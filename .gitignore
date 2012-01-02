@@ -1,0 +1,5 @@
+*.pyc
+Instanssi/sqlite.db
+.project
+.pydevproject
+.settings

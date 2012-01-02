@@ -1,0 +1,37 @@
+
+html, body{margin:0;padding:0;background-image:url('../images/sky_repeat.jpg');background-repeat:repeat-x;}
+html{background-color: #000000; overflow-x:hidden;}
+
+
+.layerItem{position: absolute; top:0;left:0;z-index:0;overflow:hidden;}
+.cloud{width: 10em; height: 4em;background-color: #fbfbfb;border-radius: 10px;overflow:hidden;}
+
+
+h1,h2{font-family:sans-serif;font-weight:normal;}
+h1{margin-top:1em;letter-spacing: 0px;font-size: 3.6em;}
+h2{font-size: 1em;margin-top:0.4em;}
+h2.date{font-size: 1.4em;}
+h2.place{font-size: 1.45em; letter-spacing:4px;}
+
+.blackArea{width:100%;height:200px;background-color: black;position:absolute;top:424px;}
+#sky{z-index:0;margin:auto;width:1600px;position:absolute;top:0;left:10%;}
+#content{ background-color: transparent; /*height:100%*/;width:960px;margin:auto;position:absolute;}
+
+#mainWrap{margin:270px 0 100px 0; color:white;}
+div.main{width:655px;float:left;}
+div.main h2{font-size: 1.5em;margin-bottom:1em;}
+div.main h2 span.posted{color: #999999;font-size: 0.5em;}
+div.main p{margin: 0.5em 0 0.5em 0;line-height:130%}
+div.main p strong{color: #7bcffa; font-weight: normal;font-size: 1em;}
+div.main{color:#ffffff;font-family:arial;}
+
+div#sideBar{width:220px; /*height:200px;*/float:left; border-left: 1px solid #222;padding-left: 40px;margin-left:40px;}
+div#sideBar h2{border-bottom: 1px solid #222;margin-bottom: 2em;}
+div#sideBar p{margin: 1em 0 1em 0; font-size: 0.8em;}
+
+div#footer{height: 200px;color:red;}
+
+
+
+
+

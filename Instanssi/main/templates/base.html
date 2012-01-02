@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Instanssi</title>
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
+{% block head %}{% endblock %}
+    <script type="text/javascript">
+    $(function() {
+{% block jquery %}{% endblock %}
+    });
+    </script>
+</head>
+<body>
+    <div id="sky"class="rotate" ><img src="/static/images/sun.png" alt="" /></div>
+    <div class="layerItem" x="-550" y="-150" z="13" ><img src="/static/images/cloud.png" alt="" /></div>
+    <div class="layerItem" x="600" y="-50" z="14" ><img src="/static/images/cloud.png" alt="" /></div>
+    
+    <div class="layerItem" x="0" y="-250" z="10" ><img src="/static/images/ground_02b.png" alt="" /></div>
+    <div class="layerItem" x="0" y="-250" z="8" ><img src="/static/images/grass.png" alt="" /></div>
+    <div class="layerItem" x="450" y="50" z="10"><img src="/static/images/tree.png" alt="" /></div>
+    <div class="layerItem" x="-215" y="90" z="10"><img src="/static/images/char.png" alt="" /></div>
+    <div class="layerItem" x="440" y="0" z="11" ><img src="/static/images/leaves.png" alt="" /></div> 
+    <div class="layerItem" x="540" y="50" z="9" ><img src="/static/images/leaves.png" alt="" /></div> 
+    <div class="blackArea"></div>
+    
+    <div class="layerItem footerItem" x="0" y="-848" z="13" ><img src="/static/images/cave_background.jpg" alt="" /></div>
+    <div class="layerItem footerItem" x="0" y="-900" z="12" ><img src="/static/images/wooden_things.png" alt="" /></div>
+    <div class="layerItem footerItem" x="0" y="-830" z="10" ><img src="/static/images/cave_black_1b.png" alt="" /></div>
+    <div class="layerItem footerItem" x="0" y="-850" z="8" ><img src="/static/images/cave_black_2.png" alt="" /></div>
+    <div class="layerItem footerItem" x="0" y="-850" z="11" ><img src="/static/images/cave_black_3.png" alt="" /></div>
+    <div class="layerItem footerItem" x="0" y="-830" z="9" ><img src="/static/images/cave_black_4.png" alt="" /></div>
+    
+    <div id="content" >
+        <h1>Instanssi</h1>
+        <h2>Digitaalisen tekemisen festivaali</h2>
+        <h2 class="date" >9.-11.3.2012 Jyväskylä</h2>
+        <h2 class="place">Voionmaan lukio</h2>
+        <div id="mainWrap">
+            <div class="main">
+{% block content %}{% endblock %}
+            </div>
+            <div id="sideBar">
+                <h2>RSS-feedit</h2>
+                <p>Instanssi: Demowall Jyväskylässä 10.9.2011 http://t.co/t14guMN #instanssi</p>
+                <p>Instanssi: Instanssi 2011 pakettiin http://bit.ly/pB1lTr #instanssi</p>
+                <p>Instanssi: Anna palautetta Instanssista http://bit.ly/iM8brf #instanssi</p>
+                <p>deggis: Menossa #instanssi -joukkueen kanssa kohtaamaan punakoneet eli idän ATK, viikon päästä Kaapelitehtaalla http://t.co/0BvAuhpT #altparty</p>
+            </div>
+        </div><!-- contentWrap-->
+    </div><!-- content -->
+</body>
+</html>

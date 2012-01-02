@@ -13,3 +13,8 @@ Lyhyehköt ohjeet:
 2. Aja djangon syncdb (python manage.py syncdb)
 3. Devaa
 4. Testaa ajamalla runserver (python manage.py runserver)
+
+Lyhyesti projektista:
+Idea siis on, että appis hakemistossa Instanssi/main2012 toimii vuoden 2012 instanssin etusivuna. 
+Muita appeja olisi esim. ensi vuoden instansseissa Instanssi/main2013 ja niin edelleen.
+Myös kompomaatti ja arkisto olisivat appiksia täällä, eli Instanssi/kompomaatti ja Instanssi/arkisto. 

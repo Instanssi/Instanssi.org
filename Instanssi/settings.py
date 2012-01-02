@@ -69,7 +69,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'main',
+    'main2012',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

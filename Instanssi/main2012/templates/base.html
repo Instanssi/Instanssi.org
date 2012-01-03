@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="/static/css/style.css" />
     <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
+    <script type="text/javascript" src="/static/js/twitter_feed.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
-{% block jquery %}{% endblock %}
+{% block jquery %}
+    $('#twitter_content').twitterfeed({username: "Instanssi"});
+{% endblock %}
     });
     </script>
 </head>
@@ -50,11 +53,9 @@
 {% block content %}{% endblock %}
             </div>
             <div id="sideBar">
-                <h2>RSS-feedit</h2>
-                <p>Instanssi: Demowall Jyväskylässä 10.9.2011 http://t.co/t14guMN #instanssi</p>
-                <p>Instanssi: Instanssi 2011 pakettiin http://bit.ly/pB1lTr #instanssi</p>
-                <p>Instanssi: Anna palautetta Instanssista http://bit.ly/iM8brf #instanssi</p>
-                <p>deggis: Menossa #instanssi -joukkueen kanssa kohtaamaan punakoneet eli idän ATK, viikon päästä Kaapelitehtaalla http://t.co/0BvAuhpT #altparty</p>
+                <h2>Twitter:</h2>
+                <div id="twitter_content">
+                </div>
             </div>
         </div><!-- contentWrap-->
     </div><!-- content -->

@@ -5,4 +5,5 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns(
     'main2012.views',
     url(r'^$', 'index'),
+    url(r'^info/', 'info'),
 )

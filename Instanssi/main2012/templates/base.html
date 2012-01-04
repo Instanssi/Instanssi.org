@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/css/reset.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
     <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
+   <!-- <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>-->
     <script type="text/javascript" src="/static/js/twitter_feed.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
@@ -18,7 +18,8 @@
     </script>
 </head>
 <body>
-    <div id="sky"class="rotate" ><img src="/static/images/sun.png" alt="" /></div>
+<!--   
+   <div id="sky"class="rotate" ><img src="/static/images/sun.png" alt="" /></div>
     <div class="layerItem" x="-550" y="-150" z="13" ><img src="/static/images/cloud.png" alt="" /></div>
     <div class="layerItem" x="600" y="-50" z="14" ><img src="/static/images/cloud.png" alt="" /></div>
     <div class="layerItem" x="0" y="-250" z="10" ><img src="/static/images/ground_02b.png" alt="" /></div>
@@ -27,8 +28,17 @@
     <div class="layerItem" x="-215" y="90" z="10"><img src="/static/images/char.png" alt="" /></div>
     <div class="layerItem" x="440" y="0" z="11" ><img src="/static/images/leaves.png" alt="" /></div> 
     <div class="layerItem" x="540" y="50" z="9" ><img src="/static/images/leaves.png" alt="" /></div> 
-    <div class="blackArea">
-        <div id="navigation">
+-->  
+<!--
+    <div id="content" >
+		
+	
+        <h1>Instanssi</h1>
+        <h2>Digitaalisen tekemisen festivaali</h2>
+        <h2 class="date" >9.-11.3.2012 Jyväskylä</h2>
+        <h2 class="place">Voionmaan lukio</h2>
+        
+		<div id="navigation">
             <ul>
                 <li><a href="/2012">Etusivu</a></li>
                 <li><a href="/2012/info">Info</a></li>
@@ -36,23 +46,10 @@
                 <li><a href="/2012/aikataulu/">Aikataulu</a></li>
             </ul>
         </div>
-    </div>
-    <!--
-    <div class="layerItem footerItem" x="0" y="-848" z="13" ><img src="/static/images/cave_background.jpg" alt="" /></div>
-    <div class="layerItem footerItem" x="0" y="-900" z="12" ><img src="/static/images/wooden_things.png" alt="" /></div>
-    <div class="layerItem footerItem" x="0" y="-830" z="10" ><img src="/static/images/cave_black_1b.png" alt="" /></div>
-    <div class="layerItem footerItem" x="0" y="-850" z="8" ><img src="/static/images/cave_black_2.png" alt="" /></div>
-    <div class="layerItem footerItem" x="0" y="-850" z="11" ><img src="/static/images/cave_black_3.png" alt="" /></div>
-    <div class="layerItem footerItem" x="0" y="-830" z="9" ><img src="/static/images/cave_black_4.png" alt="" /></div>
-    -->
-    <div id="content" >
-        <h1>Instanssi</h1>
-        <h2>Digitaalisen tekemisen festivaali</h2>
-        <h2 class="date" >9.-11.3.2012 Jyväskylä</h2>
-        <h2 class="place">Voionmaan lukio</h2>
-        <div id="mainWrap">
+		
+		<div id="mainWrap">
             <div class="main">
-{% block content %}{% endblock %}
+
             </div>
             <div id="sideBar">
                 <h2>Twitter:</h2>
@@ -60,6 +57,48 @@
                 </div>
             </div>
         </div><!-- contentWrap-->
+<!--		
+		<div id="footer">
+	
+		</div>
+		
     </div><!-- content -->
+<!-- NEW -->
+<div id="header">
+</div>
+
+<div id="navigation">
+	<ul class="center">
+		<li><a href="/2012">Etusivu</a></li>
+		<li><a href="/2012/aikataulu/">Aikataulu</a></li>
+		<li><a href="/2012/aikataulu/">Kompot</a></li>
+		<li><a href="/2012/liput/">Liput</a></li>
+		<li><a href="/2012/info">Info</a></li>
+		<li><a href="/2012/aikataulu/">Yhteystiedot</a></li>
+		<li><a href="/2012/aikataulu/">In english</a></li>
+	</ul>
+</div>
+
+<div id="content">
+	<div class="center">
+		<div id="main-area">
+		{% block content %}{% endblock %}
+		</div>
+		<div id="side-bar">
+			<h2>Twitter:</h2>
+                <div id="twitter_content">
+                </div>
+		</div>
+		
+	</div>
+</div>
+
+<div id="footer">
+</div>
+
+<div id="footer-copyright">
+	<pre class="center">© 2012 Instanssi | Kaikki oikeudet pidätetään.</pre>
+</div>
+
 </body>
 </html>

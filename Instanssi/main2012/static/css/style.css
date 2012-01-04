@@ -1,5 +1,7 @@
 
-html, body{margin:0;padding:0;background-image:url('../images/sky_repeat.jpg');background-repeat:repeat-x;}
+/*
+html, body{margin:0;padding:0;background-image:url('../images/sky_repeat.jpg');background-repeat:repeat-x; background-position: 0px -221px;}
+
 html{background-color: #000000; overflow-x:hidden;}
 
 
@@ -32,9 +34,29 @@ div#sideBar{width:220px;float:left; border-left: 1px solid #222;padding-left: 40
 div#sideBar h2{border-bottom: 1px solid #222;margin-bottom: 2em;}
 div#sideBar p{margin: 1em 0 1em 0; font-size: 0.8em;}
 
-div#footer{height: 200px;color:red;}
+
+#footer{height: 400px; width: 100%; background: blue;}
+*/
+/* *** */
+.center{ width: 960px; margin: 0 auto;}
+
+#header{width: 100%; height: 350px; background: #fff; }
+
+#navigation{width: 100#; height: 50px; background: #000;display: block;}
+#navigation ul{padding-top: 15px;}
+#navigation ul li{display: inline;}
+#navigation a{color:white; 1px 1px 7px;padding: 0 .5em; text-decoration: none;}
+
+#content{width: 100%; height: 600px; background: #111; border-top: 1px solid #1e5166;}
+#content h2{color: #fff;margin-bottom: 20px;}
+#content h2 .posted{ color: #999; font-size: 12px;}
+#content p{width: 500px; color: #fff; line-height: 130%; background: #191919; padding: 0.5em 2em;}
+
+#content #main-area{width: 655px; float: left; min-height: 600px;}
+#content #side-bar p{ width: 220px; float: left;}
 
 
+#footer{ width: 100%; height: 390px; background: #34302a; border-top: 1px solid #218d8e; }
 
-
-
+#footer-copyright{ width: 100%; height: 50px; background: #218d8e; }
+#footer-copyright pre{ color: #fff; padding-top: 15px; text-align: right;}

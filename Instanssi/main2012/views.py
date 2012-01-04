@@ -2,6 +2,7 @@
 
 from django.http import HttpResponse
 from django.template import Context, loader
+from django.shortcuts import render_to_response
 
 # 
 # At the moment, all the pages are loaded by using separate functions. 
@@ -17,8 +18,19 @@ def index(request):
     return HttpResponse(t.render(c))
 
 def info(request):
-    t = loader.get_template('info.html')
-    c = Context({
-        'request': request,
-    })
-    return HttpResponse(t.render(c))
+    return render_to_response('info.html')
+
+def aikataulu(request):
+    return render_to_response('aikataulu.html')
+
+def english(request):
+    return render_to_response('english.html')
+
+def kompot(request):
+    return render_to_response('kompot.html')
+
+def liput(request):
+    return render_to_response('liput.html')
+
+def yhteystiedot(request):
+    return render_to_response('yhteystiedot.html')

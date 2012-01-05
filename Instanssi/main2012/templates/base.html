@@ -5,8 +5,10 @@
     <title>Instanssi</title>
     <link rel="stylesheet" href="/static/css/reset.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
+	<link href='http://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+	
     <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
-   <!-- <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>-->
+    <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
     <script type="text/javascript" src="/static/js/twitter_feed.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
@@ -64,18 +66,31 @@
 		
     </div><!-- content -->
 <!-- NEW -->
+<style> .nav-marker{left: 25px;} </style>
+
 <div id="header">
+	<div class="center">
+		<a class="hover-fade" href="http://instanssi.org">
+			<h1>Instanssi</h1>
+			<h2 class="description">Digitaalisen tekemisen festivaali</h2>
+		</a>
+		<h2 class="date" >9.-11.3.2012 Jyväskylä</h2>
+		<h2 class="place">Voionmaan lukiolla</h2>
+		<h2 class="details">Demoja, musiikkia, kuvia ja valoja</h2>
+	</div>
 </div>
 
 <div id="navigation">
 	<ul class="center">
-		<li><a href="/2012">Etusivu</a></li>
+		
+		<li><a href="/2012">Instanssi</a></li>
 		<li><a href="/2012/aikataulu/">Aikataulu</a></li>
 		<li><a href="/2012/aikataulu/">Kompot</a></li>
 		<li><a href="/2012/liput/">Liput</a></li>
 		<li><a href="/2012/info">Info</a></li>
-		<li><a href="/2012/aikataulu/">Yhteystiedot</a></li>
-		<li><a href="/2012/aikataulu/">In english</a></li>
+		<li><a href="/2012/yheteystiedot/">Yhteystiedot</a></li>
+		<li><a href="/2012/inenglish/">In english</a></li>
+		<div class="nav-marker"></div>
 	</ul>
 </div>
 
@@ -94,11 +109,47 @@
 </div>
 
 <div id="footer">
+	<div class="center">
+	<div class="site-map">
+		<h3>Sivukartta</h3>
+		<ul >
+			<li class="hover-fade hover-right"><a href="/2012">Etusivu</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/aikataulu/">Aikataulu</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/aikataulu/">Kompot</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/liput/">Liput</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/info">Info</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/yheteystiedot/">Yhteystiedot</a></li>
+			<li class="hover-fade hover-right"><a href="/2012/inenglish/">In english</a></li>
+		</ul>
+	</div>
+	
+	<div class="partners">
+		<h3>Yheteistyössä</h3>
+	</div>
+	
+	<div class="social-media">
+		<h3>Sosiaaliset mediat</h3>
+		<ul>
+		<li><a href="http://www.facebook.com/instanssi" alt=""><img src="/static/images/social-media/facebook.png" /></a></li>
+		<li><a href="http://twitter.com/instanssi" alt=""><img src="/static/images/social-media/twitter.png" /></a></li>
+		<li><a href="http://www.youtube.com/user/InstanssiOrg" alt=""><img src="/static/images/social-media/youtube.png" /></a></li>
+		<li><a href="http://www.pouet.net/party.php?which=1544&when=2010" alt=""><img src="/static/images/social-media/pouet.png" /></a></li>
+		
+		<ul>
+	</div>
+	
+	<div class="clearer"></div>
+	</div>
 </div>
 
 <div id="footer-copyright">
 	<pre class="center">© 2012 Instanssi | Kaikki oikeudet pidätetään.</pre>
 </div>
 
+<div class="layerItem" x="440" y="100" z="16" ><img src="/static/images/leaves.png" alt="" /></div> 
+<div class="layerItem" x="540" y="150" z="22" ><img src="/static/images/leaves.png" alt="" /></div> 
+<div class="layerItem" x="450" y="150" z="20"><img src="/static/images/tree.png" alt="" /></div>
+<div class="layerItem" x="0" y="-150" z="20" ><img src="/static/images/ground.png" alt="" /></div>
+<div class="layerItem" x="0" y="-150" z="16" ><img src="/static/images/grass.png" alt="" /></div>
 </body>
 </html>

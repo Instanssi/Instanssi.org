@@ -1,18 +1,30 @@
-
-
-
-
-
 (function($){
 $.fn.blogfeed = function(options) {
     var defaults = {
-        address: 'http://blog.instanssi.org/feeds/posts/default',
         postcount: 5
     };
     var options = $.extend(defaults, options);
     
     return this.each(function() {
-        
+        var $obj = $(this);
+        $.getFeed({url: options.feedurl, success: function(feed) {
+            var k = 0;
+            var out = '';
+            $.each(feed.items, function(i, item) {
+                if(++k > options.postcount) { return; }
+                var time = new Date(Date.parse(item.updated));
+                var timestamp = ''
+                    +time.getDate()+'.'
+                    +time.getMonth()+'.'
+                    +time.getFullYear()+' '
+                    +(time.getHours() < 10 ? '0'+time.getHours() : time.getHours())+':'
+                    +(time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes());
+                out += '<h3>'+item.title+'</h3>';
+                out += '<div class="blogtext">'+item.description+'</div>';
+                out += '<span class="blogtime">Posted on '+timestamp+'</span>';
+            });
+            $obj.html(out);
+        }});
     });
 };
 })(jQuery);

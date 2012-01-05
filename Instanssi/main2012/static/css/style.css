@@ -92,5 +92,10 @@ eng = 465
 #map_canvas{ width: 600px; height: 400px; display: block; border: 6px solid #fff; margin: 20px 0 20px 0;}
 .twitter-date{ font-size: 11px; color: #999; display: block;}
 
+#tweets dd { margin-bottom: 0.5em; }
+#tweets .date { margin-right: 0.5em; }
+#tweets .author {}
+#tweets .title {}
+
 /* border-radius, shadow, rotation */
 #footer h3{ text-shadow: 2px 0px 1px #000;}

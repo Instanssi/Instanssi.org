@@ -9,12 +9,16 @@
 	
     <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
+    <script type="text/javascript" src="/static/js/twitterlib.min.js"></script>
     <script type="text/javascript" src="/static/js/twitter_feed.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
 {% block jquery %}
-    $('#twitter_content').twitterfeed({username: "Instanssi"});
+    $('#tweets').twitterfeed({
+        users: ["Instanssi"], 
+        tweetcount: 5
+    });
 {% endblock %}
     });
     </script>
@@ -57,7 +61,7 @@
 		
 		<div id="side-bar">
 			<h2>Twitter</h2>
-			<div id="twitter_content">
+			<div id="tweets">
 			</div>
 		</div>
 		<div class="clearer"></div>

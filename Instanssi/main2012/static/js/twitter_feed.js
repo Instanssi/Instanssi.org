@@ -43,6 +43,7 @@ $.fn.twitterfeed = function(options) {
             $.each(data, function(key, val) { 
                 out += '<p class="feedelement">';
                 out += val['text']+'<span class="twitter-date" >'+parseTwitterDate(val['created_at'])+'</span>';
+                out += '<span class="twitter-link"><a href="https://twitter.com/#!/'+options.username+'/status/'+val['id_str']+'">Open</a></span>';
                 out += '</p>';
             }); 
             obj.append(out);

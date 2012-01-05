@@ -42,7 +42,7 @@ $.fn.twitterfeed = function(options) {
             var out = "";
             $.each(data, function(key, val) { 
                 out += '<p class="feedelement">';
-                out += val['text']+'<br />'+parseTwitterDate(val['created_at']);
+                out += val['text']+'<span class="twitter-date" >'+parseTwitterDate(val['created_at'])+'</span>';
                 out += '</p>';
             }); 
             obj.append(out);

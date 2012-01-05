@@ -61,7 +61,8 @@ function getLatestTweets(user, limit, doneCb) {
                 author: k.user.screen_name,
                 text: twitterlib.ify.clean(twitterlib.expandLinks(k)),
                 time: twitterlib.time.relative(k.created_at),
-                tid: k.id_str
+                tid: k.id_str,
+                publishedDate: k.created_at
             });
         });
 

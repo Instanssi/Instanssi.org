@@ -93,7 +93,7 @@ eng = 465
 .twitter-date{ font-size: 11px; color: #999; display: block;}
 
 #tweets dd { margin-bottom: 0.5em; }
-#tweets .date { margin-right: 0.5em; }
+#tweets .date { font-size: 11px; color: #999; display: block; }
 #tweets .author {}
 #tweets .title {}
 

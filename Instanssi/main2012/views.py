@@ -9,7 +9,6 @@ from django.shortcuts import render_to_response
 # There aren't that many different pages, so it's acceptable :P
 #
 
-
 def index(request):
     t = loader.get_template('index.html')
     c = Context({
@@ -18,7 +17,8 @@ def index(request):
     return HttpResponse(t.render(c))
 
 def info(request):
-    return render_to_response('info.html')
+    googleapikey = "AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s";
+    return render_to_response('info.html', {'googleapikey': googleapikey})
 
 def aikataulu(request):
     return render_to_response('aikataulu.html')

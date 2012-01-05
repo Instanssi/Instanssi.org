@@ -6,26 +6,589 @@
 
 {% block content %}
 {{ block.super }}
-	
-    <h2>Aikataulu</h2>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse accumsan pharetra lectus, 
-        vitae sollicitudin tortor mollis id. Phasellus interdum convallis nulla, laoreet mattis massa 
-        auctor vel. Morbi ac massa et metus sodales posuere venenatis consectetur neque. Curabitur 
-        interdum tempus pretium. Suspendisse volutpat augue vitae enim feugiat blandit. Sed massa nisi,
-        mollis non vulputate vel, euismod sit amet ipsum. Cras felis sem, commodo at fringilla eget, 
-        fringilla eget metus. Vestibulum dictum dignissim purus vitae fermentum. Mauris dignissim mauris 
-        sit amet sem blandit volutpat. Duis in lacus elit, id fringilla arcu. Vivamus placerat erat a 
-        arcu tempus tristique. Fusce pulvinar sollicitudin urna a consequat. Phasellus id lectus lectus, 
-        a rhoncus nulla. Proin vehicula sem at eros porttitor nec accumsan arcu hendrerit. Donec 
-        convallis nibh ut odio malesuada porttitor.
-    </p>
-    <p>
-        Suspendisse potenti. Sed sagittis pulvinar lobortis. Cras adipiscing, mauris vel pharetra egestas, 
-        ligula magna dignissim nibh, id vulputate lacus nisl egestas nibh. Phasellus varius porta odio, nec 
-        consequat augue condimentum ut. Pellentesque elementum adipiscing justo, non varius sem congue ut. 
-        Morbi semper molestie lectus, in venenatis nulla tincidunt eu. Vestibulum iaculis ullamcorper luctus. 
-        Donec blandit consectetur quam vitae auctor. Sed in diam in massa varius elementum et sed nulla.
-    </p>
-	<style> .nav-marker{left: 95px;} </style>
+
+<div id="schedule"> <!-- for inner CSS tunings -->
+
+  <h2>Aikataulu: perjantai</h2>
+  <table>
+    <tr class='otsikot'>
+      <th class='aika'>Aika</th>
+      <th class='kuva'>Kuva</th>
+      <th class='otsikko1'>Otsikko</th>
+      <th class='otsikko2'></th>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        17:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ovet auki</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        17:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Pöydissä sähköt &amp; verkko</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        17:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Kioski auki</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        18:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ständien pitäjät paikalle</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        19:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/deggis.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Heikki Salo</strong>
+          <div class='puhujalinkit'>
+            <a href='http://deggis.iki.fi'>
+              <img src='/static/images/schedule/link.png' />
+            </a>
+            <a href='https://github.com/deggis'>
+              <img src='/static/images/schedule/git.png' />
+            </a>
+            <a href='http://twitter.com/#!/deggis'>
+              <img src='/static/images/schedule/twitter.png' />
+            </a>
+            <a href='http://www.linkedin.com/profile/view?id=87349669'>
+              <img src='/static/images/schedule/linkedin.jpg' />
+            </a>
+          </div>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        Tervetulotoivotus &amp; esittelyjä (20 min)
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        19:30
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/poikola.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Antti Poikola</strong>
+          <div class='puhujalinkit'>
+            <a href='http://apoikola.wordpress.com/'>
+              <img src='/static/images/schedule/link.png' />
+            </a>
+            <a href='http://twitter.com/#!/apoikola'>
+              <img src='/static/images/schedule/twitter.png' />
+            </a>
+            <a href='http://www.linkedin.com/profile/view?id=1480240'>
+              <img src='/static/images/schedule/linkedin.jpg' />
+            </a>
+          </div>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Mitä on avoin data ja mitä Suomessa tapahtuu nyt?" (20 min)
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        20:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/sauli.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Sauli Korhonen</strong>
+          <div class='puhujalinkit'>
+            <a href='http://kingthrill.blogspot.com/'>
+              <img src='/static/images/schedule/link.png' />
+            </a>
+            <a href='http://www.linkedin.com/profile/view?id=108903985'>
+              <img src='/static/images/schedule/linkedin.jpg' />
+            </a>
+          </div>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "N:s johdatus konemusiikkiin" (20 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        20:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Deadline: Häröpelikompo</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        20:30
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/epeli.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Esa-Matti Suuronen</strong>
+          <div class='puhujalinkit'>
+            <a href='http://esa-matti.suuronen.org/'>
+              <img src='/static/images/schedule/link.png' />
+            </a>
+            <a href='https://github.com/epeli'>
+              <img src='/static/images/schedule/git.png' />
+            </a>
+            <a href='http://www.linkedin.com/profile/view?id=87349151'>
+              <img src='/static/images/schedule/linkedin.jpg' />
+            </a>
+            <a href='http://twitter.com/#!/EsaMatti'>
+              <img src='/static/images/schedule/twitter.png' />
+            </a>
+          </div>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Instanssin valot - ValoAPI" (20 min)
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        20:45
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>ValoAPI online</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        21:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ständit kiinni yöksi</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        21:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/paavo.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Paavo Nieminen</strong>
+          <div class='puhujalinkit'>
+            <a href='http://users.jyu.fi/~nieminen/'>
+              <img src='/static/images/schedule/link.png' />
+            </a>
+          </div>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Alle 1 kt:n softasyntikka" (20 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        22:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Deadline: robocode-alkulohkot</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        22:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Häröpelikompo</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        23:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Häröpelikompo: äänestys alkaa</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        23:45
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/itpro.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>HC IT-ammattilainen</strong>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Robocode-koodaus" (15 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        00:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/robocode.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Robocode-näytösottelu</strong>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Aikataulu: lauantai</h2>
+  <table>
+    <tr class='otsikot'>
+      <th class='aika'>Aika</th>
+      <th class='kuva'>Kuva</th>
+      <th class='otsikko1'>Otsikko</th>
+      <th class='otsikko2'></th>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        08:00
+      </td>
+      <td class='kuva'></td>
+      <td class='otsikko1'>
+        <strong>Deadline: 4k, demo</strong>
+      </td>
+      <td class='otsikko2'>
+        kevyt deadline: päivittää saa vielä.
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        10:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Kioski aukeaa</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        12:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Häröpelikompo: äänestys päättyy</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        12:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ständien pitäjät paikalle</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        13:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/question.png' />
+      </td>
+      <td class='otsikko1'>
+        <strong>Yhdistyskierros</strong>
+      </td>
+      <td class='otsikko2'>
+        "7 alan yritystä ja yhteisöä esittäytyy" (7 min/kpl)
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        14:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/parkkinen.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Juuso Parkkinen(?)</strong>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "SoRvi - avoimen datan työkalupakki R-kielelle" (20 min)
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        15:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/domander.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>Richard Domander</strong>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Tekotyperyys - tahallaan väärin toimivat älykkäät agentit" (20 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        16:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Deadline: 4k, demo</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        18:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ständit illaksi kiinni</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        20:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Vikkelä musiikki</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        20:30
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Vikkelä musiikki - äänestys alkaa</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        20:30
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Grafiikka</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        22:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Summamutikka</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        23:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Pikkiriikkinen demo &amp; Instanssi demo</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        23:45
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/itpro.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <strong>HC IT-ammattilainen</strong>
+      </td>
+      <td class='otsikko2'>
+        "Semifinaalitankkien koodi ja tehdyt päivitykset" (15 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        00:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/robocode.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Robocode-semifinaali</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        01:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <strong>Scorched Earth</strong>
+      </td>
+      <td class='otsikko2'>
+        "50 erän die hard -turnaus"
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        03:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/es.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Livefeediä Stage142:lta</strong>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Aikataulu: sunnuntai</h2>
+  <table>
+    <tr class='otsikot'>
+      <th class='aika'>Aika</th>
+      <th class='kuva'>Kuva</th>
+      <th class='otsikko1'>Otsikko</th>
+      <th class='otsikko2'></th>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        09:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Deadline: Robocode-finaali</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        10:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Kaikki äänestykset päättyvät</strong>
+      </td>
+    </tr>
+    <tr class='esitys'>
+      <td class='aika'>
+        11:30
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/itpro.jpg' />
+      </td>
+      <td class='otsikko1'>
+        <div class='puhuja'>
+          <strong>HC IT-ammattilainen</strong>
+        </div>
+      </td>
+      <td class='otsikko2'>
+        "Finaalitankkien koodi ja tehdyt päivitykset" (15 min)
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        12:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/robocode.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Robocode-finaali</strong>
+      </td>
+    </tr>
+    <tr class='kompo'>
+      <td class='aika'>
+        13:00
+      </td>
+      <td class='kuva'>
+        <img src='/static/images/schedule/palkinnot.jpg' />
+      </td>
+      <td colspan='2'>
+        <strong>Palkintojen jako</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        14:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>ValoAPI offline</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        14:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Kioski kiinni</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        14:30
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Pöydistä verkko &amp; virrat kiinni</strong>
+      </td>
+    </tr>
+    <tr class='infra'>
+      <td class='aika'>
+        15:00
+      </td>
+      <td class='kuva'></td>
+      <td colspan='2'>
+        <strong>Ovet kiinni</strong>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+    <style> .nav-marker{left: 95px;} </style>
 {% endblock %}

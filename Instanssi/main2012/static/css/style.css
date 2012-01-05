@@ -48,7 +48,7 @@ body{ background-image:url('../images/header-background.jpg');background-repeat:
 .place{ color: #014162;margin-top: 10px;}
 .details{ color: #014162;margin-top: 10px;}
 
-#navigation{width: 100#; height: 50px; background: #000;display: block;}
+#navigation{width: 100%; height: 50px; background: #000;display: block;}
 #navigation ul{padding-top: 15px;}
 #navigation ul li{display: inline;}
 #navigation a{color:white; padding: 0 .5em; text-decoration: none;}

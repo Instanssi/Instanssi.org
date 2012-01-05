@@ -100,3 +100,27 @@ eng = 465
 
 /* border-radius, shadow, rotation */
 #footer h3{ text-shadow: 2px 0px 1px #000;}
+
+#schedule a img { border: none; }
+#schedule tr    { border-color: #600; border-width: 1px; border-style: solid; }
+#schedule td    { vertical-align: top; position: relative; }
+#schedule th    { text-align: left; }
+
+#schedule tr.kompo  { background-color: #dfd; }
+#schedule tr.esitys { background-color: #ffd; }
+#schedule tr.infra  { background-color: #000; color: #ddd; }
+
+#schedule td.aika, th.aika { width: 3em; }
+
+#schedule span.puhujainfo { display: block; font-size: 75%; }
+#schedule .puhuja { position: relative; width: 100%; height: 100%; }
+
+#schedule .puhujalinkit { position: absolute; right: 10px; top: 1px; }
+
+#schedule .puhujalinkit img { width: 1em; }
+#schedule td.kuva, #schedule th.kuva  { width: 4em; }
+
+#schedule td.otsikko1, #schedule th.otsikko1 { width: 16em;}
+#schedule td.otsikko2, #schedule th.otsikko2 { width: 24em;}
+
+#schedule img { width: 4em; }

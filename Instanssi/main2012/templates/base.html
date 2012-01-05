@@ -5,7 +5,7 @@
     <title>Instanssi</title>
     <link rel="stylesheet" href="/static/css/reset.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
-	<link href='http://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css' />
 	
     <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="/static/js/instanssiBackground.js"></script>
@@ -20,52 +20,7 @@
     </script>
 </head>
 <body>
-<!--   
-   <div id="sky"class="rotate" ><img src="/static/images/sun.png" alt="" /></div>
-    <div class="layerItem" x="-550" y="-150" z="13" ><img src="/static/images/cloud.png" alt="" /></div>
-    <div class="layerItem" x="600" y="-50" z="14" ><img src="/static/images/cloud.png" alt="" /></div>
-    <div class="layerItem" x="0" y="-250" z="10" ><img src="/static/images/ground_02b.png" alt="" /></div>
-    <div class="layerItem" x="0" y="-250" z="8" ><img src="/static/images/grass.png" alt="" /></div>
-    <div class="layerItem" x="450" y="50" z="10"><img src="/static/images/tree.png" alt="" /></div>
-    <div class="layerItem" x="-215" y="90" z="10"><img src="/static/images/char.png" alt="" /></div>
-    <div class="layerItem" x="440" y="0" z="11" ><img src="/static/images/leaves.png" alt="" /></div> 
-    <div class="layerItem" x="540" y="50" z="9" ><img src="/static/images/leaves.png" alt="" /></div> 
--->  
-<!--
-    <div id="content" >
-		
-	
-        <h1>Instanssi</h1>
-        <h2>Digitaalisen tekemisen festivaali</h2>
-        <h2 class="date" >9.-11.3.2012 Jyväskylä</h2>
-        <h2 class="place">Voionmaan lukio</h2>
-        
-		<div id="navigation">
-            <ul>
-                <li><a href="/2012">Etusivu</a></li>
-                <li><a href="/2012/info">Info</a></li>
-                <li><a href="/2012/liput/">Liput</a></li>
-                <li><a href="/2012/aikataulu/">Aikataulu</a></li>
-            </ul>
-        </div>
-		
-		<div id="mainWrap">
-            <div class="main">
 
-            </div>
-            <div id="sideBar">
-                <h2>Twitter:</h2>
-                <div id="twitter_content">
-                </div>
-            </div>
-        </div><!-- contentWrap-->
-<!--		
-		<div id="footer">
-	
-		</div>
-		
-    </div><!-- content -->
-<!-- NEW -->
 <style> .nav-marker{left: 25px;} </style>
 
 <div id="header">
@@ -89,6 +44,7 @@
 		<li><a href="/2012/info/">Info</a></li>
 		<li><a href="/2012/yhteystiedot/">Yhteystiedot</a></li>
 		<li><a href="/2012/english/">In English</a></li>
+		<div class="clearer"></div>
 		<div class="nav-marker"></div>
 	</ul>
 </div>
@@ -98,11 +54,13 @@
 		<div id="main-area">
 		{% block content %}{% endblock %}
 		</div>
+		
 		<div id="side-bar">
-			<h2>Twitter:</h2>
-                <div id="twitter_content">
-                </div>
+			<h2>Twitter</h2>
+			<div id="twitter_content">
+			</div>
 		</div>
+		<div class="clearer"></div>
 	</div>
 </div>
 
@@ -122,7 +80,7 @@
 	</div>
 	
 	<div class="partners">
-		<h3>Yheteistyössä</h3>
+		<h3>Yhteistyössä</h3>
 	</div>
 	
 	<div class="social-media">
@@ -131,7 +89,7 @@
 		<li><a href="http://www.facebook.com/instanssi" alt=""><img src="/static/images/social-media/facebook.png" /></a></li>
 		<li><a href="http://twitter.com/instanssi" alt=""><img src="/static/images/social-media/twitter.png" /></a></li>
 		<li><a href="http://www.youtube.com/user/InstanssiOrg" alt=""><img src="/static/images/social-media/youtube.png" /></a></li>
-		<li><a href="http://www.pouet.net/party.php?which=1544&when=2010" alt=""><img src="/static/images/social-media/pouet.png" /></a></li>
+		<li><a href="http://www.pouet.net/party.php?which=1544&when=2011" alt=""><img src="/static/images/social-media/pouet.png" /></a></li>
 		
 		<ul>
 	</div>
@@ -143,7 +101,7 @@
 <div id="footer-copyright">
 	<pre class="center">© 2012 Instanssi | Kaikki oikeudet pidätetään.</pre>
 </div>
-
+<div class="layerItem" x="-100" y="0" z="26" ><img src="/static/images/cubes.png" alt="" /></div> 
 <div class="layerItem" x="440" y="100" z="16" ><img src="/static/images/leaves.png" alt="" /></div> 
 <div class="layerItem" x="540" y="150" z="22" ><img src="/static/images/leaves.png" alt="" /></div> 
 <div class="layerItem" x="450" y="150" z="20"><img src="/static/images/tree.png" alt="" /></div>

@@ -23,6 +23,8 @@
 
 {% block content %}
 {{ block.super }}
+	<style> .nav-marker{left: 297px;} </style>
+
     <h2>Info</h2>
     <h3>Mikä on Instanssi ?</h3>
     <p>
@@ -42,7 +44,7 @@
     <p>
         Voionmaan lukion, 13.-15.5.2011. Google maps-kartta alla.
     </p>
-    <p>
-        <div id="map_canvas" style="width: 563px; height: 400px; display: block;"></div>
-    </p>
+    
+    <div id="map_canvas" ></div>
+    
 {% endblock %}

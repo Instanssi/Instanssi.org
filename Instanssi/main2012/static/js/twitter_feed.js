@@ -29,22 +29,6 @@ function orderEntries(entries, limit) {
     return entries.slice(0, limit);
 }
 
-function ISODateString(d){
-    function pad(n){
-        return n<10 ? '0'+n : n;
-    }
-    return d.getUTCFullYear()+'-' +
-        pad(d.getUTCMonth()+1)+'-'+
-        pad(d.getUTCDate());
-}
-
-// https://github.com/jamescarr/jquery-text-tools
-function linkify(text){
-    return text.replace(/(href="|<a.*?>)?[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+/g, function($0, $1) {
-        return $1 ? $0 : $0.link($0);
-    });
-}
-
 function getLatestTweets(user, limit, doneCb) {
     var count = 0;
     var tweetCache = attr('tweetCache');
@@ -74,9 +58,10 @@ function getLatestTweets(user, limit, doneCb) {
     
         $.each(tweets, function(i, k) {
             ret.push({
-                author: user,
-                text: linkify(k.text),
-                publishedDate: k.created_at
+                author: k.user.screen_name,
+                text: twitterlib.ify.clean(twitterlib.expandLinks(k)),
+                time: twitterlib.time.relative(k.created_at),
+                tid: k.id_str
             });
         });
 
@@ -93,13 +78,17 @@ function getLatestTweets(user, limit, doneCb) {
 }
 
 function constructTweetUI($parent, entries) {
-    var $dl = $('<dl>').appendTo($parent);
-
+    var out = '<ul>';
     $.each(entries, function(i, k) {
-        $('<dt>').append('<span class="date">' + ISODateString(k.publishedDate) + '</span>').
-            append('<span class="author">' + k.author + '</span>').appendTo($dl);
-        $('<dd>').append('<span class="title">' + k.text + '</span>').appendTo($dl);
+        out += '<li>';
+        out += '<span class="author">@'+k.author+': </span>';
+        out += '<span class="text">'+k.text+'</span><br />';
+        out += '<span class="time">'+k.time+'</span> &middot; ';
+        out += '<span class="link"><a href="http://twitter.com/'+k.author+'/status/'+k.tid+'">Details</a></span>';
+        out += '</li>';
     });
+    out += '</ul>';
+    $parent.append(out);
 }
 
 function twitterWidget($parent, users, amount) {

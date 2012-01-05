@@ -66,7 +66,7 @@ eng = 465
 #content h2{color: #fff;margin-bottom: 20px; font-variant: small-caps; font-size: 18px;}
 #content h2 .posted{ color: #999; font-size: 12px;}
 #content h3{color: #1fa3f5; margin-top: 20px; font-variant: small-caps; font-size: 16px;}
-#content p{font-family: verdana; font-size: 12px; color: #fff; line-height: 130%; background: #161616; padding: 0.5em 2em;}
+#content p,li{font-family: verdana; font-size: 12px; color: #fff; line-height: 130%; background: #161616; padding: 0.5em 2em;}
 #content #main-area{width: 600px; padding: 0 25px 0 0; float: left; min-height: 600px; border-right: 1px solid #181818;}
 #content #side-bar { width: 220px; float: left; padding: 0 0 0 25px;}
 #content a:link, #content a:hover, #content a:visited{color: #1fa3f5;}
@@ -90,12 +90,13 @@ eng = 465
 .clearer{ clear: both; }
 .center{ width: 940px; margin: 0 auto; padding-left: 10px; padding-right: 10px }
 #map_canvas{ width: 600px; height: 400px; display: block; border: 6px solid #fff; margin: 20px 0 20px 0;}
-.twitter-date{ font-size: 11px; color: #999; display: block;}
 
-#tweets dd { margin-bottom: 0.5em; }
-#tweets .date { font-size: 11px; color: #999; display: block; }
-#tweets .author {}
-#tweets .title {}
+#tweets ul { display: inline; }
+#tweets li { display: block; }
+#tweets .time { font-size: 11px; color: #999; display: inline-block; }
+#tweets .author {  }
+#tweets .text {}
+#tweets .link { font-size: 11px; color: #999; display: inline-block;  }
 
 /* border-radius, shadow, rotation */
 #footer h3{ text-shadow: 2px 0px 1px #000;}

@@ -7,7 +7,8 @@ from Instanssi import settings
 def render_custom(tpl):
     return render_to_response(tpl, {
         'googleapikey': settings.GOOGLEAPIKEY,
-        'googleanalytics': settings.GOOGLEANALYTICS
+        'googleanalytics': settings.GOOGLEANALYTICS,
+        'debugmode': settings.DEBUG
     })
 
 # Pages

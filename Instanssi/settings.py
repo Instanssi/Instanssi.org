@@ -69,6 +69,8 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'main2012',
+    'arkisto',
+    'kompomaatti',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

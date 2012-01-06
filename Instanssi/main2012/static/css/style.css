@@ -53,10 +53,9 @@ eng = 465
 
 .partners{ width: 620px; border-left: 0px solid #34302a; border-right: 0px solid #34302a; }
 .partners img{padding:0; border: 0; margin:0; margin: 5px;}
-.social-media{width: 130px;}
-.social-media p{margin-bottom: 20px; color: #eee;}
+.social-media{width: 100px;}
 .social-media img{position: relative;}
-.social-media-icons a{float: left;}
+
 #footer h3{padding: 20px 0 20px 0; color: #eee; border-bottom: 1px solid #1fa3f5; width: 120px; margin: 0 0 20px 0; }
 
 .layerItem{position: absolute; top:0;left:0;z-index:0;overflow:hidden;}
@@ -124,6 +123,7 @@ border-spacing: 0 10px;
 
 #schedule img { width: 4em; }
 
+#content ul.info { color: #fff; list-style: disc; padding-left: 50px; font-size: 12px; }
 
 /*
 #schedule img { width: 4em; border: 2px solid #fff}

@@ -9,6 +9,10 @@ $(document).ready( function(){
 	socialMediaButtons();
 	titleHover("#hearder h1");
 	siteMapHover();
+	navigationButtonEffect();
+	ordetTicketButtonEffect();
+	fixBlogImageContainer();
+	
 	$(window).resize(function() {/*centerContent();*/});
 	
 	$(document).mousemove(function(e){
@@ -88,7 +92,6 @@ function siteMapHover(){
 
 function setNavigationMarker( page )
 {
-	
 	var navX = 0;
 	switch( page ){
 		case "instanssi": 	navX = 25; break; 
@@ -99,7 +102,33 @@ function setNavigationMarker( page )
 		case "yhteystiedot":navX = 25; break; 
 		case "inenglish": 	navX = 25; break; 
 	}
+}
 
-	
-	
+function fixBlogImageContainer()
+{
+	var target = $('.tr-caption-container');
+	$(target).ready(function(){ 
+		var width = $('.tr-caption-container').width();
+		//alert("width:"+width);
+	});	
+}
+
+
+function ordetTicketButtonEffect()
+{
+	$('.order-ticket a').mouseenter(function(){
+		$(this).stop().animate({opacity: 0.8}, 300);
+	});
+	$( ".order-ticket a" ).mouseleave(function(){
+		$(this).stop().animate({opacity: 1}, 300);
+	});
+}
+function navigationButtonEffect()
+{
+	/*$('#navigation li').mouseenter(function(){
+		$(this).stop().animate({top: '-2px'}, 200);
+	});
+	$( "#navigation li" ).mouseleave(function(){
+		$(this).stop().animate({top: '0px'}, 200);
+	});*/
 }

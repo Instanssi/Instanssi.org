@@ -5,6 +5,7 @@ var _y = 0;
 $(document).ready( function(){
 	/*centerContent();*/
 	/*setFooterPosition();*/
+	initLayerItems();
 	updateLayerItems();
 	socialMediaButtons();
 	titleHover("#hearder h1");
@@ -12,7 +13,7 @@ $(document).ready( function(){
 	navigationButtonEffect();
 	ordetTicketButtonEffect();
 	fixBlogImageContainer();
-	
+
 	$(window).resize(function() {/*centerContent();*/});
 	
 	$(document).mousemove(function(e){
@@ -24,7 +25,6 @@ $(document).ready( function(){
 });
 
 function updateLayerItems(){
-	initLayerItems();
 	
 	$(".layerItem").each( function(){
 		var z = parseInt($(this).attr("z")) * 1;
@@ -39,12 +39,22 @@ function updateLayerItems(){
 	});
 }
 
-function initLayerItems(){
-	$(".layerItem").each(function(){
+function initLayerItems(){/*
+	$(".layerItem").each( function(){
+		var z = parseInt($(this).attr("z")) * 1;
+		var y = parseInt($(this).attr("y")) * -1;
+		var x = parseInt($(this).attr("x")) * 1;
+
+		// wut? liikutellaan layereita, kun hiiri liikkuu
 		$(this).css({
+			top:  y,
+			left: ( ( $(window).width()  - $(this).width() ) / 2) +  x - ($(window).width() - _x*2 ) * (-1/(z*z))
 		});
-	});
+	});*/
+	_x = $(window).width() / 2;
+	_y = $(window).height() / 2;
 }
+
 function centerContent()
 {
 	var halfOfHtml = (($(window).width()-960)/2);

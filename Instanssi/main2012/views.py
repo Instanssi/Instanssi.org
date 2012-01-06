@@ -1,36 +1,30 @@
 # -*- coding: utf-8 -*-
 
-from django.http import HttpResponse
-from django.template import Context, loader
 from django.shortcuts import render_to_response
+from Instanssi import settings
 
-# 
-# At the moment, all the pages are loaded by using separate functions. 
-# There aren't that many different pages, so it's acceptable :P
-#
-
+# A nice wrapper
+def render_custom(tpl):
+    return render_to_response('info.html', {'googleapikey': settings.GOOGLEAPIKEY,
+                                            'googleanalytics': settings.GOOGLEANALYTICS})
+# Pages
 def index(request):
-    t = loader.get_template('index.html')
-    c = Context({
-        'request': request,
-    })
-    return HttpResponse(t.render(c))
+    return render_custom("index.html")
 
 def info(request):
-    googleapikey = "AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s";
-    return render_to_response('info.html', {'googleapikey': googleapikey})
+    return render_custom("info.html")
 
 def aikataulu(request):
-    return render_to_response('aikataulu.html')
+    return render_custom('aikataulu.html')
 
 def english(request):
-    return render_to_response('english.html')
+    return render_custom('english.html')
 
 def kompot(request):
-    return render_to_response('kompot.html')
+    return render_custom('kompot.html')
 
 def liput(request):
-    return render_to_response('liput.html')
+    return render_custom('liput.html')
 
 def yhteystiedot(request):
-    return render_to_response('yhteystiedot.html')
+    return render_custom('yhteystiedot.html')

@@ -11,14 +11,17 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sqlite.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'sqlite.db',
+        'USER': '', 
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
+
+GOOGLEAPIKEY = 'AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s'
+GOOGLEANALYTICS = False
 
 TIME_ZONE = 'Europe/Helsinki'
 LANGUAGE_CODE = 'fi-FI'
@@ -33,12 +36,9 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-# Additional locations of static files
 STATICFILES_DIRS = (
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
@@ -80,11 +80,6 @@ INSTALLED_APPS = (
     'django.contrib.admin'
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

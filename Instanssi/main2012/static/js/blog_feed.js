@@ -24,7 +24,17 @@ $.fn.blogfeed = function(options) {
                 out += '<span class="blogtime">Posted on '+timestamp+'</span>';
             });
             $obj.html(out);
+			fixBlogImageContainer();
         }});
     });
 };
+
+function fixBlogImageContainer()
+{
+	$('.tr-caption-container').each(function(){
+		var width = $( this ).find('img').width();
+		$( this ).width( width );
+	});
+}
+
 })(jQuery);

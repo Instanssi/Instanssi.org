@@ -54,8 +54,10 @@ eng = 465
 
 .partners{ width: 620px; border-left: 0px solid #34302a; border-right: 0px solid #34302a; }
 .partners img{padding:0; border: 0; margin:0; margin: 5px;}
-.social-media{width: 100px;}
-.social-media img{position: relative;}
+.social-media{width: 140px;}
+.social-media img{position: relative; }
+.social-media a{ float:left !important; width: 60px;}
+.social-media p{ margin-bottom: 10px; color: #eee;}
 
 #footer h3{padding: 20px 0 20px 0; color: #eee; border-bottom: 1px solid #1fa3f5; width: 120px; margin: 0 0 20px 0; }
 

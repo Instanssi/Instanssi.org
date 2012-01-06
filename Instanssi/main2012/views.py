@@ -2,6 +2,9 @@
 
 from django.shortcuts import render_to_response
 from Instanssi import settings
+from django.http import HttpResponse
+import urllib2
+from urllib2 import URLError
 
 # A nice wrapper
 def render_custom(tpl):
@@ -32,3 +35,15 @@ def liput(request):
 
 def yhteystiedot(request):
     return render_custom('yhteystiedot.html')
+
+# evil h4x
+def feed(request):
+    req = urllib2.Request('http://blog.instanssi.org/feeds/posts/default')
+    data = ''
+    try:
+        urllib2.urlopen(req)
+        response = urllib2.urlopen(req, timeout=3)
+        data = response.read()
+    except URLError, e:
+        pass
+    return HttpResponse(data);

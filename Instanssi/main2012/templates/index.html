@@ -11,11 +11,7 @@
 {% block jquery %}
 {{ block.super }}
     $('#blogfeedarea').blogfeed({
-{% if debugmode %}
-        feedurl: '/static/main2012/temp/test.rss',
-{% else %}
-        feedurl: 'http://blog.instanssi.org/feeds/posts/default',
-{% endif %}
+        feedurl: '/2012/feed/',
         postcount: 5
     });
 {% endblock %}

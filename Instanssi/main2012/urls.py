@@ -11,4 +11,5 @@ urlpatterns = patterns(
     url(r'^kompot/', 'kompot'),
     url(r'^liput/', 'liput'),
     url(r'^yhteystiedot/', 'yhteystiedot'),
+    url(r'feed/', 'feed')
 )

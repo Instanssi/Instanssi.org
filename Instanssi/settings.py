@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Tuomas Virtanen', 'turatzuro@gmail.com'),
+    ('Tuomas Virtanen', 'katajakasa@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -41,8 +41,7 @@ STATICFILES_DIRS = (
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
 # Make this unique, and don't share it with anybody.
@@ -76,7 +75,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
+    'django.contrib.admin'
 )
 
 # A sample logging configuration. The only tangible logging

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
-{% block head %}{{ block.super }}{% endblock %}
+{% block head %}
+{{ block.super }}
+    <style type="text/css"> .nav-marker{left: 170px;} </style>
+{% endblock %}
 
 {% block jquery %}{{ block.super }}{% endblock %}
 
@@ -39,5 +42,5 @@
     <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
-	<style> .nav-marker{left: 170px;} </style>
+	
 {% endblock %}

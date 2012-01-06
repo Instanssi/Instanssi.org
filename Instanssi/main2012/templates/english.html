@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
-{% block head %}{{ block.super }}{% endblock %}
+{% block head %}
+{{ block.super }}
+    <style type="text/css"> .nav-marker{left: 435px;} </style>
+{% endblock %}
 
 {% block jquery %}{{ block.super }}{% endblock %}
 
@@ -39,6 +42,5 @@
         Static ticket – 10 Euros. This ticket includes everything that the Dynamic ticket plus network, electricity and table 
         space (60x70cm) for your computer.
     </p>
-	<style> .nav-marker{left: 435px;} </style>
 {% endblock %}
 

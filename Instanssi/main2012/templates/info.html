@@ -2,7 +2,8 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ googleapikey }}&sensor=false"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ googleapikey }}&amp;sensor=false"></script>
+    <style type="text/css"> .nav-marker{left: 278px;}</style>
 {% endblock %}
 
 {% block jquery %}
@@ -45,5 +46,4 @@
     </p>
     
     <div id="map_canvas" ></div>
-    <style> .nav-marker{left: 278px;} </style>
 {% endblock %}

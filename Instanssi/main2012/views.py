@@ -5,7 +5,7 @@ from Instanssi import settings
 
 # A nice wrapper
 def render_custom(tpl):
-    return render_to_response('info.html', {'googleapikey': settings.GOOGLEAPIKEY,
+    return render_to_response(tpl, {'googleapikey': settings.GOOGLEAPIKEY,
                                             'googleanalytics': settings.GOOGLEANALYTICS})
 # Pages
 def index(request):

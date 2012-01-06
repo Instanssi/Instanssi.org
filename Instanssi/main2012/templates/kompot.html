@@ -5,117 +5,183 @@
     <style type="text/css"> .nav-marker{left: 170px;} </style>
 {% endblock %}
 
-{% block jquery %}{{ block.super }}{% endblock %}
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
 
 {% block content %}
 {{ block.super }}
-
-
 <h2>Kompot</h2>
 
-<div class="p">Yleiset säännöt:
-<ul class="info">
-    <li>Kompoteosten ohjelmakoodia suositellaan julkaistavaksi avoimena lähdekoodina. Työn alla olevista teoksista sopii keskustella julkisesti vaikkapa ohjelmointivinkkien etsimiseksi.</li>
-    <li>Kaikkien teosten tulee koostua pääosin ennen julkaisemattomasta materiaalista.</li>
-    <li>Sääntömuutoksia tehdään tarvittaessa yllättäen ja mielivaltaisesti.</li>
-</ul>
-</div>
-
 <div class="p">
-Etäosallistuminen:
-<ul class="info">
-  <li>Demokompoihin voi osallistua myös etänä. Mahdollisen palkintonsa noutamisen joutuu sopimaan itse.</li>
-</ul>
+    Yleiset säännöt:
+    <ul class="info">
+        <li>
+            Kompoteosten ohjelmakoodia kannustetaan julkaistavaksi avoimena lähdekoodina. 
+            Työn alla olevista teoksista sopii keskustella julkisesti vaikkapa ohjelmointivinkkien etsimiseksi.
+        </li>
+        <li>
+            Kaikkien teosten tulee koostua pääosin ennen julkaisemattomasta materiaalista.
+        </li>
+        <li>
+            Sääntömuutoksia tehdään tarvittaessa yllättäen ja mielivaltaisesti, joskaan ei perusteettomasti.
+        </li>
+    </ul>
 </div>
-
 <div class="p">
-Julkaisu:
-<ul class="info">
-  <li>Kompoihin osallistuminen tarkoittaa teoksen luovuttamista hyvässä demoskene-hengessä julkiseen käyttöön sisältäen teosten ja videotallenteiden levittämisen Instanssin sivustolla. Käytettävän materiaalin täytyy olla moiseen sopivaa.</li>
-</ul>
+    Etäosallistuminen:
+    <ul class="info">
+        <li>Demokompoihin voi osallistua myös etänä. Mahdollisen palkintonsa noutamisen joutuu sopimaan itse.</li>
+    </ul>
+</div>
+<div class="p">
+    Julkaisu:
+    <ul class="info">
+        <li>
+            Kompoihin osallistuminen tarkoittaa teoksen luovuttamista hyvässä demoskene-hengessä julkiseen 
+            käyttöön sisältäen teosten ja videotallenteiden levittämisen Instanssin sivustolla. Käytettävän 
+            materiaalin täytyy olla moiseen sopivaa.
+        </li>
+    </ul>
+</div>
+<div class="p">
+    Tekniikka:
+    <ul class="info">
+        <li>Julkaistaan myöhemmin sen varmistuttua.</li>
+    </ul>
 </div>
 
-<div class="p">Tekniikka:
-<ul class="info">
-  <li>Julkaistaan myöhemmin sen varmistuttua</li>
-</ul>
+<h3>Instanssidemo</h3>
+<p>
+    Instanssidemo on tapahtuman kliimaksi, jolloin taiteelliset reaaliaikaiset päräytykset 
+    alistavat raudan tahtoonsa tavoitteena audiovisuaalinen elämys. Teos on audiovisuaalinen 
+    tietokoneohjelma. Käytettävän tekniikan saa valita vapaasti. Esimerkiksi OpenGL, SDL, 
+    DirectX, XNA, Qt, HTML5 ja ncurses ovat kelvollisia ympäristöjä. Kompokoneelle voidaan 
+    tarvittaessa asentaa oletusasetuksin yleisimpiä (paketinhallinnasta löytyviä) kirjastoja. 
+    Eriskummallisissa tapauksissa valmistaudu käyttämään esitykseen omaa laitteistoasi.
+</p>
+<p>
+    Valkokankaan ja äänentoiston lisäksi ohjelmoitavaa salivalaistusta kannustetaan käyttämään 
+    osana demoa. Salivalaistuksen käyttöä suunnitteleville tulemme julkaisemaan speksauksen sekä 
+    apuja ennen tapahtumaa.
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>Puretun paketin on mahduttava alle 128 megatavun tilaan.</li>
+        <li>Demo on enimmäkseen ohjelmoitu. Puhtaat animaatiot sopivat summamutikkaan.</li>
+    </ul>
 </div>
 
-    <h3>Instanssidemo</h3>
-
-    <p>Teos on audiovisuaalinen tietokoneohjelma. Käytettävän tekniikan saa valita vapaasti. Esimerkiksi OpenGL, SDL, DirectX, XNA, Qt, HTML5 ja ncurses ovat kelvollisia ympäristöjä. Kompokoneelle voidaan tarvittaessa asentaa oletusasetuksin yleisimpiä (paketinhallinnasta löytyviä) kirjastoja. Eriskummallisissa tapauksissa valmistaudu käyttämään esitykseen omaa laitteistoasi.</p>
-
-    <p>Valkokankaan ja äänentoiston lisäksi salivalaistusta voi käyttää osana demoa.</p>
-    <div class="p">Säännöt:
-<ul class="info">
-    <li>Puretun paketin on mahduttava alle 128 megatavun tilaan.</li>
-    <li>Demo on enimmäkseen ohjelmoitu. Puhtaat animaatiot sopivat summamutikkaan.</li>
-</ul>
-	</div>
-    <h3>Pikkiriikkinen demo</h3>
-
-    <p>Teos on audiovisuaalinen tietokoneohjelma. Erona demokompoon on 4096 tavun kokorajoite. Perinteisten suoritettavien binäärien lisäksi kompoon kelvollisia ovat tulkattavat ja käännettävät teokset, siispä esimerkiksi selaimessa toimivan Javascriptin käyttö on sallittua. Käytetty teknologia mainitaan esityksen yhteydessä.</p>
-
-    <p>Binäärimuotoinen teos voi linkittää käytettävän järjestelmän yleisiin kirjastoihin (Linux-koneella esim. C, OpenGL, SDL). Lisäkirjastojen asennusta voi pyytää.</p>
-
-    <p>Valkokankaan ja äänentoiston lisäksi salivalaistusta voi tavumäärän salliessa käyttää osana demoa.</p>
-
-    <div class="p">Säännöt:
-
-<ul class="info">
-    <li>Ajettava ohjelma on kooltaan enintään 4096 tavua.</li>
-</ul>
+<h3>Pikkiriikkinen demo</h3>
+<p>
+    Pikkiriikkinen demo edustaa raa’an ohjelmointitaidon terävintä kärkeä. Teos on äärimmäisen 
+    pieni audiovisuaalinen tietokoneohjelma. Ainoa, joskin hyvin määrittävä ero instanssidemokompoon 
+    verrattuna on teoksen 4096 tavun kokorajoite. Perinteisten suoritettavien binäärien lisäksi 
+    kompoon kelvollisia ovat tulkattavat ja käännettävät ohjelmat, siispä esimerkiksi selaimessa 
+    toimivan Javascriptin käyttö on sallittua. Käytetty teknologia mainitaan esityksen yhteydessä.
+</p>
+<p>
+    Binäärimuotoinen teos voi linkittää käytettävän järjestelmän yleisiin kirjastoihin (Linux-koneella 
+    esim. C, OpenGL, SDL). Lisäkirjastojen asennusta voi pyytää.
+</p>
+<p>
+    Valkokankaan ja äänentoiston lisäksi salivalaistusta voi tavumäärän salliessa käyttää osana demoa.
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>Ajettava ohjelma on kooltaan enintään 4096 tavua.</li>
+    </ul>
 </div>
 
-    <h3>Musiikki</h3>
-
-    <p>Tekniikka vapaa, esimerkiksi renderoitu äänitiedosto, tracker-muotoinen kappale tai ajettava ohjelma newskool- tai oldskool-raudalla käy.</p>
-
-    <div class="p">Säännöt:
-
-<ul class="info">
-    <li>Kappaletta soitetaan kompossa neljä minuuttia.</li>
-    <li>Kappale on tietokonemusiikkia.</li>
-</ul>
-</div>
-    <h3>Grafiikka</h3>
-
-    <p>Teos on tietokoneella valmistettu kuva. Tekniikaksi kelpaa pikseleiden asettaminen paikoilleen käsin tai mallin renderöinti. Valokuvia voi käyttää käsittelymateriaalina.</p>
-
-    <div class="p">Säännöt:
-
-<ul class="info">
-    <li>Valmiin tuotoksen on oltava png-muodossa.</li>
-</ul>
-	</div>
-	
-    <h3>Vikkelä grafiikka</h3>
-    <p>Teos on tietokoneella tehty kuva kuten grafiikkakompossa. Se tehdään kuitenkin tapahtuman aikana aiheesta, joka annetaan kilpailuajan alkaessa.</p>
-
-    <h3>Robocode</h3>
-
-    <p>Kompossa ohjelmoidaan tankki käyttäen Robocode-alustaa. Lisätietoa Robocodesta: <a href="http://robocode.sourceforge.net">/http://robocode.sourceforge.net/</a>.</p>
-
-    <div class="p">Säännöt:
-<ul class="info">
-    <li>Välieriä muodostetaan puolitusalgoritmilla kunnes ruudulla on kerrallaan korkeintaan kuusi tankkia.</li>
-</ul>
+<h3>Musiikki</h3>
+<p>
+    Loihdi sävelmiä, mielenkiintoisia soundeja tai rankkoja äänimattoja - kunhan loihdit ääntä 
+    joka on jonkin tulkinnan mukaan musikaalista. Maailma lienee täynnä hyviä esimerkkejä hyvistä 
+    biiseistä. Tekniikka vapaa, esimerkiksi renderoitu äänitiedosto, äänite, tracker-muotoinen 
+    kappale tai ajettava ohjelma newskool- tai oldskool-raudalla käy.
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>
+            Kappaletta soitetaan kompossa neljä minuuttia. Aikaraja on suhteellisen ruhtinaallinen, 
+            mutta kappaletta ei kannata perusteettomasti viruttaa kattamaan koko aikaikkunaa.
+        </li>
+    </ul>
 </div>
 
-    <h3>Summamutikka</h3>
-
-    <p>Tavoitteena on hämmennys. Tyyli ja keinot vapaat. Teoksen voi esittää valkokankaan sijaan myös kekseliäällä tavalla. Ilmoita kuvauksessa teoksen luonne ja esitystapa.</p>
-
-    <p>Teos voi käyttää myös salivalaistusta.</p>
-
-<div class="p">Säännöt:
-<ul class="info">
-    <li>Esitysympäristö on valkokangas tai ympäröivä lava.</li>
-    <li>Ei pyrotekniikkaa.</li>
-</ul>
+<h3>Grafiikka</h3>
+<p>
+    Teos on tietokoneella tuotettu kuva. Simppeli juttu? Tekniikaksi käy esimerkiksi pikseleiden 
+    asettaminen paikoilleen käsin tai 3D-mallin renderöinti. Tai kaikkien mahdollisten tekniikoiden 
+    sekakäyttö.
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>Pelkät valokuvat eivät siltänään kelpaa, mutta niitä voi käyttää teoksen materiaalina.</li>
+        <li>Valmiin tuotoksen on oltava png-muodossa</li>
+    </ul>
 </div>
 
-    <h3>Skreippaus</h3>
-    <p>Tavoitteena teknisestä ja/tai sisällöllisesti mielenkiintoinen tiedonvapautus. Vapauta tietoa kotona tai paikanpäällä tekemällä screen scraper -työkalu, joka esittää mielenkiintoista julkista tietoa koneen luettavaksi tarkoitetussa muodossa. Liitä kilpailutyöhön lähdekoodi ja lyhyt kuvaus.</p>
-	
+<h3>Vikkelä grafiikka</h3>
+<p>
+    Teos on tietokoneellisesti tuotettu kuva kuten grafiikkakompossa. Se tehdään kuitenkin tapahtuman 
+    aikana aiheesta, joka annetaan kilpailuajan alkaessa. Annettavan kilpailuajan pituus pidetään tässä 
+    vaiheessa arvoituksena.
+</p>
+
+<h3>Robocode</h3>
+<p>
+    Kuin kukkotappelu mutta rankempana! Potkaise robottiin sullottu koodisi areenalle näyttämään 
+    kenen algoritmit räjäyttävät tienoot. Kompossa ohjelmoidaan tankki käyttäen Robocode-alustaa. 
+    Lisätietoa Robocodesta: http://robocode.sourceforge.net/
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>Ei ennen julkaistuja tankkeja</li>
+        <li>
+            Välieriä muodostetaan puolitusalgoritmilla kunnes ruudulla on kerrallaan korkeintaan 
+            kuusi tankkia
+        </li>
+    </ul>
+</div>
+
+<h3>Summamutikka</h3>
+<p>
+    Tulee todennäköisesti taas olemaan se kilpailu, josta puhutaan yllättävän paljon. Ja johon 
+    todella kuka tahansa pystyy osallistumaan. Tavoitteena on mahdollisimman suuri hämmennys. 
+    Tyyli ja keinot ovat vapaat tarjottujen puitteiden rajoissa. Teoksen voi siis esittää valkokankaan 
+    sijaan myös kekseliäämmin keinoin. Aikaisempina kertoina on nähty mm. ohjelmoitavaa salivalaistusta 
+    hyödyntävä kuunnelma, informatiivinen PowerPoint-esitys, musiikkikeikka, hassunhauskoja videoita 
+    sekä kaikenkarvaisten harrasteprojektien esittelyjä. Tule, hämmennä ja hämmästytä!
+</p>
+<div class="p">
+    Säännöt:
+    <ul class="info">
+        <li>
+            Ilmoittautuessasi kompoon (tapahtuman aikana) ilmoita kuvauksessa teoksen luonne ja 
+            esitystapa. Erityistarpeista kannattaa sopia etukäteen.
+        </li>
+        <li>
+            Esitysympäristö on valkokangas ja/tai salin etuosa. Käytettävissä valkokangas, äänentoisto, 
+            mikrofoneja, salivalot, savukoneistoa sekä mahdollinen muu tapahtuman tehostevarustus.
+        </li>
+        <li>
+            Ei pyrotekniikkaa, vaarallisia aineita eikä vaarallisia esineitä.
+        </li>
+    </ul>
+</div>
+
+
+<h3>Skreippaus</h3>
+<p>
+    Kompon tavoitteena on teknisesti ja/tai sisällöllisesti mielenkiintoinen tiedonvapautus. 
+    Vapauta tietoa kotona tai paikan päällä tekemällä screen scraper -työkalu, joka esittää 
+    mielenkiintoista julkista tietoa koneen luettavaksi tarkoitetussa muodossa. Liitä kilpailutyöhön 
+    lähdekoodi ja lyhyt kuvaus.
+</p>
 {% endblock %}

@@ -15,7 +15,7 @@ $.fn.blogfeed = function(options) {
                 var time = new Date(Date.parse(item.updated));
                 var timestamp = ''
                     +time.getDate()+'.'
-                    +time.getMonth()+'.'
+                    +(time.getMonth()+1)+'.'
                     +time.getFullYear()+' '
                     +(time.getHours() < 10 ? '0'+time.getHours() : time.getHours())+':'
                     +(time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes());

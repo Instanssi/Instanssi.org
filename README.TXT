@@ -5,6 +5,10 @@ Python (2.7): http://python.org/
 Django (1.3): https://docs.djangoproject.com/en/dev/topics/install/?from=olddocs#installing-an-official-release
 Tutoriaali: https://docs.djangoproject.com/en/1.3/intro/tutorial01/
 
+Dependencyt:
+django-openid-auth [0.4] (https://launchpad.net/django-openid-auth)
+python-openid [2.2.5 or later] (https://github.com/openid/python-openid/) 
+
 Huom!
 Eclipse + EGit + PyDev auttanee kehittelyssä paljon.
 

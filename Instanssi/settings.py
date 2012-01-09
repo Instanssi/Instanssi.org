@@ -20,22 +20,34 @@ DATABASES = {
     }
 }
 
+# Google api stuff
 GOOGLEAPIKEY = 'AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s'
 GOOGLEANALYTICS = False
 
+# Generic stuff
 TIME_ZONE = 'Europe/Helsinki'
 LANGUAGE_CODE = 'fi-FI'
 SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 
-
+# Files
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+# OpenID
+OPENID_CREATE_USERS = True
+OPENID_UPDATE_DETAILS_FROM_SREG = True
+OPENID_SREG_REQUIRED_FIELDS = []
+OPENID_SREG_EXTRA_FIELDS = []
+OPENID_FOLLOW_RENAMES = True
+LOGIN_URL = '/openid/login/'
+LOGIN_REDIRECT_URL = '/'
+
+# Static files
 STATICFILES_DIRS = (
 )
 
@@ -71,13 +83,20 @@ INSTALLED_APPS = (
     'main2012',
     'arkisto',
     'kompomaatti',
+    'openidauth',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin'
+    'django.contrib.admin',
+    'django_openid_auth',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django_openid_auth.auth.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 LOGGING = {

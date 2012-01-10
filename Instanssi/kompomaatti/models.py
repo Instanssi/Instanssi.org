@@ -5,9 +5,12 @@ from django.contrib import admin
 class Compo(models.Model):
     name = models.CharField('Name', max_length=32)
     description = models.TextField('Description')
-    add_deadline = models.DateTimeField('Deadline for uploads')
-    edit_deadline = models.DateTimeField('Deadline for edits')
-    time = models.DateTimeField('Compo time')
+    adding_end = models.DateTimeField('Deadline for uploads')
+    editing_end = models.DateTimeField('Deadline for edits')
+    compo_start = models.DateTimeField('Compo time')
+    voting_start = models.DateTimeField('Voting opens')
+    voting_end = models.DateTimeField('Voting ends')
+    sizelimit = models.IntegerField('File size limit')
     def __unicode__(self):
         return self.name
     
@@ -19,14 +22,15 @@ class Entry(models.Model):
     creator = models.CharField('Creator name', max_length=64)
     file = models.FileField(upload_to='entries/')
     def __unicode__(self):
-        return self.name
+        return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
 
 class Vote(models.Model):
     user = models.ForeignKey(User)
     compo = models.ForeignKey(Compo)
     entry = models.ForeignKey(Entry)
+    rank = models.IntegerField('Rank')
     def __unicode__(self):
-        return self.entry.name + ' by ' + self.user.name
+        return self.entry.name + ' by ' + self.user.username + ' as ' + self.rank
     
 admin.site.register(Compo)
 admin.site.register(Entry)

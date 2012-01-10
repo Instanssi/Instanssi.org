@@ -1,17 +1,11 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>404 Not Found</title>
+</head>
+<body>
+    <h1>404 Not Found</h1>
+    <p>The requested URL {{ request.path|escape }} was not found on this server.</p>
+</body>
+</html>
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
-
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
-
-{% block content %}
-{{ block.super }}
-    <h2>404 Not Found</h2>
-    <p>
-        The requested URL {{ request.path|escape }} was not found on this server.
-    </p>
-{% endblock %}

@@ -16,25 +16,25 @@ def render_custom(tpl):
 
 # Pages
 def index(request):
-    return render_custom("index.html")
+    return render_custom("main2012/index.html")
 
 def info(request):
-    return render_custom("info.html")
+    return render_custom("main2012/info.html")
 
 def aikataulu(request):
-    return render_custom('aikataulu.html')
+    return render_custom('main2012/aikataulu.html')
 
 def english(request):
-    return render_custom('english.html')
+    return render_custom('main2012/english.html')
 
 def kompot(request):
-    return render_custom('kompot.html')
+    return render_custom('main2012/kompot.html')
 
 def liput(request):
-    return render_custom('liput.html')
+    return render_custom('main2012/liput.html')
 
 def yhteystiedot(request):
-    return render_custom('yhteystiedot.html')
+    return render_custom('main2012/yhteystiedot.html')
 
 # evil h4x
 def feed(request):

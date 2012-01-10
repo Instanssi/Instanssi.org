@@ -19,6 +19,10 @@ def help(request):
     return custom_render('kompomaatti/help.html')
 
 
+def myprods(request):
+    return custom_render('kompomaatti/myprods.html')
+
+
 def compo(request, compo_id):
     try:
         compo = Compo.objects.get(id=compo_id)

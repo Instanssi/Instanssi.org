@@ -8,5 +8,6 @@ urlpatterns = patterns(
     url(r'^compo/(?P<compo_id>\d+)/', 'compo'),
     url(r'^entry/(?P<entry_id>\d+)/', 'entry'),
     url(r'^compolist/', 'compolist'),
+    url(r'^myprods/', 'myprods'),
     url(r'^help/', 'help'),
 )

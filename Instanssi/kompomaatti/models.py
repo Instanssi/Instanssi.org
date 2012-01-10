@@ -22,7 +22,7 @@ class Compo(models.Model):
     
 class Entry(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä")
-    compo = models.ForeignKey(Compo, verbose_name="kompo")
+    compo = models.ForeignKey(Compo, verbose_name="kompo", help_text="Kompo johon osallistutaan")
     name = models.CharField('Nimi', max_length=64, help_text='Nimi tuotokselle')
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')

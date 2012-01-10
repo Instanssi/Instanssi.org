@@ -1,0 +1,48 @@
+h1 {
+    font-size: 1.5em;
+    padding: 0.5em;
+}
+h2 {
+    font-size: 1.2em;
+}
+
+#base {
+    width: 800px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid black;
+}
+
+#nav {
+    background-color: #dcdcdc;
+    padding: 0.2em;
+}
+
+#basenav {
+    display: inline-block;
+}
+
+#basenav li {
+    padding: 0.2em;
+    float: left;
+}
+
+#subnav {
+
+}
+
+#subnav li {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    float: none;
+}
+
+
+#content {
+    padding: 0.2em;
+}
+
+#footer {
+    background-color: #dcdcdc;
+    padding: 0.2em;
+}

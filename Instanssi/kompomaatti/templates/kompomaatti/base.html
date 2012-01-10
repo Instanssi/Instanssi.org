@@ -14,6 +14,28 @@
     </script>
 </head>
 <body>
-{% block content %}{% endblock %}
+    <div id="base">
+        <h1>Kompomaatti</h1>
+        <div id="nav">
+            <ul id="basenav">
+                <li><a href="/kompomaatti/">Kompomaatti</a></li>
+                <li>
+                    <a href="/kompomaatti/compolist/">Kompot</a>
+                    <ul id="subnav">
+{% for navcompo in compos %}
+                        <li><a href="/kompomaatti/compo/{{ navcompo.id }}/">{{ navcompo.name }}</a></li>
+{% endfor %}
+                    </ul>
+                </li>
+                <li><a href="/kompomaatti/help/">Ohje</a></li>
+            </ul>
+        </div>
+        <div id="content">
+        {% block content %}{% endblock %}
+        </div>
+        <div id="footer">
+            &copy; Instanssi.org 2012
+        </div>
+    </div>
 </body>
 </html>

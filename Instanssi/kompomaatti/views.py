@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 from models import Compo, Entry
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from forms import AddEntryForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -29,6 +29,7 @@ def myprods(request):
             nentry = addform.save(commit=False)
             nentry.user = request.user
             nentry.save()
+            return HttpResponseRedirect('/kompomaatti/myprods/') 
     else:
         addform = AddEntryForm() 
 

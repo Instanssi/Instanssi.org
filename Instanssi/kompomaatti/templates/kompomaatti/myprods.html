@@ -11,14 +11,44 @@
 {% block content %}
 {{ block.super }}
 <h2>Omat Tuotokset</h2>
+
 <h3>Ladatut tuotokset</3>
-<p>Lorem ipsum...</p>
+{% if myentries %}
+<table class="generic_table">
+    <thead>
+        <tr>
+            <th>Kompo</th>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th>Tekijä</th>
+            <th>Tiedosto</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for entry in myentries %}
+        <tr>
+            <td>{{ entry.compo }}</td>
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.description }}</td>
+            <td>{{ entry.creator }}</td>
+            <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
+        </tr>
+{% endfor %}
+{% else %}
+    <p>Ei ladattuja tuotoksia</p>
+{% endif %}
+    </tbody>
+</table>
+
 <h3>Lataa uusi tuotos</h3>
-<form action="" method="post">
-    {% csrf_token %}
-    <table class="formtable">
-    {{ addform.as_table }}
-    </table>
-    <input type="submit" value="Submit" />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Lisää uusi entry</legend>
+        {% csrf_token %}
+        <table class="formtable">
+        {{ addform.as_table }}
+        </table>
+        <input type="submit" value="Submit" />
+    </fieldset>
 </form>
 {% endblock %}

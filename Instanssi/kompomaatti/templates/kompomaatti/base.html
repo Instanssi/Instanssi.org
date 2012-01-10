@@ -13,6 +13,11 @@
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
+        $("select, input, textarea").uniform();
+        $('.errorlist').addClass('ui-state-error');
+        $('.errorlist').prepend('<div class="ui-icon ui-icon-alert icon-messagebox"></div>');
+        $('.coppercat_noticecell').addClass('ui-state-highlight');
+        $('.coppercat_noticecell').prepend('<div class="ui-icon ui-icon-info icon-messagebox"></div>');
 {% block jquery %}{% endblock %}
     });
     </script>

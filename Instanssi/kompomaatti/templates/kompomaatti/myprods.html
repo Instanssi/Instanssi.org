@@ -11,4 +11,14 @@
 {% block content %}
 {{ block.super }}
 <h2>Omat Tuotokset</h2>
+<h3>Ladatut tuotokset</3>
+<p>Lorem ipsum...</p>
+<h3>Lataa uusi tuotos</h3>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="formtable">
+    {{ addform.as_table }}
+    </table>
+    <input type="submit" value="Submit" />
+</form>
 {% endblock %}

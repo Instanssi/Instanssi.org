@@ -1,5 +1,9 @@
 *.pyc
-Instanssi/sqlite.db
+database.db
 .project
 .pydevproject
 .settings
+content/static/*
+content/media/*
+!content/static/index.html
+!content/media/index.html

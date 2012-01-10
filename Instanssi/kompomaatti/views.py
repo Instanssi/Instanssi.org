@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 def custom_render(request, tpl, context={}):
     compos = Compo.objects.all()
     context['compos'] = compos
+    context['logged'] = request.user.is_authenticated()
     return render_to_response(tpl, context, context_instance=RequestContext(request))
 
 
@@ -22,7 +23,7 @@ def help(request):
     return custom_render(request, 'kompomaatti/help.html')
 
 @login_required
-def myprods(request):
+def myprods(request): 
     if request.method == 'POST':
         addform = AddEntryForm(request.POST, request.FILES) 
         if addform.is_valid(): 

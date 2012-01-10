@@ -1,11 +1,13 @@
-h1 { font-size: 1.5em; margin: 0.5em; }
-h2 { font-size: 1.2em; margin: 0.3em; }
-h3 { font-size: 1.1em; margin: 0.3em; }
+h1, h2, h3 { font-weight: bold; margin-left: 0.5em; margin-bottom: 0.8em; margin-top: 0.6em; }
+h1 { font-size: 1.5em; }
+h2 { font-size: 1.1em; }
+h3 { font-size: 1.0em; }
 p { font-size: 0.9em; margin: 0.1em; }
 
 fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
-.formtable th { width: 100px; text-align: left; }
-.formtable td { padding: 0.15em; }
+.formtable th { padding-left: 1em; padding-right: 1em; vertical-align: middle; text-align: left; border-bottom: 1px dotted gray; }
+.formtable td { padding-bottom: 0.4em; padding-top: 0.4em; border-bottom: 1px dotted gray; width: 100%; }
+.formtable .helptext { font-size: 0.8em; }
 
 .generic_table { font-size: 0.9em; margin: 0.3em; }
 .generic_table th { background-color: #dcdcdc; padding: 0.3em; text-align: left; }

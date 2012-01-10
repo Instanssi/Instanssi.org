@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 
+# Get path
+import os
+PROJECTDIR = os.path.dirname(os.path.dirname(__file__))
+
+# Settings
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Tuomas Virtanen', 'katajakasa@gmail.com'),
 )
-
 MANAGERS = ADMINS
 
+# Database (Just use sqlite3 for now)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'sqlite.db',
+        'NAME': os.path.join(PROJECTDIR, 'database.db'),
         'USER': '', 
         'PASSWORD': '',
         'HOST': '',
@@ -32,9 +37,9 @@ USE_I18N = True
 USE_L10N = True
 
 # Files
-MEDIA_ROOT = ''
-MEDIA_URL = ''
-STATIC_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/media/')
+MEDIA_URL = '/uploads/'
+STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
@@ -47,7 +52,6 @@ OPENID_FOLLOW_RENAMES = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/'
 
-# Static files
 STATICFILES_DIRS = (
 )
 
@@ -59,11 +63,9 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '31+n6s#)q4uqpg2of7_t(33t604-8c2xndwh%r$q5b$(h=m1&5'
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.app_directories.Loader'
 )
 
 MIDDLEWARE_CLASSES = (

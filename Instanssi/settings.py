@@ -2,7 +2,8 @@
 
 # Get path
 import os
-PROJECTDIR = os.path.dirname(os.path.dirname(__file__))
+CONTENTDIR = os.path.dirname(__file__)
+PROJECTDIR = os.path.dirname(CONTENTDIR)
 
 # Settings
 DEBUG = True
@@ -53,6 +54,7 @@ LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/'
 
 STATICFILES_DIRS = (
+    os.path.join(CONTENTDIR, 'static/'),
 )
 
 STATICFILES_FINDERS = (

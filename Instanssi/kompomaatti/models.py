@@ -3,6 +3,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from imagekit.models import ImageSpec
+from imagekit.processors import resize
+from imagekit.admin import AdminThumbnail
 
 class Compo(models.Model):
     name = models.CharField('Nimi', max_length=32)
@@ -27,12 +30,17 @@ class Entry(models.Model):
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
     entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti. Esim. mp3, ogg, zip, jne. kelpaavat.")
-    imagefile = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
+    imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
+    imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     def __unicode__(self):
         return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
     class Meta:
         verbose_name="tuotos"
         verbose_name_plural="tuotokset"
+
+class EntryAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'admin_thumbnail')
+    admin_thumbnail = AdminThumbnail(image_field='imagefile_thumbnail')
 
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä")
@@ -46,5 +54,5 @@ class Vote(models.Model):
         verbose_name_plural="äänet"
     
 admin.site.register(Compo)
-admin.site.register(Entry)
+admin.site.register(Entry, EntryAdmin)
 admin.site.register(Vote)

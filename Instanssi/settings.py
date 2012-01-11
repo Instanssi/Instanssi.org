@@ -95,6 +95,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django_openid_auth',
+    'imagekit',
 )
 
 AUTHENTICATION_BACKENDS = (

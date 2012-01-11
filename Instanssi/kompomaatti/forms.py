@@ -10,4 +10,4 @@ class AddEntryForm(ModelForm):
 
     class Meta:
         model = Entry
-        fields = ('compo','name','creator','description','entryfile','imagefile')
+        fields = ('compo','name','creator','description','entryfile','imagefile_original')

@@ -10,5 +10,32 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Kompo: {{ compo.name }}</h2>
+    <h2>Kompo: {{ compo.name }}</h2>
+    <h3>Kuvaus</h3>
+    <div class="compo_description">
+        {{ compo.description|safe }}
+    </div>
+    
+    <h3>Aikataulu</h3>
+    <table class="compo_details">
+        <tr>
+            <th>Deadline entryjen lisäämiselle</th>
+            <td>{{ compo.adding_end|date:"d.m.Y H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Deadline entryjen muokkaamiselle</th>
+            <td>{{ compo.editing_end|date:"d.m.Y H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Kompo alkaa</th>
+            <td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Äänestysaika</th>
+            <td>{{ compo.voting_start|date:"d.m.Y H:i" }} - {{ compo.voting_end|date:"d.m.Y H:i" }}</td>
+        </tr>
+    </table>
+    
+    <h3>Äänestys</h3>
+    <p>Äänestys tulee tähän</p>
 {% endblock %}

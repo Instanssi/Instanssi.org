@@ -2,7 +2,7 @@ h1, h2, h3 { font-weight: bold; margin-left: 0.5em; margin-bottom: 0.8em; margin
 h1 { font-size: 1.5em; }
 h2 { font-size: 1.1em; }
 h3 { font-size: 1.0em; }
-p { font-size: 0.9em; margin: 0.1em; }
+p { font-size: 0.9em; margin-bottom: 0.7em; margin-top: 0.7em;}
 
 fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 .formtable th { padding-left: 1em; padding-right: 1em; vertical-align: middle; text-align: left; border-bottom: 1px dotted gray; }
@@ -12,6 +12,12 @@ fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 .generic_table { font-size: 0.9em; margin: 0.3em; }
 .generic_table th { background-color: #dcdcdc; padding: 0.3em; text-align: left; }
 .generic_table td { background-color: #eeeeee; padding: 0.3em; }
+
+.compo_description { margin: 0.5em; }
+.compo_description li { margin-left: 1em; font-size: 0.9em; display: list-item; list-style-type: disc; }
+.compo_details { margin-left: 0.2em; }
+.compo_details th { padding: 0.2em; text-align: left; }
+.compo_details td { padding: 0.2em; }
 
 #base {
     width: 800px;

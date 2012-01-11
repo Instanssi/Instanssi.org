@@ -10,4 +10,5 @@ urlpatterns = patterns(
     url(r'^compolist/', 'compolist'),
     url(r'^myprods/', 'myprods'),
     url(r'^help/', 'help'),
+    url(r'^logout/', 'dologout'),
 )

@@ -51,7 +51,7 @@ OPENID_SREG_REQUIRED_FIELDS = []
 OPENID_SREG_EXTRA_FIELDS = []
 OPENID_FOLLOW_RENAMES = True
 LOGIN_URL = '/openid/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/kompomaatti/'
 
 STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),

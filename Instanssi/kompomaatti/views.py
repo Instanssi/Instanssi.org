@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponseRedirect
 from forms import AddEntryForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 def custom_render(request, tpl, context={}):
     compos = Compo.objects.all()
@@ -60,3 +61,7 @@ def entry(request, entry_id):
     except ObjectDoesNotExist:
         raise Http404
     return custom_render(request, 'kompomaatti/entry.html', {'entry': entry})
+
+def dologout(request):
+    logout(request)
+    return HttpResponseRedirect('/kompomaatti/') 

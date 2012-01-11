@@ -36,8 +36,13 @@
 {% endfor %}
                     </ul>
                 </li>
-                <li><a href="/kompomaatti/myprods/">Omat Tuotokset</a></li>
                 <li><a href="/kompomaatti/help/">Ohje</a></li>
+{% if logged %}
+                <li><a href="/kompomaatti/myprods/">Omat Tuotokset</a></li>
+                <li><a href="/kompomaatti/logout/">Kirjaudu ulos</a></li>
+{% else %}
+                <li><a href="/openid/login/">Kirjaudu sisään</a></li>
+{% endif %}
             </ul>
         </div>
         <div id="content">

@@ -11,9 +11,9 @@
 {% block content %}
 {{ block.super }}
 <h2>Entry: {{ entry.name }} by {{ entry.creator }}</h2>
-{% if entry.imagefile %}
+{% if entry.imagefile_thumbnail %}
 <p>
-    <img src="{{ entry.imagefile.url }}" alt="{{ entry.name }}" style="max-width: 480px; box-shadow: 1px 1px 7px #222; margin-left: 1em;" />
+    <img src="{{ entry.imagefile_thumbnail.url }}" alt="{{ entry.name }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" />
 </p>
 {% endif %}
 <p>

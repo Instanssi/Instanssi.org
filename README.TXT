@@ -9,7 +9,8 @@ Django:
 Python [2.6, 2.7] (http://python.org/)
 django [1.3.1] (https://www.djangoproject.com/download/)
 django-openid-auth [0.4] (https://launchpad.net/django-openid-auth)
-python-openid [2.2.5 or later] (https://github.com/openid/python-openid/) 
+python-openid [2.2.5 or later] (https://github.com/openid/python-openid/)
+PIL [1.1.7 or later] (http://www.pythonware.com/products/pil/)
 
 --- Lyhyehköt asennusohjeet:
 1. Hommaa Python, Django, dependenssikirjastot. Asenna ne ohjeiden mukaan.

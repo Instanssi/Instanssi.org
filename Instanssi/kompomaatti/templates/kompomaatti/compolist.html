@@ -24,7 +24,7 @@
     </p>
     <ul>
 {% for entry in entries|idx:compo.id %}
-        <li>{{ entry.name }} by {{ entry.creator }}</li>
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}</li>
 {% endfor %}
     </ul>
 </div>

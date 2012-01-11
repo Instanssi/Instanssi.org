@@ -22,6 +22,7 @@
             <th>Kuvaus</th>
             <th>Tekijä</th>
             <th>Tiedosto</th>
+            <th>Kuva</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
             <td>{{ entry.description }}</td>
             <td>{{ entry.creator }}</td>
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
+            <td><a href="{{ entry.imagefile.url }}">Kuva</a></td>
         </tr>
 {% endfor %}
 {% else %}

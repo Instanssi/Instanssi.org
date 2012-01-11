@@ -46,7 +46,7 @@
 {% if entries %}
     <ul id="sortable">
 {% for entry in entries %}
-        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ entry.name }} by {{ entry.creator }}</li>
+        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}</li>
 {% endfor %}
     </ul>
 {% else %}

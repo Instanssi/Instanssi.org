@@ -6,6 +6,8 @@
 
 {% block jquery %}
 {{ block.super }}
+    $("#sortable").sortable();
+    $("#sortable").disableSelection();
 {% endblock %}
 
 {% block content %}
@@ -36,6 +38,18 @@
         </tr>
     </table>
     
-    <h3>Äänestys</h3>
-    <p>Äänestys tulee tähän</p>
+    <h3>Teokset</h3>
+    <p>
+        Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
+        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua ja jälkeen.
+    </p>
+{% if entries %}
+    <ul id="sortable">
+{% for entry in entries %}
+        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ entry.name }} by {{ entry.creator }}</li>
+{% endfor %}
+    </ul>
+{% else %}
+    <p>Kompossa ei ole vielä osallistujia!</p>
+{% endif %}
 {% endblock %}

@@ -45,18 +45,25 @@ def myprods(request):
 
 def compo(request, compo_id):
     try:
-        compo = Compo.objects.get(id=compo_id)
+        c = Compo.objects.get(id=compo_id)
     except ObjectDoesNotExist:
         raise Http404
+    
+    e = Entry.objects.filter(compo=c)
     return custom_render(request, 'kompomaatti/compo.html', {
-        'compo': compo
+        'compo': c,
+        'entries': e
     })
 
 
 def compolist(request):
     compos = Compo.objects.filter(active=True).order_by('compo_start')
+    entries = {}
+    for compo in compos:
+        entries[compo.id] = Entry.objects.filter(compo=compo)
     return custom_render(request, 'kompomaatti/compolist.html', {
         'compolist': compos,
+        'entries': entries,
     })
 
 

@@ -1,4 +1,5 @@
 {% extends "kompomaatti/base.html" %}
+{% load idx %}
 
 {% block head %}
 {{ block.super }}
@@ -19,8 +20,13 @@
         Kompo alkaa {{ compo.compo_start|date:"d.m.Y H:i" }}
     </p>
     <p>
-        Äänestys tähän!
+        <a href="/kompomaatti/compo/{{ compo.id }}/">Siirry äänestämään &raquo;</a>
     </p>
+    <ul>
+{% for entry in entries|idx:compo.id %}
+        <li>{{ entry.name }} by {{ entry.creator }}</li>
+{% endfor %}
+    </ul>
 </div>
 {% endfor %}
 {% else %}

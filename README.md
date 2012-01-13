@@ -10,7 +10,7 @@ internationalization :D
 
 License:
 --------
-MIT. Please refer to `LICENSE.TXT` for more information.
+MIT. Please refer to `LICENSE` for more information.
 
 Mikä on tämä ?
 --------------

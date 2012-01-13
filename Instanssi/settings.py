@@ -81,6 +81,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'Instanssi.urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(CONTENTDIR, 'templates/'),
 )
 
 INSTALLED_APPS = (

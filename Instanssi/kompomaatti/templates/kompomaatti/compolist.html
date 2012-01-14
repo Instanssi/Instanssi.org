@@ -16,11 +16,26 @@
 {% for compo in compolist %}
 <div class="compo">
     <h3>{{ compo.name }}</h3>
+    <table class="compo_details">
+        <tr>
+            <th>Deadline entryjen lisäämiselle</th>
+            <td>{{ compo.adding_time }}</td>
+        </tr>
+        <tr>
+            <th>Deadline entryjen muokkaamiselle</th>
+            <td>{{ compo.editing_time }}</td>
+        </tr>
+        <tr>
+            <th>Kompo alkaa</th>
+            <td>{{ compo.compo_time }}</td>
+        </tr>
+        <tr>
+            <th>Äänestysaika</th>
+            <td>{{ compo.voting_time }}</td>
+        </tr>
+    </table>
     <p>
-        Kompo alkaa {{ compo.compo_start|date:"d.m.Y H:i" }}
-    </p>
-    <p>
-        <a href="/kompomaatti/compo/{{ compo.id }}/">Siirry äänestämään &raquo;</a>
+        <a href="/kompomaatti/compo/{{ compo.id }}/">Siirry lisätietoihin &amp; äänestämään &raquo;</a>
     </p>
     <ul>
 {% for entry in entries|idx:compo.id %}

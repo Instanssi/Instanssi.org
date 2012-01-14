@@ -22,33 +22,52 @@
     <table class="compo_details">
         <tr>
             <th>Deadline entryjen lisäämiselle</th>
-            <td>{{ compo.adding_end|date:"d.m.Y H:i" }}</td>
+            <td>{{ compo.adding_time }}</td>
         </tr>
         <tr>
             <th>Deadline entryjen muokkaamiselle</th>
-            <td>{{ compo.editing_end|date:"d.m.Y H:i" }}</td>
+            <td>{{ compo.editing_time }}</td>
         </tr>
         <tr>
             <th>Kompo alkaa</th>
-            <td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
+            <td>{{ compo.compo_time }}</td>
         </tr>
         <tr>
             <th>Äänestysaika</th>
-            <td>{{ compo.voting_start|date:"d.m.Y H:i" }} - {{ compo.voting_end|date:"d.m.Y H:i" }}</td>
+            <td>{{ compo.voting_time }}</td>
         </tr>
     </table>
     
     <h3>Teokset</h3>
     <p>
         Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
-        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua ja jälkeen.
+        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua)
     </p>
 {% if entries %}
-    <ul id="sortable">
+{% if voting_open %}
+    <form action="" method="post">
+        <fieldset>
+            <legend>Äänestys</legend>
+            <ul id="sortable">
 {% for entry in entries %}
-        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}</li>
+                <li class="ui-state-default">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
+                </li>
+{% endfor %}
+            </ul>
+            <p>
+                {% csrf_token %}
+                <input type="submit" value="Tallenna" />
+            </p>
+        </fieldset>
+    </form>
+{% else %}
+    <ul>
+{% for entry in entries %}
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}</li>
 {% endfor %}
     </ul>
+{% endif %}
 {% else %}
     <p>Kompossa ei ole vielä osallistujia!</p>
 {% endif %}

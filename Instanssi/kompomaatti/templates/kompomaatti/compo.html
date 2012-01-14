@@ -8,6 +8,29 @@
 {{ block.super }}
     $("#sortable").sortable();
     $("#sortable").disableSelection();
+    $("#savebutton").button({label: 'Tallenna'});
+    $("#savebutton").css("font-size", "1.0em");
+    $('#savebutton').click(function() {
+        order = [];
+        $("#sortable").children('li').each(function(idx, elm) {
+            order.push(elm.id.split('_')[1]);
+        });                                     
+        $.post('/kompomaatti/compo/{{ compo.id }}/', {
+            'action': 'vote', 
+            'order[]': order,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }, function(data) {
+            $('#voting_errortext').removeClass('ui-state-highlight');
+            $('#voting_errortext').removeClass('ui-state-error');
+            if(data == '0') {
+                $('#voting_errortext').addClass('ui-state-highlight');
+                $('#voting_errortext').html('<div class="ui-icon ui-icon-info icon-messagebox"></div><span>Äänestys suoritettu!</span>');
+            } else {
+                $('#voting_errortext').addClass('ui-state-error');
+                $('#voting_errortext').html('<div class="ui-icon ui-icon-alert icon-messagebox"></div><span>Virhe äänestyksessä!</span>');
+            }
+        });
+    });
 {% endblock %}
 
 {% block content %}
@@ -43,24 +66,24 @@
         Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
         Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua)
     </p>
+{% if not has_voted and voting_open%}
+    <p>
+        <strong>Et ole vielä äänestänyt!</strong>
+    </p>
+{% endif %}
 {% if entries %}
 {% if voting_open %}
-    <form action="" method="post">
-        <fieldset>
-            <legend>Äänestys</legend>
-            <ul id="sortable">
+    <div id="voting_errortext"></div>
+    <ul id="sortable">
 {% for entry in entries %}
-                <li class="ui-state-default">
-                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
-                </li>
+        <li class="ui-state-default" id="entry_{{ entry.id }}">
+            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
+        </li>
 {% endfor %}
-            </ul>
-            <p>
-                {% csrf_token %}
-                <input type="submit" value="Tallenna" />
-            </p>
-        </fieldset>
-    </form>
+    </ul>
+    <p>
+        <div id="savebutton"></div>
+    </p>
 {% else %}
     <ul>
 {% for entry in entries %}

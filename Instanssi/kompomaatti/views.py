@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 from models import Compo, Entry, Vote
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from forms import AddEntryForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -79,12 +79,37 @@ def compo(request, compo_id):
         if c.voting_start <= now and now < c.voting_end:
             voting_open = True
     
-        # Handle voting
+        # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
             if voting_open:
+                # Remove old votes by this user, on this compo
                 if has_voted:
-                    Vote.objects.delete(user=request.user, compo=c)
-                return HttpResponseRedirect('/kompomaatti/compo/'+compo_id+'/')
+                    Vote.objects.filter(user=request.user, compo=c).delete()
+                
+                # List of all ranks in order
+                order_raw = request.POST.getlist('order[]')
+                order = []
+                for id in order_raw:
+                    order.append(int(id))
+                
+                # Check voting input for cheating :P
+                # See if all entries have a rank.
+                for entry in Entry.objects.filter(compo=c):
+                    if entry.id not in order:
+                        return HttpResponse("1")
+                    
+                # Add new votes, if there were no errors
+                number = 1
+                for entry_id in order:
+                    vote = Vote()
+                    vote.user = request.user
+                    vote.compo = c
+                    vote.entry = Entry.objects.get(id=entry_id)
+                    vote.rank = number
+                    vote.save()
+                    number += 1
+                        
+                return HttpResponse("0")
             else:
                 raise Http404
     
@@ -105,7 +130,8 @@ def compo(request, compo_id):
     return custom_render(request, 'kompomaatti/compo.html', {
         'compo': c,
         'entries': e,
-        'voting_open': voting_open
+        'voting_open': voting_open,
+        'has_voted': has_voted
     })
 
 

@@ -48,7 +48,7 @@ class Vote(models.Model):
     entry = models.ForeignKey(Entry, verbose_name="tuotos")
     rank = models.IntegerField('Sijoitus')
     def __unicode__(self):
-        return self.entry.name + ' by ' + self.user.username + ' as ' + self.rank
+        return self.entry.name + ' by ' + self.user.username + ' as ' + str(self.rank)
     class Meta:
         verbose_name="ääni"
         verbose_name_plural="äänet"

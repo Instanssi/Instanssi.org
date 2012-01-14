@@ -33,7 +33,7 @@
             <td>{{ entry.description }}</td>
             <td>{{ entry.creator }}</td>
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
-            <td><a href="{{ entry.imagefile.url }}">Kuva</a></td>
+            <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Kuva</a>{% endif %}</td>
         </tr>
 {% endfor %}
 {% else %}

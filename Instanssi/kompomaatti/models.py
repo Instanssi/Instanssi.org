@@ -8,15 +8,19 @@ from imagekit.processors import resize
 from imagekit.admin import AdminThumbnail
 
 class Compo(models.Model):
-    name = models.CharField('Nimi', max_length=32)
-    description = models.TextField('Kuvaus')
-    adding_end = models.DateTimeField('Deadline entryjen lisäyksille')
-    editing_end = models.DateTimeField('Deadline entryjen muokkauksille')
-    compo_start = models.DateTimeField('Kompon aloitusaika')
-    voting_start = models.DateTimeField('Äänestyksen alkamisaika')
-    voting_end = models.DateTimeField('Äänestyksen päättymisaika')
-    sizelimit = models.IntegerField('Kokoraja tiedostoille')
-    active = models.BooleanField('Aktiivinen')
+    name = models.CharField('Nimi', max_length=32, help_text="Kompon nimi (max 32 merkkiä).")
+    description = models.TextField('Kuvaus', help_text="Kuvaus kompolle; esim. vaatimukset, esimerkit, jne.")
+    adding_end = models.DateTimeField('Deadline entryjen lisäyksille', help_text="Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.")
+    editing_end = models.DateTimeField('Deadline entryjen muokkauksille', help_text="Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.")
+    compo_start = models.DateTimeField('Kompon aloitusaika', help_text="Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).")
+    voting_start = models.DateTimeField('Äänestyksen alkamisaika', help_text="Alkamisaika entryjen äänestykselle.")
+    voting_end = models.DateTimeField('Äänestyksen päättymisaika', 'Päättymisaika entryjen äänestykselle.')
+    sizelimit = models.IntegerField('Kokoraja tiedostoille', help_text="Kokoraja entryjen tiedostoille (tavua).")
+    formats = models.CharField('Sallitut tiedostopäätteet', max_length="128", help_text="Sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    active = models.BooleanField('Aktiivinen', help_text="Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
+    allow_player = models.BooleanField('Salli mediasoitin', help_text="Salli mediasoittimen käyttö entrynäkymässä.")
+    allow_image = models.BooleanField('Salli kuvat', help_text="Salli kuvien lataaminen entryille ja kuvien näyttäminen entrynäkymässä.")
+    show_voting_results = models.BooleanField('Näytä tulokset', help_text="Näytä äänestustulokset.")
     def __unicode__(self):
         return self.name
     class Meta:
@@ -24,7 +28,7 @@ class Compo(models.Model):
         verbose_name_plural="kompot"
     
 class Entry(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä")
+    user = models.ForeignKey(User, verbose_name="käyttäjä", help_text="Käyttäjä jolle entry kuuluu")
     compo = models.ForeignKey(Compo, verbose_name="kompo", help_text="Kompo johon osallistutaan")
     name = models.CharField('Nimi', max_length=64, help_text='Nimi tuotokselle')
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')

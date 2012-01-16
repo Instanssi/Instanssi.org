@@ -21,14 +21,26 @@ Oppaita
 * Djangon asennus: https://docs.djangoproject.com/en/dev/topics/install/?from=olddocs#installing-an-official-release
 * Tutoriaali: https://docs.djangoproject.com/en/1.3/intro/tutorial01/
 
-Dependencyt
+Vaatimukset
 -----------
-* [Python 2.7] (http://python.org/)
-* [Django 1.3.1] (https://www.djangoproject.com/download/)
-* [django-openid-auth 0.4] (https://launchpad.net/django-openid-auth)
-* [python-openid 2.2.5 or later] (https://github.com/openid/python-openid/)
-* [PIL 1.1.7 or later] (http://www.pythonware.com/products/pil/)
-* [django-imagekit 1.1.0 or later] (https://github.com/jdriscoll/django-imagekit)
+Python 2.6 tai uudempi on hyvä olla (https://www.python.org). Kannattaa asentaa myös PIP
+ja easy_install, joka tapahtuu seuraavasti:
+
+Windows:
+1. Asenna setuptools (easy_install-paketti) osoitteesta http://pypi.python.org/pypi/setuptools . 
+2.
+
+Linux:
+1. Asenna PIP distrosi paketinhallinnalla, esim. `apt-get install python-pip`.
+2. Asenna allaolevat dependencyt joko käyttäen PIP:ä tai distron pakettienhallintaa.
+
+Dependencyt:
+* [Django 1.3.1] (https://www.djangoproject.com/download/) `pip install django`
+* [django-openid-auth 0.4] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [python-openid 2.2.5 or later] (https://github.com/openid/python-openid/) `pip install python-openid`
+* [PIL 1.1.7 or later] (http://www.pythonware.com/products/pil/) `pip install pil`
+* [django-imagekit 1.1.0 or later] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
+* [South 0.7.3 or later] (http://south.aeracode.org/) `pip install south`
 
 Lyhyehköt asennusohjeet
 -----------------------

@@ -26,18 +26,18 @@ Vaatimukset
 Python 2.6 tai uudempi on hyvä olla (https://www.python.org). Kannattaa asentaa myös PIP
 ja easy_install, joka tapahtuu seuraavasti:
 
-## Windows:
+### Windows:
 1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin bin- 
    ja scripts-kansiot ovat windowsin PATHissa.
 2. Asenna setuptools (http://pypi.python.org/pypi/setuptools). 
 3. Asenna PIP (http://pypi.python.org/pypi/pip) komennolla `easy_install pip`.
 4. Asenna allaolevat dependencyt PIPillä.
 
-## Linux:
+### Linux:
 1. Asenna PIP distrosi paketinhallinnalla, esim. `apt-get install python-pip`.
 2. Asenna allaolevat dependencyt joko käyttäen PIP:ä tai distron pakettienhallintaa.
 
-## Dependencyt:
+### Dependencyt:
 * [Django 1.3.1] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth 0.4] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [python-openid 2.2.5 or later] (https://github.com/openid/python-openid/) `pip install python-openid`

@@ -6,6 +6,17 @@
 
 {% block jquery %}
 {{ block.super }}
+{% if entry.compo.allow_player %}
+	$("#mplayer").jPlayer({
+		ready: function () {
+		   $(this).jPlayer("setMedia", {
+		    oga: "{{ entry.entryfile.url }}"
+		});
+	},
+	swfPath: "/static/libs/js/jplayer-2.1.0/",
+	supplied: "oga"
+ });
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -14,6 +25,11 @@
 {% if entry.imagefile_thumbnail %}
 <p>
     <img src="{{ entry.imagefile_thumbnail.url }}" alt="{{ entry.name }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" />
+</p>
+{% endif %}
+{% if entry.compo.allow_player %}
+<p>
+	<div id="mplayer"></div>
 </p>
 {% endif %}
 <p>

@@ -16,11 +16,16 @@ class Compo(models.Model):
     voting_start = models.DateTimeField('Äänestyksen alkamisaika', help_text="Alkamisaika entryjen äänestykselle.")
     voting_end = models.DateTimeField('Äänestyksen päättymisaika', 'Päättymisaika entryjen äänestykselle.')
     sizelimit = models.IntegerField('Kokoraja tiedostoille', help_text="Kokoraja entryjen tiedostoille (tavua).")
-    formats = models.CharField('Sallitut tiedostopäätteet', max_length="128", help_text="Sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    formats = models.CharField('Sallitut tiedostopäätteet', max_length="128", help_text="Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
     active = models.BooleanField('Aktiivinen', help_text="Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
-    allow_player = models.BooleanField('Salli mediasoitin', help_text="Salli mediasoittimen käyttö entrynäkymässä.")
-    allow_image = models.BooleanField('Salli kuvat', help_text="Salli kuvien lataaminen entryille ja kuvien näyttäminen entrynäkymässä.")
     show_voting_results = models.BooleanField('Näytä tulokset', help_text="Näytä äänestustulokset.")
+    ENTRY_VIEW_TYPES = (
+        (0, 'Ei mitään'),
+        (1, 'Youtube URL'),
+        (2, 'Image'),
+        (3, 'jPlayer'),
+    )
+    entry_view_type = models.IntegerField('Entryesittelyn tyyppi', choices=ENTRY_VIEW_TYPES, default=0, help_text="Millainen näkymä näytetään entryn tiedoissa.")
     def __unicode__(self):
         return self.name
     class Meta:
@@ -36,6 +41,7 @@ class Entry(models.Model):
     entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti. Esim. mp3, ogg, zip, jne. kelpaavat.")
     imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
+    youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
     def __unicode__(self):
         return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
     class Meta:

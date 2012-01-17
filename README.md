@@ -1,47 +1,48 @@
 Instanssi.org 2012 website project
 ==================================
 
-What is this ?
+1. What is this ?
 --------------
 This project right here is the website of instanssi.org demoparty. It contains the main website (main2012),
 Kompomaatti (our compo entry management interface), and Instanssi Arkisto (our entry archive site). Most
 of the comments and language used is in Finnish, because the programmers weren't interested in 
 internationalization :D
 
-License:
---------
+2. License
+----------
 MIT. Please refer to `LICENSE` for more information.
 
-Mikä on tämä ?
---------------
+3. Mikä on tämä ?
+-----------------
 En jaksa kirjoittaa suomeksi, lue ylläolevat :D
 
-Oppaita
--------
+5. Oppaita
+----------
 * Djangon asennus: https://docs.djangoproject.com/en/dev/topics/install/?from=olddocs#installing-an-official-release
 * Tutoriaali: https://docs.djangoproject.com/en/1.3/intro/tutorial01/
 
-Windows-asennus
----------------
+5. Ympäristön asentaminen Windowsille
+-------------------------------------
 1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin bin- 
    ja scripts-kansiot ovat windowsin PATHissa.
 2. Asenna setuptools (http://pypi.python.org/pypi/setuptools). 
 3. Asenna PIP (http://pypi.python.org/pypi/pip) komennolla `easy_install pip`.
-4. Asenna allaolevat kirjastot PIPillä.
-5. Nouki tämä projekti gitillä (git clone ...).
-6. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
-7. Testaa ajamalla runserver (`python manage.py runserver`).
+4. Asenna kappaleessa 8 mainitut kirjastot PIP:llä.
 
-Linux-asennus
--------------
+6. Ympäristön asentaminen Linuxeille
+------------------------------------
 1. Asenna PIP distrosi paketinhallinnalla, esim. `apt-get install python-pip`.
-2. Asenna allaolevat kirjastot joko käyttäen PIP:ä tai distron pakettienhallintaa.
-3. Nouki tämä projekti gitillä (git clone ...).
-4. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
-5. Testaa ajamalla runserver (`python manage.py runserver`).
+2. Asenna kappaleessa 8 mainitut kirjastot joko käyttäen PIP:ä tai distrosi pakettienhallintaa.
 
-Kirjastot
----------
+7. Projektin asentaminen
+------------------------
+1. Kloonaa tämä projekti gitillä (git clone ...).
+2. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
+3. Suorita migrate projektihakemistossa (`python manage.py migrate kompomaatti`).
+4. Testaa ajamalla runserver (`python manage.py runserver`).
+
+8. Kirjastot
+------------
 * [Django 1.3.1] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth 0.4] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [python-openid 2.2.5 or later] (https://github.com/openid/python-openid/) `pip install python-openid`

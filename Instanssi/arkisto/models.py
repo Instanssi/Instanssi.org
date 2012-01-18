@@ -1,3 +1,32 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 
-# Create your models here.
+class Tag(models.Model):
+    name = models.CharField('Tag', max_length=32)
+    def __unicode__(self):
+        return self.name
+
+class Event(models.Model):
+    name = models.CharField('Nimi', max_length=32)
+    date = models.DateField('Päivämäärä')
+    def __unicode__(self):
+        return self.name
+    
+class Compo(models.Model):
+    event = models.ForeignKey(Event)
+    name = models.CharField('Nimi', max_length=32)
+    description = models.TextField('Kuvaus')
+    def __unicode__(self):
+        return self.event.name + ": " + self.name
+
+class Entry(models.Model):
+    compo = models.ForeignKey(Compo)
+    name = models.CharField('Nimi', max_length=32)
+    description = models.TextField('Kuvaus')
+    creator = models.CharField('Tekijä', max_length=64)
+    file = models.FileField('Tiedosto', upload_to='entries/')
+    youtube_url = models.URLField('Youtube URL', blank=True)
+    tags = models.ManyToManyField(Tag)
+    def __unicode__(self):
+        return self.compo.name + " " + self.name

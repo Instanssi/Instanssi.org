@@ -3,9 +3,11 @@ h1 { font-size: 1.5em; }
 h2 { font-size: 1.1em; }
 h3 { font-size: 1.0em; }
 #content p,li { font-size: 0.9em; margin-bottom: 0.7em; margin-top: 0.7em;}
-#content li { display: list-item; list-style-type: disc; margin-left: 1.2em; }
+#content p li { display: list-item; list-style-type: disc; margin-left: 1.2em; }
 
-fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
+.media_player li { margin: 0; padding: 0; display: block; list-style-type: none; }
+
+#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 .formtable th { padding-left: 1em; padding-right: 1em; vertical-align: middle; text-align: left; border-bottom: 1px dotted gray; }
 .formtable td { padding-bottom: 0.4em; padding-top: 0.4em; border-bottom: 1px dotted gray; width: 100%; }
 .formtable .helptext { font-size: 0.8em; }

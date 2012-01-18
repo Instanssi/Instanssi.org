@@ -4,6 +4,6 @@ database.db
 .pydevproject
 .settings
 content/static/*
-content/media/*
+content/uploads/*
 !content/static/index.html
-!content/media/index.html
+!content/uploads/index.html

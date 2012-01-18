@@ -38,7 +38,7 @@ USE_I18N = True
 USE_L10N = True
 
 # Files
-MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/media/')
+MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
 STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'

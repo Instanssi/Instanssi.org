@@ -38,9 +38,9 @@ Projektin asentaminen
 ---------------------
 1. Kloonaa tämä projekti gitillä (git clone ...).
 2. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
-3. Suorita migrate projektihakemistossa (`python manage.py migrate kompomaatti`) sekä (`python manage.py migrate arkisto`).
+3. Suorita migrate projektihakemistossa (`python manage.py migrate`).
 4. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
-   joskus olla tarpeen suorittaa migratet ja syncdb uudelleen.
+   joskus olla tarpeen suorittaa migrate ja syncdb uudelleen.
 
 Kirjastot
 ---------

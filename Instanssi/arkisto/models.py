@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.contrib import admin
 
 class Tag(models.Model):
     name = models.CharField('Tag', max_length=32)
@@ -28,5 +29,12 @@ class Entry(models.Model):
     file = models.FileField('Tiedosto', upload_to='entries/')
     youtube_url = models.URLField('Youtube URL', blank=True)
     tags = models.ManyToManyField(Tag)
+    position = models.IntegerField('Sijoitus')
     def __unicode__(self):
         return self.compo.name + " " + self.name
+
+# Register models to admin panel
+admin.site.register(Tag)
+admin.site.register(Event)
+admin.site.register(Compo)
+admin.site.register(Entry)

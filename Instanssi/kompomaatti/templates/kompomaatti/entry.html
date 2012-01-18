@@ -6,7 +6,7 @@
 
 {% block jquery %}
 {{ block.super }}
-{% if entry.compo.allow_player %}
+{% if entry.compo.entry_view_type == 3 %}
 	$("#mplayer").jPlayer({
 		ready: function () {
 		   $(this).jPlayer("setMedia", {
@@ -22,12 +22,12 @@
 {% block content %}
 {{ block.super }}
 <h2>Entry: {{ entry.name }} by {{ entry.creator }}</h2>
-{% if entry.imagefile_thumbnail %}
+{% if entry.compo.entry_view_type == 2 and entry.imagefile_thumbnail %}
 <p>
     <img src="{{ entry.imagefile_thumbnail.url }}" alt="{{ entry.name }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" />
 </p>
 {% endif %}
-{% if entry.compo.allow_player %}
+{% if entry.compo.entry_view_type == 3 %}
 <p>
 	<div id="mplayer"></div>
 </p>

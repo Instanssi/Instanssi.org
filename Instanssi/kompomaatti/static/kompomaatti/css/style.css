@@ -1,7 +1,9 @@
-h1, h2, h3 { font-weight: bold; margin-left: 0.5em; margin-bottom: 0.8em; margin-top: 0.6em; }
-h1 { font-size: 1.5em; }
+body{background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
+h1, h2, h3 { }
+h1 { font-size: 1.5em; font-variant: small-caps;margin:0;padding: 24px 0px; color: #fff;} 
 h2 { font-size: 1.1em; }
 h3 { font-size: 1.0em; }
+#content p{margin: 0 0 0 15px;}
 #content p,li { font-size: 0.9em; margin-bottom: 0.7em; margin-top: 0.7em;}
 #content p li { display: list-item; list-style-type: disc; margin-left: 1.2em; }
 
@@ -25,44 +27,26 @@ h3 { font-size: 1.0em; }
 #sortable li { display: block; margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 18px; }
 #sortable li span { position: absolute; margin-left: -1.3em; }
 
-#base {
-    width: 800px;
-    margin-right: auto;
-    margin-left: auto;
-    border: 1px solid black;
-}
+#base {width: 960px;margin: 0 auto;}
 
 #nav {
-    background-color: #dcdcdc;
     padding: 0.2em;
 }
 
 #basenav {
     display: inline-block;
-    width: 800px;
+    width: 960px;
 }
 
-#basenav li {
-    float: left;
-    width: 20%;
-}
+#basenav li {float:left;margin-right: 20px;}
+#basenav li a{text-decoration:none;  color: #fff; display: block; text-align: left; padding: 8px 0px; font-size: 1.1em;}
+#basenav li a:hover{color: #eee;}
 
-#basenav li a {
-    float: left;
-    border: 1px solid black;
-    background-color: #dcdcdc;
-    padding: 0.3em;
-    min-width: 85%;
-    text-align: center;
-}
 
-#basenav li a:hover {
-    background-color: #eeeeee;
-}
 
-#subnav {
-    margin: none;
-}
+
+
+#subnav {margin: none;}
 
 #subnav li {
     float: none;
@@ -70,21 +54,11 @@ h3 { font-size: 1.0em; }
     width: 100%;
 }
 
-#subnav li a {
-    border-top: none;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 0.3em;
-    min-width: 85%;
-}
 
 
-#content {
-    padding: 0.2em;
-}
+#content {padding: 0.2em; min-height: 400px;}
+#footer {background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;padding: 8px; text-align: right; color: #fff;}
 
-#footer {
-    background-color: #dcdcdc;
-    padding: 0.2em;
-}
+/* CSS 3*/
+#basenav li a{text-shadow: 1px 0px 1px #333;}
+h1{ text-shadow: 1px 0px 1px #444;}

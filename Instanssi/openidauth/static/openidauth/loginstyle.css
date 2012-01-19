@@ -1,0 +1,9 @@
+html{background: #ddd;}
+body{background: #ddd; width: 250px; margin: 60px auto;}
+h1{font-variant: small-caps; text-shadow: 1px 1px 1px #fff;color:#222; font-size: 1.5em;}
+legend{font-variant: small-caps;}
+fieldset{padding: 40px;}
+#id_openid_identifier{margin: 10px 0 0 0;}
+select{padding: 0px 0px; width: 160px;  text-align: center;}
+input{padding: 6px 12px; margin: 10px 0 0 0;border: 1px solid #999; background: #eee; float: right;}
+input:hover{ cursor:pointer;  background: #ddd;}

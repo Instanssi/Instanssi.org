@@ -23,8 +23,9 @@ Oppaita
 
 Ympäristön asentaminen Windowsille
 ----------------------------------
-1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin bin- 
-   ja scripts-kansiot ovat windowsin PATHissa.
+1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin juurikansio (se josta löytyy python.exe)
+   ja scripts-kansiot ovat windowsin PATHissa. Kannattaa ladata 32bit versio, vaikka olisikin 64bit windows. Helpompi saada
+   kirjastot.
 2. Asenna setuptools (http://pypi.python.org/pypi/setuptools). 
 3. Asenna PIP (http://pypi.python.org/pypi/pip) komennolla `easy_install pip`.
 4. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot PIP:llä.

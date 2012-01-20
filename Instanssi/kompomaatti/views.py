@@ -29,7 +29,7 @@ def help(request):
 def myprods(request): 
     # Handle adding an antry
     if request.method == 'POST':
-        addform = AddEntryForm(request.POST, request.FILES) 
+        addform = AddEntryForm(request.POST, request.FILES)
         if addform.is_valid(): 
             nentry = addform.save(commit=False)
             nentry.user = request.user

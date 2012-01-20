@@ -44,7 +44,7 @@ class Entry(models.Model):
     name = models.CharField('Nimi', max_length=64, help_text='Nimi tuotokselle')
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
-    entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti. Esim. mp3, ogg, zip, jne. kelpaavat.")
+    entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti.")
     imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
@@ -62,8 +62,12 @@ class Entry(models.Model):
             ext = 'oga'
         return ext
     
+    def readable_allowed_formats(self):
+        allowed_formats = self.compo.formats.split('|')
+        return ', '.join(allowed_formats)
+    
     def clean(self):
-        # Check if compo is active
+        # Make sure the compo is active
         if not self.compo.active:
             raise ValidationError('Kompo ei ole aktiivinen.')
             
@@ -71,7 +75,7 @@ class Entry(models.Model):
         allowed_entry_formats = self.compo.formats.split('|')
         entry_type = os.path.splitext(self.entryfile.name)[1][1:]
         if entry_type not in allowed_entry_formats:
-            raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(allowed_entry_formats) + '.')
+            raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.readable_allowed_formats() + '.')
 
 
 class EntryAdmin(admin.ModelAdmin):

@@ -6,6 +6,7 @@ from django.contrib import admin
 from imagekit.models import ImageSpec
 from imagekit.processors import resize
 from imagekit.admin import AdminThumbnail
+import os.path
 
 class Compo(models.Model):
     name = models.CharField('Nimi', max_length=32, help_text="Kompon nimi (max 32 merkkiä).")
@@ -47,6 +48,11 @@ class Entry(models.Model):
     class Meta:
         verbose_name="tuotos"
         verbose_name_plural="tuotokset"
+    def get_entry_jplayer_ext(self):
+        ext = os.path.splitext(self.entryfile.name)[1][1:]
+        if ext == 'ogg':
+            ext = 'oga'
+        return ext
 
 class EntryAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'admin_thumbnail')

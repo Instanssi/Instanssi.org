@@ -45,7 +45,7 @@ class Entry(models.Model):
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
     entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti.")
-    sourcefile = models.FileField('Lähdekoodi', upload_to='entrysources/', help_text="Tästä voit jakaa demosi lähdekoodit kaikkien saataville, mikäli olo tuntuu anteliaalta. Sallitut formaatit ovat: .zip, .gz, .bz2, .7z ", blank=True)
+    sourcefile = models.FileField('Lähdekoodi', upload_to='entrysources/', help_text="Tästä voit jakaa demosi lähdekoodit kaikkien saataville mikäli olo tuntuu anteliaalta. Sallitut formaatit ovat: .zip, .gz, .bz2, .7z ", blank=True)
     imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)

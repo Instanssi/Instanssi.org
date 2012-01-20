@@ -16,6 +16,7 @@ class AddEntryForm(ModelForm):
                 'creator',
                 'description',
                 'entryfile',
+                'sourcefile',
                 'imagefile_original',
                 ButtonHolder (
                     Submit('submit', 'Submit')
@@ -28,4 +29,4 @@ class AddEntryForm(ModelForm):
 
     class Meta:
         model = Entry
-        fields = ('compo','name','creator','description','entryfile','imagefile_original')
+        fields = ('compo','name','creator','description','entryfile','sourcefile','imagefile_original')

@@ -1,4 +1,5 @@
 {% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -43,14 +44,14 @@
 </table>
 
 <h3>Lataa uusi tuotos</h3>
-<form action="" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data" class="uniForm">
     <fieldset>
         <legend>Lisää uusi entry</legend>
         {% csrf_token %}
-        <table class="formtable">
-        {{ addform.as_table }}
-        </table>
-        <input type="submit" value="Submit" />
+        {{ addform|as_uni_form }}
+        <div class="buttonHolder">
+            <input type="submit" name="submit" value="Tallenna" class="submit submitButton" id="submit-id-submit" />
+        </div>
     </fieldset>
 </form>
 {% endblock %}

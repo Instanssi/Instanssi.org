@@ -89,15 +89,16 @@ INSTALLED_APPS = (
     'arkisto',
     'kompomaatti',
     'openidauth',
+    'django_openid_auth',
     'imagekit',
     'south',
+    'uni_form',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'django_openid_auth',
 )
 
 AUTHENTICATION_BACKENDS = (

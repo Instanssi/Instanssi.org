@@ -51,6 +51,7 @@ Kirjastot
 * [PIL 1.1.7 or later] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit 1.1.0 or later] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South 0.7.3 or later] (http://south.aeracode.org/) `pip install south`
+* [django-uni-form latest] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
 
 IDEjä
 -----

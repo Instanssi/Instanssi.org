@@ -67,15 +67,18 @@ class Entry(models.Model):
         return ', '.join(allowed_formats)
     
     def clean(self):
-        # Make sure the compo is active
-        if not self.compo.active:
-            raise ValidationError('Kompo ei ole aktiivinen.')
+        # Only check if compo is set. compo is required field, so
+        # if Compo field is no set, something will fail at form validation.
+        if self.compo_id is not None:
+            # Make sure the compo is active
+            if not self.compo.active:
+                raise ValidationError('Kompo ei ole aktiivinen.')
             
-        # Check if entry format is allowed
-        allowed_entry_formats = self.compo.formats.split('|')
-        entry_type = os.path.splitext(self.entryfile.name)[1][1:]
-        if entry_type not in allowed_entry_formats:
-            raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.readable_allowed_formats() + '.')
+            # Check if entry format is allowed
+            allowed_entry_formats = self.compo.formats.split('|')
+            entry_type = os.path.splitext(self.entryfile.name)[1][1:]
+            if entry_type not in allowed_entry_formats:
+                raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.readable_allowed_formats() + '.')
 
 
 class EntryAdmin(admin.ModelAdmin):

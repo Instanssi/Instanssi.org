@@ -10,7 +10,7 @@ class AddEntryForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                'Lähetä uusi tuotos',
+                'Uusi tuotos',
                 'compo',
                 'name',
                 'creator',

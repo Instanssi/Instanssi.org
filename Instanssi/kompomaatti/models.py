@@ -11,32 +11,32 @@ import os.path
 
 
 class Compo(models.Model):
-    name = models.CharField('Nimi', max_length=32, help_text="Kompon nimi (max 32 merkkiä).")
-    description = models.TextField('Kuvaus', help_text="Kuvaus kompolle; esim. vaatimukset, esimerkit, jne.")
-    adding_end = models.DateTimeField('Deadline entryjen lisäyksille', help_text="Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.")
-    editing_end = models.DateTimeField('Deadline entryjen muokkauksille', help_text="Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.")
-    compo_start = models.DateTimeField('Kompon aloitusaika', help_text="Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).")
-    voting_start = models.DateTimeField('Äänestyksen alkamisaika', help_text="Alkamisaika entryjen äänestykselle.")
-    voting_end = models.DateTimeField('Äänestyksen päättymisaika', 'Päättymisaika entryjen äänestykselle.')
-    sizelimit = models.IntegerField('Kokoraja tiedostoille', help_text="Kokoraja entryjen tiedostoille (tavua).")
-    formats = models.CharField('Sallitut tiedostopäätteet', max_length=128, help_text="Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
-    source_formats = models.CharField('Sallitut lähdekoodipaketin päätteet', max_length=128, help_text="Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna", default="zip|7z|gz|bz2")
-    active = models.BooleanField('Aktiivinen', help_text="Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
-    show_voting_results = models.BooleanField('Näytä tulokset', help_text="Näytä äänestustulokset.")
+    name = models.CharField(u'Nimi', max_length=32, help_text=u"Kompon nimi (max 32 merkkiä).")
+    description = models.TextField(u'Kuvaus', help_text=u"Kuvaus kompolle; esim. vaatimukset, esimerkit, jne.")
+    adding_end = models.DateTimeField(u'Deadline entryjen lisäyksille', help_text=u"Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.")
+    editing_end = models.DateTimeField(u'Deadline entryjen muokkauksille', help_text=u"Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.")
+    compo_start = models.DateTimeField(u'Kompon aloitusaika', help_text=u"Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).")
+    voting_start = models.DateTimeField(u'Äänestyksen alkamisaika', help_text=u"Alkamisaika entryjen äänestykselle.")
+    voting_end = models.DateTimeField(u'Äänestyksen päättymisaika', help_text=u'Päättymisaika entryjen äänestykselle.')
+    sizelimit = models.IntegerField(u'Kokoraja tiedostoille', help_text=u"Kokoraja entryjen tiedostoille (tavua).")
+    formats = models.CharField(u'Sallitut tiedostopäätteet', max_length=128, help_text=u"Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    source_formats = models.CharField(u'Sallitut lähdekoodipaketin päätteet', max_length=128, help_text=u"Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna", default="zip|7z|gz|bz2")
+    active = models.BooleanField(u'Aktiivinen', help_text=u"Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
+    show_voting_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä äänestustulokset.")
     ENTRY_VIEW_TYPES = (
-        (0, 'Ei mitään'),
-        (1, 'Youtube URL'),
-        (2, 'Image'),
-        (3, 'jPlayer'),
+        (0, u'Ei mitään'),
+        (1, u'Youtube URL'),
+        (2, u'Image'),
+        (3, u'jPlayer'),
     )
-    entry_view_type = models.IntegerField('Entryesittelyn tyyppi', choices=ENTRY_VIEW_TYPES, default=0, help_text="Millainen näkymä näytetään entryn tiedoissa.")
+    entry_view_type = models.IntegerField(u'Entryesittelyn tyyppi', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa.")
     
     def __unicode__(self):
         return self.name
     
     class Meta:
-        verbose_name="kompo"
-        verbose_name_plural="kompot"
+        verbose_name=u"kompo"
+        verbose_name_plural=u"kompot"
         
     def readable_allowed_entry_formats(self):
         return ', '.join(self.formats.split('|'))
@@ -45,23 +45,23 @@ class Compo(models.Model):
         return ', '.join(self.source_formats.split('|'))
 
 class Entry(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", help_text="Käyttäjä jolle entry kuuluu")
-    compo = models.ForeignKey(Compo, verbose_name="kompo", help_text="Kompo johon osallistutaan")
-    name = models.CharField('Nimi', max_length=64, help_text='Nimi tuotokselle')
-    description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
-    creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
-    entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti.")
-    sourcefile = models.FileField('Lähdekoodi', upload_to='entrysources/', help_text="Lähdekoodipaketti.", blank=True)
-    imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
+    user = models.ForeignKey(User, verbose_name="käyttäjä", help_text=u"Käyttäjä jolle entry kuuluu")
+    compo = models.ForeignKey(Compo, verbose_name="kompo", help_text=u"Kompo johon osallistutaan")
+    name = models.CharField(u'Nimi', max_length=64, help_text=u'Nimi tuotokselle')
+    description = models.TextField(u'Kuvaus', help_text=u'Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
+    creator = models.CharField(u'Tekijä', max_length=64, help_text=u'Tuotoksen tekijän tai tekijäryhmän nimi')
+    entryfile = models.FileField(u'Tiedosto', upload_to='entries/', help_text=u"Tuotospaketti.")
+    sourcefile = models.FileField(u'Lähdekoodi', upload_to='entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
+    imagefile_original = models.ImageField(u'Kuva', upload_to='entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
-    youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
+    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon.", blank=True)
     
     def __unicode__(self):
         return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
     
     class Meta:
-        verbose_name="tuotos"
-        verbose_name_plural="tuotokset"
+        verbose_name=u"tuotos"
+        verbose_name_plural=u"tuotokset"
         
     def get_entry_jplayer_ext(self):
         ext = os.path.splitext(self.entryfile.name)[1][1:]
@@ -75,7 +75,7 @@ class Entry(models.Model):
         if self.compo_id is not None:
             # Make sure the compo is active
             if not self.compo.active:
-                raise ValidationError('Kompo ei ole aktiivinen.')
+                raise ValidationError(u'Kompo ei ole aktiivinen.')
             
             # Check if entry format is allowed
             allowed_entry_formats = self.compo.formats.split('|')
@@ -92,17 +92,17 @@ class Entry(models.Model):
 
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä")
-    compo = models.ForeignKey(Compo, verbose_name="kompo")
-    entry = models.ForeignKey(Entry, verbose_name="tuotos")
-    rank = models.IntegerField('Sijoitus')
+    user = models.ForeignKey(User, verbose_name=u"käyttäjä")
+    compo = models.ForeignKey(Compo, verbose_name=u"kompo")
+    entry = models.ForeignKey(Entry, verbose_name=u"tuotos")
+    rank = models.IntegerField(u'Sijoitus')
     
     def __unicode__(self):
         return self.entry.name + ' by ' + self.user.username + ' as ' + str(self.rank)
     
     class Meta:
-        verbose_name="ääni"
-        verbose_name_plural="äänet"
+        verbose_name=u"ääni"
+        verbose_name_plural=u"äänet"
 
 
 admin.site.register(Compo)

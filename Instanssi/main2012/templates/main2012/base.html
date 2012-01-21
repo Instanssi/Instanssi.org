@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="/static/libs/css/reset.css" />
     <link rel="stylesheet" href="/static/main2012/css/style.css" />
     <link href='http://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css' />
+	<link rel="icon" type="image/jpeg" href="/static/main2012/images/favicon.jpg">
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/static/main2012/js/instanssiBackground.js"></script>
     <script type="text/javascript" src="/static/main2012/js/twitterlib.min.js"></script>
     <script type="text/javascript" src="/static/main2012/js/twitter_feed.js"></script>
+	<script src="/static/main2012/js/modernizr-1.7.min.js"></script>
 {% if not debugmode %}
     <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -137,11 +139,9 @@
 <div id="footer-copyright">
 	<pre class="center">© 2012 Instanssi | Kaikki oikeudet pidätetään.</pre>
 </div>
-<div class="layerItem" x="-100" y="0" z="26" ><img src="/static/main2012/images/cubes.png" alt="" /></div> 
-<div class="layerItem" x="440" y="100" z="16" ><img src="/static/main2012/images/leaves.png" alt="" /></div> 
-<div class="layerItem" x="540" y="150" z="22" ><img src="/static/main2012/images/leaves.png" alt="" /></div> 
-<div class="layerItem" x="450" y="150" z="20"><img src="/static/main2012/images/tree.png" alt="" /></div>
-<div class="layerItem" x="0" y="-150" z="20" ><img src="/static/main2012/images/ground.png" alt="" /></div>
-<div class="layerItem" x="0" y="-150" z="16" ><img src="/static/main2012/images/grass.png" alt="" /></div>
+
+<div id="layerItems">
+</div>
+
 </body>
 </html>

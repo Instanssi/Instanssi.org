@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from Instanssi.kompomaatti.misc import awesometime
+from django.core.files import File
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
@@ -51,6 +52,33 @@ def myentries(request):
     })
 
 @login_required
+def delentry(request, entry_id):
+    # Check if entry exists and get the object
+    try:
+        entry = Entry.objects.get(id=entry_id)
+    except ObjectDoesNotExist:
+        raise Http404
+
+    # Make sure the user owns the entry
+    if entry.user != request.user:
+        raise Http404    
+    
+    # Make sure the compo is active and if adding time is open
+    if not entry.compo.active or entry.compo.adding_end < datetime.now():
+        raise Http404
+    
+    # Delete entry and associated files
+    entry.delete()
+    entry.entryfile.delete()
+    if entry.sourcefile:
+        entry.sourcefile.delete()
+    if entry.imagefile_original:
+        entry.imagefile_original.delete()
+    
+    # Redirect back to dashboard
+    return HttpResponseRedirect('/kompomaatti/myentries/') 
+
+@login_required
 def addentry(request, compo_id):
     # Check if entry exists and get the object
     try:
@@ -58,12 +86,8 @@ def addentry(request, compo_id):
     except ObjectDoesNotExist:
         raise Http404
     
-    # Make sure the compo is active
-    if not compo.active:
-        raise Http404
-    
-    # Check if compo adding time is open
-    if compo.adding_end < datetime.now():
+    # Make sure the compo is active and if adding time is open
+    if not compo.active or compo.adding_end < datetime.now():
         raise Http404
     
     # Check if we got filled form    
@@ -98,12 +122,8 @@ def editentry(request, entry_id):
     if entry.user != request.user:
         raise Http404
     
-    # Make sure the compo the entry belongs to is active
-    if not entry.compo.active:
-        raise Http404
-    
-    # Check if compo editing time is open
-    if entry.compo.editing_end < datetime.now():
+    # Make sure the compo is active and if adding time is open
+    if not entry.compo.active or entry.compo.adding_end < datetime.now():
         raise Http404
     
     # Check if we got filled form    

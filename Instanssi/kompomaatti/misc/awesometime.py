@@ -32,7 +32,9 @@ def format_between(t1, t2):
     tomorrow = today + timedelta(days=1)
     the_day_after_tomorrow = today + timedelta(days=2) # Must honor the movie!
     
-    if t1 < now and t2 > now:
+    if t2 < now:
+        return "Päättynyt"
+    elif t1 < now and t2 > now:
         left = t2-now
         l_hours = int(left.total_seconds() / timedelta(hours=1).total_seconds())
         l_minutes = int((left.total_seconds() - timedelta(hours=l_hours).total_seconds()) / 60)

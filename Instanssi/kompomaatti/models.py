@@ -19,7 +19,8 @@ class Compo(models.Model):
     voting_start = models.DateTimeField('Äänestyksen alkamisaika', help_text="Alkamisaika entryjen äänestykselle.")
     voting_end = models.DateTimeField('Äänestyksen päättymisaika', 'Päättymisaika entryjen äänestykselle.')
     sizelimit = models.IntegerField('Kokoraja tiedostoille', help_text="Kokoraja entryjen tiedostoille (tavua).")
-    formats = models.CharField('Sallitut tiedostopäätteet', max_length="128", help_text="Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    formats = models.CharField('Sallitut tiedostopäätteet', max_length=128, help_text="Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    source_formats = models.CharField('Sallitut lähdekoodipaketin päätteet', max_length=128, help_text="Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna", default="zip|7z|gz|bz2")
     active = models.BooleanField('Aktiivinen', help_text="Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
     show_voting_results = models.BooleanField('Näytä tulokset', help_text="Näytä äänestustulokset.")
     ENTRY_VIEW_TYPES = (
@@ -36,7 +37,12 @@ class Compo(models.Model):
     class Meta:
         verbose_name="kompo"
         verbose_name_plural="kompot"
-
+        
+    def readable_allowed_entry_formats(self):
+        return ', '.join(self.formats.split('|'))
+    
+    def readable_allowed_source_formats(self):
+        return ', '.join(self.source_formats.split('|'))
 
 class Entry(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä", help_text="Käyttäjä jolle entry kuuluu")
@@ -45,7 +51,7 @@ class Entry(models.Model):
     description = models.TextField('Kuvaus', help_text='Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField('Tekijä', max_length=64, help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
     entryfile = models.FileField('Tiedosto', upload_to='entries/', help_text="Tuotospaketti.")
-    sourcefile = models.FileField('Lähdekoodi', upload_to='entrysources/', help_text="Tästä voit jakaa demosi lähdekoodit kaikkien saataville mikäli olo tuntuu anteliaalta. Sallitut formaatit ovat: .zip, .gz, .bz2, .7z ", blank=True)
+    sourcefile = models.FileField('Lähdekoodi', upload_to='entrysources/', help_text="Lähdekoodipaketti.", blank=True)
     imagefile_original = models.ImageField('Kuva', upload_to='entryimages/', help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
@@ -63,10 +69,6 @@ class Entry(models.Model):
             ext = 'oga'
         return ext
     
-    def readable_allowed_formats(self):
-        allowed_formats = self.compo.formats.split('|')
-        return ', '.join(allowed_formats)
-    
     def clean(self):
         # Only check if compo is set. compo is required field, so
         # if Compo field is no set, something will fail at form validation.
@@ -79,12 +81,14 @@ class Entry(models.Model):
             allowed_entry_formats = self.compo.formats.split('|')
             entry_type = os.path.splitext(self.entryfile.name)[1][1:]
             if entry_type not in allowed_entry_formats:
-                raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.readable_allowed_formats() + '.')
+                raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_entry_formats() + '.')
 
-
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'admin_thumbnail')
-    admin_thumbnail = AdminThumbnail(image_field='imagefile_thumbnail')
+            # Check if sourcepackage format is allowed
+            if self.sourcefile:
+                allowed_source_formats = self.compo.source_formats.split('|')
+                source_type = os.path.splitext(self.sourcefile.name)[1][1:]
+                if source_type not in allowed_source_formats:
+                    raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_source_formats() + '.')
 
 
 class Vote(models.Model):
@@ -99,7 +103,8 @@ class Vote(models.Model):
     class Meta:
         verbose_name="ääni"
         verbose_name_plural="äänet"
-    
+
+
 admin.site.register(Compo)
-admin.site.register(Entry, EntryAdmin)
+admin.site.register(Entry)
 admin.site.register(Vote)

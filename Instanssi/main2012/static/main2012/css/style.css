@@ -64,7 +64,7 @@ eng = 465
 
 #footer h3{padding: 20px 0 20px 0; color: #eee; border-bottom: 1px solid #1fa3f5; width: 120px; margin: 0 0 20px 0; }
 
-#layerItems{width:960px;  overflow:hidden;clip: }
+#layerItems{width:100%; position:absolute; top:0; height:300px; overflow:hidden;clip: }
 .layerItem{position: absolute; top:0;left:0;z-index:0;}
 .clearer{ clear: both; }
 .center{ width: 940px; margin: 0 auto; padding-left: 10px; padding-right: 10px }

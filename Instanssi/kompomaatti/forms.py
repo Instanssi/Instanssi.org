@@ -29,8 +29,8 @@ class EntryForm(ModelForm):
         )
         super(EntryForm, self).__init__(*args, **kwargs) 
         if compo:
-            self.fields['entryfile'].help_text = "Tuotospaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_entry_formats() + '.';
-            self.fields['sourcefile'].help_text = "Lähdekoodipaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_source_formats() + '.';
+            self.fields['entryfile'].help_text = u"Tuotospaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_entry_formats() + '.';
+            self.fields['sourcefile'].help_text = u"Lähdekoodipaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_source_formats() + '.';
         if editing:
             self.fields['entryfile'].required = False
 

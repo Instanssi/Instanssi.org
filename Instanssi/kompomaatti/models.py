@@ -81,14 +81,14 @@ class Entry(models.Model):
             allowed_entry_formats = self.compo.formats.split('|')
             entry_type = os.path.splitext(self.entryfile.name)[1][1:]
             if entry_type not in allowed_entry_formats:
-                raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_entry_formats() + '.')
+                raise ValidationError(u'Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_entry_formats() + '.')
 
             # Check if sourcepackage format is allowed
             if self.sourcefile:
                 allowed_source_formats = self.compo.source_formats.split('|')
                 source_type = os.path.splitext(self.sourcefile.name)[1][1:]
                 if source_type not in allowed_source_formats:
-                    raise ValidationError('Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_source_formats() + '.')
+                    raise ValidationError(u'Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_source_formats() + '.')
 
 
 class Vote(models.Model):

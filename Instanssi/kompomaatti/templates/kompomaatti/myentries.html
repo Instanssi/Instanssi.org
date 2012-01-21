@@ -1,0 +1,81 @@
+{% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+{% load editableentry %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Omat Tuotokset</h2>
+
+<h3>Ladatut tuotokset</h3>
+{% if myentries %}
+<table class="generic_table">
+    <thead>
+        <tr>
+            <th>Kompo</th>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th>Tekijä</th>
+            <th>Tiedosto</th>
+            <th>Kuva</th>
+            <th>Lähdekoodi</th>
+            <th>Muokkaa</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for entry in myentries %}
+        <tr>
+            <td>{{ entry.compo }}</td>
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.description }}</td>
+            <td>{{ entry.creator }}</td>
+            <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
+            <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Kuva</a>{% endif %}</td>
+            <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lähdekoodi</a>{% endif %}</td>
+{% if entry|is_editable %}
+            <td><a href="/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
+{% else %}
+            <td>Muokkausaika ohi.</td>
+{% endif %}
+        </tr>
+{% endfor %}
+{% else %}
+    <p>Ei ladattuja tuotoksia</p>
+{% endif %}
+    </tbody>
+</table>
+
+<h3>Avoimet kompot</h3>
+{% if opencompos %}
+<table class="generic_table">
+    <thead>
+        <tr>
+            <th>Kompo</th>
+            <th>Deadline lisäyksille</th>
+            <th>Deadline muokkauksille</th>
+            <th>Lisätietoja</th>
+            <th>Lisää uusi entry!</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for compo in opencompos %}
+        <tr>
+            <td>{{ compo.name }}</td>
+            <td>{{ compo.adding_time }}</td>
+            <td>{{ compo.editing_time }}</td>
+            <td><a href="/kompomaatti/compo/{{ compo.id }}/">Lisätietoja</a></td>
+            <td><a href="/kompomaatti/addentry/{{ compo.id }}/">Lisää uusi entry!</a></td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

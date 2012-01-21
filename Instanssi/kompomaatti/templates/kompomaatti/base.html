@@ -5,19 +5,15 @@
     <title>Kompomaatti</title>
     <link rel="stylesheet" href="/static/libs/css/reset.css" />
     <link rel="stylesheet" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
-    <link rel="stylesheet" href="/static/libs/css/uniform/css/uniform.default.css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/static/kompomaatti/css/style.css" />
+    <link href="/static/libs/css/uni-form/uni-form.css" media="all" rel="stylesheet" />
+    <link href="/static/libs/css/uni-form/default.uni-form.css" media="all" rel="stylesheet" />
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="/static/libs/js/uniform/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
-    $("select, input, textarea").uniform();
-    $('.errorlist').addClass('ui-state-error');
-    $('.errorlist').prepend('<div class="ui-icon ui-icon-alert icon-messagebox"></div>');
-    $('.successnote').addClass('ui-state-highlight');
-    $('.successnote').prepend('<div class="ui-icon ui-icon-info icon-messagebox"></div>');
 {% block jquery %}{% endblock %}
     });
     </script>
@@ -38,7 +34,7 @@
                 </li>
                 <li><a href="/kompomaatti/help/">Ohje</a></li>
 {% if logged %}
-                <li><a href="/kompomaatti/myprods/">Omat Tuotokset</a></li>
+                <li><a href="/kompomaatti/myentries/">Omat Tuotokset</a></li>
                 <li><a href="/kompomaatti/logout/">Kirjaudu ulos</a></li>
 {% else %}
                 <li><a href="/openid/login/">Kirjaudu sisään</a></li>

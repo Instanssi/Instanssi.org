@@ -14,11 +14,12 @@
     $("#mplayer").jPlayer({
         ready: function () {
             $(this).jPlayer("setMedia", {
-                oga: "{{ entry.entryfile.url }}"
+                {{ entry.get_entry_jplayer_ext }}: "{{ entry.entryfile.url }}"
             });
         },
         swfPath: "/static/libs/js/jplayer-2.1.0/Jplayer.swf",
-        supplied: "oga"
+        supplied: "{{ entry.get_entry_jplayer_ext }}",
+        wmode: "window"
     });
 {% endif %}
 {% endblock %}

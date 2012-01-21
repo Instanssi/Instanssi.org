@@ -38,6 +38,7 @@ Ympäristön asentaminen Linuxeille
 Projektin asentaminen
 ---------------------
 1. Kloonaa tämä projekti gitillä (git clone ...).
+2. Uudelleennimeä `settings.py-dist` nimelle `settings.py`.
 2. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
 3. Suorita migrate projektihakemistossa (`python manage.py migrate`).
 4. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
@@ -51,6 +52,7 @@ Kirjastot
 * [PIL 1.1.7 or later] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit 1.1.0 or later] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South 0.7.3 or later] (http://south.aeracode.org/) `pip install south`
+* [django-uni-form latest] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
 
 IDEjä
 -----

@@ -4,49 +4,18 @@ from django.shortcuts import render_to_response
 from models import Compo, Entry, Vote
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from forms import AddEntryForm
+from forms import EntryForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from Instanssi.kompomaatti.misc import awesometime
 
+# ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
-    compos = Compo.objects.all()
-    context['compos'] = compos
+    context['compos'] = Compo.objects.all()
     context['logged'] = request.user.is_authenticated()
     return render_to_response(tpl, context, context_instance=RequestContext(request))
-
-
-def index(request):
-    return custom_render(request, 'kompomaatti/index.html')
-
-
-def help(request):
-    return custom_render(request, 'kompomaatti/help.html')
-
-@login_required
-def myprods(request): 
-    # Handle adding an antry
-    if request.method == 'POST':
-        addform = AddEntryForm(request.POST, request.FILES) 
-        if addform.is_valid(): 
-            nentry = addform.save(commit=False)
-            nentry.user = request.user
-            nentry.save()
-            return HttpResponseRedirect('/kompomaatti/myprods/') 
-    else:
-        addform = AddEntryForm() 
-
-    # Get list of users entries
-    my_entries = Entry.objects.filter(user=request.user)
-
-    # Dump the page to the user
-    return custom_render(request, 'kompomaatti/myprods.html', {
-        'addform': addform,
-        'myentries': my_entries
-    })
-
 
 def compo_times_formatter(compo):
     compo.compo_time = awesometime.format_single(compo.compo_start)
@@ -54,6 +23,105 @@ def compo_times_formatter(compo):
     compo.editing_time = awesometime.format_single(compo.editing_end)
     compo.voting_time = awesometime.format_between(compo.voting_start, compo.voting_end)
     return compo
+
+# ---- PAGES ----
+
+def index(request):
+    return custom_render(request, 'kompomaatti/index.html')
+
+def help(request):
+    return custom_render(request, 'kompomaatti/help.html')
+
+@login_required
+def myentries(request): 
+    # Get list of users entries
+    my_entries = Entry.objects.filter(user=request.user)
+    
+    # Get list of open compos, format times
+    open_compos = Compo.objects.filter(active=True, adding_end__gte = datetime.now())
+    oclist = []
+    for compo in open_compos:
+        formatted_compo = compo_times_formatter(compo)
+        oclist.append(formatted_compo)
+
+    # Dump the page to the user
+    return custom_render(request, 'kompomaatti/myentries.html', {
+        'myentries': my_entries,
+        'opencompos': oclist,
+    })
+
+@login_required
+def addentry(request, compo_id):
+    # Check if entry exists and get the object
+    try:
+        compo = Compo.objects.get(id=compo_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    # Make sure the compo is active
+    if not compo.active:
+        raise Http404
+    
+    # Check if compo adding time is open
+    if compo.adding_end < datetime.now():
+        raise Http404
+    
+    # Check if we got filled form    
+    if request.method == 'POST':
+        addform = EntryForm(request.POST, request.FILES, compo=compo, legend="Uusi tuotos")
+        if addform.is_valid():
+            # Fileformat checks are done in models.Entry
+            # Other checks have already been done. So just go ahead and save.
+            nentry = addform.save(commit=False)
+            nentry.user = request.user
+            nentry.compo = compo
+            nentry.save()
+            return HttpResponseRedirect('/kompomaatti/myentries/') 
+    else:
+        addform = EntryForm(compo=compo, legend="Uusi tuotos")
+
+    # Return the edit form
+    return custom_render(request, 'kompomaatti/addentry.html', {
+        'addform': addform,
+        'compo': compo,
+    })
+
+@login_required
+def editentry(request, entry_id):
+    # Check if entry exists and get the object
+    try:
+        entry = Entry.objects.get(id=entry_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    # Make sure the user owns the entry
+    if entry.user != request.user:
+        raise Http404
+    
+    # Make sure the compo the entry belongs to is active
+    if not entry.compo.active:
+        raise Http404
+    
+    # Check if compo editing time is open
+    if entry.compo.editing_end < datetime.now():
+        raise Http404
+    
+    # Check if we got filled form    
+    if request.method == 'POST':
+        editform = EntryForm(request.POST, request.FILES, instance=entry, editing=True, compo=entry.compo, legend="Muokkaa tuotosta")
+        if editform.is_valid():
+            # Fileformat checks are done in models.Entry
+            # Other checks have already been done. So just go ahead and save.
+            editform.save()
+            return HttpResponseRedirect('/kompomaatti/myentries/') 
+    else:
+        editform = EntryForm(instance=entry, editing=True, compo=entry.compo, legend="Muokkaa tuotosta")
+    
+    # Return the edit form
+    return custom_render(request, 'kompomaatti/editentry.html', {
+        'editform': editform,
+        'entry': entry,
+    })
 
 def compo(request, compo_id):
     # Get compo information

@@ -10,7 +10,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Tuomas Virtanen', 'katajakasa@gmail.com'),
+#    ('Amy Admin', 'amy.admin@happyadminlandia.com'),
 )
 MANAGERS = ADMINS
 
@@ -53,6 +53,10 @@ OPENID_FOLLOW_RENAMES = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/kompomaatti/'
 
+# Uni-form debugging stuff
+UNIFORM_FAIL_SILENTLY = not DEBUG
+
+# Add a shared static file directory
 STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),
 )
@@ -89,15 +93,16 @@ INSTALLED_APPS = (
     'arkisto',
     'kompomaatti',
     'openidauth',
+    'django_openid_auth',
     'imagekit',
     'south',
+    'uni_form',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'django_openid_auth',
 )
 
 AUTHENTICATION_BACKENDS = (

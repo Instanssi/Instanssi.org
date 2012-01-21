@@ -2,12 +2,38 @@
 
 from django.forms import ModelForm
 from models import Compo, Entry
+from uni_form.helper import FormHelper
+from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
+from datetime import datetime
 
-class AddEntryForm(ModelForm):
+class EntryForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AddEntryForm, self).__init__(*args, **kwargs) 
-        self.fields['compo'].queryset = Compo.objects.filter(active=True)
+        legend = kwargs.pop('legend', 'Entry')
+        compo = kwargs.pop('compo', None)
+        editing = kwargs.pop('editing', False)
+        
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                legend,
+                'name',
+                'creator',
+                'description',
+                'entryfile',
+                'sourcefile',
+                'imagefile_original',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        super(EntryForm, self).__init__(*args, **kwargs) 
+        if compo:
+            self.fields['entryfile'].help_text = "Tuotospaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_entry_formats() + '.';
+            self.fields['sourcefile'].help_text = "Lähdekoodipaketti. Sallitut tiedostoformaatit: " + compo.readable_allowed_source_formats() + '.';
+        if editing:
+            self.fields['entryfile'].required = False
 
     class Meta:
         model = Entry
-        fields = ('compo','name','creator','description','entryfile','imagefile_original')
+        fields = ('name','creator','description','entryfile','sourcefile','imagefile_original')

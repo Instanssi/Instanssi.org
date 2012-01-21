@@ -26,6 +26,10 @@ def format_single_helper(t):
 def format_single(t):
     return format_single_helper(t).capitalize()
 
+# Since python 2.6 does not support deltatime.total_seconds() ... :<
+def delta_total_seconds(delta):
+    return delta.days * 86400 + delta.seconds
+
 def format_between(t1, t2):
     now = datetime.now()
     today = todayhelper()
@@ -36,8 +40,8 @@ def format_between(t1, t2):
         return "Päättynyt"
     elif t1 < now and t2 > now:
         left = t2-now
-        l_hours = int(left.total_seconds() / timedelta(hours=1).total_seconds())
-        l_minutes = int((left.total_seconds() - timedelta(hours=l_hours).total_seconds()) / 60)
+        l_hours = int(delta_total_seconds(left) / delta_total_seconds(timedelta(hours=1)))
+        l_minutes = int((delta_total_seconds(left) - delta_total_seconds(timedelta(hours=l_hours))) / 60)
         if(l_hours == 0):
             return "Menossa, aikaa jäljellä " + str(l_minutes) + " minuuttia"
         else:

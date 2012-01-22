@@ -25,9 +25,9 @@ class Compo(models.Model):
     show_voting_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä äänestustulokset.", default=False)
     ENTRY_VIEW_TYPES = (
         (0, u'Ei mitään'),
-        (1, u'Youtube URL'),
-        (2, u'Image'),
-        (3, u'jPlayer'),
+        (1, u'Youtube ensin, sitten kuva'), # Videoentryille, koodauskompoille
+        (2, u'Vain kuva'), # Grafiikkakompoille
+        (3, u'jPlayer ensin, sitten kuva'), # Musiikkikompoille
     )
     entry_view_type = models.IntegerField(u'Entryesittelyn tyyppi', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa.")
     

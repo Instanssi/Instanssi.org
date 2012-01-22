@@ -6,7 +6,6 @@ from django.contrib import admin
 from imagekit.models import ImageSpec
 from imagekit.processors import resize
 from imagekit.admin import AdminThumbnail
-from django.core.exceptions import ValidationError
 import os.path
 
 
@@ -18,11 +17,12 @@ class Compo(models.Model):
     compo_start = models.DateTimeField(u'Kompon aloitusaika', help_text=u"Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).")
     voting_start = models.DateTimeField(u'Äänestyksen alkamisaika', help_text=u"Alkamisaika entryjen äänestykselle.")
     voting_end = models.DateTimeField(u'Äänestyksen päättymisaika', help_text=u'Päättymisaika entryjen äänestykselle.')
-    sizelimit = models.IntegerField(u'Kokoraja tiedostoille', help_text=u"Kokoraja entryjen tiedostoille (tavua).")
-    formats = models.CharField(u'Sallitut tiedostopäätteet', max_length=128, help_text=u"Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim png|jpg|gif.")
+    entry_sizelimit = models.IntegerField(u'Kokoraja entryille', help_text=u"Kokoraja entrytiedostoille (tavua).", default=134217728) # Default to 128M
+    source_sizelimit = models.IntegerField(u'Kokoraja sorsille', help_text=u"Kokoraja sorsatiedostoille (tavua).", default=134217728) # Default to 128M
+    formats = models.CharField(u'Sallitut tiedostopäätteet', max_length=128, help_text=u"Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. \"png|jpg|gif\".", default="zip|7z|gz|bz2")
     source_formats = models.CharField(u'Sallitut lähdekoodipaketin päätteet', max_length=128, help_text=u"Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna", default="zip|7z|gz|bz2")
-    active = models.BooleanField(u'Aktiivinen', help_text=u"Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.")
-    show_voting_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä äänestustulokset.")
+    active = models.BooleanField(u'Aktiivinen', help_text=u"Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.", default=True)
+    show_voting_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä äänestustulokset.", default=False)
     ENTRY_VIEW_TYPES = (
         (0, u'Ei mitään'),
         (1, u'Youtube URL'),
@@ -37,11 +37,11 @@ class Compo(models.Model):
     class Meta:
         verbose_name=u"kompo"
         verbose_name_plural=u"kompot"
-        
-    def readable_allowed_entry_formats(self):
+            
+    def readable_entry_formats(self):
         return ', '.join(self.formats.split('|'))
     
-    def readable_allowed_source_formats(self):
+    def readable_source_formats(self):
         return ', '.join(self.source_formats.split('|'))
 
 class Entry(models.Model):
@@ -69,28 +69,6 @@ class Entry(models.Model):
             ext = 'oga'
         return ext
     
-    def clean(self):
-        # Only check if compo is set. compo is required field, so
-        # if Compo field is no set, something will fail at form validation.
-        if self.compo_id is not None:
-            # Make sure the compo is active
-            if not self.compo.active:
-                raise ValidationError(u'Kompo ei ole aktiivinen.')
-            
-            # Check if entry format is allowed
-            allowed_entry_formats = self.compo.formats.split('|')
-            entry_type = os.path.splitext(self.entryfile.name)[1][1:]
-            if entry_type not in allowed_entry_formats:
-                raise ValidationError(u'Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_entry_formats() + '.')
-
-            # Check if sourcepackage format is allowed
-            if self.sourcefile:
-                allowed_source_formats = self.compo.source_formats.split('|')
-                source_type = os.path.splitext(self.sourcefile.name)[1][1:]
-                if source_type not in allowed_source_formats:
-                    raise ValidationError(u'Entryn tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_allowed_source_formats() + '.')
-
-
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä")
     compo = models.ForeignKey(Compo, verbose_name=u"kompo")

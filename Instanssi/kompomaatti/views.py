@@ -62,18 +62,19 @@ def delentry(request, entry_id):
     # Make sure the user owns the entry
     if entry.user != request.user:
         raise Http404    
-    
+
     # Make sure the compo is active and if adding time is open
-    if not entry.compo.active or entry.compo.adding_end < datetime.now():
+    if not entry.compo.active or entry.compo.editing_end < datetime.now():
         raise Http404
     
     # Delete entry and associated files
-    entry.delete()
-    entry.entryfile.delete()
+    if entry.entryfile:
+        entry.entryfile.delete()
     if entry.sourcefile:
         entry.sourcefile.delete()
     if entry.imagefile_original:
         entry.imagefile_original.delete()
+    entry.delete()
     
     # Redirect back to dashboard
     return HttpResponseRedirect('/kompomaatti/myentries/') 
@@ -90,7 +91,7 @@ def addentry(request, compo_id):
     if not compo.active or compo.adding_end < datetime.now():
         raise Http404
     
-    # Check if we got filled form    
+    # Check if we got filled form
     if request.method == 'POST':
         addform = EntryForm(request.POST, request.FILES, compo=compo, legend="Uusi tuotos")
         if addform.is_valid():
@@ -123,7 +124,7 @@ def editentry(request, entry_id):
         raise Http404
     
     # Make sure the compo is active and if adding time is open
-    if not entry.compo.active or entry.compo.adding_end < datetime.now():
+    if not entry.compo.active or entry.compo.editing_end < datetime.now():
         raise Http404
     
     # Check if we got filled form    

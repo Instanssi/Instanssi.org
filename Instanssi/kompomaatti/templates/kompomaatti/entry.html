@@ -10,7 +10,7 @@
 
 {% block jquery %}
 {{ block.super }}
-{% if entry.compo.entry_view_type == 3 %}
+{% if show.jplayer %}
     $("#mplayer").jPlayer({
         ready: function () {
             $(this).jPlayer("setMedia", {
@@ -27,54 +27,9 @@
 {% block content %}
 {{ block.super }}
 <h2>Entry: {{ entry.name }} by {{ entry.creator }}</h2>
-{% if entry.compo.entry_view_type == 2 and entry.imagefile_thumbnail %}
-<p>
-    <img src="{{ entry.imagefile_thumbnail.url }}" alt="{{ entry.name }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" />
-</p>
-{% endif %}
-{% if entry.compo.entry_view_type == 3 %}
-<div class="media_player">
-	<div id="mplayer"></div>
-    <div id="jp_container_1" class="jp-audio">
-        <div class="jp-type-single">
-            <div class="jp-gui jp-interface">
-                <ul class="jp-controls">
-                    <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-                    <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-                    <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-                    <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-                    <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-                    <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-                </ul>
-                <div class="jp-progress">
-                    <div class="jp-seek-bar">
-                        <div class="jp-play-bar"></div>
-                    </div>
-                </div>
-                <div class="jp-volume-bar">
-                    <div class="jp-volume-bar-value"></div>
-                </div>
-                <div class="jp-current-time"></div>
-                <div class="jp-duration"></div>
-                <ul class="jp-toggles">
-                    <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-                    <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-                </ul>
-            </div>
-            <div class="jp-title">
-                <ul>
-                    <li>{{ entry.name }} by {{ entry.creator }}</li>
-                </ul>
-            </div>
-            <div class="jp-no-solution">
-                <span>Update Required</span>
-                To play the media you will need to either update your browser to a recent version or update your 
-                <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
+{% if show.youtube %}{% include "kompomaatti/entryviews/youtube.html" %}{% endif %}
+{% if show.jplayer %}{% include "kompomaatti/entryviews/jplayer.html" %}{% endif %}
+{% if show.image   %}{% include "kompomaatti/entryviews/image.html"   %}{% endif %}
 <p>
     {{ entry.description }}
 </p>

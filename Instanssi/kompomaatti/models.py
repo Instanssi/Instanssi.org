@@ -29,7 +29,7 @@ class Compo(models.Model):
         (2, u'Vain kuva'), # Grafiikkakompoille
         (3, u'jPlayer ensin, sitten kuva'), # Musiikkikompoille
     )
-    entry_view_type = models.IntegerField(u'Entryesittelyn tyyppi', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa.")
+    entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi.")
     
     def __unicode__(self):
         return self.name

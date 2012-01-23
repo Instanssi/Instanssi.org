@@ -7,12 +7,18 @@ class Tag(models.Model):
     name = models.CharField('Tag', max_length=32)
     def __unicode__(self):
         return self.name
+    class Meta:
+        verbose_name=u"tagi"
+        verbose_name_plural=u"tagit"
 
 class Event(models.Model):
     name = models.CharField('Nimi', max_length=32)
     date = models.DateField('Päivämäärä')
     def __unicode__(self):
         return self.name
+    class Meta:
+        verbose_name=u"tapahtuma"
+        verbose_name_plural=u"tapahtumat"
     
 class Compo(models.Model):
     event = models.ForeignKey(Event)
@@ -20,6 +26,9 @@ class Compo(models.Model):
     description = models.TextField('Kuvaus')
     def __unicode__(self):
         return self.event.name + ": " + self.name
+    class Meta:
+        verbose_name=u"kompo"
+        verbose_name_plural=u"kompot"
 
 class Entry(models.Model):
     compo = models.ForeignKey(Compo)
@@ -32,6 +41,9 @@ class Entry(models.Model):
     position = models.IntegerField('Sijoitus')
     def __unicode__(self):
         return self.compo.name + " " + self.name
+    class Meta:
+        verbose_name=u"tuotos"
+        verbose_name_plural=u"tuotokset"
 
 # Register models to admin panel
 admin.site.register(Tag)

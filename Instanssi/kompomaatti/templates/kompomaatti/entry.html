@@ -31,7 +31,7 @@
 {% if show.jplayer %}{% include "kompomaatti/entryviews/jplayer.html" %}{% endif %}
 {% if show.image   %}{% include "kompomaatti/entryviews/image.html"   %}{% endif %}
 <p>
-    {{ entry.description }}
+    {{ entry.description|linebreaks }}
 </p>
 <p>
     <a href="{{ entry.entryfile.url }}">Lataa teos &raquo;</a>

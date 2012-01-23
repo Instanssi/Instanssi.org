@@ -33,7 +33,9 @@ Ympäristön asentaminen Windowsille
 Ympäristön asentaminen Linuxeille
 ---------------------------------
 1. Asenna PIP distrosi paketinhallinnalla, esim. `apt-get install python-pip`.
-2. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot joko käyttäen PIP:iä tai distrosi pakettienhallintaa.
+2. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot joko käyttäen PIP:iä tai distrosi pakettienhallintaa. 
+   PIL-kirjaston asennus käyttäen PIP:ä saattaa vaatia jotain lisäkirjastoja kääntämiseen. Lisäkirjastojen asentamisen
+   saattaa pystyä välttämään asentamalla PIL:n suoraan distron pakettienhallinnasta, esim. `apt-get install python-imaging` tjsp.
 
 Projektin asentaminen
 ---------------------

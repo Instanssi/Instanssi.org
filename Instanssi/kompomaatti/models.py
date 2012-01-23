@@ -29,7 +29,7 @@ class Compo(models.Model):
         (2, u'Vain kuva'), # Grafiikkakompoille
         (3, u'jPlayer ensin, sitten kuva'), # Musiikkikompoille
     )
-    entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi.")
+    entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi. Latauslinkki näytetään aina.")
     
     def __unicode__(self):
         return self.name
@@ -54,7 +54,7 @@ class Entry(models.Model):
     sourcefile = models.FileField(u'Lähdekoodi', upload_to='entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
     imagefile_original = models.ImageField(u'Kuva', upload_to='entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
-    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon.", blank=True)
+    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
     
     def __unicode__(self):
         return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
@@ -67,7 +67,13 @@ class Entry(models.Model):
         ext = os.path.splitext(self.entryfile.name)[1][1:]
         if ext == 'ogg':
             ext = 'oga'
+        if ext == 'ogm':
+            ext = 'ogv'
         return ext
+    
+    def can_use_jplayer(self):
+        ext = os.path.splitext(self.entryfile.name)[1][1:]
+        return (ext in ['mp3','oga','ogv'])
     
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä")

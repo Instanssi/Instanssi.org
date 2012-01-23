@@ -40,7 +40,7 @@ Ympäristön asentaminen Linuxeille
 Projektin asentaminen
 ---------------------
 1. Kloonaa tämä projekti gitillä (git clone ...).
-2. Uudelleennimeä `settings.py-dist` nimelle `settings.py`.
+2. Kopioi `settings.py-dist` tiedostoksi `settings.py`.
 2. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
 3. Suorita migrate projektihakemistossa (`python manage.py migrate`).
 4. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa

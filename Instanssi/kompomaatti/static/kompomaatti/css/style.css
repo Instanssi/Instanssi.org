@@ -4,18 +4,19 @@ h1 { font-size: 1.5em; font-variant: small-caps;margin:0;padding: 24px 0px; colo
 h2 { font-size: 1.2em; margin-bottom: 1em; margin-top: 1em; }
 h3 { font-size: 1.1em; margin-bottom: 1em; margin-top: 1em; }
 
+#content { padding: 0.2em; min-height: 400px; }
+#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 #content > p,
 #content > ul,
 #content > ol { margin-bottom: 1em; margin-top: 1em; }
-#content ul,ol > li { display: list-item; padding: 0.3em; }
+#content > ul li,
+#content > ol li { display: list-item; padding: 0.3em; }
 #content > ul { list-style-type: disc; margin-left: 1.2em; }
 #content > ol { list-style-type: decimal; margin-left: 1.2em; }
 
 strong { font-weight: bold; }
 
-#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
-
-.generic_table { font-size: 0.9em; margin: 0.3em; }
+.generic_table { font-size: 0.9em; margin: 0.3em; width: 99%; }
 .generic_table th { background-color: #dcdcdc; padding: 0.3em; text-align: left; }
 .generic_table td { background-color: #eeeeee; padding: 0.3em; }
 
@@ -24,40 +25,25 @@ strong { font-weight: bold; }
 .compo_details th { padding: 0.2em; text-align: left; }
 .compo_details td { padding: 0.2em; }
 
-#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-#sortable li { display: block; margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 18px; }
-#sortable li span { position: absolute; margin-left: -1.3em; }
+#sortable { margin: 0; padding: 0; width: 60%; }
+#sortable > li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 18px; }
+#sortable > li > span { position: absolute; margin-left: -1.3em; }
 
 #base {width: 960px;margin: 0 auto;}
 
-#nav {
-    padding: 0.2em;
-}
+#nav { padding: 0.2em; }
 
-#basenav {
-    display: inline-block;
-    width: 960px;
-}
-
-#basenav > li {float:left;margin-right: 20px;}
-#basenav > li a{text-decoration:none;  color: #fff; display: block; text-align: left; padding: 8px 0px; font-size: 1.1em;}
-#basenav > li a:hover{color: #eee;}
-
-
-
-
+#basenav { display: inline-block; width: 960px; }
+#basenav li {float:left;margin-right: 20px;}
+#basenav li a{text-decoration:none;  color: #fff; display: block; text-align: left; padding: 8px 0px; font-size: 1.1em;}
+#basenav li a:hover{color: #eee;}
 
 #subnav {margin: none;}
-
-#subnav li {
-    float: none;
-    margin: none;
-    width: 100%;
-}
+#subnav li { float: none; margin: none; width: 100%; }
 
 
 
-#content {padding: 0.2em; min-height: 400px;}
+
 #footer {background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;padding: 8px; text-align: right; color: #fff;}
 
 /* CSS 3*/

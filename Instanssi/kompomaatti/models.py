@@ -106,3 +106,4 @@ class Vote(models.Model):
 admin.site.register(Compo)
 admin.site.register(Entry)
 admin.site.register(Vote)
+admin.site.register(VoteCode)

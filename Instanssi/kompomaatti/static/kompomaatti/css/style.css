@@ -16,6 +16,7 @@ h3 { font-size: 1.1em; margin-bottom: 1em; margin-top: 1em; }
 
 strong { font-weight: bold; }
 
+
 .generic_table { font-size: 0.9em; margin: 0.3em; width: 99%; }
 .generic_table th { background-color: #dcdcdc; padding: 0.3em; text-align: left; }
 .generic_table td { background-color: #eeeeee; padding: 0.3em; }
@@ -26,8 +27,8 @@ strong { font-weight: bold; }
 .compo_details td { padding: 0.2em; }
 
 #sortable { margin: 0; padding: 0; width: 60%; }
-#sortable > li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 18px; }
-#sortable > li > span { position: absolute; margin-left: -1.3em; }
+#sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; font-size: 1.0em; height: 18px; }
+#sortable li > span { float: left; }
 
 #base {width: 960px;margin: 0 auto;}
 

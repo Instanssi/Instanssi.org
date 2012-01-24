@@ -33,6 +33,12 @@
 <p>
     {{ entry.description|linebreaks }}
 </p>
+{% if entry.disqualified %}
+<p>
+    <strong>Huom! Tuotos on diskattu!</strong><br />
+    {{ entry.disqualified_reason }}
+</p>
+{% endif %}
 <p>
     <a href="{{ entry.entryfile.url }}">Lataa teos &raquo;</a>
 </p>

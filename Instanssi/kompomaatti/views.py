@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from Instanssi.kompomaatti.misc import awesometime
-from django.core.files import File
+from operator import itemgetter
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
@@ -95,8 +95,6 @@ def addentry(request, compo_id):
     if request.method == 'POST':
         addform = EntryForm(request.POST, request.FILES, compo=compo, legend="Uusi tuotos")
         if addform.is_valid():
-            # Fileformat checks are done in models.Entry
-            # Other checks have already been done. So just go ahead and save.
             nentry = addform.save(commit=False)
             nentry.user = request.user
             nentry.compo = compo
@@ -131,8 +129,6 @@ def editentry(request, entry_id):
     if request.method == 'POST':
         editform = EntryForm(request.POST, request.FILES, instance=entry, editing=True, compo=entry.compo, legend="Muokkaa tuotosta")
         if editform.is_valid():
-            # Fileformat checks are done in models.Entry
-            # Other checks have already been done. So just go ahead and save.
             editform.save()
             return HttpResponseRedirect('/kompomaatti/myentries/') 
     else:
@@ -157,6 +153,7 @@ def compo(request, compo_id):
     # The following is only relevant, if the user is logged in and valid.
     has_voted = False
     voting_open = False
+    votes = {}
     if request.user.is_authenticated():
         # Check if user has already voted
         votes = Vote.objects.filter(user=request.user, compo=c).order_by('rank')
@@ -231,16 +228,39 @@ def compolist(request):
     for compo in composet:
         compos.append(compo_times_formatter(compo))
     
-    # Get entries in compos
-    # TODO: Get order by voting results
+    # Get entries in compos. If compo has been flagged to show voting results, 
+    # then get those. Otherwise just show entries in alphabetical order (by entry name).
     entries = {}
     for compo in compos:
-        entries[compo.id] = Entry.objects.filter(compo=compo)
+        if compo.show_voting_results:
+            # Get entries
+            entries_temp = {}
+            for entry in Entry.objects.filter(compo=compo):
+                entries_temp[entry.id] = {
+                    'id': entry.id,
+                    'creator': entry.creator,
+                    'name': entry.name,
+                    'score': 0.0,
+                    'disqualified': entry.disqualified,
+                }
+            
+            # Get score for each entry. Score should be 0 for all disqualified entries, 
+            # so just discard those. Also skip votes with rank = 0. (division by zero etc.) :P
+            all_votes = Vote.objects.select_related(depth=1).filter(compo=compo)
+            for vote in all_votes:
+                if not vote.entry.disqualified or vote.rank > 0:
+                    entries_temp[vote.entry.id]['score'] += (1.0 / vote.rank)
+            
+            # Sort entries by score, highest score first (of course).
+            entries[compo.id] = sorted(entries_temp.values(), key=itemgetter('score'), reverse=True)
+        else:
+            # Just get entries in alphabetical order
+            entries[compo.id] = Entry.objects.filter(compo=compo).order_by('name')
 
     # Return page
     return custom_render(request, 'kompomaatti/compolist.html', {
         'compolist': compos,
-        'entries': entries,
+        'entries': entries
     })
 
 

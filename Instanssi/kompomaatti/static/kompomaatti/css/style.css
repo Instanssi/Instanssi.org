@@ -10,7 +10,8 @@ h3 { font-size: 1.0em; }
 #content ul { list-style-type: disc; margin-left: 1.2em; }
 #content ol { list-style-type: decimal; margin-left: 1.2em; }
 
-.media_player li { margin: 0; padding: 0; display: block; list-style-type: none; }
+.media_player li { margin: 0; padding: 0; display: block;  }
+.media_player ul { list-style-type: none; margin-left: 0; }
 
 #content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 .formtable th { padding-left: 1em; padding-right: 1em; vertical-align: middle; text-align: left; border-bottom: 1px dotted gray; }

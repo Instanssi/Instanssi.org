@@ -6,8 +6,20 @@ from django.contrib import admin
 from imagekit.models import ImageSpec
 from imagekit.processors import resize
 from imagekit.admin import AdminThumbnail
+from datetime import datetime
 import os.path
 
+class VoteCode(models.Model):
+    key = models.CharField(u'Avain', help_text=u"Äänestysavain.", max_length=64)
+    associated_to = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
+    time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", default=datetime.now())
+
+    def __unicode__(self):
+        return self.key
+    
+    class Meta:
+        verbose_name=u"äänestysavain"
+        verbose_name_plural=u"äänestysavaimet"
 
 class Compo(models.Model):
     name = models.CharField(u'Nimi', max_length=32, help_text=u"Kompon nimi (max 32 merkkiä).")

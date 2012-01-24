@@ -168,22 +168,39 @@ def compo(request, compo_id):
         # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
             if voting_open:
-                # Remove old votes by this user, on this compo
-                if has_voted:
-                    Vote.objects.filter(user=request.user, compo=c).delete()
-                
                 # List of all ranks in order
                 order_raw = request.POST.getlist('order[]')
                 order = []
                 for id in order_raw:
                     order.append(int(id))
                 
+                # Remove old votes by this user, on this compo
+                if has_voted:
+                    Vote.objects.filter(user=request.user, compo=c).delete()
+                
+                # Get entries in compo that are not disqualified
+                compo_entries = Entry.objects.filter(compo=c, disqualified=False)
+                
                 # Check voting input for cheating :P
                 # See if all entries have a rank.
-                for entry in Entry.objects.filter(compo=c):
+                for entry in compo_entries:
                     if entry.id not in order:
                         return HttpResponse("1")
-                    
+                
+                # See that we have the right amount of entries
+                if len(order) != len(compo_entries):
+                    return HttpResponse("1")
+                
+                # Make sure that no entry is in the list twice
+                checked_ids = []
+                for entryid in order:
+                    if entryid not in checked_ids:
+                        checked_ids.append(entryid)
+                    else:
+                        print entryid
+                        print checked_ids
+                        return HttpResponse("1")
+
                 # Add new votes, if there were no errors
                 number = 1
                 for entry_id in order:
@@ -202,13 +219,15 @@ def compo(request, compo_id):
     # Get entries.
     # If voting is open, and user has already voted, get the order of entries by previous voting
     # If voting is open, and user has NOT voted yet, get the entries in random order
-    # Otherwise just get entries and sort by name
+    # Otherwise just get entries sorted by name
+    # Make sure that no disqualified entries are included if voting is open. No need to vote for those ...
     if voting_open and has_voted:
         e = []
         for vote in votes:
-            e.append(vote.entry)
+            if not vote.entry.disqualified:
+                e.append(vote.entry)
     elif voting_open:
-        e = Entry.objects.filter(compo=c).order_by('?')
+        e = Entry.objects.filter(compo=c,disqualified=False).order_by('?')
     else:
         e = Entry.objects.filter(compo=c).order_by('name')
     
@@ -243,6 +262,9 @@ def compolist(request):
                     'score': 0.0,
                     'disqualified': entry.disqualified,
                 }
+                # Want to show disqualified entries dead last.
+                if entry.disqualified:
+                    entries_temp[entry.id]['score'] = -1.0
             
             # Get score for each entry. Score should be 0 for all disqualified entries, 
             # so just discard those. Also skip votes with rank = 0. (division by zero etc.) :P

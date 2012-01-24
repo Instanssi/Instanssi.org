@@ -6,6 +6,7 @@
 
 {% block jquery %}
 {{ block.super }}
+{% if voting_open %}
     $("#sortable").sortable();
     $("#sortable").disableSelection();
     $("#savebutton").button({label: 'Tallenna'});
@@ -31,6 +32,7 @@
             }
         });
     });
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -64,9 +66,10 @@
     <h3>Teokset</h3>
     <p>
         Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
-        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua)
+        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua).
+        <strong>Huomaa: äänestäminen vaatii selaimelta javascript-tuen!</strong>
     </p>
-{% if not has_voted and voting_open%}
+{% if not has_voted and voting_open %}
     <p>
         <strong>Et ole vielä äänestänyt!</strong>
     </p>
@@ -85,11 +88,25 @@
         <div id="savebutton"></div>
     </p>
 {% else %}
+    {% if compo.show_voting_results %}
+    <p>Äänestystulokset:</p>
+    <ol>
+    {% for entry in entries %}
+        {% if entry.disqualified %}
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Diskattu!</li>
+        {% else %}
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Pisteet: {{ entry.score }}</li>
+        {% endif %}
+    {% endfor %}
+    </ol>
+    {% else %}
+    <p>Teokset aakkosjärjestyksessä:</p>
     <ul>
-{% for entry in entries %}
-        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}</li>
-{% endfor %}
+    {% for entry in entries %}
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}.{% if entry.disqualified %} Diskattu!{% endif %}</li>
+    {% endfor %}
     </ul>
+    {% endif %}
 {% endif %}
 {% else %}
     <p>Kompossa ei ole vielä osallistujia!</p>

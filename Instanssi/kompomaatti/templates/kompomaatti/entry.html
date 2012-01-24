@@ -27,16 +27,20 @@
 {% block content %}
 {{ block.super }}
 <h2>Entry: {{ entry.name }} by {{ entry.creator }}</h2>
+<h3>Tiedot</h3>
 {% if show.youtube %}{% include "kompomaatti/entryviews/youtube.html" %}{% endif %}
 {% if show.jplayer %}{% include "kompomaatti/entryviews/jplayer.html" %}{% endif %}
 {% if show.image   %}{% include "kompomaatti/entryviews/image.html"   %}{% endif %}
+{% if entry.description %}
+<h3>Kuvaus</h3>
 <p>
     {{ entry.description|linebreaks }}
 </p>
+{% endif %}
 {% if entry.disqualified %}
+<h3>Tuotos on diskattu!</h3>
 <p>
-    <strong>Huom! Tuotos on diskattu!</strong><br />
-    {{ entry.disqualified_reason }}
+    {{ entry.disqualified_reason|linebreaks }}
 </p>
 {% endif %}
 <p>

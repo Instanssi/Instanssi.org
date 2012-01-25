@@ -25,7 +25,7 @@
             <ul id="basenav">
                 <li><a href="/kompomaatti/">Kompomaatti</a></li>
                 <li>
-                    <a href="/kompomaatti/compolist/">Kompot</a>
+                    <a href="/kompomaatti/compolist/">Kompot<div class="img-placeholder"></div></a>
                     <ul id="subnav">
 {% for navcompo in compos %}
                         <li><a href="/kompomaatti/compo/{{ navcompo.id }}/">{{ navcompo.name }}</a></li>
@@ -44,9 +44,9 @@
         <div id="content">
         {% block content %}{% endblock %}
         </div>
-        <div id="footer">
-            &copy; Instanssi.org 2012
-        </div>
     </div>
+	<div id="footer">
+		&copy; Instanssi.org 2012
+	</div>
 </body>
 </html>

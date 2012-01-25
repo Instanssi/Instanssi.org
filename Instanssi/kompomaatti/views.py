@@ -14,7 +14,7 @@ from operator import itemgetter
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
-    context['compos'] = Compo.objects.all()
+    context['compos'] = Compo.objects.filter(active=True)
     context['logged'] = request.user.is_authenticated()
     return render_to_response(tpl, context, context_instance=RequestContext(request))
 

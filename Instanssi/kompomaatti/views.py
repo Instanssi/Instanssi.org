@@ -187,11 +187,13 @@ def compo(request, compo_id):
                             return HttpResponse("1")
                     order = sorted(tmp, key=tmp.get)
                 else:
-                    # List of all ranks in order
                     order_raw = request.POST.getlist('order[]')
                     for id in order_raw:
-                        order.append(int(id))
-                
+                        try:
+                            order.append(int(id))
+                        except:
+                            return HttpResponse("1")
+                        
                 # Remove old votes by this user, on this compo
                 if has_voted:
                     Vote.objects.filter(user=request.user, compo=c).delete()

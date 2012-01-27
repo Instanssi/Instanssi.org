@@ -2,7 +2,7 @@ body{background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
 h1, h2, h3 { }
 h1 { font-size: 1.5em; font-variant: small-caps;margin:0;padding: 28px 0px; color: #fff;} 
 h2 { font-size: 1.2em; margin-bottom: 1em; margin-top: 1em; font-weight: bold;font-variant: small-caps;}
-h3 { font-size: 1.1em; margin-bottom: 1em; margin-top: 1em; }
+h3 { font-size: 1.1em; margin-bottom: 1em; margin-top: 1em; border-bottom: 1px dotted #aaaaaa; padding-bottom: 0.3em;}
 
 #content { padding: 0.2em; min-height: 400px; }
 #content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }

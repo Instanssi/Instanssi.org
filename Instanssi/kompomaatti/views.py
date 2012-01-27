@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response
-from models import Compo, Entry, Vote
+from models import Compo, Entry, Vote, VoteCode
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from forms import EntryForm
@@ -16,6 +16,7 @@ from operator import itemgetter
 def custom_render(request, tpl, context={}):
     context['compos'] = Compo.objects.filter(active=True)
     context['logged'] = request.user.is_authenticated()
+    context['is_su'] = request.user.is_superuser
     return render_to_response(tpl, context, context_instance=RequestContext(request))
 
 def compo_times_formatter(compo):
@@ -32,6 +33,25 @@ def index(request):
 
 def help(request):
     return custom_render(request, 'kompomaatti/help.html')
+
+@login_required
+def admin(request):
+    # Make sure the user is superuser.
+    if not request.user.is_superuser:
+        raise Http404
+        
+    # Get data
+    compos = Compo.objects.all()
+    entries = Entry.objects.all()
+    tokens = VoteCode.objects.all()
+        
+    # Just dump the page
+    return custom_render(request, 'kompomaatti/admin.html', {
+        'tokens': tokens,
+        'entries': entries,
+        'compos': compos
+    })
+
 
 @login_required
 def myentries(request): 

@@ -9,9 +9,9 @@
 
 {% block jquery %}
 {{ block.super }}
-    $("#kompot_table").tablesorter().tablesorterPager({container: $("#kompot_pager")});
-    $("#entries_table").tablesorter().tablesorterPager({container: $("#entries_pager")}); 
-    $("#tokens_table").tablesorter().tablesorterPager({container: $("#tokens_pager")}); 
+    $("#kompot_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#kompot_pager")});
+    $("#entries_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entries_pager")}); 
+    $("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}

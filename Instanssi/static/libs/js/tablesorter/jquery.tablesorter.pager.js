@@ -16,7 +16,7 @@
 			}
 			
 			function fixPosition(table) {
-				var c = table.config;
+				/*var c = table.config;
 				if(!c.pagerPositionSet && c.positionFixed) {
 					var c = table.config, o = $(table);
 					if(o.offset) {
@@ -26,7 +26,7 @@
 						});
 					}
 					c.pagerPositionSet = true;
-				}
+				}*/
 			}
 			
 			function moveToFirstPage(table) {

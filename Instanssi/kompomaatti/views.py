@@ -3,14 +3,17 @@
 from django.shortcuts import render_to_response
 from models import Compo, Entry, Vote, VoteCode
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from forms import EntryForm
+from forms import EntryForm, CreateTokensForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from Instanssi.kompomaatti.misc import awesometime
 from operator import itemgetter
+import random
+import hashlib
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
@@ -40,6 +43,22 @@ def admin(request):
     if not request.user.is_superuser:
         raise Http404
         
+    # Check if we got filled form
+    if request.method == 'POST':
+        gentokensform = CreateTokensForm(request.POST)
+        if gentokensform.is_valid():
+            amount = int(gentokensform.cleaned_data['amount'])
+            for n in range(amount):
+                try:
+                    c = VoteCode()
+                    c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
+                    c.save()
+                except IntegrityError:
+                    n = n-1 # Ugly, may cause infinite loop...
+            return HttpResponseRedirect('/kompomaatti/admin/') 
+    else:
+        gentokensform = CreateTokensForm()
+        
     # Get data
     compos = Compo.objects.all()
     entries = Entry.objects.all()
@@ -49,7 +68,8 @@ def admin(request):
     return custom_render(request, 'kompomaatti/admin.html', {
         'tokens': tokens,
         'entries': entries,
-        'compos': compos
+        'compos': compos,
+        'gentokensform': gentokensform,
     })
 
 

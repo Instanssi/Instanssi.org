@@ -10,9 +10,9 @@ from datetime import datetime
 import os.path
 
 class VoteCode(models.Model):
-    key = models.CharField(u'Avain', help_text=u"Äänestysavain.", max_length=64)
-    associated_to = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
-    time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", default=datetime.now())
+    key = models.CharField(u'Avain', help_text=u"Äänestysavain.", max_length=64, unique=True)
+    associated_to = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
+    time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True)
 
     def __unicode__(self):
         return self.key

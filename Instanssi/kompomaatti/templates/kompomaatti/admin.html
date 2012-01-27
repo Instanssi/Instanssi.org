@@ -1,4 +1,5 @@
 {% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -80,7 +81,7 @@
 {% for token in tokens %}
 		<tr>
 			<td>{{ token.key }}</td>
-			<td>{{ token.associated_to }}</td>
+			<td>{% if token.associated_to %}{{ token.associated_to }}{% endif %}</td>
 			<td>{{ token.time|date:"d.m.Y H:i" }}</td>
 		</tr>
 {% endfor %}
@@ -89,4 +90,6 @@
 	<div id="tokens_pager" class="pager">
 		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
 	</div>
+	<br />
+	{% uni_form gentokensform gentokensform.helper %}
 {% endblock %}

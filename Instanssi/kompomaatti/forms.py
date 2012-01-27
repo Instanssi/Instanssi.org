@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import ModelForm
+from django import forms
 from models import Compo, Entry
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
@@ -9,7 +9,23 @@ from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 from django.core.exceptions import ValidationError
 import os
 
-class EntryForm(ModelForm):
+class CreateTokensForm(forms.Form):
+    amount = forms.IntegerField(min_value=1, max_value=100, label="Määrä", help_text="Montako tokenia luodaan.")
+    
+    def __init__(self, *args, **kwargs):
+        super(CreateTokensForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Generoi tokeneita',
+                'amount',
+                ButtonHolder (
+                    Submit('submit', 'Generoi')
+                )
+            )
+        )
+
+class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.legend = kwargs.pop('legend', 'Entry')
         self.compo = kwargs.pop('compo', None)

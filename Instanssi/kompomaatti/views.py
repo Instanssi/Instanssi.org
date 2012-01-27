@@ -180,8 +180,11 @@ def compo(request, compo_id):
                     for entry in compo_entries:
                         check_for = "ventry_"+str(entry.id)
                         if not request.POST.has_key(check_for):
-                            return HttpResponse("1") # TODO: Better error responses
-                        tmp[entry.id] = int(request.POST[check_for]) # TODO: Check for errors
+                            return HttpResponse("1") # TODO: Better error responses for html version!
+                        try:
+                            tmp[entry.id] = int(request.POST[check_for])
+                        except:
+                            return HttpResponse("1")
                     order = sorted(tmp, key=tmp.get)
                 else:
                     # List of all ranks in order

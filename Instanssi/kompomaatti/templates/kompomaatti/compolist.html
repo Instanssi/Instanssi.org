@@ -36,7 +36,8 @@
     <p>
         <a href="/kompomaatti/compo/{{ compo.id }}/">Siirry lisätietoihin &amp; äänestämään &raquo;</a>
     </p>
-{% if compo.show_voting_results %}
+{% if entries|idx:compo.id %}
+	{% if compo.show_voting_results %}
     <p>Äänestystulokset:</p>
     <ol>
     {% for entry in entries|idx:compo.id %}
@@ -47,13 +48,14 @@
         {% endif %}
     {% endfor %}
     </ol>
-{% else %}
+	{% else %}
     <p>Teokset aakkosjärjestyksessä:</p>
     <ul>
     {% for entry in entries|idx:compo.id %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}.{% if entry.disqualified %} Diskattu!{% endif %}</li>
     {% endfor %}
     </ul>
+	{% endif %}
 {% endif %}
 {% endfor %}
 {% else %}

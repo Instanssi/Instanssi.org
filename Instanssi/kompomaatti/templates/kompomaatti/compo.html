@@ -7,6 +7,8 @@
 {% block jquery %}
 {{ block.super }}
 {% if voting_open %}
+    $("#vote_js_mode").css("display", "inline");
+    $("#vote_html_mode").css("display", "none");
     $("#sortable").sortable();
     $("#sortable").disableSelection();
     $("#savebutton").button({label: 'Tallenna'});
@@ -17,7 +19,7 @@
             order.push(elm.id.split('_')[1]);
         });                                     
         $.post('/kompomaatti/compo/{{ compo.id }}/', {
-            'action': 'vote', 
+            'action': 'vote_js', 
             'order[]': order,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         }, function(data) {
@@ -25,10 +27,10 @@
             $('#voting_errortext').removeClass('ui-state-error');
             if(data == '0') {
                 $('#voting_errortext').addClass('ui-state-highlight');
-                $('#voting_errortext').html('<div class="ui-icon ui-icon-info icon-messagebox"></div><span>Äänestys suoritettu!</span>');
+                $('#voting_errortext').html('<div class="ui-icon ui-icon-info icon-messagebox msgicon"></div><span>Äänestys suoritettu!</span>');
             } else {
                 $('#voting_errortext').addClass('ui-state-error');
-                $('#voting_errortext').html('<div class="ui-icon ui-icon-alert icon-messagebox"></div><span>Virhe äänestyksessä!</span>');
+                $('#voting_errortext').html('<div class="ui-icon ui-icon-alert icon-messagebox msgicon"></div><span>Virhe äänestyksessä!</span>');
             }
         });
     });
@@ -67,7 +69,6 @@
     <p>
         Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
         Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua).
-        <strong>Huomaa: äänestäminen vaatii selaimelta javascript-tuen!</strong>
     </p>
 {% if not has_voted and voting_open %}
     <p>
@@ -77,16 +78,46 @@
 {% if entries %}
 {% if voting_open %}
     <div id="voting_errortext"></div>
-    <ul id="sortable">
+    <div id="vote_js_mode">
+        <p>
+            Äänestä järjestämällä teokset parhaimmuusjärjestykseen. Paras ylimmäiseksi, viimeiseksi paras alimmaiseksi.
+            Kun teokset ovat mieleisessäsi järjestyksessä, paina "Tallenna"-painiketta. Voit muokata järjestystä
+            äänestyksen päättymiseen asti.
+        </p>
+        <ul id="sortable">
 {% for entry in entries %}
-        <li class="ui-state-default" id="entry_{{ entry.id }}">
-            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
-        </li>
+            <li class="ui-state-default" id="entry_{{ entry.id }}">
+                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
+            </li>
 {% endfor %}
-    </ul>
-    <p>
-        <div id="savebutton"></div>
-    </p>
+        </ul>
+        <p>
+            <div id="savebutton"></div>
+        </p>
+    </div>
+    <div id="vote_html_mode">
+        <form action="." method="POST">
+            <fieldset>
+                <legend>Äänestys</legend>
+                <p>
+                    <strong>Huom! Javascript on kytketty pois päältä, joten näytetään yhteensopiva äänestystila!</strong> Äänestys toimii niin, että 
+                    teoksille annetaan numerot ykkösestä alkaen parhaimmuusjärjestyksessä, eli esim. paras teos saisi sijoituksen 1, seuraavaksi paras 2, 
+                    ja niin edelleen. Älä jätä kenttiä tyhjäksi!
+                </p>
+                <ul id="voteslist">
+{% for entry in entries %}
+                    <li class="html_mode_voting_entry">
+                        <input type="text" maxlength="3" size="3" name="ventry_{{ entry.id }}" value="{% if has_voted %}{{ forloop.counter }}{% endif %}" />
+                        <a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}
+                    </li>
+{% endfor %}
+                </ul>
+                {% csrf_token %}
+                <input type="hidden" name="action" value="vote_html" />
+                <input type="submit" value="Talenna" />
+            </fieldset>
+        </form>
+    </div>
 {% else %}
     {% if compo.show_voting_results %}
     <p>Äänestystulokset:</p>

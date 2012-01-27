@@ -168,18 +168,30 @@ def compo(request, compo_id):
         # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
             if voting_open:
-                # List of all ranks in order
-                order_raw = request.POST.getlist('order[]')
+                # Get entries in compo that are not disqualified
+                compo_entries = Entry.objects.filter(compo=c, disqualified=False)
+                
+                # Get the input data, and format it so that we can handle it.
+                # HTML mode and JS mode voting systems give out different kind 
+                # of data
                 order = []
-                for id in order_raw:
-                    order.append(int(id))
+                tmp = {}
+                if request.POST['action'] == 'vote_html':
+                    for entry in compo_entries:
+                        check_for = "ventry_"+str(entry.id)
+                        if not request.POST.has_key(check_for):
+                            return HttpResponse("1") # TODO: Better error responses
+                        tmp[entry.id] = int(request.POST[check_for]) # TODO: Check for errors
+                    order = sorted(tmp, key=tmp.get)
+                else:
+                    # List of all ranks in order
+                    order_raw = request.POST.getlist('order[]')
+                    for id in order_raw:
+                        order.append(int(id))
                 
                 # Remove old votes by this user, on this compo
                 if has_voted:
                     Vote.objects.filter(user=request.user, compo=c).delete()
-                
-                # Get entries in compo that are not disqualified
-                compo_entries = Entry.objects.filter(compo=c, disqualified=False)
                 
                 # Check voting input for cheating :P
                 # See if all entries have a rank.
@@ -197,8 +209,6 @@ def compo(request, compo_id):
                     if entryid not in checked_ids:
                         checked_ids.append(entryid)
                     else:
-                        print entryid
-                        print checked_ids
                         return HttpResponse("1")
 
                 # Add new votes, if there were no errors

@@ -16,7 +16,6 @@ h3 { font-size: 1.1em; margin-bottom: 1em; margin-top: 1em; }
 
 strong { font-weight: bold; }
 
-
 .generic_table { font-size: 0.9em; margin: 0.3em; width: 99%; }
 .generic_table th { background-color: #dcdcdc; padding: 0.3em; text-align: left; }
 .generic_table td { background-color: #eeeeee; padding: 0.3em; }
@@ -51,8 +50,15 @@ strong { font-weight: bold; }
 #basenav li a{text-shadow: 1px 0px 1px #333;}
 h1{ text-shadow: 1px 0px 1px #444;}
 
-
-
+/* For error/notice box in voting form */
+.msgicon { float: left; }
+#voting_errortext { margin-bottom: 0.2em; margin-top: 0.2em; padding: 0.2em; }
+#vote_js_mode { display: none; }
+#vote_html_mode input { margin: 0.3em; }
+#vote_html_mode p {margin: 0.3em;}
+#vote_html_mode fieldset { padding: 0.3em; }
+#vote_html_mode li { border: 1px solid #dcdcdc; background-color: #eeeeee; margin: 0.3em; padding: 0em; }
+#vote_js_mode p { margin: 0.3em; }
 
 /* FOOTER ALWAYS BOTTOM*/
 * {

@@ -2,17 +2,91 @@
 
 {% block head %}
 {{ block.super }}
+	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
+    $("#kompot_table").tablesorter().tablesorterPager({container: $("#kompot_pager")});
+    $("#entries_table").tablesorter().tablesorterPager({container: $("#entries_pager")}); 
+    $("#tokens_table").tablesorter().tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Admin-paneeli</h2>
 	<h3>Kompot</h3>
+	<table id="kompot_table" class="tablesorter"> 
+	<thead>
+		<tr>
+			<th>Nimi</th>
+			<th>Aktiivinen</th>
+			<th>Aika</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for compo in compos %}
+		<tr>
+			<td>{{ compo.name }}</td>
+			<td>{{ compo.active }}</td>
+			<td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+	</table>
+	<div id="kompot_pager" class="pager">
+		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
+	</div>
+	
 	<h3>Entryt</h3>
+	<table id="entries_table" class="tablesorter"> 
+	<thead>
+		<tr>
+			<th>Nimi</th>
+			<th>Tekijä</th>
+			<th>Käyttäjä</th>
+			<th>Kompo</th>
+			<th>Tiedosto</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for entry in entries %}
+		<tr>
+			<td>{{ entry.name }}</td>
+			<td>{{ entry.creator }}</td>
+			<td>{{ entry.user.email }}</td>
+			<td>{{ entry.compo.name }}</td>
+			<td><a href="{{ entry.entryfile.url}}">Lataa</a></td>
+		</tr>
+{% endfor %}
+	</tbody>
+	</table>
+	<div id="entries_pager" class="pager">
+		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
+	</div>
+	
 	<h3>Äänestyskoodit</h3>
+	<table id="tokens_table" class="tablesorter"> 
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Assosiaatio käyttäjään</th>
+			<th>Assosioitu</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for token in tokens %}
+		<tr>
+			<td>{{ token.key }}</td>
+			<td>{{ token.associated_to }}</td>
+			<td>{{ token.time|date:"d.m.Y H:i" }}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+	</table>
+	<div id="tokens_pager" class="pager">
+		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
+	</div>
 {% endblock %}

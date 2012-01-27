@@ -31,6 +31,7 @@ eng = 465
 #content h2{color: #fff;margin-bottom: 20px; font-variant: small-caps; font-size: 18px; }
 #content h2 .posted{ color: #999; font-size: 12px;}
 #content h3{color: #1fa3f5; margin-top: 20px; font-variant: small-caps; font-size: 16px; letter-spacing: 2px;}
+#content em {font-style: italic; }
 #content p,
 #tweets li,
 #content div.p,

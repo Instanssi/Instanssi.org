@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from models import Compo, Entry
+from models import Compo, Entry, VoteCode
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
@@ -25,14 +25,6 @@ class CreateTokensForm(forms.Form):
             )
         )
         
-    def clean_code(self):
-        code = self.cleaned_data['code']
-        try:
-            vc = VoteCode.objects.get(key=code)
-        except:
-            raise ValidationError(u'Äänestyskoodia ei ole olemassa!')
-        return code
-        
 class VoteCodeAssocForm(forms.Form):
     code = forms.CharField(max_length=8, label="Äänestyskoodi", help_text="Syötä saamasi äänestyskoodi tähän.")
     
@@ -48,6 +40,14 @@ class VoteCodeAssocForm(forms.Form):
                 )
             )
         )
+        
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        try:
+            vc = VoteCode.objects.get(key=code)
+        except VoteCode.DoesNotExist:
+            raise ValidationError(u'Äänestyskoodia ei ole olemassa!')
+        return code
 
 class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

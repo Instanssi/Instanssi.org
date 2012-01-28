@@ -99,11 +99,14 @@ def myentries(request):
         assocform = VoteCodeAssocForm(request.POST)
         if assocform.is_valid():
             code = assocform.cleaned_data['code']
-            vc = VoteCode.objects.get(key=code)
-            vc.associated_to = request.user
-            vc.time = datetime.now()
-            vc.save()
-            return HttpResponseRedirect('/kompomaatti/admin/') 
+            try:
+                vc = VoteCode.objects.get(key=code)
+                vc.associated_to = request.user
+                vc.time = datetime.now()
+                vc.save()
+            except VoteCode.DoesNotExist:
+                pass
+            return HttpResponseRedirect('/kompomaatti/myentries/') 
     else:
         assocform = VoteCodeAssocForm()
     

@@ -5,7 +5,7 @@ from models import Compo, Entry, Vote, VoteCode
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from forms import EntryForm, CreateTokensForm
+from forms import EntryForm, CreateTokensForm, VoteCodeAssocForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -20,6 +20,15 @@ def custom_render(request, tpl, context={}):
     context['compos'] = Compo.objects.filter(active=True)
     context['logged'] = request.user.is_authenticated()
     context['is_su'] = request.user.is_superuser
+    associated = False
+    votecode = None
+    try:
+        votecode = VoteCode.objects.get(user=request.user)
+        associated = True
+    except:
+        pass
+    context['associated'] = associated
+    context['votecode'] = votecode
     return render_to_response(tpl, context, context_instance=RequestContext(request))
 
 def compo_times_formatter(compo):
@@ -89,6 +98,7 @@ def myentries(request):
     return custom_render(request, 'kompomaatti/myentries.html', {
         'myentries': my_entries,
         'opencompos': oclist,
+        'user': request.user
     })
 
 @login_required

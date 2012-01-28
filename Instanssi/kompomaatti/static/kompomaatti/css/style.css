@@ -24,6 +24,10 @@ strong { font-weight: bold; }
 .compo_details th { padding: 0.2em; text-align: left; }
 .compo_details td { padding: 0.2em; }
 
+.generic_info_table { border: 1px solid #bbbbbb; }
+.generic_info_table th { background-color: #dcdcdc; padding: 0.3em; }
+.generic_info_table td { background-color: #eeeeee; padding: 0.3em; }
+
 #sortable { margin: 0; padding: 0; width: 60%; }
 #sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; font-size: 1.0em; height: 18px; }
 #sortable li > span { float: left; }

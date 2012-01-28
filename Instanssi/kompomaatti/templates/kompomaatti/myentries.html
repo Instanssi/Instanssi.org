@@ -28,6 +28,33 @@
 {{ block.super }}
 <h2>Dashboard</h2>
 
+<h3>Omat tiedot</h3>
+<p>
+	Seuraavat tiedot on saatu käyttämältäsi OpenID-kirjautumispalvelimelta tallennettu kompomaatin 
+	kirjautumisjärjestelmään.
+</p>
+<table class="generic_info_table">
+	<tr>
+		<th>Etunimi</th>
+		<td>{{ user.first_name }}</td>
+	</tr>
+	<tr>
+		<th>Sukunimi</th>
+		<td>{{ user.last_name }}</td>
+	</tr>
+	<tr>
+		<th>Sähköposti</th>
+		<td>{{ user.email }}</td>
+	</tr>
+</table>
+
+<h3>Äänestysavain</h3>
+{% if associated %}
+<p>Sinulle on assosoitu äänestysavain <i>{{ votecode.key }}</i>! Voit äänestää.</p>
+{% else %}
+
+{% endif %}
+
 <h3>Ladatut tuotokset</h3>
 {% if myentries %}
 <p>

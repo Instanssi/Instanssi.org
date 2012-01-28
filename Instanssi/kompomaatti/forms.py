@@ -24,6 +24,22 @@ class CreateTokensForm(forms.Form):
                 )
             )
         )
+        
+class VoteCodeAssocForm(forms.Form):
+    code = forms.CharField(max_length=8, label="Äänestyskoodi", help_text="Syötä saamasi äänestyskoodi tähän.")
+    
+    def __init__(self, *args, **kwargs):
+        super(VoteCodeAssocForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Syötä äänestyskoodi',
+                'code',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
 
 class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

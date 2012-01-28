@@ -236,6 +236,12 @@ def compo(request, compo_id):
         # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
             if voting_open:
+                # Make sure the user has a valid votecode
+                try:
+                    votecode = VoteCode.objects.get(associated_to=request.user)
+                except:
+                    return HttpResponse("1")
+                
                 # Get entries in compo that are not disqualified
                 compo_entries = Entry.objects.filter(compo=c, disqualified=False)
                 

@@ -11,11 +11,19 @@
 {% block content %}
 {{ block.super }}
 <h2>Etusivu</h2>
+<h3>Tervetuloa!</h3>
 <p>
-    Tervetuloa kompomaattiin, kaikkien hakkereiden märkään unelmaan!
+    Tervetuloa Kompomaattiin, Instanssien viralliseen entryjenhallinta- ja äänestyspalveluun!
 </p>
+{% if not associated %}
 <p>
-    Lorem ipsum ja niin edelleen ...
+    <strong>Et ole rekisteröitynyt äänestäjäksi.</strong> Käyhän rekisteröitymässä <a href="/kompomaatti/myentries/">Dashboardilla</a>.
+</p>
+{% endif %}
+
+<h3>Tulossa</h3>
+<p>
+    Tapahtumia tulossa ...
 </p>
 
  <div class="push"></div>

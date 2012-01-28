@@ -20,13 +20,10 @@ table.tablesorter { font-size: 0.9em; margin-top: 0; }
 strong { font-weight: bold; }
 
 .compo_description { margin: 0.5em; font-size: 0.9em; color: #444;}
-.compo_details { margin-left: 0.2em; }
-.compo_details th { padding: 0.2em; text-align: left; }
-.compo_details td { padding: 0.2em; }
 
-.generic_info_table { border: 1px solid #bbbbbb; }
-.generic_info_table th { background-color: #dcdcdc; padding: 0.3em; }
-.generic_info_table td { background-color: #eeeeee; padding: 0.3em; }
+.generic_info_table { border: 1px solid #bbbbbb; width: 100%; }
+.generic_info_table th { background-color: #e6eeee; padding: 0.3em; border: 1px solid #bbbbbb; width: 30%; text-align: left; }
+.generic_info_table td { background-color: #ffffff; padding: 0.3em; border: 1px solid #bbbbbb; width: 70%; }
 
 #sortable { margin: 0; padding: 0; width: 60%; }
 #sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; font-size: 1.0em; height: 18px; }

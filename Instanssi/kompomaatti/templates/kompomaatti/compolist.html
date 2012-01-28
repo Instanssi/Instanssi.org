@@ -15,7 +15,7 @@
 {% if compolist %}
 {% for compo in compolist %}
     <h3>{{ compo.name }}</h3>
-    <table class="compo_details">
+    <table class="generic_info_table">
         <tr>
             <th>Deadline entryjen lisäämiselle</th>
             <td>{{ compo.adding_time }}</td>
@@ -32,17 +32,18 @@
             <th>Äänestysaika</th>
             <td>{{ compo.voting_time }}</td>
         </tr>
+        <tr>
+            <th>Lisätiedot</th>
+            <td><a href="/kompomaatti/compo/{{ compo.id }}/">Siirry lisätietoihin &amp; äänestämään &raquo;</a></td>
+        </tr>
     </table>
-    <p>
-        <a href="/kompomaatti/compo/{{ compo.id }}/">Siirry lisätietoihin &amp; äänestämään &raquo;</a>
-    </p>
 {% if entries|idx:compo.id %}
 	{% if compo.show_voting_results %}
     <p>Äänestystulokset:</p>
     <ol>
     {% for entry in entries|idx:compo.id %}
         {% if entry.disqualified %}
-        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Diskattu!</li>
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. <strong>Diskattu!</strong></li>
         {% else %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Pisteet: {{ entry.score }}</li>
         {% endif %}

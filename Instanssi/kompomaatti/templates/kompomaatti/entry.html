@@ -27,23 +27,44 @@
 {% block content %}
 {{ block.super }}
 <h2>Entry: {{ entry.name }} by {{ entry.creator }}</h2>
-<h3>Tiedot</h3>
+
+{% if not show.jplayer %}
+<h3>Esikatselu</h3>
+{% endif %}
 {% if show.youtube %}{% include "kompomaatti/entryviews/youtube.html" %}{% endif %}
-{% if show.jplayer %}{% include "kompomaatti/entryviews/jplayer.html" %}{% endif %}
 {% if show.image   %}{% include "kompomaatti/entryviews/image.html"   %}{% endif %}
-{% if entry.description %}
-<h3>Kuvaus</h3>
-<p>
-    {{ entry.description|linebreaks }}
-</p>
-{% endif %}
+
+<h3>Tiedot</h3>
+<table class="generic_info_table">
+    <tr>
+        <th>Nimi</th>
+        <td>{{ entry.name }}</td>
+        <td rowspan="{% if entry.disqualified %}5{% else %}4{% endif %}">
+            {% if show.jplayer %}{% include "kompomaatti/entryviews/jplayer.html" %}{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Tekijä</th>
+        <td>{{ entry.creator }}</td>
+    </tr>
+    <tr>
+        <th>Kuvaus</th>
+        <td>{% if entry.description %}{{ entry.description|linebreaks }}{% else %}Ei kuvausta.{% endif %}</td>
+    </tr>
 {% if entry.disqualified %}
-<h3>Tuotos on diskattu!</h3>
-<p>
-    {{ entry.disqualified_reason|linebreaks }}
-</p>
+    <tr>
+        <th>Diskaus!</th>
+        <td>
+            <strong>Huom! Tuotos on diskattu seuraavasta syystä:</strong><br />
+            {{ entry.disqualified_reason|linebreaks }}
+        </td>
+    </tr
 {% endif %}
-<p>
-    <a href="{{ entry.entryfile.url }}">Lataa teos &raquo;</a>
+    <tr>
+        <th>Lataa</th>
+        <td><a href="{{ entry.entryfile.url }}">Lataa teos &raquo;</a></td>
+    </tr>
+</table>
+
 </p>
 {% endblock %}

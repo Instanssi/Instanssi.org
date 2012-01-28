@@ -46,7 +46,7 @@
     </div>
     
     <h3>Aikataulu</h3>
-    <table class="compo_details">
+    <table class="generic_info_table">
         <tr>
             <th>Deadline entryjen lisäämiselle</th>
             <td>{{ compo.adding_time }}</td>
@@ -68,7 +68,8 @@
     <h3>Teokset</h3>
     <p>
         Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
-        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua).
+        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua). Huom: diskattuja
+        entryjä ei näytetä!
     </p>
 {% if not has_voted and voting_open %}
     <p>
@@ -124,7 +125,7 @@
     <ol>
     {% for entry in entries %}
         {% if entry.disqualified %}
-        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Diskattu!</li>
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. <strong>Diskattu!</li>
         {% else %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Pisteet: {{ entry.score }}</li>
         {% endif %}

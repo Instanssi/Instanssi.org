@@ -25,6 +25,14 @@ class CreateTokensForm(forms.Form):
             )
         )
         
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        try:
+            vc = VoteCode.objects.get(key=code)
+        except:
+            raise ValidationError(u'Äänestyskoodia ei ole olemassa!')
+        return code
+        
 class VoteCodeAssocForm(forms.Form):
     code = forms.CharField(max_length=8, label="Äänestyskoodi", help_text="Syötä saamasi äänestyskoodi tähän.")
     

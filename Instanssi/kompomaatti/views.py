@@ -23,7 +23,7 @@ def custom_render(request, tpl, context={}):
     associated = False
     votecode = None
     try:
-        votecode = VoteCode.objects.get(user=request.user)
+        votecode = VoteCode.objects.get(associated_to=request.user)
         associated = True
     except:
         pass
@@ -94,11 +94,26 @@ def myentries(request):
         formatted_compo = compo_times_formatter(compo)
         oclist.append(formatted_compo)
 
+    # Check if we got filled form
+    if request.method == 'POST':
+        assocform = VoteCodeAssocForm(request.POST)
+        if assocform.is_valid():
+            code = assocform.cleaned_data['code']
+            vc = VoteCode.objects.get(key=code)
+            vc.associated_to = request.user
+            vc.time = datetime.now()
+            vc.save()
+            return HttpResponseRedirect('/kompomaatti/admin/') 
+    else:
+        assocform = VoteCodeAssocForm()
+    
+
     # Dump the page to the user
     return custom_render(request, 'kompomaatti/myentries.html', {
         'myentries': my_entries,
         'opencompos': oclist,
-        'user': request.user
+        'user': request.user,
+        'assocform': assocform,
     })
 
 @login_required

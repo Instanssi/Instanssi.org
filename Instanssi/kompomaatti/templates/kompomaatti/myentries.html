@@ -50,9 +50,9 @@
 
 <h3>Äänestysavain</h3>
 {% if associated %}
-<p>Sinulle on assosoitu äänestysavain <i>{{ votecode.key }}</i>! Voit äänestää.</p>
+<p>Sinulle on assosoitu äänestysavain <strong>{{ votecode.key }}</strong>! Voit äänestää.</p>
 {% else %}
-
+	{% uni_form assocform assocform.helper %}
 {% endif %}
 
 <h3>Ladatut tuotokset</h3>

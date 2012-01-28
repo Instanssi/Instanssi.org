@@ -139,4 +139,5 @@ border-spacing: 0 10px;
 
 #schedule td.aika, th.aika { width: 3em; padding: 0.5em; }
 */
-
+#main-area ul{list-style-type: disc; padding: 1em 0 ;padding-left: 20px;}
+#main-area ol{list-style-type: decimal; padding: 1em 0; padding-left: 20px;}

@@ -73,13 +73,12 @@ height: auto !important;
 height: 100%;
 margin: 0 auto -3em;
 }
-#footer, .push {
-height: 3em;
-}
+#footer, .push {	height: 3em;}
+#footer{margin-top: 4em;}
  
  /* DROPDOWN MENU*/
 #subnav{position:absolute;}
 #subnav li{visibility:hidden;background: #0098A6; border: 1px solid #005860;}
 #subnav li a{border: 0px;}
 li:hover #subnav li{visibility:visible;}
-.img-placeholder{margin-left: 10px;width:20px;height:20px; background: #fff;float:right;}
+.img-placeholder{margin-left: 10px;width:20px;height:20px; background: url('../images/dropdown-menu-marker.png');float:right;}

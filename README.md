@@ -4,7 +4,7 @@ Instanssi.org 2012 website project
 What is this ?
 --------------
 This project right here is the website of instanssi.org demoparty. It contains the main website (main2012),
-Kompomaatti (our compo entry management interface), and Instanssi Arkisto (our entry archive site). Most
+Kompomaatti (our compo entry management interface), and Arkisto (our entry archive site). Most
 of the comments and language used is in Finnish, because the programmers weren't interested in 
 internationalization :D
 

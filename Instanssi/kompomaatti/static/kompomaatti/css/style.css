@@ -1,9 +1,14 @@
 body{background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
 h1, h2, h3 { }
-h1 { font-size: 1.5em; font-variant: small-caps;margin:0;padding: 28px 0px; color: #fff;} 
-h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold;font-variant: small-caps;}
+h1 { font-size: 1.5em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #fff;} 
+h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
 h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px dotted #aaaaaa; padding-bottom: 0.3em;}
+strong { font-weight: bold; }
 
+/* Base div CSS */
+#base {width: 960px;margin: 0 auto;}
+
+/* Content div css */
 #content { padding: 0.2em; min-height: 400px; }
 #content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; font-size: 0.9em; }
 #content > p,
@@ -14,23 +19,31 @@ h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1e
 #content > ul { list-style-type: disc; margin-left: 1.2em; }
 #content > ol { list-style-type: decimal; margin-left: 1.2em; }
 
+/* For tabular data fields using tablesorter.js */
 div.pager { font-size: 0.9em; margin-top: 0.1em; margin-bottom: 0.3em; }
 table.tablesorter { font-size: 0.9em; margin-top: 0; }
 
-strong { font-weight: bold; }
+/* Tables that have headers on the left side, and data on the right side */
+table.generic_info_table { border: 1px solid #bbbbbb; width: 100%; }
+table.generic_info_table th { background-color: #e6eeee; padding: 0.3em; border: 1px solid #bbbbbb; width: 30%; text-align: left; }
+table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border: 1px solid #bbbbbb; width: 70%; }
 
-.compo_description { margin: 0.5em; font-size: 0.9em; color: #444;}
-
-.generic_info_table { border: 1px solid #bbbbbb; width: 100%; }
-.generic_info_table th { background-color: #e6eeee; padding: 0.3em; border: 1px solid #bbbbbb; width: 30%; text-align: left; }
-.generic_info_table td { background-color: #ffffff; padding: 0.3em; border: 1px solid #bbbbbb; width: 70%; }
-
+/* Sortables in voting */
 #sortable { margin: 0; padding: 0; width: 60%; }
 #sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; font-size: 1.0em; height: 18px; }
 #sortable li > span { float: left; }
 
-#base {width: 960px;margin: 0 auto;}
+/* For error/notice box in voting form */
+.msgicon { float: left; }
+#voting_errortext { margin-bottom: 0.2em; margin-top: 0.2em; padding: 0.2em; }
+#vote_js_mode { display: none; }
+#vote_js_mode p { margin: 0.3em; }
+#vote_html_mode input { margin: 0.3em; }
+#vote_html_mode p {margin: 0.3em;}
+#vote_html_mode fieldset { padding: 0.3em; }
+#vote_html_mode li { border: 1px solid #dcdcdc; background-color: #eeeeee; margin: 0.3em; padding: 0em; }
 
+/* Navigation stuff */
 #nav { padding: 0.2em; }
 
 #basenav { display: inline-block; width: 960px; }
@@ -42,23 +55,9 @@ strong { font-weight: bold; }
 #subnav li { float: none; margin: none; width: 100%; }
 
 
-
-
-#footer {background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;padding: 8px; text-align: right; color: #fff;}
-
 /* CSS 3*/
 #basenav li a{text-shadow: 1px 0px 1px #333;}
-h1{ text-shadow: 1px 0px 1px #444;}
-
-/* For error/notice box in voting form */
-.msgicon { float: left; }
-#voting_errortext { margin-bottom: 0.2em; margin-top: 0.2em; padding: 0.2em; }
-#vote_js_mode { display: none; }
-#vote_html_mode input { margin: 0.3em; }
-#vote_html_mode p {margin: 0.3em;}
-#vote_html_mode fieldset { padding: 0.3em; }
-#vote_html_mode li { border: 1px solid #dcdcdc; background-color: #eeeeee; margin: 0.3em; padding: 0em; }
-#vote_js_mode p { margin: 0.3em; }
+h1 {text-shadow: 1px 0px 1px #444;}
 
 /* FOOTER ALWAYS BOTTOM*/
 * {
@@ -73,8 +72,8 @@ height: auto !important;
 height: 100%;
 margin: 0 auto -3em;
 }
-#footer, .push {	height: 3em;}
-#footer{margin-top: 4em;}
+#footer, .push {height: 3em;}
+#footer{margin-top: 4em; background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;padding: 8px; text-align: right; color: #fff;}
  
  /* DROPDOWN MENU*/
 #subnav{position:absolute;}

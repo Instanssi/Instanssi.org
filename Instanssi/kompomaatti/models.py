@@ -9,7 +9,7 @@ from imagekit.admin import AdminThumbnail
 from datetime import datetime
 import os.path
 
-class VoteCodeRequests(models.Model):
+class VoteCodeRequest(models.Model):
     user = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u'Pyynnön esittänyt käyttäjä')
     text = models.TextField(u'Kuvaus', help_text=u'Lyhyt aneluteksti admineille :)')
     

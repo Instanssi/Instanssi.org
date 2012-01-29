@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^myentries/edit/(?P<entry_id>\d+)/', 'editentry'),
     url(r'^myentries/add/(?P<compo_id>\d+)/', 'addentry'),
     url(r'^myentries/', 'myentries'),
+    url(r'^admin/givecode/(?P<vcrid>\d+)/', 'admin_givecode'),
     url(r'^admin/', 'admin'),
     url(r'^help/', 'help'),
     url(r'^logout/', 'dologout'),

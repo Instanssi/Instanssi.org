@@ -49,14 +49,14 @@
     </tr>
     <tr>
         <th>Kuvaus</th>
-        <td>{% if entry.description %}{{ entry.description|linebreaks }}{% else %}Ei kuvausta.{% endif %}</td>
+        <td>{% if entry.description %}{{ entry.description|linebreaksbr }}{% else %}Ei kuvausta.{% endif %}</td>
     </tr>
 {% if entry.disqualified %}
     <tr>
         <th>Diskaus!</th>
         <td>
             <strong>Huom! Tuotos on diskattu seuraavasta syystä:</strong><br />
-            {{ entry.disqualified_reason|linebreaks }}
+            {{ entry.disqualified_reason|linebreaksbr }}
         </td>
     </tr
 {% endif %}

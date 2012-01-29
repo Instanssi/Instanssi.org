@@ -95,7 +95,7 @@
         <tr>
             <td>{{ req.user.first_name }} {{ req.user.last_name }}</td>
             <td>{{ req.user.email }}</td>
-            <td>{{ req.text }}</td>
+            <td>{{ req.text|linebreaksbr }}</td>
             <td>
                 <a class="icon allowicon" href="/kompomaatti/admin/givecode/{{ req.id }}/">Salli</a>
             </td>

@@ -80,7 +80,7 @@
         <tr>
             <td>{{ entry.compo }}</td>
             <td>{{ entry.name }}</td>
-            <td>{{ entry.description }}</td>
+            <td>{{ entry.description|linebreaksbr }}</td>
             <td>{{ entry.creator }}</td>
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
             <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Kuva</a>{% endif %}</td>

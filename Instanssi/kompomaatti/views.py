@@ -83,6 +83,42 @@ def admin(request):
         'gentokensform': gentokensform,
     })
 
+@login_required
+def admin_givecode(request, vcrid):
+    # Make sure the user is superuser.
+    if not request.user.is_superuser:
+        raise Http404
+    
+    # Get the request
+    try:
+        vcr = VoteCodeRequest.objects.get(id=vcrid)
+    except VoteCodeRequest.DoesNotExist:
+        raise Http404
+        
+    # Add votecode for user. Bang your head to the wall until you succeed, etc.
+    # Really, do something about this later!
+    # TODO: Do something about this shit!
+    done = False
+    for i in range(25):
+        try:
+            c = VoteCode()
+            c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
+            c.associated_to = vcr.user
+            c.time = datetime.now()
+            c.save()
+            done = True
+            break;
+        except IntegrityError:
+            pass
+    
+    if not done:
+        raise HttpResponse("Virhe yritettäessä lisätä satunnaista avainta ... FIXME!")
+            
+    # Delete request
+    vcr.delete()
+    
+    # Return to admin page
+    return HttpResponseRedirect('/kompomaatti/admin/') 
 
 @login_required
 def myentries(request): 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from models import Compo, Entry, VoteCode
+from models import Compo, Entry, VoteCode, VoteCodeRequest
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 import os
 
 class CreateTokensForm(forms.Form):
-    amount = forms.IntegerField(min_value=1, max_value=100, label="Määrä", help_text="Montako tokenia luodaan.")
+    amount = forms.IntegerField(min_value=1, max_value=100, label=u"Määrä", help_text=u"Montako tokenia luodaan.")
     
     def __init__(self, *args, **kwargs):
         super(CreateTokensForm, self).__init__(*args, **kwargs)
@@ -25,8 +25,26 @@ class CreateTokensForm(forms.Form):
             )
         )
         
+class RequestVoteCodeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RequestVoteCodeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Pyydä äänestysoikeutta',
+                'text',
+                ButtonHolder (
+                    Submit('submit', 'Pyydä äänestysoikeutta')
+                )
+            )
+        )
+        
+    class Meta:
+        model = VoteCodeRequest
+        fields = ('text',)
+        
 class VoteCodeAssocForm(forms.Form):
-    code = forms.CharField(max_length=8, label="Äänestyskoodi", help_text="Syötä saamasi äänestyskoodi tähän.")
+    code = forms.CharField(max_length=8, label=u"Äänestyskoodi", help_text=u"Syötä saamasi äänestyskoodi tähän.")
     
     def __init__(self, *args, **kwargs):
         super(VoteCodeAssocForm, self).__init__(*args, **kwargs)

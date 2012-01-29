@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response
-from models import Compo, Entry, Vote, VoteCode
+from models import Compo, Entry, Vote, VoteCode, VoteCodeRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from forms import EntryForm, CreateTokensForm, VoteCodeAssocForm
+from forms import EntryForm, CreateTokensForm, VoteCodeAssocForm, RequestVoteCodeForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -94,7 +94,7 @@ def myentries(request):
         formatted_compo = compo_times_formatter(compo)
         oclist.append(formatted_compo)
 
-    # Check if we got filled form
+    # Check if we got data from vote code assoc form
     if request.method == 'POST':
         assocform = VoteCodeAssocForm(request.POST)
         if assocform.is_valid():
@@ -110,13 +110,16 @@ def myentries(request):
     else:
         assocform = VoteCodeAssocForm()
     
-
+    # Check if we got data from vote code request form
+    requestform = RequestVoteCodeForm()
+    
     # Dump the page to the user
     return custom_render(request, 'kompomaatti/myentries.html', {
         'myentries': my_entries,
         'opencompos': oclist,
         'user': request.user,
         'assocform': assocform,
+        'requestform': requestform,
     })
 
 @login_required

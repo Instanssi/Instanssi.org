@@ -52,7 +52,14 @@
 {% if associated %}
 <p>Sinulle on assosoitu äänestysavain <strong>{{ votecode.key }}</strong>! Voit äänestää.</p>
 {% else %}
+    <p>
+        Seuraavia kenttiä käytetään äänestysoikeuden hankkimiseen. Jos sait äänestyskoodin lippusi kanssa,
+        syötä se ylempään lomakkeeseen. Jos olet hukannut koodin, et sellaista saanut tai olet yhteydessä muualta,
+        voit pyytää äänestysoikeutta alemmalla lomakkeella. Mikäli pyydät äänestysoikeutta, saattaa sen saamisessa 
+        kestää hetki.
+    </p>
 	{% uni_form assocform assocform.helper %}
+	{% uni_form requestform requestform.helper %}
 {% endif %}
 
 <h3>Ladatut tuotokset</h3>

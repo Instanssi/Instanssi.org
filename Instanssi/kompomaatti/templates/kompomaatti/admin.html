@@ -13,12 +13,14 @@
     $("#kompot_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#kompot_pager")});
     $("#entries_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entries_pager")}); 
     $("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
+    $("#requests_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#requests_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Admin-paneeli</h2>
 	<h3>Kompot</h3>
+{% if compos %}
 	<table id="kompot_table" class="tablesorter"> 
 	<thead>
 		<tr>
@@ -40,8 +42,12 @@
 	<div id="kompot_pager" class="pager">
 		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
 	</div>
+{% else %}
+    <p>Ei kompoja.</p>
+{% endif %}
 	
 	<h3>Entryt</h3>
+{% if entries %}
 	<table id="entries_table" class="tablesorter"> 
 	<thead>
 		<tr>
@@ -67,8 +73,39 @@
 	<div id="entries_pager" class="pager">
 		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
 	</div>
+{% else %}
+    <p>Ei entryjä.</p>
+{% endif %}
+	
+	<h3>Äänestyskoodipyynnöt</h3>
+{% if vcreqs %}
+    <table id="requests_table" class="tablesorter"> 
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Sähköposti</th>
+            <th>Pyyntöteksti</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for req in vcreqs %}
+        <tr>
+            <td>{{ req.user.first_name }} {{ req.user.last_name }}</td>
+            <td>{{ req.user.email }}</td>
+            <td>{{ req.text }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+    </table>
+    <div id="requests_pager" class="pager">
+        {% include "kompomaatti/admin_incs/sorter_pager.html" %}
+    </div>
+{% else %}
+    <p>Ei äänestyskoodipyyntöjä.</p>
+{% endif %}
 	
 	<h3>Äänestyskoodit</h3>
+{% if tokens %}
 	<table id="tokens_table" class="tablesorter"> 
 	<thead>
 		<tr>
@@ -91,5 +128,8 @@
 		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
 	</div>
 	<br />
+{% else %}
+    <p>Ei äänestyskoodipyyntöjä.</p>
+{% endif %}
 	{% uni_form gentokensform gentokensform.helper %}
 {% endblock %}

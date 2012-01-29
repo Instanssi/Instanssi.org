@@ -72,12 +72,14 @@ def admin(request):
     compos = Compo.objects.all()
     entries = Entry.objects.all()
     tokens = VoteCode.objects.all()
+    vcreqs = VoteCodeRequest.objects.all()
         
     # Just dump the page
     return custom_render(request, 'kompomaatti/admin.html', {
         'tokens': tokens,
         'entries': entries,
         'compos': compos,
+        'vcreqs': vcreqs,
         'gentokensform': gentokensform,
     })
 

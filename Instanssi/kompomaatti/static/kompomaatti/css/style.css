@@ -46,9 +46,25 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 /* Navigation stuff */
 #nav { padding: 0.2em; }
 
-#basenav { display: inline-block; width: 960px; }
-#basenav li {float:left;margin-right: 0px; padding: 0px 0px; }
-#basenav li a{text-decoration:none; border: 1px solid #005860; color: #fff; display: block; text-align: left; padding: 8px 8px; font-size: 1.1em; box-shadow: inset 1px 0px 1px #ccc;}
+#basenav { 
+    display: inline-block; 
+    width: 960px; 
+}
+#basenav li {
+    float:left;
+    margin-right: 0px; 
+    padding: 0px 0px;
+}
+#basenav li a{
+    text-decoration:none;
+    border: 1px solid #005860;
+    color: #fff;
+    display: block;
+    text-align: left;
+    padding: 8px 8px;
+    font-size: 1.1em;
+    box-shadow: inset 1px 0px 1px #ccc;
+}
 #basenav li a:hover{color: #eee;}
 
 #subnav {margin: none;}

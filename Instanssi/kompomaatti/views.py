@@ -95,7 +95,7 @@ def myentries(request):
         oclist.append(formatted_compo)
 
     # Check if we got data from vote code assoc form
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST['formtype'] == 'votecodeassocform':
         assocform = VoteCodeAssocForm(request.POST)
         if assocform.is_valid():
             code = assocform.cleaned_data['code']
@@ -110,9 +110,30 @@ def myentries(request):
     else:
         assocform = VoteCodeAssocForm()
     
-    # Check if we got data from vote code request form
-    requestform = RequestVoteCodeForm()
+    # Get last VoteCodeRequest, if it exists
+    try:
+        vcreq = VoteCodeRequest.objects.get(user=request.user)
+    except VoteCodeRequest.DoesNotExist:
+        vcreq = None
     
+    # Check if we got data from vote code request form
+    if request.method == 'POST' and request.POST['formtype'] == 'requestvotecodeform':
+        requestform = RequestVoteCodeForm(request.POST)
+        if requestform.is_valid():
+            if vcreq:
+                vcreq.text = requestform.cleaned_data['text']
+                vcreq.save()
+            else:
+                req = requestform.save(commit=False)
+                req.user = request.user
+                req.save()
+            return HttpResponseRedirect('/kompomaatti/myentries/') 
+    else:
+        if vcreq:
+            requestform = RequestVoteCodeForm(instance=vcreq)
+        else:
+            requestform = RequestVoteCodeForm()
+        
     # Dump the page to the user
     return custom_render(request, 'kompomaatti/myentries.html', {
         'myentries': my_entries,

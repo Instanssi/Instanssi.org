@@ -26,6 +26,8 @@ class CreateTokensForm(forms.Form):
         )
         
 class RequestVoteCodeForm(forms.ModelForm):
+    formtype = forms.CharField(widget=forms.HiddenInput(),initial=u"requestvotecodeform")
+    
     def __init__(self, *args, **kwargs):
         super(RequestVoteCodeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -33,6 +35,7 @@ class RequestVoteCodeForm(forms.ModelForm):
             Fieldset(
                 u'Pyydä äänestysoikeutta',
                 'text',
+                'formtype',
                 ButtonHolder (
                     Submit('submit', 'Pyydä äänestysoikeutta')
                 )
@@ -44,6 +47,7 @@ class RequestVoteCodeForm(forms.ModelForm):
         fields = ('text',)
         
 class VoteCodeAssocForm(forms.Form):
+    formtype = forms.CharField(widget=forms.HiddenInput(),initial=u"votecodeassocform")
     code = forms.CharField(max_length=8, label=u"Äänestyskoodi", help_text=u"Syötä saamasi äänestyskoodi tähän.")
     
     def __init__(self, *args, **kwargs):
@@ -53,6 +57,7 @@ class VoteCodeAssocForm(forms.Form):
             Fieldset(
                 u'Syötä äänestyskoodi',
                 'code',
+                'formtype',
                 ButtonHolder (
                     Submit('submit', 'Tallenna')
                 )

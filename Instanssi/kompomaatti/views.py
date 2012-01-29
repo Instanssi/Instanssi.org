@@ -240,7 +240,7 @@ def compo(request, compo_id):
                 try:
                     votecode = VoteCode.objects.get(associated_to=request.user)
                 except:
-                    return HttpResponse("1")
+                    return HttpResponse("Ei äänestysoikeutta!")
                 
                 # Get entries in compo that are not disqualified
                 compo_entries = Entry.objects.filter(compo=c, disqualified=False)
@@ -254,11 +254,11 @@ def compo(request, compo_id):
                     for entry in compo_entries:
                         check_for = "ventry_"+str(entry.id)
                         if not request.POST.has_key(check_for):
-                            return HttpResponse("1") # TODO: Better error responses for html version!
+                            return HttpResponse("Virhe syötteen käsittelyssä!") 
                         try:
                             tmp[entry.id] = int(request.POST[check_for])
                         except:
-                            return HttpResponse("1")
+                            return HttpResponse("Virhe syötteen käsittelyssä!")
                     order = sorted(tmp, key=tmp.get)
                 else:
                     order_raw = request.POST.getlist('order[]')
@@ -266,7 +266,7 @@ def compo(request, compo_id):
                         try:
                             order.append(int(id))
                         except:
-                            return HttpResponse("1")
+                            return HttpResponse("Virhe syötteen käsittelyssä!")
                         
                 # Remove old votes by this user, on this compo
                 if has_voted:
@@ -276,19 +276,19 @@ def compo(request, compo_id):
                 # See if all entries have a rank.
                 for entry in compo_entries:
                     if entry.id not in order:
-                        return HttpResponse("1")
+                        return HttpResponse("Virhe syötteen käsittelyssä!")
                 
                 # See that we have the right amount of entries
                 if len(order) != len(compo_entries):
-                    return HttpResponse("1")
-                
+                    return HttpResponse("Virhe syötteen käsittelyssä!")
+
                 # Make sure that no entry is in the list twice
                 checked_ids = []
                 for entryid in order:
                     if entryid not in checked_ids:
                         checked_ids.append(entryid)
                     else:
-                        return HttpResponse("1")
+                        return HttpResponse("Virhe syötteen käsittelyssä!")
 
                 # Add new votes, if there were no errors
                 number = 1
@@ -300,9 +300,13 @@ def compo(request, compo_id):
                     vote.rank = number
                     vote.save()
                     number += 1
-                        
-                return HttpResponse("0")
-            else:
+                
+                # Select response mode according to input 
+                if request.POST['action'] == 'vote_html':
+                    return HttpResponseRedirect('/kompomaatti/compo/'+compo_id+'/') 
+                else:
+                    return HttpResponse("0") # 0 = Success.
+            else: # If voting is closed, just show 404. This shouldn't really happen ...
                 raise Http404
     
     # Get entries.
@@ -312,9 +316,17 @@ def compo(request, compo_id):
     # Make sure that no disqualified entries are included if voting is open. No need to vote for those ...
     if voting_open and has_voted:
         e = []
+        # First go through the entries that have been voted for and add them to list.
         for vote in votes:
             if not vote.entry.disqualified:
                 e.append(vote.entry)
+                
+        # Then, make sure to also show entries that have NOT been voted previously by the user 
+        # (if entry has been added late)
+        entries_tmp = Entry.objects.filter(compo=c,disqualified=False).order_by('?')
+        for entry in entries_tmp:
+            if entry not in e:
+                e.append(entry)
     elif voting_open:
         e = Entry.objects.filter(compo=c,disqualified=False).order_by('?')
     else:

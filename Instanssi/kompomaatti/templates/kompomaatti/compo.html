@@ -30,7 +30,7 @@
                 $('#voting_errortext').html('<div class="ui-icon ui-icon-info icon-messagebox msgicon"></div><span>Äänestys suoritettu!</span>');
             } else {
                 $('#voting_errortext').addClass('ui-state-error');
-                $('#voting_errortext').html('<div class="ui-icon ui-icon-alert icon-messagebox msgicon"></div><span>Virhe äänestyksessä!</span>');
+                $('#voting_errortext').html('<div class="ui-icon ui-icon-alert icon-messagebox msgicon"></div><span>'+data+'</span>');
             }
         });
     });

@@ -54,6 +54,16 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 #subnav {margin: none;}
 #subnav li { float: none; margin: none; width: 100%; }
 
+/* JQuery ui icons */
+a.icon {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    margin-right: 0.1em;
+    margin-left: 0.1em;
+    float: left;
+}
 
 /* CSS 3*/
 #basenav li a{text-shadow: 1px 0px 1px #333;}

@@ -13,7 +13,9 @@
     $("#kompot_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#kompot_pager")});
     $("#entries_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entries_pager")}); 
     $("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
-    $("#requests_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#requests_pager")}); 
+    $("#requests_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#requests_pager")});
+    
+    $('.allowicon').button({ icons: {primary: 'ui-icon-check'}, text: false });
 {% endblock %}
 
 {% block content %}
@@ -85,6 +87,7 @@
             <th>Nimi</th>
             <th>Sähköposti</th>
             <th>Pyyntöteksti</th>
+            <th>Toiminnot</th>
         </tr>
     </thead>
     <tbody>
@@ -93,6 +96,9 @@
             <td>{{ req.user.first_name }} {{ req.user.last_name }}</td>
             <td>{{ req.user.email }}</td>
             <td>{{ req.text }}</td>
+            <td>
+                <a class="icon allowicon" href="/kompomaatti/admin/givecode/{{ req.id }}/">Salli</a>
+            </td>
         </tr>
 {% endfor %}
     </tbody>

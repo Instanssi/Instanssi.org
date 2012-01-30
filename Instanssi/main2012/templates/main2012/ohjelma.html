@@ -1,0 +1,81 @@
+{% extends "main2012/base.html" %}
+
+{% block head %}
+{{ block.super }}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ googleapikey }}&amp;sensor=false"></script>
+    <style type="text/css"> .nav-marker{left: 278px;}</style>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    var position = new google.maps.LatLng(62.239850, 25.72460);
+    var mapopts = {
+        center: position,
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapopts);
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title: "Instanssi"
+    });
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+    <h2>Instanssi 2012 - ohjelma</h2>
+
+    <p>Instanssi 2012:n aikataulu. Aikatauluun tulee vielä täydennyksiä ja muutoksia ennen tapahtumaa.
+    Muutoksista laitetaan viestit <a href="http://twitter.com/Instanssi">twitteriin</a>,
+    <a href="https://www.facebook.com/events/281869421862634/">Facebook-tapahtumaan</a>,
+    <a href="https://plus.google.com/b/105078397903279257138/">Google+-sivulle</a> ja
+    <a href="http://blog.instanssi.org/">blogiin</a>, joten yksi tai kaikki seurantaan. :-)
+    </p>
+
+    <div id="program">
+
+        <h3>Esitykset</h3>
+
+        <div class="programitem" id="heikkisalo">
+          <img alt="deggis" class="author" src='/static/main2012/images/schedule/deggis.jpg' />
+          <p><strong>Heikki Salo</strong>
+          <div class="programauthorlinks">
+              <a href='http://deggis.iki.fi'><img src='/static/main2012/images/program/link.png' /></a>
+              <a href='https://github.com/deggis'><img src='/static/main2012/images/program/git.png' /></a>
+              <a href='http://twitter.com/#!/deggis'><img src='/static/main2012/images/program/twitter.png' /></a>
+              <a href='http://www.linkedin.com/profile/view?id=87349669'><img src='/static/main2012/images/program/linkedin.jpg' /></a>
+          </div>
+          </p>
+          <p>
+            Heikki Salo on Instanssi-työryhmän puheenjohtaja.
+          </p>
+          <p>
+            Tässä esityksessä toivotetaan väki tervetulleeksi ja summataan Instanssi 15 minuutissa.
+          </p>
+        </div>
+
+
+        <div class="programitem" id="karihintikka">
+          <img alt="deggis" class="author" src='/static/main2012/images/schedule/nosfegnome_crop.jpg' />
+          <p><strong>Pilvari Nosfe Pirtola</strong>
+          <div class="programauthorlinks">
+              <a href='http://low.fi/~nosfe/'><img src='/static/main2012/images/program/link.png' /></a>
+          </div>
+          </p>
+          <p>
+            Taiteilija, demoparta
+          </p>
+
+          <img alt="Demoscene" class="teaser" src='/static/main2012/images/program/event_pirtola_demoscene.jpg' />
+          <p>
+            "Demoscenen tyylilajit ja niiden kehitys 80-luvulta nykypäivään" ja esittelee samalla parhaat palat eri tyylilajeista.
+
+          </p>
+        </div>
+
+
+    </div>
+
+{% endblock %}

@@ -15,6 +15,7 @@ from operator import itemgetter
 import random
 import hashlib
 from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
@@ -60,15 +61,30 @@ def admin_printcodes(request):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=votecodes.pdf'
 
-    # Create the PDF object, using the response object as its "file."
+    # Create the PDF object,
     p = canvas.Canvas(response)
+    p.setAuthor(u"Kompomaatti")
+    p.setTitle(u"Äänestyskoodeja")
+    p.setFont("Helvetica-Oblique", 18)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
-
-    # Close the PDF object cleanly, and we're done.
+    # Print codes
+    height = 0
+    step = 2.12*cm
+    perpage = 14
+    codeno = 0
+    for code in codes:
+        p.line(0,height,21*cm,height)
+        p.drawString(1*cm, height+0.8*cm, u"Äänestyskoodi: "+code.key)
+        height += step
+        codeno += 1
+        if codeno >= perpage:
+            p.showPage()
+            p.setFont("Helvetica-Oblique", 18)
+            height = 0
+            codeno = 0
     p.showPage()
+
+    # Close the PDF object & dump out the response
     p.save()
     return response
 

@@ -14,6 +14,7 @@ from Instanssi.kompomaatti.misc import awesometime
 from operator import itemgetter
 import random
 import hashlib
+from reportlab.pdfgen import canvas
 
 # ---- HELPER FUNCTIONS ----
 def custom_render(request, tpl, context={}):
@@ -45,6 +46,31 @@ def index(request):
 
 def help(request):
     return custom_render(request, 'kompomaatti/help.html')
+
+@login_required
+def admin_printcodes(request):
+    # Make sure the user is superuser.
+    if not request.user.is_superuser:
+        raise Http404
+    
+    # Get free votecodes
+    codes = VoteCode.objects.filter(associated_to=None)
+    
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=votecodes.pdf'
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response
 
 @login_required
 def admin(request):

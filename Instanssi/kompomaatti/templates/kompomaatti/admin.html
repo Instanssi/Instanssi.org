@@ -14,7 +14,7 @@
     $("#entries_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entries_pager")}); 
     $("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
     $("#requests_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#requests_pager")});
-    
+    $(".jq-button").button();
     $('.allowicon').button({ icons: {primary: 'ui-icon-check'}, text: false });
 {% endblock %}
 
@@ -22,6 +22,7 @@
 {{ block.super }}
     <h2>Admin-paneeli</h2>
 	<h3>Kompot</h3>
+	<a href="/kompomaatti/admin/addcompo/" class="jq-button">Lisää kompo</a>
 {% if compos %}
 	<table id="kompot_table" class="tablesorter"> 
 	<thead>
@@ -112,6 +113,7 @@
 	
 	<h3>Äänestyskoodit</h3>
 {% if tokens %}
+    <a href="/kompomaatti/admin/printcodes/" class="jq-button">Vapaat tokenit .PDF muodossa</a>
 	<table id="tokens_table" class="tablesorter"> 
 	<thead>
 		<tr>

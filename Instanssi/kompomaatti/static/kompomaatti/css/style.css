@@ -81,6 +81,10 @@ a.icon {
     float: left;
 }
 
+.ui-button {
+    font-size: 0.9em;
+}
+
 /* CSS 3*/
 #basenav li a{text-shadow: 1px 0px 1px #333;}
 h1 {text-shadow: 1px 0px 1px #444;}

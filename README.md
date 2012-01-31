@@ -25,7 +25,8 @@ Ympäristön asentaminen Windowsille
 ----------------------------------
 1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin juurikansio (se josta löytyy python.exe)
    ja scripts-kansiot ovat windowsin PATHissa. Kannattaa ladata 32bit versio, vaikka olisikin 64bit windows. Helpompi saada
-   kirjastot.
+   kirjastot. Mikäli ehdottomasti haluat asentaa 64bit versiot, niin osa paketeista on ladattavissa osoitteesta 
+   http://www.lfd.uci.edu/~gohlke/pythonlibs/ .
 2. Asenna setuptools (http://pypi.python.org/pypi/setuptools). 
 3. Asenna PIP (http://pypi.python.org/pypi/pip) komennolla `easy_install pip`.
 4. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot PIP:llä.
@@ -48,15 +49,17 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.3.1] (https://www.djangoproject.com/download/) `pip install django`
-* [django-openid-auth 0.4] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
-* [python-openid 2.2.5 or later] (https://github.com/openid/python-openid/) `pip install python-openid`
-* [PIL 1.1.7 or later] (http://www.pythonware.com/products/pil/) `pip install pil`
-* [django-imagekit 1.1.0 or later] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
-* [South 0.7.3 or later] (http://south.aeracode.org/) `pip install south`
-* [django-uni-form latest] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
+* [Django 1.3 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
+* [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
+* [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
+* [South] (http://south.aeracode.org/) `pip install south`
+* [django-uni-form] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
+* [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 
 IDEjä
 -----
 * Eclipse (addonit: PyDev + EGIt)
 * Aptana Studio 3
+

@@ -24,10 +24,16 @@ def editcompo(request, compo_id):
     except VoteCodeRequest.DoesNotExist:
         raise Http404
     
+    # Check if we got filled form
+    if request.method == 'POST':
+        form = EditCompoForm(request.POST, instance=compo)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/kompomaatti/admin/') 
+    else:
+        form = EditCompoForm(instance=compo)
 
-    
-    form = AdminCompoForm(instance=compo)
-    
+    # Render
     return custom_render(request, 'kompomaatti/admin/editcompo.html', {
         'form': form,
     })
@@ -44,8 +50,16 @@ def editentry(request, entry_id):
     except Entry.DoesNotExist:
         raise Http404
 
-    form = AdminCompoForm(instance=entry)
-    
+    # Check if we got filled form
+    if request.method == 'POST':
+        form = AdminEntryForm(request.POST, instance=entry)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/kompomaatti/admin/') 
+    else:
+        form = AdminCompoForm(instance=entry)
+
+    # Render
     return custom_render(request, 'kompomaatti/admin/editentry.html', {
         'form': form,
     })
@@ -65,6 +79,7 @@ def addcompo(request):
     else:
         form = AdminCompoForm()
 
+    # Render
     return custom_render(request, 'kompomaatti/admin/addcompo.html', {
         'form': form,
     })

@@ -16,6 +16,7 @@
     $("#requests_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#requests_pager")});
     $(".jq-button").button();
     $('.allowicon').button({ icons: {primary: 'ui-icon-check'}, text: false });
+    $('.editicon').button({ icons: {primary: 'ui-icon-pencil'}, text: false });
 {% endblock %}
 
 {% block content %}
@@ -30,6 +31,7 @@
 			<th>Nimi</th>
 			<th>Aktiivinen</th>
 			<th>Aika</th>
+			<th>Ops</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,6 +40,9 @@
 			<td>{{ compo.name }}</td>
 			<td>{{ compo.active }}</td>
 			<td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
+			<td>
+			    <a class="icon editicon" href="/kompomaatti/admin/editcompo/{{ compo.id }}/">Muokkaa</a>
+			</td>
 		</tr>
 {% endfor %}
 	</tbody>
@@ -59,6 +64,7 @@
 			<th>Käyttäjä</th>
 			<th>Kompo</th>
 			<th>Tiedosto</th>
+			<th>Ops</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -69,6 +75,9 @@
 			<td>{{ entry.user.email }}</td>
 			<td>{{ entry.compo.name }}</td>
 			<td><a href="{{ entry.entryfile.url}}">Lataa</a></td>
+            <td>
+                <a class="icon editicon" href="/kompomaatti/admin/editentry/{{ entry.id }}/">Muokkaa</a>
+            </td>
 		</tr>
 {% endfor %}
 	</tbody>

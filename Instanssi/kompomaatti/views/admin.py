@@ -26,12 +26,12 @@ def editcompo(request, compo_id):
     
     # Check if we got filled form
     if request.method == 'POST':
-        form = EditCompoForm(request.POST, instance=compo)
+        form = AdminCompoForm(request.POST, instance=compo)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/kompomaatti/admin/') 
     else:
-        form = EditCompoForm(instance=compo)
+        form = AdminCompoForm(instance=compo)
 
     # Render
     return custom_render(request, 'kompomaatti/admin/editcompo.html', {
@@ -57,7 +57,7 @@ def editentry(request, entry_id):
             form.save()
             return HttpResponseRedirect('/kompomaatti/admin/') 
     else:
-        form = AdminCompoForm(instance=entry)
+        form = AdminEntryForm(instance=entry)
 
     # Render
     return custom_render(request, 'kompomaatti/admin/editentry.html', {

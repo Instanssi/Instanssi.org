@@ -125,7 +125,7 @@
     <ol>
     {% for entry in entries %}
         {% if entry.disqualified %}
-        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. <strong>Diskattu!</li>
+        <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. <strong>Diskattu!</strong></li>
         {% else %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Pisteet: {{ entry.score }}</li>
         {% endif %}

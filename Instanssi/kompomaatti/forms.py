@@ -1,13 +1,71 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from models import Compo, Entry, VoteCode, VoteCodeRequest
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
-from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 from django.core.exceptions import ValidationError
 import os
+
+from Instanssi.kompomaatti.misc.sizeformat import sizeformat
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest
+
+class AdminCompoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminCompoForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Kompo',
+                'name',
+                'description',
+                'adding_end',
+                'editing_end',
+                'compo_start',
+                'voting_start',
+                'voting_end',
+                'entry_sizelimit',
+                'source_sizelimit',
+                'formats',
+                'source_formats',
+                'active',
+                'show_voting_results',
+                'entry_view_type',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = Compo
+
+class AdminEntryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminEntryForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Tuotos',
+                'compo',
+                'name',
+                'description',
+                'creator',
+                'entryfile',
+                'sourcefile',
+                'imagefile_original',
+                'youtube_url',
+                'disqualified',
+                'disqualified_reason',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = Entry
+        exclude = ('user','imagefile_thumbnail',)
 
 class CreateTokensForm(forms.Form):
     amount = forms.IntegerField(min_value=1, max_value=100, label=u"Määrä", help_text=u"Montako tokenia luodaan.")

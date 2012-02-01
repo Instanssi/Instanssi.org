@@ -1,0 +1,20 @@
+{% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block head %}
+{{ block.super }}
+    <script type="text/javascript" src="/static/libs/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+    <link rel="stylesheet" href="/static/libs/css/datetimepicker/style.css" />
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('.datetimeinput').datetimepicker({stepMinute: 15});
+    $('.ui-widget').css('font-size', '0.85em');
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Muokkaa tuotosta</h2>
+    {% uni_form form form.helper %}
+{% endblock %}

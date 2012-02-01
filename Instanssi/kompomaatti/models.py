@@ -113,9 +113,29 @@ class Vote(models.Model):
         verbose_name=u"ääni"
         verbose_name_plural=u"äänet"
 
+# FIXME: Shouldn't need all the try-except's.
+# Something to do with how we import stuff ?
+try: 
+    admin.site.register(Compo)
+except: 
+    pass
 
-admin.site.register(Compo)
-admin.site.register(Entry)
-admin.site.register(Vote)
-admin.site.register(VoteCode)
-admin.site.register(VoteCodeRequest)
+try: 
+    admin.site.register(Entry)
+except: 
+    pass
+
+try: 
+    admin.site.register(Vote)
+except: 
+    pass
+
+try: 
+    admin.site.register(VoteCode)
+except: 
+    pass
+
+try: 
+    admin.site.register(VoteCodeRequest)
+except: 
+    pass

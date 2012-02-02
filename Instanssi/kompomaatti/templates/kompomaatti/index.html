@@ -22,11 +22,15 @@
 {% endif %}
 
 <h3>Tulossa</h3>
+{% if events %}
 {% for event in events %}
 <p>
     <strong>{{ event.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</strong>: {{ event.name }} <a href="/kompomaatti/compo/{{ event.id }}/">Lisätietoja &raquo;</a>
 </p>
 {% endfor %}
+{% else %}
+<p>Ei tapahtumia.</p>
+{% endif %}
 
 <div class="push"></div>
 {% endblock %}

@@ -67,8 +67,8 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 }
 #basenav li a:hover{color: #eee;}
 
-#subnav {margin: none;}
-#subnav li { float: none; margin: none; width: 100%; }
+#subnav {margin: 0;}
+#subnav li { float: none; margin: 0; width: 100%; }
 
 /* JQuery ui icons */
 a.icon {

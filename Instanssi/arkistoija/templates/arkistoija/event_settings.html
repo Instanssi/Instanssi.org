@@ -1,0 +1,18 @@
+{% extends "arkistoija/base.html" %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block title %}{{ block.super }}Tapahtuman tiedot{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<p>
+    Ensin täytyy luoda uusi tapahtuma. Anna tapahtuman tiedot ja paina "Seuraava".
+</p>
+{% endblock %}

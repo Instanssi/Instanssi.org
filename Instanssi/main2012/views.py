@@ -50,15 +50,15 @@ def updateblog(request):
     
     # Get items that have changed
     for item in feed['items']:
-        timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed'])) + timedelta(hours=2)
         locked = False
         try:
-            oldentry = BlogEntry.objects.get(date=timestamp)
+            oldentry = BlogEntry.objects.get(title=item['title'])
             locked = oldentry.locked
         except BlogEntry.DoesNotExist:
             pass
         
         if not locked:
+            timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed'])) + timedelta(hours=2)
             entry = BlogEntry()
             entry.title = item['title']
             entry.summary = item['summary']

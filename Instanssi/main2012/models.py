@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib import admin
 
 class BlogEntry(models.Model):
-    title = models.TextField(u'Otsikko')
+    title = models.CharField(u'Otsikko', max_length=128)
     summary = models.TextField(u'Teksti')
     date = models.DateTimeField(u'Päivitetty')
     link = models.URLField(u'Linkki')

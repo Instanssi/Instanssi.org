@@ -57,6 +57,7 @@ Kirjastot
 * [South] (http://south.aeracode.org/) `pip install south`
 * [django-uni-form] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
+* [feedparser] (http://code.google.com/p/feedparser/) `pip install feedparser`
 
 IDEjä
 -----

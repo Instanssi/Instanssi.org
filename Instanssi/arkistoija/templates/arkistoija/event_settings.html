@@ -1,4 +1,5 @@
 {% extends "arkistoija/base.html" %}
+{% load uni_form_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -15,4 +16,5 @@
 <p>
     Ensin täytyy luoda uusi tapahtuma. Anna tapahtuman tiedot ja paina "Seuraava".
 </p>
+{% uni_form eventform eventform.helper %}
 {% endblock %}

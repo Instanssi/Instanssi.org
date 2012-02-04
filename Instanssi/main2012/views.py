@@ -5,20 +5,22 @@ from Instanssi import settings
 from django.http import HttpResponse
 import feedparser
 from models import BlogEntry
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 
 # A nice wrapper
-def render_custom(tpl):
-    return render_to_response(tpl, {
+def render_custom(tpl, ext={}):
+    vars = {
         'googleapikey': settings.GOOGLEAPIKEY,
         'googleanalytics': settings.GOOGLEANALYTICS,
         'debugmode': settings.DEBUG
-    })
+    }
+    return render_to_response(tpl, dict(vars.items() + ext.items()))
 
 # Pages
 def index(request):
-    return render_custom("main2012/index.html")
+    entries = BlogEntry.objects.all()
+    return render_custom("main2012/index.html", {'blogitems': entries})
 
 def info(request):
     return render_custom("main2012/info.html")
@@ -48,7 +50,7 @@ def updateblog(request):
     
     # Get items that have changed
     for item in feed['items']:
-        timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed']))
+        timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed'])) + timedelta(hours=2)
         entry = BlogEntry()
         entry.title = item['title']
         entry.summary = item['summary']

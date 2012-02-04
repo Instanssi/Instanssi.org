@@ -2,22 +2,21 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="/static/main2012/js/jquery.jfeed.pack.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/iso8601.min.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/blog_feed.js"></script>
     <style type="text/css"> .nav-marker{left: 25px;} </style>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $('#blogfeedarea').blogfeed({
-        feedurl: '/2012/feed/',
-        postcount: 5
-    });
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Blog</h2>
-    <div id="blogfeedarea"></div>
+    <div id="blogfeedarea">
+{% for item in blogitems %}
+        <h3>{{ item.title }}</h3>
+        <div class="blogtext">{{ item.summary|safe }}</div>
+        <span class="blogtime">{{ item.date|date:"d.m.Y \k\l\o\. H:i" }} by {{ item.name }} &middot; <a href="{{ item.link }}">Lisätiedot &raquo;</a></span>
+{% endfor %}
+    </div>
 {% endblock %}

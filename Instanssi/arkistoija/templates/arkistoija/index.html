@@ -8,7 +8,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block title %}{{ block.super }}Etusivu{% endblock %}
+
 {% block content %}
 {{ block.super }}
-
+<p>
+    Konvertteri. Ole kirjautuneena sisään adminina, muuten homma ei toimi.
+</p>
+<br />
 {% endblock %}

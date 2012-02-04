@@ -19,6 +19,13 @@
     </script>
 </head>
 <body>
-{% block content %}{% endblock %}
+<div id="base">
+    <h1>Arkistoija</h1>
+    <div id="content">
+        <h2>&raquo; {% block title %}{% endblock %}</h2>
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
 </body>
 </html>

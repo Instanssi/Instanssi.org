@@ -46,7 +46,19 @@ class Entry(models.Model):
         verbose_name_plural=u"tuotokset"
 
 # Register models to admin panel
-admin.site.register(Tag)
-admin.site.register(Event)
-admin.site.register(Compo)
-admin.site.register(Entry)
+try:
+    admin.site.register(Tag)
+except:
+    pass
+try:
+    admin.site.register(Event)
+except:
+    pass
+try:
+    admin.site.register(Compo)
+except:
+    pass
+try:
+    admin.site.register(Entry)
+except:
+    pass

@@ -3,8 +3,10 @@
 from django.shortcuts import render_to_response
 from Instanssi import settings
 from django.http import HttpResponse
-import urllib2
-from urllib2 import URLError
+import feedparser
+from models import BlogEntry
+from datetime import datetime
+import time
 
 # A nice wrapper
 def render_custom(tpl):
@@ -36,14 +38,25 @@ def liput(request):
 def yhteystiedot(request):
     return render_custom('main2012/yhteystiedot.html')
 
-# evil h4x
-def feed(request):
-    req = urllib2.Request('http://blog.instanssi.org/feeds/posts/default')
-    data = ''
-    try:
-        urllib2.urlopen(req)
-        response = urllib2.urlopen(req, timeout=3)
-        data = response.read()
-    except URLError, e:
-        pass
-    return HttpResponse(data);
+def updateblog(request):
+    # Get feed
+    url = 'http://blog.instanssi.org/feeds/posts/default'
+    feed = feedparser.parse(url)
+    
+    # Delete old entries
+    BlogEntry.objects.all().delete()
+    
+    # Get items that have changed
+    for item in feed['items']:
+        timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed']))
+        entry = BlogEntry()
+        entry.title = item['title']
+        entry.summary = item['summary']
+        entry.date = timestamp
+        entry.link = item['link']
+        entry.name = item['authors'][0]['name']
+        entry.save()
+        
+    # Just return "ok"
+    return HttpResponse("ok");
+

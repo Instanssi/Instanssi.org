@@ -46,18 +46,26 @@ def updateblog(request):
     feed = feedparser.parse(url)
     
     # Delete old entries
-    BlogEntry.objects.all().delete()
+    BlogEntry.objects.filter(locked=False).delete()
     
     # Get items that have changed
     for item in feed['items']:
         timestamp = datetime.fromtimestamp(time.mktime(item['published_parsed'])) + timedelta(hours=2)
-        entry = BlogEntry()
-        entry.title = item['title']
-        entry.summary = item['summary']
-        entry.date = timestamp
-        entry.link = item['link']
-        entry.name = item['authors'][0]['name']
-        entry.save()
+        locked = False
+        try:
+            oldentry = BlogEntry.objects.get(date=timestamp)
+            locked = oldentry.locked
+        except BlogEntry.DoesNotExist:
+            pass
+        
+        if not locked:
+            entry = BlogEntry()
+            entry.title = item['title']
+            entry.summary = item['summary']
+            entry.date = timestamp
+            entry.link = item['link']
+            entry.name = item['authors'][0]['name']
+            entry.save()
         
     # Just return "ok"
     return HttpResponse("ok");

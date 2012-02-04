@@ -19,7 +19,7 @@ def render_custom(tpl, ext={}):
 
 # Pages
 def index(request):
-    entries = BlogEntry.objects.all()
+    entries = BlogEntry.objects.all().order_by('date').reverse()
     return render_custom("main2012/index.html", {'blogitems': entries})
 
 def info(request):

@@ -7,6 +7,13 @@
 
 {% block jquery %}
 {{ block.super }}
+    $('form.uniForm').uniform();
+    $('#next').click(function() {
+        $('.uniForm').submit(function() {
+            return false;
+        });
+        return false;
+    });
 {% endblock %}
 
 {% block title %}{{ block.super }}Tapahtuman tiedot{% endblock %}

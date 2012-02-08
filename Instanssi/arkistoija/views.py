@@ -6,6 +6,7 @@ from Instanssi import settings
 import Instanssi.kompomaatti.models as kmodels
 import Instanssi.arkisto.models as amodels
 from forms import EventForm
+from django.template import RequestContext
 
 def dummy(request):
     return {}
@@ -59,7 +60,7 @@ def index(request, pgnum = "0"):
         'page_next': pgidx+1,
         'page_prev': pgidx-1,
     }
-    return render_to_response(pages_nm[pgidx], dict(ext.items() + vars.items()))
+    return render_to_response(pages_nm[pgidx], dict(ext.items() + vars.items()), context_instance=RequestContext(request))
 
 def cancel(request):
     # Make sure the user is admin

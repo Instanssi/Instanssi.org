@@ -68,6 +68,7 @@
         
       .uniForm .textInput,
       .uniForm .datetimeinput,
+      .uniForm .dateinput,
       .uniForm textarea    { padding: 4px 2px; border: 1px solid #aaa; background: #fff; }
       .uniForm textarea    { height: 12em; }
       .uniForm select      {}

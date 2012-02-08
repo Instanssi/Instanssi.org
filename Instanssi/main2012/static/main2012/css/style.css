@@ -35,7 +35,7 @@ eng = 465
 #content p,
 #tweets li,
 #content div.p,
-.blogtext {font-family: verdana; font-size: 12px; color: #fff; line-height: 130%; background: #161616; padding: 0.5em 2em;}
+.blogtext {font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; font-size: 12px; color: #fff; line-height: 130%; background: #161616; padding: 0.5em 2em;}
 #content #main-area{width: 600px; padding: 0 25px 0 0; float: left; min-height: 600px; border-right: 1px solid #181818;}
 #content #side-bar { width: 220px; float: left; padding: 0 0 0 25px;}
 #content a:link, #content a:hover, #content a:visited{color: #1fa3f5;}
@@ -46,7 +46,8 @@ eng = 465
 	margin-top: 100px !important;
 }
 #content span.order-ticket{ margin-top: 10px; position: relative; top: 40px; }
-#content ul{font-size: 12px;font-family: verdana; }
+#content ul,
+table { font-size: 12px; font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; }
 
 #footer{ width: 100%; min-height: 390px; border-top: 1px solid #1fa3f5;  background: url('../images/footer-bg.png') repeat-x #34302a;}
 #footer-copyright{ width: 100%; height: 50px; background: url('../images/copyright-bg.png') #1c93dd repeat-x ; border-top: 1px solid #7bbde5; }

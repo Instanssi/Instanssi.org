@@ -2,7 +2,7 @@ html, body{overflow-x:hidden;background: #111;}
 body{ background-image:url('../images/header-background.jpg');background-repeat:repeat-x;}
 
 #header .center{ height: 300px; }
-#header{width: 100%; height: 300px; font-family: 'Alfa Slab One', cursive; font-weight:normal; background: url('../images/mobile/mobile-header.jpg');}
+#header{width: 100%; height: 300px; font-family: 'Alfa Slab One', serif; font-weight:normal; background: url('../images/mobile/mobile-header.jpg');}
 #header h1{padding-top:10px;letter-spacing: 0px;font-size: 60px; font-variant: small-caps;}
 #header a, #header a:visited, #header a:link, #header a:hover{text-decoration: none;color: #000;}
 .description{font-size: 16.5px; font-variant: small-caps;}
@@ -126,7 +126,7 @@ border-spacing: 0 10px;
 
 #schedule td.otsikko1, #schedule th.otsikko1 { width: 16em;}
 #schedule td.otsikko2, #schedule th.otsikko2 { width: 24em;}
- #schedule td.otsikko1, #schedule td.otsikko2{}
+#schedule td.otsikko1, #schedule td.otsikko2 {}
 
 
 #schedule img { width: 4em; }
@@ -141,3 +141,84 @@ border-spacing: 0 10px;
 */
 #main-area ul{list-style-type: disc; padding: 1em 0 ;padding-left: 20px;}
 #main-area ol{list-style-type: decimal; padding: 1em 0; padding-left: 20px;}
+
+/**
+ * let's do some things differently if the screen appears very small 
+ * (as is the case with many smaller and/or cheaper smartphones)
+ * 
+ * TODO:
+ * - determine optimal size to trigger at
+ * - do something about the blog content's table abuse
+ * - add some in-page links to template(s) for usability?
+ */
+@media screen and (max-width: 768px) {
+
+/* reset stuff a bit */
+#header, #navigation, #content, #footer,
+.center,
+.blogtext,
+#content p,
+#content div.p,
+#tweets li {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+}
+
+#navigation ul { padding: 3px }
+#navigation ul li { display: inline-block; padding: 5px 2px }
+#navigation a { padding: 2px }
+#navigation .nav-marker { display: none; }
+
+.center { width: auto; }
+
+#content h3 { margin: 20px 0 .5em 0; }
+#content img { max-width: 100% !important; height: auto; }
+#content ul.info { padding: 1em 0 1em 20px; }
+
+#content span.order-ticket { float: left; margin: 40px 0; position: static; top: auto; }
+
+#content #main-area,
+#content #side-bar { 
+    width: auto;
+    height: auto;
+    display: block;
+    float: none;
+    min-height: 0;
+    padding: 1em 5px;
+    clear: both;
+}
+
+/* try to hack around the blog content's abuse of tables */
+table.tr-caption-container,
+table.tr-caption-container tbody,
+table.tr-caption-container td,
+table.tr-caption-container tr { display: block; }
+#content table.tr-caption-container img { border: none; }
+div.separator a { margin: 0 !important; }
+
+
+#footer h3 { margin: 0 0 10px; padding: 10px 0 }
+
+.site-map,
+.partners,
+.social-media {
+    display: block;
+    width: auto;
+    height: auto;
+    float: none;
+    clear: both;
+}
+.site-map ul li { display: inline-block }
+.site-map ul li a { margin: 0 !important } /* disable hover effect */
+
+/* add a little padding */
+#header { padding: 0 5px; } 
+#footer .center { padding: 5px; }
+
+#footer h3 { display: inline-block; width: auto; }
+#footer-copyright { width: auto; }
+#footer-copyright pre.center { text-align: left; padding-top: 15px; }
+
+} /* @media */

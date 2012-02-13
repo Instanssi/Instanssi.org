@@ -9,9 +9,7 @@
 {{ block.super }}
     $('form.uniForm').uniform();
     $('#next').click(function() {
-        $('.uniForm').submit(function() {
-            return false;
-        });
+        $('.uniForm').trigger('submit');
         return false;
     });
 {% endblock %}

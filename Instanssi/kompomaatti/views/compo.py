@@ -5,7 +5,7 @@ from datetime import datetime
 
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
-from Instanssi.kompomaatti.models import Entry, Compo, Vote
+from Instanssi.kompomaatti.models import Entry, Compo, Vote, VoteCode
 
 def compo(request, compo_id):
     # Get compo information

@@ -1,6 +1,8 @@
 {% extends "main2012/base.html" %}
 
 {% block head %}
+{{ block.super }}
+    <style type="text/css"> .nav-marker{left: 320px;} </style>
 {% endblock %}
 
 {% block jquery %}
@@ -36,8 +38,5 @@
 	<span class="order-ticket">    
 	<a href="http://tickets.holvi.com/event/6fd5ca46/">Siirry ostamaan lippuja</a>
     </span>
-	
-	<style> .nav-marker{left: 230px;} </style>
-
 {% endblock %}
 

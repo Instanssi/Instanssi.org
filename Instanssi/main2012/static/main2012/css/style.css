@@ -132,14 +132,13 @@ border-spacing: 0 10px;
 
 #schedule img { width: 4em; }
 
+
+
+
 #content ul.info { color: #fff; list-style: disc; padding-left: 50px; font-size: 12px; }
 
-/*
-#schedule img { width: 4em; border: 2px solid #fff}
-#schedule tr   { border:  #161616 1px solid; }
+#program .teaser { align: right; width: 8em; }
 
-#schedule td.aika, th.aika { width: 3em; padding: 0.5em; }
-*/
 #main-area ul{list-style-type: disc; padding: 1em 0 ;padding-left: 20px;}
 #main-area ol{list-style-type: decimal; padding: 1em 0; padding-left: 20px;}
 
@@ -223,3 +222,18 @@ div.separator a { margin: 0 !important; }
 #footer-copyright pre.center { text-align: left; padding-top: 15px; }
 
 } /* @media */
+
+.program-item{ background: #161616; margin: 0.5em 0;}
+.program-item *{ background: transparent !important;}
+#program .program-author-links img { width: 1em; border: none; }
+.program-item h4{font-variant: small-caps; color: #76B8F2; padding: 10px; text-shadow: 1px 0px 1px #000; letter-spacing: 1px;}
+.program-item .author{float:left; background: blue ;}
+#program .author-img{ border: 2px solid #fff; width: 4em; margin: 10px;}
+.program-item .author-img{float:left;margin: 5px;}
+.program-item .author-name{margin-top: 5px; font-weight: bold;}
+.program-item .author-description{color: #ccc !important;}
+.program-item .program-description{margin:10px !important;padding:0 !important; }
+
+.program-item .program-author-links{padding: 10px;}
+
+.github-icon{background: #fff !important;}

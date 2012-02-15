@@ -9,7 +9,9 @@ urlpatterns = patterns(
     url(r'^aikataulu/', 'aikataulu'),
     url(r'^english/', 'english'),
     url(r'^kompot/', 'kompot'),
+    url(r'^ohjelma/', 'ohjelma'),
     url(r'^liput/', 'liput'),
     url(r'^yhteystiedot/', 'yhteystiedot'),
-    url(r'^updateblog/', 'updateblog')
+    url(r'^updateblog/', 'updateblog'),
+    url(r'^feed/', 'feed')
 )

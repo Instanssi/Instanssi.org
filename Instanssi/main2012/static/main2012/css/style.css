@@ -100,7 +100,7 @@ border-collapse:separate;
 border-spacing: 0 10px;
 }
 
-#schedule img { border: 2px solid #fff; }
+#schedule img { border: 2px solid #111; box-shadow: none; }
 
 #schedule tr:nth-child(even) { border: 0px solid #161616; background: #161616; margin: 0 0 10px;}
 #schedule tr.kompo  {color: #ccc; }
@@ -128,7 +128,7 @@ border-spacing: 0 10px;
 #schedule td.otsikko1, #schedule th.otsikko1 { width: 16em;}
 #schedule td.otsikko2, #schedule th.otsikko2 { width: 24em;}
 #schedule td.otsikko1, #schedule td.otsikko2 {}
-
+#schedule .puhuja :nth-child(2){ display: block; margin-top: 40px;}
 
 #schedule img { width: 4em; }
 
@@ -239,3 +239,7 @@ div.separator a { margin: 0 !important; }
 .program-item .program-author-links{padding: 10px;}
 
 .github-icon{background: #fff !important;}
+
+
+#program .author-img{border: 3px solid #111;}
+#program .program-thumbnail{ border: 3px solid #111; margin: 0 10px 10px 10px; }

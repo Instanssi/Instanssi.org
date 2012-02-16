@@ -232,7 +232,9 @@ div.separator a { margin: 0 !important; }
 .program-item .author-img{float:left;margin: 5px;}
 .program-item .author-name{margin-top: 5px; font-weight: bold;}
 .program-item .author-description{color: #ccc !important;}
-.program-item .program-description{margin:10px !important;padding:0 !important; }
+.program-item .program-description{margin:10px !important;padding:0 !important;  }
+
+.program-item .program-description .program-thumbnail { margin: 0px; border: none; width: 150px; float: right; }
 
 .program-item .program-author-links{padding: 10px;}
 

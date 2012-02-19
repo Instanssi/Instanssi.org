@@ -2,6 +2,8 @@
 
 from django.db import models
 from django.contrib import admin
+from imagekit.models import ImageSpec
+from imagekit.processors import resize
 
 class Tag(models.Model):
     name = models.CharField('Tag', max_length=32)
@@ -36,7 +38,7 @@ class Entry(models.Model):
     description = models.TextField('Kuvaus')
     creator = models.CharField('Tekijä', max_length=64)
     file = models.FileField('Tiedosto', upload_to='arkisto/entryfiles/')
-    imagefile_original = models.ImageField(u'Kuva', upload_to='arkisto/entryimages/', blank=True)
+    imagefile_original = models.ImageField(u'Kuva', upload_to='arkisto/entryimages/', blank=True, null=True)
     imagefile_small = ImageSpec([resize.Fit(160, 100)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     imagefile_medium = ImageSpec([resize.Fit(640, 420)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField('Youtube URL', blank=True)

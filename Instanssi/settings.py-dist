@@ -92,7 +92,6 @@ INSTALLED_APPS = (
     'main2012',
     'arkisto',
     'kompomaatti',
-    'arkistoija',
     'openidauth',
     'django_openid_auth',
     'imagekit',

@@ -59,6 +59,12 @@ Kirjastot
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 * [feedparser] (http://code.google.com/p/feedparser/) `pip install feedparser`
 
+Kompomaatti
+-----------
+Kompomaatti on vakiona pois päältä. Kompomaatin saa toimimaan seuraavasti:
+1. Luo admin-paneelissa uusi tapahtuma (event)
+2. Aseta settings.py-tiedoston ACTIVE_EVENT_ID-muuttujat arvoksi luodun tapahtuman ID.
+
 IDEjä
 -----
 * Eclipse (addonit: PyDev + EGIt)

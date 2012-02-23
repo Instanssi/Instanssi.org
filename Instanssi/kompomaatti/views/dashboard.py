@@ -7,8 +7,9 @@ from datetime import datetime
 
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
-from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest
+from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest, Event
 from Instanssi.kompomaatti.forms import EntryForm, VoteCodeAssocForm, RequestVoteCodeForm
+from Instanssi.settings import ACTIVE_EVENT_ID
 
 @login_required
 def dashboard(request): 
@@ -16,7 +17,7 @@ def dashboard(request):
     my_entries = Entry.objects.filter(user=request.user)
     
     # Get list of open compos, format times
-    open_compos = Compo.objects.filter(active=True, adding_end__gte = datetime.now())
+    open_compos = Compo.objects.filter(active=True, event=ACTIVE_EVENT_ID, adding_end__gte = datetime.now())
     oclist = []
     for compo in open_compos:
         formatted_compo = compo_times_formatter(compo)
@@ -75,8 +76,8 @@ def dashboard(request):
 def delentry(request, entry_id):
     # Check if entry exists and get the object
     try:
-        entry = Entry.objects.get(id=entry_id)
-    except ObjectDoesNotExist:
+        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=ACTIVE_EVENT_ID))
+    except Entry.DoesNotExist:
         raise Http404
 
     # Make sure the user owns the entry
@@ -103,8 +104,8 @@ def delentry(request, entry_id):
 def addentry(request, compo_id):
     # Check if entry exists and get the object
     try:
-        compo = Compo.objects.get(id=compo_id)
-    except ObjectDoesNotExist:
+        compo = Compo.objects.get(id=compo_id, event=ACTIVE_EVENT_ID)
+    except Compo.DoesNotExist:
         raise Http404
     
     # Make sure the compo is active and if adding time is open
@@ -118,6 +119,7 @@ def addentry(request, compo_id):
             nentry = addform.save(commit=False)
             nentry.user = request.user
             nentry.compo = compo
+            nentry.event = ACTIVE_EVENT_ID
             nentry.save()
             return HttpResponseRedirect('/kompomaatti/myentries/') 
     else:
@@ -133,8 +135,8 @@ def addentry(request, compo_id):
 def editentry(request, entry_id):
     # Check if entry exists and get the object
     try:
-        entry = Entry.objects.get(id=entry_id)
-    except ObjectDoesNotExist:
+        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=ACTIVE_EVENT_ID))
+    except Entry.DoesNotExist:
         raise Http404
     
     # Make sure the user owns the entry

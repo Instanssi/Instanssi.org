@@ -6,10 +6,11 @@ from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 from datetime import datetime
+from Instanssi.settings import ACTIVE_EVENT_ID
 import random
 import hashlib
 
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event
 from Instanssi.kompomaatti.forms import AdminEntryForm,AdminCompoForm,CreateTokensForm
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 
@@ -75,7 +76,13 @@ def addcompo(request):
     if request.method == 'POST':
         form = AdminCompoForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Get the Event. If this fails, everything should fail anyways. So, don't catch exception.
+            event = Event.objects.get(id=ACTIVE_EVENT_ID)
+            
+            # Save compo
+            compo = form.save(commit=False)
+            compo.event = event
+            compo.save()
             return HttpResponseRedirect('/kompomaatti/admin/') 
     else:
         form = AdminCompoForm()
@@ -148,16 +155,16 @@ def admin(request):
         gentokensform = CreateTokensForm()
         
     # Get data
-    compos = Compo.objects.all()
-    entries = Entry.objects.all()
+    compos = Compo.objects.filter(event=ACTIVE_EVENT_ID)
+    entries = Entry.objects.filter(compo__in=compos)
     tokens = VoteCode.objects.all()
     vcreqs = VoteCodeRequest.objects.all()
-        
+    
     # Just dump the page
     return custom_render(request, 'kompomaatti/admin/admin.html', {
         'tokens': tokens,
         'entries': entries,
-        'compos': compos,
+        'rcompos': compos,
         'vcreqs': vcreqs,
         'gentokensform': gentokensform,
     })

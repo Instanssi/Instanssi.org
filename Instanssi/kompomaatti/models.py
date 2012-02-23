@@ -21,10 +21,8 @@ class Event(models.Model):
 class VoteCodeRequest(models.Model):
     user = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u'Pyynnön esittänyt käyttäjä')
     text = models.TextField(u'Kuvaus', help_text=u'Lyhyt aneluteksti admineille :)')
-    
     def __unicode__(self):
         return self.user.username
-    
     class Meta:
         verbose_name=u"äänestyskoodipyyntö"
         verbose_name_plural=u"äänestyskoodipyynnöt"
@@ -33,10 +31,8 @@ class VoteCode(models.Model):
     key = models.CharField(u'Avain', help_text=u"Äänestysavain.", max_length=64, unique=True)
     associated_to = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
     time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True)
-
     def __unicode__(self):
         return self.key
-    
     class Meta:
         verbose_name=u"äänestysavain"
         verbose_name_plural=u"äänestysavaimet"

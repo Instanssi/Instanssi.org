@@ -3,9 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <title>Arkisto</title>
-    <link rel="stylesheet" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" href="/static/arkisto/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/static/arkisto/css/style.css" />
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
+    <meta property="og:locale" content="fi_FI" />
+    <meta property="og:url" content="http://instanssi.org/arkisto/" />
+    <meta property="og:image" content="http://instanssi.org/static/main2012/images/social-media/banner-button-256x256.jpg" />
+    <meta property="og:title" content="Instanssi Arkisto" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Instanssi Arkisto" />
+{% if not debugmode %}
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10526874-10']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+{% endif %}
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
@@ -14,6 +33,14 @@
     </script>
 </head>
 <body>
+    <div id="header"><h1>Instanssi | Arkisto</h1></div>
+    <div id="content">
+        <ul id="nav">
+            <li><a href="">Instanssi 2012</a></li><span class="separator">|</span>
+            <li><a href="">Konstruktori 2012</a></li><span class="separator">|</span>
+            <li><a href="">Instanssi 2011</a></li>
+        </ul>
 {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

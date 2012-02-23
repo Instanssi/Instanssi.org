@@ -9,6 +9,15 @@ from imagekit.admin import AdminThumbnail
 from datetime import datetime
 import os.path
 
+class Event(models.Model):
+    name = models.CharField(u'Nimi', max_length=64, help_text=u"Tapahtuman nimi")
+    date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
+    def __unicode__(self):
+        return self.name
+    class Meta:
+        verbose_name=u"tapahtuma"
+        verbose_name_plural=u"tapahtumat"
+
 class VoteCodeRequest(models.Model):
     user = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u'Pyynnön esittänyt käyttäjä')
     text = models.TextField(u'Kuvaus', help_text=u'Lyhyt aneluteksti admineille :)')
@@ -33,6 +42,7 @@ class VoteCode(models.Model):
         verbose_name_plural=u"äänestysavaimet"
 
 class Compo(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u"tapahtuma", help_text=u"Tapahtuma johon kompo kuuluu")
     name = models.CharField(u'Nimi', max_length=32, help_text=u"Kompon nimi (max 32 merkkiä).")
     description = models.TextField(u'Kuvaus', help_text=u"Kuvaus kompolle; esim. vaatimukset, esimerkit, jne.")
     adding_end = models.DateTimeField(u'Deadline entryjen lisäyksille', help_text=u"Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.")
@@ -68,8 +78,8 @@ class Compo(models.Model):
         return ', '.join(self.source_formats.split('|'))
 
 class Entry(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", help_text=u"Käyttäjä jolle entry kuuluu")
-    compo = models.ForeignKey(Compo, verbose_name="kompo", help_text=u"Kompo johon osallistutaan")
+    user = models.ForeignKey(User, verbose_name=u"käyttäjä", help_text=u"Käyttäjä jolle entry kuuluu")
+    compo = models.ForeignKey(Compo, verbose_name=u"kompo", help_text=u"Kompo johon osallistutaan")
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Nimi tuotokselle')
     description = models.TextField(u'Kuvaus', help_text=u'Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField(u'Tekijä', max_length=64, help_text=u'Tuotoksen tekijän tai tekijäryhmän nimi')
@@ -77,6 +87,7 @@ class Entry(models.Model):
     sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
     imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
+    imagefile_medium = ImageSpec([resize.Fit(640, 420)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
     disqualified = models.BooleanField(u'Diskattu', help_text=u"Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!", default=False)
     disqualified_reason = models.TextField(u'Syy diskaukseen', help_text=u"Diskauksen syy.", blank=True)

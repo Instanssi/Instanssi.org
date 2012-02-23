@@ -12,6 +12,7 @@ import os.path
 class Event(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u"Tapahtuman nimi")
     date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
+    archived = models.BooleanField(u'Arkistoitu', help_text=u"Saa näyttää arkistossa", default=False)
     def __unicode__(self):
         return '[' + str(self.pk) + '] ' + self.name
     class Meta:

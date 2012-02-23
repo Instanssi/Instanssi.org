@@ -26,6 +26,9 @@ DATABASES = {
     }
 }
 
+# Kompomaatti active event. If there is no active event, just use -1. 
+ACTIVE_EVENT_ID = -1
+
 # Google api stuff
 GOOGLEAPIKEY = 'AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s'
 GOOGLEANALYTICS = False

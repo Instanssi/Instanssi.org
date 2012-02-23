@@ -39,6 +39,7 @@ class AdminCompoForm(forms.ModelForm):
         
     class Meta:
         model = Compo
+        exclude = ('event',)
 
 class AdminEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

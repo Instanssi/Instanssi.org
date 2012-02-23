@@ -13,7 +13,7 @@ class Event(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u"Tapahtuman nimi")
     date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
     def __unicode__(self):
-        return self.name
+        return '[' + str(self.pk) + '] ' + self.name
     class Meta:
         verbose_name=u"tapahtuma"
         verbose_name_plural=u"tapahtumat"
@@ -120,29 +120,12 @@ class Vote(models.Model):
         verbose_name=u"ääni"
         verbose_name_plural=u"äänet"
 
-# FIXME: Shouldn't need all the try-except's.
-# Something to do with how we import stuff ?
-try: 
+try:
     admin.site.register(Compo)
-except: 
-    pass
-
-try: 
     admin.site.register(Entry)
-except: 
-    pass
-
-try: 
+    admin.site.register(Event)
     admin.site.register(Vote)
-except: 
-    pass
-
-try: 
     admin.site.register(VoteCode)
-except: 
-    pass
-
-try: 
     admin.site.register(VoteCodeRequest)
-except: 
+except:
     pass

@@ -9,6 +9,15 @@ from imagekit.admin import AdminThumbnail
 from datetime import datetime
 import os.path
 
+class Profile(models.Model):
+    user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
+    otherinfo = models.TextField(u'Muut yhteystiedot', help_text=u'Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne.')
+    def __unicode__(self):
+        return self.user
+    class Meta:
+        verbose_name=u"profiili"
+        verbose_name_plural=u"profiilit"
+
 class Event(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u"Tapahtuman nimi")
     date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
@@ -128,5 +137,6 @@ try:
     admin.site.register(Vote)
     admin.site.register(VoteCode)
     admin.site.register(VoteCodeRequest)
+    admin.site.register(Profile)
 except:
     pass

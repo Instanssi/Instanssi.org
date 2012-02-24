@@ -22,6 +22,22 @@
 {% block content %}
 {{ block.super }}
     <h2>Admin-paneeli</h2>
+    <h3>Käynnissä olevan tapahtuman tiedot</h3>
+    <table class="generic_info_table">
+        <tr>
+            <th>Nimi</th>
+            <td>{{ event.name }}</td>
+        </tr>
+        <tr>
+            <th>Päivämäärä</th>
+            <td>{{ event.date }}</td>
+        </tr>
+        <tr>
+            <th>Arkistoitu</th>
+            <td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
+        </tr>
+    </table>
+    
 	<h3>Kompot</h3>
 	<a href="/kompomaatti/admin/addcompo/" class="jq-button">Lisää kompo</a>
 {% if compos %}

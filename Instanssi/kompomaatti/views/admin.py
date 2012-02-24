@@ -6,13 +6,12 @@ from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 from datetime import datetime
-from Instanssi.settings import ACTIVE_EVENT_ID
 import random
 import hashlib
-
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event
 from Instanssi.kompomaatti.forms import AdminEntryForm,AdminCompoForm,CreateTokensForm
 from Instanssi.kompomaatti.misc.custom_render import custom_render
+from Instanssi.settings import ACTIVE_EVENT_ID
 
 @login_required
 def editcompo(request, compo_id):
@@ -159,6 +158,7 @@ def admin(request):
     entries = Entry.objects.filter(compo__in=compos)
     tokens = VoteCode.objects.all()
     vcreqs = VoteCodeRequest.objects.all()
+    event = Event.objects.get(id=ACTIVE_EVENT_ID)
     
     # Just dump the page
     return custom_render(request, 'kompomaatti/admin/admin.html', {
@@ -166,6 +166,7 @@ def admin(request):
         'entries': entries,
         'rcompos': compos,
         'vcreqs': vcreqs,
+        'event': event,
         'gentokensform': gentokensform,
     })
 

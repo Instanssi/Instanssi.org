@@ -13,7 +13,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     otherinfo = models.TextField(u'Muut yhteystiedot', help_text=u'Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne.')
     def __unicode__(self):
-        return self.user
+        return self.user.username
     class Meta:
         verbose_name=u"profiili"
         verbose_name_plural=u"profiilit"

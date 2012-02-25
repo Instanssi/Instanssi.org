@@ -7,7 +7,7 @@ from datetime import datetime
 
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
-from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest, Event
+from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest, Event, Profile
 from Instanssi.kompomaatti.forms import EntryForm, VoteCodeAssocForm, RequestVoteCodeForm
 from Instanssi.settings import ACTIVE_EVENT_ID
 
@@ -62,6 +62,14 @@ def dashboard(request):
             requestform = RequestVoteCodeForm(instance=vcreq)
         else:
             requestform = RequestVoteCodeForm()
+        
+    # Get Profile (if exists)
+    request.user.otherinfo = None
+    try:
+        pr = Profile.objects.get(user=request.user)
+        request.user.otherinfo = pr.otherinfo
+    except:
+        pass
         
     # Dump the page to the user
     return custom_render(request, 'kompomaatti/myentries.html', {

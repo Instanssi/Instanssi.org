@@ -29,7 +29,8 @@
 <h3>Omat tiedot</h3>
 <p>
 	Seuraavat tiedot on saatu käyttämältäsi OpenID-kirjautumispalvelimelta, ja tallennettu kompomaatin 
-	kirjautumisjärjestelmään.
+	kirjautumisjärjestelmään. Mikäli tiedot ovat väärin, muokkaathan ne oikeiksi! Näitä tietoja ei julkaista
+	missään.
 </p>
 <table class="generic_info_table">
 	<tr>
@@ -44,6 +45,12 @@
 		<th>Sähköposti</th>
 		<td>{{ user.email }}</td>
 	</tr>
+{% if user.otherinfo %}
+	<tr>
+        <th>Muut yhteystiedot</th>
+        <td>{{ user.otherinfo }}</td>
+	</tr>
+{% endif %}
 </table>
 
 <h3>Äänestysavain</h3>

@@ -49,7 +49,7 @@
 {% if user.otherinfo %}
 	<tr>
         <th>Muut yhteystiedot</th>
-        <td>{{ user.otherinfo }}</td>
+        <td>{{ user.otherinfo|linebreaksbr }}</td>
 	</tr>
 {% endif %}
     <tr>

@@ -62,6 +62,7 @@ Kirjastot
 Kompomaatti
 -----------
 Kompomaatti on vakiona pois päältä. Kompomaatin saa toimimaan seuraavasti:
+
 1. Luo admin-paneelissa uusi tapahtuma (event)
 2. Aseta settings.py-tiedoston ACTIVE_EVENT_ID-muuttujat arvoksi luodun tapahtuman ID.
 

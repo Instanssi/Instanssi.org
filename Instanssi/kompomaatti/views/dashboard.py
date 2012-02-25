@@ -169,3 +169,8 @@ def editentry(request, entry_id):
         'editform': editform,
         'entry': entry,
     })
+    
+@login_required
+def editprofile(request):
+    return custom_render(request, 'kompomaatti/editprofile.html', {
+    })

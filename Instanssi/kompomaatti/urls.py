@@ -11,6 +11,7 @@ urlpatterns = patterns(
     url(r'^myentries/del/(?P<entry_id>\d+)/', 'dashboard.delentry'),
     url(r'^myentries/edit/(?P<entry_id>\d+)/', 'dashboard.editentry'),
     url(r'^myentries/add/(?P<compo_id>\d+)/', 'dashboard.addentry'),
+    url(r'^myentries/editprofile/', 'dashboard.editprofile'),
     url(r'^myentries/', 'dashboard.dashboard'),
     url(r'^admin/givecode/(?P<vcrid>\d+)/', 'admin.givecode'),
     url(r'^admin/editcompo/(?P<compo_id>\d+)/', 'admin.editcompo'),

@@ -1,0 +1,18 @@
+{% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Muokkaa käyttäjäprofiilia</h2>
+
+
+{% endblock %}

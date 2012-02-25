@@ -4,11 +4,11 @@ from django.db import IntegrityError
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-
+from django.contrib.auth.models import User
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest, Event, Profile
-from Instanssi.kompomaatti.forms import EntryForm, VoteCodeAssocForm, RequestVoteCodeForm
+from Instanssi.kompomaatti.forms import EntryForm, VoteCodeAssocForm, RequestVoteCodeForm, ProfileForm
 from Instanssi.settings import ACTIVE_EVENT_ID
 
 @login_required
@@ -172,5 +172,7 @@ def editentry(request, entry_id):
     
 @login_required
 def editprofile(request):
+    profileform = ProfileForm(instance=request.user)
     return custom_render(request, 'kompomaatti/editprofile.html', {
+        'profileform': profileform,
     })

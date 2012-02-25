@@ -6,9 +6,35 @@ from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
 from django.core.exceptions import ValidationError
 import os
-
+from django.contrib.auth.models import User
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest
+
+class ProfileForm(forms.ModelForm):
+    otherinfo = forms.CharField(widget=forms.Textarea(), label=u"Muut yhteystiedot", help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", required=False)
+    
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Muokkaa profiilia',
+                'first_name',
+                'last_name',
+                'email',
+                'otherinfo',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        self.fields['first_name'].label = u"Etunimi"
+        self.fields['last_name'].label = u"Sukunimi"
+        self.fields['email'].label = u"Sähköposti"
+
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email')
 
 class AdminCompoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

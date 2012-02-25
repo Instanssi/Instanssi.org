@@ -172,7 +172,31 @@ def editentry(request, entry_id):
     
 @login_required
 def editprofile(request):
-    profileform = ProfileForm(instance=request.user)
+    # Get profile info
+    try:
+        profile_instance = Profile.objects.get(user=request.user)
+    except:
+        profile_instance = None
+    
+    # Handle submit
+    if request.method == 'POST':
+        profileform = ProfileForm(request.POST, instance=request.user, profile=profile_instance)
+        if profileform.is_valid():
+            # Save user information
+            profileform.save()
+            
+            # Save profile
+            if profile_instance == None:
+                profile_instance = Profile()
+                profile_instance.user = request.user
+            profile_instance.otherinfo = profileform.cleaned_data['otherinfo']
+            profile_instance.save()
+            
+            # All done, redirect
+            return HttpResponseRedirect('/kompomaatti/myentries/') 
+    else:
+        profileform = ProfileForm(instance=request.user, profile=profile_instance)
+        
     return custom_render(request, 'kompomaatti/editprofile.html', {
         'profileform': profileform,
     })

@@ -8,12 +8,14 @@ from django.core.exceptions import ValidationError
 import os
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Profile
 
 class ProfileForm(forms.ModelForm):
     otherinfo = forms.CharField(widget=forms.Textarea(), label=u"Muut yhteystiedot", help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", required=False)
     
     def __init__(self, *args, **kwargs):
+        profile = kwargs.pop('profile', None)
+        
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -28,10 +30,16 @@ class ProfileForm(forms.ModelForm):
                 )
             )
         )
+        
+        # Finnish labels
         self.fields['first_name'].label = u"Etunimi"
         self.fields['last_name'].label = u"Sukunimi"
         self.fields['email'].label = u"Sähköposti"
-
+        
+        # Get initial information for otherinfo field
+        if profile:
+            self.fields['otherinfo'].initial = profile.otherinfo
+                
     class Meta:
         model = User
         fields = ('first_name','last_name','email')

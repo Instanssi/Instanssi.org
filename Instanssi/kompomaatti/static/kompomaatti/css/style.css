@@ -1,8 +1,9 @@
 body{background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
-h1, h2, h3 { }
-h1 { font-size: 1.5em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #4ED3FF;} 
-h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
-h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px solid #aaaaaa;padding-bottom: 0.3em;}
+h1, h2, h3, h4, h5, p, li, td, th, label, div { font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; }
+h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #4ED3FF;} 
+h2 { font-size: 1.1em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
+h3 { font-size: 0.9em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px solid #aaaaaa;padding-bottom: 0.3em;}
+p, li, td, th, label, div { font-size: 14px; }
 strong { font-weight: bold; }
 
 /* Base div CSS */
@@ -14,7 +15,7 @@ strong { font-weight: bold; }
 
 /* Content div css */
 #content { width: 960px; margin: 0 auto; padding: 0.2em; min-height: 400px; margin-bottom: 4em;}
-#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; font-size: 0.9em; }
+#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
 #content > p,
 #content > ul,
 #content > ol { margin-bottom: 1em; margin-top: 1em; }
@@ -24,8 +25,8 @@ strong { font-weight: bold; }
 #content > ol { list-style-type: decimal; margin-left: 1.2em; }
 
 /* For tabular data fields using tablesorter.js */
-div.pager { font-size: 0.9em; margin-top: 0.1em; margin-bottom: 0.3em; }
-table.tablesorter { font-size: 0.9em; margin-top: 0; }
+div.pager { margin-top: 0.1em; margin-bottom: 0.3em; }
+table.tablesorter { margin-top: 0; }
 
 /* Tables that have headers on the left side, and data on the right side */
 table.generic_info_table { border: 1px solid #bbbbbb; width: 100%; }
@@ -34,7 +35,7 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 
 /* Sortables in voting */
 #sortable { margin: 0; padding: 0; width: 60%; }
-#sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; font-size: 1.0em; height: 18px; }
+#sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; height: 18px; }
 #sortable li > span { float: left; }
 
 /* For error/notice box in voting form */
@@ -66,7 +67,7 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
     display: block;
     text-align: left;
     padding: 8px 8px;
-    font-size: 1.1em;
+    font-size: 16px;
     /*box-shadow: inset 1px 0px 1px #ccc;*/
 }
 #basenav li a:hover{color: #ccc;}
@@ -87,7 +88,7 @@ a.icon {
 
 /* jquery-ui stuff */
 .ui-button {
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 /* CSS 3*/

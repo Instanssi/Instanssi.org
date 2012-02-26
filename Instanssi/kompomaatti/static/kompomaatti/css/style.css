@@ -109,7 +109,7 @@ height: 100%;
 margin: 0 auto -3em;
 }
 #footer, .push {height: 3em;}
-#footer{margin-top: -4em; background: /*url('../images/kompomaatti-bg.jpg')*/ repeat-x #222;/*padding: 8px;*/ text-align: right; color: #fff;}
+#footer{margin-top: -3em; background: /*url('../images/kompomaatti-bg.jpg')*/ repeat-x #222;/*padding: 8px;*/ text-align: right; color: #fff;}
  
  /* DROPDOWN MENU*/
 #subnav{position:absolute;}
@@ -117,3 +117,5 @@ margin: 0 auto -3em;
 #subnav li a{border: 0px;}
 li:hover #subnav li{visibility:visible;}
 .img-placeholder{margin-left: 10px;width:20px;height:20px; background: url('../images/dropdown-menu-marker.png');float:right;}
+
+

@@ -1,15 +1,19 @@
-body{background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
+body{background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
 h1, h2, h3 { }
-h1 { font-size: 1.5em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #fff;} 
+h1 { font-size: 1.5em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #4ED3FF;} 
 h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
-h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px dotted #aaaaaa; padding-bottom: 0.3em;}
+h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px solid #aaaaaa;padding-bottom: 0.3em;}
 strong { font-weight: bold; }
 
 /* Base div CSS */
-#base {width: 960px;margin: 0 auto;}
+#base {margin: 0 auto;}
+
+#header{ background: #222; margin: auto; width: 100%;border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
+
+#nav, h1{ width: 960px; margin: 0 auto;}
 
 /* Content div css */
-#content { padding: 0.2em; min-height: 400px; }
+#content { width: 960px; margin: 0 auto; padding: 0.2em; min-height: 400px; margin-bottom: 4em;}
 #content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; font-size: 0.9em; }
 #content > p,
 #content > ul,
@@ -57,15 +61,15 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 }
 #basenav li a{
     text-decoration:none;
-    border: 1px solid #005860;
+    /*border: 1px solid #005860;*/
     color: #fff;
     display: block;
     text-align: left;
     padding: 8px 8px;
     font-size: 1.1em;
-    box-shadow: inset 1px 0px 1px #ccc;
+    /*box-shadow: inset 1px 0px 1px #ccc;*/
 }
-#basenav li a:hover{color: #eee;}
+#basenav li a:hover{color: #ccc;}
 
 #subnav {margin: 0;}
 #subnav li { float: none; margin: 0; width: 100%; }
@@ -104,7 +108,7 @@ height: 100%;
 margin: 0 auto -3em;
 }
 #footer, .push {height: 3em;}
-#footer{margin-top: 4em; background: url('../images/kompomaatti-bg.jpg') repeat-x #F2F2F2;padding: 8px; text-align: right; color: #fff;}
+#footer{margin-top: -4em; background: /*url('../images/kompomaatti-bg.jpg')*/ repeat-x #222;/*padding: 8px;*/ text-align: right; color: #fff;}
  
  /* DROPDOWN MENU*/
 #subnav{position:absolute;}

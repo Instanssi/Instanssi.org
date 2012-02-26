@@ -21,30 +21,32 @@
 </head>
 <body>
     <div id="base">
-        <h1>Kompomaatti</h1>
-        <div id="nav">
-            <ul id="basenav">
-                <li><a href="/kompomaatti/">Kompomaatti</a></li>
-                <li>
-                    <a href="/kompomaatti/compolist/">Kompot<div class="img-placeholder"></div></a>
-                    <ul id="subnav">
+        <div id="header">
+			<h1>Kompomaatti</h1>
+			<div id="nav">
+				<ul id="basenav">
+					<li><a href="/kompomaatti/">Kompomaatti</a></li>
+					<li>
+						<a href="/kompomaatti/compolist/">Kompot<div class="img-placeholder"></div></a>
+						<ul id="subnav">
 {% for navcompo in compos %}
-                        <li><a href="/kompomaatti/compo/{{ navcompo.id }}/">{{ navcompo.name }}</a></li>
+							<li><a href="/kompomaatti/compo/{{ navcompo.id }}/">{{ navcompo.name }}</a></li>
 {% endfor %}
-                    </ul>
-                </li>
-                <li><a href="/kompomaatti/help/">Ohje</a></li>
+						</ul>
+					</li>
+					<li><a href="/kompomaatti/help/">Ohje</a></li>
 {% if logged %}
-                <li><a href="/kompomaatti/myentries/">Dashboard</a></li>
+					<li><a href="/kompomaatti/myentries/">Dashboard</a></li>
 	{% if is_su %}
-				<li><a href="/kompomaatti/admin/">Admin</a></li>
+					<li><a href="/kompomaatti/admin/">Admin</a></li>
 	{% endif %}
-                <li><a href="/kompomaatti/logout/">Kirjaudu ulos</a></li>
+					<li><a href="/kompomaatti/logout/">Kirjaudu ulos</a></li>
 {% else %}
-                <li><a href="/openid/login/">Kirjaudu sisään</a></li>
+					<li><a href="/openid/login/">Kirjaudu sisään</a></li>
 {% endif %}
-            </ul>
-        </div>
+				</ul>
+			</div>
+		</div>
         <div id="content">
         {% block content %}{% endblock %}
         </div>

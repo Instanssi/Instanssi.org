@@ -1,5 +1,5 @@
 body{background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
-h1, h2, h3, h4, h5, p, li, td, th, label, div { font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; }
+h1, h2, h3, h4, h5, p, li, td, th, label, div, legend { font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; }
 h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #4ED3FF;} 
 h2 { font-size: 1.1em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
 h3 { font-size: 0.9em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px solid #aaaaaa;padding-bottom: 0.3em;}

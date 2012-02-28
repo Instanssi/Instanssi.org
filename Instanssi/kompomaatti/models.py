@@ -115,7 +115,7 @@ class Entry(models.Model):
     
     def can_use_jplayer(self):
         ext = os.path.splitext(self.entryfile.name)[1][1:]
-        return (ext in ['mp3','oga','ogv'])
+        return (ext in ['mp3','oga','ogv','ogg'])
     
     def get_show_list(self):
         show = {

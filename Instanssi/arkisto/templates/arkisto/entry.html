@@ -15,7 +15,7 @@
 				<p class="title"><span class="name">{{ entry.name }}</span> by <span class="by">{{ entry.creator }}</span></p>
 {% if entry.get_show_list.youtube == 1 %}{% include "arkisto/entryviews/youtube.html" %}{% endif %}
 {% if entry.get_show_list.image == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
-{% if entry.get_show_list.jplayer == 1 %}{% include "arkisto/entryviews/fillerimg.html" %}{% endif %}
+{% if entry.get_show_list.jplayer == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
 				<div class="info">
 				<p>{{ entry.compo.name }}</p>
 				<p>3. sija</p>

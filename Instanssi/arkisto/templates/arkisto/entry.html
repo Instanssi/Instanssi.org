@@ -13,17 +13,9 @@
 		<div id="entry-holder">
 			<div class="center">
 				<p class="title"><span class="name">{{ entry.name }}</span> by <span class="by">{{ entry.creator }}</span></p>
-				<div class="img">
-{% if entry.get_show_list.youtube == 1 %}
-	<p>Youtube</p>
-{% endif %}
-{% if entry.get_show_list.image == 1 %}
-	<p>image</p>
-{% endif %}
-{% if entry.get_show_list.jplayer == 1 %}
-	<p>jPlayer</p>
-{% endif %}
-				</div>
+{% if entry.get_show_list.youtube == 1 %}{% include "arkisto/entryviews/youtube.html" %}{% endif %}
+{% if entry.get_show_list.image == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
+{% if entry.get_show_list.jplayer == 1 %}{% include "arkisto/entryviews/fillerimg.html" %}{% endif %}
 				<div class="info">
 				<p>{{ entry.compo.name }}</p>
 				<p>3. sija</p>
@@ -36,9 +28,9 @@
 				</div>
 				<div class="clearer"></div>
 			</div>
-			<div class="desc">{{ entry.description }}</div>
+			<div class="desc">{{ entry.description|linebreaksbr }}</div>
 {% if entry.disqualified %}
-			<div class="desc"><strong>Entry on diskattu!:</strong><br />{{ entry.disqualied_reason }}</div>
+			<div class="desc"><strong>Entry on diskattu!:</strong><br />{{ entry.disqualied_reason|linebreaksbr }}</div>
 {% endif %}
 		</div>
 

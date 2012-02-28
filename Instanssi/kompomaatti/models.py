@@ -92,8 +92,8 @@ class Entry(models.Model):
     entryfile = models.FileField(u'Tiedosto', upload_to='kompomaatti/entryfiles/', help_text=u"Tuotospaketti.")
     sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
     imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
-    imagefile_thumbnail = ImageSpec([resize.Fit(320, 240)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
-    imagefile_medium = ImageSpec([resize.Fit(640, 420)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
+    imagefile_thumbnail = ImageSpec([resize.Fit(160, 100)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
+    imagefile_medium = ImageSpec([resize.Fit(640, 400)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
     disqualified = models.BooleanField(u'Diskattu', help_text=u"Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!", default=False)
     disqualified_reason = models.TextField(u'Syy diskaukseen', help_text=u"Diskauksen syy.", blank=True)
@@ -116,6 +116,30 @@ class Entry(models.Model):
     def can_use_jplayer(self):
         ext = os.path.splitext(self.entryfile.name)[1][1:]
         return (ext in ['mp3','oga','ogv'])
+    
+    def get_show_list(self):
+        show = {
+            'youtube': False,
+            'image': False,
+            'jplayer': False,
+        }
+        
+        state = self.compo.entry_view_type
+        if state == 1:
+            if self.youtube_url:
+                show['youtube'] = True
+            elif self.imagefile_original:
+                show['image'] = True
+        elif state == 2:
+            if self.imagefile_original:
+                show['image'] = True
+        elif state == 3:
+            if self.can_use_jplayer():
+                show['jplayer'] = True
+            elif self.imagefile_original:
+                show['image'] = True
+        
+        return show
     
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä")

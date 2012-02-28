@@ -18,9 +18,13 @@
 {% if entry.get_show_list.jplayer == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
 				<div class="info">
 				<p>{{ entry.compo.name }}</p>
-				<p>3. sija</p>
-				<p>131 ääntä</p>
-				<hr/>
+{% if entry.disqualified %}
+				<p>Diskattu!</p>
+{% else %}
+				<p>{{ entry.rank }}. sija</p>
+				<p>{{ entry.score }} pistettä</p>
+{% endif %}
+				<hr />
 				<p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
 {% if entry.sourcefile %}
 				<p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>

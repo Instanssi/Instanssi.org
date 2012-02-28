@@ -10,113 +10,18 @@
 
 {% block content %}
 {{ block.super }}
-		<h3>Demo</h3>
-		<div class="entry-holder">
-			<div class="entry">
-				<a href="entry-view.html"><img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> </a>
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<a href="entry-view.html"><img src="http://t1.gstatic.com/images?q=tbn:ANd9GcScLcPpLTMR5Qeo4LkqNvmnNtuDWePUnWW9o-s2IwS6oRFU4MiIgg"  /> </a>
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<a href="entry-view.html"><img src="http://t3.gstatic.com/images?q=tbn:ANd9GcQ2Mqo4TZ0bA2YV-NKOLPDViy3WIHq6Ts7-G2jNlvzRPct48cr7"  /> </a>
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<a href="entry-view.html"><img src="http://t0.gstatic.com/images?q=tbn:ANd9GcS2lm-rX-RRCl_ECyADShAxQXE-43M-LoaCuUyLW3leNI2axyV-Pg"  /> </a>
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<a href="entry-view.html"><img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> </a>
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="clearer"></div>
+
+{% for compo in compos %}
+	<h3>{{ compo.name }}</h3>
+	<div class="entry-holder">
+{% for entry in compo.entries %}
+		<div class="entry">
+			<a href="/arkisto/entry/{{ entry.id }}/"><img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  /> </a>
+			<p class="entry-name">{{ entry.name }}</p>
+			<p class="by">{{ entry.creator }}</p>
 		</div>
-		
-		<h3>Grafiikka</h3>
-		<div class="entry-holder">
-			<div class="entry">
-				<img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t1.gstatic.com/images?q=tbn:ANd9GcScLcPpLTMR5Qeo4LkqNvmnNtuDWePUnWW9o-s2IwS6oRFU4MiIgg"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t3.gstatic.com/images?q=tbn:ANd9GcQ2Mqo4TZ0bA2YV-NKOLPDViy3WIHq6Ts7-G2jNlvzRPct48cr7"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t0.gstatic.com/images?q=tbn:ANd9GcS2lm-rX-RRCl_ECyADShAxQXE-43M-LoaCuUyLW3leNI2axyV-Pg"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			<div class="clearer"></div>
-		</div>
-		
-		<h3>Musiikki</h3>
-		<div class="entry-holder">
-			<div class="entry">
-				<img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t1.gstatic.com/images?q=tbn:ANd9GcScLcPpLTMR5Qeo4LkqNvmnNtuDWePUnWW9o-s2IwS6oRFU4MiIgg"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t3.gstatic.com/images?q=tbn:ANd9GcQ2Mqo4TZ0bA2YV-NKOLPDViy3WIHq6Ts7-G2jNlvzRPct48cr7"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://t0.gstatic.com/images?q=tbn:ANd9GcS2lm-rX-RRCl_ECyADShAxQXE-43M-LoaCuUyLW3leNI2axyV-Pg"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="entry">
-				<img src="http://cdn1.iconfinder.com/data/icons/very_emotional_emoticons_lazy/128x128/128%20%2810%29.png"  /> 
-				<p class="entry-name">Entry name</p>
-				<p class="by">Person's name</p>
-			</div>
-			
-			<div class="clearer"></div>
-		</div>
+{% endfor %}
+		<div class="clearer"></div>
+	</div>
+{% endfor %}
 {% endblock %}

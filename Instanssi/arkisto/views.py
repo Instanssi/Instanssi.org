@@ -15,7 +15,7 @@ def custom_render(request, tpl, context={}):
 
 def event(request, event_id):
     try:
-        event = Event.objects.get(id=event_id)
+        event = Event.objects.get(id=event_id, archived=True)
     except Event.NotFound:
         raise Http404
     
@@ -33,7 +33,7 @@ def event(request, event_id):
 
 def index(request):
     try:
-        latest = Event.objects.all().order_by('date').reverse()[0]
+        latest = Event.objects.filter(archived=True).order_by('date').reverse()[0]
     except:
         return HttpResponse("No content in archive!")
         
@@ -41,20 +41,18 @@ def index(request):
 
 
 def entry(request, entry_id):
-    '''
     # Get the entry
     try:
         entry = Entry.objects.get(id=entry_id)
     except Entry.DoesNotExist:
         raise Http404
-    
+
     # Make sure the entry belongs to an archived event
-    if entry.compo.event.archived != True:
+    if not entry.compo.event.archived:
         raise Http404
     
     # Dump the page
     return custom_render(request, 'arkisto/entry.html', {
         'entry': entry,
+        'event': entry.compo.event,
     })
-    '''
-    return custom_render(request, 'arkisto/entry.html')

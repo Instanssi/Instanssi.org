@@ -11,21 +11,35 @@
 {% block content %}
 {{ block.super }}
 		<div id="entry-holder">
-			
 			<div class="center">
-				<p class="title"><span class="name">Entry name</span> by <span class="by">Person's name</span></p>
-				<div class="img">Tähän entry: Jos Grafiikka-> kuva, jos demo->video jne.</div>
+				<p class="title"><span class="name">{{ entry.name }}</span> by <span class="by">{{ entry.creator }}</span></p>
+				<div class="img">
+{% if entry.get_show_list.youtube == 1 %}
+	<p>Youtube</p>
+{% endif %}
+{% if entry.get_show_list.image == 1 %}
+	<p>image</p>
+{% endif %}
+{% if entry.get_show_list.jplayer == 1 %}
+	<p>jPlayer</p>
+{% endif %}
+				</div>
 				<div class="info">
-				<p>Demo</p>
+				<p>{{ entry.compo.name }}</p>
 				<p>3. sija</p>
 				<p>131 ääntä</p>
 				<hr/>
-				<p><a href="">Lataa koneelle</a></p>
+				<p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
+{% if entry.sourcefile %}
+				<p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>
+{% endif %}
 				</div>
 				<div class="clearer"></div>
 			</div>
-			
-			<div class="desc">Koodasin demo kolan voimalla. Käytin hienoa rajapintaa ja hulluja kirjastoja. Hauskaa oli.</div>
+			<div class="desc">{{ entry.description }}</div>
+{% if entry.disqualified %}
+			<div class="desc"><strong>Entry on diskattu!:</strong><br />{{ entry.disqualied_reason }}</div>
+{% endif %}
 		</div>
 
 {% endblock %}

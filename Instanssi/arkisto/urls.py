@@ -6,4 +6,5 @@ urlpatterns = patterns(
     'arkisto.views',
     url(r'^$', 'index'),
     url(r'^entry/(?P<entry_id>\d+)/', 'entry'),
+    url(r'^event/(?P<event_id>\d+)/', 'event'),
 )

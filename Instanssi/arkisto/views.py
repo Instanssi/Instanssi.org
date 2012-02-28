@@ -3,19 +3,41 @@
 from django.shortcuts import render_to_response
 from Instanssi.kompomaatti.models import Event, Compo, Entry
 from django.template import RequestContext
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from Instanssi import settings
 
 def custom_render(request, tpl, context={}):
     internal = {
-        'nav_events': Event.objects.filter(archived=True).order_by('date'),
+        'nav_events': Event.objects.filter(archived=True).order_by('date').reverse(),
         'debugmode': settings.DEBUG,
     }
     return render_to_response(tpl, dict(context.items() + internal.items()), context_instance=RequestContext(request))
 
+def event(request, event_id):
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.NotFound:
+        raise Http404
+    
+    compos = Compo.objects.filter(event=event)
+    compolist = []
+    for compo in compos:
+        compo.entries = Entry.objects.filter(compo=compo)
+        compolist.append(compo)
+    
+    return custom_render(request, 'arkisto/index.html', {
+        'event': event,
+        'compos': compolist,
+    })
+
 
 def index(request):
-    return custom_render(request, 'arkisto/index.html')
+    try:
+        latest = Event.objects.all().order_by('date').reverse()[0]
+    except:
+        return HttpResponse("No content in archive!")
+        
+    return event(request, latest.id)
 
 
 def entry(request, entry_id):

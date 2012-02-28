@@ -36,10 +36,12 @@
     <div id="header"><h1>Instanssi | Arkisto</h1></div>
     <div id="content">
         <ul id="nav">
-            <li><a href="">Instanssi 2012</a></li><span class="separator">|</span>
-            <li><a href="">Konstruktori 2012</a></li><span class="separator">|</span>
-            <li><a href="">Instanssi 2011</a></li>
+{% for event in nav_events %}
+            <li><a href="/arkisto/event/{{ event.id }}/">{{ event.name }}</a></li>
+            {% if not forloop.last %}<span class="separator">|</span>{% endif %}
+{% endfor %}
         </ul>
+        <h2>{{ event.name }} <a href="/arkisto/event/{{ event.id }}/" class="see-all-results">Katso kaikki tulokset</a></h2>
 {% block content %}{% endblock %}
     </div>
 </body>

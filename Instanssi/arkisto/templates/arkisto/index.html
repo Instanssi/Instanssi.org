@@ -16,7 +16,13 @@
 	<div class="entry-holder">
 {% for entry in compo.entries %}
 		<div class="entry">
-			<a href="/arkisto/entry/{{ entry.id }}/"><img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  /> </a>
+			<a href="/arkisto/entry/{{ entry.id }}/">
+{% if entry.imagefile_thumbnail %}
+				<img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  /> 
+{% else %}
+				<img src="/static/arkisto/img/filler_small.png" alt="Entry" width="160" height="100">
+{% endif %}
+			</a>
 			<p class="entry-name">{{ entry.name }}</p>
 			<p class="by">{{ entry.creator }}</p>
 		</div>

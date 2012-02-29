@@ -17,6 +17,8 @@ h3{/*color:#0A5ED3;*/ color: #222; font-size: 1em;font-weight: normal; font-fami
 #nav .separator{margin: 0 10px;}
 #content{width:960px; margin: 0 auto;}
 
+.sija{ color: #aaa; background: #ddd; text-align: center; width: 1.1em; height: 1.1em; position: relative; top: 0.4em; right: 0.6em; z-index: -10; font-size: 2em; box-shadow: inset 1px 1px 1px #fff; border: 1px solid #ccc; text-shadow: 1px 1px 0px #fff;/* border-radius: 1em;*/ }
+
 .entry img{width:160px; height: 100px;border: 1px solid #fff; box-shadow: 0px 2px 6px #000; }
 .entry{ float: left; margin: 15px; color: #444;}
 .entry img:hover{ border: 1px solid #666; cursor: pointer;}
@@ -26,13 +28,13 @@ h3{/*color:#0A5ED3;*/ color: #222; font-size: 1em;font-weight: normal; font-fami
 
 
 
-#entry-holder .title{font-variant: small-caps;}
-#entry-holder .name{font-size: 1.6em;}
-#entry-holder .by{font-size: 1.6em;}
+#entry-holder .title{font-variant: small-caps; color: #666;}
+#entry-holder .name{font-size: 1.6em; color: #222;}
+#entry-holder .by{font-size: 1.6em; color: #222;}
 #entry-holder .img{width: 640px; height: 400px; border: 1px solid #333; float: left; }
-#entry-holder  .info{font-size: 1.3em; float:left;margin-left: 20px; font-variant: small-caps;}
+#entry-holder  .info{font-size: 1em; float:left;margin-left: 20px; font-variant: small-caps; color: #222;}
 #entry-holder  .info p:first-child{margin-top: 295px;}
 #entry-holder  .info p a{ margin: 5px; font-variant: small-caps;color:#0A5ED3;text-decoration: none;}
 #entry-holder  .info p a:hover{ text-decoration: underline;}
 #entry-holder  .some-width{width: 100px; background:blue;}
-#entry-holder  .desc{background: #ddd; padding: 20px; margin: 20px 0; }
+#entry-holder  .desc{background: #e7e7e7; padding: 20px; margin: 20px 0; border: 1px solid #d7d7d7; box-shadow: inset 0px 0px 10px #ddd;}

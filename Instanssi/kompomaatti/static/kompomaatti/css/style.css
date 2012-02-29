@@ -1,6 +1,6 @@
 body{background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2;}
 h1, h2, h3, h4, h5, p, li, td, th, label, div, legend { font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; }
-h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 28px 0px; color: #4ED3FF;} 
+h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 30px 0px; color: #4ED3FF;} 
 h2 { font-size: 1.1em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
 h3 { font-size: 0.9em; letter-spacing: 1px; margin-bottom: 0.5em; margin-top: 1em; font-weight: bold; border-bottom: 1px solid #aaaaaa;padding-bottom: 0.3em;}
 p, li, td, th, label, div { font-size: 14px; }
@@ -63,17 +63,24 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 #basenav li a{
     text-decoration:none;
     /*border: 1px solid #005860;*/
-    color: #fff;
+    color: #ccc;
     display: block;
     text-align: left;
     padding: 8px 8px;
     font-size: 16px;
     /*box-shadow: inset 1px 0px 1px #ccc;*/
 }
-#basenav li a:hover{color: #ccc;}
+#basenav li a:hover{color: #fff;}
 
+ /* DROPDOWN MENU*/
 #subnav {margin: 0;}
 #subnav li { float: none; margin: 0; width: 100%; }
+#subnav{position:absolute;   margin-top: 0px; margin-left: 0px;}
+#subnav li{/*visibility:hidden;*/ display: none; background: #222; border: 1px solid #111; opacity: 0.9;}
+#subnav li a{border: 0px;}
+li:hover #subnav li{/*visibility:visible;*/ display: block;}
+.img-placeholder{margin-left: 10px;width:20px;height:20px; background: url('../images/dropdown-menu-marker.png');float:right;}
+
 
 /* JQuery ui icons */
 a.icon {
@@ -107,12 +114,7 @@ margin: 0 auto -3em;
 #footer, .push {height: 3em;}
 #footer{margin-top: -3em; background: /*url('../images/kompomaatti-bg.jpg')*/ repeat-x #222;/*padding: 8px;*/ text-align: right; color: #fff; border-top: 1px solid #000;}
  
- /* DROPDOWN MENU*/
-#subnav{position:absolute;}
-#subnav li{visibility:hidden;background: #0098A6; border: 1px solid #005860;}
-#subnav li a{border: 0px;}
-li:hover #subnav li{visibility:visible;}
-.img-placeholder{margin-left: 10px;width:20px;height:20px; background: url('../images/dropdown-menu-marker.png');float:right;}
+
 
 /* CSS 3*/
 #header, #footer{

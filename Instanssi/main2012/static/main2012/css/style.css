@@ -1,5 +1,6 @@
 html, body{overflow-x:hidden;background: #111;}
 body{ background-image:url('../images/header-background.jpg');background-repeat:repeat-x;}
+strong { font-weight: bold; }
 
 #header .center{ height: 300px; }
 #header{width: 100%; height: 300px; font-family: 'Alfa Slab One', serif; font-weight:normal; background: url('../images/mobile/mobile-header.jpg');}

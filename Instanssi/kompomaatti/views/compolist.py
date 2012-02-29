@@ -26,19 +26,9 @@ def compolist(request):
                     'id': entry.id,
                     'creator': entry.creator,
                     'name': entry.name,
-                    'score': 0.0,
+                    'score': entry.get_score(),
                     'disqualified': entry.disqualified,
                 }
-                # Want to show disqualified entries dead last.
-                if entry.disqualified:
-                    entries_temp[entry.id]['score'] = -1.0
-            
-            # Get score for each entry. Score should be 0 for all disqualified entries, 
-            # so just discard those. Also skip votes with rank = 0. (division by zero etc.) :P
-            all_votes = Vote.objects.select_related(depth=1).filter(compo=compo)
-            for vote in all_votes:
-                if not vote.entry.disqualified or vote.rank > 0:
-                    entries_temp[vote.entry.id]['score'] += (1.0 / vote.rank)
             
             # Sort entries by score, highest score first (of course).
             entries[compo.id] = sorted(entries_temp.values(), key=itemgetter('score'), reverse=True)

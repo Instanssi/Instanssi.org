@@ -117,6 +117,17 @@ class Entry(models.Model):
         ext = os.path.splitext(self.entryfile.name)[1][1:]
         return (ext in ['mp3','oga','ogv','ogg'])
     
+    def get_score(self):
+        if self.disqualified:
+            return -1.0
+        else:
+            score = 0.0
+            votes = Vote.objects.filter(entry=self, compo=self.compo)
+            for vote in votes:
+                if vote.rank > 0:
+                    score += (1.0 / vote.rank)
+            return score
+    
     def get_show_list(self):
         show = {
             'youtube': False,

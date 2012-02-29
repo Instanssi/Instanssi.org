@@ -95,8 +95,8 @@
             <td>{{ entry.description|linebreaksbr }}</td>
             <td>{{ entry.creator }}</td>
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
-            <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Kuva</a>{% endif %}</td>
-            <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lähdekoodi</a>{% endif %}</td>
+            <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Kuva</a>{% else %}&nbsp;{% endif %}</td>
+            <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lähdekoodi</a>{% else %}&nbsp;{% endif %}</td>
             <td>
 {% if entry|is_editable %}
                 <a class="icon editicon" href="/kompomaatti/myentries/edit/{{ entry.id }}/">Muokkaa</a>
@@ -105,11 +105,11 @@
             </td>
         </tr>
 {% endfor %}
-{% else %}
-    <p>Ei ladattuja tuotoksia</p>
-{% endif %}
     </tbody>
 </table>
+{% else %}
+<p>Ei ladattuja tuotoksia</p>
+{% endif %}
 
 <h3>Avoimet kompot</h3>
 <p>

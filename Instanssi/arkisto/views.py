@@ -2,13 +2,10 @@
 
 from django.shortcuts import render_to_response
 from Instanssi.kompomaatti.models import Event, Compo, Entry
+from Instanssi.kompomaatti.misc import entrysort
 from django.template import RequestContext
 from django.http import Http404, HttpResponse
 from Instanssi import settings
-
-# Helper function for sorting by entry score
-def sort_by_score(object):
-    return object.get_score()
 
 # Helper function for rendering pages
 def custom_render(request, tpl, context={}):
@@ -28,7 +25,7 @@ def event(request, event_id):
     compos = Compo.objects.filter(event=event)
     compolist = []
     for compo in compos:
-        compo.entries = sorted(Entry.objects.filter(compo=compo), key=sort_by_score, reverse=True)
+        compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
         compolist.append(compo)
     
     return custom_render(request, 'arkisto/index.html', {
@@ -58,7 +55,7 @@ def entry(request, entry_id):
         raise Http404
     
     # Get entry rank
-    entries = sorted(Entry.objects.filter(compo=entry.compo), key=sort_by_score, reverse=True)
+    entries = entrysort.sort_by_score(Entry.objects.filter(compo=entry.compo))
     n = 1
     for e in entries:
         if e.id == entry.id:

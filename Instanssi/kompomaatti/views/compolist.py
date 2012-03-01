@@ -6,10 +6,7 @@ from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Entry, Compo, Vote
 from Instanssi.settings import ACTIVE_EVENT_ID
-
-# Helper function for sorting by entry score
-def sort_by_score(object):
-    return object.get_score()
+from Instanssi.kompomaatti.misc import entrysort
 
 def compolist(request):
     # Get compos, format times
@@ -24,7 +21,7 @@ def compolist(request):
     for compo in compos:
         if compo.show_voting_results:
             # Sort entries by score, highest score first (of course).
-            entries[compo.id] = sorted(Entry.objects.filter(compo=compo), key=sort_by_score, reverse=True)
+            entries[compo.id] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
         else:
             # Just get entries in alphabetical order
             entries[compo.id] = Entry.objects.filter(compo=compo).order_by('name')

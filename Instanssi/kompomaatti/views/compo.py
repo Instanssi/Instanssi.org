@@ -6,10 +6,7 @@ from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Entry, Compo, Vote, VoteCode
 from Instanssi.settings import ACTIVE_EVENT_ID
-
-# Helper function for sorting by entry score
-def sort_by_score(object):
-    return object.get_score()
+from Instanssi.kompomaatti.misc import entrysort
 
 def compo(request, compo_id):
     # Get compo information
@@ -134,7 +131,7 @@ def compo(request, compo_id):
         e = Entry.objects.filter(compo=c,disqualified=False).order_by('?')
     else:
         if c.show_voting_results:
-            e = sorted(Entry.objects.filter(compo=c), key=sort_by_score, reverse=True)
+            e = entrysort.sort_by_score(Entry.objects.filter(compo=c))
         else:
             e = Entry.objects.filter(compo=c).order_by('name')
     

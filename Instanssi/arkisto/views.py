@@ -6,6 +6,11 @@ from django.template import RequestContext
 from django.http import Http404, HttpResponse
 from Instanssi import settings
 
+# Helper function for sorting by entry score
+def sort_by_score(object):
+    return object.get_score()
+
+# Helper function for rendering pages
 def custom_render(request, tpl, context={}):
     internal = {
         'nav_events': Event.objects.filter(archived=True).order_by('date').reverse(),
@@ -13,6 +18,7 @@ def custom_render(request, tpl, context={}):
     }
     return render_to_response(tpl, dict(context.items() + internal.items()), context_instance=RequestContext(request))
 
+# Event page
 def event(request, event_id):
     try:
         event = Event.objects.get(id=event_id, archived=True)
@@ -22,7 +28,7 @@ def event(request, event_id):
     compos = Compo.objects.filter(event=event)
     compolist = []
     for compo in compos:
-        compo.entries = Entry.objects.filter(compo=compo)
+        compo.entries = sorted(Entry.objects.filter(compo=compo), key=sort_by_score, reverse=True)
         compolist.append(compo)
     
     return custom_render(request, 'arkisto/index.html', {
@@ -30,7 +36,7 @@ def event(request, event_id):
         'compos': compolist,
     })
 
-
+# Index page (loads event page)
 def index(request):
     try:
         latest = Event.objects.filter(archived=True).order_by('date').reverse()[0]
@@ -39,7 +45,7 @@ def index(request):
         
     return event(request, latest.id)
 
-
+# Entry page
 def entry(request, entry_id):
     # Get the entry
     try:
@@ -50,6 +56,14 @@ def entry(request, entry_id):
     # Make sure the entry belongs to an archived event
     if not entry.compo.event.archived:
         raise Http404
+    
+    # Get entry rank
+    entries = sorted(Entry.objects.filter(compo=entry.compo), key=sort_by_score, reverse=True)
+    n = 1
+    for e in entries:
+        if e.id == entry.id:
+            entry.rank = n
+        n += 1
     
     # Dump the page
     return custom_render(request, 'arkisto/entry.html', {

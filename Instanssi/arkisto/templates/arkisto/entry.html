@@ -12,17 +12,21 @@
 {{ block.super }}
 		<div id="entry-holder">
 			<div class="center">
-				<p class="title"><span class="name">{{ entry.name }}</span> by <span class="by">{{ entry.creator }}</span></p>
-{% if entry.get_show_list.youtube == 1 %}{% include "arkisto/entryviews/youtube.html" %}{% endif %}
-{% if entry.get_show_list.image == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
-{% if entry.get_show_list.jplayer == 1 %}{% include "arkisto/entryviews/image.html" %}{% endif %}
+				<p class="title">
+				    <span class="name">{{ entry.name }}</span> 
+				    by <span class="by">{{ entry.creator }}</span>
+				</p>
+{% if entry.get_show_list.youtube %}{% include "arkisto/entryviews/youtube.html" %}{% endif %}
+{% if entry.get_show_list.image   %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
+{% if entry.get_show_list.jplayer %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
+{% if entry.get_show_list.noshow  %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
 				<div class="info">
 				<p>{{ entry.compo.name }}</p>
 {% if entry.disqualified %}
 				<p>Diskattu!</p>
 {% else %}
 				<p>{{ entry.rank }}. sija</p>
-				<p>{{ entry.score }} pistettä</p>
+				<p>{{ entry.get_score|floatformat:"2" }} pistettä</p>
 {% endif %}
 				<hr />
 				<p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>

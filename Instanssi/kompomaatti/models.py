@@ -133,6 +133,7 @@ class Entry(models.Model):
             'youtube': False,
             'image': False,
             'jplayer': False,
+            'noshow': True
         }
         
         state = self.compo.entry_view_type
@@ -150,6 +151,9 @@ class Entry(models.Model):
             elif self.imagefile_original:
                 show['image'] = True
         
+        if show['jplayer'] or show['image'] or show['youtube']:
+            show['noshow'] = False
+            
         return show
     
 class Vote(models.Model):

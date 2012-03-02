@@ -71,7 +71,7 @@ class Compo(models.Model):
     entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi. Latauslinkki näytetään aina.")
     
     def __unicode__(self):
-        return self.name
+        return self.event.name + ': ' + self.name
     
     class Meta:
         verbose_name=u"kompo"

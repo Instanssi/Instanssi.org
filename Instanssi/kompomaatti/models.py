@@ -43,7 +43,10 @@ class VoteCode(models.Model):
     associated_to = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
     time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True)
     def __unicode__(self):
-        return self.key
+        if self.associated_to:
+            return self.key + ': ' + self.associated_to.username
+        else:
+            return self.key
     class Meta:
         verbose_name=u"äänestysavain"
         verbose_name_plural=u"äänestysavaimet"

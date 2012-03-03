@@ -98,7 +98,8 @@ class Entry(models.Model):
     youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
     disqualified = models.BooleanField(u'Diskattu', help_text=u"Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!", default=False)
     disqualified_reason = models.TextField(u'Syy diskaukseen', help_text=u"Diskauksen syy.", blank=True)
-    
+    archive_score = models.FloatField(u'Pisteet', help_text=u'Arkistoidun entryn kompossa saamat pisteet.', null=True, blank=True)
+
     def __unicode__(self):
         return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
     
@@ -119,6 +120,11 @@ class Entry(models.Model):
         return (ext in ['mp3','oga','ogv','ogg'])
     
     def get_score(self):
+        # If entry has predefined score, use that information
+        if self.archive_score:
+            return self.archive_score
+        
+        # Otherwise calculate points
         if self.disqualified:
             return -1.0
         else:
@@ -128,6 +134,18 @@ class Entry(models.Model):
                 if vote.rank > 0:
                     score += (1.0 / vote.rank)
             return score
+        
+    def get_rank(self):
+        # Calculate ranks by score
+        def sort_helper(object):
+            return object.get_score()
+        entries = sorted(Entry.objects.filter(compo=self.compo), key=sort_helper, reverse=True)
+        n = 1
+        for e in entries:
+            if e.id == self.id:
+                return n
+            n += 1
+        return n
     
     def get_show_list(self):
         show = {

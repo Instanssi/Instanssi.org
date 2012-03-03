@@ -3,10 +3,9 @@ body{
     font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", sans-serif; 
 }
 h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 30px 0px; color: #4ED3FF;} 
-h2 { font-size: 1.1em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
-h3 { font-size: 0.9em; letter-spacing: 1px; margin-bottom: 1.0em; margin-top: 2.0em; font-weight: bold; border-bottom: 1px solid #aaaaaa; padding-bottom: 0.3em;}
-legend { font-size: 0.5em; }
-p, li, td, th, label, div { font-size: 14px; }
+h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
+h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1.0em; margin-top: 2.0em; font-weight: bold; border-bottom: 1px solid #aaaaaa; padding-bottom: 0.3em;}
+p, li, td, th, label, div, strong, legend { font-size: 14px; }
 strong { font-weight: bold; }
 
 /* Base div CSS */
@@ -48,9 +47,9 @@ table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border:
 .msgicon { float: left; }
 #voting_errortext { margin-bottom: 0.2em; margin-top: 0.2em; padding: 0.2em; }
 #vote_js_mode { display: none; }
-#vote_js_mode p { margin: 0.3em; }
-#vote_html_mode input { margin: 0.3em; }
-#vote_html_mode p {margin: 0.3em;}
+#vote_js_mode p { margin-bottom: 0.3em; margin-top: 0.3em; }
+#vote_html_mode input { margin-bottom: 0.3em; margin-top: 0.3em; }
+#vote_html_mode p { margin-bottom: 0.3em; margin-top: 0.3em; }
 #vote_html_mode fieldset { padding: 0.3em; }
 #vote_html_mode li { border: 1px solid #dcdcdc; background-color: #eeeeee; margin: 0.3em; padding: 0em; }
 

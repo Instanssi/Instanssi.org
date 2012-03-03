@@ -7,6 +7,7 @@ from imagekit.models import ImageSpec
 from imagekit.processors import resize
 from imagekit.admin import AdminThumbnail
 from datetime import datetime
+from misc.overwritestorage import OverwriteStorage
 import os.path
 
 class Profile(models.Model):
@@ -89,9 +90,9 @@ class Entry(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Nimi tuotokselle')
     description = models.TextField(u'Kuvaus', help_text=u'Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField(u'Tekijä', max_length=64, help_text=u'Tuotoksen tekijän tai tekijäryhmän nimi')
-    entryfile = models.FileField(u'Tiedosto', upload_to='kompomaatti/entryfiles/', help_text=u"Tuotospaketti.")
-    sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
-    imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
+    entryfile = models.FileField(u'Tiedosto', upload_to='kompomaatti/entryfiles/', storage=OverwriteStorage(), help_text=u"Tuotospaketti.")
+    sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', storage=OverwriteStorage(), help_text=u"Lähdekoodipaketti.", blank=True)
+    imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', storage=OverwriteStorage(), help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpec([resize.Fit(160, 100)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     imagefile_medium = ImageSpec([resize.Fit(640, 400)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)

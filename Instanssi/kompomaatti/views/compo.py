@@ -32,6 +32,11 @@ def compo(request, compo_id):
         now = datetime.now()
         if c.voting_start <= now and now < c.voting_end:
             voting_open = True
+        
+        # Check if we can show the entries
+        show_entries = False
+        if c.voting_start <= now:
+            show_entries = True
     
         # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
@@ -132,13 +137,16 @@ def compo(request, compo_id):
     else:
         if c.show_voting_results:
             e = entrysort.sort_by_score(Entry.objects.filter(compo=c))
-        else:
+        elif show_entries:
             e = Entry.objects.filter(compo=c).order_by('name')
+        else:
+            e = []
     
     # Render the page. Ya, rly.
     return custom_render(request, 'kompomaatti/compo.html', {
         'compo': c,
         'entries': e,
         'voting_open': voting_open,
-        'has_voted': has_voted
+        'has_voted': has_voted,
+        'show_entries': show_entries,
     })

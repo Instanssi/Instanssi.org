@@ -66,17 +66,22 @@
     </table>
     
     <h3>Teokset</h3>
-    <p>
-        Äänestys näkyy vain, jos äänestysaika on voimassa. Muutoin näytetään lista teoksista.
-        Teoslistasta saa ladattua teoksia vain äänestysajan aluettua (ja loputtua). Huom: diskattuja
-        entryjä ei näytetä!
-    </p>
+{% if entries %}
 {% if not has_voted and voting_open %}
     <p>
         <strong>Et ole vielä äänestänyt!</strong>
     </p>
 {% endif %}
-{% if entries %}
+{% if has_voted and voting_open %}
+    <p>
+        <strong>Olet jo äänestänyt!</strong>
+    </p>
+{% endif %}
+{% if voting_open and not associated and logged %}
+    <p>
+        <strong>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta!</strong>
+    </p>
+{% endif %}
 {% if voting_open and associated %}
     <div id="voting_errortext"></div>
     <div id="vote_js_mode">
@@ -85,6 +90,7 @@
             Kun teokset ovat mieleisessäsi järjestyksessä, paina "Tallenna"-painiketta. Voit muokata järjestystä
             äänestyksen päättymiseen asti.
         </p>
+        <br />
         <ul id="sortable">
 {% for entry in entries %}
             <li class="ui-state-default" id="entry_{{ entry.id }}">
@@ -141,6 +147,10 @@
     {% endif %}
 {% endif %}
 {% else %}
-    <p>Kompossa ei ole vielä osallistujia!</p>
+    {% if show_entries %}
+    <p>Kompossa ei ole osallistujia!</p>
+    {% else %}
+    <p>Äänestys ei ole vielä auki!</p>
+    {% endif %}
 {% endif %}
 {% endblock %}

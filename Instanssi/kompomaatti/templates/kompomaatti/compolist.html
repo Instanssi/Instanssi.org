@@ -41,20 +41,20 @@
 	{% if compo.show_voting_results %}
     <p>Äänestystulokset:</p>
     <ol>
-    {% for entry in entries|idx:compo.id %}
+        {% for entry in entries|idx:compo.id %}
         {% if entry.disqualified %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. <strong>Diskattu!</strong></li>
         {% else %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}. Pisteet: {{ entry.get_score|floatformat:"2" }}</li>
         {% endif %}
-    {% endfor %}
+        {% endfor %}
     </ol>
 	{% else %}
     <p>Teokset aakkosjärjestyksessä:</p>
     <ul>
-    {% for entry in entries|idx:compo.id %}
+        {% for entry in entries|idx:compo.id %}
         <li><a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }}.{% if entry.disqualified %} Diskattu!{% endif %}</li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 	{% endif %}
 {% endif %}

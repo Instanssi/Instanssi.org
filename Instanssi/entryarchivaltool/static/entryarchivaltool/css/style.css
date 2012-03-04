@@ -1,0 +1,26 @@
+body {
+    font-size: 12px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+h1 { font-size: 2.0em; }
+h2 { font-size: 1.2em; }
+
+#base {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#header {
+    padding: 0.5em;
+}
+#content {
+    padding: 0.5em;
+}
+#content fieldset {
+    border: 1px solid #aaaaaa;
+}
+form.uniForm .ctrlHolder {
+    border-bottom: 1px dotted #aaaaaa;
+}
+strong { font-weight: bold; }

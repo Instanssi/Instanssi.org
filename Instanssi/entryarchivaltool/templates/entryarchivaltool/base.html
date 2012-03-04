@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Arkistointityökalu</title>
+    <link rel="stylesheet" href="/static/libs/css/reset.css" />
+    <link rel="stylesheet" href="/static/entryarchivaltool/css/style.css" />
+    <link href="/static/libs/css/uni-form/uni-form.css" media="all" rel="stylesheet" />
+    <link href="/static/libs/css/uni-form/default.uni-form.css" media="all" rel="stylesheet" />
+    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
+{% block head %}{% endblock %}
+    <script type="text/javascript">
+    $(function() {
+{% block jquery %}{% endblock %}
+    });
+    </script>
+</head>
+<body>
+<div id="base">
+    <div id="header">
+        <h1>Arkistointityökalu</h1>
+    </div>
+    <div id="content">
+    {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

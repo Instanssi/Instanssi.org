@@ -1,0 +1,19 @@
+{% extends "entryarchivaltool/base.html" %}
+{% load uni_form_tags %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% if saved %}
+<p><strong>Tallennettu!</strong></p><br />
+{% endif %}
+{% uni_form addform addform.helper %}
+{% endblock %}

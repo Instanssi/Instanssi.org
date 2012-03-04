@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^2012/', include('main2012.urls')),
     url(r'^arkisto/', include('arkisto.urls')),
+    url(r'^archivaltool/', include('entryarchivaltool.urls')),
     url(r'^$', include('main2012.urls')),
     url(r'^admin/', include(admin.site.urls)),
     (r'^openid/', include('django_openid_auth.urls')),

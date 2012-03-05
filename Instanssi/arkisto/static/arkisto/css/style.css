@@ -23,10 +23,8 @@ h3{/*color:#0A5ED3;*/ color: #222; font-size: 1em;font-weight: normal; font-fami
 .entry{ float: left; margin: 15px; color: #444;}
 .entry img:hover{ border: 1px solid #666; cursor: pointer;}
 .entry-holder{margin-bottom: 40px;}
-.tags a{ color: #888; text-decoration: none; font-style: italic;}
-.tags a:hover{ text-decoration: underline;}
-
-
+p.by { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
+p.entry-name { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
 
 #entry-holder .title{font-variant: small-caps; color: #666;}
 #entry-holder .name{font-size: 1.6em; color: #222;}

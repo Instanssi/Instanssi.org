@@ -18,6 +18,13 @@ def compo(request, compo_id):
     # Format times and stuff
     c = compo_times_formatter(c)
     
+    now = datetime.now()
+    
+    # Check if we can show the entries
+    show_entries = False
+    if c.voting_start <= now:
+        show_entries = True
+    
     # The following is only relevant, if the user is logged in and valid.
     has_voted = False
     voting_open = False
@@ -29,15 +36,9 @@ def compo(request, compo_id):
             has_voted = True
         
         # Check if voting is open
-        now = datetime.now()
         if c.voting_start <= now and now < c.voting_end:
             voting_open = True
         
-        # Check if we can show the entries
-        show_entries = False
-        if c.voting_start <= now:
-            show_entries = True
-    
         # Check if we want to do something with forms and stuff.
         if request.method == 'POST':
             if voting_open:

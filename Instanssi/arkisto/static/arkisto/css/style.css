@@ -3,6 +3,7 @@ html{background: url('background-image-white.jpg') #eee;}
 html{ overflow-y: scroll;}
 .clearer{clear: both;}
 
+body{font-family: 'MS Serif', 'New York', sans-serif;}
 
 #header{background: #222;border-bottom: 1px solid #777;font-variant: small-caps; font-weight:bold; border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
 

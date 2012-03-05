@@ -19,7 +19,7 @@ def custom_render(request, tpl, context={}):
 def event(request, event_id):
     try:
         event = Event.objects.get(id=event_id, archived=True)
-    except Event.NotFound:
+    except Event.DoesNotExist:
         raise Http404
     
     compos = Compo.objects.filter(event=event)

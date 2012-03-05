@@ -34,6 +34,9 @@ def english(request):
 def kompot(request):
     return render_custom('main2012/kompot.html')
 
+def stream(request):
+    return render_custom('main2012/stream.html')
+
 def ohjelma(request):
     return render_custom('main2012/ohjelma.html')
 

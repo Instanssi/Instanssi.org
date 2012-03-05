@@ -22,7 +22,7 @@ h3{/*color:#0A5ED3;*/ color: #222; font-size: 1em;font-weight: normal; font-fami
 .entry img{width:160px; height: 100px;border: 1px solid #fff; box-shadow: 0px 2px 6px #000; }
 .entry{ float: left; margin: 15px; color: #444;}
 .entry img:hover{ border: 1px solid #666; cursor: pointer;}
-.entry-holder{margin-bottom: 40px;}
+.entry-holder{margin-bottom: 30px;}
 p.by { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
 p.entry-name { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
 

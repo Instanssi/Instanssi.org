@@ -24,8 +24,8 @@
 				<img src="/static/arkisto/img/filler_small.png" alt="Entry" width="160" height="100">
 {% endif %}
 			</a>
-			<p class="entry-name">{{ entry.name }}</p>
-			<p class="by">{{ entry.creator }}</p>
+			<p class="entry-name" title="{{ entry.name }}">{{ entry.name }}</p>
+			<p class="by" title="{{ entry.creator }}">{{ entry.creator }}</p>
 		</div>
 {% endfor %}
 		<div class="clearer"></div>

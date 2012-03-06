@@ -2,15 +2,19 @@ body{
     background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2; 
     font-family: 'MS Serif', 'New York', sans-serif;
 }
-h1 { font-size: 1.4em; font-variant: small-caps; margin:0; padding: 30px 0px; color: #4ED3FF;} 
-h2 { font-size: 1.2em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: bold; font-variant: small-caps;}
-h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1.0em; margin-top: 2.0em; font-weight: bold; border-bottom: 1px solid #aaaaaa; padding-bottom: 0.3em;}
-p, li, td, th, label, div, strong, legend { font-size: 14px; }
+p, li, td, th, label, div, strong, legend {  }
+h1, h2, h3{font-family: 'MS Serif', 'New York', sans-serif; font-size: 16px; }
+
+h1 a, h1{ font-size: 1em !important; font-variant: small-caps; margin:0; padding: 1em 0px; color: #4ED3FF; text-decoration: none;} 
+
+h2 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: normal; font-variant: small-caps; font-family: Palatino Linotype, Book Antiqua, Palatino, serif;}
+h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1.0em; margin-top: 2.0em; font-weight: normal; border-bottom: 1px solid #aaaaaa; padding-bottom: 0.3em;}
+
 strong { font-weight: bold; }
 
 /* Base div CSS */
 #base {margin: 0 auto;}
-#header{ background: #222; margin: auto; width: 100%;border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
+#header{font-family: 'MS Serif', 'New York', sans-serif !important;background: #222;border-bottom: 1px solid #777;font-variant: small-caps; font-weight:normal; border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
 #nav, h1{ width: 960px; margin: 0 auto;}
 
 /* uni-form stuff */
@@ -123,7 +127,7 @@ margin: 0 auto -3em;
 
 /* CSS 3*/
 #header, #footer{
-	background-image: linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
+	/*background-image: linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
 	background-image: -o-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
 	background-image: -moz-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
 	background-image: -webkit-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
@@ -134,7 +138,7 @@ margin: 0 auto -3em;
 		left top,
 		color-stop(0.1, rgb(34,34,34)),
 		color-stop(0.57, rgb(51,51,51))
-	);
+	);*/
 } 
 h1{
 	text-shadow: 1px 1px 1px #000;

@@ -4,16 +4,16 @@ html{ overflow-y: scroll;}
 .clearer{clear: both;}
 
 body{font-family: 'MS Serif', 'New York', sans-serif;}
+h1 a{font-family: 'MS Serif', 'New York', sans-serif; text-decoration: none;}
+#header{font-family: 'MS Serif', 'New York', sans-serif !important;background: #222;border-bottom: 1px solid #777;font-variant: small-caps; font-weight:normal; border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;font-size: 16px;}
 
-#header{background: #222;border-bottom: 1px solid #777;font-variant: small-caps; font-weight:bold; border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
-
-h1{color: #4ED3FF; font-size: 1em; font-weight: normal; padding: 1em 0;  margin: 0 auto; width: 960px;}
+h1 a, h1{color: #4ED3FF; font-size: 1em; font-weight: normal; padding: 1em 0;  margin: 0 auto; width: 960px;}
 h2{/*color:#0A5ED3;*/ color: #222; font-size: 2em;font-weight: normal; font-family: Palatino Linotype, Book Antiqua, Palatino, serif;text-shadow: 0px 1px 0px #E0DEDE; font-variant: small-caps; margin-bottom: 40px;}
 h3{/*color:#0A5ED3;*/ color: #222; font-size: 1em;font-weight: normal; font-family: Palatino Linotype, Book Antiqua, Palatino, serif;text-shadow: 0px 1px 0px #E0DEDE; font-variant: small-caps;}
 
 #nav{border-bottom: 1px solid #aaa; padding: 20px 0px;}
 #nav li{display: inline;}
-#nav li a, .see-all-results{font-size: 14px; text-decoration:underline; color:#0A5ED3;}
+#nav li a, .see-all-results{font-size: 14px; text-decoration:underline; color:#0A5ED3; font-variant: small-caps;}
 #nav li a:hover, .see-all-results:hover{text-decoration: underline;}
 #nav .separator{margin: 0 10px;}
 #content{width:960px; margin: 0 auto;}

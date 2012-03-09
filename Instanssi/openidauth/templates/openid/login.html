@@ -14,6 +14,9 @@
     </style>
     <script type="text/javascript">
     $(function() {
+        $('#openid_selector').change(function() {
+            $("#id_openid_identifier").val($('#openid_selector').val());
+        });
     });
     </script>
 </head>
@@ -35,6 +38,10 @@
             <legend>OpenID Login</legend>
             <div class="form-row openid_input_area">
                 <label for="id_openid_identifier">OpenID Tarjoaja</label><br />
+                <select id="openid_selector">
+                    <option id="google" selected="selected" value="https://www.google.com/accounts/o8/id">Google</option>
+                    <option id="korppi" value="https://korppi.jyu.fi/openid/">Korppi</option>
+                </select><br />
                 <input type="text" class="openid_text" value="https://www.google.com/accounts/o8/id" name="openid_identifier" id="id_openid_identifier" />
             </div>
             <div class="submit-row ">

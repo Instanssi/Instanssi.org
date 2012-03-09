@@ -4,5 +4,7 @@ h1{font-variant: small-caps; text-shadow: 1px 1px 1px #fff;color:#222; font-size
 legend{font-variant: small-caps;}
 fieldset{padding: 40px;}
 #id_openid_identifier{margin: 10px 0 0 0;}
-input{padding: 6px 12px; width: 220px; margin: 10px 0 0 0;border: 1px solid #999; background: #eee; float: right;}
+input{padding: 6px 12px; width: 220px; margin: 10px 0 0 0;border: 1px solid #999; background: #eee;}
 input:hover{ cursor:pointer;  background: #ddd;}
+
+#openid_selector { width: 220px; border: 1px solid #999; background: #eee; }

@@ -6,6 +6,7 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".jq-button").button();
 {% if voting_open %}
     $("#vote_js_mode").css("display", "inline");
     $("#vote_html_mode").css("display", "none");
@@ -44,6 +45,9 @@
     <div class="compo_description">
         {{ compo.description|safe }}
     </div>
+{% if can_add_entry %}
+    <p><a href="/kompomaatti/myentries/add/{{ compo.id }}/" class="jq-button">Osallistu!</a></p>
+{% endif %}
     
     <h3>Aikataulu</h3>
     <table class="generic_info_table">

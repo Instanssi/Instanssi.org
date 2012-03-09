@@ -20,6 +20,11 @@ def compo(request, compo_id):
     
     now = datetime.now()
     
+    # Check if user can add entry
+    can_add_entry = False
+    if c.adding_end >= now:
+        can_add_entry = True
+    
     # Check if we can show the entries
     show_entries = False
     if c.voting_start <= now:
@@ -150,4 +155,5 @@ def compo(request, compo_id):
         'voting_open': voting_open,
         'has_voted': has_voted,
         'show_entries': show_entries,
+        'can_add_entry': can_add_entry,
     })

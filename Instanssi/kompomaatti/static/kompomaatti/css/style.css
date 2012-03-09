@@ -33,6 +33,15 @@ form.uniForm .ctrlHolder {
 #content > ul { list-style-type: disc; margin-left: 1.2em; }
 #content > ol { list-style-type: decimal; margin-left: 1.2em; }
 
+/* Content div css */
+.compo_description > p,
+.compo_description > ul,
+.compo_description > ol { margin-bottom: 1em; margin-top: 1em; }
+.compo_description > ul li,
+.compo_description > ol li { display: list-item; padding: 0.3em; }
+.compo_description > ul { list-style-type: disc; margin-left: 1.2em; }
+.compo_description > ol { list-style-type: decimal; margin-left: 1.2em; }
+
 /* For tabular data fields using tablesorter.js */
 div.pager { margin-top: 0.1em; margin-bottom: 0.3em; }
 table.tablesorter { margin-top: 0; }

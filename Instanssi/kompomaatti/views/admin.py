@@ -199,7 +199,7 @@ def givecode(request, vcrid):
             pass
     
     if not done:
-        raise HttpResponse("Virhe yritettäessä lisätä satunnaista avainta ... FIXME!")
+        return HttpResponse("Virhe yritettäessä lisätä satunnaista avainta ... FIXME!")
             
     # Delete request
     vcr.delete()

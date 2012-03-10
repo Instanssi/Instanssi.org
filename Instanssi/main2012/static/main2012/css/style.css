@@ -133,7 +133,8 @@ border-spacing: 0 10px;
 
 #schedule img { width: 4em; }
 
-
+#schedule .peruttu  { text-decoration: line-through; }
+#hintikkainfo       { text-decoration: none; }
 
 
 #content ul.info { color: #fff; list-style: disc; padding-left: 50px; font-size: 12px; }

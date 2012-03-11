@@ -18,7 +18,7 @@
 {% for entry in entries %}
         <li>
             <a href="/kompomaatti/entry/{{ entry.id }}/">{{ entry.name }}</a> by {{ entry.creator }} &middot; 
-            {% if entry.disqualified %}<strong>Diskattu, ei pisteitä!</strong>{% else %}{{ entry.get_score }} pt{% endif %}
+            {% if entry.disqualified %}<strong>Diskattu, ei pisteitä!</strong>{% else %}{{ entry.get_score|floatformat:"2" }} pt{% endif %}
         </li>
 {% endfor %}
     </ol>

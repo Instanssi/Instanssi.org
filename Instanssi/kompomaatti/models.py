@@ -73,6 +73,7 @@ class Compo(models.Model):
         (3, u'jPlayer ensin, sitten kuva'), # Musiikkikompoille
     )
     entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi. Latauslinkki näytetään aina.")
+    hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilotetaanko kompon tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.', default=False)
     
     def __unicode__(self):
         return self.event.name + ': ' + self.name

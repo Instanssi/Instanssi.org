@@ -55,7 +55,7 @@ def entry(request, entry_id):
         raise Http404
     
     # Make sure the compo is active and can be shown
-    if entry.compo.hide_from_archive or not active:
+    if entry.compo.hide_from_archive or not entry.compo.active:
         raise Http404
     
     # Get entry rank

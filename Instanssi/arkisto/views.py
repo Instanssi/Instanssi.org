@@ -22,7 +22,7 @@ def event(request, event_id):
     except Event.DoesNotExist:
         raise Http404
     
-    compos = Compo.objects.filter(event=event)
+    compos = Compo.objects.filter(event=event, active=True, hide_from_archive=False)
     compolist = []
     for compo in compos:
         compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
@@ -52,6 +52,10 @@ def entry(request, entry_id):
 
     # Make sure the entry belongs to an archived event
     if not entry.compo.event.archived:
+        raise Http404
+    
+    # Make sure the compo is active and can be shown
+    if entry.compo.hide_from_archive or not active:
         raise Http404
     
     # Get entry rank

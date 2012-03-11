@@ -12,6 +12,7 @@ from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest
 from Instanssi.kompomaatti.forms import AdminEntryForm,AdminCompoForm,CreateTokensForm
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.settings import ACTIVE_EVENT_ID
+from Instanssi.kompomaatti.misc import entrysort
 
 @login_required
 def editcompo(request, compo_id):
@@ -37,6 +38,27 @@ def editcompo(request, compo_id):
     # Render
     return custom_render(request, 'kompomaatti/admin/editcompo.html', {
         'form': form,
+    })
+
+@login_required
+def results(request, compo_id):
+    # Make sure the user is superuser.
+    if not request.user.is_superuser:
+        raise Http404
+
+    # Get the compo
+    try:
+        c = Compo.objects.get(id=compo_id)
+    except Entry.DoesNotExist:
+        raise Http404
+    
+    # Get the entries
+    entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+
+    # Render
+    return custom_render(request, 'kompomaatti/admin/results.html', {
+        'entries': entries,
+        'compo': c,
     })
 
 @login_required

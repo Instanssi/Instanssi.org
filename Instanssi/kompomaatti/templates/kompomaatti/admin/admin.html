@@ -47,6 +47,7 @@
 			<th>Nimi</th>
 			<th>Aktiivinen</th>
 			<th>Aika</th>
+			<th>Tulokset</th>
 			<th>Ops</th>
 		</tr>
 	</thead>
@@ -56,6 +57,7 @@
 			<td>{{ compo.name }}</td>
 			<td>{{ compo.active }}</td>
 			<td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
+			<td><a href="/kompomaatti/admin/results/{{ compo.id }}/">Tulokset</a></td>
 			<td>
 			    <a class="icon editicon" href="/kompomaatti/admin/editcompo/{{ compo.id }}/">Muokkaa</a>
 			</td>

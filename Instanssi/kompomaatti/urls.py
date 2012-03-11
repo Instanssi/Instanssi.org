@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^myentries/editprofile/', 'dashboard.editprofile'),
     url(r'^myentries/', 'dashboard.dashboard'),
     url(r'^admin/givecode/(?P<vcrid>\d+)/', 'admin.givecode'),
+    url(r'^admin/results/(?P<compo_id>\d+)/', 'admin.results'),
     url(r'^admin/editcompo/(?P<compo_id>\d+)/', 'admin.editcompo'),
     url(r'^admin/editentry/(?P<entry_id>\d+)/', 'admin.editentry'),
     url(r'^admin/addcompo/', 'admin.addcompo'),

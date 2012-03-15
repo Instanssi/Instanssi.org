@@ -1,9 +1,5 @@
 # TODO
 
-* OpenID-loginin voisi hoitaa nätimmin -- nyt se on tiukasti pultattu kiinni kompomaattiin.
-
-
-
 ## Asiakkaille näkyvä osio
 
 ### Kompomaatti

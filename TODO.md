@@ -1,5 +1,11 @@
 # TODO
 
+## Yleisesti
+
+* Rosetta / i18n
+* Englanninkielinen väännös ?
+* Kuvanmuunnoskirjastoja voisi päivitellä kun aika tulee ...
+
 ## Asiakkaille näkyvä osio
 
 ### Kompomaatti

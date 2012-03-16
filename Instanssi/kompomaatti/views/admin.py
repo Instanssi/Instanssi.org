@@ -75,7 +75,7 @@ def editentry(request, entry_id):
 
     # Check if we got filled form
     if request.method == 'POST':
-        form = AdminEntryForm(request.POST, instance=entry)
+        form = AdminEntryForm(request.POST, request.FILES, instance=entry)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/kompomaatti/admin/') 

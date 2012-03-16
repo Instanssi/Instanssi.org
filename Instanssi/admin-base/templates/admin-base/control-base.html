@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Hallinta{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/libs/css/reset.css" />
+    <link rel="stylesheet" href="/static/admin-base/css/style.css" />
+    <link rel="stylesheet" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
+    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+{% block head %}{% endblock %}
+    <script type="text/javascript">
+    $(function() {
+{% block jquery %}{% endblock %}
+    });
+    </script>
+</head>
+<body>
+    <div id="control_base">
+        <div id="control_header">Hallinta</div>
+        <div id="control_nav">
+            <a href="/control/">Etusivu</a> &middot;
+            <a href="/control/kompomaatti/">Kompomaatti</a> &middot;
+            <a href="/control/upload/">Tiedostot</a> &middot;
+            <a href="/control/slides/">Slaidit</a> &middot;
+            <a href="/control/blog/">Blogi</a> &middot;
+            <a href="/control/schedule/">Aikataulu</a> &middot;
+            <a href="/control/screenshow/">Screenshow</a> &middot;
+            <a href="/control/arkisto/">Arkisto</a> &middot;
+            <a href="/control/users/">Käyttäjät</a>
+        </div>
+    </div>
+{% block content %}{% endblock %}
+</body>
+</html>

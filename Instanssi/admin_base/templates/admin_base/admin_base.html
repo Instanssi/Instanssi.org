@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <title>Hallinta{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" href="/static/admin-base/css/style.css" />
-    <link rel="stylesheet" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
 {% block head %}{% endblock %}
@@ -16,9 +17,9 @@
     </script>
 </head>
 <body>
-    <div id="control_base">
-        <div id="control_header">Hallinta</div>
-        <div id="control_nav">
+    <div id="admin_base_bottom">
+        <div id="admin_base_header"><h1>Hallinta</h1></div>
+        <div id="admin_base_nav">
             <a href="/control/">Etusivu</a> &middot;
             <a href="/control/kompomaatti/">Kompomaatti</a> &middot;
             <a href="/control/upload/">Tiedostot</a> &middot;

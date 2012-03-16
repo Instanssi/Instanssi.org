@@ -1,0 +1,22 @@
+body {
+    font-family: 'Droid Serif', serif;
+}
+h1 { font-size: 100%; font-weight: bold; }
+h2 { font-size: 120%; font-weight: bold; }
+h3 { font-size: 100%; font-weight: bold; border-bottom: 1px dotted #333333; }
+
+#admin_base_bottom {
+    width: 100%;
+    background-color: black;
+    color: white;
+    box-shadow: 0px 0px 5px #111111;
+    height: 100px;
+}
+
+#admin_base_header {
+    float: left;
+}
+
+#admin_base_nav {
+    float: left;
+}

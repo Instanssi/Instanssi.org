@@ -20,8 +20,9 @@
 
 ## Admineille näkyvä osio
 
-Seuraaville olisi yhtenäinen navigointilayout. Kaikille sivuille pääsisi
-vain admin-oikeuksilla.
+* Kaikille sivuille oikeudet is_staff / has_perms -kamalla
+* Yhtenäinen navigointilayout
+* Järkevä jako applikaatioihin
 
 ### /blog-admin/
 
@@ -42,6 +43,7 @@ vain admin-oikeuksilla.
 * Tiedostojen tallennuspalvelu. Tänne voisi laittaa taustakuvia jne. muita palveluita varten.
 * Kuka tahansa ADMIN voisi lisätä/poistaa tiedostoja. Ei käyttäjäkohtaisia oikeuksia, yksinkertainen
   värkki. Ei myöskään erillistä suojausta tiedostoille, eli kuka tahansa voi lukea jos tietää nimen.
+* Tiedoston nimi, lataaja, latausaika ...
   
 ### /diashow-admin/
 

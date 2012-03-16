@@ -93,7 +93,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'main2012',
-    'admin-base',
+    'admin_base',
     'arkisto',
     'kompomaatti',
     'entryarchivaltool',

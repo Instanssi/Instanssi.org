@@ -1,0 +1,54 @@
+{% extends "admin_calendar/base.html" %}
+
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/admin_calendar/css/fullcalendar/fullcalendar.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_calendar/css/fullcalendar/fullcalendar.print.css" media="print" />
+    <script type="text/javascript" src="/static/admin_calendar/js/fullcalendar/fullcalendar.min.js"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $("#calendar").fullCalendar({
+        editable: true,
+        selectable: true,
+        defaultView: 'agendaWeek',
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'agendaWeek,agendaDay'
+        },
+        firstDay: 1,
+        slotMinutes: 15,
+        timeFormat: {
+            agenda: 'H:mm{ - H:mm}', 
+            '': 'H:mm'
+        },
+        axisFormat: 'H:mm',
+        events: "/control/calendar/json/events/",
+        loading: function(bool) {
+            if(bool) {
+                $('#loading').show();
+            } else {
+                $('#loading').hide();
+            }
+        },
+        eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {
+        },
+        eventDrop: function(event, delta) {
+        },
+        select: function( startDate, endDate, allDay, jsEvent, view ) {
+        },
+        eventClick: function(event, jsEvent, view) {
+        },
+    });
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Kalenteri</h2>
+    <div id="loading" style="display:none">loading...</div>
+    <div id="calendar"></div>
+{% endblock %}

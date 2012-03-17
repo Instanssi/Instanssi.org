@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'admin_auth',
     'admin_blog',
     'admin_upload',
+    'admin_calendar',
     'arkisto',
     'kompomaatti',
     'entryarchivaltool',

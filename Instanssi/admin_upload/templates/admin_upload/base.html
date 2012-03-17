@@ -1,0 +1,20 @@
+{% extends "admin_base/admin_base.html" %}
+
+{% block title %} - Tiedostot{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+<a href="/control/files/">Listaus</a>
+<a href="/control/files/upload/">Lataa</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

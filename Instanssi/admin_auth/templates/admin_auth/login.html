@@ -1,0 +1,28 @@
+{% extends "admin_auth/base.html" %}
+{% load uni_form_tags %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/uni-form.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/default.uni-form.css" media="all" />
+    <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+{% if error %}
+<p class="errortext ui-state-error">Käyttäjätunnus tai salasana väärin!</p>
+{% endif %}
+
+{% uni_form loginform loginform.helper %}
+
+{% endblock %}
+
+
+

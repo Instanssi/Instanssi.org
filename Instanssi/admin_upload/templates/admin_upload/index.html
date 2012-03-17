@@ -8,17 +8,22 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa tiedoston ?"); 
+    });
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-    <h2>Listaus</h2>
+    <h2>Tiedostolistaus</h2>
+{% if files %}
     <table>
         <thead>
             <th>Nimi</th>
             <th>Kuvaus</th>
             <th>Päivä</th>
             <th>Lataa</th>
+            <th>Poista</th>
         </thead>
         <tbody>
 {% for file in files %}
@@ -27,8 +32,12 @@
                 <td>{{ file.description|linebreaksbr  }}</td>
                 <td>{{ file.date|date:"d.m.Y" }}</td>
                 <td><a href="{{ file.file.url }}">Lataa</a></td>
+                <td><a href="/control/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
             </tr>
 {% endfor %}
         </tbody>
     </table>
+{% else %}
+    <p>Ei ladattuja tiedostoja!</p>
+{% endif %}
 {% endblock %}

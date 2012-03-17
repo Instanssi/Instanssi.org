@@ -10,8 +10,8 @@ from datetime import datetime
 
 @login_required
 def index(request):
-    # Make sure the user is superuser.
-    if not request.user.is_superuser:
+    # Make sure the user is staff.
+    if not request.user.is_staff:
         raise Http404
     
     # Get filelist
@@ -23,9 +23,33 @@ def index(request):
     }, context_instance=RequestContext(request))
     
 @login_required
+def deletefile(request, file_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Check for permissions
+    if not request.user.has_perm('admin_upload.delete_uploadedfile'):
+        raise Http404
+    
+    # Delete the file
+    try:
+        rec = UploadedFile.objects.get(id=file_id)
+        rec.file.delete()
+        rec.delete()
+    except UploadedFile.DoesNotExist:
+        pass
+    
+    return HttpResponseRedirect("/control/files/")
+    
+@login_required
 def upload(request):
-    # Make sure the user is superuser.
-    if not request.user.is_superuser:
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Check for permissions
+    if not request.user.has_perm('admin_upload.add_uploadedfile'):
         raise Http404
     
     # Handle form data, if any

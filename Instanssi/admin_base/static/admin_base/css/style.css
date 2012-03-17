@@ -3,7 +3,7 @@ body { font-family: 'Droid Serif', serif; }
 h1 { font-size: 140%; font-weight: bold; }
 h2 { font-size: 130%; font-weight: bold; padding-top: 0.5em; padding-bottom: 0.5em; }
 h3 { font-size: 100%; font-weight: bold; padding-top: 0.3em; padding-bottom: 0.3em; border-bottom: 1px dotted #333333; }
-p,ul,form { font-size: 95%; }
+p,ul,form,table { font-size: 95%; }
 p { margin-bottom: 0.75em; margin-top: 0.75em; }
 
 #admin_base_bottom {
@@ -52,6 +52,11 @@ p { margin-bottom: 0.75em; margin-top: 0.75em; }
 }
 
 #admin_base_content a:hover { text-decoration: none; }
+
+/* tables */
+table { border-collapse: collapse; width: 100%; }
+table th { padding: 5px; border: 1px solid #aaaaaa; background-color: #222222; color: white; text-align: left; }
+table td { padding: 5px; border: 1px solid #aaaaaa; background-color: #eeeeee; }
 
 /* forms */
 form.uniForm .ctrlHolder { border-bottom: 1px dotted #aaaaaa; }

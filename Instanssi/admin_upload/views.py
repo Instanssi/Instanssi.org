@@ -8,7 +8,7 @@ from models import UploadedFile
 from forms import UploadForm
 from datetime import datetime
 
-@login_required
+@login_required(login_url='/control/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -22,7 +22,7 @@ def index(request):
         'files': files,
     }, context_instance=RequestContext(request))
     
-@login_required
+@login_required(login_url='/control/auth/login/')
 def deletefile(request, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -42,7 +42,7 @@ def deletefile(request, file_id):
     
     return HttpResponseRedirect("/control/files/")
     
-@login_required
+@login_required(login_url='/control/auth/login/')
 def upload(request):
     # Make sure the user is staff.
     if not request.user.is_staff:

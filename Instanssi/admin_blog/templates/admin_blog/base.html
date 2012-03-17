@@ -1,0 +1,21 @@
+{% extends "admin_base/admin_base.html" %}
+
+{% block title %} - Blog{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/admin_blog/css/style.css" media="all" />
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+    <a href="/control/blog/">Entryt</a>
+    <a href="/control/blog/write/">Kirjoita</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

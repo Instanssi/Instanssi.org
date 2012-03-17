@@ -1,0 +1,22 @@
+{% extends "admin_blog/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Muokkaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/uni-form.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/default.uni-form.css" media="all" />
+    <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Muokkaa blogientryä</h2>
+{% uni_form editform editform.helper %}
+{% endblock %}

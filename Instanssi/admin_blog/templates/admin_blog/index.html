@@ -1,0 +1,41 @@
+{% extends "admin_blog/base.html" %}
+
+{% block title %}{{ block.super }} - Entryt{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa blogientryn ?"); 
+    });
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Blogientryt</h2>
+{% if entries %}
+{% for entry in entries %}
+    <table class="blogentry_base">
+        <tr>
+            <th>{{ entry.title }}</th>
+        </tr>
+        <tr>
+            <td>
+                {{ entry.text|linebreaksbr }}
+                <div class="blogentry_time">
+                    &raquo; {{ entry.user.username }} | 
+                    {{ entry.date|date:"d.m.Y H:i" }} |
+                    <a href="/control/blog/edit/{{ entry.id }}/">Muokkaa</a> | 
+                    <a class="delete_link" href="/control/blog/delete/{{ entry.id }}/">Poista</a> | 
+                </div>
+           </td>
+        </tr>
+    </table>
+{% endfor %}
+{% else %}
+    <p>Ei viestejä!</p>
+{% endif %}
+{% endblock %}

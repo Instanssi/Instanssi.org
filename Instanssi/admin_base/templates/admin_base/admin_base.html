@@ -20,17 +20,23 @@
     <div id="admin_base_bottom">
         <div id="admin_base_header"><h1>Hallinta</h1></div>
         <div id="admin_base_nav">
-            <a href="/control/">Etusivu</a> &middot;
-            <a href="/control/kompomaatti/">Kompomaatti</a> &middot;
-            <a href="/control/upload/">Tiedostot</a> &middot;
-            <a href="/control/slides/">Slaidit</a> &middot;
-            <a href="/control/blog/">Blogi</a> &middot;
-            <a href="/control/schedule/">Aikataulu</a> &middot;
-            <a href="/control/screenshow/">Screenshow</a> &middot;
-            <a href="/control/arkisto/">Arkisto</a> &middot;
+            <a href="/control/kompomaatti/">Kompomaatti</a>
+            <a href="/control/files/">Tiedostot</a>
+            <a href="/control/slides/">Slaidit</a>
+            <a href="/control/blog/">Blogi</a>
+            <a href="/control/schedule/">Aikataulu</a>
+            <a href="/control/screenshow/">Screenshow</a>
+            <a href="/control/arkisto/">Arkisto</a>
             <a href="/control/users/">Käyttäjät</a>
         </div>
     </div>
-{% block content %}{% endblock %}
+    <div id="admin_base_subnav_bottom">
+        <div id="admin_base_subnav">
+            &raquo; {% block navigation %}{% endblock %}
+        </div>
+    </div>
+    <div id="admin_base_content">
+    {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

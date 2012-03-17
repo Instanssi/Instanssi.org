@@ -1,22 +1,76 @@
-body {
-    font-family: 'Droid Serif', serif;
-}
-h1 { font-size: 100%; font-weight: bold; }
-h2 { font-size: 120%; font-weight: bold; }
-h3 { font-size: 100%; font-weight: bold; border-bottom: 1px dotted #333333; }
+body { font-family: 'Droid Serif', serif; }
+h1 { font-size: 140%; font-weight: bold; }
+h2 { font-size: 130%; font-weight: bold; padding-top: 0.5em; padding-bottom: 0.5em; }
+h3 { font-size: 100%; font-weight: bold; padding-top: 0.3em; padding-bottom: 0.3em; border-bottom: 1px dotted #333333; }
+p,ul,form { font-size: 90%; }
+p { margin-bottom: 0.75em; margin-top: 0.75em; }
 
 #admin_base_bottom {
     width: 100%;
     background-color: black;
+    box-shadow: 0px 0px 5px #000000;
+    padding-top: 8px;
+    padding-bottom: 8px;
     color: white;
-    box-shadow: 0px 0px 5px #111111;
-    height: 100px;
 }
 
 #admin_base_header {
-    float: left;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    background-image: url('../images/admin_icon.png');
+    background-repeat: no-repeat;
+}
+
+#admin_base_header h1 {
+    position: relative;
+    left: 28px;
+    top: 2px;
 }
 
 #admin_base_nav {
-    float: left;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#admin_base_subnav_bottom {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+    position: relative;
+    z-index: -1;
+    color: white;
+    box-shadow: 0px 0px 5px #111111;
+    background-color: #222222;
+}
+
+#admin_base_subnav {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#admin_base_nav a,
+#admin_base_subnav a {
+    color: #aaaaff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+#admin_base_nav a:hover,
+#admin_base_subnav a:hover {
+    text-decoration: underline;
+}
+
+#admin_base_content {
+    padding: 8px;
+    position: relative;
+    z-index: -2;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #eeeeff;
+    box-shadow: 0px 0px 5px #ddeeff;
 }

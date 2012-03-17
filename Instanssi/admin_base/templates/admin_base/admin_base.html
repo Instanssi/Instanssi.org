@@ -18,8 +18,8 @@
 </head>
 <body>
     <div id="admin_base_bottom">
-        <div id="admin_base_header"><h1>Hallinta</h1></div>
-        <div id="admin_base_nav">
+        <div id="admin_base_header" class="admin_base_sizer"><h1>Hallinta</h1></div>
+        <div class="admin_base_sizer admin_base_nav">
             <a href="/control/kompomaatti/">Kompomaatti</a>
             <a href="/control/files/">Tiedostot</a>
             <a href="/control/slides/">Slaidit</a>
@@ -31,11 +31,11 @@
         </div>
     </div>
     <div id="admin_base_subnav_bottom">
-        <div id="admin_base_subnav">
+        <div class="admin_base_sizer admin_base_nav">
             &raquo; {% block navigation %}{% endblock %}
         </div>
     </div>
-    <div id="admin_base_content">
+    <div id="admin_base_content" class="admin_base_sizer">
     {% block content %}{% endblock %}
     </div>
 </body>

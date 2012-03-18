@@ -10,6 +10,7 @@ admin.autodiscover()
 # URLS
 urlpatterns = patterns('',
     url(r'^2012/', include('main2012.urls')),
+    url(r'^control/', include('admin_base.urls')),
     url(r'^control/files/', include('admin_upload.urls')),
     url(r'^control/auth/', include('admin_auth.urls')),
     url(r'^control/blog/', include('admin_blog.urls')),

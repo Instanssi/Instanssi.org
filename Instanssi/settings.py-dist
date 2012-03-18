@@ -36,6 +36,7 @@ GOOGLEANALYTICS = False
 # Generic stuff
 TIME_ZONE = 'Europe/Helsinki'
 LANGUAGE_CODE = 'fi-FI'
+SHORT_LANGUAGE_CODE = LANGUAGE_CODE[:2]
 SITE_ID = 1
 USE_I18N = False
 USE_L10N = False

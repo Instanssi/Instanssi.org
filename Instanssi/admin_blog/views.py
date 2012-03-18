@@ -7,6 +7,7 @@ from django.template import RequestContext
 from models import BlogEntry, BlogComment
 from forms import BlogEntryForm
 from datetime import datetime
+from Instanssi.settings import SHORT_LANGUAGE_CODE
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -45,6 +46,7 @@ def write(request):
     # Render response
     return render_to_response("admin_blog/write.html", {
         'addform': form,
+        'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/control/auth/login/')
@@ -75,6 +77,7 @@ def edit(request, entry_id):
     # Render response
     return render_to_response("admin_blog/edit.html", {
         'editform': form,
+        'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
     }, context_instance=RequestContext(request))
     
     

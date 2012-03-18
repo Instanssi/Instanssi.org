@@ -8,11 +8,22 @@
     <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/uni-form.css" media="all" />
     <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/default.uni-form.css" media="all" />
     <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/wymeditor/jquery.wymeditor.min.js"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
     $('form.uniForm').uniform();
+    $('#id_text').wymeditor({
+        containersItems: [
+            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
+            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
+            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
+            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
+        ],
+        skin: 'silver',
+        lang: '{{ LANGUAGE_CODE }}',
+    });
 {% endblock %}
 
 {% block content %}

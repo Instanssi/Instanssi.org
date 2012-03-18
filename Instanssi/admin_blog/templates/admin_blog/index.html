@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td>
-                {{ entry.text|linebreaksbr }}
+                {{ entry.text|safe }}
                 <div class="blogentry_time">
                     &raquo; {{ entry.user.username }} | 
                     {{ entry.date|date:"d.m.Y H:i" }} |

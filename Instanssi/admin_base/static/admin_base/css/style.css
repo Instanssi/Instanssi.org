@@ -4,26 +4,6 @@ h1 { font-size: 140%; font-weight: bold; }
 h2 { font-size: 130%; font-weight: bold; padding-top: 0.5em; padding-bottom: 0.5em; }
 h3 { font-size: 100%; font-weight: bold; padding-top: 0.3em; padding-bottom: 0.3em; border-bottom: 1px dotted #333333; }
 p,ul,form,table { font-size: 95%; }
-p { margin-bottom: 0.75em; margin-top: 0.75em; }
-
-pre {
-    font-family: "Consolas", monospace;
-    background-color: #eaeaff;
-    border: 1px solid #cdcdcd;
-    padding: 8px;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
-}
-
-blockquote {
-    background-color: #eaeaff;
-    border-left: 3px dotted #aaaaaa;
-    padding: 1px;
-    padding-left: 1em;
-    margin-left: 1em;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
-}
 
 #admin_base_bottom {
     width: 100%;
@@ -82,3 +62,32 @@ table td { padding: 5px; border: 1px solid #aaaaaa; background-color: #eeeeee; }
 form.uniForm .ctrlHolder { border-bottom: 1px dotted #aaaaaa; }
 #admin_base_content fieldset { border: 1px solid #bbbbbb; padding: 0.3em; margin: 0.3em; }
 
+p,ul,ol,pre,blockquote {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+#admin_base_content ul {
+    list-style-type: disc;
+    margin-left: 2em;
+}
+
+#admin_base_content ol {
+    list-style-type: decimal;
+    margin-left: 2em;
+}
+
+#admin_base_content pre {
+    font-family: "Consolas", monospace;
+    background-color: #eaeaff;
+    border: 1px solid #cdcdcd;
+    padding: 8px;
+}
+
+#admin_base_content blockquote {
+    background-color: #eaeaff;
+    border-left: 3px dotted #aaaaaa;
+    padding: 1px;
+    padding-left: 1em;
+    margin-left: 1em;
+}

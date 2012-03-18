@@ -7,7 +7,7 @@ from django.contrib import admin
 class BlogEntry(models.Model):
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=32)
-    text = models.TextField(u'Teksti', help_text=u'Teksti entrylle.')
+    text = models.TextField(u'Teksti')
     date = models.DateTimeField(u'Aika')
     public = models.BooleanField(u'Julkinen', help_text=u'Julkaistaanko entry kaikille.', default=False)
     def __unicode__(self):

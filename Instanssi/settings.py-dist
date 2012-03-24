@@ -96,6 +96,7 @@ INSTALLED_APPS = (
     'main2012',
     'admin_base',
     'admin_auth',
+    'admin_arkisto',
     'admin_blog',
     'admin_upload',
     'admin_calendar',

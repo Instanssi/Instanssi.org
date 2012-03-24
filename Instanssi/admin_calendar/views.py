@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.utils import simplejson
 from models import CalendarEvent
+from Instanssi.kompomaatti.models import Compo
 
 def JSONResponse(data):
     return HttpResponse(simplejson.dumps(data), mimetype='application/json')
@@ -26,6 +27,8 @@ def api_events(request, event_name):
     
     output = {'error': ''}
     if event_name == "events":
-        output['events'] = [1,2,67]
+        output['events'] = []
+        
+        compos = Compo.object.filter(active=True)
     
     return JSONResponse(output)

@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
-    'admin_auth.views',
+    'Instanssi.admin_auth.views',
     url(r'^login/', 'login_action'),
     url(r'^logout/', 'logout_action'),
     url(r'^loggedout/', 'logout_page'),

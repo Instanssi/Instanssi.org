@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
-    'kompomaatti.views',
+    'Instanssi.kompomaatti.views',
     url(r'^$', 'index.index'),
     url(r'^compo/(?P<compo_id>\d+)/', 'compo.compo'),
     url(r'^entry/(?P<entry_id>\d+)/', 'entry.entry'),

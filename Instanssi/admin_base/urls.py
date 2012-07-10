@@ -3,6 +3,6 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
-    'admin_base.views',
+    'Instanssi.admin_base.views',
     url(r'^$', 'index'),
 )

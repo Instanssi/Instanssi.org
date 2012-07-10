@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
-    'main2012.views',
+    'Instanssi.main2012.views',
     url(r'^$', 'index'),
     url(r'^info/', 'info'),
     url(r'^aikataulu/', 'aikataulu'),

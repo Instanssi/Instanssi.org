@@ -93,17 +93,17 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'main2012',
-    'admin_base',
-    'admin_auth',
-    'admin_arkisto',
-    'admin_blog',
-    'admin_upload',
-    'admin_calendar',
-    'arkisto',
-    'kompomaatti',
-    'entryarchivaltool',
-    'openidauth',
+    'Instanssi.main2012',
+    'Instanssi.admin_base',
+    'Instanssi.admin_auth',
+    'Instanssi.admin_arkisto',
+    'Instanssi.admin_blog',
+    'Instanssi.admin_upload',
+    'Instanssi.admin_calendar',
+    'Instanssi.arkisto',
+    'Instanssi.kompomaatti',
+    'Instanssi.entryarchivaltool',
+    'Instanssi.openidauth',
     'django_openid_auth',
     'imagekit',
     'south',
@@ -124,9 +124,15 @@ AUTHENTICATION_BACKENDS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -138,3 +144,4 @@ LOGGING = {
         },
     }
 }
+

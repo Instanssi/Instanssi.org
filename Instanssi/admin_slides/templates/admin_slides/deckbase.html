@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Slideshow</title>
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/deckjs/core/deck.core.css" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/deckjs/themes/style/swiss.css" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/deckjs/themes/transition/horizontal-slide.css" />
+    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/deckjs/modernizr.custom.js"></script>
+    <script type="text/javascript" src="/static/libs/js/deckjs/core/deck.core.js"></script>
+    <style type="text/css">
+    	.slide {
+    		text-align: center;
+    	}
+    </style>
+    <script type="text/javascript">
+    $(function() {
+    	$.deck('.slide');
+	});
+    </script>
+</head>
+<body>
+<article class="deck-container">
+{% block content %}{% endblock %}
+</article>
+</body>
+</html>

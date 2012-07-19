@@ -13,5 +13,31 @@
 {% block content %}
 {{ block.super }}
     <h2>Slaidit</h2>
-	<p>Lorem ipsum ...</p>
+    	
+{% if compos %}
+	<table>
+		<thead>
+			<tr>
+				<th>Kompo</th>
+				<th>Vuosi</th>
+				<th>Tapahtuma</th>
+				<th>Osallistujat</th>
+				<th>Tulokset</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for compo in compos %}
+			<tr>
+				<td>{{ compo.name }}</td>
+				<td>{{ compo.compo_start|date:"Y" }}</td>
+				<td>{{ compo.event.name }}</td>
+				<td><a href="/control/slides/slide_entries/{{ compo.id }}/">Osallistujat</a></td>
+				<td><a href="/control/slides/slide_results/{{ compo.id }}/">Tulokset</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei kompoja!</p>
+{% endif %}
 {% endblock %}

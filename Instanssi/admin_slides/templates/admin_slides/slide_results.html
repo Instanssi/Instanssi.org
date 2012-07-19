@@ -1,0 +1,28 @@
+{% extends "admin_slides/deckbase.html" %}
+
+{% block content %}
+{% if entries %}
+<section class="slide">
+	<h2>{{ compo.name }}</h2>
+</section>
+{% for entry in entries %}
+<section class="slide">
+	<h2>{{ compo.name }} n/n.</h2>
+	<div class="infoarea">
+		<h3>n. Sija</h3>
+		<p>{{ entry.name }}</p>
+		<p>by</p>
+		<p>{{ entry.creator }}</p>
+	</div>
+</section>
+{% endfor %}
+{% else %}
+<section class="slide">
+	<h2>{{ compo.name }}</h2>
+	<span class="infoarea">
+		<h3 class="centered">Kompossa ei ole entryjä.</h3>
+	</span>
+</section>
+{% endif %}
+
+{% endblock %}

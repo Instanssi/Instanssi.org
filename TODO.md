@@ -58,7 +58,8 @@
   * Palkintojen jakoon
 * Taustakuvat ja muut käytettävät jutut voitaisiin noukkia upload-palvelusta
 * Html + JS (?)
-  
+* deck.js for now, impress.js + hienot palkintosijakikat myöhemmin.
+
 ### /kompomaatti-admin/
 
 * Kompomaatin hallintapaneelin voisi siirtää omaan paikkaansa. Nyt se elää vähän ahtaasti.

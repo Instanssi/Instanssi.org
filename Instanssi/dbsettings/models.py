@@ -22,28 +22,38 @@ class Setting(models.Model):
         unique_together = ("key", "group")
 
     @staticmethod
-    def get(key, group=u''):
-        p = Setting.objects.get(key=key, group=group)
-        if p.type == 0:
-            return int(p.value)
-        elif p.type == 1:
-            if p.value == u"0":
+    def guesstype(setting):
+        if setting.type == 0:
+            return int(setting.value)
+        elif setting.type == 1:
+            if setting.value == u"0":
                 return False
             else:
                 return True
         else:
-            return unicode(p.value)
+            return unicode(setting.value)
+
+    @staticmethod
+    def get(key, group=u''):
+        try:
+            p = Setting.objects.get(key=key, group=group)
+        except:
+            raise KeyError("Key does not exist!")
+        return Setting.guesstype(p)
         
     @staticmethod
     def get_by_group(group):
-        return Setting.objects.filter(group=group)
-    
+        out = {}
+        for s in Setting.objects.filter(group=group):
+            out[s.key] = Setting.guesstype(s)
+        return out
+                
     @staticmethod
     def set(key, value, group=u''):
         # Guess type
         if type(value) == str or type(value) == unicode:
             t = 2
-        elif type(value) == int or type(value) == long:
+        elif type(value) == int:
             t = 0
             value = str(value)
         elif type(value) == bool:

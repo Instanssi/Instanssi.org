@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib import admin
+from Instanssi.settings import DEFAULT_DB_SETTINGS
 
 class Setting(models.Model):
     key = models.CharField(u'Avain', help_text=u'Asetuksen avain', max_length=32)
@@ -39,14 +40,29 @@ class Setting(models.Model):
         try:
             p = Setting.objects.get(key=key, group=group)
         except:
+            if group in DEFAULT_DB_SETTINGS:
+                if key in DEFAULT_DB_SETTINGS[group]:
+                    return DEFAULT_DB_SETTINGS[group][key]
             return default
         return Setting.guesstype(p)
         
     @staticmethod
     def get_by_group(group):
+        # Get settings from DB
         out = {}
         for s in Setting.objects.filter(group=group):
             out[s.key] = Setting.guesstype(s)
+            
+        # Get defaults
+        try:
+            defs = DEFAULT_DB_SETTINGS[group]
+        except:
+            defs = {}
+        
+        # Add defaults if not already in settings
+        for dk, dv in defs.iteritems():
+            if dk not in out:
+                out[dk] = dv
         return out
                 
     @staticmethod

@@ -4,7 +4,6 @@ from django import forms
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.dbsettings.models import Setting
-from Instanssi.settings import DEFAULT_DB_SETTINGS
 
 class SettingForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -19,20 +18,10 @@ class SettingForm(forms.Form):
         # Get settings in group
         settings = Setting.get_by_group(self.group)
         
-        # Get defaults
-        try:
-            defs = DEFAULT_DB_SETTINGS[self.group]
-        except:
-            defs = {}
-        
-        # Add defaults if not already in settings
-        for dk, dv in defs.iteritems():
-            if dk not in settings:
-                settings[dk] = dv
-        
         # Create fieldset for everything
         fs = Fieldset(u'Asetukset')
-        
+
+        # Add fields for settings
         for k,v in settings.iteritems():
             if k in self.choices:
                 self.fields[k] = forms.TypedChoiceField(choices=self.choices[k], coerce=type(v))

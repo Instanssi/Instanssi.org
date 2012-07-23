@@ -1,0 +1,20 @@
+{% extends "admin_base/admin_base.html" %}
+
+{% block title %} - Tapahtumat{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+    <a href="/control/events/">Tapahtumalista</a>
+    <a href="/control/events/settings/">Tapahtuma-asetukset</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

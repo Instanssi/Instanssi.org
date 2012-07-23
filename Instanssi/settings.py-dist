@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'Instanssi.admin_upload',
     'Instanssi.admin_calendar',
     'Instanssi.admin_slides',
+    'Instanssi.admin_events',
     'Instanssi.arkisto',
     'Instanssi.kompomaatti',
     'Instanssi.entryarchivaltool',

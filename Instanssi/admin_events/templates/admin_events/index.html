@@ -33,7 +33,7 @@
 			<tr>
 				<td>{{ event.name }}</td>
 				<td>{{ event.date|date:"d.m.Y" }}</td>
-				<td>{{ event.archived }}</td>
+				<td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
 				<td><a href="/control/events/delete/{{ event.id }}/" class="delete_link">Poista</a></td>
 				<td><a href="/control/events/edit/{{ event.id }}/">Muokkaa</a></td>
 			</tr>

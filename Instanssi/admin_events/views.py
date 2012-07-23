@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
+from Instanssi.dbsettings.forms import SettingForm
 from common.responses import JSONResponse
 
 @login_required(login_url='/control/auth/login/')
@@ -55,8 +56,31 @@ def settings(request):
     if not request.user.is_staff:
         raise Http404
     
+    # Choices
+    choices = {
+        'active_event_id': [
+            (-1, u'Ei mitään'),
+        ],
+    }
+    for event in Event.objects.all():
+        choices['active_event_id'].append((event.id, event.name))
+    
+    # Create settingsform OR handle save
+    if request.method == 'POST':
+        settingform = SettingForm(request.POST, group=u'event', choices=choices)
+        if settingform.is_valid():
+            settingform.save()
+            return HttpResponseRedirect("/control/events/settings/")
+    else:
+        settingform = SettingForm(group=u'event', choices=choices)
+        
+    # Set titles & descriptions
+    settingform.set_label('active_event_id', u'Aktiivinen tapahtuma')
+    settingform.set_help_text('active_event_id', u'Kompomaatissa tällä hetkellä aktiivinen tapahtuma')
+    
     # Render response
     return render_to_response("admin_events/settings.html", {
+        'settingform': settingform,
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/control/auth/login/')

@@ -1,6 +1,7 @@
 {% extends "admin_events/base.html" %}
+{% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Tapahtuma-asetukset{% endblock %}
+{% block title %}{{ block.super }} - Muokkaa tapahtumaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -12,5 +13,6 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Tapahtuma-asetukset</h2>
+    <h2>Muokkaa tapahtumaa</h2>
+{% uni_form eventform eventform.helper %}
 {% endblock %}

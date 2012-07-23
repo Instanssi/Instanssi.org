@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.contrib import admin
 
 class Setting(models.Model):
     key = models.CharField(u'Avain', help_text=u'Asetuksen avain', max_length=32)
@@ -34,11 +35,11 @@ class Setting(models.Model):
             return unicode(setting.value)
 
     @staticmethod
-    def get(key, group=u''):
+    def get(key, group=u'', default=None):
         try:
             p = Setting.objects.get(key=key, group=group)
         except:
-            raise KeyError("Key does not exist!")
+            return default
         return Setting.guesstype(p)
         
     @staticmethod
@@ -72,8 +73,13 @@ class Setting(models.Model):
             setting = Setting()
             setting.key = key
             setting.group = group
+            setting.type = t
         
-        # Set type and value, then save.
-        setting.type = t
+        # Set value, then save.
         setting.value = value
         setting.save()
+        
+try:
+    admin.site.register(Setting)
+except:
+    pass

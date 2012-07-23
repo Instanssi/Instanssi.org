@@ -6,6 +6,7 @@ urlpatterns = patterns(
     'Instanssi.admin_events.views',
     url(r'^$', 'index'),
     url(r'^settings/', 'settings'),
+    url(r'^add/', 'add'),
     url(r'^edit/(?P<event_id>\d+)/', 'edit'),
     url(r'^delete/(?P<event_id>\d+)/', 'delete'),
 )

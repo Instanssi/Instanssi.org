@@ -14,15 +14,26 @@ def index(request):
     if not request.user.is_staff:
         raise Http404
     
-    # Check if user can add event
-    may_add_event = request.user.has_perm('kompomaatti.add_event')
+    # Get all events
+    events = Event.objects.all()
+    
+    # Render response
+    return render_to_response("admin_events/index.html", {
+        'events': events,
+    }, context_instance=RequestContext(request))
+
+@login_required(login_url='/control/auth/login/')
+def add(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Check for permissions
+    if not request.user.has_perm('kompomaatti.add_event'):
+        raise Http404
     
     # Handle form data, if any
     if request.method == 'POST':
-        # Check for permissions
-        if not may_add_event:
-            raise Http404
-            
         eventform = EventForm(request.POST)
         if eventform.is_valid():
             data = eventform.save(commit=False)
@@ -32,15 +43,11 @@ def index(request):
     else:
         eventform = EventForm()
     
-    # Get all events
-    events = Event.objects.all()
-    
     # Render response
-    return render_to_response("admin_events/index.html", {
-        'events': events,
+    return render_to_response("admin_events/add.html", {
         'eventform': eventform,
-        'may_add_event': may_add_event,
     }, context_instance=RequestContext(request))
+
 
 @login_required(login_url='/control/auth/login/')
 def settings(request):

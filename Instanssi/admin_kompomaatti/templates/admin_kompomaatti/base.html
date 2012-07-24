@@ -1,0 +1,24 @@
+{% extends "admin_base/admin_base.html" %}
+
+{% block title %} - Kompomaatti{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+    <a href="/control/kompomaatti/">Tila</a>
+    <a href="/control/kompomaatti/compos/">Kompot</a>
+    <a href="/control/kompomaatti/entries/">Entryt</a>
+    <a href="/control/kompomaatti/results/">Tulokset</a>
+    <a href="/control/kompomaatti/votecodes/">Koodit</a>
+    <a href="/control/kompomaatti/votecoderequests/">Koodipyynnöt</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

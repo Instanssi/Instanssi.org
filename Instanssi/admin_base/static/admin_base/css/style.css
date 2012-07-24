@@ -1,9 +1,9 @@
 html { overflow-y: scroll; }
-body { font-family: 'Droid Serif', serif; }
+body,li,a { font-family: 'Droid Serif', serif; }
 h1 { font-size: 140%; font-weight: bold; }
-h2 { font-size: 130%; font-weight: bold; padding-top: 0.5em; padding-bottom: 0.5em; }
-h3 { font-size: 100%; font-weight: bold; padding-top: 0.3em; padding-bottom: 0.3em; border-bottom: 1px dotted #333333; }
-p,ul,form,table { font-size: 95%; }
+h2 { font-size: 130%; font-weight: bold; padding-top: 0.3em; padding-bottom: 1em; }
+h3 { font-size: 100%; font-weight: bold; padding-top: 1em; padding-bottom: 0.3em; margin-bottom: 0.7em; border-bottom: 1px dotted #333333; }
+p,ul,form,table,li { font-size: 95%; }
 
 #admin_base_bottom {
     width: 100%;
@@ -23,9 +23,6 @@ p,ul,form,table { font-size: 95%; }
     margin-right: auto;
 }
 
-.admin_base_nav a { text-decoration: none; margin-right: 10px; color: #aaaaff; }
-.admin_base_nav a:hover { text-decoration: underline; }
-
 #admin_base_header {
     padding-bottom: 10px;
     background-image: url('../images/admin_icon.png');
@@ -36,15 +33,6 @@ p,ul,form,table { font-size: 95%; }
     position: relative;
     left: 28px;
     top: 2px;
-}
-
-#admin_base_subnav_bottom {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    width: 100%;
-    color: white;
-    box-shadow: 0px 0px 5px #050505;
-    background-color: #222222;
 }
 
 #admin_base_content {

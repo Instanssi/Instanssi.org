@@ -5,6 +5,7 @@
     <title>Hallinta{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_base/js/jmenu/jMenu.jquery.css" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif" />
     <link rel="stylesheet" type="text/css" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
     <link href="/static/libs/css/uni-form/uni-form.css" media="all" rel="stylesheet" />
@@ -14,14 +15,32 @@
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/datetimepicker/jquery.ui.datetime.src.js"></script>
+    <script type="text/javascript" src="/static/admin_base/js/jmenu/jMenu.jquery.min.js"></script>
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
 {% block jquery %}{% endblock %}
-	$('form.uniForm').uniform();
-	$('.datetimeinput').datetime();
-	$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
-	$('.ui-widget').css('font-size','0.90em');
+		$('form.uniForm').uniform();
+		$('.datetimeinput').datetime();
+		$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
+		$('.ui-widget').css('font-size','0.90em');
+		
+		$("#jMenu").jMenu({
+			openClick : false,
+			ulWidth : 'auto',
+			effects : {
+				effectSpeedOpen : 0,
+				effectSpeedClose : 0,
+				effectTypeOpen : 'show',
+				effectTypeClose : 'hide',
+				effectOpen : 'linear',
+				effectClose : 'linear'
+			},
+			TimeBeforeOpening : 50,
+			TimeBeforeClosing : 50,
+			animatedText : false,
+			paddingLeft: 1
+		});
     });
     </script>
 </head>
@@ -29,20 +48,79 @@
     <div id="admin_base_bottom">
         <div id="admin_base_header" class="admin_base_sizer"><h1>Hallinta</h1></div>
         <div class="admin_base_sizer admin_base_nav">
-        	<a href="/control/events/">Tapahtumat</a>
-            <a href="/control/kompomaatti/">Kompomaatti</a>
-            <a href="/control/files/">Tiedostot</a>
-            <a href="/control/slides/">Slaidit</a>
-            <a href="/control/blog/">Blogi</a>
-            <a href="/control/calendar/">Aikataulu</a>
-            <a href="/control/arkisto/">Arkisto</a>
-            <a href="/control/users/">Käyttäjät</a>
-            <a href="/control/auth/logout/">Logout</a>
-        </div>
-    </div>
-    <div id="admin_base_subnav_bottom">
-        <div class="admin_base_sizer admin_base_nav">
-            &raquo; {% block navigation %}{% endblock %}
+        	<ul id="jMenu">
+        		<li>
+        			<a class="fNiv" href="/control/events/">Tapahtumat</a>
+        			<ul>
+        				<li class="arrow"></li>
+					    <li><a href="/control/events/">Listaus</a></li>
+					    <li><a href="/control/events/add/">Lisää</a></li>
+					    <li><a href="/control/events/settings/">Asetukset</a></li>
+        			</ul>
+        		</li>
+            	<li>
+            		<a class="fNiv" href="/control/kompomaatti/">Kompomaatti</a>
+            		<ul>
+        				<li class="arrow"></li>
+					    <li><a href="/control/kompomaatti/">Tila</a></li>
+					    <li><a href="/control/kompomaatti/compos/">Kompot</a></li>
+					    <li><a href="/control/kompomaatti/entries/">Entryt</a></li>
+					    <li><a href="/control/kompomaatti/results/">Tulokset</a></li>
+					    <li><a href="/control/kompomaatti/votecodes/">Avaimet</a></li>
+					    <li><a href="/control/kompomaatti/votecoderequests/">Avainpyynnöt</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/files/">Tiedostot</a>
+            		<ul>
+        				<li class="arrow"></li>
+					    <li><a href="/control/files/">Listaus</a></li>
+					    <li><a href="/control/files/upload/">Lataa</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/slides/">Slaidit</a>
+            		<ul>
+        				<li class="arrow"></li>
+        				<li><a href="/control/slides/">Slaidit</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/blog/">Blogi</a>
+            		<ul>
+        				<li class="arrow"></li>
+						<li><a href="/control/blog/">Entryt</a></li>
+						<li><a href="/control/blog/write/">Kirjoita</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/calendar/">Aikataulu</a>
+            		<ul>
+        				<li class="arrow"></li>
+        				<li><a href="/control/calendar/">Kalenteri</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/arkisto/">Arkisto</a>
+            		<ul>
+        				<li class="arrow"></li>
+					    <li><a href="/control/arkisto/">Tapahtumat</a></li>
+					    <li><a href="/control/arkisto/archiver/">Arkistoija</a></li>
+					    <li><a href="/control/arkisto/addtool/">Lisää</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/users/">Käyttäjät</a>
+            		<ul>
+        				<li class="arrow"></li>
+					    <li><a href="/control/users/">Pääkäyttäjät</a></li>
+					    <li><a href="/control/users/openid/">OpenID-käyttäjät</a></li>
+        			</ul>
+            	</li>
+            	<li>
+            		<a class="fNiv" href="/control/auth/logout/">Logout</a>
+            	</li>
+            </ul>
         </div>
     </div>
     <div id="admin_base_content" class="admin_base_sizer">

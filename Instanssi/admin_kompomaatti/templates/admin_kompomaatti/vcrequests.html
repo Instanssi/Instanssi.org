@@ -1,0 +1,40 @@
+{% extends "admin_kompomaatti/base.html" %}
+
+{% block title %}{{ block.super }} - Avainpyynnöt{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Avainpyynnöt</h2>
+{% if requests %}
+	<table>
+		<thead>
+			<tr>
+	            <th>Nimi</th>
+	            <th>Sähköposti</th>
+	            <th>Pyyntöteksti</th>
+	            <th>Salli</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for request in requests %}
+			<tr>
+	            <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+	            <td>{{ request.user.email }}</td>
+	            <td>{{ request.text|linebreaksbr }}</td>
+	            <td><a href="/control/kompomaatti/acceptreq/{{ request.id }}/">Salli</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei pyyntöjä.</p>
+{% endif %}
+{% endblock %}

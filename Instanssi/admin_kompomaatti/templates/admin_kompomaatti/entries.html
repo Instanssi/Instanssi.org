@@ -1,0 +1,53 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Entryt{% endblock %}
+
+{% block head %}
+{{ block.super }}
+	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+	$("#entry_table").tablesorter({widgets: ['zebra']});
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Entryt</h2>
+    <h3>Listaus</h3>
+{% if entries %}
+	<table id="entry_table">
+		<thead>
+			<tr>
+				<th>Nimi</th>
+				<th>Tekijä</th>
+				<th>Käyttäjä</th>
+				<th>Kompo</th>
+				<th>Tiedosto</th>
+				<th>Muokkaa</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for entry in entries %}
+			<tr>
+				<td>{{ entry.name }}</td>
+				<td>{{ entry.creator }}</td>
+				<td>{{ entry.user.email }}</td>
+				<td>{{ entry.compo.name }}</td>
+				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
+	            <td><a class="icon editicon" href="/control/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei entryjä.</p>
+{% endif %}
+
+	<h3>Lisää</h3>
+{% uni_form entryform entryform.helper %}
+{% endblock %}

@@ -9,15 +9,18 @@ from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Compo, Entry, Vote, VoteCode, VoteCodeRequest, Event, Profile
 from Instanssi.kompomaatti.forms import EntryForm, VoteCodeAssocForm, RequestVoteCodeForm, ProfileForm
-from Instanssi.settings import ACTIVE_EVENT_ID
+from Instanssi.dbsettings.models import Setting
 
 @login_required
 def dashboard(request): 
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Get list of users entries
     my_entries = Entry.objects.filter(user=request.user)
     
     # Get list of open compos, format times
-    open_compos = Compo.objects.filter(active=True, event=ACTIVE_EVENT_ID, adding_end__gte = datetime.now())
+    open_compos = Compo.objects.filter(active=True, event=active_event_id, adding_end__gte = datetime.now())
     oclist = []
     for compo in open_compos:
         formatted_compo = compo_times_formatter(compo)
@@ -82,9 +85,12 @@ def dashboard(request):
 
 @login_required
 def delentry(request, entry_id):
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Check if entry exists and get the object
     try:
-        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=ACTIVE_EVENT_ID))
+        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=active_event_id))
     except Entry.DoesNotExist:
         raise Http404
 
@@ -110,9 +116,12 @@ def delentry(request, entry_id):
 
 @login_required
 def addentry(request, compo_id):
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Check if entry exists and get the object
     try:
-        compo = Compo.objects.get(id=compo_id, event=ACTIVE_EVENT_ID)
+        compo = Compo.objects.get(id=compo_id, event=active_event_id)
     except Compo.DoesNotExist:
         raise Http404
     
@@ -127,7 +136,7 @@ def addentry(request, compo_id):
             nentry = addform.save(commit=False)
             nentry.user = request.user
             nentry.compo = compo
-            nentry.event = ACTIVE_EVENT_ID
+            nentry.event = active_event_id
             nentry.save()
             return HttpResponseRedirect('/kompomaatti/myentries/') 
     else:
@@ -141,9 +150,12 @@ def addentry(request, compo_id):
 
 @login_required
 def editentry(request, entry_id):
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)    
+
     # Check if entry exists and get the object
     try:
-        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=ACTIVE_EVENT_ID))
+        entry = Entry.objects.get(id=entry_id, compo__in=Compo.objects.filter(event=active_event_id))
     except Entry.DoesNotExist:
         raise Http404
     

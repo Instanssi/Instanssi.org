@@ -11,8 +11,8 @@ import hashlib
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event
 from Instanssi.kompomaatti.forms import AdminEntryForm,AdminCompoForm,CreateTokensForm
 from Instanssi.kompomaatti.misc.custom_render import custom_render
-from Instanssi.settings import ACTIVE_EVENT_ID
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.dbsettings.models import Setting
 
 @login_required
 def editcompo(request, compo_id):
@@ -93,12 +93,15 @@ def addcompo(request):
     if not request.user.is_superuser:
         raise Http404
     
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Check if we got filled form
     if request.method == 'POST':
         form = AdminCompoForm(request.POST)
         if form.is_valid():
             # Get the Event. If this fails, everything should fail anyways. So, don't catch exception.
-            event = Event.objects.get(id=ACTIVE_EVENT_ID)
+            event = Event.objects.get(id=active_event_id)
             
             # Save compo
             compo = form.save(commit=False)
@@ -175,12 +178,15 @@ def admin(request):
     else:
         gentokensform = CreateTokensForm()
         
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+        
     # Get data
-    compos = Compo.objects.filter(event=ACTIVE_EVENT_ID)
+    compos = Compo.objects.filter(event=active_event_id)
     entries = Entry.objects.filter(compo__in=compos)
     tokens = VoteCode.objects.all()
     vcreqs = VoteCodeRequest.objects.all()
-    event = Event.objects.get(id=ACTIVE_EVENT_ID)
+    event = Event.objects.get(id=active_event_id)
     
     # Just dump the page
     return custom_render(request, 'kompomaatti/admin/admin.html', {

@@ -26,9 +26,6 @@ DATABASES = {
     }
 }
 
-# Kompomaatti active event. If there is no active event, just use -1. 
-ACTIVE_EVENT_ID = -1
-
 # Google api stuff
 GOOGLEAPIKEY = 'AIzaSyCy8WMM6bkEdsDUE2_jPax35M0PXP87W5s'
 GOOGLEANALYTICS = False
@@ -73,7 +70,7 @@ STATICFILES_FINDERS = (
 
 # Default settings for dbsettings module
 DEFAULT_DB_SETTINGS = {
-    u'event': {
+    u'events': {
         u'active_event_id': -1,
     },
 }

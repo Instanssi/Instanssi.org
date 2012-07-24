@@ -3,10 +3,11 @@
 from django.shortcuts import render_to_response
 from Instanssi.kompomaatti.models import Compo, VoteCode
 from django.template import RequestContext
-from Instanssi.settings import ACTIVE_EVENT_ID
+from Instanssi.dbsettings.models import Setting
 
 def custom_render(request, tpl, context={}):
-    context['compos'] = Compo.objects.filter(active=True, event=ACTIVE_EVENT_ID)
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    context['compos'] = Compo.objects.filter(active=True, event=active_event_id)
     context['logged'] = request.user.is_authenticated()
     context['is_su'] = request.user.is_superuser
     associated = False

@@ -5,13 +5,16 @@ from datetime import datetime
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Entry, Compo, Vote, VoteCode
-from Instanssi.settings import ACTIVE_EVENT_ID
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.dbsettings.models import Setting
 
 def compo(request, compo_id):
+    # Get event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Get compo information
     try:
-        c = Compo.objects.get(id=compo_id, event=ACTIVE_EVENT_ID, active=True)
+        c = Compo.objects.get(id=compo_id, event=active_event_id, active=True)
     except Compo.DoesNotExist:
         raise Http404
     

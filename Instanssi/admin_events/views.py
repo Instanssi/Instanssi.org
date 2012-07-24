@@ -67,12 +67,12 @@ def settings(request):
     
     # Create settingsform OR handle save
     if request.method == 'POST':
-        settingform = SettingForm(request.POST, group=u'event', choices=choices)
+        settingform = SettingForm(request.POST, group=u'events', choices=choices)
         if settingform.is_valid():
             settingform.save()
             return HttpResponseRedirect("/control/events/settings/")
     else:
-        settingform = SettingForm(group=u'event', choices=choices)
+        settingform = SettingForm(group=u'events', choices=choices)
         
     # Set titles & descriptions
     settingform.set_label('active_event_id', u'Aktiivinen tapahtuma')

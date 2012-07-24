@@ -5,13 +5,16 @@ from operator import itemgetter
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter
 from Instanssi.kompomaatti.models import Entry, Compo, Vote
-from Instanssi.settings import ACTIVE_EVENT_ID
+from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.misc import entrysort
 from datetime import datetime
 
 def compolist(request):
+    # Get active event id
+    active_event_id = Setting.get('active_event_id', 'events', -1)
+    
     # Get compos, format times
-    composet = Compo.objects.filter(active=True, event=ACTIVE_EVENT_ID).order_by('compo_start')
+    composet = Compo.objects.filter(active=True, event=active_event_id).order_by('compo_start')
     compos = []
     for compo in composet:
         compos.append(compo_times_formatter(compo))

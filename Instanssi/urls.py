@@ -20,16 +20,11 @@ urlpatterns = patterns('',
     url(r'^control/events/', include('Instanssi.admin_events.urls')),
     url(r'^arkisto/', include('Instanssi.arkisto.urls')),
     url(r'^archivaltool/', include('Instanssi.entryarchivaltool.urls')),
+    url(r'^kompomaatti/', include('Instanssi.kompomaatti.urls')),
     url(r'^$', include('Instanssi.main2012.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^openid/', include('django_openid_auth.urls')),
 )
-
-# Add Kompomaatti urls only if ACTIVE_EVENT_ID is not -1
-if settings.ACTIVE_EVENT_ID != -1:
-    urlpatterns += patterns('',
-        url(r'^kompomaatti/', include('Instanssi.kompomaatti.urls')),
-    )
 
 # Serve media files through static.serve when running in debug mode
 if settings.DEBUG:

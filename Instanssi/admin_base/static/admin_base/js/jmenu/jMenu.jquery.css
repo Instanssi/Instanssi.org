@@ -24,19 +24,21 @@
 	position: absolute;
 	padding: 0;
 	margin: 0;
+	z-index: 1;
 }
 #jMenu li ul li {
 	background-color: #322f32;
 	display: block;
 	border-bottom: 1px solid #484548;
 	padding: 0;
+	z-index: 1;
 }
 #jMenu li ul li.arrow {
 	background: #322f32 url('arrow_down.png') no-repeat center center;
 	height: 6px;
 	padding: 0;
 	border-bottom: none;
-	padding-bottom: 10px
+	padding-bottom: 10px;
 }
 #jMenu li ul li a {
 	text-transform: none;

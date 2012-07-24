@@ -15,3 +15,52 @@ def index(request):
     return render_to_response("admin_kompomaatti/index.html", {
     }, context_instance=RequestContext(request))
     
+@login_required(login_url='/control/auth/login/')
+def compos(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Render response
+    return render_to_response("admin_kompomaatti/index.html", {
+    }, context_instance=RequestContext(request))
+    
+@login_required(login_url='/control/auth/login/')
+def entries(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Render response
+    return render_to_response("admin_kompomaatti/index.html", {
+    }, context_instance=RequestContext(request))
+    
+@login_required(login_url='/control/auth/login/')
+def results(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Render response
+    return render_to_response("admin_kompomaatti/index.html", {
+    }, context_instance=RequestContext(request))
+    
+@login_required(login_url='/control/auth/login/')
+def votecodes(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Render response
+    return render_to_response("admin_kompomaatti/index.html", {
+    }, context_instance=RequestContext(request))
+    
+@login_required(login_url='/control/auth/login/')
+def votecoderequests(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Render response
+    return render_to_response("admin_kompomaatti/index.html", {
+    }, context_instance=RequestContext(request))

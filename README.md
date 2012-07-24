@@ -49,7 +49,7 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.3 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
@@ -58,13 +58,6 @@ Kirjastot
 * [django-uni-form] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 * [feedparser] (http://code.google.com/p/feedparser/) `pip install feedparser`
-
-Kompomaatti
------------
-Kompomaatti on vakiona pois päältä. Kompomaatin saa toimimaan seuraavasti:
-
-1. Luo admin-paneelissa uusi tapahtuma (event)
-2. Aseta settings.py-tiedoston ACTIVE_EVENT_ID-muuttujat arvoksi luodun tapahtuman ID.
 
 IDEjä
 -----

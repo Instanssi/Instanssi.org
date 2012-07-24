@@ -13,7 +13,6 @@ p,ul,form,table,li { font-size: 95%; }
     padding-bottom: 8px;
     color: white;
     position: relative;
-    z-index: 1;
 }
 
 .admin_base_sizer {

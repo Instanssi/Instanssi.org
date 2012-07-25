@@ -1,4 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
 
 {% block title %}{{ block.super }} - Tila{% endblock %}
 
@@ -14,4 +15,5 @@
 {{ block.super }}
     <h2>Tila</h2>
 
+{% uni_form eventform eventform.helper %}
 {% endblock %}

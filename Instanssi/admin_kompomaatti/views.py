@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminChangeEventForm
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -14,8 +14,18 @@ def index(request):
     if not request.user.is_staff:
         raise Http404
     
+    # Event select form
+    if request.method == 'POST':
+        form = AdminChangeEventForm(request.POST, request=request)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/control/kompomaatti/') 
+    else:
+        form = AdminChangeEventForm(request=request)
+    
     # Render response
     return render_to_response("admin_kompomaatti/index.html", {
+        'eventform': form,
     }, context_instance=RequestContext(request))
     
 @login_required(login_url='/control/auth/login/')

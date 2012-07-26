@@ -76,3 +76,6 @@
 * Hakisi tietoja aikataulusta ja demokompoista, ja näyttäisi niiden tietoja screenillä satunnaisesti
 * Voisi myös näyttää upload-palvelulla upattuja kuvia kun halutaan (sponsorit?)
 * Ääntä, videoita ? (HTML5)
+
+### /tv-stuff/
+* Telkkaristreamin alareunan tapahtumajutskien generointi

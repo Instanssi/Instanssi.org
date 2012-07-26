@@ -5,7 +5,7 @@ from django.http import Http404,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.utils import simplejson
-from models import CalendarEvent
+from Instanssi.ext_calendar.models import CalendarEvent
 from Instanssi.kompomaatti.models import Compo
 
 def JSONResponse(data):

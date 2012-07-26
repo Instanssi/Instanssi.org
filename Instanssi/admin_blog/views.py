@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from models import BlogEntry, BlogComment
+from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from forms import BlogEntryForm
 from datetime import datetime
 from Instanssi.settings import SHORT_LANGUAGE_CODE

@@ -111,7 +111,6 @@ INSTALLED_APPS = (
     'Instanssi.admin_users',
     'Instanssi.arkisto',
     'Instanssi.kompomaatti',
-    'Instanssi.entryarchivaltool',
     'Instanssi.openidauth',
     'Instanssi.dbsettings',
     'django_openid_auth',

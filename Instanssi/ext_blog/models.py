@@ -3,8 +3,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from Instanssi.kompomaatti.models import Event
 
 class BlogEntry(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=32)
     text = models.TextField(u'Teksti')

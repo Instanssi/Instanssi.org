@@ -5,8 +5,10 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from Instanssi.kompomaatti.models import Event
 
 class CalendarEvent(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     start = models.DateTimeField(u'Alku', help_text=u'Tapahtuman alkamisaika.')
     end = models.DateTimeField(u'Loppe', help_text=u'Tapahtuman loppumisaika.', blank=True)

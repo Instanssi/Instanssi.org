@@ -3,7 +3,7 @@
 from django import forms
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
-from models import BlogEntry
+from Instanssi.ext_blog.models import BlogEntry
 
 class BlogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

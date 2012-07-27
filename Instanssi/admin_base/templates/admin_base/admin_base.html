@@ -4,14 +4,16 @@
     <meta charset="utf-8" />
     <title>Hallinta{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/static/admin_base/js/jmenu/jMenu.jquery.css" />
     <link rel="stylesheet" type="text/css" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/selectbox/css/jquery.selectbox.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
     <link href="/static/libs/css/uni-form/uni-form.css" media="all" rel="stylesheet" />
     <link href="/static/libs/css/uni-form/default.uni-form.css" media="all" rel="stylesheet" />
     <link rel="stylesheet" href="/static/libs/css/datetimepicker/jquery.ui.datetime.css" />
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/static/libs/js/selectbox/jquery.selectbox-0.2.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/datetimepicker/jquery.ui.datetime.src.js"></script>
     <script type="text/javascript" src="/static/admin_base/js/jmenu/jMenu.jquery.min.js"></script>
@@ -19,6 +21,8 @@
     <script type="text/javascript">
     $(function() {
 {% block jquery %}{% endblock %}
+		$("#event_sel").selectbox();
+
 		$('form.uniForm').uniform();
 		$('.datetimeinput').datetime();
 		$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
@@ -47,10 +51,12 @@
 	<div id="admin_base_bg">
     <div id="admin_base_bottom">
         <div id="admin_base_header" class="admin_base_sizer">
-        	<h1>Hallinta</h1>
-        	<select id="event_sel">
-        		<option>SampleText</option>
-        	</select>
+        	<div id="header_left"><h1>Hallinta</h1></div>
+        	<div id="header_right">
+	        	<select id="event_sel">
+	        		<option>SampleText</option>
+	        	</select>
+	        </div>
         </div>
         <div class="admin_base_sizer">
         	<ul id="jMenu">

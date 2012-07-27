@@ -35,21 +35,17 @@ p,ul,form,table { font-size: 10pt; }
     padding-bottom: 10px;
     background-image: url('../images/admin_icon.png');
     background-repeat: no-repeat;
+    height: 30px;
 }
 
-#event_sel {
-	position: relative;
+#header_left {
+	float: left;
+	display: block;
+}
+
+#header_right {
 	float: right;
-	top: -20px;
-	right: 0px;
-	padding: 3px; 
-	border: 0px; 
-	background: transparent; 
-	color: #eeeeee;
-}
-
-#event_sel option {
-	margin: 3px;
+	display: block;
 }
 
 #admin_base_header h1 {

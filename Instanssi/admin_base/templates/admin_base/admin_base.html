@@ -44,9 +44,10 @@
     </script>
 </head>
 <body>
+	<div id="admin_base_bg">
     <div id="admin_base_bottom">
         <div id="admin_base_header" class="admin_base_sizer"><h1>Hallinta</h1></div>
-        <div class="admin_base_sizer admin_base_nav">
+        <div class="admin_base_sizer">
         	<ul id="jMenu">
         		<li>
         			<a class="fNiv" href="/control/events/">Tapahtumat</a>
@@ -85,25 +86,28 @@
         			</ul>
             	</li>
             	<li>
-            		<a class="fNiv" href="/control/blog/">Blogi</a>
+            		<a class="fNiv" href="/control/blog/">Sivusto</a>
             		<ul>
         				<li class="arrow"></li>
-						<li><a href="/control/blog/">Entryt</a></li>
-						<li><a href="/control/blog/write/">Kirjoita</a></li>
-        			</ul>
-            	</li>
-            	<li>
-            		<a class="fNiv" href="/control/calendar/">Aikataulu</a>
-            		<ul>
-        				<li class="arrow"></li>
-        				<li><a href="/control/calendar/">Kalenteri</a></li>
+						<li>
+							<a href="/control/blog/">Blogi</a>
+							<ul>
+								<li><a href="/control/blog/">Selaa</a></li>
+								<li><a href="/control/blog/write/">Kirjoita</a></li>
+							</ul>
+							<a href="/control/blog/">Kalenteri</a>
+			            	<ul>
+			            		<li><a href="/control/calendar/">Selaa</a></li>
+			        			<li><a href="/control/calendar/">Lisää</a></li>
+			            	</ul>
+						</li>
         			</ul>
             	</li>
             	<li>
             		<a class="fNiv" href="/control/arkisto/">Arkisto</a>
             		<ul>
         				<li class="arrow"></li>
-					    <li><a href="/control/arkisto/">Tapahtumat</a></li>
+					    <li><a href="/control/arkisto/">Teokset</a></li>
 					    <li><a href="/control/arkisto/archiver/">Arkistoija</a></li>
 					    <li><a href="/control/arkisto/addtool/">Lisää</a></li>
         			</ul>
@@ -121,6 +125,7 @@
             	</li>
             </ul>
         </div>
+    </div>
     </div>
     <div id="admin_base_content" class="admin_base_sizer">
     {% block content %}{% endblock %}

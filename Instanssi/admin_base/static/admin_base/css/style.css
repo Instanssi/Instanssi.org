@@ -5,6 +5,13 @@ h2 { font-size: 130%; font-weight: bold; padding-top: 0.3em; padding-bottom: 1em
 h3 { font-size: 100%; font-weight: bold; padding-top: 1em; padding-bottom: 0.3em; margin-bottom: 0.7em; border-bottom: 1px dotted #333333; }
 p,ul,form,table { font-size: 10pt; }
 
+#admin_base_bg {
+	width: 100%;
+    background-image: url('/static/admin_base/images/header.jpg');
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
 #admin_base_bottom {
     width: 100%;
     background-color: black;
@@ -13,6 +20,8 @@ p,ul,form,table { font-size: 10pt; }
     padding-bottom: 8px;
     color: white;
     position: relative;
+    background-color: rgba(0,0,0,0.85);
+
 }
 
 .admin_base_sizer {

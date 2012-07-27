@@ -37,6 +37,21 @@ p,ul,form,table { font-size: 10pt; }
     background-repeat: no-repeat;
 }
 
+#event_sel {
+	position: relative;
+	float: right;
+	top: -20px;
+	right: 0px;
+	padding: 3px; 
+	border: 0px; 
+	background: transparent; 
+	color: #eeeeee;
+}
+
+#event_sel option {
+	margin: 3px;
+}
+
 #admin_base_header h1 {
     position: relative;
     left: 28px;

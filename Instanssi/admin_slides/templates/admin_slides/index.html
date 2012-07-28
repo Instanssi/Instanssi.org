@@ -8,6 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
+	$("#slides_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
@@ -15,7 +16,7 @@
     <h2>Slaidit</h2>
     	
 {% if compos %}
-	<table>
+	<table id="slides_table" class="tablesorter">
 		<thead>
 			<tr>
 				<th>Kompo</th>

@@ -1,0 +1,22 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Avaimet - Generoi{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Generoi lisää äänestysavaimia</h2>
+{% if gentokensform %}
+{% uni_form gentokensform gentokensform.helper %}
+{% else %}
+	<p>Tapahtumaa ei ole valittuna; tokeneita ei voida generoida.</p>
+{% endif %}
+{% endblock %}

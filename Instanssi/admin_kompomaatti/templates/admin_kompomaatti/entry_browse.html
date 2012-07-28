@@ -5,9 +5,6 @@
 
 {% block head %}
 {{ block.super }}
-	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
-	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
-	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 
 {% block jquery %}
@@ -19,7 +16,7 @@
 {{ block.super }}
     <h2>Entryt</h2>
 {% if entries %}
-	<table id="entry_table">
+	<table id="entry_table" class="tablesorter">
 		<thead>
 			<tr>
 				<th>Nimi</th>

@@ -4,14 +4,45 @@
 
 {% block head %}
 {{ block.super }}
+	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+	$(".jq-button").button();
+	$("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Avaimet</h2>
-
+{% if tokens %}
+    <a href="/control/kompomaatti/printcodes/" class="jq-button">Vapaat tokenit .PDF muodossa</a>
+	<table id="tokens_table" class="tablesorter"> 
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Assosiaatio käyttäjään</th>
+			<th>Assosioitu</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for token in tokens %}
+		<tr>
+			<td>{{ token.key }}</td>
+			<td>{% if token.associated_to %}{{ token.associated_to.email }}{% else %}-{% endif %}</td>
+			<td>{{ token.time|date:"d.m.Y H:i" }}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+	</table>
+	<div id="tokens_pager" class="pager">
+		{% include "kompomaatti/admin_incs/sorter_pager.html" %}
+	</div>
+	<br />
+{% else %}
+    <p>Ei äänestyskoodeja.</p>
+{% endif %}
 {% endblock %}

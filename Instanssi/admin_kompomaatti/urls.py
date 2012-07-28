@@ -13,5 +13,8 @@ urlpatterns = patterns(
     url(r'^editentry/(?P<entry_id>\d+)/', 'entry_edit'),
     url(r'^results/', 'results'),
     url(r'^votecodes/', 'votecodes'),
+    url(r'^printcodes/', 'votecodes_print'),
+    url(r'^addvotecodes/', 'votecodes_generate'),
     url(r'^votecoderequests/', 'votecoderequests'),
+    url(r'acceptreq/(?P<vcrid>\d+)/', 'votecoderequests_accept'),
 )

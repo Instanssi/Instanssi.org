@@ -8,13 +8,14 @@
 
 {% block jquery %}
 {{ block.super }}
+	$("#req_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Avainpyynnöt</h2>
 {% if requests %}
-	<table>
+	<table id="req_table" class="tablesorter">
 		<thead>
 			<tr>
 	            <th>Nimi</th>

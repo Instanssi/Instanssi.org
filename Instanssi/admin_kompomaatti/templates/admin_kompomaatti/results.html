@@ -4,14 +4,50 @@
 
 {% block head %}
 {{ block.super }}
+	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+	$(".entrylist").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Tulokset</h2>
-
+{% if results %}
+{% for compo,entries in results.items %}
+	<h3>{{ compo }}</h3>
+{% if entries %}
+	<table class="entrylist">
+		<thead>
+			<tr>
+				<th>Sijoitus</th>
+				<th>Nimi</th>
+				<th>Tekijä</th>
+				<th>Pisteet</th>
+				<th>Diskattu?</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for entry in entries %}
+			<tr>
+				<td>{{ forloop.counter }}</td>
+				<td>{{ entry.name }}</td>
+				<td>{{ entry.creator }}</td>
+				<td>{% if entry.disqualified %}-{% else %}{{ entry.get_score|floatformat:"2" }}{% endif %}</td>
+				<td>{% if entry.disqualified %}Kyllä! Ei pisteitä.{% else %}Ei.{% endif %}</td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei entryjä tässä kompossa!</p>
+{% endif %}
+{% endfor %}
+{% else %}
+	<p>Ei vielä tuloksia näytettävänä!</p>
+{% endif %}
 {% endblock %}

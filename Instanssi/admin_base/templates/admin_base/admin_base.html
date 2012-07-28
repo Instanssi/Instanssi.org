@@ -21,7 +21,14 @@
     <script type="text/javascript">
     $(function() {
 {% block jquery %}{% endblock %}
-		$("#event_sel").selectbox();
+		$("#event_sel").selectbox({
+			onChange: function(val, inst) {
+				if(val > -1) {
+					url = "/control/eventchange/"+val+"/?r={{ full_path }}";
+					window.location.replace(url)
+				}
+			}
+		});
 
 		$('form.uniForm').uniform();
 		$('.datetimeinput').datetime();
@@ -54,7 +61,13 @@
         	<div id="header_left"><h1>Hallinta</h1></div>
         	<div id="header_right">
 	        	<select id="event_sel">
-	        		<option>SampleText</option>
+{% if navmenu_events %}
+{% for ev in navmenu_events %}
+					<option value="{{ ev.id }}" {% if ev.id == selected_event_id %}selected="selected"{% endif %}>{{ ev.name }}</option>
+{% endfor %}
+{% else %}
+					<option value="-1">Ei mitään</option>
+{% endif %} 
 	        	</select>
 	        </div>
         </div>
@@ -73,7 +86,6 @@
             		<a class="fNiv" href="/control/kompomaatti/">Kompomaatti</a>
             		<ul>
         				<li class="arrow"></li>
-					    <li><a href="/control/kompomaatti/">Tila</a></li>
 					    <li><a href="/control/kompomaatti/compos/">Kompot</a></li>
 					    <li><a href="/control/kompomaatti/entries/">Entryt</a></li>
 					    <li><a href="/control/kompomaatti/results/">Tulokset</a></li>

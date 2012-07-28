@@ -3,11 +3,11 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from forms import BlogEntryForm
 from datetime import datetime
 from Instanssi.settings import SHORT_LANGUAGE_CODE
+from Instanssi.admin_base.misc.custom_render import admin_render
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -18,9 +18,9 @@ def index(request):
     entries = BlogEntry.objects.all()
     
     # Render response
-    return render_to_response("admin_blog/index.html", {
+    return admin_render(request, "admin_blog/index.html", {
         'entries': entries,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def write(request):
@@ -44,10 +44,10 @@ def write(request):
         form = BlogEntryForm()
     
     # Render response
-    return render_to_response("admin_blog/write.html", {
+    return admin_render(request, "admin_blog/write.html", {
         'addform': form,
         'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def edit(request, entry_id):
@@ -75,10 +75,10 @@ def edit(request, entry_id):
         form = BlogEntryForm(instance=entry)
     
     # Render response
-    return render_to_response("admin_blog/edit.html", {
+    return admin_render(request, "admin_blog/edit.html", {
         'editform': form,
         'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
-    }, context_instance=RequestContext(request))
+    })
     
     
 @login_required(login_url='/control/auth/login/') 

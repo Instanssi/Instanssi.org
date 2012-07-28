@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
+from Instanssi.admin_base.misc.custom_render import admin_render
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -12,8 +12,7 @@ def index(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_users/index.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_users/index.html", {})
 
 @login_required(login_url='/control/auth/login/')
 def openid(request):
@@ -22,5 +21,4 @@ def openid(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_users/openid.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_users/openid.html", {})

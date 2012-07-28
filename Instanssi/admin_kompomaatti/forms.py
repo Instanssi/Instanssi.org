@@ -7,54 +7,6 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event
-from Instanssi.dbsettings.models import Setting
-
-class AdminChangeEventForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        
-        # Init
-        super(AdminChangeEventForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout()
-        
-        # Get settings in group
-        ev_objs = Event.objects.all()
-        events = [(-1,u'Ei mitään')]
-        for ev in ev_objs:
-            events.append((ev.id, ev.name))
-        
-        # Get initial value
-        initial = None
-        if self.request != None and 'm_event_id' in self.request.session:
-            initial = self.request.session['m_event_id']
-        elif len(events) > 0:
-            initial = Setting.get('active_event_id', 'events', events[0])
-        
-        # Create fieldset for everything
-        fs = Fieldset(u'Asetukset')
-
-        # Add fields for settings
-        self.fields['m_event_id'] = forms.TypedChoiceField(choices=events, coerce=int)
-        self.fields['m_event_id'].help_text = u'Valitsee kompomaatin admin-paneelissa käsiteltävänä olevan tapahtuman. Vaikuttaa kaikkiin kompomaatti-menun alaisiin sivuihin! Tämä asetus ei tee muutoksia tietokantaan.'
-        self.fields['m_event_id'].label = u'Tapahtuman valinta'
-        if initial:
-            self.fields['m_event_id'].initial = initial
-
-        # Add buttonholder
-        self.helper.layout = Layout(
-            Fieldset(
-                u'Tapahtuman valinta',
-                'm_event_id',
-                ButtonHolder (
-                    Submit('submit', 'Valitse')
-                )
-            )
-        )
-        
-    def save(self):
-        self.request.session['m_event_id'] = self.cleaned_data['m_event_id']
-
 
 class AdminCompoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

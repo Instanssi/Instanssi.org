@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
+from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Event
 
 @login_required(login_url='/control/auth/login/')
@@ -15,9 +15,9 @@ def index(request):
     events = Event.objects.all()
     
     # Render response
-    return render_to_response("admin_arkisto/index.html", {
+    return admin_render(request, "admin_arkisto/index.html", {
         'events': events,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def archiver(request):
@@ -26,8 +26,7 @@ def archiver(request):
         raise Http404
 
     # Render response
-    return render_to_response("admin_arkisto/archiver.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_arkisto/archiver.html", {})
 
 @login_required(login_url='/control/auth/login/')
 def addtool(request):
@@ -36,5 +35,4 @@ def addtool(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_arkisto/addtool.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_arkisto/addtool.html", {})

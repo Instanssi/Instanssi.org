@@ -3,10 +3,10 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from models import UploadedFile
 from forms import UploadForm
 from datetime import datetime
+from Instanssi.admin_base.misc.custom_render import admin_render
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -18,9 +18,9 @@ def index(request):
     files = UploadedFile.objects.all()
     
     # Render response
-    return render_to_response("admin_upload/index.html", {
+    return admin_render(request, "admin_upload/index.html", {
         'files': files,
-    }, context_instance=RequestContext(request))
+    })
     
 @login_required(login_url='/control/auth/login/')
 def deletefile(request, file_id):
@@ -65,6 +65,6 @@ def upload(request):
         uploadform = UploadForm()
     
     # Render response
-    return render_to_response("admin_upload/upload.html", {
+    return admin_render(request, "admin_upload/upload.html", {
         'uploadform': uploadform,
-    }, context_instance=RequestContext(request))
+    })

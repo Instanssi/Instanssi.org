@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_kompomaatti.views',
-    url(r'^$', 'index'),
+    url(r'^$', 'compos'),
     url(r'^compos/', 'compos'),
     url(r'^entries/', 'entries'),
     url(r'^results/', 'results'),

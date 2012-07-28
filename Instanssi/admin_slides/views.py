@@ -3,9 +3,10 @@
 from django.shortcuts import render_to_response
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.eventsel import get_selected_event
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -14,9 +15,9 @@ def index(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_slides/index.html", {
-        'compos': Compo.objects.all(),
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_slides/index.html", {
+        'compos': Compo.objects.filter(event_id=get_selected_event(request)),
+    })
     
 @login_required(login_url='/control/auth/login/')
 def slide_results(request, compo_id):
@@ -34,10 +35,10 @@ def slide_results(request, compo_id):
     entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
 
     # Render
-    return render_to_response('admin_slides/slide_results.html', {
+    return admin_render(request, 'admin_slides/slide_results.html', {
         'entries': entries,
         'compo': c,
-    }, context_instance=RequestContext(request))
+    })
     
 @login_required(login_url='/control/auth/login/')
 def slide_entries(request, compo_id):
@@ -55,8 +56,8 @@ def slide_entries(request, compo_id):
     entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
 
     # Render
-    return render_to_response('admin_slides/slide_entries.html', {
+    return admin_render(request, 'admin_slides/slide_entries.html', {
         'entries': entries,
         'compo': c,
-    }, context_instance=RequestContext(request))
+    })
     

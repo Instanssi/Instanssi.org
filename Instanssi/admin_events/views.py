@@ -3,11 +3,11 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
 from Instanssi.dbsettings.forms import SettingForm
 from common.responses import JSONResponse
+from Instanssi.admin_base.misc.custom_render import admin_render
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -19,9 +19,9 @@ def index(request):
     events = Event.objects.all()
     
     # Render response
-    return render_to_response("admin_events/index.html", {
+    return admin_render(request, "admin_events/index.html", {
         'events': events,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def add(request):
@@ -45,9 +45,9 @@ def add(request):
         eventform = EventForm()
     
     # Render response
-    return render_to_response("admin_events/add.html", {
+    return admin_render(request, "admin_events/add.html", {
         'eventform': eventform,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @login_required(login_url='/control/auth/login/')
@@ -79,9 +79,9 @@ def settings(request):
     settingform.set_help_text('active_event_id', u'Kompomaatissa tällä hetkellä aktiivinen tapahtuma')
     
     # Render response
-    return render_to_response("admin_events/settings.html", {
+    return admin_render(request, "admin_events/settings.html", {
         'settingform': settingform,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def edit(request, event_id):
@@ -111,9 +111,9 @@ def edit(request, event_id):
         eventform = EventForm(instance=event)
     
     # Render response
-    return render_to_response("admin_events/edit.html", {
+    return admin_render(request, "admin_events/edit.html", {
         'eventform': eventform,
-    }, context_instance=RequestContext(request))
+    })
 
 @login_required(login_url='/control/auth/login/')
 def delete(request, event_id):

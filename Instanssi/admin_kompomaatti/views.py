@@ -3,30 +3,11 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminChangeEventForm
-
-@login_required(login_url='/control/auth/login/')
-def index(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Event select form
-    if request.method == 'POST':
-        form = AdminChangeEventForm(request.POST, request=request)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/control/kompomaatti/') 
-    else:
-        form = AdminChangeEventForm(request=request)
-    
-    # Render response
-    return render_to_response("admin_kompomaatti/index.html", {
-        'eventform': form,
-    }, context_instance=RequestContext(request))
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.eventsel import get_selected_event
     
 @login_required(login_url='/control/auth/login/')
 def compos(request):
@@ -35,8 +16,8 @@ def compos(request):
         raise Http404
     
     # Get compos
-    active_event_id = Setting.get('active_event_id', 'events', -1)
-    compos = Compo.objects.filter(event=active_event_id)
+    selected_event_id = get_selected_event(request)
+    compos = Compo.objects.filter(event=selected_event_id)
     
     # Form handling
     if request.method == "POST":
@@ -50,10 +31,10 @@ def compos(request):
         compoform = AdminCompoForm()
     
     # Render response
-    return render_to_response("admin_kompomaatti/compos.html", {
+    return admin_render(request, "admin_kompomaatti/compos.html", {
         'compos': compos,
         'compoform': compoform,
-    }, context_instance=RequestContext(request))
+    })
     
 @login_required(login_url='/control/auth/login/')
 def entries(request):
@@ -62,18 +43,14 @@ def entries(request):
         raise Http404
     
     # Get Entries    
-    active_event_id = Setting.get('active_event_id', 'events', -1)
-    compos = Compo.objects.filter(event=active_event_id)
+    selected_event_id = get_selected_event(request)
+    compos = Compo.objects.filter(event=selected_event_id)
     entries = Entry.objects.filter(compo__in=compos)
     
-    # Form handling
-    entryform = AdminEntryForm()
-    
     # Render response
-    return render_to_response("admin_kompomaatti/entries.html", {
+    return admin_render(request, "admin_kompomaatti/entries.html", {
         'entries': entries,
-        'entryform': entryform,
-    }, context_instance=RequestContext(request))
+    })
     
 @login_required(login_url='/control/auth/login/')
 def results(request):
@@ -82,8 +59,7 @@ def results(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_kompomaatti/results.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render("admin_kompomaatti/results.html", {})
     
 @login_required(login_url='/control/auth/login/')
 def votecodes(request):
@@ -92,8 +68,7 @@ def votecodes(request):
         raise Http404
     
     # Render response
-    return render_to_response("admin_kompomaatti/votecodes.html", {
-    }, context_instance=RequestContext(request))
+    return admin_render(request, "admin_kompomaatti/votecodes.html", {})
     
 @login_required(login_url='/control/auth/login/')
 def votecoderequests(request):
@@ -104,6 +79,6 @@ def votecoderequests(request):
     requests = VoteCodeRequest.objects.all()
     
     # Render response
-    return render_to_response("admin_kompomaatti/vcrequests.html", {
+    return admin_render(request, "admin_kompomaatti/vcrequests.html", {
         'requests': requests,
-    }, context_instance=RequestContext(request))
+    })

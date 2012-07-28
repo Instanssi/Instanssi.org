@@ -7,3 +7,21 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     return HttpResponseRedirect("/control/files/")
     
+@login_required(login_url='/control/auth/login/')
+def eventchange(request, event_id):
+    # Get redirect path
+    if 'r' in request.GET:
+        r = request.GET['r']
+        if r[0] != "/":
+            r = "/control/"
+    else:
+        r = "/control/"
+        
+    # Set session variable
+    try:
+        request.session['m_event_id'] = int(event_id)
+    except:
+        raise Http404
+        
+    # Redirect
+    return HttpResponseRedirect(r)

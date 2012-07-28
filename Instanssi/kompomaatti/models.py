@@ -37,8 +37,9 @@ class VoteCodeRequest(models.Model):
         verbose_name_plural=u"äänestyskoodipyynnöt"
 
 class VoteCode(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma, johon äänestysavain on assosioitu', blank=True, null=True)
     key = models.CharField(u'Avain', help_text=u"Äänestysavain.", max_length=64, unique=True)
-    associated_to = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
+    associated_to = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u"Käyttäjä jolle avain on assosioitu", blank=True, null=True)
     time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True)
     def __unicode__(self):
         if self.associated_to:
@@ -48,6 +49,7 @@ class VoteCode(models.Model):
     class Meta:
         verbose_name=u"äänestysavain"
         verbose_name_plural=u"äänestysavaimet"
+        unique_together = (("event", "key"),("event","associated_to"))
 
 class Compo(models.Model):
     event = models.ForeignKey(Event, verbose_name=u"tapahtuma", help_text=u"Tapahtuma johon kompo kuuluu")

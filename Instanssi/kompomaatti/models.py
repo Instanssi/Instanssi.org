@@ -6,7 +6,6 @@ from django.contrib import admin
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from datetime import datetime
-from misc.overwritestorage import OverwriteStorage
 import os.path
 
 class Profile(models.Model):
@@ -93,9 +92,9 @@ class Entry(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Nimi tuotokselle')
     description = models.TextField(u'Kuvaus', help_text=u'Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.')
     creator = models.CharField(u'Tekijä', max_length=64, help_text=u'Tuotoksen tekijän tai tekijäryhmän nimi')
-    entryfile = models.FileField(u'Tiedosto', upload_to='kompomaatti/entryfiles/', storage=OverwriteStorage(), help_text=u"Tuotospaketti.")
-    sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', storage=OverwriteStorage(), help_text=u"Lähdekoodipaketti.", blank=True)
-    imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', storage=OverwriteStorage(), help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
+    entryfile = models.FileField(u'Tiedosto', upload_to='kompomaatti/entryfiles/', help_text=u"Tuotospaketti.")
+    sourcefile = models.FileField(u'Lähdekoodi', upload_to='kompomaatti/entrysources/', help_text=u"Lähdekoodipaketti.", blank=True)
+    imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(160, 100)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     imagefile_medium = ImageSpecField([ResizeToFill(640, 400)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
@@ -182,6 +181,31 @@ class Entry(models.Model):
             show['noshow'] = False
             
         return show
+    
+    def save(self, *args, **kwargs):
+        this = Entry.objects.get(id=self.id)
+        
+        # Check entryfile
+        try:
+            if this.entryfile != self.entryfile:
+                this.entryfile.delete(save=False)
+        except: pass 
+        
+        # Check sourcefile
+        try:
+            if this.sourcefile != self.sourcefile:
+                this.sourcefile.delete(save=False)
+        except: pass 
+        
+        # Check imagefile_original
+        try:
+            if this.imagefile_original != self.imagefile_original:
+                this.imagefile_original.delete(save=False)
+        except: pass 
+            
+        # Continue with normal save
+        super(Entry, self).save(*args, **kwargs)
+
     
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä")

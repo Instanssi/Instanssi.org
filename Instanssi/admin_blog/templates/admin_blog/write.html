@@ -27,5 +27,9 @@
 {% block content %}
 {{ block.super }}
     <h2>Uusi entry</h2>
+{% if addform %}
 {% uni_form addform addform.helper %}
+{% else %}
+	<p>Tapahtumaa ei ole valittu; blogiin ei voi kirjoittaa.</p>
+{% endif %}
 {% endblock %}

@@ -12,13 +12,14 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
     });
+    $("#event_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Listaus</h2>
 {% if events %}
-    <table>
+    <table id="event_table" class="tablesorter">
     	<thead>
     		<tr>
     			<th>Nimi</th>

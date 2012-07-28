@@ -186,8 +186,6 @@ def results(request):
     for compo in compos:
         results[compo.name] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
     
-    print results
-    
     # Render response
     return admin_render(request, "admin_kompomaatti/results.html", {
         'results': results,
@@ -262,8 +260,6 @@ def votecodes_generate(request):
     except:
         event = None
 
-    print event
-    
     # Handle form
     gentokensform = None
     if event != None:

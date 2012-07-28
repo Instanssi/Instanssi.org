@@ -11,13 +11,14 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tiedoston ?"); 
     });
+    $("#upload_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Tiedostolistaus</h2>
 {% if files %}
-    <table>
+    <table id="upload_table" class="tablesorter">
         <thead>
             <tr>
                 <th>Nimi</th>

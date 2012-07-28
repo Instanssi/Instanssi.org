@@ -1,7 +1,7 @@
 {% extends "admin_kompomaatti/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Kompot{% endblock %}
+{% block title %}{{ block.super }} - Kompot - Selaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -18,7 +18,6 @@
 {% block content %}
 {{ block.super }}
     <h2>Kompot</h2>
-    <h3>Listaus</h3>
 {% if compos %}
 	<table id="compo_table" >
 		<thead>
@@ -43,7 +42,4 @@
 {% else %}
 	<p>Ei kompoja.</p>
 {% endif %}
-
-	<h3>Lisää</h3>
-{% uni_form compoform compoform.helper %}
 {% endblock %}

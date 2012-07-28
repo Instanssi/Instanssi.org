@@ -40,6 +40,32 @@ class AdminCompoForm(forms.ModelForm):
         model = Compo
         exclude = ('event',)
 
+class AdminEntryAddForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminEntryAddForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Tuotos',
+                'user',
+                'compo',
+                'name',
+                'description',
+                'creator',
+                'entryfile',
+                'sourcefile',
+                'imagefile_original',
+                'youtube_url',
+                ButtonHolder (
+                    Submit('submit', 'Lisää')
+                )
+            )
+        )
+        
+    class Meta:
+        model = Entry
+        exclude = ('disqualified','disqualified_reason','imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
+
 class AdminEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdminEntryForm, self).__init__(*args, **kwargs)

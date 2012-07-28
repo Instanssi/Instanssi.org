@@ -1,7 +1,7 @@
 {% extends "admin_kompomaatti/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Entryt{% endblock %}
+{% block title %}{{ block.super }} - Entryt - Selaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -18,7 +18,6 @@
 {% block content %}
 {{ block.super }}
     <h2>Entryt</h2>
-    <h3>Listaus</h3>
 {% if entries %}
 	<table id="entry_table">
 		<thead>

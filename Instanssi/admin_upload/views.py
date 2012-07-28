@@ -3,10 +3,10 @@
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from models import UploadedFile
-from forms import UploadForm
-from datetime import datetime
+from Instanssi.admin_upload.models import UploadedFile
+from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_base.misc.custom_render import admin_render
+from datetime import datetime
 
 @login_required(login_url='/control/auth/login/')
 def index(request):

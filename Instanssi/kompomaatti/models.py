@@ -123,14 +123,11 @@ class Entry(models.Model):
         return (ext in ['mp3','oga','ogv','ogg'])
     
     def get_score(self):
-        # If entry has predefined score, use that information
-        if self.archive_score:
-            return self.archive_score
-        
-        # Otherwise calculate points
-        if self.disqualified:
+        if self.disqualified: # If disqualified, score will be -1
             return -1.0
-        else:
+        elif self.archive_score: # If entry is archived, the score will be simple to get
+            return self.archive_score
+        else: # Otherwise the score has to be calculated
             score = 0.0
             votes = Vote.objects.filter(entry=self, compo=self.compo)
             for vote in votes:
@@ -183,25 +180,22 @@ class Entry(models.Model):
         return show
     
     def save(self, *args, **kwargs):
-        this = Entry.objects.get(id=self.id)
-        
-        # Check entryfile
         try:
+            this = Entry.objects.get(id=self.id)
+            
+            # Check entryfile
             if this.entryfile != self.entryfile:
                 this.entryfile.delete(save=False)
-        except: pass 
-        
-        # Check sourcefile
-        try:
+                
+            # Check sourcefile
             if this.sourcefile != self.sourcefile:
                 this.sourcefile.delete(save=False)
-        except: pass 
-        
-        # Check imagefile_original
-        try:
+                
+            # Check imagefile_original
             if this.imagefile_original != self.imagefile_original:
                 this.imagefile_original.delete(save=False)
-        except: pass 
+        except: 
+            pass 
             
         # Continue with normal save
         super(Entry, self).save(*args, **kwargs)

@@ -8,9 +8,34 @@
 
 {% block jquery %}
 {{ block.super }}
+	$("#user_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>OpenID-käyttäjät</h2>
+ 	<table id="user_table" class="tablesorter">
+ 		<thead>
+ 			<tr>
+ 				<th>Nimi</th>
+ 				<th>Sähköposti</th>
+ 				<th>Rekisteröity</th>
+ 				<th>Viimeisin kirjautuminen</th>
+ 				<th>Aktivoitu</th>
+ 				<th>Muut tiedot</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+{% for user in openidusers %}
+			<tr>
+				<td>{{ user.first_name }} {{ user.last_name }}</td>
+				<td>{{ user.email }}</td>
+				<td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
+				<td>{{ user.last_login|date:"d.m.Y H:i" }}</td>
+				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
+				<td>{{ user.otherinfo|linebreaksbr }}</td>
+			</tr>
+{% endfor %}
+ 		</tbody>
+ 	</table>
 {% endblock %}

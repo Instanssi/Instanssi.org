@@ -6,4 +6,5 @@ urlpatterns = patterns(
     'Instanssi.admin_users.views',
     url(r'^$', 'index'),
     url(r'^openid/', 'openid'),
+    url(r'^addsuperuser/', 'addsuperuser'),
 )

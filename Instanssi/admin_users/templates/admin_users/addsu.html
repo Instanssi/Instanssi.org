@@ -1,0 +1,18 @@
+{% extends "admin_users/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Pääkäyttäjät - Lisää{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Lisää</h2>
+{% uni_form addform addform.helper %}
+{% endblock %}

@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="/static/libs/js/selectbox/jquery.selectbox-0.2.min.js"></script>
-    <script type="text/javascript" src="/static/libs/js/datetimepicker/jquery.ui.datetime.src.js"></script>
+    <script type="text/javascript" src="/static/libs/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
     <script type="text/javascript" src="/static/admin_base/js/jmenu/jMenu.jquery.min.js"></script>
 	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
@@ -33,7 +33,11 @@
 			}
 		});
 
-		$('.datetimeinput').datetimepicker();
+		$('.datetimeinput').datetimepicker({
+			dateFormat: 'yy-mm-dd',
+			timeFormat: 'hh:mm:ss',
+			stepMinute: 5
+		});
 		$('form.uniForm').uniform();
 		$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
 		$('.ui-widget').css('font-size','0.90em');

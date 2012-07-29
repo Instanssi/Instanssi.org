@@ -24,18 +24,16 @@
                 <th>Nimi</th>
                 <th>Kuvaus</th>
                 <th>Päivä</th>
-                <th>Lataa</th>
                 <th>Poista</th>
             </tr>
         </thead>
         <tbody>
 {% for file in files %}
             <tr>
-                <td>{{ file.name }}</td>
+                <td><a href="{{ file.file.url }}">{{ file.name }}</a></td>
                 <td>{{ file.description|linebreaksbr  }}</td>
                 <td>{{ file.date|date:"d.m.Y" }}</td>
-                <td><a href="{{ file.file.url }}">Lataa</a></td>
-                <td><a href="/control/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
+                <td><a href="/control/files/delete/{{ file.id }}/">Poista</a></td>
             </tr>
 {% endfor %}
         </tbody>

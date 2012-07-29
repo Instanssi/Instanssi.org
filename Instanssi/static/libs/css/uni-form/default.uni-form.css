@@ -67,11 +67,12 @@
         .uniForm label small{ font-size: .75em; color: #777; }
         
       .uniForm .textInput,
-      .uniForm .datetimeinput,
       .uniForm .dateinput,
+      .uniForm .datetimeinput,
+      .uniForm .timeinput,
       .uniForm textarea    { padding: 4px 2px; border: 1px solid #aaa; background: #fff; }
       .uniForm textarea    { height: 12em; }
-      .uniForm select      {}
+      .uniForm select      { padding: 4px 2px; border: 1px solid #aaa; background: #fff; }
       .uniForm .fileUpload {}
       
       .uniForm ul{}
@@ -126,7 +127,6 @@
                                       -moz-border-radius:    4px;
                                       -o-border-radius:      4px;
                                       -khtml-border-radius:  4px;
-                                      margin: 0.3em;
                                     }
     .uniForm .ctrlHolder.error input.error,
     .uniForm .ctrlHolder.error select.error,

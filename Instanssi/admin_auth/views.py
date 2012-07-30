@@ -18,7 +18,7 @@ def login_action(request):
             if user is not None:
                 if user.is_active and user.is_staff:
                     login(request, user)
-                    return HttpResponseRedirect("/control/files/")
+                    return HttpResponseRedirect("/control/")
                 
             # If everything fails, raise error flag
             error = True

@@ -61,6 +61,7 @@ class PasswordChangeForm(forms.Form):
         if pwa != pwb:
             msg = u'Salasana ei vastaa edelliseen kenttään annettua!'
             self._errors["new_pw_again"] = self.error_class([msg])
+            del cleaned_data["new_pw_again"]
                 
         # Remember to return cleaned data
         return cleaned_data

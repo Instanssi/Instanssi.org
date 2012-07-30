@@ -15,7 +15,8 @@ def password(request):
     if request.method == "POST":
         pwform = PasswordChangeForm(request.POST, user=request.user)
         if pwform.is_valid():
-            pass
+            pwform.save()
+            return HttpResponseRedirect("/control/profile/")
     else:
         pwform = PasswordChangeForm()
     

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class PasswordChangeForm(forms.Form):
     old_pw = forms.CharField(widget=forms.PasswordInput, label=u'Vanha salasana', help_text=u'Kirjoita vanha salasanasi turvallisuussyistä.')
-    new_pw = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana', help_text=u'Kirjoita uusi salasanasi.')
+    new_pw = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana', help_text=u'Kirjoita uusi salasanasi. Tulee olla vähintään 8 merkkiä pitkä.')
     new_pw_again = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana uudelleen', help_text=u'Kirjoita uusi salasanasi toistamiseen varmistukseksi.')
     
     def __init__(self, *args, **kwargs):
@@ -26,6 +26,11 @@ class PasswordChangeForm(forms.Form):
             )
         )
         
+    def save(self):
+        password = self.cleaned_data['new_pw']
+        self.user.set_password(password)
+        self.user.save()
+        
     def clean_old_pw(self):
         # Make sure this is valid
         old = self.cleaned_data['old_pw']
@@ -34,6 +39,18 @@ class PasswordChangeForm(forms.Form):
             
         # Remember to return cleaned data
         return old
+        
+    def clean_new_pw(self):
+        pw = self.cleaned_data['new_pw']
+        if len(pw) < 8:
+            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+        return pw
+        
+    def clean_new_pw_again(self):
+        pw = self.cleaned_data['new_pw_again']
+        if len(pw) < 8:
+            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+        return pw
         
     def clean(self):
         cleaned_data = super(PasswordChangeForm, self).clean()
@@ -47,3 +64,4 @@ class PasswordChangeForm(forms.Form):
                 
         # Remember to return cleaned data
         return cleaned_data
+    

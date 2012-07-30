@@ -32,18 +32,22 @@ def addsuperuser(request):
         raise Http404
     
     # Check form
-    # TODO: CHECK RIGHTS
     # TODO: GIVE SEPARATE RIGHTS TO STAFF
-    if request.method == "POST":
-        addform = UserCreationForm(request.POST)
-        if addform.is_valid():
-            addform.save()
-            return HttpResponseRedirect("/control/users/")
+    if request.user.is_superuser:
+        if request.method == "POST":
+            addform = UserCreationForm(request.POST)
+            if addform.is_valid():
+                addform.save()
+                return HttpResponseRedirect("/control/users/")
+        else:
+            addform = UserCreationForm()
     else:
-        addform = UserCreationForm()
-    
+        addform = None
+        
     # Render response
-    return admin_render(request, "admin_users/addsu.html", {'addform': addform})
+    return admin_render(request, "admin_users/addsu.html", {
+        'addform': addform,
+    })
 
 @login_required(login_url='/control/auth/login/')
 def openid(request):

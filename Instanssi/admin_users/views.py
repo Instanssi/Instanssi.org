@@ -37,21 +37,7 @@ def addsuperuser(request):
     if request.method == "POST":
         addform = UserCreationForm(request.POST)
         if addform.is_valid():
-            # Create user
-            username = addform.cleaned_data['username']
-            email = addform.cleaned_data['email']
-            password = addform.cleaned_data['password']
-            user = User.objects.create_user(username, email, password)
-            
-            # Set other parameters
-            user.is_staff = True
-            user.is_superuser = False
-            user.is_active = True
-            user.first_name = addform.cleaned_data['first_name']
-            user.last_name = addform.cleaned_data['last_name']
-            user.save()
-            
-            # Redirect
+            addform.save()
             return HttpResponseRedirect("/control/users/")
     else:
         addform = UserCreationForm()

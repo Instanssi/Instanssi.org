@@ -22,6 +22,26 @@ class UserCreationForm(forms.ModelForm):
                 )
             )
         )
+        self.fields['password'].help_text = u"Salasanan tulee olla vähintään 8 merkkiä pitkä."
+    
+    def clean_password(self):
+        # Make sure password is okay
+        password = self.cleaned_data['password']
+        if len(password) < 8:
+            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+        return password
+    
+    def save(self):
+        username = self.cleaned_data['username']
+        email = self.cleaned_data['email']
+        password = self.cleaned_data['password']
+        user = User.objects.create_user(username, email, password)
+        user.is_staff = True
+        user.is_superuser = False
+        user.is_active = True
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
         
     class Meta:
         model = User

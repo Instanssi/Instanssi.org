@@ -33,6 +33,7 @@ def addsuperuser(request):
     
     # Check form
     # TODO: CHECK RIGHTS
+    # TODO: GIVE SEPARATE RIGHTS TO STAFF
     if request.method == "POST":
         addform = UserCreationForm(request.POST)
         if addform.is_valid():

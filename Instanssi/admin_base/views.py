@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
-    return HttpResponseRedirect("/control/files/")
+    return HttpResponseRedirect("/control/events/")
     
 @login_required(login_url='/control/auth/login/')
 def eventchange(request, event_id):

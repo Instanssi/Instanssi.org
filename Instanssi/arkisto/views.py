@@ -3,6 +3,7 @@
 from django.shortcuts import render_to_response
 from Instanssi.kompomaatti.models import Event, Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 from django.template import RequestContext
 from django.http import Http404, HttpResponse
 from Instanssi import settings
@@ -22,15 +23,25 @@ def event(request, event_id):
     except Event.DoesNotExist:
         raise Http404
     
+    # Get all compos that are active but not hidden from archive
     compos = Compo.objects.filter(event=event, active=True, hide_from_archive=False)
     compolist = []
     for compo in compos:
         compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
         compolist.append(compo)
+        
+    # Get other videos
+    cats = OtherVideoCategory.objects.filter(event=event).order_by('name')
+    videolist = []
+    for cat in cats:
+        cat.videos = OtherVideo.objects.filter(category=cat)
+        videolist.append(cat)
     
+    # Render Event frontpage
     return custom_render(request, 'arkisto/index.html', {
         'event': event,
         'compos': compolist,
+        'videos': videolist,
     })
 
 # Index page (loads event page)
@@ -71,3 +82,22 @@ def entry(request, entry_id):
         'entry': entry,
         'event': entry.compo.event,
     })
+    
+# Video page
+def video(request, video_id):
+    # Get the entry
+    try:
+        video = OtherVideo.objects.get(id=video_id)
+    except Entry.DoesNotExist:
+        raise Http404
+
+    # Make sure the entry belongs to an archived event
+    if not video.category.event.archived:
+        raise Http404
+    
+    # Dump the page
+    return custom_render(request, 'arkisto/video.html', {
+        'video': video,
+        'event': video.category.event,
+    })
+    

@@ -31,4 +31,20 @@
 		<div class="clearer"></div>
 	</div>
 {% endfor %}
+
+{% for category in videos %}
+	<h3>{{ category.name }}</h3>
+	<div class="entry-holder">
+{% for video in category.videos %}
+		<div class="entry">
+			<a href="/arkisto/video/{{ video.id }}/">
+				<img src="/static/arkisto/img/filler_small.png" alt="Entry" width="160" height="100">
+			</a>
+			<p class="entry-name" title="{{ video.name }}">{{ video.name }}</p>
+		</div>
+{% endfor %}
+		<div class="clearer"></div>
+	</div>
+{% endfor %}
+
 {% endblock %}

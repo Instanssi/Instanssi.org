@@ -27,3 +27,9 @@ class OtherVideo(models.Model):
     class Meta:
         verbose_name=u"muu video"
         verbose_name_plural=u"muut videot"
+
+try:
+    admin.site.register(OtherVideoCategory)
+    admin.site.register(OtherVideo)
+except:
+    pass

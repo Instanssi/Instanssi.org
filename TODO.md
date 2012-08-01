@@ -27,15 +27,11 @@
 ## Admineille näkyvä osio
 
 * Kaikille sivuille oikeudet is_staff / has_perms -kamalla
-* Yhtenäinen navigointilayout
-* Järkevä jako applikaatioihin
 
 ### /blog-admin/
 
-* Bloginhallinta. Sisällön lisääminen, poisto, muokkaaminen.
-* Blogientryjä voisi julkaista kun tuntuu siltä. Ajastettu julkaisu ?
+* Ajastettu julkaisu ?
 * Saisi minne tahansa näkyviin templatetagilla {% render_blog %} (pääsivulle)
-* Voisi samalla julkaista myös twitteriin, facebookkiin ...
 
 ### /schedule-admin/
 
@@ -46,24 +42,15 @@
 
 ### /upload/
 
-* Tiedostojen tallennuspalvelu. Tänne voisi laittaa taustakuvia jne. muita palveluita varten.
-* Kuka tahansa ADMIN voisi lisätä/poistaa tiedostoja. Ei käyttäjäkohtaisia oikeuksia, yksinkertainen
-  värkki. Ei myöskään erillistä suojausta tiedostoille, eli kuka tahansa voi lukea jos tietää nimen.
-* Tiedoston nimi, lataaja, latausaika ...
+* Tehty
   
 ### /diashow-admin/
 
-* Diaesitysten generointi kompomaatin datasta.
-  * Kompoihin
-  * Palkintojen jakoon
-* Taustakuvat ja muut käytettävät jutut voitaisiin noukkia upload-palvelusta
-* Html + JS (?)
-* deck.js for now, impress.js + hienot palkintosijakikat myöhemmin.
+* Tehty
 
 ### /kompomaatti-admin/
 
-* Kompomaatin hallintapaneelin voisi siirtää omaan paikkaansa. Nyt se elää vähän ahtaasti.
-* Parempi openid-käyttäjien hallinta
+* Tehty
 
 ### /arkisto-admin/
 

@@ -1,0 +1,46 @@
+{% extends "admin_arkisto/base.html" %}
+
+{% block title %}{{ block.super }} - Muut videot - Selaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa videon ?"); 
+    });
+    $("#video_table").tablesorter({widgets: ['zebra']});
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Muut videot</h2>
+{% if videos %}
+    <table id="video_table" class="tablesorter">
+    	<thead>
+    		<tr>
+    			<th>Nimi</th>
+    			<th>Kategoria</th>
+    			<th>Kuvaus</th>
+    			<th>Poista</th>
+    			<th>Muokkaa</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+{% for video in videos %}
+			<tr>
+				<td><a href="{{ video.youtube_url }}">{{ video.name }}</a></td>
+				<td>{{ video.category.name }}</td>
+				<td>{{ video.description|linebreaksbr }}</td>
+				<td><a href="/control/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a></td>
+				<td><a href="/control/arkisto/editvid/{{ video.id }}/">Muokkaa</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+    </table>
+{% else %}
+	<p>Ei videoita.</p>
+{% endif %}
+{% endblock %}

@@ -1,16 +1,8 @@
 /**
  * This is a stylesheet for a demo presentation for impress.js
  * 
- * It is not meant to be a part of impress.js and is not required by impress.js.
- * I expect that anyone creating a presentation for impress.js would create their own
- * set of styles.
+ * Edited by Katajakasa
  */
-
-
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -57,7 +49,6 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-
 
 body {
     font-family: 'Cantarell', sans-serif;
@@ -117,10 +108,6 @@ p.by {
 p.creator {
 	font-size: 3em;
 }
-
-
-
-
 
 /* COMMON STEP STYLES */
 

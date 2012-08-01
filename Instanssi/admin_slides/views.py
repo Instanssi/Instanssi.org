@@ -43,13 +43,14 @@ def slide_results(request, compo_id):
             'creator': entry.creator,
             'name': entry.name,
             'score': entry.get_score(),
-            'score_x': i * 1500,
+            'score_x': i * 2500,
             'score_y': 0,
             'score_z': i * 500,
-            'info_x': (i+1) * 1500,
+            'score_rot_y': rot,
+            'info_x': (i+1) * 2500,
             'info_y': 0,
             'info_z': (i+1) * 500,
-            'rotate_y': rot,
+            'info_rot_y': rot+10,
         })
         i = i + 2
         rot = rot + 20

@@ -1,20 +1,20 @@
 {% extends "admin_slides/impressbase.html" %}
 
 {% block content %}
-<div id="demo_{{ entry.id }}_score" class="step slide" data-x="0" data-y="0" data-z="2000" data-rotate-y="90">
-	<div class="centered_frontpage">
+<div id="title" class="step" data-x="0" data-y="0" data-z="2000" data-rotate-y="90">
+	<div class="centered">
 		<p class="componame">{{ compo.name }}</p>
 	</div>
 </div>
 {% for entry in entries %}
-<div id="demo_{{ entry.id }}_score" class="step slide" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.rotate_y }}">
-	<div class="centered_score">
+<div id="demo_{{ entry.id }}_score" class="step" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.score_rot_y }}">
+	<div class="centered">
 		<p class="entry pos">{{ forloop.counter }}. Sija</p>
 		<p class="entry score">{{ entry.score }} pistettä</p>
 	</div>
 </div>
-<div id="demo_{{ entry.id }}_information" class="step slide" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}" data-rotate-y="{{ entry.rotate_y }}">
-	<div class="centered_info">
+<div id="demo_{{ entry.id }}_information" class="step" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}" data-rotate-y="{{ entry.info_rot_y }}">
+	<div class="centered">
 		<p class="entry name">{{ entry.name }}</p>
 		<p class="entry by">by</p>
 		<p class="entry creator">{{ entry.creator }}</p>

@@ -79,6 +79,7 @@ body     { pointer-events: none; }
 div.centered {
 	width: 100%;
 	text-align: center;
+	text-shadow: #555 3px 3px 8px;
 }
 
 p.componame {
@@ -86,7 +87,6 @@ p.componame {
 }
 
 p.entry {
-
 }
 
 p.pos {
@@ -107,6 +107,15 @@ p.by {
 
 p.creator {
 	font-size: 3em;
+}
+
+p.compothanks {
+	font-size: 2em;
+}
+
+.centered a {
+	font-size: 0.7em;
+	text-decoration: none;
 }
 
 /* COMMON STEP STYLES */

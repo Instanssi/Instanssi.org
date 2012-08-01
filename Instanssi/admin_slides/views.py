@@ -32,7 +32,7 @@ def slide_results(request, compo_id):
         raise Http404
     
     # Get the entries
-    s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+    s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
     
     i = 0
     rot = 0
@@ -43,11 +43,11 @@ def slide_results(request, compo_id):
             'creator': entry.creator,
             'name': entry.name,
             'score': entry.get_score(),
-            'score_x': i * 2500,
+            'score_x': i * 3000,
             'score_y': 0,
             'score_z': i * 500,
             'score_rot_y': rot,
-            'info_x': (i+1) * 2500,
+            'info_x': (i+1) * 3000,
             'info_y': 0,
             'info_z': (i+1) * 500,
             'info_rot_y': rot+10,
@@ -59,6 +59,9 @@ def slide_results(request, compo_id):
     return admin_render(request, 'admin_slides/slide_results.html', {
         'entries': f_entries,
         'compo': c,
+        'last_x': i * 3000,
+        'last_z': i * 500,
+        'last_rot_y': rot+10,
     })
     
 @login_required(login_url='/control/auth/login/')
@@ -74,7 +77,7 @@ def slide_entries(request, compo_id):
         raise Http404
     
     # Get the entries
-    s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+    s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
 
     i = 0
     flip = False
@@ -100,5 +103,7 @@ def slide_entries(request, compo_id):
     return admin_render(request, 'admin_slides/slide_entries.html', {
         'entries': f_entries,
         'compo': c,
+        'last_y': - i * 2500,
+        'last_rot_x': flip,
     })
     

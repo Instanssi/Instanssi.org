@@ -1,28 +1,19 @@
-{% extends "admin_slides/deckbase.html" %}
+{% extends "admin_slides/impressbase.html" %}
 
 {% block content %}
-{% if entries %}
-<section class="slide">
-	<h2>{{ compo.name }}</h2>
-</section>
 {% for entry in entries %}
-<section class="slide">
-	<h2>{{ compo.name }} n/n.</h2>
-	<div class="infoarea">
-		<h3>n. Sija</h3>
-		<p>{{ entry.name }}</p>
-		<p>by</p>
-		<p>{{ entry.creator }}</p>
+<div id="demo_{{ entry.id }}_score" class="step slide" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.rotate_y }}">
+	<div class="centered_score">
+		<p class="entry pos">{{ forloop.counter }}. Sija</p>
+		<p class="entry score">{{ entry.score }} pistettä</p>
 	</div>
-</section>
+</div>
+<div id="demo_{{ entry.id }}_information" class="step slide" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}" data-rotate-y="{{ entry.rotate_y }}">
+	<div class="centered_info">
+		<p class="entry name">{{ entry.name }}</p>
+		<p class="entry by">by</p>
+		<p class="entry creator">{{ entry.creator }}</p>
+	</div>
+</div>
 {% endfor %}
-{% else %}
-<section class="slide">
-	<h2>{{ compo.name }}</h2>
-	<span class="infoarea">
-		<h3 class="centered">Kompossa ei ole entryjä.</h3>
-	</span>
-</section>
-{% endif %}
-
 {% endblock %}

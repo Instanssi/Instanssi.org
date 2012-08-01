@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slideshow</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_slides/css/style.css" />
+    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.7.2.min.js"></script>
+</head>
+<body class="impress-not-supported">
+<div class="fallback-message">
+    <p>Selaimesi ei tue Impress.js:ää! Hanki kunnollinen selain!</p>
+</div>
+<div id="impress">
+{% block content %}{% endblock %}
+</div>
+<script type="text/javascript" src="/static/libs/js/impress/impress.js"></script>
+<script type="text/javascript">impress().init();</script>
+</body>
+</html>

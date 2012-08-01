@@ -74,11 +74,31 @@ def slide_entries(request, compo_id):
         raise Http404
     
     # Get the entries
-    entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+    s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+
+    i = 0
+    flip = False
+    f_entries = []
+    for entry in s_entries:
+        if flip: g = 180
+        else: g = 0
+        f_entries.append({
+            'id': entry.id,
+            'creator': entry.creator,
+            'name': entry.name,
+            'x': 0,
+            'y': -i * 2500,
+            'z': 0,
+            'rot_y': 0,
+            'rot_x': g,
+            'rot_z': 0,
+        })
+        i = i + 1
+        flip = not flip
 
     # Render
     return admin_render(request, 'admin_slides/slide_entries.html', {
-        'entries': entries,
+        'entries': f_entries,
         'compo': c,
     })
     

@@ -1,13 +1,25 @@
-{% extends "admin_slides/deckbase.html" %}
+{% extends "admin_slides/impressbase.html" %}
 
 {% block content %}
-
-{% if entries %}
+<div id="title" class="step" data-x="0" data-y="2500" data-z="0" data-rotate-x="180">
+	<div class="centered">
+		<p class="componame">{{ compo.name }}</p>
+	</div>
+</div>
 {% for entry in entries %}
-
+<div id="demo_{{ entry.id }}_information" 
+     class="step" 
+	 data-x="{{ entry.x }}" 
+	 data-y="{{ entry.y }}" 
+	 data-z="{{ entry.z }}" 
+	 data-rotate-x="{{ entry.rot_x }}" 
+	 data-rotate-y="{{ entry.rot_y }}" 
+	 data-rotate-z="{{ entry.rot_z }}">
+	<div class="centered">
+		<p class="entry name">{{ entry.name }}</p>
+		<p class="entry by">by</p>
+		<p class="entry creator">{{ entry.creator }}</p>
+	</div>
+</div>
 {% endfor %}
-{% else %}
-
-{% endif %}
-
 {% endblock %}

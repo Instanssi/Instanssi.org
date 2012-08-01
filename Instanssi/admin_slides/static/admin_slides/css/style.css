@@ -116,6 +116,15 @@ body     { pointer-events: none; }
 	text-align: center;
 	margin-top: 6em;
 }
+
+.centered_frontpage {
+	width: 100%;
+	text-align: center;
+	margin-top: 9em;
+}
+
+p.componame {
+	font-size: 3em;
 }
 
 p.entry {

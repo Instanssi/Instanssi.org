@@ -1,6 +1,11 @@
 {% extends "admin_slides/impressbase.html" %}
 
 {% block content %}
+<div id="demo_{{ entry.id }}_score" class="step slide" data-x="0" data-y="0" data-z="2000" data-rotate-y="90">
+	<div class="centered_frontpage">
+		<p class="componame">{{ compo.name }}</p>
+	</div>
+</div>
 {% for entry in entries %}
 <div id="demo_{{ entry.id }}_score" class="step slide" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.rotate_y }}">
 	<div class="centered_score">

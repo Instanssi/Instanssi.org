@@ -1,6 +1,7 @@
 {% extends "admin_arkisto/base.html" %}
+{% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Muut videot - Lisää{% endblock %}
+{% block title %}{{ block.super }} - Videot - Lisää{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -13,5 +14,5 @@
 {% block content %}
 {{ block.super }}
     <h2>Lisää video</h2>
-    
+{% uni_form vidform vidform.helper %}
 {% endblock %}

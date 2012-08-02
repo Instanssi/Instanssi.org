@@ -1,0 +1,18 @@
+{% extends "admin_arkisto/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Videokategoriat - Lisää{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Lisää kategoria</h2>
+{% uni_form catform catform.helper %}
+{% endblock %}

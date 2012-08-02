@@ -6,5 +6,6 @@ urlpatterns = patterns(
     'Instanssi.admin_arkisto.views',
     url(r'^$', 'index'),
     url(r'^archiver/', 'archiver'),
-    url(r'^othervids/', 'othervids'),
+    url(r'^vids/', 'vids'),
+    url(r'^vidcats/', 'cats'),
 )

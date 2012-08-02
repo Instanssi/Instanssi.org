@@ -1,0 +1,42 @@
+{% extends "admin_arkisto/base.html" %}
+
+{% block title %}{{ block.super }} - Kategoriat - Selaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa kategorian ?"); 
+    });
+    $("#cat_table").tablesorter({widgets: ['zebra']});
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Selaa kategorioita</h2>
+{% if categories %}
+    <table id="cat_table" class="tablesorter">
+    	<thead>
+    		<tr>
+    			<th>Nimi</th>
+    			<th>Poista</th>
+    			<th>Muokkaa</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+{% for cat in categories %}
+			<tr>
+				<td>{{ cat.name }}</td>
+				<td><a href="/control/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a></td>
+				<td><a href="/control/arkisto/editcat/{{ cat.id }}/">Muokkaa</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+    </table>
+{% else %}
+	<p>Ei kategorioita.</p>
+{% endif %}
+{% endblock %}

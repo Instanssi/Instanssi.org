@@ -2,7 +2,7 @@
 
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
-from Instanssi import settings
+from django.conf import settings
 
 # Use admin panel
 admin.autodiscover()
@@ -30,7 +30,7 @@ urlpatterns = patterns('',
 )
 
 # Serve media files through static.serve when running in debug mode
-if settings.DEBUG:
+if getattr(settings, 'DEBUG'):
     urlpatterns += patterns('',
         (r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

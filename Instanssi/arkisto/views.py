@@ -6,13 +6,13 @@ from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 from django.template import RequestContext
 from django.http import Http404, HttpResponse
-from Instanssi import settings
+from django.conf import settings
 
 # Helper function for rendering pages
 def custom_render(request, tpl, context={}):
     internal = {
         'nav_events': Event.objects.filter(archived=True).order_by('date').reverse(),
-        'debugmode': settings.DEBUG,
+        'debugmode': getattr(settings, 'DEBUG'),
     }
     return render_to_response(tpl, dict(context.items() + internal.items()), context_instance=RequestContext(request))
 

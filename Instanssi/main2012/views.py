@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response
-from Instanssi import settings
+from django.conf import settings
 from django.http import HttpResponse
 import feedparser
 from models import BlogEntry
@@ -11,9 +11,9 @@ import time
 # A nice wrapper
 def render_custom(tpl, ext={}):
     vars = {
-        'googleapikey': settings.GOOGLEAPIKEY,
-        'googleanalytics': settings.GOOGLEANALYTICS,
-        'debugmode': settings.DEBUG
+        'googleapikey': getattr(settings, 'GOOGLEAPIKEY'),
+        'googleanalytics': getattr(settings, 'GOOGLEANALYTICS'),
+        'debugmode': getattr(settings, 'DEBUG'),
     }
     return render_to_response(tpl, dict(vars.items() + ext.items()))
 

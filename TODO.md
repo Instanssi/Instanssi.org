@@ -4,8 +4,6 @@
 
 * Rosetta / i18n
 * Englanninkielinen väännös ?
-* Kuvanmuunnoskirjastoja voisi päivitellä kun aika tulee ...
-* Muunna importtaamasta "settings.py":ä suoraan, käytä "import django.conf.settings" ...
 
 ## Asiakkaille näkyvä osio
 
@@ -20,7 +18,7 @@
 * Aikataulun jne. voisi sijoitella omiin järjestelmiinsä, jotka ladataan templatetageilla
 
 ### Arkisto
-* Voisi lisätä videoita jotka eivät olleet kompoissa
+* Tehty
 
 ### openidauth
 * Nyt aika niputettu yhteen kompomaatin kanssa -- voisi olla itsenäisempi ?
@@ -42,15 +40,12 @@
 * Saisi minne vaan näkyviin templatetagilla {% render_schedule %} (pääsivulle)
 
 ### /upload/
-
 * Tehty
   
 ### /diashow-admin/
-
 * Tehty
 
 ### /kompomaatti-admin/
-
 * Tehty
 
 ### /arkisto-admin/

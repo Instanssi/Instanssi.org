@@ -58,7 +58,7 @@ def addvid(request):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.add_othervideo'):
+    if not request.user.has_perm('arkisto.add_othervideo'):
         raise Http404
     
     # Handle form
@@ -82,7 +82,7 @@ def editvid(request, video_id):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.change_othervideo'):
+    if not request.user.has_perm('arkisto.change_othervideo'):
         raise Http404
     
     # Get Video
@@ -114,7 +114,7 @@ def deletevid(request, video_id):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.delete_othervideo'):
+    if not request.user.has_perm('arkisto.delete_othervideo'):
         raise Http404
     
     # Attempt to delete video
@@ -148,7 +148,7 @@ def addcat(request):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.add_othervideocategory'):
+    if not request.user.has_perm('arkisto.add_othervideocategory'):
         raise Http404
     
     # Handle form
@@ -174,7 +174,7 @@ def editcat(request, category_id):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.change_othervideocategory'):
+    if not request.user.has_perm('arkisto.change_othervideocategory'):
         raise Http404
     
     # Get category
@@ -205,7 +205,7 @@ def deletecat(request, category_id):
         raise Http404
     
     # Check for permissions
-    if not request.user.has_perm('admin_arkisto.delete_othervideocategory'):
+    if not request.user.has_perm('arkisto.delete_othervideocategory'):
         raise Http404
     
     # Attempt to delete category

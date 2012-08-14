@@ -54,6 +54,17 @@ OPENID_FOLLOW_RENAMES = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/kompomaatti/'
 
+# Options for testing.customrunner.CustomRunner
+TEST_EXCLUDE = {
+    'django_openid_auth',
+    'uni_form',
+    'django',
+    'south',
+    'imagekit',
+}
+TEST_RUN_ALL = False
+TEST_RUNNER = 'testing.customrunner.CustomRunner'
+
 # Uni-form debugging stuff
 UNIFORM_FAIL_SILENTLY = not DEBUG
 

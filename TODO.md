@@ -5,6 +5,7 @@
 * Rosetta / i18n
 * Englanninkielinen väännös ?
 * Kuvanmuunnoskirjastoja voisi päivitellä kun aika tulee ...
+* Muunna importtaamasta "settings.py":ä suoraan, käytä "import django.conf.settings" ...
 
 ## Asiakkaille näkyvä osio
 

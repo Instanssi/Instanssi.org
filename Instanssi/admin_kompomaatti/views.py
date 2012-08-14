@@ -156,9 +156,7 @@ def entry_add(request):
     if request.method == "POST":
         entryform = AdminEntryAddForm(request.POST, request.FILES)
         if entryform.is_valid():
-            data = entryform.save(commit=False)
-            data.event_id = selected_event_id
-            data.save()
+            entryform.save()
             return HttpResponseRedirect('/control/kompomaatti/entries/') 
     else:
         entryform = AdminEntryAddForm()

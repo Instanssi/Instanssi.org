@@ -5,7 +5,8 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from Instanssi.kompomaatti.models import Event
+from Instanssi.kompomaatti.models import Event, Compo
+from Instanssi.ext_programme.models import ProgrammeEvent
 
 class CalendarEvent(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
@@ -14,14 +15,15 @@ class CalendarEvent(models.Model):
     end = models.DateTimeField(u'Loppe', help_text=u'Tapahtuman loppumisaika.', blank=True)
     description = models.TextField(u'Kuvaus', help_text=u'Tapahtuman kuvaus.', blank=True)
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=32)
-    image_original = models.ImageField(u'Kuva', upload_to='calendar/images/', help_text=u"Kuva tapahtumalle.", blank=True)
-    image_small = ImageSpecField([ResizeToFill(48, 48)], image_field='imagefile_original', format='PNG')
+    icon_original = models.ImageField(u'Kuva', upload_to='calendar/images/', help_text=u"Kuva tapahtumalle.", blank=True)
+    icon_small = ImageSpecField([ResizeToFill(48, 48)], image_field='icon_original', format='PNG')
     EVENT_TYPES = (
         (0, u'Kompo'),
-        (1, u'Kilpailu'),
-        (2, u'Ohjelmatapahtuma')
+        (1, u'Ohjelmatapahtuma')
     )
     type = models.IntegerField(u'Tyyppi', help_text=u'Tapahtuman tyyppi', choices=EVENT_TYPES, default=0)
+    linked_compo = models.ForeignKey(Compo, blank=True, null=True, verbose_name=u'Liittyvä kompo')
+    linked_programme = models.ForeignKey(ProgrammeEvent, blank=True, null=True, verbose_name=u'Liittyvä ohjelmatapahtuma')
     
     def __unicode__(self):
         return self.title
@@ -30,7 +32,6 @@ class CalendarEvent(models.Model):
         verbose_name=u"kalenteritapahtuma"
         verbose_name_plural=u"kalenteritapahtumat"
         
-    
 try:
     admin.site.register(CalendarEvent)
 except:

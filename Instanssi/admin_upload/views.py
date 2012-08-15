@@ -53,12 +53,6 @@ def upload(request):
     if not request.user.has_perm('admin_upload.add_uploadedfile'):
         raise Http404
     
-    # Get event
-    try:
-        event = Event.objects.get(id=get_selected_event(request))
-    except:
-        raise Http404
-    
     # Handle form data, if any
     if request.method == 'POST':
         uploadform = UploadForm(request.POST, request.FILES)
@@ -66,7 +60,7 @@ def upload(request):
             data = uploadform.save(commit=False)
             data.user = request.user
             data.date = datetime.now()
-            data.event = event
+            data.event_id = get_selected_event(request)
             data.save()
             return HttpResponseRedirect("/control/files/")
     else:

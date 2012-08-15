@@ -17,10 +17,19 @@ class CalendarEvent(models.Model):
     image_original = models.ImageField(u'Kuva', upload_to='calendar/images/', help_text=u"Kuva tapahtumalle.", blank=True)
     image_small = ImageSpecField([ResizeToFill(48, 48)], image_field='imagefile_original', format='PNG')
     EVENT_TYPES = (
-        (0, u'Aikaraja'),
-        (1, u'Aikavaraus'),
+        (0, u'Kompo'),
+        (1, u'Kilpailu'),
+        (2, u'Ohjelmatapahtuma')
     )
     type = models.IntegerField(u'Tyyppi', help_text=u'Tapahtuman tyyppi', choices=EVENT_TYPES, default=0)
+    
+    def __unicode__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name=u"kalenteritapahtuma"
+        verbose_name_plural=u"kalenteritapahtumat"
+        
     
 try:
     admin.site.register(CalendarEvent)

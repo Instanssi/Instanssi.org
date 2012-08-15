@@ -14,10 +14,7 @@ def index(request):
         raise Http404
     
     # Filter programme events by selected event
-    try:
-        pevs = ProgrammeEvent.objects.filter(event_id=get_selected_event(request))
-    except:
-        raise Http404
+    pevs = ProgrammeEvent.objects.filter(event_id=get_selected_event(request))
     
     # Render response
     return admin_render(request, "admin_programme/index.html", {

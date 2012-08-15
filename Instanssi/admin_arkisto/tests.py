@@ -101,5 +101,3 @@ class AdminArkistoUserTestCase(unittest.TestCase):
                 # Test
                 r = c.get(page)
                 self.assertEqual(r.status_code, expect_code, u'Error while testing '+page+' as user '+user+'. Got code '+str(r.status_code)+', but expected '+str(expect_code)+'.')
-            
-

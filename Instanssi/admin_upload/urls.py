@@ -7,4 +7,5 @@ urlpatterns = patterns(
     url(r'^$', 'index'),
     url(r'^upload/', 'upload'),
     url(r'^delete/(?P<file_id>\d+)/', 'deletefile'),
+    url(r'^edit/(?P<file_id>\d+)/', 'editfile'),
 )

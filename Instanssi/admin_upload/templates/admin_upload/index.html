@@ -24,6 +24,7 @@
                 <th>Nimi</th>
                 <th>Kuvaus</th>
                 <th>Päivä</th>
+                <th>Muokkaa</th>
                 <th>Poista</th>
             </tr>
         </thead>
@@ -33,7 +34,8 @@
                 <td><a href="{{ file.file.url }}">{{ file.name }}</a></td>
                 <td>{{ file.description|linebreaksbr  }}</td>
                 <td>{{ file.date|date:"d.m.Y" }}</td>
-                <td><a href="/control/files/delete/{{ file.id }}/">Poista</a></td>
+                <td><a href="/control/files/edit/{{ file.id }}/">Muokkaa</a></td>
+                <td><a href="/control/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
             </tr>
 {% endfor %}
         </tbody>

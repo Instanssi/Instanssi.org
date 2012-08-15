@@ -60,11 +60,41 @@ def upload(request):
             data.user = request.user
             data.date = datetime.now()
             data.save()
-            return HttpResponseRedirect("/control/files/upload/")
+            return HttpResponseRedirect("/control/files/")
     else:
         uploadform = UploadForm()
     
     # Render response
     return admin_render(request, "admin_upload/upload.html", {
+        'uploadform': uploadform,
+    })
+    
+@login_required(login_url='/control/auth/login/')
+def editfile(request, file_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Check for permissions
+    if not request.user.has_perm('admin_upload.change_uploadedfile'):
+        raise Http404
+    
+    # Get previously uploaded file
+    try:
+        uploadedfile = UploadedFile.objects.get(id=file_id)
+    except:
+        raise Http404
+    
+    # Handle form data
+    if request.method == 'POST':
+        uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
+        if uploadform.is_valid():
+            uploadform.save()
+            return HttpResponseRedirect("/control/files/")
+    else:
+        uploadform = UploadForm(instance=uploadedfile)
+    
+    # Render response
+    return admin_render(request, "admin_upload/edit.html", {
         'uploadform': uploadform,
     })

@@ -14,13 +14,16 @@
 * Ei turhaan kysytä pikkukuvaa musiikkitiedostoille. Entryn lisääminen voisi olla hieman kustomoitavampi.
 
 ### main2012, main2013, ...
+
 * Jatketaan joka vuodelle oma sivunsa, jätetään vanhat talteen
 * Aikataulun jne. voisi sijoitella omiin järjestelmiinsä, jotka ladataan templatetageilla
 
 ### Arkisto
+
 * Tehty
 
 ### openidauth
+
 * Nyt aika niputettu yhteen kompomaatin kanssa -- voisi olla itsenäisempi ?
 
 ## Admineille näkyvä osio
@@ -40,12 +43,15 @@
 * Saisi minne vaan näkyviin templatetagilla {% render_schedule %} (pääsivulle)
 
 ### /upload/
+
 * Tehty
   
 ### /diashow-admin/
+
 * Tehty
 
 ### /kompomaatti-admin/
+
 * Tehty
 
 ### /arkisto-admin/

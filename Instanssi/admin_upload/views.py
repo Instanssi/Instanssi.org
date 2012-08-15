@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.eventsel import get_selected_event
 from datetime import datetime
 
 @login_required(login_url='/control/auth/login/')
@@ -15,7 +16,7 @@ def index(request):
         raise Http404
     
     # Get filelist
-    files = UploadedFile.objects.all()
+    files = UploadedFile.objects.filter(event=get_selected_event(request))
     
     # Render response
     return admin_render(request, "admin_upload/index.html", {
@@ -52,6 +53,12 @@ def upload(request):
     if not request.user.has_perm('admin_upload.add_uploadedfile'):
         raise Http404
     
+    # Get event
+    try:
+        event = Event.objects.get(id=get_selected_event(request))
+    except:
+        raise Http404
+    
     # Handle form data, if any
     if request.method == 'POST':
         uploadform = UploadForm(request.POST, request.FILES)
@@ -59,6 +66,7 @@ def upload(request):
             data = uploadform.save(commit=False)
             data.user = request.user
             data.date = datetime.now()
+            data.event = event
             data.save()
             return HttpResponseRedirect("/control/files/")
     else:

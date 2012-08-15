@@ -3,9 +3,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from Instanssi.kompomaatti.models import Event
 import os.path
 
 class UploadedFile(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     description = models.TextField(u'Kuvaus', help_text=u'Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', blank=True)
     file = models.FileField(u'Tiedosto', upload_to='files/')

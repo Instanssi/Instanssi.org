@@ -8,6 +8,8 @@ from Instanssi.kompomaatti.models import Event
 
 class ProgrammeEvent(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
+    start = models.DateTimeField(u'Alku', help_text=u'Tapahtuman alkamisaika.')
+    end = models.DateTimeField(u'Loppu', help_text=u'Tapahtuman loppumisaika.', blank=True)
     description = models.TextField(u'Kuvaus', help_text=u'Tapahtuman kuvaus.')
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=64)
     presenters = models.CharField(u'Henkilöt', help_text=u'Esityksen pitäjät tms.', max_length=256)
@@ -21,6 +23,18 @@ class ProgrammeEvent(models.Model):
     facebook_url = models.URLField(u'Facebook', help_text=u'Tapahtumaan liittyvä facebook-url.', blank=True)
     linkedin_url = models.URLField(u'LinkedIn', help_text=u'Tapahtumaan liittyvä LinkedIn-url.', blank=True)
     wiki_url = models.URLField(u'Wikipedia', help_text=u'Tapahtumaan liittyvä Wikipedia-url.', blank=True)
+
+    def save(self, *args, **kwargs):
+        # Delete old icon file when editing
+        try:
+            this = ProgrammeEvent.objects.get(id=self.id)
+            if this.icon_original != self.icon_original:
+                this.icon_original.delete(save=False)
+        except: 
+            pass 
+            
+        # Continue with normal save
+        super(ProgrammeEvent, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title

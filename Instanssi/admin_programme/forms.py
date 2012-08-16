@@ -14,6 +14,8 @@ class ProgrammeEventForm(forms.ModelForm):
                 u'',
                 'title',
                 'description',
+                'start',
+                'end',
                 'presenters',
                 'presenters_titles',
                 'icon_original',
@@ -32,4 +34,4 @@ class ProgrammeEventForm(forms.ModelForm):
                 
     class Meta:
         model = ProgrammeEvent
-        exclude = ('event',)
+        exclude = ('event','icon_small',)

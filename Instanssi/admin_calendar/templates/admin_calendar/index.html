@@ -1,18 +1,50 @@
 {% extends "admin_calendar/base.html" %}
 
-{% block title %}{{ block.super }}{% endblock %}
+{% block title %}{{ block.super }} - Listaus{% endblock %}
 
 {% block head %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="/static/admin_calendar/css/style.css" />
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
+    });
+    $(".calendar_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Kalenteri</h2>
-
+    
+{% if cevs %}
+	<table class="tablesorter calendar_table">
+		<thead>
+			<tr>
+				<th>Otsikko</th>
+				<th>Kuvaus</th>
+				<th>Alkaa</th>
+				<th>Päättyy</th>
+				<th>Muokkaa</th>
+				<th>Poista</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for event in cevs %}
+			<tr>
+				<td>{{ event.title }}</td>
+				<td>{{ event.description }}</td>
+				<td>{{ event.start|date:"d.m.Y H:i" }}</td>
+				<td>{{ event.end|date:"d.m.Y H:i" }}</td>
+				<td><a href="/control/calendar/edit/{{ event.id }}/" >Muokkaa</a></td>
+				<td><a href="/control/calendar/delete/{{ event.id }}/" class="delete_link">Poista</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Kalenteri on tyhjä.</p>
+{% endif %}
+    
 {% endblock %}

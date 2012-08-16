@@ -1,0 +1,18 @@
+{% extends "admin_calendar/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Lisää{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Lisää Kalenteritapahtuma</h2>
+{% uni_form eventform eventform.helper %}
+{% endblock %}

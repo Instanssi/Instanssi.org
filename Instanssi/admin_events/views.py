@@ -8,6 +8,7 @@ from Instanssi.admin_events.forms import EventForm
 from Instanssi.dbsettings.forms import SettingForm
 from common.responses import JSONResponse
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.eventsel import get_selected_event
 
 @login_required(login_url='/control/auth/login/')
 def index(request):
@@ -124,6 +125,11 @@ def delete(request, event_id):
     # Check for permissions
     if not request.user.has_perm('kompomaatti.delete_event'):
         raise Http404
+    
+    # If we remove event that is selected, delete the session variable
+    # and let the system select a new event automatically.
+    if event_id == get_selected_event(request):
+        del request.session['m_event_id']
     
     # Delete the file
     try:

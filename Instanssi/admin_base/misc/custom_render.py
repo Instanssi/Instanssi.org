@@ -9,7 +9,7 @@ def admin_render(request, tpl, context={}):
     # Get active event (shown for normal users)
     context['active_event_id'] = Setting.get('active_event_id', 'events', -1)
     
-    # Shown in admin panel
+    # Choose the event selected for handling in the admin panel
     if 'm_event_id' in request.session:
         context['selected_event_id'] = request.session['m_event_id']
     else:
@@ -17,6 +17,9 @@ def admin_render(request, tpl, context={}):
     
     # Events
     context['navmenu_events'] = Event.objects.all()
+    context['show_eventdep_menus'] = True
+    if context['selected_event_id'] == -1:
+        context['show_eventdep_menus'] = False
     
     # For redirects
     context['full_path'] = request.get_full_path()

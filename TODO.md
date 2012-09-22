@@ -8,7 +8,8 @@
 ## Asiakkaille näkyvä osio
 
 ### Kompomaatti
-* Kompomaatin asiakaspuoli
+* Kompomaatin asiakaspuoli pitäisi uudistaa
+* Kilpailut, joissa ei tallenneta tuotoksia, mm. levykkeenheitto. Admin-paneelista voitaisiin lopuksi pisteyttää.
 * Äänestysjärjestelmä voisi olla parempi... jokin viiva jota voisi siirrellä, ts. "tämän alapuolella
   olevat ovat kaikki saman arvoisia (i don't care)".
 * Ei turhaan kysytä pikkukuvaa musiikkitiedostoille. Entryn lisääminen voisi olla hieman kustomoitavampi.

@@ -21,7 +21,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
     
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def compo_browse(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -48,7 +48,7 @@ def compo_browse(request):
         'compoform': compoform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def compo_add(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -73,7 +73,7 @@ def compo_add(request):
         'compoform': compoform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def compo_edit(request, compo_id):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
@@ -100,7 +100,7 @@ def compo_edit(request, compo_id):
         'editform': editform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def entry_browse(request):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
@@ -116,7 +116,7 @@ def entry_browse(request):
         'entries': entries,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def entry_edit(request, entry_id):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
@@ -143,7 +143,7 @@ def entry_edit(request, entry_id):
         'editform': editform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def entry_add(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -166,7 +166,7 @@ def entry_add(request):
         'entryform': entryform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def results(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -189,7 +189,7 @@ def results(request):
         'results': results,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def votecodes(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -204,7 +204,7 @@ def votecodes(request):
         'tokens': tokens,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def votecodes_print(request):
     # Make sure the user is superuser.
     if not request.user.is_staff:
@@ -245,7 +245,7 @@ def votecodes_print(request):
     p.save()
     return response
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def votecodes_generate(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -283,7 +283,7 @@ def votecodes_generate(request):
         'gentokensform': gentokensform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def votecoderequests(request):
     # Make sure the user is staff.
     if not request.user.is_staff:

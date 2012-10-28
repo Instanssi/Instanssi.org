@@ -8,7 +8,7 @@ from Instanssi.ext_calendar.models import CalendarEvent
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 from Instanssi.admin_calendar.forms import CalendarEventForm
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -22,7 +22,7 @@ def index(request):
         'cevs': cevs,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def add(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -49,7 +49,7 @@ def add(request):
         'eventform': form,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def edit(request, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -81,7 +81,7 @@ def edit(request, cev_id):
     })
     
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def delete(request, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

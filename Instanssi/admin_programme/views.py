@@ -7,7 +7,7 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 from Instanssi.admin_programme.forms import ProgrammeEventForm
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -21,7 +21,7 @@ def index(request):
         'pevs': pevs,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def add(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -47,7 +47,7 @@ def add(request):
         'eventform': form,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def edit(request, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -78,7 +78,7 @@ def edit(request, pev_id):
         'event': pev,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def delete(request, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

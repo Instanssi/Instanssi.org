@@ -9,7 +9,7 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 from datetime import datetime
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -23,7 +23,7 @@ def index(request):
         'files': files,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def deletefile(request, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -43,7 +43,7 @@ def deletefile(request, file_id):
     
     return HttpResponseRedirect("/control/files/")
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def upload(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -71,7 +71,7 @@ def upload(request):
         'uploadform': uploadform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def editfile(request, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

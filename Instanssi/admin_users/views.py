@@ -8,7 +8,7 @@ from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -25,7 +25,7 @@ def index(request):
         'superusers': users,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def addsuperuser(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -49,7 +49,7 @@ def addsuperuser(request):
         'addform': addform,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def openid(request):
     # Make sure the user is staff.
     if not request.user.is_staff:

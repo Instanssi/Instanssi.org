@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_profile.forms import PasswordChangeForm,InformationChangeForm
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def password(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -25,7 +25,7 @@ def password(request):
         'pwform': pwform,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def profile(request):
     # Make sure the user is staff.
     if not request.user.is_staff:

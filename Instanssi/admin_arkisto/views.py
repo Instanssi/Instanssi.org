@@ -9,7 +9,7 @@ from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -22,7 +22,7 @@ def index(request):
         'events': events,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def archiver(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -31,7 +31,7 @@ def archiver(request):
     # Render response
     return admin_render(request, "admin_arkisto/archiver.html", {})
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def vids(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -51,7 +51,7 @@ def vids(request):
         'videos': videos,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def addvid(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -75,7 +75,7 @@ def addvid(request):
         'vidform': vidform,                                             
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def editvid(request, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -107,7 +107,7 @@ def editvid(request, video_id):
     })
     
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def deletevid(request, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -126,7 +126,7 @@ def deletevid(request, video_id):
     # Redirect
     return HttpResponseRedirect("/control/arkisto/vids/")
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def cats(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -141,7 +141,7 @@ def cats(request):
         'categories': categories,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def addcat(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -167,7 +167,7 @@ def addcat(request):
         'catform': catform,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def editcat(request, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -198,7 +198,7 @@ def editcat(request, category_id):
         'cat': category,
     })
     
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def deletecat(request, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

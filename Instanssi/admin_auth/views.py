@@ -18,7 +18,7 @@ def login_action(request):
             if user is not None:
                 if user.is_active and user.is_staff:
                     login(request, user)
-                    return HttpResponseRedirect("/control/")
+                    return HttpResponseRedirect("/manage/")
                 
             # If everything fails, raise error flag
             error = True
@@ -34,7 +34,7 @@ def login_action(request):
 def logout_page(request):
     return render_to_response("admin_auth/loggedout.html")
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def logout_action(request):
     logout(request)
-    return HttpResponseRedirect("/control/auth/loggedout/")
+    return HttpResponseRedirect("/manage/auth/loggedout/")

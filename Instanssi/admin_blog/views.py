@@ -11,7 +11,7 @@ from Instanssi.settings import SHORT_LANGUAGE_CODE
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -26,7 +26,7 @@ def index(request):
         'entries': entries,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def write(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -63,7 +63,7 @@ def write(request):
         'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def edit(request, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -95,7 +95,7 @@ def edit(request, entry_id):
     })
     
     
-@login_required(login_url='/control/auth/login/') 
+@login_required(login_url='/manage/auth/login/') 
 def delete(request, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

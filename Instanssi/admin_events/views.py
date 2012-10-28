@@ -10,7 +10,7 @@ from common.responses import JSONResponse
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.eventsel import get_selected_event
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -24,7 +24,7 @@ def index(request):
         'events': events,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def add(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -51,7 +51,7 @@ def add(request):
     })
 
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def settings(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -84,7 +84,7 @@ def settings(request):
         'settingform': settingform,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def edit(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -116,7 +116,7 @@ def edit(request, event_id):
         'eventform': eventform,
     })
 
-@login_required(login_url='/control/auth/login/')
+@login_required(login_url='/manage/auth/login/')
 def delete(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

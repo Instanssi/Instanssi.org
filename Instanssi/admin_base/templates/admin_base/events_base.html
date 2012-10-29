@@ -1,0 +1,33 @@
+{% extends "admin_base/admin_base.html" %}
+
+{% block title %} - Blog{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+{{ block.super }}
+            <div class="box">
+                <div class="sizer">
+                    Tapahtuma:
+                    <select name="event_select" id="event_select">
+                    	<option value="-1">Ei mitään</option>
+{% for event in navmenu_events %}
+						<option value="{{ event.id }}" {% if ev.id == selected_event_id %}selected="selected"{% endif %}>{{ event.name }}</option>
+{% endfor %}
+                    </select>
+                </div>
+            </div>
+            <ul class="box">
+{% block sidemenu %}{% endblock %}
+            </ul>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

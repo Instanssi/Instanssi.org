@@ -1,4 +1,4 @@
-{% extends "admin_base/admin_base.html" %}
+{% extends "admin_base/generic_base.html" %}
 
 {% block title %} - Käyttäjät{% endblock %}
 
@@ -8,6 +8,15 @@
 
 {% block jquery %}
 {{ block.super }}
+{% endblock %}
+
+{% block sidemenu %}
+{{ block.super }}
+            <ul class="box">
+            	<li class="menuitem"><a href="/manage/profile/">Apua</a></li>
+                <li class="menuitem"><a href="/manage/profile/profile/">Profiilin tiedot</a></li>
+                <li class="menuitem"><a href="/manage/profile/password/">Salasanan vaihto</a></li>
+            </ul>
 {% endblock %}
 
 {% block content %}

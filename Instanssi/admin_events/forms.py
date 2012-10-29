@@ -15,7 +15,7 @@ class EventForm(forms.ModelForm):
                 'name',
                 'date',
                 ButtonHolder (
-                    Submit('submit', u'Lisää')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

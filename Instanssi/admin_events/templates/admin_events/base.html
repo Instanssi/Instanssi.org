@@ -1,4 +1,4 @@
-{% extends "admin_base/admin_base.html" %}
+{% extends "admin_base/generic_base.html" %}
 
 {% block title %} - Tapahtumat{% endblock %}
 
@@ -8,6 +8,14 @@
 
 {% block jquery %}
 {{ block.super }}
+{% endblock %}
+
+{% block sidemenu %}
+{{ block.super }}
+            <ul class="box">
+            	<li class="menuitem"><a href="/manage/events/">Selaa</a></li>
+                <li class="menuitem"><a href="/manage/events/add/">Lisää</a></li>
+            </ul>
 {% endblock %}
 
 {% block content %}

@@ -1,6 +1,6 @@
 {% extends "admin_users/base.html" %}
 
-{% block title %}{{ block.super }} - OpenID-käyttäjät{% endblock %}
+{% block title %}{{ block.super }} - Pääkäyttäjät{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -13,33 +13,31 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>OpenID-käyttäjät</h2>
-{% if openidusers %}
+    <h2>Pääkäyttäjät</h2>
  	<table id="user_table" class="tablesorter">
  		<thead>
  			<tr>
+ 				<th>Tunnus</th>
  				<th>Nimi</th>
  				<th>Sähköposti</th>
+ 				<th>Käyttäjätaso</th>
  				<th>Rekisteröity</th>
  				<th>Viimeisin kirjautuminen</th>
  				<th>Aktivoitu</th>
- 				<th>Muut tiedot</th>
  			</tr>
  		</thead>
  		<tbody>
-{% for user in openidusers %}
+{% for user in superusers %}
 			<tr>
+				<td>{{ user.username }}</td>
 				<td>{{ user.first_name }} {{ user.last_name }}</td>
 				<td>{{ user.email }}</td>
+				<td>{% if user.is_superuser %}Administrator{% elif user.is_staff %}Staff{% else %}Käyttäjä{% endif %}</td>
 				<td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
 				<td>{{ user.last_login|date:"d.m.Y H:i" }}</td>
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
-				<td>{{ user.otherinfo|linebreaksbr }}</td>
 			</tr>
 {% endfor %}
  		</tbody>
  	</table>
-{% else %}
-	<p>Ei OpenID-käyttäjiä!</p>
-{% endif %}
 {% endblock %}

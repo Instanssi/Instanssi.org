@@ -14,6 +14,15 @@ def index(request):
     if not request.user.is_staff:
         raise Http404
     
+    # Render response
+    return admin_render(request, "admin_users/index.html", {})
+
+@login_required(login_url='/manage/auth/login/')
+def superusers(request):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
     # Get users
     try:
         users = User.objects.exclude(username="openiduser")
@@ -21,7 +30,7 @@ def index(request):
         raise Http404
     
     # Render response
-    return admin_render(request, "admin_users/index.html", {
+    return admin_render(request, "admin_users/supers.html", {
         'superusers': users,
     })
 
@@ -38,7 +47,7 @@ def addsuperuser(request):
             addform = UserCreationForm(request.POST)
             if addform.is_valid():
                 addform.save()
-                return HttpResponseRedirect("/control/users/")
+                return HttpResponseRedirect("/manage/users/superusers/")
         else:
             addform = UserCreationForm()
     else:

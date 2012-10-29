@@ -158,3 +158,44 @@ p {
     padding-left: 0.3em;
     padding-right: 0.6em;
 }
+
+#contents ul {
+    list-style-type: disc;
+    margin-left: 2em;
+}
+
+#contents ol {
+    list-style-type: decimal;
+    margin-left: 2em;
+}
+
+#contents pre {
+    font-family: "Consolas", monospace;
+    background-color: #eaeaff;
+    border: 1px solid #cdcdcd;
+    padding: 8px;
+}
+
+#contents blockquote {
+    background-color: #eaeaff;
+    border-left: 3px dotted #aaaaaa;
+    padding: 1px;
+    padding-left: 1em;
+    margin-left: 1em;
+}
+
+/* ---------- Generic tables ---------- */
+
+table { border-collapse: collapse; width: 100%; }
+table th { padding: 5px; border: 1px solid #aaaaaa; background-color: #222222; color: white; text-align: left; }
+table td { padding: 5px; border: 1px solid #aaaaaa; background-color: #eeeeee; }
+
+/* ---------- uniForm tweaks ---------- */
+
+form.uniForm .ctrlHolder { 
+	border-bottom: 1px dotted #aaaaaa; 
+}
+
+fieldset { 
+	border: 1px solid #bbbbbb; padding: 0.3em; margin: 0.3em; 
+}

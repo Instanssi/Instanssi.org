@@ -16,15 +16,20 @@
                 <div class="sizer">
                     Tapahtuma:
                     <select name="event_select" id="event_select">
-                    	<option value="-1">Ei mitään</option>
 {% for event in navmenu_events %}
-						<option value="{{ event.id }}" {% if ev.id == selected_event_id %}selected="selected"{% endif %}>{{ event.name }}</option>
+						<option value="{{ event.id }}" {% if event.id == selected_event_id %}selected="selected"{% endif %}>{{ event.name }}</option>
 {% endfor %}
                     </select>
                 </div>
             </div>
             <ul class="box">
-{% block sidemenu %}{% endblock %}
+                <li class="menuitem">
+                    <a href="/manage/{{ selected_event_id }}/blog/">Blog</a>
+                    <ul class="sub-level">
+                        <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/">Selaa</a></li>
+                        <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/write/">Kirjoita</a></li>
+                    </ul>
+                </li>
             </ul>
 {% endblock %}
 

@@ -7,7 +7,7 @@ from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from Instanssi.kompomaatti.models import Event
 from forms import BlogEntryForm
 from datetime import datetime
-from Instanssi.settings import SHORT_LANGUAGE_CODE
+from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 
 @login_required(login_url='/manage/auth/login/')
@@ -22,7 +22,7 @@ def index(request, sel_event_id):
     # Render response
     return admin_render(request, "admin_blog/index.html", {
         'entries': entries,
-        'selected_event_id': sel_event_id,
+        'selected_event_id': int(sel_event_id),
     })
 
 @login_required(login_url='/manage/auth/login/')
@@ -59,8 +59,8 @@ def write(request, sel_event_id):
     # Render response
     return admin_render(request, "admin_blog/write.html", {
         'addform': form,
-        'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
-        'selected_event_id': sel_event_id,
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
+        'selected_event_id': int(sel_event_id),
     })
 
 @login_required(login_url='/manage/auth/login/')
@@ -91,8 +91,8 @@ def edit(request, sel_event_id, entry_id):
     # Render response
     return admin_render(request, "admin_blog/edit.html", {
         'editform': form,
-        'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
-        'selected_event_id': sel_event_id,
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
+        'selected_event_id': int(sel_event_id),
     })
     
     

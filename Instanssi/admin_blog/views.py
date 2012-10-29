@@ -9,25 +9,24 @@ from forms import BlogEntryForm
 from datetime import datetime
 from Instanssi.settings import SHORT_LANGUAGE_CODE
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_base.misc.eventsel import get_selected_event
 
 @login_required(login_url='/manage/auth/login/')
-def index(request):
+def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
     # Get events
-    selected_event_id = get_selected_event(request)
-    entries = BlogEntry.objects.filter(event_id = selected_event_id)
+    entries = BlogEntry.objects.filter(event_id = sel_event_id)
     
     # Render response
     return admin_render(request, "admin_blog/index.html", {
         'entries': entries,
+        'selected_event_id': sel_event_id,
     })
 
 @login_required(login_url='/manage/auth/login/')
-def write(request):
+def write(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -38,7 +37,7 @@ def write(request):
     
     # Find event
     try:
-        event = Event.objects.get(id=get_selected_event(request))
+        event = Event.objects.get(id=sel_event_id)
     except:
         event = None
     
@@ -53,7 +52,7 @@ def write(request):
                 entry.date = datetime.now()
                 entry.user = request.user
                 entry.save()
-                return HttpResponseRedirect("/control/blog/")
+                return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
         else:
             form = BlogEntryForm()
     
@@ -61,10 +60,11 @@ def write(request):
     return admin_render(request, "admin_blog/write.html", {
         'addform': form,
         'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
+        'selected_event_id': sel_event_id,
     })
 
 @login_required(login_url='/manage/auth/login/')
-def edit(request, entry_id):
+def edit(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -84,7 +84,7 @@ def edit(request, entry_id):
         form = BlogEntryForm(request.POST, instance=entry)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/control/blog/")
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
     else:
         form = BlogEntryForm(instance=entry)
     
@@ -92,11 +92,12 @@ def edit(request, entry_id):
     return admin_render(request, "admin_blog/edit.html", {
         'editform': form,
         'LANGUAGE_CODE': SHORT_LANGUAGE_CODE,
+        'selected_event_id': sel_event_id,
     })
     
     
 @login_required(login_url='/manage/auth/login/') 
-def delete(request, entry_id):
+def delete(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -112,4 +113,4 @@ def delete(request, entry_id):
     except BlogEntry.DoesNotExist:
         pass
     
-    return HttpResponseRedirect("/control/blog/")
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")

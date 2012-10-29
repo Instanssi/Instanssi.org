@@ -28,8 +28,8 @@
                 <div class="blogentry_time">
                     &raquo; {{ entry.user.username }} | 
                     {{ entry.date|date:"d.m.Y H:i" }} |
-                    <a href="/control/blog/edit/{{ entry.id }}/">Muokkaa</a> | 
-                    <a class="delete_link" href="/control/blog/delete/{{ entry.id }}/">Poista</a> | 
+                    <a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/">Muokkaa</a> | 
+                    <a class="delete_link" href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/">Poista</a> | 
                 </div>
            </td>
         </tr>

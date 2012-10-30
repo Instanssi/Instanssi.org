@@ -13,26 +13,13 @@ def index(request):
     if not request.user.is_staff:
         raise Http404
     
-    # Get all events
-    events = Event.objects.all()
-    
-    # Render response
-    return admin_render(request, "admin_events/index.html", {
-        'events': events,
-    })
-
-@login_required(login_url='/manage/auth/login/')
-def add(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Check for permissions
-    if not request.user.has_perm('kompomaatti.add_event'):
-        raise Http404
-    
     # Handle form data, if any
     if request.method == 'POST':
+        # CHeck for permissions
+        if not request.user.has_perm('kompomaatti.add_event'):
+            raise Http404
+    
+        # Handle form
         eventform = EventForm(request.POST)
         if eventform.is_valid():
             data = eventform.save(commit=False)
@@ -42,8 +29,12 @@ def add(request):
     else:
         eventform = EventForm()
     
+    # Get all events
+    events = Event.objects.all()
+    
     # Render response
-    return admin_render(request, "admin_events/add.html", {
+    return admin_render(request, "admin_events/index.html", {
+        'events': events,
         'eventform': eventform,
     })
 

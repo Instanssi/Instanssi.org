@@ -27,7 +27,7 @@
 /* #############################   GENERALS   ################################### */
 /* ------------------------------------------------------------------------------ */
 
-.uniForm{ margin: 0; padding: 0; position: relative; z-index: 0; } /* reset stuff */
+.uniForm{ margin: 0; padding: 0; position: relative; } /* reset stuff */
   
   /* Some generals and more resets */
   .uniForm fieldset{ border: none; margin: 0; padding: 0; }

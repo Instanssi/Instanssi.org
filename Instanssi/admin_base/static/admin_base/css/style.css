@@ -146,8 +146,7 @@ p {
 #left_nav ul.sub-level li:first-child { border-top: 0px; }
 
 #left_nav .sizer {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 7px;
 }
 
 /* ---------- Contents ---------- */

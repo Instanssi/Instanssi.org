@@ -195,16 +195,14 @@ ul.sub-level {
 /* ---------- Contents ---------- */
 
 #contents_normal {
-    padding-top: 0.6em;
-    padding-left: 0.6em;
-    padding-right: 0.6em;
+    padding: 0.6em;
 }
 
 #contents_events_case {
     padding-top: 5px;
     margin-left: 160px;
+    padding: 0.6em;
     padding-left: 0.3em;
-    padding-right: 0.6em;
 }
 
 #contents ul {
@@ -256,6 +254,7 @@ table td {
 /* ---------- uniForm tweaks ---------- */
 
 form.uniForm {
+	margin-top: 1.0em;
 	max-width: 900px;
 }
 

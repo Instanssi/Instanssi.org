@@ -1,5 +1,7 @@
-body { font-family: 'Droid Serif', serif; }
-p,ul,form,table { font-size: 95%; }
+body,p,ul,form,table,td,th { 
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+}
 
 #auth_base {
     width: 600px;
@@ -12,7 +14,7 @@ p,ul,form,table { font-size: 95%; }
 }
 
 #auth_header {
-    background-color: #222222;
+    background-color: rgba(40,52,59,1);
     width: 100%;
     position: relative;
     z-index: 1;

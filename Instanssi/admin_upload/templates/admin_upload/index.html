@@ -12,7 +12,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tiedoston ?"); 
     });
-    $("#upload_table").tablesorter({widgets: ['zebra']});
+    $("#upload_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#upload_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -41,6 +41,9 @@
 {% endfor %}
         </tbody>
     </table>
+	<div id="upload_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
     <p>Ei ladattuja tiedostoja!</p>
 {% endif %}

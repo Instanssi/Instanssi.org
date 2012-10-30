@@ -12,7 +12,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
     });
-    $("#calendar_table").tablesorter({widgets: ['zebra']});
+    $("#calendar_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#event_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -44,6 +44,9 @@
 {% endfor %}
 		</tbody>
 	</table>
+	<div id="event_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
 	<p>Aikataulussa ei ole merkintöjä.</p>
 {% endif %}

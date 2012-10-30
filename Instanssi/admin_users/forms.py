@@ -11,7 +11,7 @@ class UserCreationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Lisää pääkäyttäjä',
                 'username',
                 'first_name',
                 'last_name',

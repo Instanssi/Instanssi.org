@@ -1,4 +1,5 @@
 {% extends "admin_users/base.html" %}
+{% load uni_form_tags %}
 
 {% block title %}{{ block.super }} - Pääkäyttäjät{% endblock %}
 
@@ -40,4 +41,8 @@
 {% endfor %}
  		</tbody>
  	</table>
+ 	
+{% if addform %}
+{% uni_form addform addform.helper %}
+{% endif %}
 {% endblock %}

@@ -10,21 +10,6 @@
 {{ block.super }}
 {% endblock %}
 
-{% block sidemenu %}
-{{ block.super }}
-            <ul class="box">
-            	<li class="menuitem"><a href="/manage/users/">Apua</a></li>
-                <li class="menuitem">
-                	<a href="/manage/users/superusers/">Pääkäyttäjät</a>
-                	<ul class="sub-level">
-                		<li class="menuitem"><a href="/manage/users/superusers/">Selaa</a></li>
-                		<li class="menuitem"><a href="/manage/users/addsuperuser/">Lisää</a></li>
-                	</ul>
-                </li>
-                <li class="menuitem"><a href="/manage/users/openid/">OpenID-käyttäjät</a></li>
-            </ul>
-{% endblock %}
-
 {% block content %}
 {{ block.super }}
 {% endblock %}

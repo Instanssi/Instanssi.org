@@ -23,23 +23,6 @@ def superusers(request):
     if not request.user.is_staff:
         raise Http404
     
-    # Get users
-    try:
-        users = User.objects.exclude(username="openiduser")
-    except:
-        raise Http404
-    
-    # Render response
-    return admin_render(request, "admin_users/supers.html", {
-        'superusers': users,
-    })
-
-@login_required(login_url='/manage/auth/login/')
-def addsuperuser(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
     # Check form
     # TODO: GIVE SEPARATE RIGHTS TO STAFF
     if request.user.is_superuser:
@@ -52,9 +35,13 @@ def addsuperuser(request):
             addform = UserCreationForm()
     else:
         addform = None
-        
+    
+    # Get users
+    users = User.objects.exclude(username="openiduser")
+    
     # Render response
-    return admin_render(request, "admin_users/addsu.html", {
+    return admin_render(request, "admin_users/supers.html", {
+        'superusers': users,
         'addform': addform,
     })
 
@@ -65,10 +52,7 @@ def openid(request):
         raise Http404
     
     # Get users
-    try:
-        db_users = User.objects.filter(username="openiduser")
-    except:
-        raise Http404
+    db_users = User.objects.filter(username="openiduser")
     
     # Create list
     users = []

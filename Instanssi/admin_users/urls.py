@@ -7,5 +7,4 @@ urlpatterns = patterns(
     url(r'^$', 'index'),
     url(r'^superusers', 'superusers'),
     url(r'^openid/', 'openid'),
-    url(r'^addsuperuser/', 'addsuperuser'),
 )

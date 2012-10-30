@@ -24,6 +24,13 @@
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/files/">Tiedostot</a></li>
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/programme/">Ohjelma</a></li>
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/calendar/">Aikataulu</a></li>
+        <li class="menuitem">
+        	<a href="/manage/{{ selected_event_id }}/arkisto/">Arkisto</a>
+            <ul class="sub-level">
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/arkisto/vids/">Videot</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/arkisto/vidcats/">Kategoriat</a></li>
+            </ul>
+        </li>
     </ul>
     <div id="contents_events_case">
 {% block content %}{% endblock %}

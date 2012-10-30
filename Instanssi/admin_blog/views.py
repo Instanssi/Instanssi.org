@@ -35,26 +35,18 @@ def write(request, sel_event_id):
     if not request.user.has_perm('admin_blog.add_blogentry'):
         raise Http404
     
-    # Find event
-    try:
-        event = Event.objects.get(id=sel_event_id)
-    except:
-        event = None
-    
     # Post
-    form = None
-    if event:
-        if request.method == 'POST':
-            form = BlogEntryForm(request.POST)
-            if form.is_valid():
-                entry = form.save(commit=False)
-                entry.event = event
-                entry.date = datetime.now()
-                entry.user = request.user
-                entry.save()
-                return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
-        else:
-            form = BlogEntryForm()
+    if request.method == 'POST':
+        form = BlogEntryForm(request.POST)
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.event_id = int(sel_event_id)
+            entry.date = datetime.now()
+            entry.user = request.user
+            entry.save()
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
+    else:
+        form = BlogEntryForm()
     
     # Render response
     return admin_render(request, "admin_blog/write.html", {
@@ -83,7 +75,9 @@ def edit(request, sel_event_id, entry_id):
     if request.method == 'POST':
         form = BlogEntryForm(request.POST, instance=entry)
         if form.is_valid():
-            form.save()
+            entry = form.save(commit=False)
+            entry.date = datetime.now()
+            entry.save()
             return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
     else:
         form = BlogEntryForm(instance=entry)

@@ -24,6 +24,7 @@
 				<th>Otsikko</th>
 				<th>Päivämäärä</th>
 				<th>Käyttäjä</th>
+				<th>Julkinen</th>
 				<th>Muokkaa</th>
 				<th>Poista</th>
 			</tr>
@@ -34,6 +35,7 @@
 				<td>{{ entry.title }}</td>
 				<td>{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ entry.user.username }}</td>
+				<td>{% if entry.public %}Kyllä{% else %}Ei{% endif %}</td>
 				<td><a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/" >Muokkaa</a></td>
 				<td><a href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/" class="delete_link">Poista</a></td>
 			</tr>

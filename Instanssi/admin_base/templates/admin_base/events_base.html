@@ -10,29 +10,18 @@
 {{ block.super }}
 {% endblock %}
 
-{% block sidebar %}
+{% block bottom %}
 {{ block.super }}
-            <div class="box">
-                <div class="sizer">
-                    Tapahtuma:
-                    <select name="event_select" id="event_select">
-{% for event in navmenu_events %}
-						<option value="{{ event.id }}" {% if event.id == selected_event_id %}selected="selected"{% endif %}>{{ event.name }}</option>
-{% endfor %}
-                    </select>
-                </div>
-            </div>
-            <ul class="box">
-                <li class="menuitem">
-                    <a href="/manage/{{ selected_event_id }}/blog/">Blog</a>
-                    <ul class="sub-level">
-                        <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/">Selaa</a></li>
-                        <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/write/">Kirjoita</a></li>
-                    </ul>
-                </li>
+	<ul id="left_nav">
+    	<li class="menuitem">
+        	<a href="/manage/{{ selected_event_id }}/blog/">Blog</a>
+            <ul class="sub-level">
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/">Selaa</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/write/">Kirjoita</a></li>
             </ul>
-{% endblock %}
-
-{% block content %}
-{{ block.super }}
+        </li>
+    </ul>
+    <div id="contents_events_case">
+{% block content %}{% endblock %}
+    </div>
 {% endblock %}

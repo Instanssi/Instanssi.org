@@ -1,6 +1,11 @@
+body, html {
+	height: 100%;
+}
+
 body {
     margin: 0px;
     padding: 0px;
+    background-color: #e7e7e7;
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
@@ -17,11 +22,16 @@ h1 {
 }
 
 h2 {
-    width: 20%;
-    border-bottom: 2px dotted black;
-    font-size: 160%;
-    margin-bottom: 10px;
-    padding: 3px;
+    font-size: 170%;
+    margin-bottom: 1em;
+    border-bottom: 1px dotted black;
+    width: 100%;
+}
+
+h3 {
+	font-size: 120%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 p,pre,blockquote,ul,ol {
@@ -31,6 +41,22 @@ p,pre,blockquote,ul,ol {
 
 p {
     text-align: justify;
+}
+
+/* ---------- Base layout tuning ---------- */
+
+#base,
+.limiter {
+	max-width: 1280px; 
+	margin: 0 auto;
+}
+
+#base {
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+	background-color: #f9f9f9;
+	box-shadow: 0px 0px 5px #888;
 }
 
 /* ---------- Header ---------- */
@@ -50,6 +76,7 @@ p {
     height: 33px;
     background-color: #28343b;
     padding-left: 5px;
+    box-shadow: 0px 2px 2px #888;
 }
 
 #header_nav_left {
@@ -67,6 +94,32 @@ p {
     padding: 9px;
 }
 
+#header_nav ul.sub-level {
+    display: none;
+}
+
+#header_nav li:hover .sub-level {
+    background-color: #111111;
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 21px;
+}
+
+#header_nav ul.sub-level li {
+    float: left;
+    width: 150px;
+    border-top: 1px dotted #333333;
+    z-index: 2;
+}
+
+#header_nav ul.sub-level li:first-child { 
+	border-top: 0px; 
+}
+
+
+/* ----------- Some common stuff for menuitems ---------- */
+
 .menuitem:hover {
     background-color: #111111;
 }
@@ -80,10 +133,12 @@ p {
     text-shadow: #cccccc 0px 0px 5px;
 }
 
-/* ---------- Middle section ---------- */
+.menuitem:hover {
+    position: relative;
+}
 
-#content_base {
-    clear: both;
+ul.sub-level {
+	z-index: 99;
 }
 
 /* ---------- Left side navigation bar ---------- */
@@ -91,33 +146,19 @@ p {
 #left_nav {
     float: left;
     width: 150px;
-    padding-left: 5px;
-}
-
-#left_nav #event_select {
-    margin-top: 4px;
-    border: 1px solid #dddddd;
-    width: 100%;
-}
-
-#left_nav .box {
-    background-color: #28343b; 
-    margin-top: 5px;
-    margin-bottom: 5px;
+    background-color: #38444b; 
     padding-top: 3px;
     padding-bottom: 3px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
     color: white;
+    margin: 0;
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
 }
 
 #left_nav .menuitem {
     padding: 7px;
     padding-left: 9px;
-}
-
-#left_nav .menuitem:hover {
-    position: relative;
 }
 
 #left_nav ul {
@@ -143,15 +184,19 @@ p {
     z-index: 2;
 }
 
-#left_nav ul.sub-level li:first-child { border-top: 0px; }
-
-#left_nav .sizer {
-    padding: 7px;
+#left_nav ul.sub-level li:first-child { 
+	border-top: 0px; 
 }
 
 /* ---------- Contents ---------- */
 
-#contents {
+#contents_normal {
+    padding-top: 0.6em;
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+}
+
+#contents_events_case {
     padding-top: 5px;
     margin-left: 160px;
     padding-left: 0.3em;
@@ -191,10 +236,22 @@ table td { padding: 5px; border: 1px solid #aaaaaa; background-color: #eeeeee; }
 
 /* ---------- uniForm tweaks ---------- */
 
+form.uniForm {
+	max-width: 900px;
+}
+
 form.uniForm .ctrlHolder { 
 	border-bottom: 1px dotted #aaaaaa; 
 }
 
-fieldset { 
-	border: 1px solid #bbbbbb; padding: 0.3em; margin: 0.3em; 
+form.uniForm .buttonHolder {
+	margin: 0;
+}
+
+form.uniForm fieldset { 
+	border: 1px solid #999999;
+}
+
+form.uniForm legend { 
+	padding: 0.3em;	
 }

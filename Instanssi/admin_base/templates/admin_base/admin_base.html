@@ -5,11 +5,6 @@
     <title>Hallinta{% block title %}{% endblock %}</title>
     <meta name="viewport" content="initial-scale=1.0" />
     
-    <!-- Admin panel CSS -->
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
-    
     <!-- Library CSS -->
     <link rel="stylesheet" type="text/css" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/libs/css/tablesorter/theme.default.css" />
@@ -26,6 +21,11 @@
 	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
 	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.min.js"></script>
 	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.widgets.min.js"></script>
+    
+    <!-- Admin panel CSS -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin_base/css/style.css" />
     
 {% block head %}{% endblock %}
     <script type="text/javascript">
@@ -44,30 +44,39 @@
 
 </head>
 <body>
-<div id="base">
-    <div id="header">
+<div id="header">
+    <div class="limiter">
         <h1>Hallinta</h1>
     </div>
-    <div id="header_nav">
+</div>
+<div id="header_nav">
+    <div class="limiter">
         <ul id="header_nav_left">
             <li class="menuitem"><a href="/manage/">Etusivu</a></li>
-            <li class="menuitem"><a href="/manage/users/">Käyttäjät</a></li>
-            <li class="menuitem"><a href="/manage/events/">Tapahtumat</a></li>
-            <li class="menuitem"><a href="/manage/editor/">Muokkaus</a></li>
+            <li class="menuitem">
+            	<a href="/manage/users/">Käyttäjät</a>
+            	<ul class="sub-level">
+            		<li class="menuitem"><a href="/manage/users/superusers/">Pääkäyttäjät</a></li>
+            		<li class="menuitem"><a href="/manage/users/openid/">OpenID-käyttäjät</a></li>
+            	</ul>
+            </li>
+            <li class="menuitem">
+            	<a href="/manage/events/">Tapahtumat</a>
+            	<ul class="sub-level">
+{% for event in navmenu_events %}
+					<li class="menuitem"><a href="/manage/{{ event.id }}/">{{ event.name }}</a></li>
+{% endfor %}
+            	</ul>
+            </li>
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem"><a href="/manage/profile/">Profiili</a></li>
             <li class="menuitem"><a href="/manage/auth/logout/">Kirjaudu ulos</a></li>
         </ul>
     </div>
-    <div id="content_base">
-        <div id="left_nav">
-{% block sidebar %}{% endblock %}
-        </div>
-        <div id="contents">
-{% block content %}{% endblock %}
-        </div>
-    </div>
+</div>
+<div id="base">
+{% block bottom %}{% endblock %}
 </div>
 </body>
 </html>

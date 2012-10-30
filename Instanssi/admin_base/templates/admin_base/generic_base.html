@@ -10,13 +10,9 @@
 {{ block.super }}
 {% endblock %}
 
-{% block sidebar %}
+{% block bottom %}
 {{ block.super }}
-            <ul class="box">
-{% block sidemenu %}{% endblock %}
-            </ul>
-{% endblock %}
-
-{% block content %}
-{{ block.super }}
+    <div id="contents_normal">
+{% block content %}{% endblock %}
+    </div>
 {% endblock %}

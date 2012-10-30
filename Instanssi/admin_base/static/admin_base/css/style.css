@@ -57,6 +57,8 @@ p {
 	min-height: 100%;
 	background-color: #f9f9f9;
 	box-shadow: 0px 0px 5px #888;
+	-moz-box-shadow: 0px 0px 5px #888;
+	-webkit-box-shadow: 0px 0px 5px #888;
 }
 
 /* ---------- Header ---------- */
@@ -77,6 +79,8 @@ p {
     background-color: rgba(40,52,59,1);
     padding-left: 5px;
     box-shadow: 0px 3px 3px #888;
+	-moz-box-shadow: 0px 3px 3px #888;
+	-webkit-box-shadow: 0px 3px 3px #888;
 }
 
 #header_nav_left {

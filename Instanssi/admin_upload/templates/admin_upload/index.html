@@ -1,4 +1,5 @@
 {% extends "admin_upload/base.html" %}
+{% load uni_form_tags %}
 
 {% block title %}{{ block.super }} - Listaus{% endblock %}
 
@@ -34,8 +35,8 @@
                 <td><a href="{{ file.file.url }}">{{ file.name }}</a></td>
                 <td>{{ file.description|linebreaksbr  }}</td>
                 <td>{{ file.date|date:"d.m.Y" }}</td>
-                <td><a href="/control/files/edit/{{ file.id }}/">Muokkaa</a></td>
-                <td><a href="/control/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
+                <td><a href="/manage/{{ selected_event_id }}/files/edit/{{ file.id }}/">Muokkaa</a></td>
+                <td><a href="/manage/{{ selected_event_id }}/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
             </tr>
 {% endfor %}
         </tbody>
@@ -43,4 +44,6 @@
 {% else %}
     <p>Ei ladattuja tiedostoja!</p>
 {% endif %}
+
+{% uni_form uploadform uploadform.helper %}
 {% endblock %}

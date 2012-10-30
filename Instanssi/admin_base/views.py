@@ -13,17 +13,3 @@ def index(request):
     
     # Render response
     return admin_render(request, "admin_base/index.html", {})
-
-@login_required(login_url='/manage/auth/login/')
-def editor(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Get latest event
-    latest_event = Event.objects.latest('date')
-    
-    # Render response
-    return admin_render(request, "admin_base/editor.html", {
-        'selected_event_id': latest_event.id,
-    })

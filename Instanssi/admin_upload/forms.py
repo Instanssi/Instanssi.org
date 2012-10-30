@@ -11,7 +11,7 @@ class UploadForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Lataa',
                 'description',
                 'file',
                 ButtonHolder (

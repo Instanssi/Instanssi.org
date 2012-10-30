@@ -11,7 +11,7 @@ class VideoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Muu Video',
                 'name',
                 'category',
                 'description',
@@ -32,7 +32,7 @@ class VideoCategoryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Kategoria',
                 'name',
                 ButtonHolder (
                     Submit('submit', u'Tallenna')

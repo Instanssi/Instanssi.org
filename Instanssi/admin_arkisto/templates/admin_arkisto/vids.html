@@ -1,6 +1,7 @@
 {% extends "admin_arkisto/base.html" %}
+{% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Videot - Selaa{% endblock %}
+{% block title %}{{ block.super }} - Videot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -34,8 +35,8 @@
 				<td><a href="{{ video.youtube_url }}">{{ video.name }}</a></td>
 				<td>{{ video.category.name }}</td>
 				<td>{{ video.description|linebreaksbr }}</td>
-				<td><a href="/control/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a></td>
-				<td><a href="/control/arkisto/editvid/{{ video.id }}/">Muokkaa</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/arkisto/editvid/{{ video.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -43,4 +44,6 @@
 {% else %}
 	<p>Ei videoita.</p>
 {% endif %}
+
+{% uni_form vidform vidform.helper %}
 {% endblock %}

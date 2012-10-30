@@ -1,6 +1,7 @@
 {% extends "admin_arkisto/base.html" %}
+{% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Kategoriat - Selaa{% endblock %}
+{% block title %}{{ block.super }} - Kategoriat{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -30,8 +31,8 @@
 {% for cat in categories %}
 			<tr>
 				<td>{{ cat.name }}</td>
-				<td><a href="/control/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a></td>
-				<td><a href="/control/arkisto/editcat/{{ cat.id }}/">Muokkaa</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/arkisto/editcat/{{ cat.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -39,4 +40,6 @@
 {% else %}
 	<p>Ei kategorioita.</p>
 {% endif %}
+
+{% uni_form catform catform.helper %}
 {% endblock %}

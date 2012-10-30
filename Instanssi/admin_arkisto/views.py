@@ -1,45 +1,61 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Event
 from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
-from Instanssi.admin_base.misc.eventsel import get_selected_event
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 
 @login_required(login_url='/manage/auth/login/')
-def index(request):
+def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
+    # Get all events
     events = Event.objects.all()
     
     # Render response
     return admin_render(request, "admin_arkisto/index.html", {
         'events': events,
+        'selected_event_id': int(sel_event_id),
     })
 
 @login_required(login_url='/manage/auth/login/')
-def archiver(request):
+def archiver(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
 
     # Render response
-    return admin_render(request, "admin_arkisto/archiver.html", {})
+    return admin_render(request, "admin_arkisto/archiver.html", {
+        'selected_event_id': int(sel_event_id),
+    })
 
 @login_required(login_url='/manage/auth/login/')
-def vids(request):
+def vids(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
+    # Handle form
+    if request.method == "POST":
+        # Check for permissions
+        if not request.user.has_perm('arkisto.add_othervideo'):
+            raise Http404
+        
+        # Handle form
+        vidform = VideoForm(request.POST)
+        if vidform.is_valid():
+            vidform.save()
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
+    else:
+        vidform = VideoForm()
+    
     # Get videos belonging to selected event
-    selected_event_id = get_selected_event(request)
-    categories = OtherVideoCategory.objects.filter(event_id=selected_event_id)
+    categories = OtherVideoCategory.objects.filter(event_id=int(sel_event_id))
     videos = []
     for cat in categories:
         vlist = OtherVideo.objects.filter(category=cat)
@@ -49,34 +65,12 @@ def vids(request):
     # Render response
     return admin_render(request, "admin_arkisto/vids.html", {
         'videos': videos,
+        'vidform': vidform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def addvid(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Check for permissions
-    if not request.user.has_perm('arkisto.add_othervideo'):
-        raise Http404
-    
-    # Handle form
-    if request.method == "POST":
-        vidform = VideoForm(request.POST)
-        if vidform.is_valid():
-            vidform.save()
-            return HttpResponseRedirect("/control/arkisto/vids/")
-    else:
-        vidform = VideoForm()
-    
-    # Render response
-    return admin_render(request, "admin_arkisto/addvid.html", {
-        'vidform': vidform,                                             
-    })
-    
-@login_required(login_url='/manage/auth/login/')
-def editvid(request, video_id):
+def editvid(request, sel_event_id, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -86,29 +80,27 @@ def editvid(request, video_id):
         raise Http404
     
     # Get Video
-    try:
-        video = OtherVideo.objects.get(id=video_id)
-    except:
-        raise Http404
+    video = get_object_or_404(OtherVideo, pk=video_id)
     
     # Handle form
     if request.method == "POST":
         vidform = VideoForm(request.POST, instance=video)
         if vidform.is_valid():
             vidform.save()
-            return HttpResponseRedirect("/control/arkisto/vids/")
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
     else:
         vidform = VideoForm(instance=video)
     
     # Render response
     return admin_render(request, "admin_arkisto/editvid.html", {
         'vidform': vidform,
-        'vid': video,                                          
+        'vid': video,
+        'selected_event_id': int(sel_event_id),
     })
     
     
 @login_required(login_url='/manage/auth/login/')
-def deletevid(request, video_id):
+def deletevid(request, sel_event_id, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -124,51 +116,42 @@ def deletevid(request, video_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect("/control/arkisto/vids/")
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
     
 @login_required(login_url='/manage/auth/login/')
-def cats(request):
+def cats(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
-    
-    # Get videos belonging to selected event
-    selected_event_id = get_selected_event(request)
-    categories = OtherVideoCategory.objects.filter(event_id=selected_event_id)
-    
-    # Render response
-    return admin_render(request, "admin_arkisto/cats.html", {
-        'categories': categories,
-    })
-    
-@login_required(login_url='/manage/auth/login/')
-def addcat(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Check for permissions
-    if not request.user.has_perm('arkisto.add_othervideocategory'):
         raise Http404
     
     # Handle form
     if request.method == "POST":
+        # Check for permissions
+        if not request.user.has_perm('arkisto.add_othervideocategory'):
+            raise Http404
+        
+        # Handle form
         catform = VideoCategoryForm(request.POST)
         if catform.is_valid():
             cat = catform.save(commit=False)
-            cat.event_id = get_selected_event(request)
+            cat.event_id = int(sel_event_id)
             cat.save()
-            return HttpResponseRedirect("/control/arkisto/vidcats/")
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")
     else:
         catform = VideoCategoryForm()
     
+    # Get videos belonging to selected event
+    categories = OtherVideoCategory.objects.filter(event_id=int(sel_event_id))
+    
     # Render response
-    return admin_render(request, "admin_arkisto/addcat.html", {
+    return admin_render(request, "admin_arkisto/cats.html", {
+        'categories': categories,
         'catform': catform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def editcat(request, category_id):
+def editcat(request, sel_event_id, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -178,17 +161,14 @@ def editcat(request, category_id):
         raise Http404
     
     # Get category
-    try:
-        category = OtherVideoCategory.objects.get(id=category_id)
-    except:
-        raise Http404
+    category = get_object_or_404(OtherVideoCategory, pk=category_id)
     
     # Handle form
     if request.method == "POST":
         catform = VideoCategoryForm(request.POST, instance=category)
         if catform.is_valid():
             catform.save()
-            return HttpResponseRedirect("/control/arkisto/vidcats/")
+            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")
     else:
         catform = VideoCategoryForm(instance=category)
     
@@ -196,10 +176,11 @@ def editcat(request, category_id):
     return admin_render(request, "admin_arkisto/editcat.html", {
         'catform': catform,
         'cat': category,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def deletecat(request, category_id):
+def deletecat(request, sel_event_id, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
@@ -215,4 +196,4 @@ def deletecat(request, category_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect("/control/arkisto/vidcats/")
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")

@@ -9,21 +9,6 @@ from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 
 @login_required(login_url='/manage/auth/login/')
-def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Get all events
-    events = Event.objects.all()
-    
-    # Render response
-    return admin_render(request, "admin_arkisto/index.html", {
-        'events': events,
-        'selected_event_id': int(sel_event_id),
-    })
-
-@login_required(login_url='/manage/auth/login/')
 def archiver(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

@@ -11,31 +11,36 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa blogientryn ?"); 
     });
+    $("#blogentry_table").tablesorter({widgets: ['zebra']});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Blogientryt</h2>
 {% if entries %}
+	<table id="blogentry_table" class="tablesorter">
+		<thead>
+			<tr>
+				<th>Otsikko</th>
+				<th>Päivämäärä</th>
+				<th>Käyttäjä</th>
+				<th>Muokkaa</th>
+				<th>Poista</th>
+			</tr>
+		</thead>
+		<tbody>
 {% for entry in entries %}
-    <table class="blogentry_base">
-        <tr>
-            <th>{{ entry.title }}</th>
-        </tr>
-        <tr>
-            <td>
-                {{ entry.text|safe }}
-                <div class="blogentry_time">
-                    &raquo; {{ entry.user.username }} | 
-                    {{ entry.date|date:"d.m.Y H:i" }} |
-                    <a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/">Muokkaa</a> | 
-                    <a class="delete_link" href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/">Poista</a> | 
-                </div>
-           </td>
-        </tr>
-    </table>
+			<tr>
+				<td>{{ entry.title }}</td>
+				<td>{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ entry.user.username }}</td>
+				<td><a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/" >Muokkaa</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/" class="delete_link">Poista</a></td>
+			</tr>
 {% endfor %}
+		</tbody>
+	</table>
 {% else %}
-    <p>Ei viestejä!</p>
+    <p>Ei entryjä!</p>
 {% endif %}
 {% endblock %}

@@ -251,6 +251,17 @@ table td {
 	background-color: #eeeeee; 
 }
 
+/* ---------- Tablesorter pagination ---------- */
+
+div.pager img {
+	margin-bottom: 3px;
+}
+
+div.pager select,
+div.pager input {
+	border: 1px solid #777777;
+}
+
 /* ---------- uniForm tweaks ---------- */
 
 form.uniForm {

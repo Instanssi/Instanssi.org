@@ -31,6 +31,16 @@
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/arkisto/vidcats/">Kategoriat</a></li>
             </ul>
         </li>
+    	<li class="menuitem">
+        	<a href="/manage/{{ selected_event_id }}/kompomaatti/">Kompomaatti</a>
+            <ul class="sub-level">
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/compos/">Kompot</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/entries/">Entryt</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/results/">Tulokset</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/votecodes/">Äänestyskoodit</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/votecoderequests/">Koodipyynnöt</a></li>
+            </ul>
+        </li>
     </ul>
     <div id="contents_events_case">
 {% block content %}{% endblock %}

@@ -8,7 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#req_table").tablesorter({widgets: ['zebra']});
+	$("#req_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#req_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -35,6 +35,9 @@
 {% endfor %}
 		</tbody>
 	</table>
+	<div id="req_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
 	<p>Ei pyyntöjä.</p>
 {% endif %}

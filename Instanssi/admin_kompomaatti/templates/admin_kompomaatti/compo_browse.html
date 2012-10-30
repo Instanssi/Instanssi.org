@@ -9,7 +9,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#compo_table").tablesorter({widgets: ['zebra']});
+	$("#compo_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#compo_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -36,6 +36,9 @@
 {% endfor %}
 		</tbody>
 	</table>
+	<div id="compo_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
 	<p>Ei kompoja.</p>
 {% endif %}

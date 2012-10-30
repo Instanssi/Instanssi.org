@@ -9,7 +9,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#entry_table").tablesorter({widgets: ['zebra']});
+	$("#entry_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entry_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -40,6 +40,9 @@
 {% endfor %}
 		</tbody>
 	</table>
+	<div id="entry_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
 	<p>Ei entryjä.</p>
 {% endif %}

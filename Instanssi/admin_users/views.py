@@ -9,15 +9,6 @@ from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm
 
 @login_required(login_url='/manage/auth/login/')
-def index(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Render response
-    return admin_render(request, "admin_users/index.html", {})
-
-@login_required(login_url='/manage/auth/login/')
 def superusers(request):
     # Make sure the user is staff.
     if not request.user.is_staff:

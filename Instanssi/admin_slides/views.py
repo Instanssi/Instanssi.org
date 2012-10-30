@@ -1,34 +1,32 @@
 # -*- coding: utf-8 -*-
 
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_base.misc.eventsel import get_selected_event
 
 @login_required(login_url='/manage/auth/login/')
-def index(request):
+def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
     # Render response
     return admin_render(request, "admin_slides/index.html", {
-        'compos': Compo.objects.filter(event_id=get_selected_event(request)),
+        'compos': Compo.objects.filter(event_id=sel_event_id),
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def slide_results(request, compo_id):
+def slide_results(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
 
     # Get the compo
-    try:
-        c = Compo.objects.get(id=compo_id)
-    except Entry.DoesNotExist:
-        raise Http404
+    c = get_object_or_404(Compo, pk=compo_id)
     
     # Get the entries
     s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
@@ -61,19 +59,17 @@ def slide_results(request, compo_id):
         'last_x': i * 3000,
         'last_z': i * 500,
         'last_rot_y': rot+10,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def slide_entries(request, compo_id):
+def slide_entries(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
 
     # Get the compo
-    try:
-        c = Compo.objects.get(id=compo_id)
-    except Entry.DoesNotExist:
-        raise Http404
+    c = get_object_or_404(Compo, pk=compo_id)
     
     # Get the entries
     s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
@@ -104,5 +100,6 @@ def slide_entries(request, compo_id):
         'compo': c,
         'last_y': - i * 2500,
         'last_rot_x': flip,
+        'selected_event_id': int(sel_event_id),
     })
     

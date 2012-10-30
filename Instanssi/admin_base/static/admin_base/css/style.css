@@ -234,9 +234,24 @@ ul.sub-level {
 
 /* ---------- Generic tables ---------- */
 
-table { border-collapse: collapse; width: 100%; }
-table th { padding: 5px; border: 1px solid #aaaaaa; background-color: #222222; color: white; text-align: left; }
-table td { padding: 5px; border: 1px solid #aaaaaa; background-color: #eeeeee; }
+table { 
+	border-collapse: collapse; 
+	width: 100%; 
+}
+
+table th { 
+	padding: 5px; 
+	border: 1px solid #aaaaaa; 
+	background-color: rgba(40,52,59,1); 
+	color: #eeeeee; 
+	text-align: left; 
+}
+
+table td { 
+	padding: 5px; 
+	border: 1px solid #aaaaaa; 
+	background-color: #eeeeee; 
+}
 
 /* ---------- uniForm tweaks ---------- */
 

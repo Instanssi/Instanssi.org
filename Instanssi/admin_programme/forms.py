@@ -11,7 +11,7 @@ class ProgrammeEventForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Tapahtuma',
                 'title',
                 'description',
                 'start',

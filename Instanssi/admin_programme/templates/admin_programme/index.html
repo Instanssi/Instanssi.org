@@ -1,6 +1,7 @@
 {% extends "admin_programme/base.html" %}
+{% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Listaus{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -24,6 +25,8 @@
 			<tr>
 				<th>Otsikko</th>
 				<th>Esiintyjät</th>
+				<th>Alkaa</th>
+				<th>Päättyy</th>
 				<th>Muokkaa</th>
 				<th>Poista</th>
 			</tr>
@@ -33,8 +36,10 @@
 			<tr>
 				<td>{{ event.title }}</td>
 				<td>{{ event.presenters }}</td>
-				<td><a href="/control/programme/edit/{{ event.id }}/" >Muokkaa</a></td>
-				<td><a href="/control/programme/delete/{{ event.id }}/" class="delete_link">Poista</a></td>
+				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td><a href="/manage/{{ selected_event_id }}/programme/edit/{{ event.id }}/">Muokkaa</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/programme/delete/{{ event.id }}/" class="delete_link">Poista</a></td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -43,4 +48,5 @@
 	<p>Ei määriteltyä ohjelmaa.</p>
 {% endif %}
     
+{% uni_form eventform eventform.helper %}
 {% endblock %}

@@ -1,12 +1,10 @@
 {% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
 
 {% block title %}{{ block.super }} - Avaimet{% endblock %}
 
 {% block head %}
 {{ block.super }}
-	<link rel="stylesheet" href="/static/libs/css/tablesorter/style.css" />
-	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.min.js"></script>
-	<script type="text/javascript" src="/static/libs/js/tablesorter/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 
 {% block jquery %}
@@ -19,7 +17,7 @@
 {{ block.super }}
     <h2>Avaimet</h2>
 {% if tokens %}
-    <a href="/control/kompomaatti/printcodes/" class="jq-button">Vapaat tokenit .PDF muodossa</a>
+    <a href="/manage/{{ selected_event_id }}/kompomaatti/printcodes/" class="jq-button">Vapaat tokenit .PDF muodossa</a>
 	<table id="tokens_table" class="tablesorter"> 
 	<thead>
 		<tr>
@@ -39,10 +37,12 @@
 	</tbody>
 	</table>
 	<div id="tokens_pager" class="pager">
-		{% include "admin_kompomaatti/inc/sorter_pager.html" %}
+		{% include "common/pagination.html" %}
 	</div>
 	<br />
 {% else %}
     <p>Ei äänestyskoodeja.</p>
 {% endif %}
+
+{% uni_form gentokensform gentokensform.helper %}
 {% endblock %}

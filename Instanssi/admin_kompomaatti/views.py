@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event
 from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_base.misc.eventsel import get_selected_event
 from Instanssi.kompomaatti.misc import entrysort
 
 # For votecode stuff
@@ -22,23 +21,22 @@ from reportlab.lib.units import cm
     
     
 @login_required(login_url='/manage/auth/login/')
-def compo_browse(request):
+def compo_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
     # Get compos
-    selected_event_id = get_selected_event(request)
-    compos = Compo.objects.filter(event=selected_event_id)
+    compos = Compo.objects.filter(event_id=int(sel_event_id))
     
     # Form handling
     if request.method == "POST":
         compoform = AdminCompoForm(request.POST)
         if compoform.is_valid():
             data = compoform.save(commit=False)
-            data.event_id = active_event_id
+            data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect('/control/kompomaatti/compos/') 
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
     else:
         compoform = AdminCompoForm()
     
@@ -46,51 +44,24 @@ def compo_browse(request):
     return admin_render(request, "admin_kompomaatti/compo_browse.html", {
         'compos': compos,
         'compoform': compoform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def compo_add(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Get compos
-    selected_event_id = get_selected_event(request)
-    
-    # Form handling
-    if request.method == "POST":
-        compoform = AdminCompoForm(request.POST)
-        if compoform.is_valid():
-            data = compoform.save(commit=False)
-            data.event_id = selected_event_id
-            data.save()
-            return HttpResponseRedirect('/control/kompomaatti/compos/') 
-    else:
-        compoform = AdminCompoForm()
-    
-    # Render response
-    return admin_render(request, "admin_kompomaatti/compo_add.html", {
-        'compoform': compoform,
-    })
-    
-@login_required(login_url='/manage/auth/login/')
-def compo_edit(request, compo_id):
+def compo_edit(request, sel_event_id, compo_id):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
         raise Http404
     
-    # Check ID
-    try:
-        compo = Compo.objects.get(id=compo_id)
-    except:
-        raise Http404
+    # Get compo
+    compo = get_object_or_404(Compo, pk=compo_id)
     
     # Handle form
     if request.method == "POST":
         editform = AdminCompoForm(request.POST, instance=compo)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect('/control/kompomaatti/entries/') 
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
     else:
         editform = AdminCompoForm(instance=compo)
     
@@ -98,42 +69,50 @@ def compo_edit(request, compo_id):
     return admin_render(request, "admin_kompomaatti/compo_edit.html", {
         'compo': compo,
         'editform': editform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def entry_browse(request):
+def entry_browse(request, sel_event_id):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
         raise Http404
     
+    # Form handling
+    if request.method == "POST":
+        entryform = AdminEntryAddForm(request.POST, request.FILES)
+        if entryform.is_valid():
+            entryform.save()
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
+    else:
+        entryform = AdminEntryAddForm()
+    
     # Get Entries    
-    selected_event_id = get_selected_event(request)
-    compos = Compo.objects.filter(event=selected_event_id)
+    compos = Compo.objects.filter(event=int(sel_event_id))
     entries = Entry.objects.filter(compo__in=compos)
     
     # Render response
     return admin_render(request, "admin_kompomaatti/entry_browse.html", {
         'entries': entries,
+        'entryform': entryform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def entry_edit(request, entry_id):
+def entry_edit(request, sel_event_id, entry_id):
     # Make sure the user is staff.index.html
     if not request.user.is_staff:
         raise Http404
     
     # Check ID
-    try:
-        entry = Entry.objects.get(id=entry_id)
-    except:
-        raise Http404
+    entry = get_object_or_404(Entry, pk=entry_id)
     
     # Handle form
     if request.method == "POST":
         editform = AdminEntryForm(request.POST, request.FILES, instance=entry)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect('/control/kompomaatti/entries/') 
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
     else:
         editform = AdminEntryForm(instance=entry)
     
@@ -141,44 +120,18 @@ def entry_edit(request, entry_id):
     return admin_render(request, "admin_kompomaatti/entry_edit.html", {
         'entry': entry,
         'editform': editform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def entry_add(request):
+def results(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
     # Get compos
-    selected_event_id = get_selected_event(request)
-    
-    # Form handling
-    if request.method == "POST":
-        entryform = AdminEntryAddForm(request.POST, request.FILES)
-        if entryform.is_valid():
-            entryform.save()
-            return HttpResponseRedirect('/control/kompomaatti/entries/') 
-    else:
-        entryform = AdminEntryAddForm()
-    
-    # Render response
-    return admin_render(request, "admin_kompomaatti/entry_add.html", {
-        'entryform': entryform,
-    })
-    
-@login_required(login_url='/manage/auth/login/')
-def results(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Get compos
-    selected_event_id = get_selected_event(request)
-    try:
-        compos = Compo.objects.filter(event_id=selected_event_id)
-    except Entry.DoesNotExist:
-        raise Http404
-    
+    compos = Compo.objects.filter(event_id=int(sel_event_id))
+
     # Get the entries
     results = {}
     for compo in compos:
@@ -187,32 +140,50 @@ def results(request):
     # Render response
     return admin_render(request, "admin_kompomaatti/results.html", {
         'results': results,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def votecodes(request):
+def votecodes(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
         
+    # Handle form
+    if request.method == 'POST':
+        gentokensform = CreateTokensForm(request.POST)
+        if gentokensform.is_valid():
+            amount = int(gentokensform.cleaned_data['amount'])
+            for n in range(amount):
+                try:
+                    c = VoteCode()
+                    c.event_id = int(sel_event_id)
+                    c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
+                    c.save()
+                except IntegrityError:
+                    n = n-1 # Ugly, may cause infinite loop...
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/votecodes/') 
+    else:
+        gentokensform = CreateTokensForm()
+        
     # Get tokens
-    selected_event_id = get_selected_event(request)
-    tokens = VoteCode.objects.filter(event_id=selected_event_id)
+    tokens = VoteCode.objects.filter(event_id=int(sel_event_id))
     
     # Render response
     return admin_render(request, "admin_kompomaatti/votecodes.html", {
         'tokens': tokens,
+        'gentokensform': gentokensform,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required(login_url='/manage/auth/login/')
-def votecodes_print(request):
+def votecodes_print(request, sel_event_id):
     # Make sure the user is superuser.
     if not request.user.is_staff:
         raise Http404
     
     # Get free votecodes
-    selected_event_id = get_selected_event(request)
-    codes = VoteCode.objects.filter(event_id=selected_event_id, associated_to=None)
+    codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
     
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(mimetype='application/pdf')
@@ -246,84 +217,36 @@ def votecodes_print(request):
     return response
     
 @login_required(login_url='/manage/auth/login/')
-def votecodes_generate(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Get active event id
-    try:
-        selected_event_id = get_selected_event(request)
-        event = Event.objects.get(id=selected_event_id)
-    except:
-        event = None
-
-    # Handle form
-    gentokensform = None
-    if event != None:
-        # Check if we got filled form
-        if request.method == 'POST':
-            gentokensform = CreateTokensForm(request.POST)
-            if gentokensform.is_valid():
-                amount = int(gentokensform.cleaned_data['amount'])
-                for n in range(amount):
-                    try:
-                        c = VoteCode()
-                        c.event = event
-                        c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
-                        c.save()
-                    except IntegrityError:
-                        n = n-1 # Ugly, may cause infinite loop...
-                return HttpResponseRedirect('/control/kompomaatti/votecodes/') 
-        else:
-            gentokensform = CreateTokensForm()
-        
-    # Render response
-    return admin_render(request, "admin_kompomaatti/votecodes_add.html", {
-        'gentokensform': gentokensform,
-    })
-    
-@login_required(login_url='/manage/auth/login/')
-def votecoderequests(request):
+def votecoderequests(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
     # Get all requests
-    requests = VoteCodeRequest.objects.all()
+    requests = VoteCodeRequest.objects.filter(event_id=int(sel_event_id))
     
     # Render response
     return admin_render(request, "admin_kompomaatti/vcrequests.html", {
         'requests': requests,
+        'selected_event_id': int(sel_event_id),
     })
     
 @login_required
-def votecoderequests_accept(request, vcrid):
-    # Make sure the user is superuser.
-    if not request.user.is_superuser:
+def votecoderequests_accept(request, sel_event_id, vcrid):
+    # Make sure the user is staff
+    if not request.user.is_staff:
         raise Http404
     
     # Get the request
-    try:
-        vcr = VoteCodeRequest.objects.get(id=vcrid)
-    except VoteCodeRequest.DoesNotExist:
-        raise Http404
-        
-    # Get active event
-    event = None
-    try:
-        event = Event.objects.get(id=get_selected_event(request))
-    except:
-        raise Http404
+    vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
         
     # Add votecode for user. Bang your head to the wall until you succeed, etc.
-    # Really, do something about this later!
     # TODO: Do something about this shit!
     done = False
     for i in range(25):
         try:
             c = VoteCode()
-            c.event = event
+            c.event_id = int(sel_event_id)
             c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
             c.associated_to = vcr.user
             c.time = datetime.now()
@@ -340,4 +263,4 @@ def votecoderequests_accept(request, vcrid):
     vcr.delete()
     
     # Return to admin page
-    return HttpResponseRedirect('/control/kompomaatti/votecoderequests/') 
+    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/votecoderequests/') 

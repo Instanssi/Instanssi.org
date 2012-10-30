@@ -1,7 +1,7 @@
 {% extends "admin_kompomaatti/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Kompot - Selaa{% endblock %}
+{% block title %}{{ block.super }} - Kompot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -31,7 +31,7 @@
 				<td>{{ compo.name }}</td>
 				<td>{{ compo.active }}</td>
 				<td>{{ compo.compo_start|date:"d.m.Y H:i" }}</td>
-				<td><a class="icon editicon" href="/control/kompomaatti/editcompo/{{ compo.id }}/">Muokkaa</a></td>
+				<td><a class="icon editicon" href="/manage/{{ selected_event_id }}/kompomaatti/editcompo/{{ compo.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -39,4 +39,6 @@
 {% else %}
 	<p>Ei kompoja.</p>
 {% endif %}
+
+{% uni_form compoform compoform.helper %}
 {% endblock %}

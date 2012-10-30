@@ -30,7 +30,7 @@
 	            <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
 	            <td>{{ request.user.email }}</td>
 	            <td>{{ request.text|linebreaksbr }}</td>
-	            <td><a href="/control/kompomaatti/acceptreq/{{ request.id }}/">Salli</a></td>
+	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/acceptreq/{{ request.id }}/">Salli</a></td>
 			</tr>
 {% endfor %}
 		</tbody>

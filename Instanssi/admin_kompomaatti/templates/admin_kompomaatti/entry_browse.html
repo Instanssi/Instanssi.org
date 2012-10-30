@@ -1,7 +1,7 @@
 {% extends "admin_kompomaatti/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Entryt - Selaa{% endblock %}
+{% block title %}{{ block.super }} - Entryt{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -35,7 +35,7 @@
 				<td>{{ entry.user.email }}</td>
 				<td>{{ entry.compo.name }}</td>
 				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
-	            <td><a class="icon editicon" href="/control/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
+	            <td><a class="icon editicon" href="/manage/{{ selected_event_id }}/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -43,4 +43,6 @@
 {% else %}
 	<p>Ei entryjä.</p>
 {% endif %}
+
+{% uni_form entryform entryform.helper %}
 {% endblock %}

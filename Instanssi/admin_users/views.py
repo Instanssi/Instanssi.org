@@ -30,7 +30,7 @@ def superusers(request):
         userform = None
     
     # Get users
-    users = User.objects.exclude(username__contains="openiduser")
+    users = User.objects.exclude(username__contains="openiduser").exclude(username="arkisto")
     
     # Render response
     return admin_render(request, "admin_users/supers.html", {
@@ -71,7 +71,7 @@ def deletesu(request, su_id):
     
     # Try to delete
     user = get_object_or_404(User, pk=su_id)
-    if user.is_superuser:
+    if user.is_superuser or user.username == "arkisto":
         raise Http403
     else:
         user.delete()

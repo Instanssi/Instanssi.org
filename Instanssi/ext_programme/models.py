@@ -9,7 +9,7 @@ from Instanssi.kompomaatti.models import Event
 class ProgrammeEvent(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     start = models.DateTimeField(u'Alku', help_text=u'Tapahtuman alkamisaika.')
-    end = models.DateTimeField(u'Loppu', help_text=u'Tapahtuman loppumisaika.', blank=True)
+    end = models.DateTimeField(u'Loppu', help_text=u'Tapahtuman loppumisaika.', null=True, blank=True)
     description = models.TextField(u'Kuvaus', help_text=u'Tapahtuman kuvaus.')
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=64)
     presenters = models.CharField(u'Henkilöt', help_text=u'Esityksen pitäjät tms.', max_length=256)

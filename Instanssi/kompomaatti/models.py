@@ -203,7 +203,6 @@ class Entry(models.Model):
         # Continue with normal save
         super(Entry, self).save(*args, **kwargs)
 
-    
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä")
     compo = models.ForeignKey(Compo, verbose_name=u"kompo")
@@ -247,7 +246,7 @@ class CompetitionParticipation(models.Model):
     score = models.FloatField(u'Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True)
 
     def __unicode__(self):
-        return self.competition.name + ', ' + self.user.first_name + ' ' + self.user.last_name + ': ' + self.score
+        return self.competition.name + ', ' + self.participant_name + ': ' + str(self.score)
     
     class Meta:
         verbose_name=u"ilmoittautuminen"

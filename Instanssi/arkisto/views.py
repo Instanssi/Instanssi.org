@@ -49,8 +49,8 @@ def index(request):
     try:
         latest = Event.objects.filter(archived=True).order_by('date').reverse()[0]
     except:
-        return HttpResponse("No content in archive!")
-        
+        return custom_render(request, 'arkisto/empty.html', {})
+            
     return event(request, latest.id)
 
 # Entry page

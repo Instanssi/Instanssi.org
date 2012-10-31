@@ -35,6 +35,7 @@
 <body>
     <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="/arkisto/">Arkisto</a></h1></div>
     <div id="content">
+{% if nav_events %}
         <ul id="nav">
 {% for event in nav_events %}
             <li><a href="/arkisto/event/{{ event.id }}/">{{ event.name }}</a></li>
@@ -42,6 +43,9 @@
 {% endfor %}
         </ul>
         <h2>{{ event.name }} <a href="/arkisto/event/{{ event.id }}/" class="see-all-results">Katso kaikki tulokset</a></h2>
+{% else %}
+		<h2>Arkisto</h2>
+{% endif %}
 {% block content %}{% endblock %}
     </div>
 </body>

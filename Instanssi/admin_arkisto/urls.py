@@ -7,6 +7,8 @@ urlpatterns = patterns(
     url(r'^$', 'archiver'),
     url(r'^archiver/', 'archiver'),
     url(r'^vids/', 'vids'),
+    url(r'^show/', 'show'),
+    url(r'^hide/', 'hide'),
     url(r'^vidcats/', 'cats'),
     url(r'^deletevid/(?P<video_id>\d+)/', 'deletevid'),
     url(r'^deletecat/(?P<category_id>\d+)/', 'deletecat'),

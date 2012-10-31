@@ -8,6 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
+	$('.button').button();
 {% endblock %}
 
 {% block crumbs %}
@@ -19,5 +20,15 @@
 {% block content %}
 {{ block.super }}
     <h2>Arkistoija</h2>
+    <h3>Arkistoinnin tila</h3>
+{% if is_archived %}
+	<p>Tapahtuma on näkyvissä arkistossa. Mikäli haluat piilottaa tapahtuman arkistosta, paina allaolevaa nappia. Mitään tietoa ei poisteta.</p>
+	<a class="button" href="/manage/{{ selected_event_id }}/arkisto/hide/">Piilota Arkistosta</a>
+{% else %}
+	<p>Tapahtuma ei ole näkyvissä arkistossa. Mikäli haluat tapahtuman kaikkien demoentryjen, videoiden ja kilpailujen tulosten näkyvän arkistossa, paina allaolevaa nappia.</p>
+	<a class="button" href="/manage/{{ selected_event_id }}/arkisto/show/">Näytä Arkistossa</a>
+{% endif %}
+    
+    <h3>Käyttäjäoikeuksien tila</h3>
     
 {% endblock %}

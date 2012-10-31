@@ -14,11 +14,49 @@ def archiver(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http403
+    
+    # Get event information
+    event = get_object_or_404(Event, pk=sel_event_id)
 
     # Render response
     return admin_render(request, "admin_arkisto/archiver.html", {
         'selected_event_id': int(sel_event_id),
+        'is_archived': event.archived,
     })
+    
+@login_required(login_url='/manage/auth/login/')
+def show(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Check rights
+    if not request.user.has_perms('kompomaatti.change_event'):
+        raise Http403
+    
+    # Mark event as archived
+    event = get_object_or_404(Event, pk=sel_event_id)
+    event.archived = True
+    event.save()
+    
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+
+@login_required(login_url='/manage/auth/login/')
+def hide(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Check rights
+    if not request.user.has_perms('kompomaatti.change_event'):
+        raise Http403
+    
+    # Mark event as NOT archived
+    event = get_object_or_404(Event, pk=sel_event_id)
+    event.archived = False
+    event.save()
+    
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
 
 @login_required(login_url='/manage/auth/login/')
 def vids(request, sel_event_id):

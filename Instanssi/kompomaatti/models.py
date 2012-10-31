@@ -223,7 +223,7 @@ class Competition(models.Model):
     description = models.TextField(u'Kuvaus', help_text=u"Kilpailun kuvaus")
     participation_end = models.DateTimeField(u'Deadline osallistumiselle.', help_text=u"Tämän jälkeen kilpailuun ei voi enää osallistua.")
     start = models.DateTimeField(u'Kilpailun alku', help_text=u"Kilpailun aloitusaika.")
-    end = models.DateTimeField(u'Kilpailun alku', help_text=u"Kilpailun päättymisaika.", null=True, blank=True)
+    end = models.DateTimeField(u'Kilpailun loppu', help_text=u"Kilpailun päättymisaika.", null=True, blank=True)
     score_type = models.CharField(u'Pisteiden tyyppi', max_length=8, help_text=u'Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.') 
     ENTRY_VIEW_TYPES = (
         (0, u'Korkeimmat pisteet ensin'),

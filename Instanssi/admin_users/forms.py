@@ -46,3 +46,23 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username','first_name','last_name','password','email')
+
+class UserEditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Muokkaa käyttäjää',
+                'first_name',
+                'last_name',
+                'email',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email')

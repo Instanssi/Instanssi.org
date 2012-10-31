@@ -1,0 +1,24 @@
+{% extends "admin_users/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Pääkäyttäjät - Muokkaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/users/superusers/">Pääkäyttäjät</a>
+		&raquo; Muokkaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Muokkaa käyttäjää</h2>
+{% uni_form userform userform.helper %}
+{% endblock %}

@@ -15,6 +15,9 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa käyttäjän ?"); 
+    });
 	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#users_pager")}); 
 {% endblock %}
 
@@ -31,6 +34,9 @@
  				<th>Rekisteröity</th>
  				<th>Viimeisin kirjautuminen</th>
  				<th>Aktivoitu</th>
+{% if is_superuser %}
+ 				<th class="sorter-false management_field"></th>
+{% endif %}
  			</tr>
  		</thead>
  		<tbody>
@@ -43,6 +49,16 @@
 				<td>{{ user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
+{% if user.is_superuser%}
+				<td></td>
+{% else %}
+{% if is_superuser %}
+				<td>
+					<a href="/manage/users/editsu/{{ user.id }}/" class="edit_link">Muokkaa</a>
+					<a href="/manage/users/deletesu/{{ user.id }}/" class="delete_link">Poista</a>
+				</td>
+{% endif %}
+{% endif %}
 			</tr>
 {% endfor %}
  		</tbody>
@@ -50,7 +66,7 @@
 	<div id="users_pager" class="pager">
 		{% include "common/pagination.html" %}
 	</div>
-{% if addform %}
-{% uni_form addform addform.helper %}
+{% if is_superuser %}
+{% uni_form userform userform.helper %}
 {% endif %}
 {% endblock %}

@@ -8,6 +8,7 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
+from django_openid_auth.models import UserOpenID
 
 @login_required(login_url='/manage/auth/login/')
 def superusers(request):
@@ -29,7 +30,7 @@ def superusers(request):
         userform = None
     
     # Get users
-    users = User.objects.exclude(username="openiduser")
+    users = User.objects.exclude(username__contains="openiduser")
     
     # Render response
     return admin_render(request, "admin_users/supers.html", {
@@ -85,7 +86,8 @@ def openid(request):
         raise Http403
     
     # Get users
-    db_users = User.objects.filter(username="openiduser")
+    oid_userlist = UserOpenID.objects.all().values('user')
+    db_users = User.objects.filter(pk__in=oid_userlist)
     
     # Create list
     users = []
@@ -99,6 +101,7 @@ def openid(request):
         
         # Append data
         users.append({
+            'id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
@@ -112,3 +115,23 @@ def openid(request):
     return admin_render(request, "admin_users/openid.html", {
         'openidusers': users,
     })
+    
+@login_required(login_url='/manage/auth/login/')
+def deleteopenid(request, user_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Check for rights
+    if not request.user.has_perm('auth.delete_user'):
+        raise Http403
+    
+    # Try to delete
+    user = get_object_or_404(User, pk=user_id)
+    if not user.is_staff and not user.is_superuser:
+        user.delete()
+    else:
+        raise Http403
+    
+    # All done, redirect
+    return HttpResponseRedirect("/manage/users/openid/")

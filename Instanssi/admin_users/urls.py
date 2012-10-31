@@ -9,4 +9,5 @@ urlpatterns = patterns(
     url(r'^deletesu/(?P<su_id>\d+)/', 'deletesu'),
     url(r'^editsu/(?P<su_id>\d+)/', 'editsu'),
     url(r'^openid/', 'openid'),
+    url(r'^deleteopenid/(?P<user_id>\d+)/', 'deleteopenid'),
 )

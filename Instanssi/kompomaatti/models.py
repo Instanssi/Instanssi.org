@@ -243,7 +243,8 @@ class Competition(models.Model):
 class CompetitionParticipation(models.Model):
     competition = models.ForeignKey(Competition, verbose_name=u'Kilpailu', help_text=u'Kilpailu johon osallistuttu')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u'Osallistuja')
-    score = models.FloatField('Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True)
+    participant_name = models.CharField(u'Osallistujan nimi', help_text=u'Nimimerkki jolla haluat osallistua.', max_length=32, default=u'')
+    score = models.FloatField(u'Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True)
 
     def __unicode__(self):
         return self.competition.name + ', ' + self.user.first_name + ' ' + self.user.last_name + ': ' + self.score

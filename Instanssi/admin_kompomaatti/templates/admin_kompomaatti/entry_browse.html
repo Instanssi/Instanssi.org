@@ -9,7 +9,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#entry_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#entry_pager")}); 
+	$("#entry_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#entry_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -23,8 +23,8 @@
 				<th>Tekijä</th>
 				<th>Käyttäjä</th>
 				<th>Kompo</th>
-				<th>Tiedosto</th>
-				<th>Muokkaa</th>
+				<th class="sorter-false">Tiedosto</th>
+				<th class="sorter-false">Muokkaa</th>
 			</tr>
 		</thead>
 		<tbody>

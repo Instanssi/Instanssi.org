@@ -8,7 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#user_table").tablesorter({widgets: ['zebra']});
+	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#users_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,7 @@
  				<th>Rekisteröity</th>
  				<th>Viimeisin kirjautuminen</th>
  				<th>Aktivoitu</th>
- 				<th>Muut tiedot</th>
+ 				<th class="sorter-false">Muut tiedot</th>
  			</tr>
  		</thead>
  		<tbody>
@@ -31,14 +31,17 @@
 			<tr>
 				<td>{{ user.first_name }} {{ user.last_name }}</td>
 				<td>{{ user.email }}</td>
-				<td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
-				<td>{{ user.last_login|date:"d.m.Y H:i" }}</td>
+				<td>{{ user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>{{ user.otherinfo|linebreaksbr }}</td>
 			</tr>
 {% endfor %}
  		</tbody>
  	</table>
+	<div id="users_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
 {% else %}
 	<p>Ei OpenID-käyttäjiä!</p>
 {% endif %}

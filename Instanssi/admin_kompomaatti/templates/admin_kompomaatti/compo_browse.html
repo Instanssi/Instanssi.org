@@ -9,7 +9,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#compo_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#compo_pager")}); 
+	$("#compo_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#compo_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
 				<th>Nimi</th>
 				<th>Aktiivinen</th>
 				<th>Aika</th>
-				<th>Muokkaa</th>
+				<th class="sorter-false">Muokkaa</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -8,7 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$(".entrylist").tablesorter({widgets: ['zebra']});
+	$(".entrylist").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});
 {% endblock %}
 
 {% block content %}

@@ -12,7 +12,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tiedoston ?"); 
     });
-    $("#upload_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#upload_pager")}); 
+    $("#upload_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#upload_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -25,8 +25,8 @@
                 <th>Nimi</th>
                 <th>Kuvaus</th>
                 <th>Päivä</th>
-                <th>Muokkaa</th>
-                <th>Poista</th>
+                <th class="sorter-false">Muokkaa</th>
+                <th class="sorter-false">Poista</th>
             </tr>
         </thead>
         <tbody>

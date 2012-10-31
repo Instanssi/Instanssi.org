@@ -8,7 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#req_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#req_pager")}); 
+	$("#req_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#req_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 	            <th>Nimi</th>
 	            <th>Sähköposti</th>
 	            <th>Pyyntöteksti</th>
-	            <th>Salli</th>
+	            <th class="sorter-false">Salli</th>
 			</tr>
 		</thead>
 		<tbody>

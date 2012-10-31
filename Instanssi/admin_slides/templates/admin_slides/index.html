@@ -8,7 +8,7 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#slides_table").tablesorter({widgets: ['zebra']});
+	$("#slides_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});
 {% endblock %}
 
 {% block content %}
@@ -21,9 +21,8 @@
 			<tr>
 				<th>Kompo</th>
 				<th>Vuosi</th>
-				<th>Tapahtuma</th>
-				<th>Osallistujat</th>
-				<th>Tulokset</th>
+				<th class="sorter-false">Osallistujat</th>
+				<th class="sorter-false">Tulokset</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,7 +30,6 @@
 			<tr>
 				<td>{{ compo.name }}</td>
 				<td>{{ compo.compo_start|date:"Y" }}</td>
-				<td>{{ compo.event.name }}</td>
 				<td><a href="/manage/{{ selected_event_id }}/slides/slide_entries/{{ compo.id }}/">Osallistujat</a></td>
 				<td><a href="/manage/{{ selected_event_id }}/slides/slide_results/{{ compo.id }}/">Tulokset</a></td>
 			</tr>

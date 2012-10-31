@@ -12,7 +12,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa kategorian ?"); 
     });
-    $("#cat_table").tablesorter({widgets: ['zebra']});
+    $("#cat_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});
 {% endblock %}
 
 {% block content %}
@@ -23,8 +23,8 @@
     	<thead>
     		<tr>
     			<th>Nimi</th>
-    			<th>Poista</th>
-    			<th>Muokkaa</th>
+    			<th class="sorter-false">Poista</th>
+    			<th class="sorter-false">Muokkaa</th>
     		</tr>
     	</thead>
     	<tbody>

@@ -10,7 +10,7 @@
 {% block jquery %}
 {{ block.super }}
 	$(".jq-button").button();
-	$("#tokens_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#tokens_pager")}); 
+	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[1,0],[2,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
 {% for token in tokens %}
 		<tr>
 			<td>{{ token.key }}</td>
-			<td>{% if token.associated_to %}{{ token.associated_to.email }}{% else %}-{% endif %}</td>
+			<td>{{ token.associated_to.email }}</td>
 			<td>{{ token.time|date:"d.m.Y H:i" }}</td>
 		</tr>
 {% endfor %}

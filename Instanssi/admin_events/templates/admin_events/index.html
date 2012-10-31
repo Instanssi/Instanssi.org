@@ -12,7 +12,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
     });
-    $("#event_table").tablesorter({widgets: ['zebra']}).tablesorterPager({container: $("#event_pager")}); 
+    $("#event_table").tablesorter({widgets: ['zebra'], sortList: [[1,0],]}).tablesorterPager({container: $("#event_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -25,8 +25,8 @@
     			<th>Nimi</th>
     			<th>Päivämäärä</th>
     			<th>Arkistoitu</th>
-    			<th>Poista</th>
-    			<th>Muokkaa</th>
+    			<th class="sorter-false">Poista</th>
+    			<th class="sorter-false">Muokkaa</th>
     		</tr>
     	</thead>
     	<tbody>

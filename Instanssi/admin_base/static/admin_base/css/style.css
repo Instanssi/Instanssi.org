@@ -43,6 +43,13 @@ p {
     text-align: justify;
 }
 
+/* ---------- Crumbpath ---------- */
+
+#crumbpath {
+	margin-bottom: 1.0em;
+	font-size: 12px;
+}
+
 /* ---------- Base layout tuning ---------- */
 
 #base,
@@ -168,7 +175,6 @@ ul.sub-level {
     padding: 7px;
     padding-left: 9px;
 }
-
 
 #left_nav ul {
     margin: 0;

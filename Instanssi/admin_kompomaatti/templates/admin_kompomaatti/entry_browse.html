@@ -29,8 +29,8 @@
 				<th>Tekijä</th>
 				<th>Käyttäjä</th>
 				<th>Kompo</th>
-				<th class="sorter-false">Tiedosto</th>
-				<th class="sorter-false">Muokkaa</th>
+				<th>Lataa</th>
+				<th class="sorter-false"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,7 +41,14 @@
 				<td>{{ entry.user.email }}</td>
 				<td>{{ entry.compo.name }}</td>
 				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
-	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
+	            <td>
+{% if perms.kompomaatti.change_entry %}
+	            	<a href="/manage/{{ selected_event_id }}/kompomaatti/editentry/{{ entry.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.kompomaatti.delete_entry %}
+	            	<a href="/manage/{{ selected_event_id }}/kompomaatti/deleteentry/{{ entry.id }}/ class="delete_link"">Poista</a>
+{% endif %}
+	            </td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -53,5 +60,7 @@
 	<p>Ei entryjä.</p>
 {% endif %}
 
+{% if perms.kompomaatti.add_entry %}
 {% uni_form entryform entryform.helper %}
+{% endif %}
 {% endblock %}

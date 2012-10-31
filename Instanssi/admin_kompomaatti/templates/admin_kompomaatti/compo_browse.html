@@ -28,7 +28,7 @@
 				<th>Nimi</th>
 				<th>Aktiivinen</th>
 				<th>Aika</th>
-				<th class="sorter-false">Muokkaa</th>
+				<th class="sorter-false"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -37,7 +37,14 @@
 				<td>{{ compo.name }}</td>
 				<td>{{ compo.active }}</td>
 				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td><a href="/manage/{{ selected_event_id }}/kompomaatti/editcompo/{{ compo.id }}/">Muokkaa</a></td>
+				<td>
+{% if perms.kompomaatti.change_compo %}
+					<a href="/manage/{{ selected_event_id }}/kompomaatti/editcompo/{{ compo.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.kompomaatti.delete_compo %}
+					<a href="/manage/{{ selected_event_id }}/kompomaatti/deletecompo/{{ compo.id }}/" class="delete_link">Poista</a>
+{% endif %}
+				</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -49,5 +56,7 @@
 	<p>Ei kompoja.</p>
 {% endif %}
 
+{% if perms.kompomaatti.add_compo %}
 {% uni_form compoform compoform.helper %}
+{% endif %}
 {% endblock %}

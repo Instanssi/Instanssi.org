@@ -28,28 +28,31 @@
 		<thead>
 			<tr>
 				<th>Nimi</th>
-				<th>Kuvaus</th>
 				<th>Ilmoittautuminen päättyy</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th>Näytä tulokset</th>
 				<th class="sorter-false">Osallistujat</th>
-				<th class="sorter-false">Muokkaa</th>
-				<th class="sorter-false">Poista</th>
+				<th class="sorter-false"></th>
 			</tr>
 		</thead>
 		<tbody>
 {% for comp in competitions %}
 			<tr>
 				<td>{{ comp.name }}</td>
-				<td>{{ comp.description }}</td>
 				<td>{{ comp.participation_end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
 				<td><a href="/manage/{{ selected_event_id }}/kompomaatti/competition/{{ comp.id }}/">Osallistujat</a></td>
-	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/editcompetition/{{ comp.id }}/">Muokkaa</a></td>
-	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/deletecompetition/{{ comp.id }}/" class="delete_link">Poista</a></td>
+	            <td>
+{% if perms.kompomaatti.change_competition %}
+	            	<a href="/manage/{{ selected_event_id }}/kompomaatti/editcompetition/{{ comp.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.kompomaatti.delete_competition %}
+	            	<a href="/manage/{{ selected_event_id }}/kompomaatti/deletecompetition/{{ comp.id }}/" class="delete_link">Poista</a>
+{% endif %}
+	            </td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -61,5 +64,7 @@
 	<p>Ei kilpailuja.</p>
 {% endif %}
 
+{% if perms.kompomaatti.add_competition %}
 {% uni_form competitionform competitionform.helper %}
+{% endif %}
 {% endblock %}

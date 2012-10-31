@@ -50,5 +50,7 @@
     <p>Ei äänestyskoodeja.</p>
 {% endif %}
 
+{% if perms.kompomaatti.add_votecode %}
 {% uni_form gentokensform gentokensform.helper %}
+{% endif %}
 {% endblock %}

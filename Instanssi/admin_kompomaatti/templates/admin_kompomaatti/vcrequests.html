@@ -27,7 +27,9 @@
 	            <th>Nimi</th>
 	            <th>Sähköposti</th>
 	            <th>Pyyntöteksti</th>
+{% if perms.kompomaatti.change_votecode %}
 	            <th class="sorter-false">Salli</th>
+{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -36,7 +38,9 @@
 	            <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
 	            <td>{{ request.user.email }}</td>
 	            <td>{{ request.text|linebreaksbr }}</td>
+{% if perms.kompomaatti.change_votecode %}
 	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/acceptreq/{{ request.id }}/">Salli</a></td>
+{% endif %}
 			</tr>
 {% endfor %}
 		</tbody>

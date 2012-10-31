@@ -217,6 +217,40 @@ class Vote(models.Model):
         verbose_name=u"ääni"
         verbose_name_plural=u"äänet"
 
+class Competition(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u"Tapahtuma", help_text=u"Tapahtuma johon kilpailu kuuluu")
+    name = models.CharField(u'Nimi', max_length=32, help_text=u"Kilpailun nimi (max 32 merkkiä).")
+    description = models.TextField(u'Kuvaus', help_text=u"Kilpailun kuvaus")
+    participation_end = models.DateTimeField(u'Deadline osallistumiselle.', help_text=u"Tämän jälkeen kilpailuun ei voi enää osallistua.")
+    start = models.DateTimeField(u'Kilpailun alku', help_text=u"Kilpailun aloitusaika.")
+    end = models.DateTimeField(u'Kilpailun alku', help_text=u"Kilpailun päättymisaika.", null=True, blank=True)
+    score_type = models.CharField(u'Pisteiden tyyppi', max_length=8, help_text=u'Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.') 
+    ENTRY_VIEW_TYPES = (
+        (0, u'Korkeimmat pisteet ensin'),
+        (1, u'Matalimmat pisteet ensin'),
+    )
+    score_sort = models.IntegerField(u'Pisteiden järjestely', choices=ENTRY_VIEW_TYPES, help_text=u'Onko suurimman vai pienimmän pistemäärän saavuttanut voittaja?', default=0)
+    show_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä kilpailun tulokset.", default=False)
+
+    def __unicode__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name=u"kilpailu"
+        verbose_name_plural=u"kilpailut"
+
+class CompetitionParticipation(models.Model):
+    competition = models.ForeignKey(Competition, verbose_name=u'Kilpailu', help_text=u'Kilpailu johon osallistuttu')
+    user = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u'Osallistuja')
+    score = models.FloatField('Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True)
+
+    def __unicode__(self):
+        return self.competition.name + ', ' + self.user.first_name + ' ' + self.user.last_name + ': ' + self.score
+    
+    class Meta:
+        verbose_name=u"ilmoittautuminen"
+        verbose_name_plural=u"ilmoittautumiset"
+
 try:
     admin.site.register(Compo)
     admin.site.register(Entry)
@@ -225,5 +259,7 @@ try:
     admin.site.register(VoteCode)
     admin.site.register(VoteCodeRequest)
     admin.site.register(Profile)
+    admin.site.register(Competition)
+    admin.site.register(CompetitionParticipation)
 except:
     pass

@@ -29,9 +29,6 @@
 
 ## Admineille näkyvä osio
 
-* Tablesorteriin pluggari, jotta osaa sortata aikaleimat formaatilla "dd.mm.yyyy klo. hh:ii"
-* Kaikille sivuille oikeudet is_staff / has_perms -kamalla
-
 ### admin_users
 
 * OpenID-sivulle käyttäjien muokkaaminen staff/administrator-statuksen omaaville

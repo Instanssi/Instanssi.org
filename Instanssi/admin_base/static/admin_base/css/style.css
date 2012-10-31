@@ -43,6 +43,30 @@ p {
     text-align: justify;
 }
 
+/* ---------- Pro H4x ---------- */
+
+/* Don't show delete functionality without Javascript support! */
+.delete_link {
+	display: none;
+}
+
+.custom_icon_style {
+	float: right;
+	display: inline-block;
+	width: 17px;
+	height: 17px;
+	border: 1px solid #bbbbbb;
+	background-color: #eeeeee;
+	margin-left: 2px;
+	margin-right: 2px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.custom_icon_style:hover {
+	background-color: #cccccc;
+}
+
 /* ---------- Crumbpath ---------- */
 
 #crumbpath {

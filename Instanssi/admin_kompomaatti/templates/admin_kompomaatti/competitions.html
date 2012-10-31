@@ -33,6 +33,7 @@
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th>Näytä tulokset</th>
+				<th class="sorter-false">Osallistujat</th>
 				<th class="sorter-false">Muokkaa</th>
 				<th class="sorter-false">Poista</th>
 			</tr>
@@ -46,6 +47,7 @@
 				<td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
+				<td><a href="/manage/{{ selected_event_id }}/kompomaatti/competition/{{ comp.id }}/">Osallistujat</a></td>
 	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/editcompetition/{{ comp.id }}/">Muokkaa</a></td>
 	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/deletecompetition/{{ comp.id }}/" class="delete_link">Poista</a></td>
 			</tr>

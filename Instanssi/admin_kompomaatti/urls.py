@@ -10,6 +10,8 @@ urlpatterns = patterns(
     url(r'^entries/', 'entry_browse'),
     url(r'^editentry/(?P<entry_id>\d+)/', 'entry_edit'),
     url(r'^competitions/', 'competitions_browse'),
+    url(r'^editcompetition/(?P<competition_id>\d+)/', 'competition_edit'),
+    url(r'^deletecompetition/(?P<competition_id>\d+)/', 'competition_delete'),
     url(r'^results/', 'results'),
     url(r'^votecodes/', 'votecodes'),
     url(r'^printcodes/', 'votecodes_print'),

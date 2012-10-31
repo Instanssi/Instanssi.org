@@ -25,7 +25,7 @@ def competitions_browse(request, sel_event_id):
     if not request.user.is_staff:
         raise Http404
     
-    # Get compos
+    # Get competitions
     competitions = Competition.objects.filter(event_id=int(sel_event_id))
     
     # Form handling
@@ -45,6 +45,46 @@ def competitions_browse(request, sel_event_id):
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
     })
+    
+@login_required(login_url='/manage/auth/login/')
+def competition_edit(request, sel_event_id, competition_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Get competition
+    competition = get_object_or_404(Competition, pk=competition_id)
+    
+    # Handle form
+    if request.method == "POST":
+        competitionform = AdminCompetitionForm(request.POST, instance=competition)
+        if competitionform.is_valid():
+            competitionform.save()
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+    else:
+        competitionform = AdminCompetitionForm(instance=competition)
+    
+    # Render response
+    return admin_render(request, "admin_kompomaatti/competition_edit.html", {
+        'competition': competition,
+        'competitionform': competitionform,
+        'selected_event_id': int(sel_event_id),
+    })
+    
+@login_required(login_url='/manage/auth/login/')
+def competition_delete(request, sel_event_id, competition_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Delete competition
+    try:
+        Competition.objects.get(pk=competition_id).delete()
+    except:
+        pass
+    
+    # Redirect
+    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
     
 @login_required(login_url='/manage/auth/login/')
 def compo_browse(request, sel_event_id):

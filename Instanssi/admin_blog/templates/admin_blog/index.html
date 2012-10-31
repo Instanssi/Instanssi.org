@@ -30,7 +30,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa blogientryn ?"); 
     });
-    $("#blogentry_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#blog_pager")}); 
+    $("#blogentry_table").tablesorter({widgets: ['zebra'], sortList: [[1,1],]}).tablesorterPager({container: $("#blog_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -44,8 +44,7 @@
 				<th>Päivämäärä</th>
 				<th>Käyttäjä</th>
 				<th>Julkinen</th>
-				<th class="sorter-false">Muokkaa</th>
-				<th class="sorter-false">Poista</th>
+				<th class="sorter-false"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,8 +54,14 @@
 				<td>{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ entry.user.username }}</td>
 				<td>{% if entry.public %}Kyllä{% else %}Ei{% endif %}</td>
-				<td><a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/" >Muokkaa</a></td>
-				<td><a href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/" class="delete_link">Poista</a></td>
+				<td>
+{% if perms.ext_blog.change_blogentry %}
+					<a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.ext_blog.delete_blogentry %}
+					<a href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/" class="delete_link">Poista</a>
+{% endif %}
+				</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -68,5 +73,7 @@
     <p>Ei entryjä!</p>
 {% endif %}
 
+{% if perms.ext_blog.add_blogentry %}
 {% uni_form addform addform.helper %}
+{% endif %}
 {% endblock %}

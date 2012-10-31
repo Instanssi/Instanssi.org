@@ -20,7 +20,7 @@ def index(request, sel_event_id):
     # Post
     if request.method == 'POST':
         # Check for permissions
-        if not request.user.has_perm('admin_blog.add_blogentry'):
+        if not request.user.has_perm('ext_blog.add_blogentry'):
             raise Http403
         
         # Handle form
@@ -53,7 +53,7 @@ def edit(request, sel_event_id, entry_id):
         raise Http403
     
     # Check for permissions
-    if not request.user.has_perm('admin_blog.change_blogentry'):
+    if not request.user.has_perm('ext_blog.change_blogentry'):
         raise Http403
     
     # Get old entry
@@ -85,7 +85,7 @@ def delete(request, sel_event_id, entry_id):
         raise Http403
     
     # Check for permissions
-    if not request.user.has_perm('admin_blog.delete_blogentry'):
+    if not request.user.has_perm('ext_blog.delete_blogentry'):
         raise Http403
     
     # Delete entry

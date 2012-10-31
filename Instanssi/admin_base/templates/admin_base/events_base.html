@@ -13,13 +13,7 @@
 {% block bottom %}
 {{ block.super }}
 	<ul id="left_nav">
-    	<li class="menuitem">
-        	<a href="/manage/{{ selected_event_id }}/blog/">Blog</a>
-            <ul class="sub-level">
-                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/">Selaa</a></li>
-                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/write/">Kirjoita</a></li>
-            </ul>
-        </li>
+    	<li class="menuitem"><a href="/manage/{{ selected_event_id }}/blog/">Blog</a></li>
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/slides/">Slaidit</a></li>
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/files/">Tiedostot</a></li>
         <li class="menuitem"><a href="/manage/{{ selected_event_id }}/programme/">Ohjelma</a></li>

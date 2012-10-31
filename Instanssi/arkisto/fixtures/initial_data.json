@@ -1,0 +1,18 @@
+[
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "arkisto", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$10000$utMzS8BbOlgg$kkGKJ8o2OWcEV7Q1nG2e5EWT2vEZN8nsGijyfOfafCE=", 
+            "email": ""
+        }
+    }
+]

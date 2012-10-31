@@ -11,7 +11,7 @@ class BlogEntryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                u'Blogientry',
                 'title',
                 'text',
                 'public',

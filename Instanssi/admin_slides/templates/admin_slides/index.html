@@ -20,7 +20,7 @@
 		<thead>
 			<tr>
 				<th>Kompo</th>
-				<th>Vuosi</th>
+				<th>Kompon alkamisaika</th>
 				<th class="sorter-false">Osallistujat</th>
 				<th class="sorter-false">Tulokset</th>
 			</tr>
@@ -29,7 +29,7 @@
 {% for compo in compos %}
 			<tr>
 				<td>{{ compo.name }}</td>
-				<td>{{ compo.compo_start|date:"Y" }}</td>
+				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td><a href="/manage/{{ selected_event_id }}/slides/slide_entries/{{ compo.id }}/">Osallistujat</a></td>
 				<td><a href="/manage/{{ selected_event_id }}/slides/slide_results/{{ compo.id }}/">Tulokset</a></td>
 			</tr>

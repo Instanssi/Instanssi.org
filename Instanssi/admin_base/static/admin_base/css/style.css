@@ -95,6 +95,9 @@ p {
 
 #header_nav .menuitem {
     float: left;
+}
+
+#header_nav .menuitem a {
     padding: 9px;
 }
 
@@ -131,6 +134,7 @@ p {
 .menuitem a {
     color: #eeeeee;
     text-decoration: none;
+    display: block;
 }
 
 .menuitem a:hover {
@@ -160,10 +164,11 @@ ul.sub-level {
 	min-height: 100%;
 }
 
-#left_nav .menuitem {
+#left_nav .menuitem a {
     padding: 7px;
     padding-left: 9px;
 }
+
 
 #left_nav ul {
     margin: 0;

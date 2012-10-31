@@ -29,16 +29,21 @@
     	<thead>
     		<tr>
     			<th>Nimi</th>
-    			<th class="sorter-false">Poista</th>
-    			<th class="sorter-false">Muokkaa</th>
+    			<th class="sorter-false"></th>
     		</tr>
     	</thead>
     	<tbody>
 {% for cat in categories %}
 			<tr>
 				<td>{{ cat.name }}</td>
-				<td><a href="/manage/{{ selected_event_id }}/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a></td>
-				<td><a href="/manage/{{ selected_event_id }}/arkisto/editcat/{{ cat.id }}/">Muokkaa</a></td>
+				<td>
+{% if perms.arkisto.delete_othervideocategory %}
+				<a href="/manage/{{ selected_event_id }}/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a>
+{% endif %}
+{% if perms.arkisto.change_othervideocategory %}
+				<a href="/manage/{{ selected_event_id }}/arkisto/editcat/{{ cat.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+				</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -47,5 +52,7 @@
 	<p>Ei kategorioita.</p>
 {% endif %}
 
+{% if perms.arkisto.add_othervideocategory %}
 {% uni_form catform catform.helper %}
+{% endif %}
 {% endblock %}

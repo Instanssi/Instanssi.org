@@ -31,8 +31,7 @@
     			<th>Nimi</th>
     			<th>Kategoria</th>
     			<th>Kuvaus</th>
-    			<th class="sorter-false">Poista</th>
-    			<th class="sorter-false">Muokkaa</th>
+    			<th class="sorter-false"></th>
     		</tr>
     	</thead>
     	<tbody>
@@ -41,8 +40,14 @@
 				<td><a href="{{ video.youtube_url }}">{{ video.name }}</a></td>
 				<td>{{ video.category.name }}</td>
 				<td>{{ video.description|linebreaksbr }}</td>
-				<td><a href="/manage/{{ selected_event_id }}/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a></td>
-				<td><a href="/manage/{{ selected_event_id }}/arkisto/editvid/{{ video.id }}/">Muokkaa</a></td>
+				<td>
+{% if perms.arkisto.delete_othervideo %}
+					<a href="/manage/{{ selected_event_id }}/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a>
+{% endif %}
+{% if perms.arkisto.change_othervideo %}
+					<a href="/manage/{{ selected_event_id }}/arkisto/editvid/{{ video.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+				</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -51,5 +56,7 @@
 	<p>Ei videoita.</p>
 {% endif %}
 
+{% if perms.arkisto.add_othervideo %}
 {% uni_form vidform vidform.helper %}
+{% endif %}
 {% endblock %}

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import Http404,HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
@@ -23,13 +24,18 @@ from reportlab.lib.units import cm
 def competitions_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get competitions
     competitions = Competition.objects.filter(event_id=int(sel_event_id))
     
     # Form handling
     if request.method == "POST":
+        # CHeck for permissions
+        if not request.user.has_perm('kompomaatti.add_competition'):
+            raise Http403
+        
+        # Handle form
         competitionform = AdminCompetitionForm(request.POST)
         if competitionform.is_valid():
             data = competitionform.save(commit=False)
@@ -50,7 +56,11 @@ def competitions_browse(request, sel_event_id):
 def competition_edit(request, sel_event_id, competition_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_competition'):
+        raise Http403
     
     # Get competition
     competition = get_object_or_404(Competition, pk=competition_id)
@@ -75,7 +85,11 @@ def competition_edit(request, sel_event_id, competition_id):
 def competition_delete(request, sel_event_id, competition_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.delete_competition'):
+        raise Http403
     
     # Delete competition
     try:
@@ -90,13 +104,18 @@ def competition_delete(request, sel_event_id, competition_id):
 def compo_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get compos
     compos = Compo.objects.filter(event_id=int(sel_event_id))
     
     # Form handling
     if request.method == "POST":
+        # CHeck for permissions
+        if not request.user.has_perm('kompomaatti.add_compo'):
+            raise Http403
+        
+        # Handle form
         compoform = AdminCompoForm(request.POST)
         if compoform.is_valid():
             data = compoform.save(commit=False)
@@ -117,7 +136,11 @@ def compo_browse(request, sel_event_id):
 def compo_edit(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_compo'):
+        raise Http403
     
     # Get compo
     compo = get_object_or_404(Compo, pk=compo_id)
@@ -142,10 +165,15 @@ def compo_edit(request, sel_event_id, compo_id):
 def entry_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Form handling
     if request.method == "POST":
+        # CHeck for permissions
+        if not request.user.has_perm('kompomaatti.add_entry'):
+            raise Http403
+        
+        # Handle form
         entryform = AdminEntryAddForm(request.POST, request.FILES)
         if entryform.is_valid():
             entryform.save()
@@ -168,7 +196,11 @@ def entry_browse(request, sel_event_id):
 def entry_edit(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_entry'):
+        raise Http403
     
     # Check ID
     entry = get_object_or_404(Entry, pk=entry_id)
@@ -193,7 +225,7 @@ def entry_edit(request, sel_event_id, entry_id):
 def results(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get compos
     compos = Compo.objects.filter(event_id=int(sel_event_id))
@@ -213,10 +245,15 @@ def results(request, sel_event_id):
 def votecodes(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
         
     # Handle form
     if request.method == 'POST':
+        # CHeck for permissions
+        if not request.user.has_perm('kompomaatti.add_votecode'):
+            raise Http403
+        
+        # Handle form
         gentokensform = CreateTokensForm(request.POST)
         if gentokensform.is_valid():
             amount = int(gentokensform.cleaned_data['amount'])
@@ -246,7 +283,7 @@ def votecodes(request, sel_event_id):
 def votecodes_print(request, sel_event_id):
     # Make sure the user is superuser.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get free votecodes
     codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
@@ -286,7 +323,7 @@ def votecodes_print(request, sel_event_id):
 def votecoderequests(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get all requests
     requests = VoteCodeRequest.objects.filter(event_id=int(sel_event_id))
@@ -301,7 +338,11 @@ def votecoderequests(request, sel_event_id):
 def votecoderequests_accept(request, sel_event_id, vcrid):
     # Make sure the user is staff
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_votecode'):
+        raise Http403
     
     # Get the request
     vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)

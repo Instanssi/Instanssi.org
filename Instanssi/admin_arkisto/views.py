@@ -2,12 +2,101 @@
 
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.kompomaatti.models import Event
+from Instanssi.kompomaatti.models import Event, Entry, Compo, Competition, CompetitionParticipation, Vote
 from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
+from Instanssi.admin_arkisto.misc import utils
+
+@login_required(login_url='/manage/auth/login/')
+def removeoldvotes(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Check rights
+    if not request.user.has_perms('kompomaatti.delete_vote'):
+        raise Http403
+    
+    # Don't proceed if the event is still ongoing
+    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+        raise Http404
+    
+    # Find compos belonging to this event
+    compo_ids = Compo.objects.filter(event_id=int(sel_event_id)).values('pk')
+    
+    # Don't allow removing votes if votes haven't yet been consolidated to entry rows (prevent data loss)
+    if utils.is_votes_unoptimized(compo_ids):
+        raise Http404
+    
+    # Delete votes belonging to compos in this event
+    Vote.objects.filter(compo__in=compo_ids).delete()
+    
+    # All done, redirect
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+
+@login_required(login_url='/manage/auth/login/')
+def transferrights(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Check rights
+    if not request.user.has_perms('kompomaatti.change_entry'):
+        raise Http403
+    
+    # Don't allow this function if the event is still ongoing
+    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+        raise Http404
+    
+    # Get archive user, compo id's and competition id's
+    archiveuser = get_object_or_404(User, username="arkisto")
+    compo_ids = Compo.objects.filter(event_id=int(sel_event_id)).values('pk')
+    competition_ids = Competition.objects.filter(event_id=int(sel_event_id)).values('pk')
+    
+    # Transfer all user rights on entries belonging to this event
+    entries = Entry.objects.filter(compo__in=compo_ids)
+    for entry in entries:
+        entry.user = archiveuser
+        entry.save()
+    
+    # Transfer all competition participations to archive user
+    participations = CompetitionParticipation.objects.filter(competition__in=competition_ids)
+    for part in participations:
+        part.user = archiveuser
+        part.save()
+    
+    # All done, redirect
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    
+@login_required(login_url='/manage/auth/login/')
+def optimizescores(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+
+    # Check rights
+    if not request.user.has_perms('kompomaatti.change_entry'):
+        raise Http403
+    
+    # Don't allow this function if the event is still ongoing
+    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+        raise Http404
+    
+    # Get compo id's
+    compo_ids = Compo.objects.filter(event_id=int(sel_event_id)).values('pk')
+    
+    # Set score and rank to database, instead of having to calculate it every time we need it
+    entries = Entry.objects.filter(compo__in=compo_ids)
+    for entry in entries:
+        entry.archive_rank = entry.get_rank()
+        entry.archive_score = entry.get_score()
+        entry.save()
+
+    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
 
 @login_required(login_url='/manage/auth/login/')
 def archiver(request, sel_event_id):
@@ -17,11 +106,50 @@ def archiver(request, sel_event_id):
     
     # Get event information
     event = get_object_or_404(Event, pk=sel_event_id)
+    
+    # Get archive user information for future use
+    archiveuser = get_object_or_404(User, username="arkisto")
+    
+    # Get Compo id's belonging to this event for future use
+    compo_ids = Compo.objects.filter(event_id=int(sel_event_id)).values('pk')
+    
+    # Check if there are any compo entries that are not owner by archive user
+    untransferred = False
+    entries = Entry.objects.filter(compo__in=compo_ids)
+    for entry in entries:
+        if entry.user != archiveuser:
+            untransferred = True
+            break
+    
+    # Check if there are any participations that are not owner by archive user
+    if not untransferred:
+        competition_ids = Competition.objects.filter(event_id=int(sel_event_id)).values('pk')
+        participations = CompetitionParticipation.objects.filter(competition__in=competition_ids)
+        for part in participations:
+            if part.user != archiveuser:
+                untransferred = True
+                break
+
+    # Check if voting results need to be optimized
+    votes_unoptimized = utils.is_votes_unoptimized(compo_ids)
+
+    # Check if event is still ongoing
+    ongoing_activity = utils.is_event_ongoing(event)
+
+    # See if there are any old votes left
+    old_votes_found = False
+    votes = Vote.objects.filter(compo__in=compo_ids)
+    if len(votes) > 0:
+        old_votes_found = True
 
     # Render response
     return admin_render(request, "admin_arkisto/archiver.html", {
         'selected_event_id': int(sel_event_id),
         'is_archived': event.archived,
+        'untransferred': untransferred,
+        'ongoing_activity': ongoing_activity,
+        'votes_unoptimized': votes_unoptimized,
+        'old_votes_found': old_votes_found,
     })
     
 @login_required(login_url='/manage/auth/login/')

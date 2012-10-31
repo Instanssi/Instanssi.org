@@ -162,6 +162,25 @@ def compo_edit(request, sel_event_id, compo_id):
     })
     
 @login_required(login_url='/manage/auth/login/')
+def compo_delete(request, sel_event_id, compo_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.delete_compo'):
+        raise Http403
+    
+    # Delete competition
+    try:
+        Compo.objects.get(pk=compo_id).delete()
+    except:
+        pass
+    
+    # Redirect
+    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
+    
+@login_required(login_url='/manage/auth/login/')
 def entry_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -220,6 +239,25 @@ def entry_edit(request, sel_event_id, entry_id):
         'editform': editform,
         'selected_event_id': int(sel_event_id),
     })
+    
+@login_required(login_url='/manage/auth/login/')
+def entry_delete(request, sel_event_id, entry_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.delete_entry'):
+        raise Http403
+    
+    # Delete competition
+    try:
+        Entry.objects.get(pk=entry_id).delete()
+    except:
+        pass
+    
+    # Redirect
+    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
     
 @login_required(login_url='/manage/auth/login/')
 def results(request, sel_event_id):

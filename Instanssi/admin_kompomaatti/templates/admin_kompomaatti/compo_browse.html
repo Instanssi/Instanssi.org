@@ -15,6 +15,9 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa kompon ?"); 
+    });
 	$("#compo_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#compo_pager")}); 
 {% endblock %}
 

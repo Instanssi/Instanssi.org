@@ -37,11 +37,11 @@
 			<tr>
 				<td>{{ cat.name }}</td>
 				<td>
-{% if perms.arkisto.delete_othervideocategory %}
-				<a href="/manage/{{ selected_event_id }}/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a>
-{% endif %}
 {% if perms.arkisto.change_othervideocategory %}
 				<a href="/manage/{{ selected_event_id }}/arkisto/editcat/{{ cat.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.arkisto.delete_othervideocategory %}
+				<a href="/manage/{{ selected_event_id }}/arkisto/deletecat/{{ cat.id }}/" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

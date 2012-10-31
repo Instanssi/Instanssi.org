@@ -41,11 +41,11 @@
 				<td>{{ video.category.name }}</td>
 				<td>{{ video.description|linebreaksbr }}</td>
 				<td>
-{% if perms.arkisto.delete_othervideo %}
-					<a href="/manage/{{ selected_event_id }}/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a>
-{% endif %}
 {% if perms.arkisto.change_othervideo %}
 					<a href="/manage/{{ selected_event_id }}/arkisto/editvid/{{ video.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.arkisto.delete_othervideo %}
+					<a href="/manage/{{ selected_event_id }}/arkisto/deletevid/{{ video.id }}/" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

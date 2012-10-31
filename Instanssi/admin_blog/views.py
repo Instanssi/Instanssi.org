@@ -16,27 +16,13 @@ def index(request, sel_event_id):
     if not request.user.is_staff:
         raise Http404
     
-    # Get events
-    entries = BlogEntry.objects.filter(event_id = sel_event_id)
-    
-    # Render response
-    return admin_render(request, "admin_blog/index.html", {
-        'entries': entries,
-        'selected_event_id': int(sel_event_id),
-    })
-
-@login_required(login_url='/manage/auth/login/')
-def write(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http404
-    
-    # Check for permissions
-    if not request.user.has_perm('admin_blog.add_blogentry'):
-        raise Http404
-    
     # Post
     if request.method == 'POST':
+        # Check for permissions
+        if not request.user.has_perm('admin_blog.add_blogentry'):
+            raise Http404
+        
+        # Handle form
         form = BlogEntryForm(request.POST)
         if form.is_valid():
             entry = form.save(commit=False)
@@ -48,11 +34,15 @@ def write(request, sel_event_id):
     else:
         form = BlogEntryForm()
     
+    # Get events
+    entries = BlogEntry.objects.filter(event_id = sel_event_id)
+    
     # Render response
-    return admin_render(request, "admin_blog/write.html", {
+    return admin_render(request, "admin_blog/index.html", {
+        'entries': entries,
+        'selected_event_id': int(sel_event_id),
         'addform': form,
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
-        'selected_event_id': int(sel_event_id),
     })
 
 @login_required(login_url='/manage/auth/login/')

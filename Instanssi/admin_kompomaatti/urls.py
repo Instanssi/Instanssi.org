@@ -9,6 +9,7 @@ urlpatterns = patterns(
     url(r'^editcompo/(?P<compo_id>\d+)/', 'compo_edit'),
     url(r'^entries/', 'entry_browse'),
     url(r'^editentry/(?P<entry_id>\d+)/', 'entry_edit'),
+    url(r'^competitions/', 'competitions_browse'),
     url(r'^results/', 'results'),
     url(r'^votecodes/', 'votecodes'),
     url(r'^printcodes/', 'votecodes_print'),

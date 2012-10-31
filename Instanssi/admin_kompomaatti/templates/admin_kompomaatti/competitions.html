@@ -1,0 +1,63 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Kilpailut{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/competitions/">Kilpailut</a>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa kilpailun ?"); 
+    });
+	$("#competition_table").tablesorter({widgets: ['zebra'], sortList: [[3,0]]}).tablesorterPager({container: $("#competition_pager")}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Kilpailut</h2>
+{% if competitions %}
+	<table id="competition_table" class="tablesorter">
+		<thead>
+			<tr>
+				<th>Nimi</th>
+				<th>Kuvaus</th>
+				<th>Ilmoittautuminen päättyy</th>
+				<th>Alkaa</th>
+				<th>Päättyy</th>
+				<th>Näytä tulokset</th>
+				<th class="sorter-false">Muokkaa</th>
+				<th class="sorter-false">Poista</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for comp in competitions %}
+			<tr>
+				<td>{{ comp.name }}</td>
+				<td>{{ comp.description }}</td>
+				<td>{{ comp.participation_end|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
+	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/editcompetition/{{ comp.id }}/">Muokkaa</a></td>
+	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/deletecompetition/{{ comp.id }}/" class="delete_link">Poista</a></td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+	<div id="competition_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
+{% else %}
+	<p>Ei kilpailuja.</p>
+{% endif %}
+
+{% uni_form competitionform competitionform.helper %}
+{% endblock %}

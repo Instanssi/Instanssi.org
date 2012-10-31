@@ -4,8 +4,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.dbsettings.models import Setting
-from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm
+from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm, AdminCompetitionForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.misc import entrysort
 
@@ -19,6 +19,32 @@ import hashlib
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
     
+@login_required(login_url='/manage/auth/login/')
+def competitions_browse(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http404
+    
+    # Get compos
+    competitions = Competition.objects.filter(event_id=int(sel_event_id))
+    
+    # Form handling
+    if request.method == "POST":
+        competitionform = AdminCompetitionForm(request.POST)
+        if competitionform.is_valid():
+            data = competitionform.save(commit=False)
+            data.event_id = int(sel_event_id)
+            data.save()
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+    else:
+        competitionform = AdminCompetitionForm()
+    
+    # Render response
+    return admin_render(request, "admin_kompomaatti/competitions.html", {
+        'competitions': competitions,
+        'competitionform': competitionform,
+        'selected_event_id': int(sel_event_id),
+    })
     
 @login_required(login_url='/manage/auth/login/')
 def compo_browse(request, sel_event_id):
@@ -49,7 +75,7 @@ def compo_browse(request, sel_event_id):
     
 @login_required(login_url='/manage/auth/login/')
 def compo_edit(request, sel_event_id, compo_id):
-    # Make sure the user is staff.index.html
+    # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
@@ -74,7 +100,7 @@ def compo_edit(request, sel_event_id, compo_id):
     
 @login_required(login_url='/manage/auth/login/')
 def entry_browse(request, sel_event_id):
-    # Make sure the user is staff.index.html
+    # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     
@@ -100,7 +126,7 @@ def entry_browse(request, sel_event_id):
     
 @login_required(login_url='/manage/auth/login/')
 def entry_edit(request, sel_event_id, entry_id):
-    # Make sure the user is staff.index.html
+    # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http404
     

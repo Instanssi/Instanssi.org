@@ -30,8 +30,7 @@
                 <th>Nimi</th>
                 <th>Kuvaus</th>
                 <th>Tallennettu</th>
-                <th class="sorter-false">Muokkaa</th>
-                <th class="sorter-false">Poista</th>
+                <th class="sorter-false"></th>
             </tr>
         </thead>
         <tbody>
@@ -40,8 +39,14 @@
                 <td><a href="{{ file.file.url }}">{{ file.name }}</a></td>
                 <td>{{ file.description|linebreaksbr  }}</td>
                 <td>{{ file.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
-                <td><a href="/manage/{{ selected_event_id }}/files/edit/{{ file.id }}/">Muokkaa</a></td>
-                <td><a href="/manage/{{ selected_event_id }}/files/delete/{{ file.id }}/" class="delete_link">Poista</a></td>
+                <td>
+{% if perms.admin_upload.change_uploadedfile %}
+                	<a href="/manage/{{ selected_event_id }}/files/edit/{{ file.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.admin_upload.delete_uploadedfile %}
+                	<a href="/manage/{{ selected_event_id }}/files/delete/{{ file.id }}/" class="delete_link">Poista</a>
+{% endif %}
+                </td>
             </tr>
 {% endfor %}
         </tbody>
@@ -53,5 +58,7 @@
     <p>Ei ladattuja tiedostoja!</p>
 {% endif %}
 
+{% if perms.admin_upload.add_uploadedfile %}
 {% uni_form uploadform uploadform.helper %}
+{% endif %}
 {% endblock %}

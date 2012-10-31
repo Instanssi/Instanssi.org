@@ -10,6 +10,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/arkisto/archiver/">Arkistoija</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
     <h2>Arkistoija</h2>

@@ -6,6 +6,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/votecoderequests/">Avainpyynnöt</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#req_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#req_pager")}); 

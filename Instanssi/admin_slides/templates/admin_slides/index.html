@@ -6,6 +6,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#slides_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});

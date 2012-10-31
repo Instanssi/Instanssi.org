@@ -37,6 +37,7 @@
             <ul class="sub-level">
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/compos/">Kompot</a></li>
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/entries/">Entryt</a></li>
+                <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/competitions/">Kilpailut</a></li>
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/results/">Tulokset</a></li>
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/votecodes/">Äänestyskoodit</a></li>
                 <li class="menuitem"><a href="/manage/{{ selected_event_id }}/kompomaatti/votecoderequests/">Koodipyynnöt</a></li>
@@ -44,6 +45,11 @@
         </li>
     </ul>
     <div id="contents_events_case">
+		<div id="crumbpath">
+			<a href="/manage/">Hallinta</a> &raquo;
+			<a href="/manage/{{ selected_event_id }}/">{{ selected_event_name }}</a>
+{% block crumbs %}{% endblock %}
+		</div>
 {% block content %}{% endblock %}
     </div>
 {% endblock %}

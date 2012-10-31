@@ -10,6 +10,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/files/">Tiedostot</a>
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
 {% endblock %}

@@ -11,6 +11,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Muokkaa tapahtumaa
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
     <h2>Muokkaa tapahtumaa</h2>

@@ -15,9 +15,14 @@
     $("#upload_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#upload_pager")}); 
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Selaa
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
-    <h2>Tiedostolistaus</h2>
+    <h2>Tiedostot</h2>
 {% if files %}
     <table id="upload_table" class="tablesorter">
         <thead>

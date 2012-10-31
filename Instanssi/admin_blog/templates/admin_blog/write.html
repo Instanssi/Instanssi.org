@@ -8,6 +8,11 @@
     <script type="text/javascript" src="/static/libs/js/wymeditor/jquery.wymeditor.min.js"></script>
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Uusi Entry
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
     $('form.uniForm').uniform();

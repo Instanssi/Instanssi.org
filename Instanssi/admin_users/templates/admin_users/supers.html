@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/users/superusers/">Pääkäyttäjät</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#users_pager")}); 

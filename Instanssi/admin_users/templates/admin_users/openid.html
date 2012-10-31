@@ -6,6 +6,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/users/openid/">OpenID-käyttäjät</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#users_pager")}); 

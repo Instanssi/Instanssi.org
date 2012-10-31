@@ -6,7 +6,33 @@ from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event, Competition
+
+class AdminCompetitionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminCompetitionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Kilpailu',
+                'name',
+                'description',
+                'participation_end',
+                'start',
+                'end',
+                'score_type',
+                'score_sort',
+                'show_results',
+                'hide_from_archive',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = Competition
+        exclude = ('event',)
 
 class AdminCompoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

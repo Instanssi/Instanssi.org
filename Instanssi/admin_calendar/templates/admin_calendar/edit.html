@@ -11,8 +11,13 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Muokkaa tapahtumaa {{ event.title }}
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
-    <h2>Muokkaa kalenteritapahtumaa {{ event.title }}</h2>
+    <h2>Muokkaa tapahtumaa</h2>
 {% uni_form eventform eventform.helper %}
 {% endblock %}

@@ -10,6 +10,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/profile/">Profiili</a>
+{% endblock %}
+
 {% block sidemenu %}
 {{ block.super }}
             <ul class="box">

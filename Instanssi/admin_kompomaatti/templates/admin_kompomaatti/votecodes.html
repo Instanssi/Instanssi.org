@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/votecodes/">Avaimet</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$(".jq-button").button();

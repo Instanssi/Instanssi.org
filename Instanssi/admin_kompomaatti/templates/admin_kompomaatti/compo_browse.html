@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/compos/">Kompot</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#compo_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#compo_pager")}); 
@@ -31,7 +37,7 @@
 				<td>{{ compo.name }}</td>
 				<td>{{ compo.active }}</td>
 				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td><a class="icon editicon" href="/manage/{{ selected_event_id }}/kompomaatti/editcompo/{{ compo.id }}/">Muokkaa</a></td>
+				<td><a href="/manage/{{ selected_event_id }}/kompomaatti/editcompo/{{ compo.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>

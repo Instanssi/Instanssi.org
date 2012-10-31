@@ -63,7 +63,7 @@ def edit(request, sel_event_id, cev_id):
         form = CalendarEventForm(instance=cev)
     
     # Render response
-    return admin_render(request, "admin_programme/edit.html", {
+    return admin_render(request, "admin_calendar/edit.html", {
         'eventform': form,
         'event': cev,
         'selected_event_id': int(sel_event_id),

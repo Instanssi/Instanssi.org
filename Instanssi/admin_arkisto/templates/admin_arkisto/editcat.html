@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/arkisto/vidcats/">Kategoriat</a>
+		&raquo; Muokkaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 {% endblock %}

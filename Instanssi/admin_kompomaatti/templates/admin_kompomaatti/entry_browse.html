@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/entries/">Entryt</a>
+		&raquo; Selaa
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 	$("#entry_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#entry_pager")}); 
@@ -35,7 +41,7 @@
 				<td>{{ entry.user.email }}</td>
 				<td>{{ entry.compo.name }}</td>
 				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
-	            <td><a class="icon editicon" href="/manage/{{ selected_event_id }}/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
+	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/editentry/{{ entry.id }}/">Muokkaa</a></td>
 			</tr>
 {% endfor %}
 		</tbody>

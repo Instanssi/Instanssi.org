@@ -6,6 +6,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/">Kompomaatti</a>
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
 {% endblock %}

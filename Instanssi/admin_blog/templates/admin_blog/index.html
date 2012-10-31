@@ -6,6 +6,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Entryt
+{% endblock %}
+
 {% block jquery %}
 {{ block.super }}
     $(".delete_link").click(function(){

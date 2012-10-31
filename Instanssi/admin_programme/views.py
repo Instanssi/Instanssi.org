@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from common.http import Http403
 from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -11,13 +12,13 @@ from Instanssi.admin_programme.forms import ProgrammeEventForm
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Create form
     if request.method == "POST":
         # Check rights
         if not request.user.has_perm('ext_programme.add_programmeevent'):
-            raise Http404
+            raise Http403
         
         # Handle form
         form = ProgrammeEventForm(request.POST, request.FILES)
@@ -43,11 +44,11 @@ def index(request, sel_event_id):
 def edit(request, sel_event_id, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check rights
     if not request.user.has_perm('ext_programme.change_programmeevent'):
-        raise Http404
+        raise Http403
     
     # Get event
     pev = get_object_or_404(ProgrammeEvent, pk=pev_id)
@@ -72,11 +73,11 @@ def edit(request, sel_event_id, pev_id):
 def delete(request, sel_event_id, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check rights
     if not request.user.has_perm('ext_programme.delete_programmeevent'):
-        raise Http404
+        raise Http403
     
     # Delete event
     try:

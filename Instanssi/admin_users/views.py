@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from common.http import Http403
 from django.shortcuts import render_to_response
-from django.http import Http404,HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Profile
@@ -12,7 +13,7 @@ from Instanssi.admin_users.forms import UserCreationForm
 def superusers(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check form
     # TODO: GIVE SEPARATE RIGHTS TO STAFF
@@ -40,7 +41,7 @@ def superusers(request):
 def openid(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Get users
     db_users = User.objects.filter(username="openiduser")

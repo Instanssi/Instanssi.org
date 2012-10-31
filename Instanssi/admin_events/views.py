@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
-from django.http import Http404,HttpResponseRedirect,HttpResponse
+from common.http import Http403
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
@@ -11,13 +12,13 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Handle form data, if any
     if request.method == 'POST':
         # CHeck for permissions
         if not request.user.has_perm('kompomaatti.add_event'):
-            raise Http404
+            raise Http403
     
         # Handle form
         eventform = EventForm(request.POST)
@@ -42,17 +43,14 @@ def index(request):
 def edit(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('kompomaatti.change_event'):
-        raise Http404
+        raise Http403
     
     # Get event, or show 404 if it doesn't exist
-    try:
-        event = Event.objects.get(id=event_id)
-    except:
-        raise Http404
+    event = get_object_or_404(Event, pk=event_id)
     
     # Handle form data, if any
     if request.method == 'POST':
@@ -74,11 +72,11 @@ def edit(request, event_id):
 def delete(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('kompomaatti.delete_event'):
-        raise Http404
+        raise Http403
     
     # Delete the file
     try:

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
-from django.http import Http404,HttpResponseRedirect
+from common.http import Http403
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from Instanssi.kompomaatti.models import Event
@@ -14,13 +15,13 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Post
     if request.method == 'POST':
         # Check for permissions
         if not request.user.has_perm('admin_blog.add_blogentry'):
-            raise Http404
+            raise Http403
         
         # Handle form
         form = BlogEntryForm(request.POST)
@@ -49,17 +50,14 @@ def index(request, sel_event_id):
 def edit(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('admin_blog.change_blogentry'):
-        raise Http404
+        raise Http403
     
     # Get old entry
-    try:
-        entry = BlogEntry.objects.get(id=entry_id)
-    except BlogEntry.DoesNotExist:
-        raise Http404
+    entry = get_object_or_404(BlogEntry, pk=entry_id)
     
     # Go ahead and edit
     if request.method == 'POST':
@@ -84,16 +82,15 @@ def edit(request, sel_event_id, entry_id):
 def delete(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('admin_blog.delete_blogentry'):
-        raise Http404
+        raise Http403
     
     # Delete entry
     try:
-        entry = BlogEntry.objects.get(id=entry_id)
-        entry.delete()
+        BlogEntry.objects.get(id=entry_id).delete()
     except BlogEntry.DoesNotExist:
         pass
     

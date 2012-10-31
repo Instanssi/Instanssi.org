@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import Http404,HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.ext_calendar.models import CalendarEvent
@@ -11,13 +12,13 @@ from Instanssi.admin_calendar.forms import CalendarEventForm
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Handle form data
     if request.method == "POST":
         # Check rights
         if not request.user.has_perm('ext_calendar.add_calendarevent'):
-            raise Http404
+            raise Http403
         
         # Handle form
         form = CalendarEventForm(request.POST, request.FILES)
@@ -44,11 +45,11 @@ def index(request, sel_event_id):
 def edit(request, sel_event_id, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check rights
     if not request.user.has_perm('ext_calendar.change_calendarevent'):
-        raise Http404
+        raise Http403
     
     # Get calendarevent
     cev = get_object_or_404(CalendarEvent, pk=cev_id)
@@ -74,17 +75,17 @@ def edit(request, sel_event_id, cev_id):
 def delete(request, sel_event_id, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check rights
     if not request.user.has_perm('ext_calendar.delete_calendarevent'):
-        raise Http404
+        raise Http403
     
     # Handle delete
     try:
         CalendarEvent.objects.get(id=cev_id).delete()
     except:
-        raise Http404
+        pass
     
     # Render response
     return HttpResponseRedirect("/manage/"+sel_event_id+"/calendar/")

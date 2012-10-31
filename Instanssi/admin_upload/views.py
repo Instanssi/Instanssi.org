@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
-from django.http import Http404,HttpResponseRedirect
+from common.http import Http403
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.admin_upload.forms import UploadForm
@@ -12,13 +13,13 @@ from datetime import datetime
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Handle form data, if any
     if request.method == 'POST':
         # Check for permissions
         if not request.user.has_perm('admin_upload.add_uploadedfile'):
-            raise Http404
+            raise Http403
         
         # Handle form
         uploadform = UploadForm(request.POST, request.FILES)
@@ -46,11 +47,11 @@ def index(request, sel_event_id):
 def deletefile(request, sel_event_id, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('admin_upload.delete_uploadedfile'):
-        raise Http404
+        raise Http403
     
     # Delete the file
     try:
@@ -66,17 +67,14 @@ def deletefile(request, sel_event_id, file_id):
 def editfile(request, sel_event_id, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Check for permissions
     if not request.user.has_perm('admin_upload.change_uploadedfile'):
-        raise Http404
+        raise Http403
     
     # Get previously uploaded file
-    try:
-        uploadedfile = UploadedFile.objects.get(id=file_id)
-    except:
-        raise Http404
+    uploadedfile = get_object_or_404(UploadedFile, pk=file_id)
     
     # Handle form data
     if request.method == 'POST':

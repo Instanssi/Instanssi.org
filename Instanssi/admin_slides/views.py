@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.http import Http404
+from common.http import Http403
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from Instanssi.kompomaatti.models import Compo, Entry
@@ -11,7 +11,7 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
     
     # Render response
     return admin_render(request, "admin_slides/index.html", {
@@ -23,7 +23,7 @@ def index(request, sel_event_id):
 def slide_results(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
 
     # Get the compo
     c = get_object_or_404(Compo, pk=compo_id)
@@ -66,7 +66,7 @@ def slide_results(request, sel_event_id, compo_id):
 def slide_entries(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
-        raise Http404
+        raise Http403
 
     # Get the compo
     c = get_object_or_404(Compo, pk=compo_id)

@@ -76,7 +76,7 @@ p {
 
 #header_nav {
     height: 33px;
-    background-color: rgba(40,52,59,1);
+    background-color: #28343b;
     padding-left: 5px;
     box-shadow: 0px 3px 3px #888;
 	-moz-box-shadow: 0px 3px 3px #888;
@@ -195,14 +195,13 @@ ul.sub-level {
 /* ---------- Contents ---------- */
 
 #contents_normal {
-    padding: 0.6em;
+    padding: 1em;
 }
 
 #contents_events_case {
     padding-top: 5px;
-    margin-left: 160px;
-    padding: 0.6em;
-    padding-left: 0.3em;
+    margin-left: 150px;
+    padding: 1em;
 }
 
 #contents ul {
@@ -266,7 +265,6 @@ div.pager input {
 
 form.uniForm {
 	margin-top: 1.0em;
-	max-width: 900px;
 }
 
 form.uniForm .ctrlHolder { 

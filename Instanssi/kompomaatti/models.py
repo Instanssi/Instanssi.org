@@ -231,6 +231,7 @@ class Competition(models.Model):
     )
     score_sort = models.IntegerField(u'Pisteiden järjestely', choices=ENTRY_VIEW_TYPES, help_text=u'Onko suurimman vai pienimmän pistemäärän saavuttanut voittaja?', default=0)
     show_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä kilpailun tulokset.", default=False)
+    hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.', default=False)
 
     def __unicode__(self):
         return self.name

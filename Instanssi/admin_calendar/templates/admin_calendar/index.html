@@ -32,8 +32,7 @@
 				<th>Kuvaus</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
-				<th class="sorter-false">Muokkaa</th>
-				<th class="sorter-false">Poista</th>
+				<th class="sorter-false"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,8 +42,14 @@
 				<td>{{ event.description }}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td><a href="/manage/{{ selected_event_id }}/calendar/edit/{{ event.id }}/" >Muokkaa</a></td>
-				<td><a href="/manage/{{ selected_event_id }}/calendar/delete/{{ event.id }}/" class="delete_link">Poista</a></td>
+				<td>
+{% if perms.ext_calendar.change_calendarevent %}
+					<a href="/manage/{{ selected_event_id }}/calendar/edit/{{ event.id }}/" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.ext_calendar.delete_calendarevent %}
+					<a href="/manage/{{ selected_event_id }}/calendar/delete/{{ event.id }}/" class="delete_link">Poista</a>
+{% endif %}
+				</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -55,6 +60,8 @@
 {% else %}
 	<p>Aikataulussa ei ole merkintöjä.</p>
 {% endif %}
-    
+   
+{% if perms.ext_calendar.add_calendarevent %}
 {% uni_form eventform eventform.helper %}
+{% endif %}
 {% endblock %}

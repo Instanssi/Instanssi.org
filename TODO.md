@@ -32,41 +32,37 @@
 * Tablesorteriin pluggari, jotta osaa sortata aikaleimat formaatilla "dd.mm.yyyy klo. hh:ii"
 * Kaikille sivuille oikeudet is_staff / has_perms -kamalla
 
-### /blog-admin/
+### admin_blog
 
-* Ajastettu julkaisu ?
 * Saisi minne tahansa näkyviin templatetagilla {% render_blog %} (pääsivulle)
 
-### /schedule-admin/
+### admin_calendar, admin_programme
 
-* Aikataulunhallinta. Kalenteriin tapahtumien lisääminen/poisto/muokkaus.
-* Esim. Kompot, esitelmät, jne.
-* Tapahtumiin voisi linkata kompoja, jolloin tarkemmat tiedot haettaisiin kompomaatista.
 * Saisi minne vaan näkyviin templatetagilla {% render_schedule %} (pääsivulle)
 
-### /upload/
+### admin_upload
 
 * Tehty
   
-### /diashow-admin/
+### admin_slides
 
 * Tehty
 
-### /kompomaatti-admin/
+### admin_kompomaatti
 
 * Tehty
 
-### /arkisto-admin/
+### admin_arkisto
 
 * Kunnollinen käyttöliittymä arkistointi-operaatioiden hallintaan.
   * mm. teosten siirto openid-käyttäjiltä arkisto-käyttäjälle.
   * vanha entryarchivaltool voisi tulla osaksi tätä.
   
-### /screenshow-admin/
+### admin_screenshow
 
 * Hakisi tietoja aikataulusta ja demokompoista, ja näyttäisi niiden tietoja screenillä satunnaisesti
 * Voisi myös näyttää upload-palvelulla upattuja kuvia kun halutaan (sponsorit?)
 * Ääntä, videoita ? (HTML5)
 
-### /tv-stuff/
+### admin_stream
 * Telkkaristreamin alareunan tapahtumajutskien generointi

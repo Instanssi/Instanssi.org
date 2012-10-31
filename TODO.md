@@ -9,10 +9,10 @@
 
 ### Kompomaatti
 * Kompomaatin asiakaspuoli pitäisi uudistaa
+* Tapahtuma pitäisi pystyä valitsemaan urlissa (nykyinen systeemi on tyhmä)
 * Kilpailut, joissa ei tallenneta tuotoksia, mm. levykkeenheitto. Admin-paneelista voitaisiin lopuksi pisteyttää.
-* Äänestysjärjestelmä voisi olla parempi... jokin viiva jota voisi siirrellä, ts. "tämän alapuolella
-  olevat ovat kaikki saman arvoisia (i don't care)".
 * Ei turhaan kysytä pikkukuvaa musiikkitiedostoille. Entryn lisääminen voisi olla hieman kustomoitavampi.
+* Äänestysjärjestelmää voisi vielä miettiä ...
 
 ### main2012, main2013, ...
 
@@ -21,7 +21,7 @@
 
 ### Arkisto
 
-* Tehty
+* Pitää osata näyttää kilpailujen tulokset (kompojen ja videoiden lisäksi)
 
 ### openidauth
 
@@ -31,6 +31,13 @@
 
 * Tablesorteriin pluggari, jotta osaa sortata aikaleimat formaatilla "dd.mm.yyyy klo. hh:ii"
 * Kaikille sivuille oikeudet is_staff / has_perms -kamalla
+
+### admin_users
+
+* OpenID-sivulle käyttäjien muokkaaminen staff/administrator-statuksen omaaville
+* Staffin jäsenten muokkaaminen ja poisto administrator-statuksen omaaville
+* Staffin jäsenten oikeuksien muokkaaminen eri toimintoihin
+* Käyttäjäryhmien hallinta ?
 
 ### admin_blog
 

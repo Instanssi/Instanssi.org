@@ -25,10 +25,11 @@
 
 ### openidauth
 
-* Nyt aika niputettu yhteen kompomaatin kanssa -- voisi olla itsenäisempi ?
+* Niputa tiukemmin kompomaattiin
 
 ## Admineille näkyvä osio
 
+* Tablesorteriin pluggari, jotta osaa sortata aikaleimat formaatilla "dd.mm.yyyy klo. hh:ii"
 * Kaikille sivuille oikeudet is_staff / has_perms -kamalla
 
 ### /blog-admin/

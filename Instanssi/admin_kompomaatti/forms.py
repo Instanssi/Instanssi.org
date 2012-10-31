@@ -100,6 +100,7 @@ class AdminEntryForm(forms.ModelForm):
             Fieldset(
                 u'Tuotos',
                 'compo',
+                'user',
                 'name',
                 'description',
                 'creator',
@@ -117,7 +118,7 @@ class AdminEntryForm(forms.ModelForm):
         
     class Meta:
         model = Entry
-        exclude = ('user','imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
+        exclude = ('imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
 
 class CreateTokensForm(forms.Form):
     amount = forms.IntegerField(min_value=1, max_value=100, label=u"Määrä", help_text=u"Montako tokenia luodaan.")

@@ -243,8 +243,27 @@ class CompetitionParticipation(models.Model):
     competition = models.ForeignKey(Competition, verbose_name=u'Kilpailu', help_text=u'Kilpailu johon osallistuttu')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u'Osallistuja')
     participant_name = models.CharField(u'Osallistujan nimi', help_text=u'Nimimerkki jolla haluat osallistua.', max_length=32, default=u'')
-    score = models.FloatField(u'Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True)
+    score = models.FloatField(u'Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True, default=0)
 
+    def get_formatted_score(self):
+        return str(self.score) + u' ' + self.competition.score_type
+
+    def get_rank(self):
+        # Get results
+        rankby = 'score'
+        if self.competition.score_sort == 1:
+            rankby = '-score'
+        results = CompetitionParticipation.objects.filter(pk=self.competition.id).order_by(rankby)
+        
+        # Find self
+        rank = 1
+        for p in results:
+            if p.id == self.id:
+                break
+            else:
+                rank = rank + 1
+        return rank
+        
     def __unicode__(self):
         return self.competition.name + ', ' + self.participant_name + ': ' + str(self.score)
     

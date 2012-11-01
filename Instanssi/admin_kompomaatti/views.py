@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm, AdminCompetitionForm
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm
+from Instanssi.admin_kompomaatti.forms import AdminCompetitionForm, AdminCompetitionScoreForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.misc import entrysort
 
@@ -19,6 +20,36 @@ import hashlib
 # For generating a paper version of votecodes
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
+    
+@login_required(login_url='/manage/auth/login/')
+def competition(request, sel_event_id, competition_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Get competition
+    competition = get_object_or_404(Competition, pk=competition_id)
+    
+    # Handle form
+    if request.method == 'POST':
+        # Check permissions
+        if not request.user.has_perm('kompomaatti.change_competitionparticipation'):
+            raise Http403
+        
+        # Handle form
+        scoreform = AdminCompetitionScoreForm(request.POST, competition=competition)
+        if scoreform.is_valid():
+            scoreform.save()
+            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+    else:
+        scoreform = AdminCompetitionScoreForm(competition=competition)
+    
+    # Render response
+    return admin_render(request, "admin_kompomaatti/competition.html", {
+        'competition': competition,
+        'scoreform': scoreform,
+        'selected_event_id': int(sel_event_id),
+    })
     
 @login_required(login_url='/manage/auth/login/')
 def competitions_browse(request, sel_event_id):

@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^competitions/', 'competitions_browse'),
     url(r'^editcompetition/(?P<competition_id>\d+)/', 'competition_edit'),
     url(r'^deletecompetition/(?P<competition_id>\d+)/', 'competition_delete'),
+    url(r'^competition/(?P<competition_id>\d+)/', 'competition'),
     url(r'^results/', 'results'),
     url(r'^votecodes/', 'votecodes'),
     url(r'^printcodes/', 'votecodes_print'),

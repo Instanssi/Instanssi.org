@@ -1,0 +1,27 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %}{{ block.super }} - Kilpailut - Osallistujat{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/admin_kompomaatti/css/style.css" />
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/competitions/">Kilpailut</a>
+		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/competition/{{ competition.id }}/">{{ competition.name }}</a>
+		&raquo; Osallistujat
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }} 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Osallistujat</h2>
+
+{% uni_form scoreform scoreform.helper %}
+{% endblock %}

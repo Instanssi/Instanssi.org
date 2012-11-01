@@ -1,12 +1,50 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.shortcuts import get_object_or_404
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event, Competition
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event, Competition, CompetitionParticipation
+
+class AdminCompetitionScoreForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.competition = kwargs.pop('competition', None)
+        
+        # Init
+        super(AdminCompetitionScoreForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout()
+        
+        # Create a fieldset for everything
+        fs = Fieldset(u'Pisteytys')
+    
+        # Set fields
+        participants = CompetitionParticipation.objects.filter(competition=self.competition)
+        for p in participants:
+            name = str(p.id)
+            self.fields[name] = forms.FloatField()
+            self.fields[name].label = p.participant_name
+            self.fields[name].help_text = u'Osallistujan '+p.participant_name+u' saavuttama tulos.'
+            self.fields[name].initial = p.score
+            fs.fields.append(name)
+    
+        # Add buttonholder
+        bh = ButtonHolder (
+            Submit('submit', u'Tallenna')
+        )
+        fs.fields.append(bh)
+        
+        # Add fieldset to layout
+        self.helper.layout.fields.append(fs)
+        
+    def save(self):
+        for k,v in self.cleaned_data.iteritems():
+            p = get_object_or_404(CompetitionParticipation, pk=int(k))
+            p.score = v
+            p.save()
 
 class AdminCompetitionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

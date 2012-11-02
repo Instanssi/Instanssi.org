@@ -49,10 +49,10 @@
 				<td>{{ user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
+{% if is_superuser %}
 {% if user.is_superuser%}
 				<td></td>
 {% else %}
-{% if is_superuser %}
 				<td>
 					<a href="/manage/users/editsu/{{ user.id }}/" class="edit_link">Muokkaa</a>
 					<a href="/manage/users/deletesu/{{ user.id }}/" class="delete_link">Poista</a>

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from Instanssi.kompomaatti.models import Event
-from forms import BlogEntryForm
+from forms import BlogEntryForm, BlogEntryEditForm
 from datetime import datetime
 from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
@@ -61,14 +61,12 @@ def edit(request, sel_event_id, entry_id):
     
     # Go ahead and edit
     if request.method == 'POST':
-        form = BlogEntryForm(request.POST, instance=entry)
+        form = BlogEntryEditForm(request.POST, instance=entry)
         if form.is_valid():
-            entry = form.save(commit=False)
-            entry.date = datetime.now()
-            entry.save()
+            form.save()
             return HttpResponseRedirect("/manage/"+sel_event_id+"/blog/")
     else:
-        form = BlogEntryForm(instance=entry)
+        form = BlogEntryEditForm(instance=entry)
     
     # Render response
     return admin_render(request, "admin_blog/edit.html", {

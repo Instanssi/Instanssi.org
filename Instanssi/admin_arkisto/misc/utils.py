@@ -19,23 +19,23 @@ def is_event_ongoing(event):
     if event.date > date.today():
         return True
     
-    compos = Compo.objects.filter(voting_end__gt=datetime.now())
+    compos = Compo.objects.filter(event=event, voting_end__gt=datetime.now())
     if len(compos) > 0:
         return True
     
-    compos = Compo.objects.filter(compo_start__gt=datetime.now())
+    compos = Compo.objects.filter(event=event, compo_start__gt=datetime.now())
     if len(compos) > 0:
         return True
 
-    compos = Compo.objects.filter(adding_end__gt=datetime.now())
+    compos = Compo.objects.filter(event=event, adding_end__gt=datetime.now())
     if len(compos) > 0:
         return True
 
-    competitions = Competition.objects.filter(end__gt=datetime.now())
+    competitions = Competition.objects.filter(event=event, end__gt=datetime.now())
     if len(competitions) > 0:
         return True
 
-    competitions = Competition.objects.filter(start__gt=datetime.now())
+    competitions = Competition.objects.filter(event=event, start__gt=datetime.now())
     if len(competitions) > 0:
         return True
             

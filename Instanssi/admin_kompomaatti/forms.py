@@ -106,7 +106,18 @@ class AdminCompoForm(forms.ModelForm):
 
 class AdminEntryAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        # Initialize
+        self.event = kwargs.pop('event', None)
         super(AdminEntryAddForm, self).__init__(*args, **kwargs)
+        
+        # Set choices
+        if self.event:
+            compos = []
+            for compo in Compo.objects.filter(event=self.event):
+                compos.append((compo.id, compo.name))
+            self.fields['compo'].choices = compos
+        
+        # Set form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
@@ -130,9 +141,20 @@ class AdminEntryAddForm(forms.ModelForm):
         model = Entry
         exclude = ('disqualified','disqualified_reason','imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
 
-class AdminEntryForm(forms.ModelForm):
+class AdminEntryEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AdminEntryForm, self).__init__(*args, **kwargs)
+        # Initialize
+        self.event = kwargs.pop('event', None)
+        super(AdminEntryEditForm, self).__init__(*args, **kwargs)
+        
+        # Set choices
+        if self.event:
+            compos = []
+            for compo in Compo.objects.filter(event=self.event):
+                compos.append((compo.id, compo.name))
+            self.fields['compo'].choices = compos
+        
+        # Set form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(

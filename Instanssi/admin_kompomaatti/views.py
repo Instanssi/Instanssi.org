@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryEditForm, AdminEntryAddForm, CreateTokensForm
 from Instanssi.admin_kompomaatti.forms import AdminCompetitionForm, AdminCompetitionScoreForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.misc import entrysort
@@ -222,6 +222,9 @@ def entry_browse(request, sel_event_id):
     if not request.user.is_staff:
         raise Http403
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Form handling
     if request.method == "POST":
         # CHeck for permissions
@@ -229,12 +232,12 @@ def entry_browse(request, sel_event_id):
             raise Http403
         
         # Handle form
-        entryform = AdminEntryAddForm(request.POST, request.FILES)
+        entryform = AdminEntryAddForm(request.POST, request.FILES, event=event)
         if entryform.is_valid():
             entryform.save()
             return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
     else:
-        entryform = AdminEntryAddForm()
+        entryform = AdminEntryAddForm(event=event)
     
     # Get Entries    
     compos = Compo.objects.filter(event=int(sel_event_id))
@@ -260,14 +263,17 @@ def entry_edit(request, sel_event_id, entry_id):
     # Check ID
     entry = get_object_or_404(Entry, pk=entry_id)
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Handle form
     if request.method == "POST":
-        editform = AdminEntryForm(request.POST, request.FILES, instance=entry)
+        editform = AdminEntryEditForm(request.POST, request.FILES, instance=entry, event=event)
         if editform.is_valid():
             editform.save()
             return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
     else:
-        editform = AdminEntryForm(instance=entry)
+        editform = AdminEntryEditForm(instance=entry, event=event)
     
     # Render response
     return admin_render(request, "admin_kompomaatti/entry_edit.html", {

@@ -11,7 +11,7 @@ class BlogEntry(models.Model):
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=128)
     text = models.TextField(u'Teksti')
     date = models.DateTimeField(u'Aika')
-    public = models.BooleanField(u'Julkinen', help_text=u'Julkaistaanko entry kaikille.', default=False)
+    public = models.BooleanField(u'Julkinen', help_text=u'Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.', default=False)
     def __unicode__(self):
         return '"' + self.title + '" by ' + self.user.username
     class Meta:

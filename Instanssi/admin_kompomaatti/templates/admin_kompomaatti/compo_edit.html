@@ -1,11 +1,12 @@
 {% extends "admin_kompomaatti/base.html" %}
 {% load uni_form_tags %}
+{% load static %}
 
 {% block title %}{{ block.super }} - Kompot - Muokkaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="/static/libs/js/wymeditor/jquery.wymeditor.min.js"></script>
+    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block crumbs %}

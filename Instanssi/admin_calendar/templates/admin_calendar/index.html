@@ -1,11 +1,12 @@
 {% extends "admin_calendar/base.html" %}
 {% load uni_form_tags %}
+{% load static %}
 
 {% block title %}{{ block.super }}{% endblock %}
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="/static/libs/js/wymeditor/jquery.wymeditor.min.js"></script>
+    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block crumbs %}
@@ -41,7 +42,6 @@
 		<thead>
 			<tr>
 				<th>Otsikko</th>
-				<th>Kuvaus</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th class="sorter-false management_field"></th>
@@ -51,7 +51,6 @@
 {% for event in cevs %}
 			<tr>
 				<td>{{ event.title }}</td>
-				<td>{{ event.description }}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>

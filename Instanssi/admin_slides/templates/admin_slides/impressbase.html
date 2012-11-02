@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html>
 <head>
     <title>Slideshow</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=auto" />
-    <link rel="stylesheet" type="text/css" href="/static/admin_slides/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="{% static "admin_slides/css/style.css" %}" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" />
-    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
 </head>
 <body class="impress-not-supported">
 <div class="fallback-message">
@@ -15,7 +15,7 @@
 <div id="impress">
 {% block content %}{% endblock %}
 </div>
-<script type="text/javascript" src="/static/libs/js/impress/impress.js"></script>
+<script type="text/javascript" src="{% static "libs/js/impress/impress.js" %}"></script>
 <script type="text/javascript">impress().init();</script>
 </body>
 </html>

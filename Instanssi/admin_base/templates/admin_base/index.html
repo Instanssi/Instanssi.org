@@ -18,5 +18,27 @@
 {% block content %}
 {{ block.super }}
     <h2>Hallinta</h2>
-	<p>Tervetuloa hallintapaneeliin!</p>
+	<p>Tervetuloa hallintapaneeliin, {{ real_name }}!</p>
+	
+{% if important_flag %}
+	<h3>Huomio!</h3>
+
+	<p>Tapahtumissa on odottavia äänestyskoodipyyntöjä:</p>
+	<ul>
+{% for vcreq in vcreqs %}
+		<li>{{ vcreq.count }} pyyntöä tapahtumassa <a href="/manage/{{ vcreq.event_id }}/kompomaatti/votecoderequests/">{{ vcreq.event_name }}</a></li>
+{% endfor %}
+	</ul>
+{% endif %}
+
+	<h3>Statistiikkaa</h3>
+	<p>
+		Kompomaatissa on tällä hetkellä <strong>{{ stats.events }}</strong> 
+		tapahtumaa, joissa on yhteensä <strong>{{ stats.compos }}</strong> kompoa 
+		ja <strong>{{ stats.entries }}</strong> entryä.
+	</p>
+	<p>
+		Kompomaattiin syötetyt tiedostot (entryt, entryjen sorsat, kuvat) 
+		vievät tällä hetkellä yhteensä <strong>{{ stats.space_usage|filesizeformat }}</strong> tilaa.
+	</p>
 {% endblock %}

@@ -30,7 +30,6 @@
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
-{% block jquery %}{% endblock %}
 		$('.datetimeinput').datetimepicker({
 			dateFormat: 'yy-mm-dd',
 			timeFormat: 'hh:mm:ss',
@@ -43,6 +42,8 @@
 		$('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
 		$('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
 		$('.management_field').css('width','30px');
+		
+{% block jquery %}{% endblock %}
     });
     </script>
 

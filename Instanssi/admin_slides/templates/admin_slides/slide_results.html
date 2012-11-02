@@ -10,7 +10,7 @@
 <div id="demo_{{ entry.id }}_score" class="step" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.score_rot_y }}">
 	<div class="centered">
 		<p class="entry pos">{{ forloop.counter }}. Sija</p>
-		<p class="entry score">{{ entry.score }} pistettä</p>
+		<p class="entry score">{{ entry.score|floatformat:"2" }} pistettä</p>
 	</div>
 </div>
 <div id="demo_{{ entry.id }}_information" class="step" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}" data-rotate-y="{{ entry.info_rot_y }}">

@@ -55,7 +55,7 @@ class VoteCode(models.Model):
 class Compo(models.Model):
     event = models.ForeignKey(Event, verbose_name=u"tapahtuma", help_text=u"Tapahtuma johon kompo kuuluu")
     name = models.CharField(u'Nimi', max_length=32, help_text=u"Kompon nimi (max 32 merkkiä).")
-    description = models.TextField(u'Kuvaus', help_text=u"Kuvaus kompolle; esim. vaatimukset, esimerkit, jne.")
+    description = models.TextField(u'Kuvaus')
     adding_end = models.DateTimeField(u'Deadline entryjen lisäyksille', help_text=u"Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.")
     editing_end = models.DateTimeField(u'Deadline entryjen muokkauksille', help_text=u"Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.")
     compo_start = models.DateTimeField(u'Kompon aloitusaika', help_text=u"Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).")

@@ -4,6 +4,7 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
 from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryForm, AdminEntryAddForm, CreateTokensForm
@@ -160,6 +161,7 @@ def compo_browse(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/compo_browse.html", {
         'compos': compos,
         'compoform': compoform,
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
         'selected_event_id': int(sel_event_id),
     })
     
@@ -190,6 +192,7 @@ def compo_edit(request, sel_event_id, compo_id):
         'compo': compo,
         'editform': editform,
         'selected_event_id': int(sel_event_id),
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @login_required(login_url='/manage/auth/login/')

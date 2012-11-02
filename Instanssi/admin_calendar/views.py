@@ -4,6 +4,7 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.ext_calendar.models import CalendarEvent
 from Instanssi.admin_calendar.forms import CalendarEventForm
@@ -39,6 +40,7 @@ def index(request, sel_event_id):
         'cevs': cevs,
         'selected_event_id': int(sel_event_id),
         'eventform': form,
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
 @login_required(login_url='/manage/auth/login/')
@@ -68,6 +70,7 @@ def edit(request, sel_event_id, cev_id):
         'eventform': form,
         'event': cev,
         'selected_event_id': int(sel_event_id),
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
     

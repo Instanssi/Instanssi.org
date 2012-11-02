@@ -12,7 +12,7 @@ class CalendarEvent(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     start = models.DateTimeField(u'Alku', help_text=u'Tapahtuman alkamisaika.')
     end = models.DateTimeField(u'Loppu', help_text=u'Tapahtuman loppumisaika.', null=True, blank=True)
-    description = models.TextField(u'Kuvaus', help_text=u'Tapahtuman kuvaus.', blank=True)
+    description = models.TextField(u'Kuvaus', blank=True)
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=64)
     icon_original = models.ImageField(u'Kuva', upload_to='calendar/images/', help_text=u"Kuva tapahtumalle.", blank=True)
     icon_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon_original', format='PNG')

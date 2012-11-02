@@ -4,6 +4,7 @@ from django import forms
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission,Group
 
 class UserCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -41,6 +42,15 @@ class UserCreationForm(forms.ModelForm):
         user.is_active = True
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        
+        # Autocreate the staff_defaults group if it doesn't exist at this point
+        try:
+            grp = Group.objects.get(name='staff_defaults')
+        except:
+            grp = Group(name='staff_defaults')
+            grp.save()
+        
+        user.groups.add(grp)
         user.save()
         
     class Meta:

@@ -74,7 +74,8 @@ def deletesu(request, su_id):
     if user.is_superuser or user.username == "arkisto":
         raise Http403
     else:
-        user.delete()
+        user.is_active = False
+        user.save()
 
     # All done, redirect
     return HttpResponseRedirect("/manage/users/superusers/")

@@ -8,7 +8,7 @@ from Instanssi.kompomaatti.models import Event
 class BlogEntry(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
-    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=32)
+    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=128)
     text = models.TextField(u'Teksti')
     date = models.DateTimeField(u'Aika')
     public = models.BooleanField(u'Julkinen', help_text=u'Julkaistaanko entry kaikille.', default=False)
@@ -21,7 +21,7 @@ class BlogEntry(models.Model):
 class BlogComment(models.Model):
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
     entry = models.ForeignKey(BlogEntry, verbose_name=u'Entry')
-    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko kommentille.', max_length=32, blank=True)
+    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko kommentille.', max_length=128, blank=True)
     text = models.TextField(u'Kommentti', help_text=u'Kommenttiteksti.')
     date = models.DateTimeField(u'Aika')
     def __unicode__(self):

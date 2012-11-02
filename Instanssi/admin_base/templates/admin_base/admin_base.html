@@ -59,14 +59,14 @@
         <ul id="header_nav_left">
             <li class="menuitem"><a href="/manage/">Etusivu</a></li>
             <li class="menuitem">
-            	<a href="/manage/users/">Käyttäjät</a>
+            	<a href="/manage/users/">Käyttäjät<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
             		<li class="menuitem"><a href="/manage/users/superusers/">Pääkäyttäjät</a></li>
             		<li class="menuitem"><a href="/manage/users/openid/">OpenID-käyttäjät</a></li>
             	</ul>
             </li>
             <li class="menuitem">
-            	<a href="/manage/events/">Tapahtumat</a>
+            	<a href="/manage/events/">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
 {% for event in navmenu_events %}
 					<li class="menuitem"><a href="/manage/{{ event.id }}/">{{ event.name }}</a></li>
@@ -76,7 +76,7 @@
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem">
-            	<a href="/manage/profile/">Profiili</a>
+            	<a href="/manage/profile/">Profiili<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
             		<li class="menuitem"><a href="/manage/profile/profile/">Profiili</a></li>
             		<li class="menuitem"><a href="/manage/profile/password/">Salasana</a></li>

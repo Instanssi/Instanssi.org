@@ -5,7 +5,7 @@ from Instanssi.kompomaatti.models import Event
 from django.template import RequestContext
 
 def admin_render(request, tpl, context={}):
-    context['navmenu_events'] = Event.objects.all()
+    context['navmenu_events'] = Event.objects.all().order_by('-date')
     context['full_path'] = request.get_full_path()
     context['is_superuser'] = request.user.is_superuser
     

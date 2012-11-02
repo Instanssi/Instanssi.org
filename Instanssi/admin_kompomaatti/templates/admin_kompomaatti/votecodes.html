@@ -16,7 +16,7 @@
 {% block jquery %}
 {{ block.super }}
 	$(".jq-button").button();
-	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[1,0],[2,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
+	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],[3,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,8 @@
 	<thead>
 		<tr>
 			<th>Token</th>
-			<th>Assosiaatio käyttäjään</th>
+			<th>Assosiaatio (käyttäjä)</th>
+			<th>Assosiaatio (email)</th>
 			<th>Assosioitu</th>
 		</tr>
 	</thead>
@@ -36,6 +37,7 @@
 {% for token in tokens %}
 		<tr>
 			<td>{{ token.key }}</td>
+			<td>{{ token.associated_to.username }}</td>
 			<td>{{ token.associated_to.email }}</td>
 			<td>{{ token.time|date:"d.m.Y \k\l\o\. H:i" }}</td>
 		</tr>

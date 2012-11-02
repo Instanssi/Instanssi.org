@@ -14,6 +14,7 @@ class BlogEntryForm(forms.ModelForm):
                 u'Blogientry',
                 'title',
                 'text',
+                'date',
                 'public',
                 ButtonHolder (
                     Submit('submit', 'Tallenna')
@@ -23,4 +24,4 @@ class BlogEntryForm(forms.ModelForm):
         
     class Meta:
         model = BlogEntry
-        fields = ('title','text','public')
+        fields = ('title','text','public','date')

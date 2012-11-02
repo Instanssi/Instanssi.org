@@ -121,7 +121,7 @@ p.compothanks {
 /* COMMON STEP STYLES */
 
 .step {
-    width: 900px;
+    width: 1800px;
     padding: 40px;
 
     -webkit-box-sizing: border-box;
@@ -146,7 +146,7 @@ p.compothanks {
 
 /* fade out inactive slides */
 .step:not(.active) {
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 /* IMPRESS NOT SUPPORTED STYLES */

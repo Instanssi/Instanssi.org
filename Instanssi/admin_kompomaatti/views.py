@@ -82,6 +82,7 @@ def competitions_browse(request, sel_event_id):
         'competitions': competitions,
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @login_required(login_url='/manage/auth/login/')
@@ -111,6 +112,7 @@ def competition_edit(request, sel_event_id, competition_id):
         'competition': competition,
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
+        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @login_required(login_url='/manage/auth/login/')

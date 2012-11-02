@@ -219,7 +219,7 @@ class Vote(models.Model):
 class Competition(models.Model):
     event = models.ForeignKey(Event, verbose_name=u"Tapahtuma", help_text=u"Tapahtuma johon kilpailu kuuluu")
     name = models.CharField(u'Nimi', max_length=32, help_text=u"Kilpailun nimi (max 32 merkkiä).")
-    description = models.TextField(u'Kuvaus', help_text=u"Kilpailun kuvaus")
+    description = models.TextField(u'Kuvaus')
     participation_end = models.DateTimeField(u'Deadline osallistumiselle.', help_text=u"Tämän jälkeen kilpailuun ei voi enää osallistua.")
     start = models.DateTimeField(u'Kilpailun alku', help_text=u"Kilpailun aloitusaika.")
     end = models.DateTimeField(u'Kilpailun loppu', help_text=u"Kilpailun päättymisaika.", null=True, blank=True)

@@ -192,6 +192,9 @@ def vids(request, sel_event_id):
     if not request.user.is_staff:
         raise Http403
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Handle form
     if request.method == "POST":
         # Check for permissions
@@ -199,12 +202,12 @@ def vids(request, sel_event_id):
             raise Http403
         
         # Handle form
-        vidform = VideoForm(request.POST)
+        vidform = VideoForm(request.POST, event=event)
         if vidform.is_valid():
             vidform.save()
             return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
     else:
-        vidform = VideoForm()
+        vidform = VideoForm(event=event)
     
     # Get videos belonging to selected event
     categories = OtherVideoCategory.objects.filter(event_id=int(sel_event_id))
@@ -234,14 +237,17 @@ def editvid(request, sel_event_id, video_id):
     # Get Video
     video = get_object_or_404(OtherVideo, pk=video_id)
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Handle form
     if request.method == "POST":
-        vidform = VideoForm(request.POST, instance=video)
+        vidform = VideoForm(request.POST, instance=video, event=event)
         if vidform.is_valid():
             vidform.save()
             return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
     else:
-        vidform = VideoForm(instance=video)
+        vidform = VideoForm(instance=video, event=event)
     
     # Render response
     return admin_render(request, "admin_arkisto/editvid.html", {

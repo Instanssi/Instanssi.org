@@ -7,7 +7,18 @@ from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 
 class VideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        # Initialize
+        self.event = kwargs.pop('event', None)
         super(VideoForm, self).__init__(*args, **kwargs)
+        
+        # Set choices
+        if self.event:
+            cats = []
+            for cat in OtherVideoCategory.objects.filter(event=self.event):
+                cats.append((cat.id, cat.name))
+            self.fields['category'].choices = cats
+        
+        # Set form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(

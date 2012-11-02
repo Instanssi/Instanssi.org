@@ -36,7 +36,7 @@
     	<tbody>
 {% for event in events %}
 			<tr>
-				<td>{{ event.name }}</td>
+				<td><a href="/manage/{{ event.id }}/">{{ event.name }}</a></td>
 				<td>{{ event.date|date:"d.m.Y" }}</td>
 				<td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>

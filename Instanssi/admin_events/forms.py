@@ -11,7 +11,7 @@ class EventForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Lisää tapahtuma',
+                u'Tapahtuma',
                 'name',
                 'date',
                 ButtonHolder (

@@ -56,7 +56,7 @@ p {
 }
 
 .custom_icon_style {
-	float: right;
+	float: left;
 	display: inline-block;
 	width: 17px;
 	height: 17px;

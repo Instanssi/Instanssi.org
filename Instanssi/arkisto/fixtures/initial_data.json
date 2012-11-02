@@ -1,12 +1,12 @@
 [
     {
-        "pk": 2, 
+        "pk": 4, 
         "model": "auth.user", 
         "fields": {
             "username": "arkisto", 
             "first_name": "", 
             "last_name": "", 
-            "is_active": true, 
+            "is_active": false, 
             "is_superuser": false, 
             "is_staff": false, 
             "groups": [], 

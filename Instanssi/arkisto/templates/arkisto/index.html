@@ -1,4 +1,5 @@
 {% extends "arkisto/base.html" %}
+{% load static %}
 
 {% block head %}
 {{ block.super }}
@@ -21,7 +22,7 @@
 {% if entry.imagefile_thumbnail %}
 				<img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  /> 
 {% else %}
-				<img src="/static/arkisto/img/filler_small.png" alt="Entry" width="160" height="100">
+				<img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
 {% endif %}
 			</a>
 			<p class="entry-name" title="{{ entry.name }}">{{ entry.name }}</p>
@@ -37,8 +38,8 @@
 	<div class="entry-holder">
 {% for video in category.videos %}
 		<div class="entry">
-			<a href="/arkisto/video/{{ video.id }}/">
-				<img src="/static/arkisto/img/filler_small.png" alt="Entry" width="160" height="100">
+			<a href="{% url 'archive-video' video.id %}">
+				<img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
 			</a>
 			<p class="entry-name" title="{{ video.name }}">{{ video.name }}</p>
 		</div>

@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Arkisto</title>
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/static/arkisto/css/style.css" />
-    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.8.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "arkisto/css/style.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="http://instanssi.org/arkisto/" />
-    <meta property="og:image" content="http://instanssi.org/static/main2012/images/social-media/banner-button-256x256.jpg" />
+    <meta property="og:image" content="http://instanssi.org{% static "main2012/images/social-media/banner-button-256x256.jpg" %}" />
     <meta property="og:title" content="Instanssi Arkisto" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Instanssi Arkisto" />
@@ -33,16 +33,16 @@
     </script>
 </head>
 <body>
-    <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="/arkisto/">Arkisto</a></h1></div>
+    <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="{% url 'archive' %}">Arkisto</a></h1></div>
     <div id="content">
 {% if nav_events %}
         <ul id="nav">
 {% for event in nav_events %}
-            <li><a href="/arkisto/event/{{ event.id }}/">{{ event.name }}</a></li>
+            <li><a href="{% url 'archive-event' event.id %}">{{ event.name }}</a></li>
             {% if not forloop.last %}<span class="separator">|</span>{% endif %}
 {% endfor %}
         </ul>
-        <h2>{{ event.name }} <a href="/arkisto/event/{{ event.id }}/" class="see-all-results">Katso kaikki tulokset</a></h2>
+        <h2>{{ event.name }} <a href="{% url 'archive-event' event.id %}" class="see-all-results">Katso kaikki tulokset</a></h2>
 {% else %}
 		<h2>Arkisto</h2>
 {% endif %}

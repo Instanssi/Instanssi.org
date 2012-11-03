@@ -14,14 +14,14 @@
 
 {% block jquery %}
 {{ block.super }}
-	$(".entrylist").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});
+	$(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Tulokset</h2>
-{% if results %}
-{% for compo,entries in results.items %}
+{% if compo_results %}
+{% for compo,entries in compo_results.items %}
 	<h3>{{ compo }}</h3>
 {% if entries %}
 	<table class="tablesorter entrylist">
@@ -51,6 +51,38 @@
 {% endif %}
 {% endfor %}
 {% else %}
-	<p>Ei vielä tuloksia näytettävänä!</p>
+	<p>Ei vielä kompojen tuloksia näytettävänä!</p>
+{% endif %}
+
+{% if competition_results %}
+{% for competition,entries in competition_results.items %}
+	<h3>{{ competition }}</h3>
+{% if entries %}
+	<table class="tablesorter participationlist">
+		<thead>
+			<tr>
+				<th>Sijoitus</th>
+				<th>Osallistuja</th>
+				<th>Pisteet</th>
+				<th>Diskattu?</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for entry in entries %}
+			<tr>
+				<td>{{ forloop.counter }}</td>
+				<td>{{ entry.participant_name }}</td>
+				<td>{% if not entry.disqualified %}{{ entry.score|floatformat:"2" }}{% endif %}</td>
+				<td>{% if entry.disqualified %}Kyllä! Ei pisteitä.{% else %}Ei.{% endif %}</td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei osanottajia tässä kilpailussa!</p>
+{% endif %}
+{% endfor %}
+{% else %}
+	<p>Ei vielä kilpailujen tuloksia näytettävänä!</p>
 {% endif %}
 {% endblock %}

@@ -318,17 +318,27 @@ def results(request, sel_event_id):
     if not request.user.is_staff:
         raise Http403
     
-    # Get compos
+    # Get compos. competitions
     compos = Compo.objects.filter(event_id=int(sel_event_id))
+    competitions = Competition.objects.filter(event_id=int(sel_event_id))
 
     # Get the entries
-    results = {}
+    compo_results = {}
     for compo in compos:
-        results[compo.name] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+        compo_results[compo.name] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+    
+    # Get competition participations
+    competition_results = {}
+    for competition in competitions:
+        rankby = '-score'
+        if competition.score_sort == 1:
+            rankby = 'score'
+        competition_results[competition.name] = CompetitionParticipation.objects.filter(competition=competition).order_by(rankby)
     
     # Render response
     return admin_render(request, "admin_kompomaatti/results.html", {
-        'results': results,
+        'compo_results': compo_results,
+        'competition_results': competition_results,
         'selected_event_id': int(sel_event_id),
     })
     

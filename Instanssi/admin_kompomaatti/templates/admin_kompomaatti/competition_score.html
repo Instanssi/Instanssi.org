@@ -2,7 +2,7 @@
 {% load uni_form_tags %}
 {% load static %}
 
-{% block title %}{{ block.super }} - Kilpailut - Osallistujat{% endblock %}
+{% block title %}{{ block.super }} - Kilpailut - Pisteytys{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -11,7 +11,7 @@
 {% block crumbs %}
 {{ block.super }}
 		&raquo; <a href="{% url 'admin-competitions' selected_event_id %}">Kilpailut</a>
-		&raquo; Osallistujat
+		&raquo; Pisteytys
 {% endblock %}
 
 {% block jquery %}
@@ -20,7 +20,7 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Osallistujat</h2>
+    <h2>Pisteytys</h2>
 
 {% uni_form scoreform scoreform.helper %}
 {% endblock %}

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response
-from Instanssi.kompomaatti.models import Event
 from django.template import RequestContext
+from Instanssi.kompomaatti.models import Event
 
 def admin_render(request, tpl, context={}):
-    context['navmenu_events'] = Event.objects.all().order_by('-date')
     context['full_path'] = request.get_full_path()
     context['is_superuser'] = request.user.is_superuser
     

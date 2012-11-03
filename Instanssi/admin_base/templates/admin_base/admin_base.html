@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}{% load render_base_events_nav from admin_base_tags %}<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -57,32 +57,30 @@
 <div id="header_nav">
     <div class="limiter">
         <ul id="header_nav_left">
-            <li class="menuitem"><a href="/manage/">Etusivu</a></li>
+            <li class="menuitem"><a href="{% url 'admin-base' %}">Etusivu</a></li>
             <li class="menuitem">
-            	<a href="/manage/users/">Käyttäjät<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'admin-superusers' %}">Käyttäjät<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
             		<li class="menuitem"><a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a></li>
             		<li class="menuitem"><a href="{% url 'admin-openid' %}">OpenID-käyttäjät</a></li>
             	</ul>
             </li>
             <li class="menuitem">
-            	<a href="/manage/events/">Tapahtumat<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'admin-events' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
-{% for event in navmenu_events %}
-					<li class="menuitem"><a href="/manage/{{ event.id }}/">{{ event.name }}</a></li>
-{% endfor %}
+{% render_base_events_nav %}
             	</ul>
             </li>
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem">
-            	<a href="/manage/profile/">Profiili<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'admin-profile' %}">Profiili<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
             		<li class="menuitem"><a href="{% url 'admin-profile' %}">Profiili</a></li>
             		<li class="menuitem"><a href="{% url 'admin-password' %}">Salasana</a></li>
             	</ul>
             </li>
-            <li class="menuitem"><a href="/manage/auth/logout/">Kirjaudu ulos</a></li>
+            <li class="menuitem"><a href="{% url 'admin-logout' %}">Kirjaudu ulos</a></li>
         </ul>
     </div>
 </div>

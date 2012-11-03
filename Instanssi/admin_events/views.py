@@ -4,11 +4,13 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -26,7 +28,7 @@ def index(request):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            return HttpResponseRedirect("/manage/events/")
+            return HttpResponseRedirect(reverse('admin-events'))
     else:
         eventform = EventForm()
     
@@ -39,7 +41,7 @@ def index(request):
         'eventform': eventform,
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def edit(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -59,7 +61,7 @@ def edit(request, event_id):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            return HttpResponseRedirect("/manage/events/")
+            return HttpResponseRedirect(reverse('admin-events'))
     else:
         eventform = EventForm(instance=event)
     
@@ -68,7 +70,7 @@ def edit(request, event_id):
         'eventform': eventform,
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def delete(request, event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -84,4 +86,4 @@ def delete(request, event_id):
     except:
         pass
     
-    return HttpResponseRedirect("/manage/events/")
+    return HttpResponseRedirect(reverse('admin-events'))

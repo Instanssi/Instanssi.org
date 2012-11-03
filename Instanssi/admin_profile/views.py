@@ -4,10 +4,12 @@ from common.http import Http403
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_profile.forms import PasswordChangeForm,InformationChangeForm
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def password(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -17,7 +19,7 @@ def password(request):
         pwform = PasswordChangeForm(request.POST, user=request.user)
         if pwform.is_valid():
             pwform.save()
-            return HttpResponseRedirect("/manage/profile/password/")
+            return HttpResponseRedirect(reverse('admin-password'))
     else:
         pwform = PasswordChangeForm()
     
@@ -26,7 +28,7 @@ def password(request):
         'pwform': pwform,
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def profile(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -37,7 +39,7 @@ def profile(request):
         profileform = InformationChangeForm(request.POST, instance=request.user)
         if profileform.is_valid():
             profileform.save()
-            return HttpResponseRedirect("/manage/profile/profile/")
+            return HttpResponseRedirect(reverse("admin-profile"))
     else:
         profileform = InformationChangeForm(instance=request.user)
     

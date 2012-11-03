@@ -3,11 +3,12 @@
 from common.http import Http403
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -19,7 +20,7 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def slide_results(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -40,14 +41,14 @@ def slide_results(request, sel_event_id, compo_id):
             'creator': entry.creator,
             'name': entry.name,
             'score': entry.get_score(),
-            'score_x': i * 3000,
+            'score_x': i * 4000,
             'score_y': 0,
             'score_z': i * 500,
-            'score_rot_y': rot,
-            'info_x': (i+1) * 3000,
+            'score_rot_y': 50,
+            'info_x': (i+1) * 4000,
             'info_y': 0,
             'info_z': (i+1) * 500,
-            'info_rot_y': rot+10,
+            'info_rot_y': 120,
         })
         i = i + 2
         rot = rot + 20
@@ -56,13 +57,13 @@ def slide_results(request, sel_event_id, compo_id):
     return admin_render(request, 'admin_slides/slide_results.html', {
         'entries': f_entries,
         'compo': c,
-        'last_x': i * 3000,
+        'last_x': i * 4000,
         'last_z': i * 500,
         'last_rot_y': rot+10,
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def slide_entries(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

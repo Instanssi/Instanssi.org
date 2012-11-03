@@ -4,12 +4,13 @@ from common.http import Http403
 from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.admin_programme.forms import ProgrammeEventForm
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -27,7 +28,7 @@ def index(request, sel_event_id):
             data = form.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/programme/")
+            return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
     else:
         form = ProgrammeEventForm()
     
@@ -42,7 +43,7 @@ def index(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def edit(request, sel_event_id, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -60,7 +61,7 @@ def edit(request, sel_event_id, pev_id):
         form = ProgrammeEventForm(request.POST, request.FILES, instance=pev)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/programme/")
+            return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
     else:
         form = ProgrammeEventForm(instance=pev)
     
@@ -72,7 +73,7 @@ def edit(request, sel_event_id, pev_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def delete(request, sel_event_id, pev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -89,5 +90,5 @@ def delete(request, sel_event_id, pev_id):
         raise Http404
     
     # Render response
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/programme/")
+    return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
 

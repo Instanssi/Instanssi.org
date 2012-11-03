@@ -16,7 +16,7 @@
 {% block jquery %}
 {{ block.super }}
     $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti poistaa käyttäjän ?"); 
+        return confirm("Haluatko varmasti deaktivoida käyttäjän ?"); 
     });
 	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#users_pager")}); 
 {% endblock %}

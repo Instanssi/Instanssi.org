@@ -5,13 +5,15 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Event, Entry, Compo, Competition, CompetitionParticipation, Vote
 from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 from Instanssi.admin_arkisto.misc import utils
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -22,7 +24,7 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def removeoldvotes(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -47,9 +49,9 @@ def removeoldvotes(request, sel_event_id):
     Vote.objects.filter(compo__in=compo_ids).delete()
     
     # All done, redirect
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def transferrights(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -81,9 +83,9 @@ def transferrights(request, sel_event_id):
         part.save()
     
     # All done, redirect
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def optimizescores(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -107,9 +109,9 @@ def optimizescores(request, sel_event_id):
         entry.archive_score = entry.get_score()
         entry.save()
 
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def archiver(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -163,7 +165,7 @@ def archiver(request, sel_event_id):
         'old_votes_found': old_votes_found,
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def show(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -178,9 +180,9 @@ def show(request, sel_event_id):
     event.archived = True
     event.save()
     
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def hide(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -195,9 +197,9 @@ def hide(request, sel_event_id):
     event.archived = False
     event.save()
     
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/archiver/")
+    return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def vids(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -216,7 +218,7 @@ def vids(request, sel_event_id):
         vidform = VideoForm(request.POST, event=event)
         if vidform.is_valid():
             vidform.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
+            return HttpResponseRedirect(reverse('admin-vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(event=event)
     
@@ -235,7 +237,7 @@ def vids(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def editvid(request, sel_event_id, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -256,7 +258,7 @@ def editvid(request, sel_event_id, video_id):
         vidform = VideoForm(request.POST, instance=video, event=event)
         if vidform.is_valid():
             vidform.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
+            return HttpResponseRedirect(reverse('admin-vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(instance=video, event=event)
     
@@ -268,7 +270,7 @@ def editvid(request, sel_event_id, video_id):
     })
     
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def deletevid(request, sel_event_id, video_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -285,9 +287,9 @@ def deletevid(request, sel_event_id, video_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vids/")
+    return HttpResponseRedirect(reverse('admin-vids', args=(sel_event_id)))
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def cats(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -305,7 +307,7 @@ def cats(request, sel_event_id):
             cat = catform.save(commit=False)
             cat.event_id = int(sel_event_id)
             cat.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")
+            return HttpResponseRedirect(reverse('admin-vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm()
     
@@ -319,7 +321,7 @@ def cats(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def editcat(request, sel_event_id, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -337,7 +339,7 @@ def editcat(request, sel_event_id, category_id):
         catform = VideoCategoryForm(request.POST, instance=category)
         if catform.is_valid():
             catform.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")
+            return HttpResponseRedirect(reverse('admin-vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm(instance=category)
     
@@ -348,7 +350,7 @@ def editcat(request, sel_event_id, category_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def deletecat(request, sel_event_id, category_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -365,4 +367,4 @@ def deletecat(request, sel_event_id, category_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/arkisto/vidcats/")
+    return HttpResponseRedirect(reverse('admin-vidcats', args=(sel_event_id)))

@@ -4,12 +4,13 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.ext_calendar.models import CalendarEvent
 from Instanssi.admin_calendar.forms import CalendarEventForm
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -28,7 +29,7 @@ def index(request, sel_event_id):
             data.event_id = int(sel_event_id)
             data.user = request.user
             data.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/calendar/")
+            return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
     else:
         form = CalendarEventForm()
     
@@ -43,7 +44,7 @@ def index(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def edit(request, sel_event_id, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -61,7 +62,7 @@ def edit(request, sel_event_id, cev_id):
         form = CalendarEventForm(request.POST, request.FILES, instance=cev)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/calendar/")
+            return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
     else:
         form = CalendarEventForm(instance=cev)
     
@@ -74,7 +75,7 @@ def edit(request, sel_event_id, cev_id):
     })
     
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def delete(request, sel_event_id, cev_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -91,5 +92,5 @@ def delete(request, sel_event_id, cev_id):
         pass
     
     # Render response
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/calendar/")
+    return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
     

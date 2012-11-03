@@ -4,12 +4,14 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 from datetime import datetime
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -29,7 +31,7 @@ def index(request, sel_event_id):
             data.date = datetime.now()
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/files/")
+            return HttpResponseRedirect(reverse('admin-uploads', args=(sel_event_id)))
     else:
         uploadform = UploadForm()
     
@@ -43,7 +45,7 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def deletefile(request, sel_event_id, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -61,9 +63,9 @@ def deletefile(request, sel_event_id, file_id):
     except UploadedFile.DoesNotExist:
         pass
     
-    return HttpResponseRedirect("/manage/"+sel_event_id+"/files/")
+    return HttpResponseRedirect(reverse('admin-uploads', args=(sel_event_id)))
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def editfile(request, sel_event_id, file_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -81,7 +83,7 @@ def editfile(request, sel_event_id, file_id):
         uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
         if uploadform.is_valid():
             uploadform.save()
-            return HttpResponseRedirect("/manage/"+sel_event_id+"/files/")
+            return HttpResponseRedirect(reverse('admin-uploads', args=(sel_event_id)))
     else:
         uploadform = UploadForm(instance=uploadedfile)
     

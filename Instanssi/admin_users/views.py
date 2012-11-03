@@ -4,13 +4,15 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
 from django_openid_auth.models import UserOpenID
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def superusers(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -23,7 +25,7 @@ def superusers(request):
             userform = UserCreationForm(request.POST)
             if userform.is_valid():
                 userform.save()
-                return HttpResponseRedirect("/manage/users/superusers/")
+                return HttpResponseRedirect(reverse('admin-superusers'))
         else:
             userform = UserCreationForm()
     else:
@@ -38,7 +40,7 @@ def superusers(request):
         'userform': userform,
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def editsu(request, su_id):
     # Make SURE we are in as a superuser
     if not request.user.is_superuser:
@@ -54,7 +56,7 @@ def editsu(request, su_id):
         userform = UserEditForm(request.POST, instance=user)
         if userform.is_valid():
             userform.save()
-            return HttpResponseRedirect("/manage/users/superusers/")
+            return HttpResponseRedirect(reverse('admin-superusers'))
     else:
         userform = UserEditForm(instance=user)
     
@@ -63,7 +65,7 @@ def editsu(request, su_id):
         'userform': userform,
     })
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def deletesu(request, su_id):
     # Make SURE we are in as a superuser
     if not request.user.is_superuser:
@@ -78,9 +80,9 @@ def deletesu(request, su_id):
         user.save()
 
     # All done, redirect
-    return HttpResponseRedirect("/manage/users/superusers/")
+    return HttpResponseRedirect(reverse('admin-superusers'))
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def openid(request):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -117,7 +119,7 @@ def openid(request):
         'openidusers': users,
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def deleteopenid(request, user_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -135,4 +137,4 @@ def deleteopenid(request, user_id):
         raise Http403
     
     # All done, redirect
-    return HttpResponseRedirect("/manage/users/openid/")
+    return HttpResponseRedirect(reverse('admin-openid'))

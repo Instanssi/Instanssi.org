@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import Event
 
-class BlogEntryFeed(Feed):
-    title = "Instanssi.org Blog Feed"
+class blog_feed(Feed):
+    title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
 

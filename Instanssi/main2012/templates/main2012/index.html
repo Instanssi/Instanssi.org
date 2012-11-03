@@ -1,4 +1,5 @@
 {% extends "main2012/base.html" %}
+{% load blog_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -12,11 +13,6 @@
 {% block content %}
 {{ block.super }}
     <h2>Blog</h2>
-    <div id="blogfeedarea">
-{% for item in blogitems %}
-        <h3>{{ item.title }}</h3>
-        <div class="blogtext">{{ item.summary|safe }}</div>
-        <span class="blogtime">{{ item.date|date:"d.m.Y \k\l\o\. H:i" }} by {{ item.name }} &middot; <a href="{{ item.link }}">Lisätiedot &raquo;</a></span>
-{% endfor %}
-    </div>
+
+{% render_blog 2 %}
 {% endblock %}

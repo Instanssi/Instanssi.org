@@ -13,6 +13,10 @@ h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
     font-size: 14px;
 }
 
+p {
+	line-height: 130%;
+}
+
 strong { 
 	font-weight: bold; 
 }

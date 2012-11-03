@@ -13,5 +13,4 @@ urlpatterns = patterns(
     url(r'^liput/', 'liput'),
     url(r'^stream/', 'stream'),
     url(r'^yhteystiedot/', 'yhteystiedot'),
-    url(r'^updateblog/', 'updateblog'),
 )

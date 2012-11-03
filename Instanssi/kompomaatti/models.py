@@ -255,13 +255,13 @@ class CompetitionParticipation(models.Model):
         rankby = '-score'
         if self.competition.score_sort == 1:
             rankby = 'score'
-        results = CompetitionParticipation.objects.filter(pk=self.competition.id).order_by(rankby)
+        results = CompetitionParticipation.objects.filter(competition_id=self.competition.id).order_by(rankby)
         
         # Find self
         rank = 1
         for p in results:
             if p.id == self.id:
-                break
+                return rank
             else:
                 rank = rank + 1
         return rank

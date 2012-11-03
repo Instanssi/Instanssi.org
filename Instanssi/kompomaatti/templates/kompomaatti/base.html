@@ -1,55 +1,83 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}{% load render_base_compos_nav from kompomaatti_base_tags %}{% load render_base_competitions_nav from kompomaatti_base_tags %}
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Kompomaatti</title>
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/kompomaatti/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/uni-form.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/uni-form/default.uni-form.css" media="all" />
-    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/static/libs/js/jquery/jquery-ui-1.9.1.custom.min.js"></script>
-    <script type="text/javascript" src="/static/libs/js/jq_touchfix/jquery.ui.touch-punch.min.js"></script>
-    <script type="text/javascript" src="/static/libs/js/uni-form/uni-form-validation.jquery.min.js"></script>
+    <title>Kompomaatti{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    
+    <!-- Library CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/theme.default.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/jquery.tablesorter.pager.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
+    
+    <!-- Library JS -->
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
+    
+    <!-- Admin panel CSS -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
+    
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
+		$('form.uniForm').uniform();
+		$('.ui-widget').css('font-size','14px');
 {% block jquery %}{% endblock %}
     });
     </script>
+
 </head>
 <body>
-    <div id="base">
-        <div id="header">
-			<h1><a href="http://instanssi.org/">Instanssi</a> | <a href="/kompomaatti/">Kompomaatti</a></h1>
-			<div id="nav">
-				<ul id="basenav">
-					<li><a href="/kompomaatti/">Etusivu</a></li>
-					<li>
-						<a href="/kompomaatti/compolist/">Kompot<div class="img-placeholder"></div></a>
-						<ul id="subnav">
-{% for navcompo in compos %}
-							<li><a href="/kompomaatti/compo/{{ navcompo.id }}/">{{ navcompo.name }}</a></li>
-{% endfor %}
-						</ul>
-					</li>
-					<li><a href="/kompomaatti/help/">Ohje</a></li>
-{% if logged %}
-					<li><a href="/kompomaatti/myentries/">Omat tiedot</a></li>
-					<li><a href="/kompomaatti/logout/">Kirjaudu ulos</a></li>
-{% else %}
-					<li><a href="/openid/login/">Kirjaudu sisään</a></li>
-{% endif %}
-				</ul>
-			</div>
-		</div>
-        <div id="content">
-        {% block content %}{% endblock %}
-        </div>
+<div id="header">
+    <div class="limiter">
+        <h1>Kompomaatti</h1>
     </div>
-	<div id="footer">
-		&copy; Instanssi.org 2012
-	</div>
+</div>
+<div id="header_nav">
+    <div class="limiter">
+        <ul id="header_nav_left">
+            <li class="menuitem">
+            	<a href="">Etusivu</a>
+            </li>
+            <li class="menuitem">
+            	<a href="">Kompot<span class="navmenu-icon-down"></span></a>
+            	<ul class="sub-level">
+{% render_base_compos_nav 2  %}
+            	</ul>
+            </li>
+            <li class="menuitem">
+            	<a href="">Kilpailut<span class="navmenu-icon-down"></span></a>
+            	<ul class="sub-level">
+{% render_base_competitions_nav 2  %}
+            	</ul>
+            </li>
+        </ul>
+        <ul id="header_nav_right">
+            <li class="menuitem">
+            	<a href="">Profiili</a>
+            </li>
+            <li class="menuitem">
+            	<a href="">Kirjaudu ulos</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="base">
+    <div id="contents">
+		<div id="crumbpath">
+			<a href="">Kompomaatti</a>
+{% block crumbs %}{% endblock %}
+		</div>
+{% block content %}{% endblock %}
+    </div>
+</div>
 </body>
 </html>

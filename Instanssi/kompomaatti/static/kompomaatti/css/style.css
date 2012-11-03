@@ -1,155 +1,232 @@
-body{
-    background: url('./images/kompomaatti-bg.jpg') repeat-x #F2F2F2; 
-    font-family: 'MS Serif', 'New York', sans-serif;
-}
-p, li, td, th, label, div, strong, legend {  }
-h1, h2, h3{font-family: 'MS Serif', 'New York', sans-serif; font-size: 16px; }
-
-h1 a, h1{ font-size: 1em !important; font-variant: small-caps; margin:0; padding: 1em 0px; color: #4ED3FF; text-decoration: none;} 
-
-h2 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1em; margin-top: 1em; font-weight: normal; font-variant: small-caps; font-family: Palatino Linotype, Book Antiqua, Palatino, serif;}
-h3 { font-size: 1.0em; letter-spacing: 1px; margin-bottom: 1.0em; margin-top: 2.0em; font-weight: normal; border-bottom: 1px solid #aaaaaa; padding-bottom: 0.3em;}
-
-strong { font-weight: bold; }
-
-/* Base div CSS */
-#base {margin: 0 auto;}
-#header{font-family: 'MS Serif', 'New York', sans-serif !important;background: #222;border-bottom: 1px solid #777;font-variant: small-caps; font-weight:normal; border-bottom: 1px solid #888; box-shadow: 0px 0px 10px #222;}
-#nav, h1{ width: 960px; margin: 0 auto;}
-
-/* uni-form stuff */
-form.uniForm .ctrlHolder {
-    border-bottom: 1px dotted #aaaaaa;
+body, html {
+	height: 100%;
 }
 
-/* Content div css */
-#content { width: 960px; margin: 0 auto; padding: 0.2em; min-height: 400px; margin-bottom: 4em;}
-#content fieldset { border: 1px solid #999999; padding: 0.3em; margin: 0.3em; }
-#content > p,
-#content > ul,
-#content > ol { margin-bottom: 1em; margin-top: 1em; }
-#content > ul li,
-#content > ol li { display: list-item; padding: 0.3em; }
-#content > ul { list-style-type: disc; margin-left: 1.2em; }
-#content > ol { list-style-type: decimal; margin-left: 1.2em; }
-
-/* Content div css */
-.compo_description > p,
-.compo_description > ul,
-.compo_description > ol { margin-bottom: 1em; margin-top: 1em; }
-.compo_description > ul li,
-.compo_description > ol li { display: list-item; padding: 0.3em; }
-.compo_description > ul { list-style-type: disc; margin-left: 1.2em; }
-.compo_description > ol { list-style-type: decimal; margin-left: 1.2em; }
-
-/* For tabular data fields using tablesorter.js */
-div.pager { margin-top: 0.1em; margin-bottom: 0.3em; }
-table.tablesorter { margin-top: 0; }
-
-/* Tables that have headers on the left side, and data on the right side */
-table.generic_info_table { border: 1px solid #bbbbbb; width: 100%; }
-table.generic_info_table th { background-color: #e6eeee; padding: 0.3em; border: 1px solid #bbbbbb; width: 30%; text-align: left; }
-table.generic_info_table td { background-color: #ffffff; padding: 0.3em; border: 1px solid #bbbbbb; width: 70%; }
-
-/* Sortables in voting */
-#sortable { margin: 0; padding: 0; width: 60%; }
-#sortable li { list-style-type: none; display: block; margin: 0 3px 3px 3px; padding: 0.4em; height: 18px; }
-#sortable li > span { float: left; }
-
-/* For error/notice box in voting form */
-.msgicon { float: left; }
-#voting_errortext { margin-bottom: 0.2em; margin-top: 0.2em; padding: 0.2em; }
-#vote_js_mode { display: none; }
-#vote_js_mode p { margin-bottom: 0.3em; margin-top: 0.3em; }
-#vote_html_mode input { margin-bottom: 0.3em; margin-top: 0.3em; }
-#vote_html_mode p { margin-bottom: 0.3em; margin-top: 0.3em; }
-#vote_html_mode fieldset { padding: 0.3em; }
-#vote_html_mode li { border: 1px solid #dcdcdc; background-color: #eeeeee; margin: 0.3em; padding: 0em; }
-
-/* Navigation stuff */
-#nav { padding: 0.2em; }
-
-#basenav { 
-    display: inline-block; 
-    width: 960px; 
-}
-#basenav li {
-    float:left;
-    margin-right: 0px; 
-    padding: 0px 0px;
-}
-#basenav li a{
-    text-decoration:none;
-    /*border: 1px solid #005860;*/
-    color: #ccc;
-    display: block;
-    text-align: left;
-    padding: 8px 8px;
-    font-size: 16px;
-    /*box-shadow: inset 1px 0px 1px #ccc;*/
-}
-#basenav li a:hover{color: #fff;}
-
- /* DROPDOWN MENU*/
-#subnav {margin: 0;}
-#subnav li { float: none; margin: 0; width: 100%; }
-#subnav{position:absolute;   margin-top: 0px; margin-left: 0px;}
-#subnav li{/*visibility:hidden;*/ display: none; background: #222; border: 1px solid #111; opacity: 0.9;}
-#subnav li a{border: 0px;}
-li:hover #subnav li{/*visibility:visible;*/ display: block;}
-.img-placeholder{margin-left: 10px;width:20px;height:20px; background: url('../images/dropdown-menu-marker.png');float:right;}
-
-
-/* JQuery ui icons */
-a.icon {
-    width: 18px;
-    height: 18px;
-    padding: 0;
-    margin: 0;
-    margin-right: 0.1em;
-    margin-left: 0.1em;
-    float: left;
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #e7e7e7;
 }
 
-/* jquery-ui stuff */
-.ui-button {
+h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
 }
 
-/* FOOTER ALWAYS BOTTOM*/
-* {
-margin: 0;
+p {
+	line-height: 130%;
 }
-html, body {
-height: 100%;
+
+strong { 
+	font-weight: bold; 
 }
+
+h1 {
+    padding-top: 15px;
+    padding-left: 10px;
+    font-size: 250%;
+    color: #eeeeee;
+    text-shadow: #aaaaaa 0px 0px 3px;
+}
+
+h2 {
+    font-size: 170%;
+    margin-bottom: 1em;
+    border-bottom: 1px dotted black;
+    width: 100%;
+}
+
+h3 {
+	font-size: 120%;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px dotted black;
+}
+
+p,pre,blockquote,ul,ol {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+p {
+    text-align: justify;
+}
+
+/* ---------- Crumbpath ---------- */
+
+#crumbpath {
+	margin-bottom: 1.0em;
+	font-size: 12px;
+}
+
+/* ---------- Base layout tuning ---------- */
+
+#base,
+.limiter {
+	max-width: 1200px; 
+	margin: 0 auto;
+}
+
 #base {
-min-height: 100%;
-height: auto !important;
-height: 100%;
-margin: 0 auto -3em;
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+	background-color: #f9f9f9;
+	box-shadow: 0px 0px 5px #888;
+	-moz-box-shadow: 0px 0px 5px #888;
+	-webkit-box-shadow: 0px 0px 5px #888;
 }
-#footer, .push {height: 3em;}
-#footer{margin-top: -3em; background: /*url('../images/kompomaatti-bg.jpg')*/ repeat-x #222;/*padding: 8px;*/ text-align: right; color: #fff; border-top: 1px solid #000;}
- 
+
+/* ---------- Header ---------- */
+
+#header {
+	background: #000138;
+	background: -moz-linear-gradient(top, rgba(41,56,86,1) 0%, rgba(0,1,56,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(41,56,86,1)), color-stop(100%,rgba(0,1,56,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#293856', endColorstr='#000138',GradientType=0 ); /* IE6-9 */
+    height: 60px;
+}
+
+#header_nav {
+    height: 33px;
+    background-color: #000138;
+    padding-left: 5px;
+    box-shadow: 0px 3px 3px #888;
+	-moz-box-shadow: 0px 3px 3px #888;
+	-webkit-box-shadow: 0px 3px 3px #888;
+}
+
+#header_nav_left {
+    float: left;
+    margin: 0;
+}
+
+#header_nav_right {
+    float: right;
+    margin: 0;
+}
+
+#header_nav .menuitem {
+    float: left;
+}
+
+#header_nav .menuitem a {
+    padding: 9px;
+}
+
+#header_nav ul.sub-level {
+    display: none;
+}
+
+#header_nav li:hover .sub-level {
+    background-color: #000000;
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 21px;
+}
+
+#header_nav ul.sub-level li {
+    float: left;
+    width: 150px;
+    border-top: 1px dotted #333333;
+    z-index: 2;
+}
+
+#header_nav ul.sub-level li:first-child { 
+	border-top: 0px; 
+}
 
 
-/* CSS 3*/
-#header, #footer{
-	/*background-image: linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
-	background-image: -o-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
-	background-image: -moz-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
-	background-image: -webkit-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
-	background-image: -ms-linear-gradient(bottom, rgb(34,34,34) 10%, rgb(51,51,51) 57%);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.1, rgb(34,34,34)),
-		color-stop(0.57, rgb(51,51,51))
-	);*/
-} 
-h1{
-	text-shadow: 1px 1px 1px #000;
+/* ----------- Some common stuff for menuitems ---------- */
+
+.navmenu-icon-down {
+	float: right;
+	position: relative;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 6px;
+	background-image: url('../img/arrow_down.png');
 }
-#basenav li a{text-shadow: 1px 0px 1px #333;}
+
+.navmenu-icon-right {
+	float: right;
+	position: relative;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 6px;
+	background-image: url('../img/arrow_right.png');
+}
+
+.menuitem:hover {
+    background-color: #000000;
+}
+
+.menuitem a {
+    color: #eeeeee;
+    text-decoration: none;
+    display: block;
+}
+
+.menuitem a:hover {
+    text-shadow: #cccccc 0px 0px 5px;
+}
+
+.menuitem:hover {
+    position: relative;
+}
+
+ul.sub-level {
+	z-index: 99;
+}
+
+/* ---------- Contents ---------- */
+
+#contents { padding: 1em; }
+#contents ul,ol { margin-left: 2em; }
+#contents ul { list-style-type: disc; }
+#contents ol { list-style-type: decimal; }
+#contents li { margin-top: 0.3em; margin-bottom: 0.3em; }
+
+/* ---------- Tablesorter pagination ---------- */
+
+div.pager {
+	vertical-align: middle;
+}
+
+div.pager img {
+	margin-bottom: 2px;
+}
+
+div.pager select,
+div.pager input {
+	border: 1px solid #777777;
+}
+
+/* ---------- uniForm tweaks ---------- */
+
+form.uniForm {
+	margin-top: 1.0em;
+}
+
+form.uniForm .ctrlHolder { 
+	border-bottom: 1px dotted #aaaaaa; 
+}
+
+form.uniForm .buttonHolder {
+	margin: 0;
+}
+
+form.uniForm fieldset { 
+	border: 1px solid #999999;
+}
+
+form.uniForm legend { 
+	padding: 0.3em;	
+}

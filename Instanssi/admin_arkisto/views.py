@@ -12,6 +12,17 @@ from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 from Instanssi.admin_arkisto.misc import utils
 
 @login_required(login_url='/manage/auth/login/')
+def index(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Render response
+    return admin_render(request, "admin_arkisto/index.html", {
+        'selected_event_id': int(sel_event_id),
+    })
+
+@login_required(login_url='/manage/auth/login/')
 def removeoldvotes(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:

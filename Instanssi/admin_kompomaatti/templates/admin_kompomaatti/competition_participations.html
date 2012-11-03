@@ -1,0 +1,59 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Kilpailut - Osallistujat{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="{% url 'admin-competitions' selected_event_id %}">Kilpailut</a>
+		&raquo; Osallistujat
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }} 
+	$("#participation_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Osallistujat</h2>
+
+{% if participants %}
+	<table id="participation_table" class="tablesorter">
+		<thead>
+			<tr>
+				<th>Nimi</th>
+				<th>Diskattu</th>
+				<th>Tulos</th>
+				<th>Sijoitus</th>
+{% if perms.kompomaatti.change_competitionparticipation %}
+				<th class="sorter-false management_field"></th>
+{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+{% for part in participants %}
+			<tr>
+				<td>{{ part.participant_name }}</td>
+				<td>{% if part.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
+				<td>{{ part.get_formatted_score }}</td>
+				<td>{{ part.get_rank }}</td>
+{% if perms.kompomaatti.change_competitionparticipation %}
+				<td>
+					<a href="{% url 'admin-participation-edit' selected_event_id part.competition.id part.id %}" class="edit_link">Muokkaa</a>
+				</td>
+{% endif %}
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Ei osallistujia.</p>
+{% endif %}
+
+{% endblock %}

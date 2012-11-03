@@ -1,0 +1,26 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load uni_form_tags %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Kilpailut - Osallistujat - Muokkaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="{% url 'admin-competitions' selected_event_id %}">Kilpailut</a>
+		&raquo; <a href="{% url 'admin-participations' selected_event_id competition.id %}">Osallistujat</a>
+		&raquo; Muokkaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Muokkaa osanottotietoa</h2>
+{% uni_form pform pform.helper %}
+{% endblock %}

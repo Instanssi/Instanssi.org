@@ -46,6 +46,27 @@ class AdminCompetitionScoreForm(forms.Form):
             p.score = v
             p.save()
 
+class AdminParticipationEditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminParticipationEditForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Osallistuja',
+                'participant_name',
+                'score',
+                'disqualified',
+                'disqualified_reason',
+                ButtonHolder (
+                    Submit('submit', 'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = CompetitionParticipation
+        fields = ('participant_name','score','disqualified','disqualified_reason')
+
 class AdminCompetitionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdminCompetitionForm, self).__init__(*args, **kwargs)

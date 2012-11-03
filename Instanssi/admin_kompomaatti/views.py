@@ -4,11 +4,11 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from Instanssi.dbsettings.models import Setting
 from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
-from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminEntryEditForm, AdminEntryAddForm, CreateTokensForm
-from Instanssi.admin_kompomaatti.forms import AdminCompetitionForm, AdminCompetitionScoreForm
+from Instanssi.admin_kompomaatti.forms import *
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.misc import entrysort
 
@@ -22,7 +22,7 @@ import hashlib
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def index(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -33,8 +33,8 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
 
-@login_required(login_url='/manage/auth/login/')
-def competition(request, sel_event_id, competition_id):
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+def competition_score(request, sel_event_id, competition_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
         raise Http403
@@ -52,18 +52,65 @@ def competition(request, sel_event_id, competition_id):
         scoreform = AdminCompetitionScoreForm(request.POST, competition=competition)
         if scoreform.is_valid():
             scoreform.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
     else:
         scoreform = AdminCompetitionScoreForm(competition=competition)
     
     # Render response
-    return admin_render(request, "admin_kompomaatti/competition.html", {
+    return admin_render(request, "admin_kompomaatti/competition_score.html", {
         'competition': competition,
         'scoreform': scoreform,
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+def competition_participations(request, sel_event_id, competition_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # Get competition
+    participants = CompetitionParticipation.objects.filter(competition_id=int(competition_id))
+    
+    # Render response
+    return admin_render(request, "admin_kompomaatti/competition_participations.html", {
+        'participants': participants,
+        'selected_event_id': int(sel_event_id),
+    })
+    
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+def competition_participation_edit(request, sel_event_id, competition_id, pid):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
+    
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_competitionparticipation'):
+        raise Http403
+    
+    # Get competition, participation
+    competition = get_object_or_404(Competition, pk=int(competition_id))
+    participant = get_object_or_404(CompetitionParticipation, pk=int(pid))
+    
+    # Handle form
+    if request.method == 'POST':
+        pform = AdminParticipationEditForm(request.POST, instance=participant)
+        if pform.is_valid():
+            pform.save()
+            return HttpResponseRedirect(reverse('admin-participations', args=(sel_event_id)))
+    else:
+        pform = AdminParticipationEditForm(instance=participant)
+    
+    
+    # Render response
+    return admin_render(request, "admin_kompomaatti/participation_edit.html", {
+        'pform': pform,
+        'selected_event_id': int(sel_event_id),
+        'competition': competition,
+    })
+    
+    
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def competitions_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -84,7 +131,7 @@ def competitions_browse(request, sel_event_id):
             data = competitionform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
     else:
         competitionform = AdminCompetitionForm()
     
@@ -96,7 +143,7 @@ def competitions_browse(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def competition_edit(request, sel_event_id, competition_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -114,7 +161,7 @@ def competition_edit(request, sel_event_id, competition_id):
         competitionform = AdminCompetitionForm(request.POST, instance=competition)
         if competitionform.is_valid():
             competitionform.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+            return HttpResponseRedirect(reverse('admin_competitions', args=(sel_event_id))) 
     else:
         competitionform = AdminCompetitionForm(instance=competition)
     
@@ -126,7 +173,7 @@ def competition_edit(request, sel_event_id, competition_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def competition_delete(request, sel_event_id, competition_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -143,9 +190,9 @@ def competition_delete(request, sel_event_id, competition_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/competitions/') 
+    return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def compo_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -166,7 +213,7 @@ def compo_browse(request, sel_event_id):
             data = compoform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
+            return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
     else:
         compoform = AdminCompoForm()
     
@@ -178,7 +225,7 @@ def compo_browse(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def compo_edit(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -196,7 +243,7 @@ def compo_edit(request, sel_event_id, compo_id):
         editform = AdminCompoForm(request.POST, instance=compo)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
+            return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
     else:
         editform = AdminCompoForm(instance=compo)
     
@@ -208,7 +255,7 @@ def compo_edit(request, sel_event_id, compo_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def compo_delete(request, sel_event_id, compo_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -225,9 +272,9 @@ def compo_delete(request, sel_event_id, compo_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/compos/') 
+    return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def entry_browse(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -246,7 +293,7 @@ def entry_browse(request, sel_event_id):
         entryform = AdminEntryAddForm(request.POST, request.FILES, event=event)
         if entryform.is_valid():
             entryform.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
+            return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
     else:
         entryform = AdminEntryAddForm(event=event)
     
@@ -261,7 +308,7 @@ def entry_browse(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def entry_edit(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -282,7 +329,7 @@ def entry_edit(request, sel_event_id, entry_id):
         editform = AdminEntryEditForm(request.POST, request.FILES, instance=entry, event=event)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
+            return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
     else:
         editform = AdminEntryEditForm(instance=entry, event=event)
     
@@ -293,7 +340,7 @@ def entry_edit(request, sel_event_id, entry_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def entry_delete(request, sel_event_id, entry_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -310,9 +357,9 @@ def entry_delete(request, sel_event_id, entry_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/entries/') 
+    return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def results(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -342,7 +389,7 @@ def results(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def votecodes(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -366,7 +413,7 @@ def votecodes(request, sel_event_id):
                     c.save()
                 except IntegrityError:
                     n = n-1 # Ugly, may cause infinite loop...
-            return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/votecodes/') 
+            return HttpResponseRedirect(reverse('admin-votecodes', args=(sel_event_id))) 
     else:
         gentokensform = CreateTokensForm()
         
@@ -380,7 +427,7 @@ def votecodes(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def votecodes_print(request, sel_event_id):
     # Make sure the user is superuser.
     if not request.user.is_staff:
@@ -420,7 +467,7 @@ def votecodes_print(request, sel_event_id):
     p.save()
     return response
     
-@login_required(login_url='/manage/auth/login/')
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def votecoderequests(request, sel_event_id):
     # Make sure the user is staff.
     if not request.user.is_staff:
@@ -435,7 +482,7 @@ def votecoderequests(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required
+@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
 def votecoderequests_accept(request, sel_event_id, vcrid):
     # Make sure the user is staff
     if not request.user.is_staff:
@@ -471,4 +518,4 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     vcr.delete()
     
     # Return to admin page
-    return HttpResponseRedirect('/manage/'+sel_event_id+'/kompomaatti/votecoderequests/') 
+    return HttpResponseRedirect(reverse('admin-votecoderequests', args=(sel_event_id))) 

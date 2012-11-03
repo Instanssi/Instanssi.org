@@ -45,6 +45,7 @@
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th>Näytä tulokset</th>
+				<th class="sorter-false">Pisteytys</th>
 				<th class="sorter-false">Osallistujat</th>
 				<th class="sorter-false management_field"></th>
 			</tr>
@@ -57,7 +58,8 @@
 				<td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
-				<td><a href="{% url 'admin-competition' selected_event_id comp.id %}">Osallistujat</a></td>
+				<td><a href="{% url 'admin-score' selected_event_id comp.id %}">Pisteytys</a></td>
+				<td><a href="{% url 'admin-participations' selected_event_id comp.id %}">Osallistujat</a></td>
 	            <td>
 {% if perms.kompomaatti.change_competition %}
 	            	<a href="{% url 'admin-competition-edit' selected_event_id comp.id %}" class="edit_link">Muokkaa</a>

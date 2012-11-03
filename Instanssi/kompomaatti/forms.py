@@ -160,6 +160,21 @@ class EntryForm(forms.ModelForm):
             raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + self.compo.readable_source_formats() + '.')
         return self.cleaned_data['sourcefile']
 
+    def clean_imagefile_original(self):
+        # Check image size
+        max_image_size = 6*1024*1024
+        if not self.field_size_ok("imagefile_original", max_image_size):
+            raise ValidationError(u'Tiedoston koko on liian suuri! Suurin sallittu koko on ' + sizeformat(max_image_size) + '.')
+        
+        # Check image format
+        imageformats = ['png','jpg','gif']
+        type = os.path.splitext(self.cleaned_data["imagefile_original"].name)[1][1:]
+        if not (type in allowed):
+            raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(imageformats) + '.')
+        
+        # Done
+        return self.cleaned_data['sourcefile']
+
     def validate(self):
         if not self.compo.active:
             raise ValidationError(u'Kompo ei ole aktiivinen.')

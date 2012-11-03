@@ -3,21 +3,18 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from Instanssi.ext_blog.models import BlogEntry, BlogComment
-from Instanssi.kompomaatti.models import Event
-from forms import BlogEntryForm, BlogEntryEditForm
-from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from Instanssi.ext_blog.models import BlogEntry, BlogComment
+from Instanssi.kompomaatti.models import Event
+from Instanssi.admin_blog.forms import BlogEntryForm, BlogEntryEditForm
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
+from datetime import datetime
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+
+@staff_access_required
 def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Post
     if request.method == 'POST':
         # Check for permissions
@@ -47,12 +44,8 @@ def index(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def edit(request, sel_event_id, entry_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('ext_blog.change_blogentry'):
         raise Http403
@@ -77,12 +70,8 @@ def edit(request, sel_event_id, entry_id):
     })
     
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def delete(request, sel_event_id, entry_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('ext_blog.delete_blogentry'):
         raise Http403

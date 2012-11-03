@@ -3,23 +3,17 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
 from django_openid_auth.models import UserOpenID
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required, su_access_required
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def superusers(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check form
-    # TODO: GIVE SEPARATE RIGHTS TO STAFF
     if request.user.is_superuser:
         if request.method == "POST":
             userform = UserCreationForm(request.POST)
@@ -40,12 +34,8 @@ def superusers(request):
         'userform': userform,
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@su_access_required
 def editsu(request, su_id):
-    # Make SURE we are in as a superuser
-    if not request.user.is_superuser:
-        raise Http403
-    
     # Get user info and make sure it's not SU we're trying to edit
     user = get_object_or_404(User, pk=su_id)
     if user.is_superuser:
@@ -65,12 +55,8 @@ def editsu(request, su_id):
         'userform': userform,
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@su_access_required
 def deletesu(request, su_id):
-    # Make SURE we are in as a superuser
-    if not request.user.is_superuser:
-        raise Http403
-    
     # Try to delete
     user = get_object_or_404(User, pk=su_id)
     if user.is_superuser or user.username == "arkisto":
@@ -82,12 +68,8 @@ def deletesu(request, su_id):
     # All done, redirect
     return HttpResponseRedirect(reverse('admin-superusers'))
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def openid(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get users
     oid_userlist = UserOpenID.objects.all().values('user')
     db_users = User.objects.filter(pk__in=oid_userlist)
@@ -119,12 +101,8 @@ def openid(request):
         'openidusers': users,
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def deleteopenid(request, user_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for rights
     if not request.user.has_perm('auth.delete_user'):
         raise Http403

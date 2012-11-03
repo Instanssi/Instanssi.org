@@ -3,19 +3,14 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def index(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Handle form data, if any
     if request.method == 'POST':
         # CHeck for permissions
@@ -41,12 +36,8 @@ def index(request):
         'eventform': eventform,
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def edit(request, event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('kompomaatti.change_event'):
         raise Http403
@@ -70,12 +61,8 @@ def edit(request, event_id):
         'eventform': eventform,
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def delete(request, event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('kompomaatti.delete_event'):
         raise Http403

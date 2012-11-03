@@ -3,20 +3,15 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from datetime import datetime
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Handle form data, if any
     if request.method == 'POST':
         # Check for permissions
@@ -45,12 +40,8 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def deletefile(request, sel_event_id, file_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('admin_upload.delete_uploadedfile'):
         raise Http403
@@ -65,12 +56,8 @@ def deletefile(request, sel_event_id, file_id):
     
     return HttpResponseRedirect(reverse('admin-uploads', args=(sel_event_id)))
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def editfile(request, sel_event_id, file_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('admin_upload.change_uploadedfile'):
         raise Http403

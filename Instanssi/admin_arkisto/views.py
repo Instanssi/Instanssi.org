@@ -3,33 +3,24 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.conf import settings
-from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.kompomaatti.models import Event, Entry, Compo, Competition, CompetitionParticipation, Vote
+from Instanssi.kompomaatti.models import *
 from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 from Instanssi.admin_arkisto.misc import utils
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Render response
     return admin_render(request, "admin_arkisto/index.html", {
         'selected_event_id': int(sel_event_id),
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def removeoldvotes(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perms('kompomaatti.delete_vote'):
         raise Http403
@@ -51,12 +42,8 @@ def removeoldvotes(request, sel_event_id):
     # All done, redirect
     return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def transferrights(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perms('kompomaatti.change_entry'):
         raise Http403
@@ -85,12 +72,8 @@ def transferrights(request, sel_event_id):
     # All done, redirect
     return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def optimizescores(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-
     # Check rights
     if not request.user.has_perms('kompomaatti.change_entry'):
         raise Http403
@@ -111,12 +94,8 @@ def optimizescores(request, sel_event_id):
 
     return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def archiver(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get event information
     event = get_object_or_404(Event, pk=sel_event_id)
     
@@ -165,12 +144,8 @@ def archiver(request, sel_event_id):
         'old_votes_found': old_votes_found,
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def show(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perms('kompomaatti.change_event'):
         raise Http403
@@ -182,12 +157,8 @@ def show(request, sel_event_id):
     
     return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def hide(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perms('kompomaatti.change_event'):
         raise Http403
@@ -199,12 +170,8 @@ def hide(request, sel_event_id):
     
     return HttpResponseRedirect(reverse('admin-archiver', args=(sel_event_id)))
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def vids(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get event
     event = get_object_or_404(Event, pk=sel_event_id)
     
@@ -237,12 +204,8 @@ def vids(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def editvid(request, sel_event_id, video_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('arkisto.change_othervideo'):
         raise Http403
@@ -270,12 +233,8 @@ def editvid(request, sel_event_id, video_id):
     })
     
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def deletevid(request, sel_event_id, video_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('arkisto.delete_othervideo'):
         raise Http403
@@ -289,12 +248,8 @@ def deletevid(request, sel_event_id, video_id):
     # Redirect
     return HttpResponseRedirect(reverse('admin-vids', args=(sel_event_id)))
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def cats(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Handle form
     if request.method == "POST":
         # Check for permissions
@@ -321,12 +276,8 @@ def cats(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def editcat(request, sel_event_id, category_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('arkisto.change_othervideocategory'):
         raise Http403
@@ -350,12 +301,8 @@ def editcat(request, sel_event_id, category_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def deletecat(request, sel_event_id, category_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check for permissions
     if not request.user.has_perm('arkisto.delete_othervideocategory'):
         raise Http403

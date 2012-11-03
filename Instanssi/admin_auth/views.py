@@ -2,11 +2,10 @@
 
 from django.shortcuts import render_to_response
 from django.http import Http404,HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.template import RequestContext
 from forms import LoginForm
-from django.conf import settings
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
 def login_action(request):
     error = False
@@ -35,7 +34,7 @@ def login_action(request):
 def logout_page(request):
     return render_to_response("admin_auth/loggedout.html")
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def logout_action(request):
     logout(request)
     return HttpResponseRedirect("/manage/auth/loggedout/")

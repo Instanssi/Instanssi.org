@@ -3,19 +3,15 @@
 from common.http import Http403
 from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.admin_programme.forms import ProgrammeEventForm
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Create form
     if request.method == "POST":
         # Check rights
@@ -43,12 +39,8 @@ def index(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def edit(request, sel_event_id, pev_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perm('ext_programme.change_programmeevent'):
         raise Http403
@@ -73,12 +65,8 @@ def edit(request, sel_event_id, pev_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def delete(request, sel_event_id, pev_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Check rights
     if not request.user.has_perm('ext_programme.delete_programmeevent'):
         raise Http403

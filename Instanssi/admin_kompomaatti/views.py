@@ -3,14 +3,13 @@
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from Instanssi.dbsettings.models import Setting
-from Instanssi.kompomaatti.models import Compo,Entry,VoteCodeRequest,VoteCode,Event,Competition,CompetitionParticipation
+from Instanssi.kompomaatti.models import *
 from Instanssi.admin_kompomaatti.forms import *
-from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
 # For votecode stuff
 from django.db import IntegrityError
@@ -22,23 +21,15 @@ import hashlib
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def index(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Render response
     return admin_render(request, "admin_kompomaatti/index.html", {
         'selected_event_id': int(sel_event_id),
     })
 
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competition_score(request, sel_event_id, competition_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get competition
     competition = get_object_or_404(Competition, pk=competition_id)
     
@@ -63,12 +54,8 @@ def competition_score(request, sel_event_id, competition_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competition_participations(request, sel_event_id, competition_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get competition
     participants = CompetitionParticipation.objects.filter(competition_id=int(competition_id))
     
@@ -78,12 +65,8 @@ def competition_participations(request, sel_event_id, competition_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competition_participation_edit(request, sel_event_id, competition_id, pid):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_competitionparticipation'):
         raise Http403
@@ -101,7 +84,6 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
     else:
         pform = AdminParticipationEditForm(instance=participant)
     
-    
     # Render response
     return admin_render(request, "admin_kompomaatti/participation_edit.html", {
         'pform': pform,
@@ -110,12 +92,8 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
     })
     
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competitions_browse(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get competitions
     competitions = Competition.objects.filter(event_id=int(sel_event_id))
     
@@ -143,12 +121,8 @@ def competitions_browse(request, sel_event_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competition_edit(request, sel_event_id, competition_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_competition'):
         raise Http403
@@ -173,12 +147,8 @@ def competition_edit(request, sel_event_id, competition_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def competition_delete(request, sel_event_id, competition_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.delete_competition'):
         raise Http403
@@ -192,12 +162,8 @@ def competition_delete(request, sel_event_id, competition_id):
     # Redirect
     return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def compo_browse(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get compos
     compos = Compo.objects.filter(event_id=int(sel_event_id))
     
@@ -225,12 +191,8 @@ def compo_browse(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def compo_edit(request, sel_event_id, compo_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_compo'):
         raise Http403
@@ -255,12 +217,8 @@ def compo_edit(request, sel_event_id, compo_id):
         'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def compo_delete(request, sel_event_id, compo_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.delete_compo'):
         raise Http403
@@ -274,12 +232,8 @@ def compo_delete(request, sel_event_id, compo_id):
     # Redirect
     return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def entry_browse(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get event
     event = get_object_or_404(Event, pk=sel_event_id)
     
@@ -308,12 +262,8 @@ def entry_browse(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def entry_edit(request, sel_event_id, entry_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_entry'):
         raise Http403
@@ -340,12 +290,8 @@ def entry_edit(request, sel_event_id, entry_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def entry_delete(request, sel_event_id, entry_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.delete_entry'):
         raise Http403
@@ -359,12 +305,8 @@ def entry_delete(request, sel_event_id, entry_id):
     # Redirect
     return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def results(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get compos. competitions
     compos = Compo.objects.filter(event_id=int(sel_event_id))
     competitions = Competition.objects.filter(event_id=int(sel_event_id))
@@ -389,12 +331,8 @@ def results(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def votecodes(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-        
     # Handle form
     if request.method == 'POST':
         # CHeck for permissions
@@ -427,12 +365,8 @@ def votecodes(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def votecodes_print(request, sel_event_id):
-    # Make sure the user is superuser.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get free votecodes
     codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
     
@@ -467,12 +401,8 @@ def votecodes_print(request, sel_event_id):
     p.save()
     return response
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def votecoderequests(request, sel_event_id):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-    
     # Get all requests
     requests = VoteCodeRequest.objects.filter(event_id=int(sel_event_id))
     
@@ -482,12 +412,8 @@ def votecoderequests(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
     })
     
-@login_required(login_url=getattr(settings, 'ADMIN_LOGIN_URL'))
+@staff_access_required
 def votecoderequests_accept(request, sel_event_id, vcrid):
-    # Make sure the user is staff
-    if not request.user.is_staff:
-        raise Http403
-    
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_votecode'):
         raise Http403

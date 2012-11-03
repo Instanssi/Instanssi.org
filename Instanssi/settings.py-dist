@@ -57,6 +57,7 @@ OPENID_SREG_EXTRA_FIELDS = []
 OPENID_FOLLOW_RENAMES = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/kompomaatti/'
+ADMIN_LOGIN_URL = '/manage/auth/login/'
 
 # Options for testing.customrunner.CustomRunner
 TEST_EXCLUDE = {

@@ -21,7 +21,18 @@ import hashlib
 # For generating a paper version of votecodes
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
+
+@login_required(login_url='/manage/auth/login/')
+def index(request, sel_event_id):
+    # Make sure the user is staff.
+    if not request.user.is_staff:
+        raise Http403
     
+    # Render response
+    return admin_render(request, "admin_kompomaatti/index.html", {
+        'selected_event_id': int(sel_event_id),
+    })
+
 @login_required(login_url='/manage/auth/login/')
 def competition(request, sel_event_id, competition_id):
     # Make sure the user is staff.

@@ -23,5 +23,83 @@
 {{ block.super }}
     <h2>Overview</h2>
 
-
+    <h3>Kompot</h3>
+    <p>
+		Kompot-sivulla hallitaan demokompojen tietoja, mm. kuvaukset, alku- ja loppuajat, jne.
+    </p>
+    <p>
+    	Entryesittely-kenttä kompon tiedoissa ilmoittaa, miten entry esitellään arkistossa ja kompomaatissa.
+    </p>
+    <ul>
+    	<li>
+    		Valinta "Ei mitään" esittää arkiston/kompomaatin kompoesittelyn tiedoissa arkiston tai kompomaatin oletuskuvan.
+    	</li>
+    	<li>
+    		Mikäli valitaan "vain kuva", näytetään entryn tiedoissa joko entryyn ladattu esittelykuva tai sen puuttuessa oletuskuva.
+    	</li>
+    	<li>
+    		Valinta "jplayer ensin, sitten kuva" yrittää esittää kompon entryjen ladatut tiedostot mediatoistimella. Mikäli
+    		mediaa ei voida toistaa (tiedostoformaatti ei ole sopiva), yritetään ensin näyttää entryyn ladattu esittelykuva, tai sen 
+    		puuttuessa oletuskuva.
+    	</li>
+    	<li>
+    		Valinta "Youtube ensin, sitten kuva" tekee saman kuin "jplayer ensin, sitten kuva", mutta yrittää jplayerin sijasta
+    		esittää entryn tietoihin lisätyn youtube-videon.
+    	</li>
+    </ul>
+    <p>
+    	<strong>HUOM!</strong> Älä esitä kompojen tietoja arkistossa ennen kompojen äänestyksen loppumista, sillä arkisto automaattisesti esittää myös tulokset!
+    </p>
+    <p>
+    	<a href="{% url 'admin-compos' selected_event_id %}">Siirry muokkaamaan kompoja &raquo;</a>
+    </p>
+    
+    <h3>Entryt</h3>
+    <p>
+		Entryt-sivulla muokataan kompomaattiin ladattujen entryjen tietoja. Entry voidaan myös diskata, mikäli se ei vastaa vaatimuksia.
+    </p>
+    <p>
+    	<strong>HUOM!</strong> Mikäli entryistä tehdään youtube-videot, voidaan videolinkki lisätä entryihin täällä!
+    </p>
+    <p>
+    	<a href="{% url 'admin-entries' selected_event_id %}">Siirry muokkaamaan entryjä &raquo;</a>
+    </p>
+    
+    <h3>Kilpailut</h3>
+    <p>
+		Kilpailut ovat mitä tahansa haasteita, joiden tulosta ei äänestetä. Tulokset lisää myöhemmin ylläpitäjä.
+    </p>
+    <p>
+    	Esimerkiksi juoksukilpailuissa pisteiden tyyppi olisi "s" ja pisteiden järjestely "Matalin tulos ensin", kun taas
+    	mm. levykkeenheitossa tyyppi olisi "m" ja järjestely "Korkein tulos ensin".
+    </p>
+    <p>
+    	<a href="{% url 'admin-competitions' selected_event_id %}">Siirry muokkaamaan kilpailuja &raquo;</a>
+    </p>
+    
+    <h3>Tulokset</h3>
+    <p>
+		Kompojen ja kilpailujen tulokset.
+    </p>
+    <p>
+    	<a href="{% url 'admin-results' selected_event_id %}">Siirry selaamaan tuloksia &raquo;</a>
+    </p>
+    
+    <h3>Äänestyskoodit</h3>
+    <p>
+		Äänestyskoodeilla hallitaan äänestysoikeutta. Koodit ovat tapahtuma- ja käyttäjäkohtaisia. Kun koodi on käytetty, kukaan muu
+		ei voi enää varata sitä samassa tapahtumassa.
+    </p>
+    <p>
+    	<a href="{% url 'admin-votecodes' selected_event_id %}">Siirry muokkaamaan äänestuskoodeja &raquo;</a>
+    </p>
+    
+    <h3>Äänestyskoodipyynnöt</h3>
+    <p>
+		Äänestyskoodipyynnöt ovat avuksi etänä osallistuville henkilöille. Käyttäjä voi kirjautua kompomaattiin, ja 
+		pyytää etänä äänestysoikeutta. Hallintapaneelista voidaan hyväksyä tarpeen mukaan pyyntöjä.
+    </p>
+    <p>
+    	<a href="{% url 'admin-votecoderequests' selected_event_id %}">Siirry selaamaan äänestyskoodipyyntöjä &raquo;</a>
+    </p>
 {% endblock %}

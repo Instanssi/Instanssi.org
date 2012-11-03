@@ -225,10 +225,10 @@ class Competition(models.Model):
     end = models.DateTimeField(u'Kilpailun loppu', help_text=u"Kilpailun päättymisaika.", null=True, blank=True)
     score_type = models.CharField(u'Pisteiden tyyppi', max_length=8, help_text=u'Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.') 
     ENTRY_VIEW_TYPES = (
-        (0, u'Korkeimmat pisteet ensin'),
-        (1, u'Matalimmat pisteet ensin'),
+        (0, u'Korkein tulos ensin'),
+        (1, u'Matalin tulos ensin'),
     )
-    score_sort = models.IntegerField(u'Pisteiden järjestely', choices=ENTRY_VIEW_TYPES, help_text=u'Onko suurimman vai pienimmän pistemäärän saavuttanut voittaja?', default=0)
+    score_sort = models.IntegerField(u'Pisteiden järjestely', choices=ENTRY_VIEW_TYPES, help_text=u'Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?', default=0)
     show_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä kilpailun tulokset.", default=False)
     hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.', default=False)
 
@@ -244,15 +244,17 @@ class CompetitionParticipation(models.Model):
     user = models.ForeignKey(User, verbose_name=u'Käyttäjä', help_text=u'Osallistuja')
     participant_name = models.CharField(u'Osallistujan nimi', help_text=u'Nimimerkki jolla haluat osallistua.', max_length=32, default=u'')
     score = models.FloatField(u'Pisteet', help_text=u'Kilpailijan saavuttamat pisteet', blank=True, default=0)
+    disqualified = models.BooleanField(u'Diskattu', help_text=u"Suoritus on diskattu sääntörikon tai teknisten virheiden takia.", default=False)
+    disqualified_reason = models.TextField(u'Diskauksen syy', blank=True)
 
     def get_formatted_score(self):
         return str(self.score) + u' ' + self.competition.score_type
 
     def get_rank(self):
         # Get results
-        rankby = 'score'
+        rankby = '-score'
         if self.competition.score_sort == 1:
-            rankby = '-score'
+            rankby = 'score'
         results = CompetitionParticipation.objects.filter(pk=self.competition.id).order_by(rankby)
         
         # Find self

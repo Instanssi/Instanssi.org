@@ -41,10 +41,10 @@
 				<td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>
 {% if perms.kompomaatti.change_event %}
-					<a href="/manage/events/edit/{{ event.id }}/" class="edit_link">Muokkaa</a>
+					<a href="{% url 'admin-events-edit' event.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.kompomaatti.delete_event %}
-					<a href="/manage/events/delete/{{ event.id }}/" class="delete_link">Poista</a>
+					<a href="{% url 'admin-events-delete' event.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

@@ -26,7 +26,7 @@
 	<p>Tapahtumissa on odottavia äänestyskoodipyyntöjä:</p>
 	<ul>
 {% for vcreq in vcreqs %}
-		<li>{{ vcreq.count }} pyyntöä tapahtumassa <a href="/manage/{{ vcreq.event_id }}/kompomaatti/votecoderequests/">{{ vcreq.event_name }}</a></li>
+		<li>{{ vcreq.count }} pyyntöä tapahtumassa <a href="{% url 'admin-votecoderequests' vcreq.event_id %}">{{ vcreq.event_name }}</a></li>
 {% endfor %}
 	</ul>
 {% endif %}

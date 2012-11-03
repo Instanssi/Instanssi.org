@@ -57,10 +57,10 @@
 				<td>{% if entry.public %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>
 {% if perms.ext_blog.change_blogentry %}
-					<a href="/manage/{{ selected_event_id }}/blog/edit/{{ entry.id }}/" class="edit_link">Muokkaa</a>
+					<a href="{% url 'admin-blog-edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.ext_blog.delete_blogentry %}
-					<a href="/manage/{{ selected_event_id }}/blog/delete/{{ entry.id }}/" class="delete_link">Poista</a>
+					<a href="{% url 'admin-blog-delete' selected_event_id entry.id%}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

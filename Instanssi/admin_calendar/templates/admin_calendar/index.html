@@ -55,10 +55,10 @@
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>
 {% if perms.ext_calendar.change_calendarevent %}
-					<a href="/manage/{{ selected_event_id }}/calendar/edit/{{ event.id }}/" class="edit_link">Muokkaa</a>
+					<a href="{% url 'admin-calendar-edit' selected_event_id event.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.ext_calendar.delete_calendarevent %}
-					<a href="/manage/{{ selected_event_id }}/calendar/delete/{{ event.id }}/" class="delete_link">Poista</a>
+					<a href="{% url 'admin-calendar-delete' selected_event_id event.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

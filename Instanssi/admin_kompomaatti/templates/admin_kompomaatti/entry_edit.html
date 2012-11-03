@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/entries/">Entryt</a>
+		&raquo; <a href="{% url 'admin-entries' selected_event_id %}">Entryt</a>
 		&raquo; Muokkaa
 {% endblock %}
 

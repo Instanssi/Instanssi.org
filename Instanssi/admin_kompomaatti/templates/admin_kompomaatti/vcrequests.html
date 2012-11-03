@@ -8,7 +8,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/votecoderequests/">Avainpyynnöt</a>
+		&raquo; <a href="{% url 'admin-votecoderequests' selected_event_id %}">Avainpyynnöt</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -39,7 +39,7 @@
 	            <td>{{ request.user.email }}</td>
 	            <td>{{ request.text|linebreaksbr }}</td>
 {% if perms.kompomaatti.change_votecode %}
-	            <td><a href="/manage/{{ selected_event_id }}/kompomaatti/acceptreq/{{ request.id }}/">Salli</a></td>
+	            <td><a href="{% url 'admin-votecoderequest-accept' selected_event_id request.id %}">Salli</a></td>
 {% endif %}
 			</tr>
 {% endfor %}

@@ -12,16 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/profile/">Profiili</a>
-{% endblock %}
-
-{% block sidemenu %}
-{{ block.super }}
-            <ul class="box">
-            	<li class="menuitem"><a href="/manage/profile/">Apua</a></li>
-                <li class="menuitem"><a href="/manage/profile/profile/">Profiilin tiedot</a></li>
-                <li class="menuitem"><a href="/manage/profile/password/">Salasanan vaihto</a></li>
-            </ul>
+		&raquo; <a href="{% url 'admin-profile' %}">Profiili</a>
 {% endblock %}
 
 {% block content %}

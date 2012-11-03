@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/{{ selected_event_id }}/kompomaatti/votecodes/">Avaimet</a>
+		&raquo; <a href="{% url 'admin-votecodes' selected_event_id %}">Avaimet</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -23,7 +23,7 @@
 {{ block.super }}
     <h2>Avaimet</h2>
 {% if tokens %}
-    <a href="/manage/{{ selected_event_id }}/kompomaatti/printcodes/" class="jq-button">Vapaat tokenit .PDF muodossa</a>
+    <a href="{% url 'admin-votecodes-print' selected_event_id %}" class="jq-button">Vapaat tokenit .PDF muodossa</a>
 	<table id="tokens_table" class="tablesorter"> 
 	<thead>
 		<tr>

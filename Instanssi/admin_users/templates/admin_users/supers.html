@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/users/superusers/">Pääkäyttäjät</a>
+		&raquo; <a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -54,8 +54,8 @@
 				<td></td>
 {% else %}
 				<td>
-					<a href="/manage/users/editsu/{{ user.id }}/" class="edit_link">Muokkaa</a>
-					<a href="/manage/users/deletesu/{{ user.id }}/" class="delete_link">Poista</a>
+					<a href="{% url 'admin-editsu' user.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'admin-deletesu' user.id %}" class="delete_link">Poista</a>
 				</td>
 {% endif %}
 {% endif %}

@@ -14,7 +14,7 @@
 {{ block.super }}
     <div id="contents">
 		<div id="crumbpath">
-			<a href="/manage/">Hallinta</a>
+			<a href="{% url 'admin-base' %}">Hallinta</a>
 {% block crumbs %}{% endblock %}
 		</div>
 {% block content %}{% endblock %}

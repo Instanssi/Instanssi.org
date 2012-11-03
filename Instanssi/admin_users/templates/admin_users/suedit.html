@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="/manage/users/superusers/">Pääkäyttäjät</a>
+		&raquo; <a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a>
 		&raquo; Muokkaa
 {% endblock %}
 

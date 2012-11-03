@@ -61,8 +61,8 @@
             <li class="menuitem">
             	<a href="/manage/users/">Käyttäjät<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
-            		<li class="menuitem"><a href="/manage/users/superusers/">Pääkäyttäjät</a></li>
-            		<li class="menuitem"><a href="/manage/users/openid/">OpenID-käyttäjät</a></li>
+            		<li class="menuitem"><a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a></li>
+            		<li class="menuitem"><a href="{% url 'admin-openid' %}">OpenID-käyttäjät</a></li>
             	</ul>
             </li>
             <li class="menuitem">
@@ -78,8 +78,8 @@
             <li class="menuitem">
             	<a href="/manage/profile/">Profiili<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
-            		<li class="menuitem"><a href="/manage/profile/profile/">Profiili</a></li>
-            		<li class="menuitem"><a href="/manage/profile/password/">Salasana</a></li>
+            		<li class="menuitem"><a href="{% url 'admin-profile' %}">Profiili</a></li>
+            		<li class="menuitem"><a href="{% url 'admin-password' %}">Salasana</a></li>
             	</ul>
             </li>
             <li class="menuitem"><a href="/manage/auth/logout/">Kirjaudu ulos</a></li>

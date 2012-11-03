@@ -4,6 +4,9 @@ from django import forms
 from uni_form.helper import FormHelper
 from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
 from models import UploadedFile
+import os
+from django.core.exceptions import ValidationError
+from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 
 class UploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -19,6 +22,19 @@ class UploadForm(forms.ModelForm):
                 )
             )
         )
+        
+    def field_format_ok(self, fname, allowed):
+        type = os.path.splitext(self.cleaned_data[fname].name)[1][1:]
+        return (type in allowed)
+
+    def clean_file(self):
+        # Check format
+        allowed = ['png','jpg','gif','zip','rar','7z','gz','tar','bz2']
+        if not self.field_format_ok("file", allowed):
+            raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(allowed) + '.')
+        
+        # Return
+        return self.cleaned_data['file']
         
     class Meta:
         model = UploadedFile

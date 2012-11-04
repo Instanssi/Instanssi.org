@@ -1,22 +1,109 @@
 {% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+{% load static %}
 
-{% block title %} - Kompo{% endblock %}
+{% block title %} - {{ compo.name }} - Tiedot{% endblock %}
 
 {% block head %}
 {{ block.super }}
+    <!-- tablesorter files -->
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/theme.default.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/jquery.tablesorter.pager.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa ilmoittautumisen ?"); 
+    });
+    $("#entries_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#entries_pager")});
+    
+    $('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
+    $('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
+    $('.management_field').css('width','30px');
 {% endblock %}
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; Kompo
+	&raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+	&raquo; Tiedot
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Kompo</h2>
+<h2>{{ compo.name }}</h2>
+
+<h3>Kuvaus</h3>
+{{ compo.description|safe }}
+
+<h3>Ajat</h3>
+<table class="info">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Ilmoittautuminen päättyy:</th>
+            <th>Muokkausaika päättyy:</th>
+            <th>Kompo alkaa:</th>
+            <th>Äänestysaika:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th>Tila/Aika:</th>
+        <td>{{ compo.adding_time }}</td>
+        <td>{{ compo.editing_time }}</td>
+        <td>{{ compo.compo_time }}</td>
+        <td>{{ compo.voting_time }}</td>
+    </tbody>
+</table>
+
+{% if user.is_authenticated %}
+<h3>Osallistuminen</h3>
+{% if entries %}
+<p>Olet osallistunut kompoon seuraavilla teoksilla:</p>
+<table class="tablesorter" id="entries_table">
+    <thead>
+        <tr>
+            <th>Teoksen nimi</th>
+            <th>Nimimerkki</th>
+            <th>Teos</th>
+            <th>Lähdekoodi</th>
+            <th>Kuva</th>
+{% if can_edit %}
+            <th class="sorter-false management_field"></th>
+{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+{% for entry in entries %}
+        <tr>
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.creator }}</td>
+            <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
+            <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lataa</a>{% endif %}</td>
+            <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Lataa</a>{% endif %}</td>
+            <td>
+{% if can_edit %}
+                <a href="{% url 'kompomaatti-entry-edit' sel_event_id compo.id entry.id %}" class="edit_link">Muokkaa</a>
+                <a href="{% url 'kompomaatti-entry-delete' sel_event_id compo.id entry.id %}" class="delete_link">Poista</a>
+{% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+<div id="entries_pager" class="pager">
+{% include "common/pagination.html" %}
+</div>
+{% else %}
+<p>Et ole vielä osallistunut.</p>
+{% endif %}
+
+{% if can_participate %}
+{% uni_form entryform entryform.helper %}
+{% endif %}
+{% endif %}
 
 {% endblock %}

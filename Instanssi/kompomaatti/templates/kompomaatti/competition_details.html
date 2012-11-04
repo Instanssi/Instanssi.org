@@ -1,6 +1,7 @@
 {% extends "kompomaatti/base.html" %}
+{% load static %}
 
-{% block title %} - Kilpailu{% endblock %}
+{% block title %} - {{ competition.name }}{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -8,14 +9,45 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".button").button();
 {% endblock %}
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; Kilpailu
+    &raquo; <a href="{% url 'kompomaatti-competition' sel_event_id competition.id %}">{{ competition.name }}</a>
+    &raquo; Tiedot
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Kilpailu</h2>
+<h2>{{ competition.name }}</h2>
+<h3>Kuvaus</h3>
+{{ competition.description|safe }}
+
+<h3>Ajat</h3>
+<table class="info">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Ilmoittautuminen päättyy:</th>
+            <th>Kilpailu alkaa:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th>Tila/Aika:</th>
+        <td>{{ competition.participation_end_time }}</td>
+        <td>{{ competition.start_time }}</td>
+    </tbody>
+</table>
+
+{% if user.is_authenticated %}
+<h3>Osallistuminen</h3>
+{% if signed_up %}
+<p>Olet ilmoittautunut!</p>
+<a class="button" href="{% url 'kompomaatti-competition-sign' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
+{% else %}
+<p>Et ole vielä ilmoittautunut.</p>
+<a class="button" href="{% url 'kompomaatti-competition-sign' sel_event_id competition.id %}">Ilmoittaudu kilpailuun!</a>
+{% endif %}
+{% endif %}
 {% endblock %}

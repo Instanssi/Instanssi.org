@@ -4,6 +4,12 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.kompomaatti.views',
+    url(r'^$', 'index', name="kompomaatti-index"),
+)
+
+"""
+urlpatterns = patterns(
+    'Instanssi.kompomaatti.views',
     url(r'^$', 'index.index'),
     url(r'^compo/(?P<compo_id>\d+)/', 'compo.compo'),
     url(r'^entry/(?P<entry_id>\d+)/', 'entry.entry'),
@@ -16,3 +22,4 @@ urlpatterns = patterns(
     url(r'^help/', 'help.help'),
     url(r'^logout/', 'auth.dologout'),
 )
+"""

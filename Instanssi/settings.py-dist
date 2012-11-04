@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'Instanssi.admin_events_overview',
     'Instanssi.arkisto',
     'Instanssi.kompomaatti',
+    'Instanssi.kompomaatti_eventselect',
     'Instanssi.openidauth',
     'Instanssi.dbsettings',
     'Instanssi.ext_blog',

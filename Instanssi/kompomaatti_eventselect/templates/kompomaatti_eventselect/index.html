@@ -1,0 +1,46 @@
+<!DOCTYPE html>{% load static %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Kompomaatti</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    
+    <!-- Library stuff -->
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
+
+    <!-- Kompomaatti event selector CSS -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti_eventselect/css/style.css" %}" />
+    
+    <script type="text/javascript">
+    $(function() {
+		$('.ui-widget').css('font-size','14px');
+		$('#submit_button').css('display', 'none');
+		$('#event_select').change(function() {
+			window.location.replace("/kompomaatti/"+$('#event_select').val()+'/');
+		});
+    });
+    </script>
+
+</head>
+<body>
+<div id="box">&nbsp;</div>
+<div id="cbox">
+	<h1>Kompomaatti</h1>
+	<p>Valitse tapahtuma.</p>
+	<form id="mform" method="POST">
+		<select id="event_select" name="eventsel">
+			<option value="-1">---</option>
+	{% for event in events %}
+			<option value="{{ event.id }}">{{ event.name }}</option>
+	{% endfor %}
+		</select>
+		{% csrf_token %}
+		<input type="submit" id="submit_button" value="Valitse" />
+	</form>
+</div>
+</body>
+</html>

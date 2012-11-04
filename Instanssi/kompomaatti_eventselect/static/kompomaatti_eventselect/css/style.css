@@ -1,0 +1,47 @@
+body, html {
+	height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #f9f9f9;
+}
+
+h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+h1 {
+    font-size: 250%;
+    color: #111111;
+    text-shadow: #aaaaaa 0px 0px 2px;
+    margin-bottom: 8px;
+}
+
+p {
+	line-height: 130%;
+	margin-left: 3px;
+	margin-bottom: 8px;
+}
+
+#box {
+	background-color: #e7e7e7;
+	height: 100%;
+	width: 80px;
+	border-right: 1px dotted black;
+	margin-right: 1em;
+	float: left;
+}
+
+#cbox {
+	padding-top: 3em;
+	float: left;
+}
+
+#event_select {
+	margin-left: 3px;
+	border: 1px solid black;
+	padding: 3px;
+}

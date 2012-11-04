@@ -61,7 +61,9 @@ def compo_details(request, event_id, compo_id):
         entryform = EntryForm(compo=compo)
     
     # Get entries
-    entries = Entry.objects.filter(compo=compo, user=request.user)
+    entries = None
+    if request.user.is_active and request.user.is_authenticated():
+        entries = Entry.objects.filter(compo=compo, user=request.user)
     
     # Dump template
     return custom_render(request, 'kompomaatti/compo_details.html', {
@@ -161,11 +163,12 @@ def competition_details(request, event_id, competition_id):
     # Check if user has participated
     signed_up = False
     participation = None
-    try:
-        participation = CompetitionParticipation.objects.get(competition=competition, user=request.user)
-        signed_up = True
-    except CompetitionParticipation.DoesNotExist:
-        pass
+    if request.user.is_active and request.user.is_authenticated():
+        try:
+            participation = CompetitionParticipation.objects.get(competition=competition, user=request.user)
+            signed_up = True
+        except CompetitionParticipation.DoesNotExist:
+            pass
     
     # All done, dump template
     return custom_render(request, 'kompomaatti/competition_details.html', {

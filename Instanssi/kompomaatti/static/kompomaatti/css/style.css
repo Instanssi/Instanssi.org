@@ -77,6 +77,25 @@ p {
 	-webkit-box-shadow: 0px 0px 5px #888;
 }
 
+/* ---------- Icons ---------- */
+
+.custom_icon_style {
+    float: left;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border: 1px solid #bbbbbb;
+    background-color: #eeeeee;
+    margin-left: 2px;
+    margin-right: 2px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.custom_icon_style:hover {
+    background-color: #cccccc;
+}
+
 /* ---------- Header ---------- */
 
 #header {
@@ -204,26 +223,25 @@ div.pager input {
 	border: 1px solid #777777;
 }
 
-/* ---------- Generic infotable ---------- */
+/* ---------- Generic tables ---------- */
 
-table.info {
-    border-collapse: collapse;
-    border: 1px solid #999999;
+table { 
+    border-collapse: collapse; 
+    width: 100%; 
 }
 
-table.info th {
-    text-align: left;
-    padding: 0.3em;
-    border: 1px solid #999999;
-    background-color: #eeeeee;
-    min-width: 150px;
+table th { 
+    padding: 5px; 
+    border: 1px solid #aaaaaa; 
+    background-color: #dddddd; 
+    text-align: left; 
 }
 
-table.info td {
-    padding: 0.3em;
-    border: 1px solid #999999;
+table td { 
+    padding: 5px; 
+    border: 1px solid #aaaaaa; 
+    background-color: #eeeeee; 
 }
-
 
 /* ---------- uniForm tweaks ---------- */
 

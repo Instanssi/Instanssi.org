@@ -51,7 +51,7 @@
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
 {% if is_superuser %}
 {% if user.is_superuser%}
-				<td></td>
+				<td>&nbsp;</td>
 {% else %}
 				<td>
 					<a href="{% url 'admin-users-edit' user.id %}" class="edit_link">Muokkaa</a>

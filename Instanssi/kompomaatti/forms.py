@@ -43,7 +43,6 @@ class ProfileForm(forms.ModelForm):
         
         # Finnish labels
         self.fields['first_name'].label = u"Etunimi"
-        self.fields['first_name'].required = True
         self.fields['last_name'].label = u"Sukunimi"
         self.fields['email'].label = u"Sähköposti"
         self.fields['otherinfo'].initial = self.profile.otherinfo

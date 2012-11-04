@@ -83,6 +83,7 @@ class AdminCompetitionForm(forms.ModelForm):
                 'score_sort',
                 'show_results',
                 'hide_from_archive',
+                'active',
                 ButtonHolder (
                     Submit('submit', 'Tallenna')
                 )

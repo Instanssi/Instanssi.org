@@ -1,7 +1,7 @@
 {% extends "kompomaatti/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %} - Etusivu{% endblock %}
+{% block title %} - Profiili{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -13,22 +13,28 @@
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; Etusivu
+	&raquo; Profiili
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Etusivu</h2>
+<h2>Profiili</h2>
+<p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
+<p>Mikäli haluat rekisteröidä saamasi äänestyskoodin, syötä se sivun alaosasta löytyvällä lomakkeella.</p>
+
 <h3>Käyttäjätiedot</h3>
 {% uni_form profileform profileform.helper %}
 
 <h3>Äänestysoikeus</h3>
 {% if can_vote %}
     <p>Sinulla on oikeus äänestää.</p>
+    <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>
 {% else %}
     <p>Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.</p>
     {% uni_form votecodeassocform votecodeassocform.helper %}
-    {% if not request.made %}
+    {% if request_made %}
+    <p>Olet jo pyytänyt äänestysoikeutta, odota rauhassa ...</p>
+    {% else %}
     {% uni_form votecoderequestform votecoderequestform.helper %}
     {% endif %}
 {% endif %}

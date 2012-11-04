@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.forms import ProfileForm, VoteCodeRequestForm, VoteCodeAssocForm
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
-from Instanssi.kompomaatti.models import Event, Profile
+from Instanssi.kompomaatti.models import Event, Profile, VoteCodeRequest, VoteCode
 from django.contrib.auth import logout
     
 def index(request, event_id):
@@ -46,11 +46,13 @@ def profile(request, event_id):
     event = get_object_or_404(Event, pk=int(event_id))
         
     # Check if user has the right to vote
+    reserved_code = None
     can_vote = False
     try:
         votecode = VoteCode.objects.get(event=event, associated_to=request.user)
+        reserved_code = votecode.key
         can_vote = True
-    except:
+    except VoteCode.DoesNotExist:
         pass
         
     # Check if request for vote code has been made
@@ -58,30 +60,30 @@ def profile(request, event_id):
     try:
         vcreq = VoteCodeRequest.objects.get(event=event, user=request.user)
         request_made = True
-    except:
+    except VoteCodeRequest.DoesNotExist:
         pass
         
     # Profile form
-    if request.method == 'POST':
-        profileform = ProfileForm(request.POST, prefix='prof', instance=request.user, user=request.user)
+    if request.method == 'POST' and 'submit-profile' in request.POST:
+        profileform = ProfileForm(request.POST, instance=request.user, user=request.user)
         if profileform.is_valid():
             profileform.save()
             return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
     else:
-        profileform = ProfileForm(instance=request.user, prefix='prof', user=request.user)
+        profileform = ProfileForm(instance=request.user, user=request.user)
     
     # Votecode Association form
-    if request.method == 'POST':
-        votecodeassocform = VoteCodeAssocForm(request.POST, prefix='vcassoc')
+    if request.method == 'POST' and 'submit-vcassoc' in request.POST:
+        votecodeassocform = VoteCodeAssocForm(request.POST, event=event, user=request.user)
         if votecodeassocform.is_valid():
             votecodeassocform.save()
             return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
     else:
-        votecodeassocform = VoteCodeAssocForm(prefix='vcassoc')
+        votecodeassocform = VoteCodeAssocForm(event=event, user=request.user)
     
     # Votecode Request form
-    if request.method == 'POST':
-        votecoderequestform = VoteCodeRequestForm(request.POST, prefix='vcreq')
+    if request.method == 'POST' and 'submit-vcreq' in request.POST:
+        votecoderequestform = VoteCodeRequestForm(request.POST)
         if votecoderequestform.is_valid():
             vcr = votecoderequestform.save(commit=False)
             vcr.user = request.user
@@ -89,7 +91,7 @@ def profile(request, event_id):
             vcr.save()
             return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
     else:
-        votecoderequestform = VoteCodeRequestForm(prefix='vcreq')
+        votecoderequestform = VoteCodeRequestForm()
     
     # Render
     return custom_render(request, 'kompomaatti/profile.html', {
@@ -97,6 +99,7 @@ def profile(request, event_id):
         'profileform': profileform,
         'votecodeassocform': votecodeassocform,
         'votecoderequestform': votecoderequestform,
+        'reserved_code': reserved_code,
         'can_vote': can_vote,
         'request_made': request_made,
     })

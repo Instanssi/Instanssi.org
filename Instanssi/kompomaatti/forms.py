@@ -36,7 +36,7 @@ class ProfileForm(forms.ModelForm):
                 'email',
                 'otherinfo',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit-profile', 'Tallenna')
                 )
             )
         )
@@ -66,7 +66,7 @@ class VoteCodeRequestForm(forms.ModelForm):
                 u'Pyydä äänestysoikeutta',
                 'text',
                 ButtonHolder (
-                    Submit('submit', 'Pyydä äänestysoikeutta')
+                    Submit('submit-vcreq', 'Pyydä äänestysoikeutta')
                 )
             )
         )
@@ -80,8 +80,8 @@ class VoteCodeAssocForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         # Init
-        self.event = kwargs.get('event', None)
-        self.user = kwargs.get('user', None)
+        self.event = kwargs.pop('event', None)
+        self.user = kwargs.pop('user', None)
         super(VoteCodeAssocForm, self).__init__(*args, **kwargs)
         
         # Build form
@@ -91,7 +91,7 @@ class VoteCodeAssocForm(forms.Form):
                 u'Syötä äänestyskoodi',
                 'code',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit-vcassoc', 'Tallenna')
                 )
             )
         )
@@ -105,6 +105,7 @@ class VoteCodeAssocForm(forms.Form):
         return code
     
     def save(self):
+        print self.cleaned_data
         vc = VoteCode.objects.get(event=self.event, key=self.cleaned_data['code'])
         vc.associated_to = self.user
         vc.time = datetime.now()

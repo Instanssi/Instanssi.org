@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.forms import ProfileForm, VoteCodeRequestForm, VoteCodeAssocForm
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
-from Instanssi.kompomaatti.models import Event, Profile, VoteCodeRequest, VoteCode
+from Instanssi.kompomaatti.models import *
+from Instanssi.kompomaatti.misc.time_formatting import *
 from django.contrib.auth import logout
     
 def index(request, event_id):
@@ -16,8 +17,15 @@ def index(request, event_id):
     })
     
 def compos(request, event_id):
+    # Get compos, format times
+    compos = []
+    for compo in Compo.objects.filter(active=True, event_id=int(event_id)):
+        compos.append(compo_times_formatter(compo))
+    
+    # Dump the template
     return custom_render(request, 'kompomaatti/compos.html', {
         'sel_event_id': int(event_id),
+        'compos': compos,
     })
     
 def compo_details(request, event_id, compo_id):
@@ -26,8 +34,15 @@ def compo_details(request, event_id, compo_id):
     })
     
 def competitions(request, event_id):
+    # Get competitions
+    competitions = []
+    for competition in Competition.objects.filter(active=True, event_id=int(event_id)):
+        competitions.append(competition_times_formatter(competition))
+    
+    # Dump the template
     return custom_render(request, 'kompomaatti/competitions.html', {
         'sel_event_id': int(event_id),
+        'competitions': competitions,
     })
     
 def competition_details(request, event_id, competition_id):

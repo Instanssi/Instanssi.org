@@ -1,6 +1,6 @@
 {% if competitions %}
 {% for competition in competitions %}
-                    <li><a href="">{{ competition.name }}</a></li>
+                    <li><a href="{% url 'kompomaatti-competition' event_id competition.id %}">{{ competition.name }}</a></li>
 {% endfor %}
 {% else %}
                     <li><span>---</span></li>

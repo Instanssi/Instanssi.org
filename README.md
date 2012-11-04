@@ -50,14 +50,19 @@ Projektin asentaminen
 Kirjastot
 ---------
 * [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
-* [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [django-social-auth] (https://github.com/omab/django-social-auth) `pip install django-social-auth`
+* [httplib2] (http://code.google.com/p/httplib2/) `pip install httplib2`
+* [python-oauth2] (https://github.com/simplegeo/python-oauth2) `pip install oauth2`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South] (http://south.aeracode.org/) `pip install south`
 * [django-uni-form] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
-* [feedparser] (http://code.google.com/p/feedparser/) `pip install feedparser`
+
+Onelineri kirjastojen asentamiseen
+----------------------------------
+    pip install django django-social-auth httplib2 oauth2 python-openid pil django-imagekit south django-uni-form reportlab
 
 IDEjä
 -----

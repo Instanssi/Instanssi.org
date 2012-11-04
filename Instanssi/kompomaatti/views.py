@@ -198,11 +198,6 @@ def competition_signout(request, event_id, competition_id):
     # Redirect
     return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
 
-def login(request, event_id):
-    return custom_render(request, 'kompomaatti/login.html', {
-        'sel_event_id': int(event_id),
-    })
-
 @user_access_required
 def profile(request, event_id):
     # Get event

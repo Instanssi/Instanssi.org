@@ -70,7 +70,7 @@
 {% if user.is_authenticated %}
                 <a href="{% url 'kompomaatti-logout' sel_event_id %}">Kirjaudu ulos</a>
 {% else %}
-                <a href="{% url 'kompomaatti-login' sel_event_id %}">Kirjaudu sisään</a>
+                <a href="{% url 'kompomaatti-auth-login' %}">Kirjaudu sisään</a>
 {% endif %}
             </li>
         </ul>

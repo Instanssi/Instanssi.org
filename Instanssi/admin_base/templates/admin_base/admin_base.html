@@ -58,13 +58,7 @@
     <div class="limiter">
         <ul id="header_nav_left">
             <li class="menuitem"><a href="{% url 'admin-base' %}">Etusivu</a></li>
-            <li class="menuitem">
-            	<a href="{% url 'admin-superusers' %}">Käyttäjät<span class="navmenu-icon-down"></span></a>
-            	<ul class="sub-level">
-            		<li class="menuitem"><a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a></li>
-            		<li class="menuitem"><a href="{% url 'admin-openid' %}">OpenID-käyttäjät</a></li>
-            	</ul>
-            </li>
+            <li class="menuitem"><a href="{% url 'admin-users' %}">Käyttäjät</a></li>
             <li class="menuitem">
             	<a href="{% url 'admin-events' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">

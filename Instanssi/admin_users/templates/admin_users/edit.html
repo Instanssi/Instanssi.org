@@ -1,7 +1,7 @@
 {% extends "admin_users/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Pääkäyttäjät - Muokkaa{% endblock %}
+{% block title %}{{ block.super }} - Muokkaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a>
+		&raquo; <a href="{% url 'admin-users' %}">Käyttäjät</a>
 		&raquo; Muokkaa
 {% endblock %}
 

@@ -1,7 +1,7 @@
 {% extends "admin_users/base.html" %}
 {% load uni_form_tags %}
 
-{% block title %}{{ block.super }} - Pääkäyttäjät{% endblock %}
+{% block title %}{{ block.super }} - Käyttäjät{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-superusers' %}">Pääkäyttäjät</a>
+		&raquo; <a href="{% url 'admin-users' %}">Käyttäjät</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -23,7 +23,7 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Pääkäyttäjät</h2>
+    <h2>Käyttäjät</h2>
  	<table id="user_table" class="tablesorter">
  		<thead>
  			<tr>
@@ -45,7 +45,7 @@
 				<td>{{ user.username }}</td>
 				<td>{{ user.first_name }} {{ user.last_name }}</td>
 				<td>{{ user.email }}</td>
-				<td>{% if user.is_superuser %}Administrator{% elif user.is_staff %}Staff{% else %}Käyttäjä{% endif %}</td>
+				<td>{% if user.is_superuser %}Administrator{% elif user.is_staff %}Staff{% else %}User{% endif %}</td>
 				<td>{{ user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
@@ -54,8 +54,8 @@
 				<td></td>
 {% else %}
 				<td>
-					<a href="{% url 'admin-editsu' user.id %}" class="edit_link">Muokkaa</a>
-					<a href="{% url 'admin-deletesu' user.id %}" class="delete_link">Poista</a>
+					<a href="{% url 'admin-users-edit' user.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'admin-users-delete' user.id %}" class="delete_link">Poista</a>
 				</td>
 {% endif %}
 {% endif %}

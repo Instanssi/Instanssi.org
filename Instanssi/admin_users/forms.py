@@ -67,6 +67,8 @@ class UserEditForm(forms.ModelForm):
                 'first_name',
                 'last_name',
                 'email',
+                'is_staff',
+                'groups',
                 ButtonHolder (
                     Submit('submit', 'Tallenna')
                 )
@@ -75,4 +77,4 @@ class UserEditForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('first_name','last_name','email')
+        fields = ('first_name','last_name','email','groups','is_staff')

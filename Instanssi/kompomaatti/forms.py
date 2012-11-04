@@ -14,13 +14,23 @@ class ProfileForm(forms.ModelForm):
     otherinfo = forms.CharField(widget=forms.Textarea(), label=u"Muut yhteystiedot", help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", required=False)
     
     def __init__(self, *args, **kwargs):
-        profile = kwargs.pop('profile', None)
-        
+        # Init
+        self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)
+        
+        # Find profile
+        try:
+            self.profile = Profile.objects.get(user=self.user)
+        except:
+            self.profile = Profile()
+            self.profile.user = self.user
+            self.profile.otherinfo = u""
+        
+        # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Muokkaa profiilia',
+                u'Käyttäjäprofiili',
                 'first_name',
                 'last_name',
                 'email',
@@ -33,28 +43,28 @@ class ProfileForm(forms.ModelForm):
         
         # Finnish labels
         self.fields['first_name'].label = u"Etunimi"
+        self.fields['first_name'].required = True
         self.fields['last_name'].label = u"Sukunimi"
         self.fields['email'].label = u"Sähköposti"
-        
-        # Get initial information for otherinfo field
-        if profile:
-            self.fields['otherinfo'].initial = profile.otherinfo
+        self.fields['otherinfo'].initial = self.profile.otherinfo
                 
+    def save(self):
+        super(ProfileForm, self).save()
+        self.profile.otherinfo = self.cleaned_data['otherinfo']
+        self.profile.save()
+        
     class Meta:
         model = User
         fields = ('first_name','last_name','email')
         
-class RequestVoteCodeForm(forms.ModelForm):
-    formtype = forms.CharField(widget=forms.HiddenInput(),initial=u"requestvotecodeform")
-    
+class VoteCodeRequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(RequestVoteCodeForm, self).__init__(*args, **kwargs)
+        super(VoteCodeRequestForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
                 u'Pyydä äänestysoikeutta',
                 'text',
-                'formtype',
                 ButtonHolder (
                     Submit('submit', 'Pyydä äänestysoikeutta')
                 )
@@ -66,17 +76,20 @@ class RequestVoteCodeForm(forms.ModelForm):
         fields = ('text',)
         
 class VoteCodeAssocForm(forms.Form):
-    formtype = forms.CharField(widget=forms.HiddenInput(),initial=u"votecodeassocform")
     code = forms.CharField(max_length=8, label=u"Äänestyskoodi", help_text=u"Syötä saamasi äänestyskoodi tähän.")
     
     def __init__(self, *args, **kwargs):
+        # Init
+        self.event = kwargs.get('event', None)
+        self.user = kwargs.get('user', None)
         super(VoteCodeAssocForm, self).__init__(*args, **kwargs)
+        
+        # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
                 u'Syötä äänestyskoodi',
                 'code',
-                'formtype',
                 ButtonHolder (
                     Submit('submit', 'Tallenna')
                 )
@@ -86,14 +99,19 @@ class VoteCodeAssocForm(forms.Form):
     def clean_code(self):
         code = self.cleaned_data['code']
         try:
-            vc = VoteCode.objects.get(key=code)
+            vc = VoteCode.objects.get(event=self.event, key=code)
         except VoteCode.DoesNotExist:
-            raise ValidationError(u'Äänestyskoodia ei ole olemassa!')
+            raise ValidationError(u'Virheellinen koodi!')
         return code
+    
+    def save(self):
+        vc = VoteCode.objects.get(event=self.event, key=self.cleaned_data['code'])
+        vc.associated_to = self.user
+        vc.time = datetime.now()
+        vc.save()
 
 class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.legend = kwargs.pop('legend', 'Entry')
         self.compo = kwargs.pop('compo', None)
         self.editing = kwargs.pop('editing', False)
         
@@ -105,7 +123,7 @@ class EntryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                self.legend,
+                u'Entry',
                 'name',
                 'creator',
                 'description',

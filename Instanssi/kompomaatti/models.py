@@ -22,7 +22,7 @@ class Event(models.Model):
     date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
     archived = models.BooleanField(u'Arkistoitu', help_text=u"Saa näyttää arkistossa", default=False)
     def __unicode__(self):
-        return '[' + str(self.pk) + '] ' + self.name
+        return u'[' + str(self.pk) + u'] ' + self.name
     class Meta:
         verbose_name=u"tapahtuma"
         verbose_name_plural=u"tapahtumat"
@@ -44,7 +44,7 @@ class VoteCode(models.Model):
     time = models.DateTimeField(u'Aikaleima', help_text=u"Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True)
     def __unicode__(self):
         if self.associated_to:
-            return self.key + ': ' + self.associated_to.username
+            return self.key + u': ' + self.associated_to.username
         else:
             return self.key
     class Meta:

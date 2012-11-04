@@ -1,8 +1,12 @@
-{% extends "admin_auth/base.html" %}
+{% extends "common/simple_base.html" %}
 {% load uni_form_tags %}
+{% load static %}
+
+{% block title %}Hallinta{% endblock %}
 
 {% block head %}
 {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin_auth/css/style.css" %}" />
 {% endblock %}
 
 {% block jquery %}
@@ -11,7 +15,7 @@
 
 {% block content %}
 {{ block.super }}
-
+<h1>Hallinta</h1>
 <p>Olet kirjautunut ulos.</p>
 <ul>
     <li><a href="/">Etusivu</a></li>

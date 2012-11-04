@@ -1,62 +1,6 @@
-body, html {
-    height: 100%;
-}
-
-body {
-    margin: 0px;
-    padding: 0px;
-    background-color: #f9f9f9;
-}
-
-h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-}
-
-h1 {
-    font-size: 250%;
-    color: #111111;
-    text-shadow: #aaaaaa 0px 0px 2px;
-    margin-bottom: 8px;
-}
-
-form.uniForm .error {
-    margin: 0.5em;
-}
-
-p {
-    line-height: 130%;
-    margin-bottom: 8px;
-}
 
 #box {
     background-color: #28343b;
-    height: 100%;
-    width: 80px;
-    margin-right: 1em;
-    float: left;
-    box-shadow: 0px 0px 5px #888;
-    -moz-box-shadow: 0px 0px 5px #888;
-    -webkit-box-shadow: 0px 0px 5px #888;
-}
-
-#cbox {
-    padding-top: 3em;
-    float: left;
-}
-
-#cbox ul {
-    list-style-type: disc;
-    margin-left: 1.3em;
-}
-
-#cbox li {
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-}
-
-#cbox fieldset {
-    border: 1px solid #999999;
 }
 
 p.errortext {

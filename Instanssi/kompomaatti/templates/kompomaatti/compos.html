@@ -1,5 +1,6 @@
 {% extends "kompomaatti/base.html" %}
-{% load uni_form_tags %}
+
+{% block title %} - Kompot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -7,12 +8,15 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Kompot
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Lisää uusi entry kompoon {{ compo.name }}</h2>
+<h2>Kompot</h2>
 
-{% uni_form addform addform.helper %}
 {% endblock %}

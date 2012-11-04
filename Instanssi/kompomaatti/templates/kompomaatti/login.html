@@ -1,5 +1,6 @@
 {% extends "kompomaatti/base.html" %}
-{% load uni_form_tags %}
+
+{% block title %} - Kirjaudu sisään{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -7,12 +8,15 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Kirjaudu sisään
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Muokkaa entryä {{ entry.name }}</h2>
+<h2>Kirjaudu sisään</h2>
 
-{% uni_form editform editform.helper %}
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %} - Etusivu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Etusivu
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Etusivu</h2>
+<h3>Käyttäjätiedot</h3>
+{% uni_form profileform profileform.helper %}
+
+<h3>Äänestysoikeus</h3>
+{% if can_vote %}
+    <p>Sinulla on oikeus äänestää.</p>
+{% else %}
+    <p>Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.</p>
+    {% uni_form votecodeassocform votecodeassocform.helper %}
+    {% if not request.made %}
+    {% uni_form votecoderequestform votecoderequestform.helper %}
+    {% endif %}
+{% endif %}
+{% endblock %}

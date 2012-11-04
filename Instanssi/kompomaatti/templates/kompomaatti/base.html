@@ -17,19 +17,19 @@
     <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
     
-    <!-- Admin panel CSS -->
+    <!-- Kompomaatti CSS -->
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
     
 {% block head %}{% endblock %}
     <script type="text/javascript">
     $(function() {
-		$('form.uniForm').uniform();
-		$('.ui-widget').css('font-size','14px');
+        $('form.uniForm').uniform();
+        $('.ui-widget').css('font-size','14px');
 {% block jquery %}{% endblock %}
     });
     </script>
@@ -38,44 +38,50 @@
 <body>
 <div id="header">
     <div class="limiter">
-        <h1>Kompomaatti</h1>
+        <h1>Kompomaatti | {{ sel_event_name }}</h1>
     </div>
 </div>
 <div id="header_nav">
     <div class="limiter">
         <ul id="header_nav_left">
             <li class="menuitem">
-            	<a href="">Etusivu</a>
+                <a href="{% url "kompomaatti-index" sel_event_id %}">Etusivu</a>
             </li>
             <li class="menuitem">
-            	<a href="">Kompot<span class="navmenu-icon-down"></span></a>
-            	<ul class="sub-level">
-{% render_base_compos_nav 2  %}
-            	</ul>
+                <a href="{% url 'kompomaatti-compos' sel_event_id %}">Kompot<span class="navmenu-icon-down"></span></a>
+                <ul class="sub-level">
+{% render_base_compos_nav sel_event_id  %}
+                </ul>
             </li>
             <li class="menuitem">
-            	<a href="">Kilpailut<span class="navmenu-icon-down"></span></a>
-            	<ul class="sub-level">
-{% render_base_competitions_nav 2  %}
-            	</ul>
+                <a href="{% url 'kompomaatti-competitions' sel_event_id %}">Kilpailut<span class="navmenu-icon-down"></span></a>
+                <ul class="sub-level">
+{% render_base_competitions_nav sel_event_id  %}
+                </ul>
             </li>
         </ul>
         <ul id="header_nav_right">
+{% if user.is_authenticated %}
             <li class="menuitem">
-            	<a href="">Profiili</a>
+                <a href="{% url 'kompomaatti-profile' sel_event_id %}">Profiili</a>
             </li>
+{% endif %}
             <li class="menuitem">
-            	<a href="">Kirjaudu ulos</a>
+{% if user.is_authenticated %}
+                <a href="{% url 'kompomaatti-logout' sel_event_id %}">Kirjaudu ulos</a>
+{% else %}
+                <a href="{% url 'kompomaatti-login' sel_event_id %}">Kirjaudu sisään</a>
+{% endif %}
             </li>
         </ul>
     </div>
 </div>
 <div id="base">
     <div id="contents">
-		<div id="crumbpath">
-			<a href="">Kompomaatti</a>
+        <div id="crumbpath">
+            <a href="">Kompomaatti</a>
 {% block crumbs %}{% endblock %}
-		</div>
+        </div>
 {% block content %}{% endblock %}
     </div>
 </div>

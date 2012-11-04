@@ -1,5 +1,6 @@
 {% extends "kompomaatti/base.html" %}
-{% load uni_form_tags %}
+
+{% block title %} - Kilpailu{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -7,12 +8,14 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('form.uniForm').uniform();
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Kilpailu
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Muokkaa käyttäjäprofiilia</h2>
-
-{% uni_form profileform profileform.helper %}
+<h2>Kilpailu</h2>
 {% endblock %}

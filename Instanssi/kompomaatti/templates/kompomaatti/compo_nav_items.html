@@ -1,3 +1,7 @@
+{% if compos %}
 {% for compo in compos %}
-							<li><a href="">{{ compo.name }}</a></li>
+                    <li><a href="">{{ compo.name }}</a></li>
 {% endfor %}
+{% else %}
+                    <li><span>---</span></l>
+{% endif %}

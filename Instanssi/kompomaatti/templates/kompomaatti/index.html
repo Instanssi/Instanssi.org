@@ -1,0 +1,24 @@
+{% extends "kompomaatti/base.html" %}
+
+{% block title %} - Etusivu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Etusivu
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Etusivu</h2>
+<p>
+    Tervetuloa Kompomaattiin, Instanssien viralliseen entryjenhallinta- ja äänestyspalveluun!
+</p>
+{% endblock %}

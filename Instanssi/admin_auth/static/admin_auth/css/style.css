@@ -1,53 +1,60 @@
-body,p,ul,form,table,td,th { 
-	font-size: 14px;
-	font-family: 'Open Sans', sans-serif;
+body, html {
+    height: 100%;
 }
 
-#auth_base {
-    width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0px 0px 5px #777777;
-    border: 1px solid #222222;
-    position: relative;
-    top: 100px;
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #f9f9f9;
 }
 
-#auth_header {
-    background-color: rgba(40,52,59,1);
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    color: white; 
+h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
 }
 
-#auth_content {
-    background-color: #eeeeee;
-    width: 100%;
+h1 {
+    font-size: 250%;
+    color: #111111;
+    text-shadow: #aaaaaa 0px 0px 2px;
+    margin-bottom: 8px;
+}
+
+p {
+    line-height: 130%;
+    margin-bottom: 8px;
+}
+
+#box {
+    background-color: #28343b;
+    height: 100%;
+    width: 80px;
+    margin-right: 1em;
+    float: left;
+    box-shadow: 0px 0px 5px #888;
+    -moz-box-shadow: 0px 0px 5px #888;
+    -webkit-box-shadow: 0px 0px 5px #888;
+}
+
+#cbox {
+    padding-top: 3em;
+    float: left;
+}
+
+#cbox ul {
+    list-style-type: disc;
+    margin-left: 1.3em;
+}
+
+#cbox li {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+
+#cbox fieldset {
+    border: 1px solid #999999;
 }
 
 p.errortext {
-    font-weight: bold;
-    padding: 8px;
-}
-
-h1 { 
-    font-size: 100%; 
-    font-weight: bold; 
-    letter-spacing: 3px; 
-}
-
-div.fixer {
-    padding: 8px;
-}
-
-ul {
-    list-style-type: disc;
-    margin-left: 1.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-li {
-    padding: 2px;
+    padding: 4px;
 }

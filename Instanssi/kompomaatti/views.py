@@ -5,11 +5,12 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.misc.custom_render import custom_render
-from Instanssi.kompomaatti.forms import ProfileForm, VoteCodeRequestForm, VoteCodeAssocForm
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
+from Instanssi.kompomaatti.forms import *
 from Instanssi.kompomaatti.models import *
 from Instanssi.kompomaatti.misc.time_formatting import *
 from django.contrib.auth import logout
+from datetime import datetime
     
 def index(request, event_id):
     return custom_render(request, 'kompomaatti/index.html', {
@@ -29,9 +30,55 @@ def compos(request, event_id):
     })
     
 def compo_details(request, event_id, compo_id):
+    # Get compo
+    compo = compo_times_formatter(get_object_or_404(Compo, pk=int(compo_id), active=True, event_id=int(event_id)))
+    
+    # Check if user can participate (deadline not caught yet)
+    can_participate = False
+    if datetime.now() < compo.adding_end:
+        can_participate = True
+    
+    # Check if user can still edit entries (deadline not caught yet)
+    can_edit = False
+    if datetime.now() < compo.editing_end:
+        can_edit = True
+    
+    # Handle entry adding
+    if request.method == 'POST' and can_participate:
+        entryform = EntryForm(request.POST, request.FILES, compo=compo)
+        if entryform.is_valid():
+            entry = entryform.save(commit=False)
+            entry.user = request.user
+            entry.compo = compo
+            entry.save()
+            return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
+    else:
+        entryform = EntryForm(compo=compo)
+    
+    # Get entries
+    entries = Entry.objects.filter(compo=compo, user=request.user)
+    
+    # Dump template
     return custom_render(request, 'kompomaatti/compo_details.html', {
         'sel_event_id': int(event_id),
+        'compo': compo,
+        'entryform': entryform,
+        'can_participate': can_participate,
+        'can_edit': can_edit,
+        'entries': entries,
     })
+    
+@user_access_required
+def compoentry_edit(request, event_id, compo_id, entry_id):
+    pass
+
+@user_access_required
+def compoentry_delete(request, event_id, compo_id, entry_id):
+    pass
+    
+@user_access_required
+def competition_signup_toggle(request, event_id, competition_id):
+    pass
     
 def competitions(request, event_id):
     # Get competitions
@@ -46,8 +93,13 @@ def competitions(request, event_id):
     })
     
 def competition_details(request, event_id, competition_id):
+    # Get competition
+    competition = competition_times_formatter(get_object_or_404(Competition, pk=int(competition_id), active=True, event_id=int(event_id)))
+    
+    # All done, dump template
     return custom_render(request, 'kompomaatti/competition_details.html', {
         'sel_event_id': int(event_id),
+        'competition': competition,
     })
 
 def login(request, event_id):

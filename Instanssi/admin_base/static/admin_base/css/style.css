@@ -329,12 +329,17 @@ form.uniForm {
 	margin-top: 1.0em;
 }
 
-form.uniForm .ctrlHolder { 
-	border-bottom: 1px dotted #aaaaaa; 
+form.uniForm .ctrlHolder,
+form.uniForm .error { 
+    border-bottom: 1px dotted #aaaaaa; 
 }
 
 form.uniForm .buttonHolder {
 	margin: 0;
+}
+
+form.uniForm .error {
+    margin: 0.5em;
 }
 
 form.uniForm fieldset { 

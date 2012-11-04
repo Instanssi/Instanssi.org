@@ -80,20 +80,20 @@ p {
 /* ---------- Header ---------- */
 
 #header {
-	background: #000138;
-	background: -moz-linear-gradient(top, rgba(41,56,86,1) 0%, rgba(0,1,56,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(41,56,86,1)), color-stop(100%,rgba(0,1,56,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(41,56,86,1) 0%,rgba(0,1,56,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#293856', endColorstr='#000138',GradientType=0 ); /* IE6-9 */
+    background: #000000; /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(10,12,51,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(10,12,51,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(10,12,51,1) 0%,rgba(0,0,0,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0a0c33', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
     height: 60px;
 }
 
 #header_nav {
     height: 33px;
-    background-color: #000138;
+    background-color: #000000;
     padding-left: 5px;
     box-shadow: 0px 3px 3px #888;
 	-moz-box-shadow: 0px 3px 3px #888;
@@ -118,12 +118,16 @@ p {
     padding: 9px;
 }
 
+#header_nav ul.sub-level span {
+	padding: 9px;
+}
+
 #header_nav ul.sub-level {
     display: none;
 }
 
 #header_nav li:hover .sub-level {
-    background-color: #000000;
+    background-color: #18242b;
     display: block;
     position: absolute;
     left: 0px;
@@ -133,7 +137,7 @@ p {
 #header_nav ul.sub-level li {
     float: left;
     width: 150px;
-    border-top: 1px dotted #333333;
+    border-top: 1px dotted #111111;
     z-index: 2;
 }
 
@@ -154,21 +158,12 @@ p {
 	background-image: url('../img/arrow_down.png');
 }
 
-.navmenu-icon-right {
-	float: right;
-	position: relative;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	margin-left: 6px;
-	background-image: url('../img/arrow_right.png');
-}
-
 .menuitem:hover {
-    background-color: #000000;
+    background-color: #18242b;
 }
 
-.menuitem a {
+.menuitem a,
+.menuitem span {
     color: #eeeeee;
     text-decoration: none;
     display: block;
@@ -215,12 +210,17 @@ form.uniForm {
 	margin-top: 1.0em;
 }
 
-form.uniForm .ctrlHolder { 
+form.uniForm .ctrlHolder,
+form.uniForm .error { 
 	border-bottom: 1px dotted #aaaaaa; 
 }
 
 form.uniForm .buttonHolder {
 	margin: 0;
+}
+
+form.uniForm .error {
+    margin: 0.5em;
 }
 
 form.uniForm fieldset { 

@@ -20,6 +20,10 @@ h1 {
     margin-bottom: 8px;
 }
 
+form.uniForm .error {
+    margin: 0.5em;
+}
+
 p {
     line-height: 130%;
     margin-bottom: 8px;

@@ -80,20 +80,20 @@ p {
 /* ---------- Header ---------- */
 
 #header {
-    background: #000022;
-    background: -moz-linear-gradient(top, rgba(10,12,51,1) 0%, rgba(0,0,34,1) 100%); 
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(10,12,51,1)), color-stop(100%,rgba(0,0,34,1))); 
-    background: -webkit-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,34,1) 100%); 
-    background: -o-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,34,1) 100%); 
-    background: -ms-linear-gradient(top, rgba(10,12,51,1) 0%,rgba(0,0,34,1) 100%);
-    background: linear-gradient(to bottom, rgba(10,12,51,1) 0%,rgba(0,0,34,1) 100%); 
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0a0c33', endColorstr='#000022',GradientType=0 );
+    background: #111121;
+    background: -moz-linear-gradient(top, rgba(17,17,57,1) 0%, rgba(17,17,33,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(17,17,57,1)), color-stop(100%,rgba(17,17,33,1)));
+    background: -webkit-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%); 
+    background: -o-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
+    background: -ms-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
+    background: linear-gradient(to bottom, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111139', endColorstr='#111121',GradientType=0 );
     height: 60px;
 }
 
 #header_nav {
     height: 33px;
-    background-color: #000022;
+    background-color: #111121;
     padding-left: 5px;
     box-shadow: 0px 3px 3px #888;
 	-moz-box-shadow: 0px 3px 3px #888;

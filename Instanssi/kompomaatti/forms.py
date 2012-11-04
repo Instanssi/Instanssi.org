@@ -113,11 +113,12 @@ class VoteCodeAssocForm(forms.Form):
 class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.compo = kwargs.pop('compo', None)
-        self.editing = kwargs.pop('editing', False)
         
         # Max sizes for filefields
         self.max_source_size = self.compo.source_sizelimit
         self.max_entry_size = self.compo.entry_sizelimit
+        self.max_image_size = 6 * 1024 * 1024
+        self.imageformats = ['png','jpg']
         
         # Layout for uni-form ext.
         self.helper = FormHelper()
@@ -141,12 +142,26 @@ class EntryForm(forms.ModelForm):
         
         # Give the entryfile and sourcefile fields a nicer help_text
         if self.compo:
-            self.fields['entryfile'].help_text = u"Tuotospaketti. Sallitut tiedostoformaatit: " + self.compo.readable_entry_formats() + u'. Tiedoston maksimikoko on ' + sizeformat(self.max_entry_size) + '.'
-            self.fields['sourcefile'].help_text = u"Lähdekoodipaketti. Sallitut tiedostoformaatit: " + self.compo.readable_source_formats() + u'. Tiedoston maksimikoko on ' + sizeformat(self.max_source_size) + '.'
-
-        # If we are editing, then entryfile field is not required
-        if self.editing:
-            self.fields['entryfile'].required = False
+            # Description for entryfile
+            self.fields['entryfile'].help_text = \
+                u"Tuotospaketti. Sallitut tiedostoformaatit: " \
+                + self.compo.readable_entry_formats() \
+                + u'. Tiedoston maksimikoko on ' \
+                + sizeformat(self.max_entry_size) + '.'
+                
+            # Description for sourcefile
+            self.fields['sourcefile'].help_text = \
+                u"Lähdekoodipaketti. Sallitut tiedostoformaatit: " \
+                + self.compo.readable_source_formats() \
+                + u'. Tiedoston maksimikoko on ' \
+                + sizeformat(self.max_source_size) + '.'
+        
+        # Description for imagefile
+        self.fields['imagefile_original'].help_text = \
+            u"Kuva teokselle. Tätä käytetään mm. arkistossa ja kompomaatin äänestysvaiheessa. Sallitut kuvaformaatit: " \
+            + ', '.join(self.imageformats)  \
+            + u'. Tiedoston maksimikoko on ' \
+            + sizeformat(self.max_image_size) + '.'
 
     class Meta:
         model = Entry
@@ -180,18 +195,16 @@ class EntryForm(forms.ModelForm):
 
     def clean_imagefile_original(self):
         # Check image size
-        max_image_size = 6*1024*1024
-        if not self.field_size_ok("imagefile_original", max_image_size):
-            raise ValidationError(u'Tiedoston koko on liian suuri! Suurin sallittu koko on ' + sizeformat(max_image_size) + '.')
+        if not self.field_size_ok("imagefile_original", self.max_image_size):
+            raise ValidationError(u'Tiedoston koko on liian suuri! Suurin sallittu koko on ' + sizeformat(self.max_image_size) + '.')
         
         # Check image format
-        imageformats = ['png','jpg','gif']
         type = os.path.splitext(self.cleaned_data["imagefile_original"].name)[1][1:]
-        if not (type in allowed):
-            raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(imageformats) + '.')
+        if not (type in self.imageformats):
+            raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(self.imageformats) + '.')
         
         # Done
-        return self.cleaned_data['sourcefile']
+        return self.cleaned_data['imagefile_original']
 
     def validate(self):
         if not self.compo.active:

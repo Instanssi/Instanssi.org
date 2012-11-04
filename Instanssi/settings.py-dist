@@ -49,19 +49,18 @@ STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-# OpenID
-OPENID_CREATE_USERS = True
-OPENID_UPDATE_DETAILS_FROM_SREG = True
-OPENID_SREG_REQUIRED_FIELDS = []
-OPENID_SREG_EXTRA_FIELDS = []
-OPENID_FOLLOW_RENAMES = True
-LOGIN_URL = '/openid/login/'
+# Social Auth
+LOGIN_URL = '/kompomaatti/auth/login/'
 LOGIN_REDIRECT_URL = '/kompomaatti/'
+LOGIN_ERROR_URL = '/kompomaatti/auth/error/'
+SOCIAL_AUTH_CREATE_USERS = True
+SOCIAL_AUTH_DEFAULT_USERNAME = 'socialauth_user'
+
+# Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 
 # Options for testing.customrunner.CustomRunner
 TEST_EXCLUDE = {
-    'django_openid_auth',
     'uni_form',
     'django',
     'south',
@@ -132,12 +131,12 @@ INSTALLED_APPS = (
     'Instanssi.arkisto',
     'Instanssi.kompomaatti',
     'Instanssi.kompomaatti_eventselect',
-    'Instanssi.openidauth',
+    'Instanssi.kompomaatti_auth',
     'Instanssi.dbsettings',
     'Instanssi.ext_blog',
     'Instanssi.ext_calendar',
     'Instanssi.ext_programme',
-    'django_openid_auth',
+    'social_auth',
     'imagekit',
     'south',
     'uni_form',
@@ -150,7 +149,7 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'django_openid_auth.auth.OpenIDBackend',
+    'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

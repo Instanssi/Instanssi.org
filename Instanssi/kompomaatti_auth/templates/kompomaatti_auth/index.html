@@ -1,0 +1,29 @@
+{% extends "common/simple_base.html" %}
+{% load static %}
+
+{% block title %}Kompomaatti{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti_eventselect/css/style.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/ddslick/jquery.ddslick.min.js" %}"></script>
+{% endblock %}
+    
+{% block jquery %}
+{{ block.super }}
+
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+	<h1>Kompomaatti</h1>
+	<form action="{% url "socialauth_begin" "openid" %}" id="mform" method="post">
+	    <label for="openid_identifier">Kirjautumispalvelu:</label>
+		<select id="openid_identifier" name="openid_identifier">
+			<option value="https://www.google.com/accounts/o8/id" selected="selected">Google</option>
+			<option value="https://korppi.jyu.fi/openid/">Korppi</option>
+		</select>
+		{% csrf_token %}
+		<input type="submit" id="submit_button" value="Kirjaudu" />
+	</form>
+{% endblock %}

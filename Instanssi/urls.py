@@ -9,8 +9,8 @@ admin.autodiscover()
 
 # URLS
 urlpatterns = patterns('',
+    url(r'', include('social_auth.urls')),
     url(r'^2012/', include('Instanssi.main2012.urls')),
-    url(r'^manage/', include('Instanssi.admin_base.urls')),
     url(r'^manage/auth/', include('Instanssi.admin_auth.urls')),
     url(r'^manage/events/', include('Instanssi.admin_events.urls')),
     url(r'^manage/users/', include('Instanssi.admin_users.urls')),
@@ -23,13 +23,14 @@ urlpatterns = patterns('',
     url(r'^manage/(?P<sel_event_id>\d+)/slides/', include('Instanssi.admin_slides.urls')),
     url(r'^manage/(?P<sel_event_id>\d+)/kompomaatti/', include('Instanssi.admin_kompomaatti.urls')),
     url(r'^manage/(?P<sel_event_id>\d+)/programme/', include('Instanssi.admin_programme.urls')),
+    url(r'^manage/', include('Instanssi.admin_base.urls')),
     url(r'^blog/', include('Instanssi.ext_blog.urls')),
     url(r'^arkisto/', include('Instanssi.arkisto.urls')),
-    url(r'^kompomaatti/', include('Instanssi.kompomaatti_eventselect.urls')),
+    url(r'^kompomaatti/auth/', include('Instanssi.kompomaatti_auth.urls')),
     url(r'^kompomaatti/(?P<event_id>\d+)/', include('Instanssi.kompomaatti.urls')),
+    url(r'^kompomaatti/', include('Instanssi.kompomaatti_eventselect.urls')),
     url(r'^$', include('Instanssi.main2012.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^openid/', include('django_openid_auth.urls')),
 )
 
 # Serve media files through static.serve when running in debug mode

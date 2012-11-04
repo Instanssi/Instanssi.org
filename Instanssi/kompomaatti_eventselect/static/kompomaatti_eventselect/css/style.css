@@ -27,12 +27,14 @@ p {
 }
 
 #box {
-	background-color: #e7e7e7;
+	background-color: #002360;
 	height: 100%;
 	width: 80px;
-	border-right: 1px dotted black;
 	margin-right: 1em;
 	float: left;
+    box-shadow: 0px 0px 5px #888;
+    -moz-box-shadow: 0px 0px 5px #888;
+    -webkit-box-shadow: 0px 0px 5px #888;
 }
 
 #cbox {

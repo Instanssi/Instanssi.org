@@ -8,3 +8,8 @@ def compo_times_formatter(compo):
     compo.editing_time = awesometime.format_single(compo.editing_end)
     compo.voting_time = awesometime.format_between(compo.voting_start, compo.voting_end)
     return compo
+
+def competition_times_formatter(competition):
+    competition.start_time = awesometime.format_single(competition.start)
+    competition.participation_end_time = awesometime.format_single(competition.participation_end)
+    return competition

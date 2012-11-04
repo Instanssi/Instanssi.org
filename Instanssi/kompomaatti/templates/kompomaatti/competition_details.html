@@ -1,4 +1,5 @@
 {% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
 {% load static %}
 
 {% block title %} - {{ competition.name }}{% endblock %}
@@ -41,13 +42,19 @@
 </table>
 
 {% if user.is_authenticated %}
+
 <h3>Osallistuminen</h3>
 {% if signed_up %}
-<p>Olet ilmoittautunut!</p>
-<a class="button" href="{% url 'kompomaatti-competition-sign' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
+    <p>Olet ilmoittautunut nimimerkillä <strong>{{ participation.participant_name }}</strong>.</p>
+    {% if can_participate %}
+    <a class="button" href="{% url 'kompomaatti-competition-signout' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
+    {% endif %}
 {% else %}
-<p>Et ole vielä ilmoittautunut.</p>
-<a class="button" href="{% url 'kompomaatti-competition-sign' sel_event_id competition.id %}">Ilmoittaudu kilpailuun!</a>
+    <p>Et ole ilmoittautunut.</p>
+    {% if can_participate %}
+    {% uni_form participationform participationform.helper %}
+    {% endif %}
 {% endif %}
+
 {% endif %}
 {% endblock %}

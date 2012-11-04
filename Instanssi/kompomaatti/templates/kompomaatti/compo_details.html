@@ -84,12 +84,16 @@
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
             <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lataa</a>{% endif %}</td>
             <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Lataa</a>{% endif %}</td>
+{% if can_edit or can_participate %}
             <td>
 {% if can_edit %}
                 <a href="{% url 'kompomaatti-entry-edit' sel_event_id compo.id entry.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if can_participate %}
                 <a href="{% url 'kompomaatti-entry-delete' sel_event_id compo.id entry.id %}" class="delete_link">Poista</a>
 {% endif %}
             </td>
+{% endif %}
         </tr>
 {% endfor %}
     </tbody>

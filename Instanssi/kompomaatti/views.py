@@ -45,6 +45,11 @@ def compo_details(request, event_id, compo_id):
     
     # Handle entry adding
     if request.method == 'POST' and can_participate:
+        # Make sure user is authenticated
+        if not request.user.is_active or not request.user.is_authenticated():
+            raise Http403
+        
+        # Handle data
         entryform = EntryForm(request.POST, request.FILES, compo=compo)
         if entryform.is_valid():
             entry = entryform.save(commit=False)
@@ -70,15 +75,50 @@ def compo_details(request, event_id, compo_id):
     
 @user_access_required
 def compoentry_edit(request, event_id, compo_id, entry_id):
-    pass
-
-@user_access_required
-def compoentry_delete(request, event_id, compo_id, entry_id):
-    pass
+    # Get compo
+    compo = get_object_or_404(Compo, pk=int(compo_id))
+    
+    # Check if user is allowed to edit
+    if datetime.now() >= compo.editing_end:
+        raise Http403
+    
+    # Get entry (make sure the user owns it, too)
+    entry = get_object_or_404(Entry, pk=int(entry_id), user=request.user)
+    
+    # Handle entry adding
+    if request.method == 'POST':
+        entryform = EntryForm(request.POST, request.FILES, instance=entry, compo=compo)
+        if entryform.is_valid():
+            entryform.save()
+            return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
+    else:
+        entryform = EntryForm(instance=entry, compo=compo)
+    
+    # Dump template
+    return custom_render(request, 'kompomaatti/entry_edit.html', {
+        'sel_event_id': int(event_id),
+        'compo': compo,
+        'entry': entry,
+        'entryform': entryform,
+    })
     
 @user_access_required
-def competition_signup_toggle(request, event_id, competition_id):
-    pass
+def compoentry_delete(request, event_id, compo_id, entry_id):
+    # Get compo
+    compo = get_object_or_404(Compo, pk=int(compo_id))
+    
+    # Check if user is allowed to edit
+    if datetime.now() >= compo.adding_end:
+        raise Http403
+    
+    # Get entry (make sure the user owns it, too)
+    entry = get_object_or_404(Entry, pk=int(entry_id), user=request.user)
+    
+    # Delete entry
+    entry.delete()
+    
+    # Redirect
+    return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
     
 def competitions(request, event_id):
     # Get competitions
@@ -96,11 +136,64 @@ def competition_details(request, event_id, competition_id):
     # Get competition
     competition = competition_times_formatter(get_object_or_404(Competition, pk=int(competition_id), active=True, event_id=int(event_id)))
     
+    # Check if user can participate (deadline not caught yet)
+    can_participate = False
+    if datetime.now() < competition.participation_end:
+        can_participate = True
+        
+    # Handle signup form
+    if request.method == 'POST' and can_participate:
+        # Make sure user is authenticated
+        if not request.user.is_active or not request.user.is_authenticated():
+            raise Http403
+        
+        # Handle post data
+        participationform = ParticipationForm(request.POST)
+        if participationform.is_valid():
+            p = participationform.save(commit=False)
+            p.competition = competition
+            p.user = request.user
+            p.save()
+            return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
+    else:
+        participationform = ParticipationForm()
+    
+    # Check if user has participated
+    signed_up = False
+    participation = None
+    try:
+        participation = CompetitionParticipation.objects.get(competition=competition, user=request.user)
+        signed_up = True
+    except CompetitionParticipation.DoesNotExist:
+        pass
+    
     # All done, dump template
     return custom_render(request, 'kompomaatti/competition_details.html', {
         'sel_event_id': int(event_id),
         'competition': competition,
+        'participation': participation,
+        'signed_up': signed_up,
+        'can_participate': can_participate,
+        'participationform': participationform,
     })
+
+@user_access_required
+def competition_signout(request, event_id, competition_id):
+    # Get competition
+    competition = get_object_or_404(Competition, pk=int(competition_id))
+    
+    # Check if user is still allowed to sign up
+    if datetime.now() >= competition.participation_end:
+        raise Http403
+    
+    # Delete participation
+    try:
+        CompetitionParticipation.objects.get(competition_id=int(competition_id), user=request.user).delete()
+    except CompetitionParticipation.DoesNotExist:
+        pass
+    
+    # Redirect
+    return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
 
 def login(request, event_id):
     return custom_render(request, 'kompomaatti/login.html', {

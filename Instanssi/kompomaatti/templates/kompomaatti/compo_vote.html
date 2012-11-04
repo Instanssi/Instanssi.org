@@ -1,0 +1,23 @@
+{% extends "kompomaatti/base.html" %}
+
+{% block title %} - {{ compo.name }} - Äänestä{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+	&raquo; Äänestä
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Äänestä</h2>
+
+{% endblock %}

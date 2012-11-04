@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 import os
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Profile
+from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Profile, CompetitionParticipation
 
 class ProfileForm(forms.ModelForm):
     otherinfo = forms.CharField(widget=forms.Textarea(), label=u"Muut yhteystiedot", help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", required=False)
@@ -109,6 +109,24 @@ class VoteCodeAssocForm(forms.Form):
         vc.associated_to = self.user
         vc.time = datetime.now()
         vc.save()
+
+class ParticipationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ParticipationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'',
+                'participant_name',
+                ButtonHolder (
+                    Submit('submit', 'Osallistu')
+                )
+            )
+        )
+
+    class Meta:
+        model = CompetitionParticipation
+        fields = ('participant_name',)
 
 class EntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

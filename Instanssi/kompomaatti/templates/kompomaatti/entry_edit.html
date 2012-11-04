@@ -1,0 +1,25 @@
+{% extends "kompomaatti/base.html" %}
+{% load uni_form_tags %}
+
+{% block title %} - {{ compo.name }} - {{ entry.name }}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    &raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+	&raquo; {{ entry.name }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>{{ entry.name }}</h2>
+
+{% uni_form entryform entryform.helper %}
+{% endblock %}

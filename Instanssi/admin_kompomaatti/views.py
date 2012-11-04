@@ -135,7 +135,7 @@ def competition_edit(request, sel_event_id, competition_id):
         competitionform = AdminCompetitionForm(request.POST, instance=competition)
         if competitionform.is_valid():
             competitionform.save()
-            return HttpResponseRedirect(reverse('admin_competitions', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm(instance=competition)
     

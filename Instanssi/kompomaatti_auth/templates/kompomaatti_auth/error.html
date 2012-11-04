@@ -1,0 +1,20 @@
+{% extends "common/simple_base.html" %}
+{% load static %}
+
+{% block title %}Kompomaatti{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti_auth/css/style.css" %}" />
+{% endblock %}
+    
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+	<h1>Kompomaatti</h1>
+	<p>Kirjautumisessa tapahtui virhe!</p>
+	<p><a href="{% url 'kompomaatti-auth-login' %}">Tästä takaisin kirjautumaan.</a></p>
+{% endblock %}

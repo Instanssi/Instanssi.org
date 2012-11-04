@@ -107,7 +107,7 @@ class Entry(models.Model):
     archive_rank = models.IntegerField(u'Sijoitus', help_text=u'Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.', null=True, blank=True)
 
     def __unicode__(self):
-        return self.name + ' by ' + self.creator + ' (uploaded by ' + self.user.username + ')'
+        return self.name + u' by ' + self.creator
     
     class Meta:
         verbose_name=u"tuotos"

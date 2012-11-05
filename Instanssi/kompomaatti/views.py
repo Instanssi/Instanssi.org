@@ -2,7 +2,7 @@
 
 from common.http import Http403
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
@@ -90,6 +90,11 @@ def compo_vote(request, event_id, compo_id):
         vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
     except VoteCode.DoesNotExist:
         raise Http403
+    
+    # Check if we have data!
+    if request.method == 'POST':
+        print request.POST
+        return HttpResponse("0")
     
     # Get compo
     compo = get_object_or_404(Compo, pk=int(compo_id))

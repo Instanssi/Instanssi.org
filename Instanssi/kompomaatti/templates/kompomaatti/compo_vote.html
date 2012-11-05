@@ -1,13 +1,37 @@
 {% extends "kompomaatti/base.html" %}
+{% load static %}
 
 {% block title %} - {{ compo.name }} - Äänestä{% endblock %}
 
 {% block head %}
 {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/voting.css" %}" />
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+    $('.vote-notice').hide();
+    $("#submit_button").button();
+    $("#submit_button").click(function() {
+        var results = new Array();
+        $("#to_list").children('li').each(function(index) {
+            results[index] = $(this).attr('id');
+        });
+        $.post('{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}', {
+            'action': 'vote', 
+            'results': results,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }, function(data) {
+            if(data == '0') {
+                $('.vote-success').fadeIn(400).delay(2500).fadeOut(400);
+            } else {
+                $('#vote-error-text').html(data);
+                $('.vote-error').fadeIn(400).delay(2500).fadeOut(400);
+            }
+        });
+    });
+
+    
     $("#from_list").sortable({
         connectWith: ".connected",
         update:  function (event, ui) {
@@ -27,6 +51,8 @@
             });
         }
     });
+    $("#from_list").disableSelection();
+    $("#to_list").disableSelection();
 {% endblock %}
 
 {% block crumbs %}
@@ -40,12 +66,14 @@
 <h2>Äänestä</h2>
 <p>
     Raahaa entryjä (vähintään yksi) paremmuusjärjestykseen oikeanpuoleiseen paneeliin.
-    Voit raahata useamman kuin kolme, mikäli tuntuu että muut ansaitsevat pisteitä :)
+    Voit raahata useammankin mikäli tuntuu siltä että muutkin ansaitsevat pisteitä :)
 </p>
 <div class="vote-widget">
+    <div class="vote-notice vote-success ui-state-highlight"><div class="ui-icon ui-icon-info icon-messagebox"></div><span>Äänestys suoritettu!</span></div>
+    <div class="vote-notice vote-error ui-state-error"><div class="ui-icon ui-icon-alert icon-messagebox"></div><span id="vote-error-text"></span></div>
     <ul id="from_list" class="vote-list connected">
 {% for entry in nvoted_entries %}
-        <li>
+        <li id="{{ entry.id }}">
             <span class="vote-entry">
                 <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
@@ -59,7 +87,7 @@
     </ul>
     <ul id="to_list" class="vote-list connected">
 {% for entry in voted_entries %}
-        <li>
+        <li id="{{ entry.id }}">
             <span class="vote-entry">
                 <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
@@ -71,6 +99,8 @@
         </li>
 {% endfor %}
     </ul>
+    <p style="clear: both; text-align: right;"><span style="margin-right: 26px;" id="submit_button">Tallenna</span></p>
 </div>
+
 
 {% endblock %}

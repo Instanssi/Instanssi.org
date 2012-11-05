@@ -256,6 +256,9 @@ class EntryForm(forms.ModelForm):
         return self.cleaned_data['sourcefile']
 
     def clean_imagefile_original(self):
+        if self.cleaned_data['imagefile_original'] == None:
+            return None
+        
         # Check image size
         if not self.field_size_ok("imagefile_original", self.max_image_size):
             raise ValidationError(u'Tiedoston koko on liian suuri! Suurin sallittu koko on ' + sizeformat(self.max_image_size) + '.')

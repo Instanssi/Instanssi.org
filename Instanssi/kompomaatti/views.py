@@ -43,6 +43,16 @@ def compo_details(request, event_id, compo_id):
     if datetime.now() < compo.editing_end:
         can_edit = True
     
+    # Check if user may vote (voting open, user has code)
+    can_vote = False
+    if request.user.is_active and request.user.is_authenticated():
+        if datetime.now() > compo.voting_start and datetime.now() < compo.voting_end:
+            try:
+                vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+                can_vote = True
+            except VoteCode.DoesNotExist:
+                pass
+    
     # Handle entry adding
     if request.method == 'POST' and can_participate:
         # Make sure user is authenticated
@@ -72,7 +82,33 @@ def compo_details(request, event_id, compo_id):
         'entryform': entryform,
         'can_participate': can_participate,
         'can_edit': can_edit,
+        'can_vote': can_vote,
         'entries': entries,
+    })
+    
+@user_access_required
+def compo_vote(request, event_id, compo_id):
+    # Make sure the user has an active votecode
+    try:
+        vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+    except VoteCode.DoesNotExist:
+        print "No votecode"
+        raise Http403
+    
+    # Get compo
+    compo = get_object_or_404(Compo, pk=int(compo_id))
+    
+    # Make sure voting is open
+    if datetime.now() < compo.voting_start or datetime.now() > compo.voting_end:
+        print "not active"
+        raise Http403
+    
+    # Handle voting data here
+    
+    # Dump template
+    return custom_render(request, 'kompomaatti/compo_vote.html', {
+        'sel_event_id': int(event_id),
+        'compo': compo,
     })
     
 @user_access_required

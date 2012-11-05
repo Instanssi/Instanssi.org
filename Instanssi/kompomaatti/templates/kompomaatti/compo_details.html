@@ -21,6 +21,7 @@
     });
     $("#entries_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#entries_pager")});
     
+    $('.button').button();
     $('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
     $('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
     $('.management_field').css('width','30px');
@@ -58,6 +59,12 @@
         <td>{{ compo.voting_time }}</td>
     </tbody>
 </table>
+
+{% if can_vote %}
+<h3>Äänestys</h3>
+<p>Äänestys on avoinna.</p>
+<a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
+{% endif %}
 
 {% if user.is_authenticated %}
 <h3>Osallistuminen</h3>

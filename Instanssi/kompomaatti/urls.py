@@ -8,6 +8,7 @@ urlpatterns = patterns(
     url(r'^compos/', 'compos', name="kompomaatti-compos"),
     url(r'^compo/(?P<compo_id>\d+)/entry/(?P<entry_id>\d+)/edit/', 'compoentry_edit', name="kompomaatti-entry-edit"),
     url(r'^compo/(?P<compo_id>\d+)/entry/(?P<entry_id>\d+)/delete/', 'compoentry_delete', name="kompomaatti-entry-delete"),
+    url(r'^compo/(?P<compo_id>\d+)/entry/(?P<entry_id>\d+)/', 'entry_details', name="kompomaatti-entry"),
     url(r'^compo/(?P<compo_id>\d+)/vote/', 'compo_vote', name="kompomaatti-compo-vote"),
     url(r'^compo/(?P<compo_id>\d+)/', 'compo_details', name="kompomaatti-compo"),
     url(r'^competitions/', 'competitions', name="kompomaatti-competitions"),

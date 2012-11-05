@@ -63,7 +63,9 @@ p {
 
 #base,
 .limiter {
-	max-width: 1200px; 
+	max-width: 1200px;
+	width: 90%;
+	min-width: 550px;
 	margin: 0 auto;
 }
 
@@ -269,3 +271,61 @@ form.uniForm fieldset {
 form.uniForm legend { 
 	padding: 0.3em;	
 }
+
+/* ---------- Voting crap ---------- */
+
+div.vote-widget {
+ 
+}
+
+div.vote-widget ul {
+    border: 1px dotted black;
+    display: inline-block;
+    float: left;
+    width: 200px;
+    padding: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #efefef;
+    min-height: 200px;
+}
+
+div.vote-widget li {
+    list-style-type: none;
+    margin: 0;
+    border: 1px solid #999999;
+    display: block;
+    border-radius: 2px;
+    height: 40px;
+    background: #efefef;
+    background: -moz-linear-gradient(top, rgba(239,239,239,1) 0%, rgba(229,229,229,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(239,239,239,1)), color-stop(100%,rgba(229,229,229,1)));
+    background: -webkit-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
+    background: -o-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
+    background: -ms-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
+    background: linear-gradient(to bottom, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#e5e5e5',GradientType=0 );
+}
+
+.vote-entry {
+    margin: 5px;
+    float: left;
+}
+
+.vote-rank {
+    float: right;
+    width: 29px;
+    height: 29px;
+    text-align: right;
+    border: 0;
+    margin: 5px;
+    font-size: 28px;
+}
+
+span.vote-entry-desc {
+    font-size: 10px;
+}
+
+
+
+

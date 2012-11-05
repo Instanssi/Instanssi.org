@@ -8,6 +8,15 @@
 
 {% block jquery %}
 {{ block.super }}
+    $("#from_list").sortable({
+        connectWith: ".connected",
+    });
+    $("#to_list").sortable({
+        connectWith: ".connected",
+        change:  function (event, ui) {
+            $("span.vote-rank").html("1");
+        }
+    });
 {% endblock %}
 
 {% block crumbs %}
@@ -19,5 +28,54 @@
 {% block content %}
 {{ block.super }}
 <h2>Äänestä</h2>
+<p>
+    Raahaa entryjä (vähintään yksi) paremmuusjärjestykseen oikeanpuoleiseen paneeliin.
+    Voit raahata useamman kuin kolme, mikäli tuntuu että muut ansaitsevat pisteitä :)
+</p>
+<div class="vote-widget">
+    <ul id="from_list" class="vote-list connected">
+{% for entry in nvoted_entries %}
+        <li>
+            <span class="vote-entry">
+                {{ entry.name }}<br />
+                <span class="vote-entry-desc">by {{ entry.creator }}</span>
+            </span>
+            <span class="vote-rank"></span>
+        </li>
+{% endfor %}
+        <li>
+            <span class="vote-entry">
+                Märehtijät<br />
+                <span class="vote-entry-desc">by 13 Lehmää ja ämpäri</span>
+            </span>
+            <span class="vote-rank"></span>
+        </li>
+        <li>
+            <span class="vote-entry">
+                leet<br />
+                <span class="vote-entry-desc">by 4chan</span>
+            </span>
+            <span class="vote-rank"></span>
+        </li>
+        <li>
+            <span class="vote-entry">
+                Rotozoomer from hell<br />
+                <span class="vote-entry-desc">by Katajakasa</span>
+            </span>
+            <span class="vote-rank"></span>
+        </li>
+    </ul>
+    <ul id="to_list" class="vote-list connected">
+{% for entry in voted_entries %}
+        <li>
+            <span class="vote-entry">
+                {{ entry.name }}<br />
+                <span class="vote-entry-desc">by {{ entry.creator }}</span>
+            </span>
+            <span class="vote-rank"></span>
+        </li>
+{% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

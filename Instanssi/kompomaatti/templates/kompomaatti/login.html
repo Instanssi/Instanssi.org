@@ -1,0 +1,43 @@
+{% extends "kompomaatti/base.html" %}
+{% load socialaccount %}
+
+{% block title %} - Kirjaudu sisään{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('#providers').change(function() {
+        $('#identifier').val($('#providers').val());
+    });
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    &raquo; Kirjaudu sisään
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Kirjaudu sisään</h2>
+    <form action="{% provider_login_url "openid" %}" id="mform" method="get">
+        <p>
+            Valitse OpenID-kirjautumispalvelu:
+        </p>
+        {% csrf_token %}
+        <p>
+            <select id="providers">
+                <option value="https://www.google.com/accounts/o8/id" selected="selected">Google</option>
+                <option value="https://korppi.jyu.fi/openid/">Korppi</option> 
+                <option value="https://me.yahoo.com">Yahoo</option>
+            </select>
+        </p>
+        <p>
+            <input type="text" name="openid" id="identifier" value="https://www.google.com/accounts/o8/id" />
+            <input type="hidden" name="next" value="{% url "kompomaatti-index" sel_event_id %}" />
+            <input type="submit" id="submit_button" value="Kirjaudu" />
+        </p>
+    </form>
+{% endblock %}

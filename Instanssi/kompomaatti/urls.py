@@ -15,4 +15,5 @@ urlpatterns = patterns(
     url(r'^competition/(?P<competition_id>\d+)/', 'competition_details', name="kompomaatti-competition"),
     url(r'^profile/', 'profile', name="kompomaatti-profile"),
     url(r'^logout/', 'do_logout', name="kompomaatti-logout"),
+    url(r'^login/', 'do_login', name="kompomaatti-login"),
 )

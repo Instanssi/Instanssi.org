@@ -92,7 +92,6 @@ def compo_vote(request, event_id, compo_id):
     try:
         vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
     except VoteCode.DoesNotExist:
-        print "No votecode"
         raise Http403
     
     # Get compo
@@ -100,15 +99,39 @@ def compo_vote(request, event_id, compo_id):
     
     # Make sure voting is open
     if datetime.now() < compo.voting_start or datetime.now() > compo.voting_end:
-        print "not active"
         raise Http403
     
-    # Handle voting data here
+    # Get votes cast by user
+    votes = Vote.objects.filter(user=request.user, compo=compo).order_by('rank')
+    
+    # Check if user has already voted
+    has_voted = False
+    if votes.count() > 0:
+        has_voted = True
+    
+    # Get entries. If user hasn't voted yet, make sure the entries are in random order to minimize bias
+    # If user has already voted, sort entries in previously voted order.
+    nvoted_entries = []
+    voted_entries = []
+    if has_voted:
+        # Get all entries
+        nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
+        
+        # Get voted entries. Add to "voted" list, remove from "not voted" list.
+        for vote in votes:
+            if not vote.entry.disqualified:
+                voted_entries.append(vote.entry)
+                nvoted_entries.remove(vote.entry)
+    else:
+        nvoted_entries = Entry.objects.filter(compo=compo).order_by('?')
     
     # Dump template
     return custom_render(request, 'kompomaatti/compo_vote.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
+        'voted_entries': voted_entries,
+        'nvoted_entries': nvoted_entries,
+        'has_voted': has_voted,
     })
     
 @user_access_required
@@ -296,6 +319,11 @@ def profile(request, event_id):
         'reserved_code': reserved_code,
         'can_vote': can_vote,
         'request_made': request_made,
+    })
+    
+def do_login(request, event_id):
+    return custom_render(request, 'kompomaatti/login.html', {
+        'sel_event_id': int(event_id),
     })
     
 @user_access_required

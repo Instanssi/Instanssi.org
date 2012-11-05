@@ -1,16 +1,24 @@
 {% extends "kompomaatti/base.html" %}
-{% load socialaccount %}
+{% load uni_form_tags %}
 
 {% block title %} - Kirjaudu sisään{% endblock %}
 
 {% block head %}
 {{ block.super }}
+    <style type="text/css">
+    #id_openid_identifier {
+        background: url({% url 'openid-logo' %}) no-repeat;
+        background-position: 5px 50%;
+        padding-left: 26px;
+        width: 50%;
+    }
+    </style>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $('#providers').change(function() {
-        $('#identifier').val($('#providers').val());
+    $('#id_sps').change(function() {
+        $('#id_openid_identifier').val($('#id_sps').val());
     });
 {% endblock %}
 
@@ -22,22 +30,7 @@
 {% block content %}
 {{ block.super }}
 <h2>Kirjaudu sisään</h2>
-    <form action="{% provider_login_url "openid" %}" id="mform" method="get">
-        <p>
-            Valitse OpenID-kirjautumispalvelu:
-        </p>
-        {% csrf_token %}
-        <p>
-            <select id="providers">
-                <option value="https://www.google.com/accounts/o8/id" selected="selected">Google</option>
-                <option value="https://korppi.jyu.fi/openid/">Korppi</option> 
-                <option value="https://me.yahoo.com">Yahoo</option>
-            </select>
-        </p>
-        <p>
-            <input type="text" name="openid" id="identifier" value="https://www.google.com/accounts/o8/id" />
-            <input type="hidden" name="next" value="{% url "kompomaatti-index" sel_event_id %}" />
-            <input type="submit" id="submit_button" value="Kirjaudu" />
-        </p>
-    </form>
+<p>Valitse kirjautumispalvelusi.</p>
+{% uni_form openidform openidform.helper %}
+
 {% endblock %}

@@ -322,8 +322,11 @@ def profile(request, event_id):
     })
     
 def do_login(request, event_id):
+    loginform = OpenIDLoginForm(next=reverse('kompomaatti-index', args=(event_id,)))
+    
     return custom_render(request, 'kompomaatti/login.html', {
         'sel_event_id': int(event_id),
+        'openidform': loginform,
     })
     
 @user_access_required

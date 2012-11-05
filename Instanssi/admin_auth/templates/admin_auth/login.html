@@ -10,21 +10,35 @@
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static "admin_auth/css/style.css" %}" />
+    <style type="text/css">
+    #id_openid_identifier {
+        background: url({% url 'openid-logo' %}) no-repeat;
+        background-position: 5px 50%;
+        padding-left: 26px;
+        width: 49%;
+    }
+    </style>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
     $('form.uniForm').uniform();
+    $('#id_sps').change(function() {
+        $('#id_openid_identifier').val($('#id_sps').val());
+    });
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 <h1>Hallinta</h1>
 
-{% if error %}
-<p class="errortext ui-state-error">Käyttäjätunnus tai salasana väärin!</p>
-{% endif %}
+<p>Valitse kirjautumispalvelusi.</p>
+
+<h2>Django</h2>
 {% uni_form loginform loginform.helper %}
+
+<h2>OpenID</h2>
+{% uni_form openidform openidform.helper %}
 
 {% endblock %}
 

@@ -50,9 +50,7 @@ Projektin asentaminen
 Kirjastot
 ---------
 * [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
-* [django-allauth] (https://github.com/pennersr/django-allauth) `pip install django-allauth`
-* [httplib2] (http://code.google.com/p/httplib2/) `pip install httplib2`
-* [python-oauth2] (https://github.com/simplegeo/python-oauth2) `pip install oauth2`
+* [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
@@ -64,7 +62,7 @@ Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django django-allauth pil django-imagekit south django-uni-form reportlab
+    pip install django django-openid-auth python-openid pil django-imagekit south django-uni-form reportlab
 
 IDEjä
 -----

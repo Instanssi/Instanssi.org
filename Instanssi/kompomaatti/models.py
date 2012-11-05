@@ -6,6 +6,7 @@ from django.contrib import admin
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from datetime import datetime
+from Instanssi.kompomaatti.misc import entrysort
 import os.path
 
 class Profile(models.Model):

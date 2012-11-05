@@ -19,6 +19,14 @@ h1 {
     text-shadow: #aaaaaa 0px 0px 2px;
     margin-bottom: 8px;
 }
+ 
+h2 {
+    font-size: 120%;
+    text-shadow: #aaaaaa 0px 0px 2px;
+    color: #111111;
+    margin-bottom: 4px;
+    margin-top: 15px;
+}
 
 form.uniForm .error {
     margin: 0.5em;

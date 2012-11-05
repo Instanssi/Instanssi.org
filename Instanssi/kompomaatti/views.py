@@ -2,7 +2,7 @@
 
 from common.http import Http403
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
@@ -33,28 +33,17 @@ def compo_details(request, event_id, compo_id):
     # Get compo
     compo = compo_times_formatter(get_object_or_404(Compo, pk=int(compo_id), active=True, event_id=int(event_id)))
     
-    # Check if user can participate (deadline not caught yet)
-    can_participate = False
-    if datetime.now() < compo.adding_end:
-        can_participate = True
-    
-    # Check if user can still edit entries (deadline not caught yet)
-    can_edit = False
-    if datetime.now() < compo.editing_end:
-        can_edit = True
-    
     # Check if user may vote (voting open, user has code)
     can_vote = False
     if request.user.is_active and request.user.is_authenticated():
-        if datetime.now() > compo.voting_start and datetime.now() < compo.voting_end:
-            try:
-                vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
-                can_vote = True
-            except VoteCode.DoesNotExist:
-                pass
-    
+        try:
+            vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+            can_vote = True
+        except VoteCode.DoesNotExist:
+            pass
+        
     # Handle entry adding
-    if request.method == 'POST' and can_participate:
+    if request.method == 'POST' and compo.is_adding_open():
         # Make sure user is authenticated
         if not request.user.is_active or not request.user.is_authenticated():
             raise Http403
@@ -70,20 +59,28 @@ def compo_details(request, event_id, compo_id):
     else:
         entryform = EntryForm(compo=compo)
     
-    # Get entries
-    entries = None
+    # Get entries, and only show them if voting has started
+    # (only show results if it has been allowed in model)
+    all_entries = []
+    if compo.has_voting_started:
+        if compo.show_voting_results:
+            all_entries = Entry.objects.filter(compo=compo)
+        else:
+            all_entries = Entry.objects.filter(compo=compo).order_by('name')
+    
+    # Get users entries
+    my_entries = []
     if request.user.is_active and request.user.is_authenticated():
-        entries = Entry.objects.filter(compo=compo, user=request.user)
+        my_entries = Entry.objects.filter(compo=compo, user=request.user)
     
     # Dump template
     return custom_render(request, 'kompomaatti/compo_details.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'entryform': entryform,
-        'can_participate': can_participate,
-        'can_edit': can_edit,
         'can_vote': can_vote,
-        'entries': entries,
+        'all_entries': all_entries,
+        'my_entries': my_entries,
     })
     
 @user_access_required
@@ -144,7 +141,7 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
         raise Http403
     
     # Get entry (make sure the user owns it, too)
-    entry = get_object_or_404(Entry, pk=int(entry_id), user=request.user)
+    entry = get_object_or_404(Entry, pk=int(entry_id), compo=compo, user=request.user)
     
     # Handle entry adding
     if request.method == 'POST':
@@ -173,7 +170,7 @@ def compoentry_delete(request, event_id, compo_id, entry_id):
         raise Http403
     
     # Get entry (make sure the user owns it, too)
-    entry = get_object_or_404(Entry, pk=int(entry_id), user=request.user)
+    entry = get_object_or_404(Entry, pk=int(entry_id), compo=compo, user=request.user)
     
     # Delete entry
     entry.delete()
@@ -250,12 +247,30 @@ def competition_signout(request, event_id, competition_id):
     
     # Delete participation
     try:
-        CompetitionParticipation.objects.get(competition_id=int(competition_id), user=request.user).delete()
+        CompetitionParticipation.objects.get(competition=competition, user=request.user).delete()
     except CompetitionParticipation.DoesNotExist:
         pass
     
     # Redirect
     return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
+
+def entry_details(request, event_id, compo_id, entry_id):
+    # Get compo
+    compo = get_object_or_404(Compo, pk=int(compo_id))
+    
+    # Make sure voting has started before allowing this page to be shown
+    if datetime.now() < compo.voting_start:
+        raise Http404
+    
+    # Get entry
+    entry = get_object_or_404(Entry, pk=int(entry_id), compo=compo)
+    
+    # Render
+    return custom_render(request, 'kompomaatti/entry_details.html', {
+        'sel_event_id': int(event_id),
+        'entry': entry,
+        'compo': compo,
+    })
 
 @user_access_required
 def profile(request, event_id):

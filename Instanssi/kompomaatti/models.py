@@ -84,6 +84,26 @@ class Compo(models.Model):
         verbose_name=u"kompo"
         verbose_name_plural=u"kompot"
             
+    def is_voting_open(self):
+        if datetime.now() > self.voting_start and datetime.now() < self.voting_end:
+            return True
+        return False
+    
+    def is_adding_open(self):
+        if datetime.now() < self.adding_end:
+            return True
+        return False
+    
+    def is_editing_open(self):
+        if datetime.now() < self.editing_end:
+            return True
+        return False
+    
+    def has_voting_started(self):
+        if datetime.now() > self.voting_start:
+            return True
+        return False
+            
     def readable_entry_formats(self):
         return ', '.join(self.formats.split('|'))
     

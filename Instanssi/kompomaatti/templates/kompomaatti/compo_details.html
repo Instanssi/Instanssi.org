@@ -37,8 +37,10 @@
 {{ block.super }}
 <h2>{{ compo.name }}</h2>
 
+
 <h3>Kuvaus</h3>
 {{ compo.description|safe }}
+
 
 <h3>Ajat</h3>
 <table class="info">
@@ -60,17 +62,52 @@
     </tbody>
 </table>
 
+
+{% if not compo.show_voting_results and compo.has_voting_started %}
+<h3>Osallistujat</h3>
+{% if all_entries %}
+<ul>
+{% for entry in all_entries %}
+    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Ei osallitujia.</p>
+{% endif %}
+{% endif %}
+{% if compo.show_voting_results %}
+<h3>Tulokset</h3>
+{% if all_entries %}
+<ol>
+{% for entry in all_entries %}
+    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }}</li>
+{% endfor %}
+</ol>
+{% else %}
+<p>Ei osallitujia.</p>
+{% endif %}
+{% endif %}
+
+
 <h3>Äänestys</h3>
-{% if can_vote %}
+{% if can_vote and compo.is_voting_open %}
 <p>Äänestys on avoinna.</p>
 <a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
-{% else %}
+{% endif %}
+{% if not can_vote and compo.is_voting_open %}
+<p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Käy hakemassa äänioikeutta profiili-paneelissa.</p>
+{% endif %}
+{% if can_vote and not compo.is_voting_open %}
+<p>Äänestys on kiinni.</p>
+{% endif %}
+{% if not can_vote and not compo.is_voting_open %}
 <p>Äänestys on kiinni.</p>
 {% endif %}
 
+
 {% if user.is_authenticated %}
 <h3>Osallistuminen</h3>
-{% if entries %}
+{% if my_entries %}
 <p>Olet osallistunut kompoon seuraavilla teoksilla:</p>
 <table class="tablesorter" id="entries_table">
     <thead>
@@ -80,25 +117,25 @@
             <th>Teos</th>
             <th>Lähdekoodi</th>
             <th>Kuva</th>
-{% if can_edit %}
+{% if compo.is_editing_open %}
             <th class="sorter-false management_field"></th>
 {% endif %}
         </tr>
     </thead>
     <tbody>
-{% for entry in entries %}
+{% for entry in my_entries %}
         <tr>
             <td>{{ entry.name }}</td>
             <td>{{ entry.creator }}</td>
             <td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
             <td>{% if entry.sourcefile %}<a href="{{ entry.sourcefile.url }}">Lataa</a>{% endif %}</td>
             <td>{% if entry.imagefile_original %}<a href="{{ entry.imagefile_original.url }}">Lataa</a>{% endif %}</td>
-{% if can_edit or can_participate %}
+{% if compo.is_editing_open or compo.is_adding_open %}
             <td>
-{% if can_edit %}
+{% if compo.is_editing_open %}
                 <a href="{% url 'kompomaatti-entry-edit' sel_event_id compo.id entry.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
-{% if can_participate %}
+{% if compo.is_adding_open %}
                 <a href="{% url 'kompomaatti-entry-delete' sel_event_id compo.id entry.id %}" class="delete_link">Poista</a>
 {% endif %}
             </td>
@@ -114,7 +151,7 @@
 <p>Et ole vielä osallistunut.</p>
 {% endif %}
 
-{% if can_participate %}
+{% if compo.is_adding_open %}
 {% uni_form entryform entryform.helper %}
 {% endif %}
 {% endif %}

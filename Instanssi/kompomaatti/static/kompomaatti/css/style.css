@@ -287,7 +287,7 @@ div.vote-widget ul {
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: #efefef;
-    min-height: 200px;
+    min-height: 50px;
 }
 
 div.vote-widget li {
@@ -312,14 +312,28 @@ div.vote-widget li {
     float: left;
 }
 
-.vote-rank {
+.vote-right {
     float: right;
     width: 29px;
     height: 29px;
     text-align: right;
     border: 0;
     margin: 5px;
-    font-size: 28px;
+    text-align: center;
+}
+
+.vote-rank {
+    font-size: 20px;
+    margin: 0px;
+    padding: 0;
+    display: block;
+}
+
+.vote-score {
+    font-size: 8px;
+    margin: 0;
+    padding: 0;
+    display: block;
 }
 
 span.vote-entry-desc {

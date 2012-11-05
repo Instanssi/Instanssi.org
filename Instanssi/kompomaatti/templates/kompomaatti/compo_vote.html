@@ -10,11 +10,21 @@
 {{ block.super }}
     $("#from_list").sortable({
         connectWith: ".connected",
+        update:  function (event, ui) {
+            $("#from_list").find(".vote-rank").html("");
+            $("#from_list").find(".vote-score").html("");
+        }
     });
     $("#to_list").sortable({
         connectWith: ".connected",
-        change:  function (event, ui) {
-            $("span.vote-rank").html("1");
+        update:  function(event, ui) {
+            $("#to_list").children('li').each(function(index) {
+                index = index + 1.0
+                rank = $(this).find('.vote-rank');
+                score = $(this).find('.vote-score');
+                rank.html(index+'.');
+                score.html(Math.round((1.0/index)*100)/100+'p')
+            });
         }
     });
 {% endblock %}
@@ -37,42 +47,27 @@
 {% for entry in nvoted_entries %}
         <li>
             <span class="vote-entry">
-                {{ entry.name }}<br />
+                <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
             </span>
-            <span class="vote-rank"></span>
+            <div class="vote-right">
+                <span class="vote-rank"></span>
+                <span class="vote-score"></span>
+            </div>
         </li>
 {% endfor %}
-        <li>
-            <span class="vote-entry">
-                Märehtijät<br />
-                <span class="vote-entry-desc">by 13 Lehmää ja ämpäri</span>
-            </span>
-            <span class="vote-rank"></span>
-        </li>
-        <li>
-            <span class="vote-entry">
-                leet<br />
-                <span class="vote-entry-desc">by 4chan</span>
-            </span>
-            <span class="vote-rank"></span>
-        </li>
-        <li>
-            <span class="vote-entry">
-                Rotozoomer from hell<br />
-                <span class="vote-entry-desc">by Katajakasa</span>
-            </span>
-            <span class="vote-rank"></span>
-        </li>
     </ul>
     <ul id="to_list" class="vote-list connected">
 {% for entry in voted_entries %}
         <li>
             <span class="vote-entry">
-                {{ entry.name }}<br />
+                <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
             </span>
-            <span class="vote-rank"></span>
+            <div class="vote-right">
+                <span class="vote-rank"></span>
+                <span class="vote-score"></span>
+            </div>
         </li>
 {% endfor %}
     </ul>

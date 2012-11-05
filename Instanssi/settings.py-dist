@@ -141,7 +141,6 @@ INSTALLED_APPS = (
     'Instanssi.ext_blog',
     'Instanssi.ext_calendar',
     'Instanssi.ext_programme',
-    'social_auth',
     'imagekit',
     'south',
     'uni_form',

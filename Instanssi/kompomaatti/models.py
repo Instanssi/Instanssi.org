@@ -144,9 +144,7 @@ class Entry(models.Model):
             return self.archive_rank
         
         # Otherwise calculate ranks by score
-        def sort_helper(object):
-            return object.get_score()
-        entries = sorted(Entry.objects.filter(compo=self.compo), key=sort_helper, reverse=True)
+        entries = entrysort.sort_by_score(Entry.objects.filter(compo=self.compo))
         n = 1
         for e in entries:
             if e.id == self.id:

@@ -60,10 +60,12 @@
     </tbody>
 </table>
 
-{% if can_vote %}
 <h3>Äänestys</h3>
+{% if can_vote %}
 <p>Äänestys on avoinna.</p>
 <a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
+{% else %}
+<p>Äänestys on kiinni.</p>
 {% endif %}
 
 {% if user.is_authenticated %}

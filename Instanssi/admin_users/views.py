@@ -8,7 +8,6 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
-from django_openid_auth.models import UserOpenID
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required, su_access_required
 
 @staff_access_required

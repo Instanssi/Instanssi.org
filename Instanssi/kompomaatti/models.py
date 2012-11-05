@@ -72,7 +72,7 @@ class Compo(models.Model):
         (0, u'Ei mitään'),
         (1, u'Youtube ensin, sitten kuva'), # Videoentryille, koodauskompoille
         (2, u'Vain kuva'), # Grafiikkakompoille
-        (3, u'jPlayer ensin, sitten kuva'), # Musiikkikompoille
+        (3, u'(deprecated)'), 
     )
     entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi. Latauslinkki näytetään aina.")
     hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilotetaanko kompon tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.', default=False)
@@ -133,18 +133,6 @@ class Entry(models.Model):
     class Meta:
         verbose_name=u"tuotos"
         verbose_name_plural=u"tuotokset"
-        
-    def get_entry_jplayer_ext(self):
-        ext = os.path.splitext(self.entryfile.name)[1][1:]
-        if ext == 'ogg':
-            ext = 'oga'
-        if ext == 'ogm':
-            ext = 'ogv'
-        return ext
-    
-    def can_use_jplayer(self):
-        ext = os.path.splitext(self.entryfile.name)[1][1:]
-        return (ext in ['mp3','oga','ogv','ogg'])
     
     def get_score(self):
         if self.disqualified: # If disqualified, score will be -1
@@ -177,7 +165,6 @@ class Entry(models.Model):
         show = {
             'youtube': False,
             'image': False,
-            'jplayer': False,
             'noshow': True
         }
         
@@ -187,16 +174,11 @@ class Entry(models.Model):
                 show['youtube'] = True
             elif self.imagefile_original:
                 show['image'] = True
-        elif state == 2:
+        elif state == 2 or state == 3: # 3 is deprecated
             if self.imagefile_original:
                 show['image'] = True
-        elif state == 3:
-            if self.can_use_jplayer():
-                show['jplayer'] = True
-            elif self.imagefile_original:
-                show['image'] = True
         
-        if show['jplayer'] or show['image'] or show['youtube']:
+        if show['image'] or show['youtube']:
             show['noshow'] = False
             
         return show

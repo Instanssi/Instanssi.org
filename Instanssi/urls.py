@@ -9,7 +9,7 @@ admin.autodiscover()
 
 # URLS
 urlpatterns = patterns('',
-    url(r'', include('social_auth.urls')),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^2012/', include('Instanssi.main2012.urls')),
     url(r'^manage/auth/', include('Instanssi.admin_auth.urls')),
     url(r'^manage/events/', include('Instanssi.admin_events.urls')),

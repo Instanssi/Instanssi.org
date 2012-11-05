@@ -44,22 +44,22 @@
 
 <h3>Ajat</h3>
 <table class="info">
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Ilmoittautuminen päättyy:</th>
-            <th>Muokkausaika päättyy:</th>
-            <th>Kompo alkaa:</th>
-            <th>Äänestysaika:</th>
-        </tr>
-    </thead>
-    <tbody>
-        <th>Tila/Aika:</th>
+    <tr>
+        <th style="width: 20%;">Ilmoittautuminen päättyy:</th>
         <td>{{ compo.adding_time }}</td>
+    </tr>
+    <tr>
+        <th>Muokkausaika päättyy:</th>
         <td>{{ compo.editing_time }}</td>
+    </tr>
+    <tr>
+        <th>Kompo alkaa:</th>
         <td>{{ compo.compo_time }}</td>
+    </tr>
+    <tr>
+        <th>Äänestysaika:</th>
         <td>{{ compo.voting_time }}</td>
-    </tbody>
+    </tr>
 </table>
 
 
@@ -80,7 +80,7 @@
 {% if all_entries %}
 <ol>
 {% for entry in all_entries %}
-    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }}</li>
+    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }} ({{ entry.get_score|floatformat:"2" }}p)</li>
 {% endfor %}
 </ol>
 {% else %}
@@ -106,7 +106,7 @@
 
 
 {% if user.is_authenticated %}
-<h3>Osallistuminen</h3>
+<h3>Omat teokset</h3>
 {% if my_entries %}
 <p>Olet osallistunut kompoon seuraavilla teoksilla:</p>
 <table class="tablesorter" id="entries_table">

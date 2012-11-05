@@ -21,5 +21,58 @@
 
 {% block content %}
 {{ block.super }}
-<h2>{{ entry.name }}</h2>
+<h2>{{ entry.name }} by {{ entry.creator }}</h2>
+
+<h3>Tiedot</h3>
+<table>
+{% if entry.description %}
+    <tr>
+        <th style="width: 20%;">Kuvaus</th>
+        <td>{{ entry.description|linebreaksbr }}</td>
+    </tr>
+{% endif %}
+{% if entry.disqualified %}
+    <tr>
+        <th>Entry on diskattu!</th>
+        <td>{{ entry.disqualified_reason|linebreaksbr }}</td>
+    </tr>
+{% endif %}
+    <tr>
+        <th>Lataa</th>
+        <td><a href="{{ entry.entryfile.url }}">Tuotos</a></td>
+    </tr>
+{% if entry.sourcefile %}
+    <tr>
+        <th>Lataa</th>
+        <td><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></td>
+    </tr>
+{% endif %}
+</table>
+
+
+{% if not entry.get_show_list.noshow %}
+<h3>Esikatselu</h3>
+{% if entry.get_show_list.youtube %}
+<object width="640" height="385">
+    <param name="movie" value="{{ entry.youtube_url }}" />
+    <param name="allowFullScreen" value="true" />
+    <param name="allowScriptAccess" value="always" />
+    <embed src="{{ entry.youtube_url }}"
+        type="application/x-shockwave-flash"
+        allowfullscreen="true"
+        allowscriptaccess="always"
+        width="640" height="385">
+    </embed>
+</object>
+{% endif %}
+{% if entry.get_show_list.image   %}
+<p>
+    <img src="{{ entry.imagefile_thumbnail.url }}" 
+         alt="{{ entry.name }}" 
+         width="{{ entry.imagefile_thumbnail.width }}" 
+         height="{{ entry.imagefile_thumbnail.height }}" />
+</p>
+{% endif %}
+{% endif %}
+
 {% endblock %}

@@ -88,7 +88,7 @@
 {% endif %}
 {% endif %}
 
-
+{% if user.is_authenticated %}
 <h3>Äänestys</h3>
 {% if can_vote and compo.is_voting_open %}
 <p>Äänestys on avoinna.</p>
@@ -102,6 +102,7 @@
 {% endif %}
 {% if not can_vote and not compo.is_voting_open %}
 <p>Äänestys on kiinni.</p>
+{% endif %}
 {% endif %}
 
 

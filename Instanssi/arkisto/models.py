@@ -19,7 +19,7 @@ class OtherVideo(models.Model):
     category = models.ForeignKey(OtherVideoCategory, verbose_name=u'Kategoria')
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Videon nimi.')
     description = models.TextField(u'Kuvaus', help_text=u'Videon kuvaus.')
-    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
+    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon.", blank=True)
 
     def __unicode__(self):
         return self.name

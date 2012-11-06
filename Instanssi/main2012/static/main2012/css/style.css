@@ -53,6 +53,10 @@ eng = 465
 	font-size: 10px;
 }
 
+#content #blog .message {
+    text-align: justify;
+}
+
 #content #blog .title {
 	color: #1fa3f5; 
 	margin-top: 20px; 
@@ -64,6 +68,8 @@ eng = 465
 #content #blog img {
     max-width: 320px;
     max-height: 230px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Content */

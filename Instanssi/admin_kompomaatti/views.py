@@ -4,7 +4,6 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from Instanssi.kompomaatti.models import *
 from Instanssi.admin_kompomaatti.forms import *
 from Instanssi.kompomaatti.misc import entrysort
@@ -118,7 +117,6 @@ def competitions_browse(request, sel_event_id):
         'competitions': competitions,
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @staff_access_required
@@ -144,7 +142,6 @@ def competition_edit(request, sel_event_id, competition_id):
         'competition': competition,
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @staff_access_required
@@ -187,7 +184,6 @@ def compo_browse(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/compo_browse.html", {
         'compos': compos,
         'compoform': compoform,
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
         'selected_event_id': int(sel_event_id),
     })
     
@@ -214,7 +210,6 @@ def compo_edit(request, sel_event_id, compo_id):
         'compo': compo,
         'editform': editform,
         'selected_event_id': int(sel_event_id),
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
     
 @staff_access_required

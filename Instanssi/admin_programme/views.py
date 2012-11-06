@@ -36,7 +36,6 @@ def index(request, sel_event_id):
         'pevs': pevs,
         'selected_event_id': int(sel_event_id),
         'eventform': form,
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
 @staff_access_required
@@ -62,7 +61,6 @@ def edit(request, sel_event_id, pev_id):
         'eventform': form,
         'event': pev,
         'selected_event_id': int(sel_event_id),
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
 @staff_access_required

@@ -1,18 +1,24 @@
 /* ---------- Voting crap ---------- */
 
 div.vote-widget {
-    width: 550px;
+    width: 500px;
     border: 1px solid #999999;
 }
 
 ul.vote-list {
     float: left;
+    padding: 4px !important;
+    margin: 10px !important;
+}
+
+.vote-list-item {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }
 
 div.vote-notice {
-    margin-right: 26px;
-    margin-left: 26px;
-    margin-top: 6px;
+    margin: 10px;
+    margin-bottom: 0px;
 }
 
 div.vote-notice > div {
@@ -86,3 +92,8 @@ div.vote-widget li {
 span.vote-entry-desc {
     font-size: 10px;
 }
+
+span.vote-button {
+    margin-right: 10px;
+}
+

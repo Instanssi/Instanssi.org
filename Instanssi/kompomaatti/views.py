@@ -69,7 +69,7 @@ def compo_details(request, event_id, compo_id):
     all_entries = []
     if compo.has_voting_started:
         if compo.show_voting_results:
-            all_entries = Entry.objects.filter(compo=compo)
+            all_entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
         else:
             all_entries = Entry.objects.filter(compo=compo).order_by('name')
     

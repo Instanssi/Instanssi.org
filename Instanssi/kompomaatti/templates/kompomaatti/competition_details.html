@@ -15,7 +15,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'kompomaatti-competition' sel_event_id competition.id %}">{{ competition.name }}</a>
+    &raquo; <a href="{% url 'km:competition' sel_event_id competition.id %}">{{ competition.name }}</a>
     &raquo; Tiedot
 {% endblock %}
 
@@ -58,7 +58,7 @@
 {% if signed_up %}
     <p>Olet ilmoittautunut nimimerkillä <strong>{{ participation.participant_name }}</strong>.</p>
     {% if can_participate %}
-    <a class="button" href="{% url 'kompomaatti-competition-signout' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
+    <a class="button" href="{% url 'km:competition-signout' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
     {% endif %}
 {% else %}
     <p>Et ole ilmoittautunut.</p>

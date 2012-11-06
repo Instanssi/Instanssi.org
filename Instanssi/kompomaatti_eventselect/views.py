@@ -10,7 +10,7 @@ def index(request):
     # Check if user selected an event without Javascript
     if request.method == 'POST':
         event_id = int(request.POST['eventsel'])
-        return HttpResponseRedirect(reverse('kompomaatti-index', args=(event_id,)))
+        return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
     
     # Render page
     return render_to_response('kompomaatti_eventselect/index.html', {

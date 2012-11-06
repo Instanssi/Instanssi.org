@@ -29,7 +29,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+	&raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
 	&raquo; Tiedot
 {% endblock %}
 
@@ -70,10 +70,10 @@
 
 {% if has_voted %}
 <p><strong>Olet jo äänestänyt.</strong> Mikäli haluat, voit vielä muokata antamiasi ääniä.</p>
-<a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry muokkaamaan antamiasi ääniä</a>
+<a href="{% url 'km:compo-vote' sel_event_id compo.id %}" class="button">Siirry muokkaamaan antamiasi ääniä</a>
 {% else %}
 <p>Et ole vielä äänestänyt.</p>
-<a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
+<a href="{% url 'km:compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
 {% endif %}
 
 {% endif %}
@@ -95,7 +95,7 @@
 <ul>
 {% for entry in all_entries %}
     <li>
-        <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
+        <a href="{% url 'km:entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
         by {{ entry.creator }} {% if entry.disqualified %}<strong>(diskattu)</strong>{% endif %}
     </li>
 {% endfor %}
@@ -110,7 +110,7 @@
 <ol>
 {% for entry in all_entries %}
     <li>
-        <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
+        <a href="{% url 'km:entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
         by {{ entry.creator }} {% if entry.disqualified %}<strong>(diskattu)</strong>{% else %}({{ entry.get_score|floatformat:"2" }}p){% endif %}
     </li>
 {% endfor %}
@@ -149,10 +149,10 @@
 {% if compo.is_editing_open or compo.is_adding_open %}
             <td>
 {% if compo.is_editing_open %}
-                <a href="{% url 'kompomaatti-entry-edit' sel_event_id compo.id entry.id %}" class="edit_link">Muokkaa</a>
+                <a href="{% url 'km:entry-edit' sel_event_id compo.id entry.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if compo.is_adding_open %}
-                <a href="{% url 'kompomaatti-entry-delete' sel_event_id compo.id entry.id %}" class="delete_link">Poista</a>
+                <a href="{% url 'km:entry-delete' sel_event_id compo.id entry.id %}" class="delete_link">Poista</a>
 {% endif %}
             </td>
 {% endif %}

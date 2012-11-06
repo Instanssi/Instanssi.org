@@ -55,7 +55,7 @@ def compo_details(request, event_id, compo_id):
             entry.user = request.user
             entry.compo = compo
             entry.save()
-            return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
+            return HttpResponseRedirect(reverse('km:compo', args=(event_id, compo_id,)))
     else:
         entryform = EntryForm(compo=compo)
     
@@ -202,7 +202,7 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
         entryform = EntryForm(request.POST, request.FILES, instance=entry, compo=compo)
         if entryform.is_valid():
             entryform.save()
-            return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
+            return HttpResponseRedirect(reverse('km:compo', args=(event_id, compo_id,)))
     else:
         entryform = EntryForm(instance=entry, compo=compo)
     
@@ -230,7 +230,7 @@ def compoentry_delete(request, event_id, compo_id, entry_id):
     entry.delete()
     
     # Redirect
-    return HttpResponseRedirect(reverse('kompomaatti-compo', args=(event_id, compo_id,)))
+    return HttpResponseRedirect(reverse('km:compo', args=(event_id, compo_id,)))
     
 def competitions(request, event_id):
     # Get competitions
@@ -266,7 +266,7 @@ def competition_details(request, event_id, competition_id):
             p.competition = competition
             p.user = request.user
             p.save()
-            return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
+            return HttpResponseRedirect(reverse('km:competition', args=(event_id, competition_id,)))
     else:
         participationform = ParticipationForm()
     
@@ -310,7 +310,7 @@ def competition_signout(request, event_id, competition_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('kompomaatti-competition', args=(event_id, competition_id,)))
+    return HttpResponseRedirect(reverse('km:competition', args=(event_id, competition_id,)))
 
 def entry_details(request, event_id, compo_id, entry_id):
     # Get compo
@@ -358,7 +358,7 @@ def profile(request, event_id):
         profileform = ProfileForm(request.POST, instance=request.user, user=request.user)
         if profileform.is_valid():
             profileform.save()
-            return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
+            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
     else:
         profileform = ProfileForm(instance=request.user, user=request.user)
     
@@ -367,7 +367,7 @@ def profile(request, event_id):
         votecodeassocform = VoteCodeAssocForm(request.POST, event=event, user=request.user)
         if votecodeassocform.is_valid():
             votecodeassocform.save()
-            return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
+            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
     else:
         votecodeassocform = VoteCodeAssocForm(event=event, user=request.user)
     
@@ -379,7 +379,7 @@ def profile(request, event_id):
             vcr.user = request.user
             vcr.event = event
             vcr.save()
-            return HttpResponseRedirect(reverse('kompomaatti-profile', args=(event_id,)))
+            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
     else:
         votecoderequestform = VoteCodeRequestForm()
     
@@ -395,7 +395,7 @@ def profile(request, event_id):
     })
     
 def do_login(request, event_id):
-    loginform = OpenIDLoginForm(next=reverse('kompomaatti-index', args=(event_id,)))
+    loginform = OpenIDLoginForm(next=reverse('km:index', args=(event_id,)))
     
     return custom_render(request, 'kompomaatti/login.html', {
         'sel_event_id': int(event_id),
@@ -405,5 +405,5 @@ def do_login(request, event_id):
 @user_access_required
 def do_logout(request, event_id):
     logout(request)
-    return HttpResponseRedirect(reverse('kompomaatti-index', args=(event_id,)))
+    return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
 

@@ -20,7 +20,7 @@
 {{ block.super }}
 	<h1>Kompomaatti</h1>
 	<p>Valitse tapahtuma.</p>
-	<form id="mform" method="POST">
+	<form id="mform" method="POST" action="">
 		<select id="event_select" name="eventsel">
 			<option value="-1">---</option>
 	{% for event in events %}

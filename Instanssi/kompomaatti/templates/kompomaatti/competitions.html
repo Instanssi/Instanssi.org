@@ -36,7 +36,7 @@
             <td>{{ competition.start_time }}</td>
         </tbody>
     </table>
-    <p><a href="{% url 'kompomaatti-competition' sel_event_id competition.id %}">Siirry tarkastelemaan kilpailun tarkempia tietoja &raquo;</a></p>
+    <p><a href="{% url 'km:competition' sel_event_id competition.id %}">Siirry tarkastelemaan kilpailun tarkempia tietoja &raquo;</a></p>
 {% endfor %}
 {% else %}
     <p>Ei kilpailuja.</p>

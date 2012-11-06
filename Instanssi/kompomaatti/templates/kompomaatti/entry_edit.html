@@ -13,7 +13,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+    &raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
 	&raquo; {{ entry.name }}
 {% endblock %}
 

@@ -38,7 +38,7 @@
             <td>{{ compo.voting_time }}</td>
         </tbody>
     </table>
-    <p><a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">Siirry tarkastelemaan kompon tarkempia tietoja &raquo;</a></p>
+    <p><a href="{% url 'km:compo' sel_event_id compo.id %}">Siirry tarkastelemaan kompon tarkempia tietoja &raquo;</a></p>
 {% endfor %}
 {% else %}
     <p>Ei kompoja.</p>

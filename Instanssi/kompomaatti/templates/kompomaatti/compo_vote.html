@@ -17,7 +17,7 @@
         $("#to_list").children('li').each(function(index) {
             results[index] = $(this).attr('id');
         });
-        $.post('{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}', {
+        $.post('{% url 'km:compo-vote' sel_event_id compo.id %}', {
             'action': 'vote', 
             'results': results,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
@@ -70,7 +70,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; <a href="{% url 'kompomaatti-compo' sel_event_id compo.id %}">{{ compo.name }}</a>
+	&raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
 	&raquo; Äänestä
 {% endblock %}
 

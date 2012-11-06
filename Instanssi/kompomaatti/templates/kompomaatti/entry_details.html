@@ -67,10 +67,10 @@
 {% endif %}
 {% if entry.get_show_list.image   %}
 <p>
-    <img src="{{ entry.imagefile_thumbnail.url }}" 
-         alt="{{ entry.name }}" 
-         width="{{ entry.imagefile_thumbnail.width }}" 
-         height="{{ entry.imagefile_thumbnail.height }}" />
+    <img src="{{ entry.imagefile_medium.url }}" 
+         alt="{{ entry.name }} by {{ entry.creator }} " 
+         width="{{ entry.imagefile_medium.width }}" 
+         height="{{ entry.imagefile_medium.height }}" />
 </p>
 {% endif %}
 {% endif %}

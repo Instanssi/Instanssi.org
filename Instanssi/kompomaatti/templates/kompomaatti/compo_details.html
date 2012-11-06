@@ -68,7 +68,10 @@
 {% if all_entries %}
 <ul>
 {% for entry in all_entries %}
-    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }}</li>
+    <li>
+        <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
+        by {{ entry.creator }} {% if entry.disqualified %}<strong>(diskattu)</strong>{% endif %}
+    </li>
 {% endfor %}
 </ul>
 {% else %}
@@ -80,7 +83,10 @@
 {% if all_entries %}
 <ol>
 {% for entry in all_entries %}
-    <li><a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> by {{ entry.creator }} ({{ entry.get_score|floatformat:"2" }}p)</li>
+    <li>
+        <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id %}">{{ entry.name }}</a> 
+        by {{ entry.creator }} {% if entry.disqualified %}<strong>(diskattu)</strong>{% else %}({{ entry.get_score|floatformat:"2" }}p){% endif %}
+    </li>
 {% endfor %}
 </ol>
 {% else %}

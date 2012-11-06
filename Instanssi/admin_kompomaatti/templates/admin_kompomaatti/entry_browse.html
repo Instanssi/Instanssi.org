@@ -32,6 +32,7 @@
 				<th>Tekijä</th>
 				<th>Käyttäjä</th>
 				<th>Kompo</th>
+				<th>Diskattu</th>
 				<th>Lataa</th>
 				<th class="sorter-false management_field"></th>
 			</tr>
@@ -43,6 +44,7 @@
 				<td>{{ entry.creator }}</td>
 				<td>{{ entry.user.email }}</td>
 				<td>{{ entry.compo.name }}</td>
+				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
 				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
 	            <td>
 {% if perms.kompomaatti.change_entry %}

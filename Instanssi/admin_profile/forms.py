@@ -21,6 +21,8 @@ class InformationChangeForm(forms.ModelForm):
             )
         )
         
+        self.fields['email'].required = True
+        
     class Meta:
         model = User
         fields = ('first_name','last_name','email')

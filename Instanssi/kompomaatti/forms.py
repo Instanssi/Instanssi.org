@@ -89,6 +89,7 @@ class ProfileForm(forms.ModelForm):
         self.fields['first_name'].label = u"Etunimi"
         self.fields['last_name'].label = u"Sukunimi"
         self.fields['email'].label = u"Sähköposti"
+        self.fields['email'].required = True
         self.fields['otherinfo'].initial = self.profile.otherinfo
                 
     def save(self):

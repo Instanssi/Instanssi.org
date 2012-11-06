@@ -26,9 +26,12 @@
 				        width="640" height="385">
 				    </embed>
 				</object>
-				<div class="info">{{ video.description|linebreaksbr }}</div>
+				<div class="info">&nbsp;</div>
 				<div class="clearer"></div>
 			</div>
+{% if entry.description %}
+			<div class="desc">{{ entry.description|linebreaksbr }}</div>
+{% endif %}
 		</div>
 {% endblock %}
 

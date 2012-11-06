@@ -86,7 +86,7 @@
     <div class="vote-notice vote-error ui-state-error"><div class="ui-icon ui-icon-alert icon-messagebox"></div><span id="vote-error-text"></span></div>
     <ul id="from_list" class="vote-list connected">
 {% for entry in nvoted_entries %}
-        <li id="{{ entry.id }}">
+        <li id="{{ entry.id }}" class="vote-list-item">
             <span class="vote-entry">
                 {{ entry.name }}<br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
@@ -100,7 +100,7 @@
     </ul>
     <ul id="to_list" class="vote-list connected">
 {% for entry in voted_entries %}
-        <li id="{{ entry.id }}">
+        <li id="{{ entry.id }}" class="vote-list-item">
             <span class="vote-entry">
                 {{ entry.name }}<br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
@@ -112,7 +112,7 @@
         </li>
 {% endfor %}
     </ul>
-    <p style="clear: both; text-align: right;"><span style="margin-right: 26px;" id="submit_button">Tallenna</span></p>
+    <p style="clear: both; text-align: right;"><span class="vote-button" id="submit_button">Tallenna</span></p>
 </div>
 
 

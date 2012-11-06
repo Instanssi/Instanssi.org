@@ -31,24 +31,37 @@
         });
     });
 
-    
+    function name_from_list() {
+        $("#from_list").find(".vote-rank").html("");
+        $("#from_list").find(".vote-score").html("");
+    }
+
+    function name_to_list() {
+        $("#to_list").children('li').each(function(index) {
+            index = index + 1.0
+            rank = $(this).find('.vote-rank');
+            score = $(this).find('.vote-score');
+            rank.html(index+'.');
+            score.html(Math.round((1.0/index)*100)/100+'p')
+        });
+    }   
+     
     $("#from_list").sortable({
         connectWith: ".connected",
-        update:  function (event, ui) {
-            $("#from_list").find(".vote-rank").html("");
-            $("#from_list").find(".vote-score").html("");
+        update: function (event, ui) {
+            name_from_list();
+        },
+        create: function(event, ui) {
+            name_from_list();
         }
     });
     $("#to_list").sortable({
         connectWith: ".connected",
-        update:  function(event, ui) {
-            $("#to_list").children('li').each(function(index) {
-                index = index + 1.0
-                rank = $(this).find('.vote-rank');
-                score = $(this).find('.vote-score');
-                rank.html(index+'.');
-                score.html(Math.round((1.0/index)*100)/100+'p')
-            });
+        update: function(event, ui) {
+            name_to_list();
+        },
+        create: function(event, ui) {
+            name_to_list();
         }
     });
     $("#from_list").disableSelection();
@@ -75,7 +88,7 @@
 {% for entry in nvoted_entries %}
         <li id="{{ entry.id }}">
             <span class="vote-entry">
-                <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
+                {{ entry.name }}<br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
             </span>
             <div class="vote-right">
@@ -89,7 +102,7 @@
 {% for entry in voted_entries %}
         <li id="{{ entry.id }}">
             <span class="vote-entry">
-                <a href="{% url 'kompomaatti-entry' sel_event_id compo.id entry.id  %}">{{ entry.name }}</a><br />
+                {{ entry.name }}<br />
                 <span class="vote-entry-desc">by {{ entry.creator }}</span>
             </span>
             <div class="vote-right">

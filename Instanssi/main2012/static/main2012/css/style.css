@@ -61,6 +61,11 @@ eng = 465
 	letter-spacing: 2px;
 }
 
+#content #blog img {
+    max-width: 320px;
+    max-height: 230px;
+}
+
 /* Content */
 
 #content{width: 100%; background: #111; border-top: 1px solid #1e5166; padding: 50px 0 50px 0;display: -webkit-box;}

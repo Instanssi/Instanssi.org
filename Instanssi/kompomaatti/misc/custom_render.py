@@ -6,8 +6,6 @@ from django.shortcuts import get_object_or_404
 from Instanssi.kompomaatti.models import Event
 
 def custom_render(request, tpl, context={}):
-    context['user'] = request.user
-    
     # Get event name
     if 'sel_event_id' in context:
         event = get_object_or_404(Event, pk=context['sel_event_id'])

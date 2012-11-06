@@ -19,9 +19,9 @@
 <p>Olet kirjautunut ulos.</p>
 <ul>
     <li><a href="/">Etusivu</a></li>
-    <li><a href="/manage/auth/login/">Hallinta</a></li>
-    <li><a href="/kompomaatti/">Kompomaatti</a></li>
-    <li><a href="/arkisto/">Arkisto</a></li>
+    <li><a href="{% url 'admin-login' %}">Hallinta</a></li>
+    <li><a href="{% url 'kme:index' %}">Kompomaatti</a></li>
+    <li><a href="{% url 'archive:index' %}">Arkisto</a></li>
 </ul>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{% load static %}{% load render_arkisto_nav from arkisto_base_tags %}
 <html>
 <head>
     <meta charset="utf-8" />
@@ -33,18 +33,15 @@
     </script>
 </head>
 <body>
-    <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="{% url 'archive' %}">Arkisto</a></h1></div>
+    <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="{% url 'archive:index' %}">Arkisto</a></h1></div>
     <div id="content">
-{% if nav_events %}
+{% if event %}
         <ul id="nav">
-{% for event in nav_events %}
-            <li><a href="{% url 'archive-event' event.id %}">{{ event.name }}</a></li>
-            {% if not forloop.last %}<span class="separator">|</span>{% endif %}
-{% endfor %}
+{% render_arkisto_nav %}
         </ul>
-        <h2>{{ event.name }} <a href="{% url 'archive-event' event.id %}" class="see-all-results">Katso kaikki tulokset</a></h2>
+        <h2>{{ event.name }} <a href="{% url 'archive:event' event.id %}" class="see-all-results">Katso kaikki tulokset</a></h2>
 {% else %}
-		<h2>Arkisto</h2>
+    <h2>Arkisto</h2>
 {% endif %}
 {% block content %}{% endblock %}
     </div>

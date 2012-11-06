@@ -63,7 +63,6 @@ MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
 STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # OpenID Auth
 LOGIN_URL = '/openid/login/'
@@ -75,12 +74,13 @@ OPENID_UPDATE_DETAILS_FROM_SREG = True
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 
 # Options for testing.customrunner.CustomRunner
-TEST_EXCLUDE = {
+TEST_EXCLUDE = (
+    'django_openid_auth',
     'uni_form',
     'django',
     'south',
     'imagekit',
-}
+)
 TEST_RUN_ALL = False
 TEST_RUNNER = 'testing.customrunner.CustomRunner'
 

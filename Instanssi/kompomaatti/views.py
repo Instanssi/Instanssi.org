@@ -144,7 +144,7 @@ def compo_vote(request, event_id, compo_id):
             vote = Vote()
             vote.user = request.user
             vote.compo = compo
-            vote.entry = Entry.objects.get(pk=id)
+            vote.entry_id = id
             vote.rank = number
             vote.save()
             number += 1

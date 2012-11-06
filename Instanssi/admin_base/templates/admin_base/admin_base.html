@@ -68,9 +68,9 @@
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem">
-            	<a href="{% url 'admin-profile' %}">Profiili<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'admin-profile' %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
-            		<li class="menuitem"><a href="{% url 'admin-profile' %}">Profiili</a></li>
+            		<li class="menuitem"><a href="{% url 'admin-profile' %}">Tiedot</a></li>
             		<li class="menuitem"><a href="{% url 'admin-password' %}">Salasana</a></li>
             	</ul>
             </li>

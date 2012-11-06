@@ -63,7 +63,7 @@
         <ul id="header_nav_right">
 {% if user.is_authenticated %}
             <li class="menuitem">
-                <a href="{% url 'km:profile' sel_event_id %}">Profiili</a>
+                <a href="{% url 'km:profile' sel_event_id %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}</a>
             </li>
 {% endif %}
             <li class="menuitem">

@@ -34,23 +34,23 @@
  				<th>Rekisteröity</th>
  				<th>Viimeisin kirjautuminen</th>
  				<th>Aktivoitu</th>
-{% if is_superuser %}
+{% if user.is_superuser %}
  				<th class="sorter-false management_field"></th>
 {% endif %}
  			</tr>
  		</thead>
  		<tbody>
-{% for user in superusers %}
+{% for m_user in superusers %}
 			<tr>
-				<td>{{ user.username }}</td>
-				<td>{{ user.first_name }} {{ user.last_name }}</td>
-				<td>{{ user.email }}</td>
-				<td>{% if user.is_superuser %}Administrator{% elif user.is_staff %}Staff{% else %}User{% endif %}</td>
-				<td>{{ user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>{{ user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>{% if user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
-{% if is_superuser %}
-{% if user.is_superuser%}
+				<td>{{ m_user.username }}</td>
+				<td>{{ m_user.first_name }} {{ m_user.last_name }}</td>
+				<td>{{ m_user.email }}</td>
+				<td>{% if m_user.is_superuser %}Administrator{% elif m_user.is_staff %}Staff{% else %}User{% endif %}</td>
+				<td>{{ m_user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{{ m_user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
+				<td>{% if m_user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
+{% if user.is_superuser %}
+{% if m_user.is_superuser%}
 				<td>&nbsp;</td>
 {% else %}
 				<td>
@@ -66,7 +66,7 @@
 	<div id="users_pager" class="pager">
 		{% include "common/pagination.html" %}
 	</div>
-{% if is_superuser %}
+{% if user.is_superuser %}
 {% uni_form userform userform.helper %}
 {% endif %}
 {% endblock %}

@@ -4,7 +4,6 @@ from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from Instanssi.ext_blog.models import BlogEntry, BlogComment
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_blog.forms import BlogEntryForm, BlogEntryEditForm
@@ -41,7 +40,6 @@ def index(request, sel_event_id):
         'entries': entries,
         'selected_event_id': int(sel_event_id),
         'addform': form,
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
     })
 
 @staff_access_required
@@ -65,7 +63,6 @@ def edit(request, sel_event_id, entry_id):
     # Render response
     return admin_render(request, "admin_blog/edit.html", {
         'editform': form,
-        'LANGUAGE_CODE': getattr(settings, 'SHORT_LANGUAGE_CODE'),
         'selected_event_id': int(sel_event_id),
     })
     

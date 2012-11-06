@@ -91,16 +91,11 @@ def compo_vote(request, event_id, compo_id):
     except VoteCode.DoesNotExist:
         raise Http403
     
-    # Check if we have data!
-    if request.method == 'POST':
-        print request.POST
-        return HttpResponse("0")
-    
     # Get compo
     compo = get_object_or_404(Compo, pk=int(compo_id))
     
     # Make sure voting is open
-    if datetime.now() < compo.voting_start or datetime.now() > compo.voting_end:
+    if not compo.is_voting_open():
         raise Http403
     
     # Get votes cast by user
@@ -111,21 +106,69 @@ def compo_vote(request, event_id, compo_id):
     if votes.count() > 0:
         has_voted = True
     
+    # Check if we have data!
+    if request.method == 'POST':
+        # Get as list, convert to ints
+        results = []
+        _results = request.POST.getlist('results[]')
+        for result in _results:
+            results.append(int(result))
+        
+        # Make sure we have right amount of entries (more than 0)
+        if len(results) < 1:
+            return HttpResponse("On äänestettävä vähintään yhtä entryä.")
+        
+        # Make sure there are no id's twice
+        _checked = []
+        for id in results:
+            if id in _checked:
+                return HttpResponse("Syötevirhe!")
+            else:
+                _checked.append(id)
+
+        # See that all id's are entries belonging to this compo
+        _cids = []
+        for entry in Entry.objects.filter(compo=compo, disqualified=False):
+            _cids.append(entry.id)
+        for result in results:
+            if result not in _cids:
+                return HttpResponse("Syötevirhe!")
+        
+        # Remove old votes by this user, on this compo
+        if has_voted:
+            Vote.objects.filter(user=request.user, compo=compo).delete()
+        
+        # Cast new votes
+        number = 1
+        for id in results:
+            vote = Vote()
+            vote.user = request.user
+            vote.compo = compo
+            vote.entry = Entry.objects.get(pk=id)
+            vote.rank = number
+            vote.save()
+            number += 1
+        
+        # Return success message
+        return HttpResponse("0")
+    
     # Get entries. If user hasn't voted yet, make sure the entries are in random order to minimize bias
     # If user has already voted, sort entries in previously voted order.
     nvoted_entries = []
     voted_entries = []
     if has_voted:
-        # Get all entries
-        nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
-        
-        # Get voted entries. Add to "voted" list, remove from "not voted" list.
+        # Get voted entries. Add to "voted" list
         for vote in votes:
             if not vote.entry.disqualified:
                 voted_entries.append(vote.entry)
-                nvoted_entries.remove(vote.entry)
+                
+        # Get all entries
+        _nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
+        for entry in _nvoted_entries:
+            if entry not in voted_entries:
+                nvoted_entries.append(entry)
     else:
-        nvoted_entries = Entry.objects.filter(compo=compo).order_by('?')
+        nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
     
     # Dump template
     return custom_render(request, 'kompomaatti/compo_vote.html', {

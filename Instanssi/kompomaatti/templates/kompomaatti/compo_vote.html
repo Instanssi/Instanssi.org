@@ -84,6 +84,7 @@
 <div class="vote-widget">
     <div class="vote-notice vote-success ui-state-highlight"><div class="ui-icon ui-icon-info icon-messagebox"></div><span>Äänestys suoritettu!</span></div>
     <div class="vote-notice vote-error ui-state-error"><div class="ui-icon ui-icon-alert icon-messagebox"></div><span id="vote-error-text"></span></div>
+    <div class="vote-button-wrapper"><span class="vote-button" id="submit_button">Tallenna</span></div>
     <ul id="from_list" class="vote-list connected">
 {% for entry in nvoted_entries %}
         <li id="{{ entry.id }}" class="vote-list-item">
@@ -112,7 +113,7 @@
         </li>
 {% endfor %}
     </ul>
-    <p style="clear: both; text-align: right;"><span class="vote-button" id="submit_button">Tallenna</span></p>
+    <div style="clear: both; text-align: right;"></div>
 </div>
 
 

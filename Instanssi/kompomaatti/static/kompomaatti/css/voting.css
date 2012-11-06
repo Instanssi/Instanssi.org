@@ -97,3 +97,9 @@ span.vote-button {
     margin-right: 10px;
 }
 
+div.vote-button-wrapper {
+    clear: both; 
+    text-align: right;
+    margin-top: 10px;
+}
+

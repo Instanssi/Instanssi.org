@@ -66,11 +66,7 @@ eng = 465
 }
 
 #content #blog img {
-    max-width: 320px;
-    max-height: 230px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    max-width: 500px;
 }
 
 /* Content */

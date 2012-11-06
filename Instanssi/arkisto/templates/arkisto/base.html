@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html>
 <head>
     <meta charset="utf-8" />
@@ -12,10 +12,10 @@
     <meta property="og:title" content="Instanssi Arkisto" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Instanssi Arkisto" />
-{% if not debugmode %}
+{% if GOOGLE_ANALYTICS %}
     <script type="text/javascript">
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-10526874-10']);
+    _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_CODE }}']);
     _gaq.push(['_trackPageview']);
     
     (function() {

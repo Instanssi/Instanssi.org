@@ -4,8 +4,9 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 
-# Use admin panel
-admin.autodiscover()
+# Use admin panel, if debug mode is on
+if settings.DEBUG:
+    admin.autodiscover()
 
 # URLS
 urlpatterns = patterns('',
@@ -25,15 +26,20 @@ urlpatterns = patterns('',
     url(r'^manage/(?P<sel_event_id>\d+)/programme/', include('Instanssi.admin_programme.urls')),
     url(r'^manage/', include('Instanssi.admin_base.urls')),
     url(r'^blog/', include('Instanssi.ext_blog.urls')),
-    url(r'^arkisto/', include('Instanssi.arkisto.urls')),
-    url(r'^kompomaatti/(?P<event_id>\d+)/', include('Instanssi.kompomaatti.urls')),
-    url(r'^kompomaatti/', include('Instanssi.kompomaatti_eventselect.urls')),
+    url(r'^arkisto/', include('Instanssi.arkisto.urls', namespace='archive')),
+    url(r'^kompomaatti/(?P<event_id>\d+)/', include('Instanssi.kompomaatti.urls', namespace="km")),
+    url(r'^kompomaatti/', include('Instanssi.kompomaatti_eventselect.urls', namespace="kme")),
     url(r'^$', include('Instanssi.main2012.urls')),
-    url(r'^admin/', include(admin.site.urls)),
 )
 
+# Add admin panel link if debug mode is on
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^admin/', include(admin.site.urls)),
+    )
+
 # Serve media files through static.serve when running in debug mode
-if getattr(settings, 'DEBUG'):
+if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

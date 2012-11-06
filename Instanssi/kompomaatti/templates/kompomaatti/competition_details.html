@@ -41,6 +41,17 @@
     </tbody>
 </table>
 
+{% if competition.show_results %}
+<h3>Tulokset</h3>
+<ol>
+{% for participant in participants %}
+    <li>
+        {{ participant.participant_name }}{% if participant.disqualified %} <strong>(diskattu)</strong>{% else %}, {{ participant.get_formatted_score }}{% endif %}
+    </li>
+{% endfor %}
+</ol>
+{% endif %}
+
 {% if user.is_authenticated %}
 
 <h3>Osallistuminen</h3>

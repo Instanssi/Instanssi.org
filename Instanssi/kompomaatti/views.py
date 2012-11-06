@@ -264,6 +264,9 @@ def competition_details(request, event_id, competition_id):
     else:
         participationform = ParticipationForm()
     
+    # Get all participants
+    participants = CompetitionParticipation.objects.filter(competition=competition)
+    
     # Check if user has participated
     signed_up = False
     participation = None
@@ -282,6 +285,7 @@ def competition_details(request, event_id, competition_id):
         'signed_up': signed_up,
         'can_participate': can_participate,
         'participationform': participationform,
+        'participants': participants,
     })
 
 @user_access_required

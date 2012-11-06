@@ -1,6 +1,0 @@
-{% load static %}
-{% if entry.imagefile_medium %}
-<img class="img" src="{{ entry.imagefile_medium.url }}" alt="{{ entry.name }}" />
-{% else %}
-<img class="img" src="{% static "arkisto/img/filler_medium.png" %}" alt="Audio file" />
-{% endif %}

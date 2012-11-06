@@ -1,4 +1,5 @@
 {% extends "arkisto/base.html" %}
+{% load static %}
 
 {% block head %}
 {{ block.super }}
@@ -16,10 +17,25 @@
 				    <span class="name">{{ entry.name }}</span> 
 				    by <span class="by">{{ entry.creator }}</span>
 				</p>
-{% if entry.get_show_list.youtube %}{% include "arkisto/entryviews/youtube.html" %}{% endif %}
-{% if entry.get_show_list.image   %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
-{% if entry.get_show_list.jplayer %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
-{% if entry.get_show_list.noshow  %}{% include "arkisto/entryviews/image.html"   %}{% endif %}
+{% if entry.get_show_list.youtube %}
+                <object width="640" height="385" style="float: left;">
+                    <param name="movie" value="{{ entry.youtube_url }}" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="allowScriptAccess" value="always" />
+                    <embed src="{{ entry.youtube_url }}"
+                        type="application/x-shockwave-flash"
+                        allowfullscreen="true"
+                        allowscriptaccess="always"
+                        width="640" height="385"></embed>
+                </object>
+{% endif %}
+{% if entry.get_show_list.image or entry.get_show_list.jplayer or entry.get_show_list.noshow %}
+                {% if entry.imagefile_medium %}
+                <img class="img" src="{{ entry.imagefile_medium.url }}" alt="{{ entry.name }}" />
+                {% else %}
+                <img class="img" src="{% static "arkisto/img/filler_medium.png" %}" alt="Audio file" />
+                {% endif %}
+{% endif %}
 				<div class="info">
 				<p>{{ entry.compo.name }}</p>
 {% if entry.disqualified %}

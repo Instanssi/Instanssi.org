@@ -98,7 +98,15 @@
 <h3>Äänestys</h3>
 {% if can_vote and compo.is_voting_open %}
 <p>Äänestys on avoinna.</p>
+
+{% if has_voted %}
+<p><strong>Olet jo äänestänyt.</strong> Mikäli haluat, voit vielä muokata antamiasi ääniä.</p>
+<a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry muokkaamaan antamiasi ääniä</a>
+{% else %}
+<p>Et ole vielä äänestänyt.</p>
 <a href="{% url 'kompomaatti-compo-vote' sel_event_id compo.id %}" class="button">Siirry äänestämään</a>
+{% endif %}
+
 {% endif %}
 {% if not can_vote and compo.is_voting_open %}
 <p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Käy hakemassa äänioikeutta profiili-paneelissa.</p>

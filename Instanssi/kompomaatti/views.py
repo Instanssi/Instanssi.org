@@ -59,6 +59,11 @@ def compo_details(request, event_id, compo_id):
     else:
         entryform = EntryForm(compo=compo)
     
+    # Check if user has already voted
+    has_voted = False
+    if Vote.objects.filter(user=request.user, compo=compo).count() > 0:
+        has_voted = True
+    
     # Get entries, and only show them if voting has started
     # (only show results if it has been allowed in model)
     all_entries = []
@@ -81,6 +86,7 @@ def compo_details(request, event_id, compo_id):
         'can_vote': can_vote,
         'all_entries': all_entries,
         'my_entries': my_entries,
+        'has_voted': has_voted,
     })
     
 @user_access_required

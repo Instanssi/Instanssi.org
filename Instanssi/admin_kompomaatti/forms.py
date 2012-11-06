@@ -8,6 +8,7 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event, Competition, CompetitionParticipation
+import urlparse
 
 class AdminCompetitionScoreForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -169,7 +170,7 @@ class AdminEntryEditForm(forms.ModelForm):
         self.event = kwargs.pop('event', None)
         super(AdminEntryEditForm, self).__init__(*args, **kwargs)
         
-        # Set choices
+        # Set choices for Compo field
         if self.event:
             compos = []
             for compo in Compo.objects.filter(event=self.event):
@@ -197,7 +198,23 @@ class AdminEntryEditForm(forms.ModelForm):
                 )
             )
         )
+
+    def clean_youtube_url(self):
+        url = self.cleaned_data['youtube_url']
+        if url.find('http://www.youtube.com/v/') == 0:
+            return url
+
+        # Parse querystring to find video ID
+        parsed = urlparse.urlparse(url)
+        qs = urlparse.parse_qs(parsed.query)
         
+        # Check if the video id exists in query string
+        if 'v' not in qs:
+            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            
+        # All done. Return valid url
+        return 'http://www.youtube.com/v/'+qs['v'][0]+'/'
+
     class Meta:
         model = Entry
         exclude = ('imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')

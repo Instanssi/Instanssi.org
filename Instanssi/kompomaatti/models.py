@@ -121,7 +121,7 @@ class Entry(models.Model):
     imagefile_original = models.ImageField(u'Kuva', upload_to='kompomaatti/entryimages/', help_text=u"Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.", blank=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(160, 100)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
     imagefile_medium = ImageSpecField([ResizeToFill(640, 400)], image_field='imagefile_original', format='JPEG', options={'quality': 90})
-    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon. Täytyy olla muotoa \"http://www.youtube.com/v/abcabcabcabc\".", blank=True)
+    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-videoon.", blank=True)
     disqualified = models.BooleanField(u'Diskattu', help_text=u"Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!", default=False)
     disqualified_reason = models.TextField(u'Syy diskaukseen', help_text=u"Diskauksen syy.", blank=True)
     archive_score = models.FloatField(u'Pisteet', help_text=u'Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.', null=True, blank=True)

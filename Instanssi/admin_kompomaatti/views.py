@@ -80,7 +80,7 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
         pform = AdminParticipationEditForm(request.POST, instance=participant)
         if pform.is_valid():
             pform.save()
-            return HttpResponseRedirect(reverse('admin-participations', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('admin-participations', args=(sel_event_id, competition_id,)))
     else:
         pform = AdminParticipationEditForm(instance=participant)
     

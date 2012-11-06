@@ -92,7 +92,7 @@ p {
 }
 
 #base {
-	height: auto !important;
+	height: auto;
 	height: 100%;
 	min-height: 100%;
 	background-color: #f9f9f9;
@@ -214,12 +214,12 @@ ul.sub-level {
 #left_nav {
     float: left;
     width: 150px;
-    background-color: #38444b; 
+    background-color: #28343b;
     padding-top: 3px;
     padding-bottom: 3px;
     color: white;
     margin: 0;
-	height: auto !important;
+	height: auto;
 	height: 100%;
 	min-height: 100%;
 }

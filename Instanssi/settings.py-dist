@@ -92,6 +92,8 @@ STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),
 )
 
+DEFAULT_FILE_STORAGE = 'common.storage.ASCIIFileSystemStorage'
+
 # How to find static files
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

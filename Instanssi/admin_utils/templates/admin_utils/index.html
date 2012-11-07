@@ -1,0 +1,28 @@
+{% extends "admin_utils/base.html" %}
+
+{% block title %}{{ block.super }} - Työkalut{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; Työkalut
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Työkalut</h2>
+
+<p>
+    <strong>HUOM!</strong> Työkalut-sivulta löytyy kasa administrator-only tietokantaan ja tiedostoihin liittyviä työkaluja, joiden harkitsematon
+    käyttö ei kannata. Ennen työkalut-valikon työkalujen käyttöä on vähintään suojattava talo faradayn häkillä, sammutettava
+    kaikki sähkölaitteet, varustauduttava palosammuttimella ja varmuuskopioitava tietokanta + uploadatut tiedostot.
+</p>
+
+{% endblock %}

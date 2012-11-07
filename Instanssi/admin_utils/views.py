@@ -107,7 +107,5 @@ def dbchecker(request):
     })
     
 @su_access_required
-def log(request):
-    # Render response
-    return admin_render(request, "admin_utils/log.html", {
-    })
+def index(request):
+    return admin_render(request, "admin_utils/index.html", {})

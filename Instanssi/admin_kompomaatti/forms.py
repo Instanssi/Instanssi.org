@@ -200,6 +200,11 @@ class AdminEntryEditForm(forms.ModelForm):
         )
 
     def clean_youtube_url(self):
+        # Make sure field has content
+        if not self.cleaned_data['youtube_url']:
+            return self.cleaned_data['youtube_url']
+        
+        # Check if we already have a valid embed url
         url = self.cleaned_data['youtube_url']
         if url.find('http://www.youtube.com/v/') == 0:
             return url

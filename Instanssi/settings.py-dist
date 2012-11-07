@@ -118,6 +118,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS += (
     'common.context_processors.short_language_code',
     'common.context_processors.google_settings',
+    'common.context_processors.openid_helper',
 )
 
 ROOT_URLCONF = 'Instanssi.urls'

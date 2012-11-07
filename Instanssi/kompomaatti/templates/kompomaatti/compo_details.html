@@ -6,16 +6,20 @@
 
 {% block head %}
 {{ block.super }}
+{% if user.is_authenticated %}
     <!-- tablesorter files -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/theme.default.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/jquery.tablesorter.pager.css" %}" />
     <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/other/tablesorter-widgets.js" %}"></script>
+{% endif %}
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
+{% if user.is_authenticated %}
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa ilmoittautumisen ?"); 
     });
@@ -25,6 +29,7 @@
     $('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
     $('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
     $('.management_field').css('width','30px');
+{% endif %}
 {% endblock %}
 
 {% block crumbs %}

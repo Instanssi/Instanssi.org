@@ -86,7 +86,20 @@ def diskcleaner(request):
     
 @su_access_required
 def dbchecker(request):
-    entries = Entry.objects.all()
+    entries = []
+    for entry in Entry.objects.all():
+        entry.entryfile_ok = True
+        entry.sourcefile_ok = True
+        entry.imagefile_ok = True
+        if not os.path.exists(entry.entryfile.path):
+            entry.entryfile_ok = False
+        if entry.sourcefile and not os.path.exists(entry.sourcefile.path):
+            entry.sourcefile_ok = False
+        if entry.imagefile_original and not os.path.exists(entry.imagefile_original.path):
+            entry.imagefile_ok = False
+            
+        if not entry.entryfile_ok or not entry.sourcefile_ok or not entry.imagefile_ok:
+            entries.append(entry)
     
     # Render response
     return admin_render(request, "admin_utils/dbchecker.html", {

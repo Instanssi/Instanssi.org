@@ -43,7 +43,7 @@ def compo_details(request, event_id, compo_id):
             pass
         
     # Handle entry adding
-    if request.method == 'POST' and compo.is_adding_open():
+    if request.method == 'POST' and compo.is_adding_open() and can_vote:
         # Make sure user is authenticated
         if not request.user.is_active or not request.user.is_authenticated():
             raise Http403
@@ -59,11 +59,6 @@ def compo_details(request, event_id, compo_id):
     else:
         entryform = EntryForm(compo=compo)
     
-    # Check if user has already voted
-    has_voted = False
-    if Vote.objects.filter(user=request.user, compo=compo).count() > 0:
-        has_voted = True
-    
     # Get entries, and only show them if voting has started
     # (only show results if it has been allowed in model)
     all_entries = []
@@ -73,10 +68,16 @@ def compo_details(request, event_id, compo_id):
         else:
             all_entries = Entry.objects.filter(compo=compo).order_by('name')
     
-    # Get users entries
+    # Stuff for users that have logged in 
     my_entries = []
+    has_voted = False
     if request.user.is_active and request.user.is_authenticated():
+        # Get all entries added by the user
         my_entries = Entry.objects.filter(compo=compo, user=request.user)
+    
+        # Check if user has already voted
+        if Vote.objects.filter(user=request.user, compo=compo).count() > 0:
+            has_voted = True
     
     # Dump template
     return custom_render(request, 'kompomaatti/compo_details.html', {

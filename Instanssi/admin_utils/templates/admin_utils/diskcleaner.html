@@ -13,10 +13,29 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".tsorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Levynputsain</h2>
+
+<h3>Entryfiles</h3>
+<table class="tsorter">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Koko</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for file in orphan_entryfiles %}
+        <tr>
+            <td><a href="{{ file.path }}">{{ file.name }}</a></td>
+            <td>{{ file.size|filesizeformat }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

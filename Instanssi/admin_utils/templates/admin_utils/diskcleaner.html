@@ -15,15 +15,30 @@
 {{ block.super }}
     $(".tsorter").tablesorter({widgets: ['zebra'], sortList: [[1,1],]});
     $("#cleanup-button").button();
+    $("#unforeseen_consequences").button();
+    $("#unforeseen_consequences").click(function() {
+        $("#dangerous_button").css('display', 'block');
+        $("#unforeseen_consequences").hide();
+    });
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 <h2>Levynpuhdistus</h2>
 
-<form action="" method="post">
+<p>
+    <strong>HUOM!</strong> Ennen levynpuhdistajan käyttöä on EHDOTTOMASTI tarkastettava että 
+    varmuuskopiot ovat kunnossa, ja että kaikki alla näkyvät tiedostot ovat oikeasti turhia!
+    Levynpuhdistaja poistaa _kaikki_ tiedostot kansioista entryfiles, sourcefiles and imagefiles, joille
+    ei ole tietokannassa relaatiota!
+</p>
+<p>
+    <span id="unforeseen_consequences">Paina tästä jos olet lukenut ja ymmärtänyt.</span>
+</p>
+
+<form action="" method="post" id="dangerous_button" style="display: none;">
     {% csrf_token %}
-    <input type="submit" value="Siivoa" name="cleanup-button" id="cleanup-button" />
+    <input style="margin-left: 350px;" type="submit" value="Nuketa tiedostot!" name="cleanup-button" id="cleanup-button" />
 </form>
 
 <h3>Entryfiles</h3>

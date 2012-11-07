@@ -60,6 +60,7 @@
         <ul id="header_nav_left">
             <li class="menuitem"><a href="{% url 'admin-base' %}">Etusivu</a></li>
             <li class="menuitem"><a href="{% url 'admin-users' %}">Käyttäjät</a></li>
+{% if user.is_superuser %}
             <li class="menuitem">
                 <a href="{% url 'admin:utils-index' %}">Työkalut<span class="navmenu-icon-down"></span></a>
                 <ul class="sub-level">
@@ -67,6 +68,7 @@
                     <li class="menuitem"><a href="{% url 'admin:diskcleaner' %}">Levynpuhdistus</a></li>
                 </ul>
             </li>
+{% endif %}
             <li class="menuitem">
             	<a href="{% url 'admin-events' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">

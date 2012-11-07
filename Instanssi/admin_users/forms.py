@@ -67,6 +67,7 @@ class UserEditForm(forms.ModelForm):
                 'first_name',
                 'last_name',
                 'email',
+                'is_active',
                 'is_staff',
                 'groups',
                 ButtonHolder (
@@ -77,4 +78,4 @@ class UserEditForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','groups','is_staff')
+        fields = ('first_name','last_name','email','groups','is_staff','is_active')

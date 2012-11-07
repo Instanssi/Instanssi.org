@@ -8,9 +8,6 @@
 ## Asiakkaille näkyvä osio
 
 ### Kompomaatti
-* Kompomaatin asiakaspuoli pitäisi uudistaa
-* Tapahtuma pitäisi pystyä valitsemaan urlissa (nykyinen systeemi on tyhmä)
-* Kilpailut, joissa ei tallenneta tuotoksia, mm. levykkeenheitto. Admin-paneelista voitaisiin lopuksi pisteyttää.
 * Ei turhaan kysytä pikkukuvaa musiikkitiedostoille. Entryn lisääminen voisi olla hieman kustomoitavampi.
 * Äänestysjärjestelmää voisi vielä miettiä ...
 
@@ -25,20 +22,17 @@
 
 ### openidauth
 
-* Niputa tiukemmin kompomaattiin
+* Tehty
 
 ## Admineille näkyvä osio
 
 ### admin_users
 
-* OpenID-sivulle käyttäjien muokkaaminen staff/administrator-statuksen omaaville
-* Staffin jäsenten muokkaaminen ja poisto administrator-statuksen omaaville
-* Staffin jäsenten oikeuksien muokkaaminen eri toimintoihin
-* Käyttäjäryhmien hallinta ?
+* Tehty
 
 ### admin_blog
 
-* Saisi minne tahansa näkyviin templatetagilla {% render_blog %} (pääsivulle)
+* CSS Vaatii vielä säätöä.
 
 ### admin_calendar, admin_programme
 
@@ -58,9 +52,7 @@
 
 ### admin_arkisto
 
-* Kunnollinen käyttöliittymä arkistointi-operaatioiden hallintaan.
-  * mm. teosten siirto openid-käyttäjiltä arkisto-käyttäjälle.
-  * vanha entryarchivaltool voisi tulla osaksi tätä.
+* Tehty
   
 ### admin_screenshow
 

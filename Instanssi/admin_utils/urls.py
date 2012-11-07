@@ -7,4 +7,5 @@ urlpatterns = patterns(
     url(r'^$', 'log', name="utils-index"),
     url(r'^log/', 'log', name="log"),
     url(r'^diskcleaner/', 'diskcleaner', name="diskcleaner"),
+    url(r'^dbchecker/', 'dbchecker', name="dbchecker"),
 )

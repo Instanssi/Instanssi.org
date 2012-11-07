@@ -33,11 +33,12 @@ def diskcleaner(request):
     for file in os.listdir(ENTRYDIR):
         if file not in db_efs:
             ext_path = os.path.join(settings.MEDIA_URL,'kompomaatti/entryfiles/')+file
-            loc_path = ENTRYDIR+file
+            loc_path = os.path.join(ENTRYDIR,file)
             orphan_entryfiles.append({
                 'path': ext_path, 
                 'name': file, 
                 'size': os.path.getsize(loc_path),
+                'local_path': loc_path,
             })
     
     # Find orphaned entryfiles
@@ -45,11 +46,12 @@ def diskcleaner(request):
     for file in os.listdir(SOURCEDIR):
         if file not in db_sfs:
             ext_path = os.path.join(settings.MEDIA_URL,'kompomaatti/entrysources/')+file
-            loc_path = SOURCEDIR+file
+            loc_path = os.path.join(SOURCEDIR,file)
             orphan_sourcefiles.append({
                 'path': ext_path, 
                 'name': file, 
                 'size': os.path.getsize(loc_path),
+                'local_path': loc_path,
             })
             
     # Find orphaned entryfiles
@@ -57,18 +59,38 @@ def diskcleaner(request):
     for file in os.listdir(IMAGEDIR):
         if file not in db_ifs:
             ext_path = os.path.join(settings.MEDIA_URL,'kompomaatti/entryimages/')+file
-            loc_path = IMAGEDIR+file
+            loc_path = os.path.join(IMAGEDIR, file)
             orphan_imagefiles.append({
                 'path': ext_path, 
                 'name': file, 
                 'size': os.path.getsize(loc_path),
+                'local_path': loc_path,
             })
+    
+    # Check if we need to do something
+    if request.method == 'POST' and 'cleanup-button' in request.POST:
+        for file in orphan_entryfiles:
+            os.remove(file['local_path'])
+        for file in orphan_sourcefiles:
+            os.remove(file['local_path'])
+        for file in orphan_imagefiles:
+            os.remove(file['local_path'])
+        return HttpResponseRedirect(reverse('manage:diskcleaner'))
     
     # Render response
     return admin_render(request, "admin_utils/diskcleaner.html", {
         'orphan_entryfiles': orphan_entryfiles,
         'orphan_sourcefiles': orphan_sourcefiles,
         'orphan_imagefiles': orphan_imagefiles,
+    })
+    
+@su_access_required
+def dbchecker(request):
+    entries = Entry.objects.all()
+    
+    # Render response
+    return admin_render(request, "admin_utils/dbchecker.html", {
+        'broken_entries': entries,
     })
     
 @su_access_required

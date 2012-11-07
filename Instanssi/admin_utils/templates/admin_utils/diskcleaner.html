@@ -44,6 +44,8 @@
 {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p>Ei orpoja entrytiedostoja.</p>
 {% endif %}
 
 <h3>Sourcefiles</h3>
@@ -64,6 +66,8 @@
 {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p>Ei orpoja sorsatiedostoja.</p>
 {% endif %}
 
 <h3>Imagefiles</h3>
@@ -84,6 +88,8 @@
 {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p>Ei orpoja kuvatiedostoja.</p>
 {% endif %}
 
 {% endblock %}

@@ -12,6 +12,7 @@ if settings.DEBUG:
 urlpatterns = patterns('',
     url(r'^openid/', include('django_openid_auth.urls')),
     url(r'^2012/', include('Instanssi.main2012.urls')),
+#    url(r'^2013/', include('Instanssi.main2013.urls')),
     url(r'^manage/auth/', include('Instanssi.admin_auth.urls')),
     url(r'^manage/events/', include('Instanssi.admin_events.urls')),
     url(r'^manage/users/', include('Instanssi.admin_users.urls')),

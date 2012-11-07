@@ -8,13 +8,83 @@ from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
 from Instanssi.kompomaatti.forms import *
 from Instanssi.kompomaatti.models import *
+from Instanssi.ext_calendar.models import CalendarEvent
+from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.kompomaatti.misc.time_formatting import *
+from Instanssi.kompomaatti.misc import awesometime
 from django.contrib.auth import logout
 from datetime import datetime
+import time
     
 def index(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    compos = Compo.objects.filter(event=event, compo_start__gt=datetime.now())
+    cals = CalendarEvent.objects.filter(event=event, start__gt=datetime.now())
+    progs = ProgrammeEvent.objects.filter(event=event, start__gt=datetime.now())
+    comps = Competition.objects.filter(event=event, start__gt=datetime.now())
+    
+    # Handle compos
+    events = []
+    for compo in compos:
+        events.append({
+            'date': compo.adding_end,
+            'title': compo.name+': kompon ilmoittautumisaika päättyy.',
+            'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'formatted_time': awesometime.format_single(compo.adding_end)
+        })
+        events.append({
+            'date': compo.compo_start,
+            'title': compo.name+': kompo alkaa.',
+            'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'formatted_time': awesometime.format_single(compo.compo_start)
+        })
+    
+    # Handle competitions
+    for comp in comps:
+        events.append({
+            'date': comp.participation_end,
+            'title': comp.name+': kilpailun ilmoittautumisaika päättyy.',
+            'url': reverse('km:competition', args=(event_id, comp.id,)),
+            'formatted_time': awesometime.format_single(comp.participation_end)
+        })
+        events.append({
+            'date': comp.start,
+            'title': comp.name+': kilpailu alkaa.',
+            'url': reverse('km:competition', args=(event_id, comp.id,)),
+            'formatted_time': awesometime.format_single(comp.start)
+        })
+        
+    # Handle calendarevents
+    for cal in cals:
+        events.append({
+            'date': cal.start,
+            'title': cal.title,
+            'url': None,
+            'formatted_time': awesometime.format_single(cal.start)
+        })
+        
+    # Handle programmeevents
+    for prog in progs:
+        events.append({
+            'date': prog.start,
+            'title': prog.title,
+            'url': None,
+            'formatted_time': awesometime.format_single(prog.start)
+        })
+        
+    # Sort list 
+    def helper(object):
+        return time.mktime(object['date'].timetuple())
+    events = sorted(events, key=helper)
+    
+    # Only pick first 10 (or less)
+    if len(events) > 10:
+        events = events[:10]
+    
+    # All done, dump template
     return custom_render(request, 'kompomaatti/index.html', {
         'sel_event_id': int(event_id),
+        'events': events,
     })
     
 def compos(request, event_id):

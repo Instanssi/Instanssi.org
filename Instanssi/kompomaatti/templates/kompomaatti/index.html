@@ -21,4 +21,25 @@
 <p>
     Tervetuloa Kompomaattiin, Instanssien viralliseen entryjenhallinta- ja äänestyspalveluun!
 </p>
+<h3>Tulevat tapahtumat</h3>
+{% if events %}
+<table>
+    <thead>
+        <tr>
+            <th style="width: 20%;">Aika</th>
+            <th>Kuvaus</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for event in events %}
+        <tr>
+            <td>{{ event.formatted_time }}</td>
+            <td>{{ event.title }}{% if event.url %} <span style="font-size: 10px;">(<a href="{{ event.url }}">Lisätiedot &raquo;</a>){% endif %}</span></td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ei tapahtumia.</p>
+{% endif %}
 {% endblock %}

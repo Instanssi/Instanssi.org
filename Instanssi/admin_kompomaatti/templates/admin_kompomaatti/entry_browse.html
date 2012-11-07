@@ -33,19 +33,17 @@
 				<th>Käyttäjä</th>
 				<th>Kompo</th>
 				<th>Diskattu</th>
-				<th>Lataa</th>
 				<th class="sorter-false management_field"></th>
 			</tr>
 		</thead>
 		<tbody>
 {% for entry in entries %}
 			<tr>
-				<td>{{ entry.name }}</td>
+				<td><a href="{{ entry.entryfile.url }}">{{ entry.name }}</a></td>
 				<td>{{ entry.creator }}</td>
 				<td>{{ entry.user.email }}</td>
 				<td>{{ entry.compo.name }}</td>
 				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
-				<td><a href="{{ entry.entryfile.url }}">Lataa</a></td>
 	            <td>
 {% if perms.kompomaatti.change_entry %}
 	            	<a href="{% url 'admin-entry-edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>

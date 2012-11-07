@@ -13,19 +13,26 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".tsorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+    $(".tsorter").tablesorter({widgets: ['zebra'], sortList: [[1,1],]});
+    $("#cleanup-button").button();
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-    <h2>Levynpuhdistus</h2>
+<h2>Levynpuhdistus</h2>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Siivoa" name="cleanup-button" id="cleanup-button" />
+</form>
 
 <h3>Entryfiles</h3>
+{% if orphan_entryfiles %}
 <table class="tsorter">
     <thead>
         <tr>
             <th>Nimi</th>
-            <th>Koko</th>
+            <th style="width: 25%;">Koko</th>
         </tr>
     </thead>
     <tbody>
@@ -37,13 +44,15 @@
 {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 <h3>Sourcefiles</h3>
+{% if orphan_sourcefiles %}
 <table class="tsorter">
     <thead>
         <tr>
             <th>Nimi</th>
-            <th>Koko</th>
+            <th style="width: 25%;">Koko</th>
         </tr>
     </thead>
     <tbody>
@@ -55,13 +64,15 @@
 {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 <h3>Imagefiles</h3>
+{% if orphan_imagefiles %}
 <table class="tsorter">
     <thead>
         <tr>
             <th>Nimi</th>
-            <th>Koko</th>
+            <th style="width: 25%;">Koko</th>
         </tr>
     </thead>
     <tbody>
@@ -73,5 +84,6 @@
 {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 {% endblock %}

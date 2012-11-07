@@ -1,6 +1,6 @@
 {% extends "admin_utils/base.html" %}
 
-{% block title %}{{ block.super }} - Levynputsain{% endblock %}
+{% block title %}{{ block.super }} - Levynpuhdistus{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -8,7 +8,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; Levynputsain
+        &raquo; Levynpuhdistus
 {% endblock %}
 
 {% block jquery %}
@@ -18,7 +18,7 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Levynputsain</h2>
+    <h2>Levynpuhdistus</h2>
 
 <h3>Entryfiles</h3>
 <table class="tsorter">
@@ -30,6 +30,42 @@
     </thead>
     <tbody>
 {% for file in orphan_entryfiles %}
+        <tr>
+            <td><a href="{{ file.path }}">{{ file.name }}</a></td>
+            <td>{{ file.size|filesizeformat }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+<h3>Sourcefiles</h3>
+<table class="tsorter">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Koko</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for file in orphan_sourcefiles %}
+        <tr>
+            <td><a href="{{ file.path }}">{{ file.name }}</a></td>
+            <td>{{ file.size|filesizeformat }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+<h3>Imagefiles</h3>
+<table class="tsorter">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Koko</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for file in orphan_imagefiles %}
         <tr>
             <td><a href="{{ file.path }}">{{ file.name }}</a></td>
             <td>{{ file.size|filesizeformat }}</td>

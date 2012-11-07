@@ -28,7 +28,7 @@ def diskcleaner(request):
         if entry.sourcefile:
             db_sfs.append(os.path.basename(entry.sourcefile.name))
     
-    # Get all entryfiles
+    # Find orphaned entryfiles
     orphan_entryfiles = []
     for file in os.listdir(ENTRYDIR):
         if file not in db_efs:
@@ -40,9 +40,35 @@ def diskcleaner(request):
                 'size': os.path.getsize(loc_path),
             })
     
+    # Find orphaned entryfiles
+    orphan_sourcefiles = []
+    for file in os.listdir(SOURCEDIR):
+        if file not in db_sfs:
+            ext_path = os.path.join(settings.MEDIA_URL,'kompomaatti/entrysources/')+file
+            loc_path = SOURCEDIR+file
+            orphan_sourcefiles.append({
+                'path': ext_path, 
+                'name': file, 
+                'size': os.path.getsize(loc_path),
+            })
+            
+    # Find orphaned entryfiles
+    orphan_imagefiles = []
+    for file in os.listdir(IMAGEDIR):
+        if file not in db_ifs:
+            ext_path = os.path.join(settings.MEDIA_URL,'kompomaatti/entryimages/')+file
+            loc_path = IMAGEDIR+file
+            orphan_imagefiles.append({
+                'path': ext_path, 
+                'name': file, 
+                'size': os.path.getsize(loc_path),
+            })
+    
     # Render response
     return admin_render(request, "admin_utils/diskcleaner.html", {
         'orphan_entryfiles': orphan_entryfiles,
+        'orphan_sourcefiles': orphan_sourcefiles,
+        'orphan_imagefiles': orphan_imagefiles,
     })
     
 @su_access_required

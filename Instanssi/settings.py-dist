@@ -85,7 +85,7 @@ TEST_RUN_ALL = False
 TEST_RUNNER = 'testing.customrunner.CustomRunner'
 
 # Uni-form debugging stuff
-UNIFORM_FAIL_SILENTLY = not DEBUG
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 # Add a shared static file directory
 STATICFILES_DIRS = (
@@ -152,7 +152,7 @@ INSTALLED_APPS = (
     'Instanssi.ext_programme',
     'imagekit',
     'south',
-    'uni_form',
+    'crispy_forms',
     'django_openid_auth',
     'django.contrib.auth',
     'django.contrib.contenttypes',

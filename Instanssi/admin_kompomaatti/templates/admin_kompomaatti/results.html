@@ -27,11 +27,11 @@
 	<table class="tablesorter entrylist">
 		<thead>
 			<tr>
-				<th>Sijoitus</th>
-				<th>Nimi</th>
-				<th>Tekijä</th>
-				<th>Pisteet</th>
-				<th>Diskattu?</th>
+				<th style="width: 8%;">Sijoitus</th>
+				<th style="width: 38%;">Nimi</th>
+				<th style="width: 38%;">Tekijä</th>
+				<th style="width: 8%;">Pisteet</th>
+				<th style="width: 8%;">Diskattu?</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,7 +41,7 @@
 				<td>{{ entry.name }}</td>
 				<td>{{ entry.creator }}</td>
 				<td>{% if entry.disqualified %}-{% else %}{{ entry.get_score|floatformat:"2" }}{% endif %}</td>
-				<td>{% if entry.disqualified %}Kyllä! Ei pisteitä.{% else %}Ei.{% endif %}</td>
+				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
 			</tr>
 {% endfor %}
 		</tbody>
@@ -61,10 +61,10 @@
 	<table class="tablesorter participationlist">
 		<thead>
 			<tr>
-				<th>Sijoitus</th>
-				<th>Osallistuja</th>
-				<th>Pisteet</th>
-				<th>Diskattu?</th>
+				<th style="width: 8%;">Sijoitus</th>
+				<th style="width: 76%;">Osallistuja</th>
+				<th style="width: 8%;">Pisteet</th>
+				<th style="width: 8%;">Diskattu?</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -73,7 +73,7 @@
 				<td>{{ forloop.counter }}</td>
 				<td>{{ entry.participant_name }}</td>
 				<td>{% if not entry.disqualified %}{{ entry.score|floatformat:"2" }}{% endif %}</td>
-				<td>{% if entry.disqualified %}Kyllä! Ei pisteitä.{% else %}Ei.{% endif %}</td>
+				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
 			</tr>
 {% endfor %}
 		</tbody>

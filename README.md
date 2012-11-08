@@ -55,14 +55,14 @@ Kirjastot
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South] (http://south.aeracode.org/) `pip install south`
-* [django-uni-form] (http://django-uni-form.readthedocs.org) `pip install django-uni-form`
+* [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django django-openid-auth python-openid pil django-imagekit south django-uni-form reportlab
+    pip install django django-openid-auth python-openid pil django-imagekit south django-crispy-forms reportlab
 
 IDEjä
 -----

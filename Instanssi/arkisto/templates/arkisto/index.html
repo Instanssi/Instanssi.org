@@ -52,4 +52,15 @@
 {% endif %}
 {% endfor %}
 
+{% for comp in competitionlist %}
+    <h3>{{ comp.name }}</h3>
+    <div class="entry-holder">
+        <ol>
+{% for p in comp.participants %}
+            <li>{{ p.participant_name }}{% if p.disqualified %}, diskattu.{% else %}, {{ p.get_formatted_score }}.{% endif %}</li>
+{% endfor %}
+        </ol>
+    </div>
+{% endfor %}
+
 {% endblock %}

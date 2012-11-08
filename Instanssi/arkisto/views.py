@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response, get_object_or_404
-from Instanssi.kompomaatti.models import Event, Compo, Entry
+from Instanssi.kompomaatti.models import Event, Compo, Entry, Competition, CompetitionParticipation
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 from django.template import RequestContext
@@ -29,12 +29,23 @@ def event(request, event_id):
     for cat in cats:
         cat.videos = OtherVideo.objects.filter(category=cat)
         videolist.append(cat)
+        
+    # Get competitions
+    competitionlist = []
+    comps = Competition.objects.filter(event=event, active=True, hide_from_archive=False).order_by('name')
+    for comp in comps:
+        rankby = '-score'
+        if comp.score_sort == 1:
+            rankby = 'score'
+        comp.participants = CompetitionParticipation.objects.filter(competition=comp).order_by(rankby)
+        competitionlist.append(comp)
     
     # Render Event frontpage
     return render_to_response('arkisto/index.html', {
         'event': event,
         'compos': compolist,
         'videos': videolist,
+        'competitionlist': competitionlist,
     }, context_instance=RequestContext(request))
 
 # Index page (loads event page)

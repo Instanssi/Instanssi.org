@@ -17,7 +17,7 @@ class LoginForm(forms.Form):
                 'username',
                 'password',
                 ButtonHolder (
-                    Submit('submit', u'Kirjaudu sisään')
+                    Submit('submit', u'Kirjaudu')
                 )
             )
         )

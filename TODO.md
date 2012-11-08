@@ -4,6 +4,7 @@
 
 * Rosetta / i18n
 * Englanninkielinen väännös ?
+* Optimoi tietokantahaut kunhan koodi on toiminnallisesti muuten valmis.
 
 ## Asiakkaille näkyvä osio
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from uni_form.helper import FormHelper
-from uni_form.layout import Submit, Layout, Fieldset, ButtonHolder
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Admin-paneelin käyttäjätunnuksesi. Huom! OpenID-tunnukset eivät kelpaa!")

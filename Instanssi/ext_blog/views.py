@@ -11,11 +11,14 @@ class blog_feed(Feed):
     description = "Instanssi-demopartyn uusimmat uutiset."
 
     def get_object(self, request, event_id):
-        self.host = request.get_host()
         return get_object_or_404(Event, pk=event_id)
 
     def items(self, obj):
-        return BlogEntry.objects.filter(event=obj, public=True).order_by('-date')[:10]
+        entries = []
+        for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('-date')[:10]:
+            entry.event_url = obj.mainurl
+            entries.append(entry)
+        return entries
 
     def item_title(self, item):
         return item.title
@@ -24,4 +27,7 @@ class blog_feed(Feed):
         return item.text
     
     def item_link(self, item):
-        return "http://"+self.host+"/blogentry/"+str(item.id)+"/"
+        print item.event_url
+        if item.event_url and len(item.event_url) > 0:
+            return item.event_url + '#blog'+str(item.id)
+        return "http://instanssi.org/#blog"+str(item.id)

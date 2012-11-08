@@ -1,21 +1,21 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Instanssi 9.-11.3.2012</title>
     <meta name="viewport" content="initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/static/libs/css/reset.css?v2" />
-    <link rel="stylesheet" type="text/css" href="/static/main2012/css/style.css?v2" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main2012/css/style.css?v2' %}" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Alfa+Slab+One" />
-    <link rel="icon" type="image/jpeg" href="/static/main2012/images/favicon.jpg">
-    <link rel="image_src" href="/static/main2012/images/social-media/banner-button-256x256.jpg" />
+    <link rel="image_src" href="{% static 'main2012/images/social-media/banner-button-256x256.jpg' %}" />
     <link rel="alternate" type="application/atom+xml" title="Instanssi Blog - Atom" href="http://blog.instanssi.org/feeds/posts/default" />
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="http://blog.instanssi.org/feeds/posts/default?alt=rss" />
-    <script type="text/javascript" src="/static/libs/js/jquery/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/twitterlib.min.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/modernizr-1.7.min.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/instanssiBackground.js"></script>
-    <script type="text/javascript" src="/static/main2012/js/twitter_feed.js"></script>
+    <link rel="icon" type="image/jpeg" href="/static/main2012/images/favicon.jpg">
+    <script type="text/javascript" src="{% static 'libs/js/jquery/jquery-1.8.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2012/js/twitterlib.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2012/js/modernizr-1.7.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2012/js/instanssiBackground.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2012/js/twitter_feed.js' %}"></script>
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:locale:alternate" content="en_GB" />
     <meta property="og:url" content="http://instanssi.org/2012/" />
@@ -62,15 +62,15 @@
 </div>
 <div id="navigation">
     <ul class="center">
-        <li><a href="/2012">Instanssi</a></li>
-        <li><a href="/2012/aikataulu/">Aikataulu</a></li>
-        <li><a href="/2012/ohjelma/">Ohjelma</a></li>
-        <li><a href="/2012/kompot/">Kompot</a></li>
-        <li><a href="/2012/liput/">Liput</a></li>
-        <li><a href="/2012/info/">Info</a></li>
-        <li><a href="/2012/yhteystiedot/">Yhteystiedot</a></li>
-        <li><a href="/2012/english/">In English</a></li>
-        <li><a href="/arkisto/">Arkisto</a></li>
+        <li><a href="{% url 'main2012:index' %}">Instanssi</a></li>
+        <li><a href="{% url 'main2012:aikataulu' %}">Aikataulu</a></li>
+        <li><a href="{% url 'main2012:ohjelma' %}">Ohjelma</a></li>
+        <li><a href="{% url 'main2012:kompot' %}">Kompot</a></li>
+        <li><a href="{% url 'main2012:liput' %}">Liput</a></li>
+        <li><a href="{% url 'main2012:info' %}">Info</a></li>
+        <li><a href="{% url 'main2012:yhteystiedot' %}">Yhteystiedot</a></li>
+        <li><a href="{% url 'main2012:english' %}">In English</a></li>
+        <li><a href="{% url 'archive:index' %}">Arkisto</a></li>
         <div class="clearer"></div>
         <div class="nav-marker"></div>
     </ul>
@@ -93,30 +93,30 @@
     <div class="site-map">
         <h3>Sivukartta</h3>
         <ul>
-            <li class="hover-fade hover-right"><a href="/2012">Instanssi</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/aikataulu/">Aikataulu</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/ohjelma/">Ohjelma</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/kompot/">Kompot</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/liput/">Liput</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/info/">Info</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/yhteystiedot/">Yhteystiedot</a></li>
-            <li class="hover-fade hover-right"><a href="/2012/english/">In English</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:index' %}">Instanssi</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:aikataulu' %}">Aikataulu</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:ohjelma' %}">Ohjelma</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:kompot' %}">Kompot</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:liput' %}">Liput</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:info' %}">Info</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:yhteystiedot' %}">Yhteystiedot</a></li>
+            <li class="hover-fade hover-right"><a href="{% url 'main2012:english' %}">In English</a></li>
         </ul>
     </div>
     <div class="partners">
         <h3>Yhteistyössä</h3>
         <div class="parner-logos">
-            <a href="http://magister.fi/" ><img src="/static/main2012/images/partners/magister-logo.png" alt="" /></a>
-            <a href="http://www.vincit.fi/" ><img src="/static/main2012/images/partners/vincit-logo.png" alt="" /></a>
-            <a href="http://www.jaadisain.fi/" ><img src="/static/main2012/images/partners/jaadisain-logo.png" alt="" /></a>
-            <a href="http://www.mediacabinet.fi/" ><img src="/static/main2012/images/partners/mediacabinet-logo.png" alt="" /></a>
-            <a href="http://www.sysdrone.fi/" ><img src="/static/main2012/images/partners/sysdrone-logo.png" alt="" /></a>
-            <a href="http://linkkijkl.fi/" ><img src="/static/main2012/images/partners/linkki-logo.png" alt="" /></a>
-            <a href="https://www.jyu.fi/it/laitokset/mit/" ><img src="/static/main2012/images/partners/jyuit-logo.png" alt="" /></a>
-            <a href="http://www.jao.fi/" ><img src="/static/main2012/images/partners/jao-logo.png" alt="" /></a>
-            <a href="http://www.koodilehto.fi/" ><img src="/static/main2012/images/partners/codegrove-logo.png" alt="" /></a>
-            <a href="http://www.liveherring.org/" ><img src="/static/main2012/images/partners/liveherring-logo.png" alt="" /></a>
-            <a href="http://www.musikantti.fi/" ><img src="/static/main2012/images/partners/musikantti-logo.png" alt="" /></a>
+            <a href="http://magister.fi/" ><img src="{% static 'main2012/images/partners/magister-logo.png' %}" alt="" /></a>
+            <a href="http://www.vincit.fi/" ><img src="{% static 'main2012/images/partners/vincit-logo.png' %}" alt="" /></a>
+            <a href="http://www.jaadisain.fi/" ><img src="{% static 'main2012/images/partners/jaadisain-logo.png' %}" alt="" /></a>
+            <a href="http://www.mediacabinet.fi/" ><img src="{% static 'main2012/images/partners/mediacabinet-logo.png' %}" alt="" /></a>
+            <a href="http://www.sysdrone.fi/" ><img src="{% static 'main2012/images/partners/sysdrone-logo.png' %}" alt="" /></a>
+            <a href="http://linkkijkl.fi/" ><img src="{% static 'main2012/images/partners/linkki-logo.png' %}" alt="" /></a>
+            <a href="https://www.jyu.fi/it/laitokset/mit/" ><img src="{% static 'main2012/images/partners/jyuit-logo.png' %}" alt="" /></a>
+            <a href="http://www.jao.fi/" ><img src="{% static 'main2012/images/partners/jao-logo.png' %}" alt="" /></a>
+            <a href="http://www.koodilehto.fi/" ><img src="{% static 'main2012/images/partners/codegrove-logo.png' %}" alt="" /></a>
+            <a href="http://www.liveherring.org/" ><img src="{% static 'main2012/images/partners/liveherring-logo.png' %}" alt="" /></a>
+            <a href="http://www.musikantti.fi/" ><img src="{% static 'main2012/images/partners/musikantti-logo.png' %}" alt="" /></a>
             <div class="clearer"></div>
         </div>
     </div>
@@ -124,11 +124,11 @@
         <h3>Sosiaaliset mediat</h3>
         <p>IRC: #instanssi<br/>&#64; IRCNet</p>
         <div class="social-media-icons">
-            <a href="http://www.facebook.com/instanssi"><img src="/static/main2012/images/social-media/facebook.png" alt="Facebook" /></a>
-            <a href="http://twitter.com/instanssi"><img src="/static/main2012/images/social-media/twitter.png" alt="Twitter" /></a>
-            <a href="http://www.youtube.com/user/InstanssiOrg"><img src="/static/main2012/images/social-media/youtube.png" alt="Youtube" /></a>
-            <a href="http://www.pouet.net/party.php?which=1544&amp;when=2011"><img src="/static/main2012/images/social-media/pouet.png" alt="pouet.net" /></a>
-            <a href="http://groups.google.com/group/instanssi"><img src="/static/main2012/images/social-media/google.png" alt="pouet.net" /></a>
+            <a href="http://www.facebook.com/instanssi"><img src="{% static 'main2012/images/social-media/facebook.png' %}" alt="Facebook" /></a>
+            <a href="http://twitter.com/instanssi"><img src="{% static 'main2012/images/social-media/twitter.png' %}" alt="Twitter" /></a>
+            <a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2012/images/social-media/youtube.png' %}" alt="Youtube" /></a>
+            <a href="http://www.pouet.net/party.php?which=1544&amp;when=2011"><img src="{% static 'main2012/images/social-media/pouet.png' %}" alt="pouet.net" /></a>
+            <a href="http://groups.google.com/group/instanssi"><img src="{% static 'main2012/images/social-media/google.png' %}" alt="Google groups" /></a>
             <div class="clearer"></div>
         </div>
     </div>

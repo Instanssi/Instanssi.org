@@ -1,7 +1,7 @@
 <div id="blog">
 {% for entry in entries %}
 	<div class="message">
-		<div class="title">{{ entry.title }}</div>
+		<div class="title"><a name="blog{{ entry.id }}">{{ entry.title }}</a></div>
 		{{ entry.text|safe }}
 		<div class="date">{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</div>
 	</div>

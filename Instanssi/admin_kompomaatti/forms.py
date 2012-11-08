@@ -155,7 +155,7 @@ class AdminEntryAddForm(forms.ModelForm):
                 'imagefile_original',
                 'youtube_url',
                 ButtonHolder (
-                    Submit('submit', 'Lisää')
+                    Submit('submit', u'Lisää')
                 )
             )
         )

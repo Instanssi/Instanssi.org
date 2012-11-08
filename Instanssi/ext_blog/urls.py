@@ -5,5 +5,5 @@ from Instanssi.ext_blog.views import blog_feed
 
 urlpatterns = patterns(
     'Instanssi.ext_blog.views',
-    url(r'^(?P<event_id>\d+)/rss/$', blog_feed(), name="rss-blog"),
+    url(r'^(?P<event_id>\d+)/rss/$', blog_feed(), name="rss"),
 )

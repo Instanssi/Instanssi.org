@@ -14,6 +14,7 @@ class EventForm(forms.ModelForm):
                 u'Tapahtuma',
                 'name',
                 'date',
+                'mainurl',
                 ButtonHolder (
                     Submit('submit', u'Tallenna')
                 )
@@ -22,4 +23,4 @@ class EventForm(forms.ModelForm):
                 
     class Meta:
         model = Event
-        fields = ('name','date')
+        fields = ('name','date','mainurl')

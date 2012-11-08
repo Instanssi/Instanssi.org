@@ -22,6 +22,7 @@ class Event(models.Model):
     name = models.CharField(u'Nimi', max_length=64, help_text=u"Tapahtuman nimi", unique=True)
     date = models.DateField(u'Päivämäärä', help_text=u"Tapahtuman päivämäärä (alku)")
     archived = models.BooleanField(u'Arkistoitu', help_text=u"Saa näyttää arkistossa", default=False)
+    mainurl = models.URLField(u'Tapahtuman pääsivu', help_text=u'URL Tapahtuman pääsivustolle', blank=True)
     def __unicode__(self):
         return u'[' + str(self.pk) + u'] ' + self.name
     class Meta:

@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_kompomaatti.views',
-    url(r'^$', 'index', name="kompomaatti"),
+    url(r'^$', 'index', name="index"),
     
     url(r'^compos/', 'compo_browse', name="compos"),
     url(r'^editcompo/(?P<compo_id>\d+)/', 'compo_edit', name="compo-edit"),

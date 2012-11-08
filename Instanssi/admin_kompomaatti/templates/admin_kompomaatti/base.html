@@ -8,7 +8,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:kompomaatti' selected_event_id %}">Kompomaatti</a>
+		&raquo; <a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a>
 {% endblock %}
 
 {% block jquery %}

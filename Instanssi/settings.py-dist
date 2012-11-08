@@ -76,7 +76,7 @@ ADMIN_LOGIN_URL = '/manage/auth/login/'
 # Options for testing.customrunner.CustomRunner
 TEST_EXCLUDE = (
     'django_openid_auth',
-    'uni_form',
+    'crispy_forms',
     'django',
     'south',
     'imagekit',
@@ -84,8 +84,9 @@ TEST_EXCLUDE = (
 TEST_RUN_ALL = False
 TEST_RUNNER = 'testing.customrunner.CustomRunner'
 
-# Uni-form debugging stuff
+# Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Add a shared static file directory
 STATICFILES_DIRS = (

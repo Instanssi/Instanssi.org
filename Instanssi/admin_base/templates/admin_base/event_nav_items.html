@@ -1,3 +1,3 @@
 {% for event in events %}
-					<li class="menuitem"><a href="{% url 'manage:overview' event.id %}">{{ event.name }}</a></li>
+					<li class="menuitem"><a href="{% url 'manage-overview:index' event.id %}">{{ event.name }}</a></li>
 {% endfor %}

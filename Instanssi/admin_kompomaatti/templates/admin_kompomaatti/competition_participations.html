@@ -10,7 +10,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:competitions' selected_event_id %}">Kilpailut</a>
+		&raquo; <a href="{% url 'manage-kompomaatti:competitions' selected_event_id %}">Kilpailut</a>
 		&raquo; Osallistujat
 {% endblock %}
 
@@ -45,7 +45,7 @@
 				<td>{{ part.get_rank }}</td>
 {% if perms.kompomaatti.change_competitionparticipation %}
 				<td>
-					<a href="{% url 'manage:participation-edit' selected_event_id part.competition.id part.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'manage-kompomaatti:participation-edit' selected_event_id part.competition.id part.id %}" class="edit_link">Muokkaa</a>
 				</td>
 {% endif %}
 			</tr>

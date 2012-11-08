@@ -14,7 +14,7 @@ def password(request):
         pwform = PasswordChangeForm(request.POST, user=request.user)
         if pwform.is_valid():
             pwform.save()
-            return HttpResponseRedirect(reverse('manage:password'))
+            return HttpResponseRedirect(reverse('manage-profile:password'))
     else:
         pwform = PasswordChangeForm()
     
@@ -30,7 +30,7 @@ def profile(request):
         profileform = InformationChangeForm(request.POST, instance=request.user)
         if profileform.is_valid():
             profileform.save()
-            return HttpResponseRedirect(reverse("admin-profile"))
+            return HttpResponseRedirect(reverse("manage-profile:index"))
     else:
         profileform = InformationChangeForm(instance=request.user)
     

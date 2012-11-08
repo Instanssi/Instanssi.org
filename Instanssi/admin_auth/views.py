@@ -20,14 +20,14 @@ def login_action(request):
             if user is not None:
                 if user.is_active and user.is_staff:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('manage:base'))
+                    return HttpResponseRedirect(reverse('manage-base:index'))
                 
             # If everything fails, raise error flag
             error = True
     else:
         loginform = LoginForm()
     
-    openidform = OpenIDLoginForm(next=reverse('manage:base'))
+    openidform = OpenIDLoginForm(next=reverse('manage-base:index'))
     
     # Render response
     return render_to_response("admin_auth/login.html", {
@@ -42,4 +42,4 @@ def logout_page(request):
 @staff_access_required
 def logout_action(request):
     logout(request)
-    return HttpResponseRedirect("/manage/auth/loggedout/")
+    return HttpResponseRedirect(reverse('manage-auth:logout-page'))

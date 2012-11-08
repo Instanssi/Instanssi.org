@@ -11,7 +11,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:compos' selected_event_id %}">Kompot</a>
+		&raquo; <a href="{% url 'manage-kompomaatti:compos' selected_event_id %}">Kompot</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -57,10 +57,10 @@
 				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>
 {% if perms.kompomaatti.change_compo %}
-					<a href="{% url 'manage:compo-edit' selected_event_id compo.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'manage-kompomaatti:compo-edit' selected_event_id compo.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.kompomaatti.delete_compo %}
-					<a href="{% url 'manage:compo-delete' selected_event_id compo.id %}" class="delete_link">Poista</a>
+					<a href="{% url 'manage-kompomaatti:compo-delete' selected_event_id compo.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

@@ -30,7 +30,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
     });
-    $("#calendar_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],]}).tablesorterPager({container: $("#event_pager")}); 
+    $("#calendar_table").tablesorter({widgets: ['zebra'], sortList: [[1,0],]}).tablesorterPager({container: $("#event_pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -55,10 +55,10 @@
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>
 {% if perms.ext_calendar.change_calendarevent %}
-					<a href="{% url 'manage:calendar-edit' selected_event_id event.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'manage-calendar:edit' selected_event_id event.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.ext_calendar.delete_calendarevent %}
-					<a href="{% url 'manage:calendar-delete' selected_event_id event.id %}" class="delete_link">Poista</a>
+					<a href="{% url 'manage-calendar:delete' selected_event_id event.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

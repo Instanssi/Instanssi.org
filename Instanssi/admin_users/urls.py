@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_users.views',
-    url(r'^$', 'users', name="users"),
-    url(r'^delete/(?P<su_id>\d+)/', 'delete', name="users-delete"),
-    url(r'^edit/(?P<su_id>\d+)/', 'edit', name="users-edit"),
+    url(r'^$', 'users', name="index"),
+    url(r'^delete/(?P<su_id>\d+)/', 'delete', name="delete"),
+    url(r'^edit/(?P<su_id>\d+)/', 'edit', name="edit"),
 )

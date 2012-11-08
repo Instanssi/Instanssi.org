@@ -40,7 +40,7 @@ def removeoldvotes(request, sel_event_id):
     Vote.objects.filter(compo__in=compo_ids).delete()
     
     # All done, redirect
-    return HttpResponseRedirect(reverse('manage:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
 @staff_access_required
 def transferrights(request, sel_event_id):
@@ -70,7 +70,7 @@ def transferrights(request, sel_event_id):
         part.save()
     
     # All done, redirect
-    return HttpResponseRedirect(reverse('manage:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
     
 @staff_access_required
 def optimizescores(request, sel_event_id):
@@ -92,7 +92,7 @@ def optimizescores(request, sel_event_id):
         entry.archive_score = entry.get_score()
         entry.save()
 
-    return HttpResponseRedirect(reverse('manage:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
 @staff_access_required
 def archiver(request, sel_event_id):
@@ -155,7 +155,7 @@ def show(request, sel_event_id):
     event.archived = True
     event.save()
     
-    return HttpResponseRedirect(reverse('manage:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
 @staff_access_required
 def hide(request, sel_event_id):
@@ -168,7 +168,7 @@ def hide(request, sel_event_id):
     event.archived = False
     event.save()
     
-    return HttpResponseRedirect(reverse('manage:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
 @staff_access_required
 def vids(request, sel_event_id):
@@ -185,7 +185,7 @@ def vids(request, sel_event_id):
         vidform = VideoForm(request.POST, event=event)
         if vidform.is_valid():
             vidform.save()
-            return HttpResponseRedirect(reverse('manage:vids', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(event=event)
     
@@ -221,7 +221,7 @@ def editvid(request, sel_event_id, video_id):
         vidform = VideoForm(request.POST, instance=video, event=event)
         if vidform.is_valid():
             vidform.save()
-            return HttpResponseRedirect(reverse('manage:vids', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(instance=video, event=event)
     
@@ -246,7 +246,7 @@ def deletevid(request, sel_event_id, video_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage:vids', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
     
 @staff_access_required
 def cats(request, sel_event_id):
@@ -262,7 +262,7 @@ def cats(request, sel_event_id):
             cat = catform.save(commit=False)
             cat.event_id = int(sel_event_id)
             cat.save()
-            return HttpResponseRedirect(reverse('manage:vidcats', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm()
     
@@ -290,7 +290,7 @@ def editcat(request, sel_event_id, category_id):
         catform = VideoCategoryForm(request.POST, instance=category)
         if catform.is_valid():
             catform.save()
-            return HttpResponseRedirect(reverse('manage:vidcats', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm(instance=category)
     
@@ -314,4 +314,4 @@ def deletecat(request, sel_event_id, category_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage:vidcats', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))

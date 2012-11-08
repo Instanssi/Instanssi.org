@@ -16,7 +16,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:archiver' selected_event_id %}">Arkistoija</a>
+		&raquo; <a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Arkistoija</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -29,10 +29,10 @@
     <h3>Arkistoinnin tila</h3>
 {% if is_archived %}
 	<p>Tapahtuma on näkyvissä arkistossa. Mikäli haluat piilottaa tapahtuman arkistosta, paina allaolevaa nappia. Mitään tietoa ei poisteta.</p>
-	<a class="button" href="{% url 'manage:archiver-hide' selected_event_id %}">Piilota Arkistosta</a>
+	<a class="button" href="{% url 'manage-arkisto:archiver-hide' selected_event_id %}">Piilota Arkistosta</a>
 {% else %}
 	<p>Tapahtuma ei ole näkyvissä arkistossa. Mikäli haluat tapahtuman kaikkien demoentryjen, videoiden ja kilpailujen tulosten näkyvän arkistossa, paina allaolevaa nappia.</p>
-	<a class="button" href="{% url 'manage:archiver-show' selected_event_id %}">Näytä Arkistossa</a>
+	<a class="button" href="{% url 'manage-arkisto:archiver-show' selected_event_id %}">Näytä Arkistossa</a>
 {% endif %}
 {% endif %}
     
@@ -43,7 +43,7 @@
 	<p>Tapahtuma on kesken, joten äänestystietoja ei voida optimoida.</p>
 {% else %}
 	<p>Löydettiin demoentryjä, joiden tuloksia ei ole vielä optimoitu. Mikäli haluat optimoida tulokset nyt, paina allaolevaa nappia. Mitään tietoja ei kadoteta.</p>
-	<a class="button" id="optimizescores" href="{% url 'manage:archiver-os' selected_event_id %}">Optimoi tulokset</a>
+	<a class="button" id="optimizescores" href="{% url 'manage-arkisto:archiver-os' selected_event_id %}">Optimoi tulokset</a>
 {% endif %}
 {% else %}
 	<p>
@@ -55,7 +55,7 @@
 		Mikäli haluat vapauttaa tilaa, voit poistaa ne painamalla allaolevaa nappulaa. Huom!
 		Tämä toimenpide poistaa tietoa! MUISTA VARMUUSKOPIO TIETOKANNASTA!
 	</p>
-	<a class="button" id="removeoldvotes" href="{% url 'manage:archiver-rv' selected_event_id %}">Poista vanhat äänet</a>
+	<a class="button" id="removeoldvotes" href="{% url 'manage-arkisto:archiver-rv' selected_event_id %}">Poista vanhat äänet</a>
 {% endif %}
 {% endif %}
 {% endif %}
@@ -70,7 +70,7 @@
 		Löydettiin demoentryjä, kilpailuja tai muuta tietoja joiden käyttäjäoikeuksia ei ole siirretty arkistokäyttäjälle. 
 		Mikäli haluat, voit tehdä tämän nyt painamalla alla olevaa nappia.
 	</p>
-	<a class="button" id="transferrights" href="{% url 'manage:archiver-tr' selected_event_id %}">Siirrä käyttäjäoikeudet</a>
+	<a class="button" id="transferrights" href="{% url 'manage-arkisto:archiver-tr' selected_event_id %}">Siirrä käyttäjäoikeudet</a>
 {% endif %}
 {% else %}
 	<p>Kaikki tapahtuman demoentryjen oikeudet kuuluvat arkistokäyttäjälle. Mitään toimenpiteitä ei tarvita.</p>

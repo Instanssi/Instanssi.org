@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:vids' selected_event_id %}">Videot</a>
+		&raquo; <a href="{% url 'manage-arkisto:vids' selected_event_id %}">Videot</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -42,10 +42,10 @@
 				<td>{{ video.description|linebreaksbr }}</td>
 				<td>
 {% if perms.arkisto.change_othervideo %}
-					<a href="{% url 'manage:vids-edit' selected_event_id video.id %}" class="edit_link">Muokkaa</a>
+					<a href="{% url 'manage-arkisto:vids-edit' selected_event_id video.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.arkisto.delete_othervideo %}
-					<a href="{% url 'manage:vids-delete' selected_event_id video.id %}" class="delete_link">Poista</a>
+					<a href="{% url 'manage-arkisto:vids-delete' selected_event_id video.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

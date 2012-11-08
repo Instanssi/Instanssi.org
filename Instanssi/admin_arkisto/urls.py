@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_arkisto.views',
-    url(r'^$', 'index', name="archive"),
+    url(r'^$', 'index', name="index"),
     url(r'^archiver/', 'archiver', name="archiver"),
     url(r'^show/', 'show', name="archiver-show"),
     url(r'^hide/', 'hide', name="archiver-hide"),

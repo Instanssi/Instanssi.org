@@ -75,7 +75,7 @@ def diskcleaner(request):
             os.remove(file['local_path'])
         for file in orphan_imagefiles:
             os.remove(file['local_path'])
-        return HttpResponseRedirect(reverse('manage:diskcleaner'))
+        return HttpResponseRedirect(reverse('manage-utils:diskcleaner'))
     
     # Render response
     return admin_render(request, "admin_utils/diskcleaner.html", {

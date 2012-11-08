@@ -20,7 +20,7 @@
     	Blogiin kirjoitetut viestit tulevat julkaisun jälkeen näkyviin tapahtuman pääsivulle sekä RSS-feediin.
     </p>
     <p>
-    	<a href="{% url 'manage:blog' selected_event_id %}">Siirry muokkaamaan blogia &raquo;</a>
+    	<a href="{% url 'manage-blog:index' selected_event_id %}">Siirry muokkaamaan blogia &raquo;</a>
     </p>
     
     <h3>Slaidit</h3>
@@ -28,7 +28,7 @@
     	Slaidit ovat automaattisesti generoituja graafisia esityksiä kompotapahtuman tueksi (sekä itse teosten pyörittelyyn, että tulosten näyttämiseen).
     </p>
     <p>
-    	<a href="{% url 'manage:slides' selected_event_id %}">Siirry selaamaan slaideja &raquo;</a>
+    	<a href="{% url 'manage-slides:index' selected_event_id %}">Siirry selaamaan slaideja &raquo;</a>
     </p>
  
     <h3>Tiedostot</h3>
@@ -37,7 +37,7 @@
     	Sallittuja tiedostomuotoja ovat zip, 7z, rar, tar, gz, bz2, png, gif, jpg.
     </p>
     <p>
-    	<a href="{% url 'manage:uploads' selected_event_id %}">Siirry hallitsemaan tiedostoja &raquo;</a>
+    	<a href="{% url 'manage-uploads:index' selected_event_id %}">Siirry hallitsemaan tiedostoja &raquo;</a>
     </p>
     
     <h3>Ohjelma</h3>
@@ -46,7 +46,7 @@
     	Ohjelma-sivun tiedot tulevat näkymään yhdessä kompojen, muiden kilpailujen ja aikataulun kanssa tapahtuman sivuilla.
     </p>
     <p>
-    	<a href="{% url 'manage:programme' selected_event_id %}">Siirry muokkaamaan ohjelmaa &raquo;</a>
+    	<a href="{% url 'manage-programme:index' selected_event_id %}">Siirry muokkaamaan ohjelmaa &raquo;</a>
     </p>
 
     <h3>Aikataulu</h3>
@@ -55,7 +55,7 @@
     	Aikataulu-sivun tiedot tulevat näkymään yhdessä kompojen, muiden kilpailujen ja ohjelman kanssa tapahtuman sivuilla.
     </p>
     <p>
-    	<a href="{% url 'manage:calendar' selected_event_id %}">Siirry muokkaamaan kalenteria &raquo;</a>
+    	<a href="{% url 'manage-calendar:index' selected_event_id %}">Siirry muokkaamaan kalenteria &raquo;</a>
     </p>
     
     <h3>Arkisto</h3>
@@ -65,7 +65,7 @@
     	kannattaa tietokannasta ottaa varmuuskopio! Osa arkistoijan ominaisuuksista saattaa poistaa tietoa (tästä tiedotetaan ohjetekstissä).
     </p>
     <p>
-    	<a href="{% url 'manage:archive' selected_event_id %}">Siirry hallitsemaan arkistoa &raquo;</a>
+    	<a href="{% url 'manage-arkisto:index' selected_event_id %}">Siirry hallitsemaan arkistoa &raquo;</a>
     </p>
     
     <h3>Kompomaatti</h3>
@@ -74,6 +74,6 @@
     	lisäys, poisto ja muokkaus.
     </p>
     <p>
-    	<a href="{% url 'manage:kompomaatti' selected_event_id %}">Siirry hallitsemaan kompomaattia &raquo;</a>
+    	<a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Siirry hallitsemaan kompomaattia &raquo;</a>
     </p>
 {% endblock %}

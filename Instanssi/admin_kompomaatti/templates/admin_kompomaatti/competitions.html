@@ -10,7 +10,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage:competitions' selected_event_id %}">Kilpailut</a>
+		&raquo; <a href="{% url 'manage-kompomaatti:competitions' selected_event_id %}">Kilpailut</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -61,15 +61,15 @@
 				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
 {% if perms.kompomaatti.change_competitionparticipation %}
-				<td><a href="{% url 'manage:score' selected_event_id comp.id %}">Pisteytys</a></td>
+				<td><a href="{% url 'manage-kompomaatti:score' selected_event_id comp.id %}">Pisteytys</a></td>
 {% endif %}
-				<td><a href="{% url 'manage:participations' selected_event_id comp.id %}">Osallistujat</a></td>
+				<td><a href="{% url 'manage-kompomaatti:participations' selected_event_id comp.id %}">Osallistujat</a></td>
 	            <td>
 {% if perms.kompomaatti.change_competition %}
-	            	<a href="{% url 'manage:competition-edit' selected_event_id comp.id %}" class="edit_link">Muokkaa</a>
+	            	<a href="{% url 'manage-kompomaatti:competition-edit' selected_event_id comp.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.kompomaatti.delete_competition %}
-	            	<a href="{% url 'manage:competition-delete' selected_event_id comp.id %}" class="delete_link">Poista</a>
+	            	<a href="{% url 'manage-kompomaatti:competition-delete' selected_event_id comp.id %}" class="delete_link">Poista</a>
 {% endif %}
 	            </td>
 			</tr>

@@ -28,7 +28,7 @@ def index(request, sel_event_id):
             entry.date = datetime.now()
             entry.user = request.user
             entry.save()
-            return HttpResponseRedirect(reverse('manage:blog', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
     else:
         form = BlogEntryForm()
     
@@ -56,7 +56,7 @@ def edit(request, sel_event_id, entry_id):
         form = BlogEntryEditForm(request.POST, instance=entry)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('manage:blog', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
     else:
         form = BlogEntryEditForm(instance=entry)
     
@@ -79,4 +79,4 @@ def delete(request, sel_event_id, entry_id):
     except BlogEntry.DoesNotExist:
         pass
     
-    return HttpResponseRedirect(reverse('manage:blog', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))

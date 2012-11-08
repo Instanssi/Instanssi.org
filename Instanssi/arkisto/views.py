@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponse
 from django.conf import settings
 
 # Event page
+# TODO: Optimize queries
 def event(request, event_id):
     # Get event
     event = get_object_or_404(Event, pk=int(event_id), archived=True)

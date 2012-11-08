@@ -1,4 +1,5 @@
 {% extends "admin_events_overview/base.html" %}
+{% load event_name from admin_base_tags %}
 
 {% block title %}{{ block.super }}{% endblock %}
 
@@ -13,7 +14,7 @@
 {% block content %}
 {{ block.super }}
     <h2>Overview</h2>
-    <p>Tervetuloa tapahtuman <strong>{{ selected_event_name }}</strong> hallintapaneeliin!</p>
+    <p>Tervetuloa tapahtuman <strong>{% event_name selected_event_id %}</strong> hallintapaneeliin!</p>
     
     <h3>Blogi</h3>
     <p>

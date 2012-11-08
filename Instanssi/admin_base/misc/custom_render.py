@@ -5,10 +5,4 @@ from django.template import RequestContext
 from Instanssi.kompomaatti.models import Event
 
 def admin_render(request, tpl, context={}):
-    # H4x
-    if 'selected_event_id' in context:
-        event = Event.objects.get(pk=context['selected_event_id'])
-        context['selected_event_name'] = event.name 
-
-    # Render
     return render_to_response(tpl, context, context_instance=RequestContext(request))

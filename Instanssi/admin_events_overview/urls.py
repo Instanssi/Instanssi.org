@@ -4,5 +4,5 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_events_overview.views',
-    url(r'^$', 'index', name="admin-overview"),
+    url(r'^$', 'index', name="overview"),
 )

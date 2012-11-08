@@ -42,7 +42,7 @@ def competition_score(request, sel_event_id, competition_id):
         scoreform = AdminCompetitionScoreForm(request.POST, competition=competition)
         if scoreform.is_valid():
             scoreform.save()
-            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:competitions', args=(sel_event_id))) 
     else:
         scoreform = AdminCompetitionScoreForm(competition=competition)
     
@@ -79,7 +79,7 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
         pform = AdminParticipationEditForm(request.POST, instance=participant)
         if pform.is_valid():
             pform.save()
-            return HttpResponseRedirect(reverse('admin-participations', args=(sel_event_id, competition_id,)))
+            return HttpResponseRedirect(reverse('manage:participations', args=(sel_event_id, competition_id,)))
     else:
         pform = AdminParticipationEditForm(instance=participant)
     
@@ -108,7 +108,7 @@ def competitions_browse(request, sel_event_id):
             data = competitionform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:competitions', args=(sel_event_id))) 
     else:
         competitionform = AdminCompetitionForm()
     
@@ -133,7 +133,7 @@ def competition_edit(request, sel_event_id, competition_id):
         competitionform = AdminCompetitionForm(request.POST, instance=competition)
         if competitionform.is_valid():
             competitionform.save()
-            return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id,))) 
+            return HttpResponseRedirect(reverse('manage:competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm(instance=competition)
     
@@ -157,7 +157,7 @@ def competition_delete(request, sel_event_id, competition_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('admin-competitions', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage:competitions', args=(sel_event_id))) 
     
 @staff_access_required
 def compo_browse(request, sel_event_id):
@@ -176,7 +176,7 @@ def compo_browse(request, sel_event_id):
             data = compoform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:compos', args=(sel_event_id))) 
     else:
         compoform = AdminCompoForm()
     
@@ -201,7 +201,7 @@ def compo_edit(request, sel_event_id, compo_id):
         editform = AdminCompoForm(request.POST, instance=compo)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:compos', args=(sel_event_id))) 
     else:
         editform = AdminCompoForm(instance=compo)
     
@@ -225,7 +225,7 @@ def compo_delete(request, sel_event_id, compo_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('admin-compos', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage:compos', args=(sel_event_id))) 
     
 @staff_access_required
 def entry_browse(request, sel_event_id):
@@ -242,7 +242,7 @@ def entry_browse(request, sel_event_id):
         entryform = AdminEntryAddForm(request.POST, request.FILES, event=event)
         if entryform.is_valid():
             entryform.save()
-            return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:entries', args=(sel_event_id))) 
     else:
         entryform = AdminEntryAddForm(event=event)
     
@@ -274,7 +274,7 @@ def entry_edit(request, sel_event_id, entry_id):
         editform = AdminEntryEditForm(request.POST, request.FILES, instance=entry, event=event)
         if editform.is_valid():
             editform.save()
-            return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:entries', args=(sel_event_id))) 
     else:
         editform = AdminEntryEditForm(instance=entry, event=event)
     
@@ -304,7 +304,7 @@ def entry_delete(request, sel_event_id, entry_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('admin-entries', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage:entries', args=(sel_event_id))) 
     
 @staff_access_required
 def results(request, sel_event_id):
@@ -352,7 +352,7 @@ def votecodes(request, sel_event_id):
                     c.save()
                 except IntegrityError:
                     n = n-1 # Ugly, may cause infinite loop...
-            return HttpResponseRedirect(reverse('admin-votecodes', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage:votecodes', args=(sel_event_id))) 
     else:
         gentokensform = CreateTokensForm()
         
@@ -445,4 +445,4 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     vcr.delete()
     
     # Return to admin page
-    return HttpResponseRedirect(reverse('admin-votecoderequests', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage:votecoderequests', args=(sel_event_id))) 

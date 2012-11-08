@@ -20,14 +20,14 @@ def login_action(request):
             if user is not None:
                 if user.is_active and user.is_staff:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('admin-base'))
+                    return HttpResponseRedirect(reverse('manage:base'))
                 
             # If everything fails, raise error flag
             error = True
     else:
         loginform = LoginForm()
     
-    openidform = OpenIDLoginForm(next=reverse('admin-base'))
+    openidform = OpenIDLoginForm(next=reverse('manage:base'))
     
     # Render response
     return render_to_response("admin_auth/login.html", {

@@ -18,7 +18,7 @@ def users(request):
             userform = UserCreationForm(request.POST)
             if userform.is_valid():
                 userform.save()
-                return HttpResponseRedirect(reverse('admin-users'))
+                return HttpResponseRedirect(reverse('manage:users'))
         else:
             userform = UserCreationForm()
     else:
@@ -45,7 +45,7 @@ def edit(request, su_id):
         userform = UserEditForm(request.POST, instance=user)
         if userform.is_valid():
             userform.save()
-            return HttpResponseRedirect(reverse('admin-users'))
+            return HttpResponseRedirect(reverse('manage:users'))
     else:
         userform = UserEditForm(instance=user)
     
@@ -65,5 +65,5 @@ def delete(request, su_id):
         user.save()
 
     # All done, redirect
-    return HttpResponseRedirect(reverse('admin-users'))
+    return HttpResponseRedirect(reverse('manage:users'))
 

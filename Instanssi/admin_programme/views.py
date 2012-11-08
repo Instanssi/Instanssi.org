@@ -24,7 +24,7 @@ def index(request, sel_event_id):
             data = form.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage:programme', args=(sel_event_id)))
     else:
         form = ProgrammeEventForm()
     
@@ -52,7 +52,7 @@ def edit(request, sel_event_id, pev_id):
         form = ProgrammeEventForm(request.POST, request.FILES, instance=pev)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage:programme', args=(sel_event_id)))
     else:
         form = ProgrammeEventForm(instance=pev)
     
@@ -76,5 +76,5 @@ def delete(request, sel_event_id, pev_id):
         raise Http404
     
     # Render response
-    return HttpResponseRedirect(reverse('admin-programme', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage:programme', args=(sel_event_id)))
 

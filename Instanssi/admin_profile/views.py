@@ -14,7 +14,7 @@ def password(request):
         pwform = PasswordChangeForm(request.POST, user=request.user)
         if pwform.is_valid():
             pwform.save()
-            return HttpResponseRedirect(reverse('admin-password'))
+            return HttpResponseRedirect(reverse('manage:password'))
     else:
         pwform = PasswordChangeForm()
     

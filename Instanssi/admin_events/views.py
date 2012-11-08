@@ -23,7 +23,7 @@ def index(request):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            return HttpResponseRedirect(reverse('admin-events'))
+            return HttpResponseRedirect(reverse('manage:events'))
     else:
         eventform = EventForm()
     
@@ -52,7 +52,7 @@ def edit(request, event_id):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            return HttpResponseRedirect(reverse('admin-events'))
+            return HttpResponseRedirect(reverse('manage:events'))
     else:
         eventform = EventForm(instance=event)
     
@@ -73,4 +73,4 @@ def delete(request, event_id):
     except:
         pass
     
-    return HttpResponseRedirect(reverse('admin-events'))
+    return HttpResponseRedirect(reverse('manage:events'))

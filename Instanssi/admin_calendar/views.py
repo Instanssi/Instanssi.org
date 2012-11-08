@@ -24,7 +24,7 @@ def index(request, sel_event_id):
             data.event_id = int(sel_event_id)
             data.user = request.user
             data.save()
-            return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage:calendar', args=(sel_event_id)))
     else:
         form = CalendarEventForm()
     
@@ -52,7 +52,7 @@ def edit(request, sel_event_id, cev_id):
         form = CalendarEventForm(request.POST, request.FILES, instance=cev)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage:calendar', args=(sel_event_id)))
     else:
         form = CalendarEventForm(instance=cev)
     
@@ -77,5 +77,5 @@ def delete(request, sel_event_id, cev_id):
         pass
     
     # Render response
-    return HttpResponseRedirect(reverse('admin-calendar', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage:calendar', args=(sel_event_id)))
     

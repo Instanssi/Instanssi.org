@@ -57,17 +57,9 @@ def transferrights(request, sel_event_id):
     compo_ids = Compo.objects.filter(event_id=int(sel_event_id)).values('pk')
     competition_ids = Competition.objects.filter(event_id=int(sel_event_id)).values('pk')
     
-    # Transfer all user rights on entries belonging to this event
-    entries = Entry.objects.filter(compo__in=compo_ids)
-    for entry in entries:
-        entry.user = archiveuser
-        entry.save()
-    
-    # Transfer all competition participations to archive user
-    participations = CompetitionParticipation.objects.filter(competition__in=competition_ids)
-    for part in participations:
-        part.user = archiveuser
-        part.save()
+    # Transfer all user rights on entries and competition participations belonging to this event
+    Entry.objects.filter(compo__in=compo_ids).update(user=archiveuser)
+    CompetitionParticipation.objects.filter(competition__in=competition_ids).update(user=archiveuser)
     
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))

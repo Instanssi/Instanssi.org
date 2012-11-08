@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-archive' selected_event_id %}">Arkisto</a>
+		&raquo; <a href="{% url 'manage:archive' selected_event_id %}">Arkisto</a>
 {% endblock %}
 
 {% block content %}

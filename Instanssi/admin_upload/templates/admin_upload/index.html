@@ -41,10 +41,10 @@
                 <td>{{ file.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
                 <td>
 {% if perms.admin_upload.change_uploadedfile %}
-                	<a href="{% url 'admin-upload-edit' selected_event_id file.id %}" class="edit_link">Muokkaa</a>
+                	<a href="{% url 'manage:upload-edit' selected_event_id file.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.admin_upload.delete_uploadedfile %}
-                	<a href="{% url 'admin-upload-delete' selected_event_id file.id %}" class="delete_link">Poista</a>
+                	<a href="{% url 'manage:upload-delete' selected_event_id file.id %}" class="delete_link">Poista</a>
 {% endif %}
                 </td>
             </tr>

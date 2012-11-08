@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-entries' selected_event_id %}">Entryt</a>
+		&raquo; <a href="{% url 'manage:entries' selected_event_id %}">Entryt</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -46,10 +46,10 @@
 				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
 	            <td>
 {% if perms.kompomaatti.change_entry %}
-	            	<a href="{% url 'admin-entry-edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>
+	            	<a href="{% url 'manage:entry-edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.kompomaatti.delete_entry %}
-	            	<a href="{% url 'admin-entry-delete' selected_event_id entry.id %}" class="delete_link">Poista</a>
+	            	<a href="{% url 'manage:entry-delete' selected_event_id entry.id %}" class="delete_link">Poista</a>
 {% endif %}
 	            </td>
 			</tr>

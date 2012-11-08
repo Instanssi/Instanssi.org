@@ -10,8 +10,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-competitions' selected_event_id %}">Kilpailut</a>
-		&raquo; <a href="{% url 'admin-participations' selected_event_id competition.id %}">Osallistujat</a>
+		&raquo; <a href="{% url 'manage:competitions' selected_event_id %}">Kilpailut</a>
+		&raquo; <a href="{% url 'manage:participations' selected_event_id competition.id %}">Osallistujat</a>
 		&raquo; Muokkaa
 {% endblock %}
 

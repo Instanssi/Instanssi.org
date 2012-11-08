@@ -51,7 +51,7 @@
     	<strong>HUOM!</strong> Älä esitä kompojen tietoja arkistossa ennen kompojen äänestyksen loppumista, sillä arkisto automaattisesti esittää myös tulokset!
     </p>
     <p>
-    	<a href="{% url 'admin-compos' selected_event_id %}">Siirry muokkaamaan kompoja &raquo;</a>
+    	<a href="{% url 'manage:compos' selected_event_id %}">Siirry muokkaamaan kompoja &raquo;</a>
     </p>
     
     <h3>Entryt</h3>
@@ -62,7 +62,7 @@
     	<strong>HUOM!</strong> Mikäli entryistä tehdään youtube-videot, voidaan videolinkki lisätä entryihin täällä!
     </p>
     <p>
-    	<a href="{% url 'admin-entries' selected_event_id %}">Siirry muokkaamaan entryjä &raquo;</a>
+    	<a href="{% url 'manage:entries' selected_event_id %}">Siirry muokkaamaan entryjä &raquo;</a>
     </p>
     
     <h3>Kilpailut</h3>
@@ -74,7 +74,7 @@
     	mm. levykkeenheitossa tyyppi olisi "m" ja järjestely "Korkein tulos ensin".
     </p>
     <p>
-    	<a href="{% url 'admin-competitions' selected_event_id %}">Siirry muokkaamaan kilpailuja &raquo;</a>
+    	<a href="{% url 'manage:competitions' selected_event_id %}">Siirry muokkaamaan kilpailuja &raquo;</a>
     </p>
     
     <h3>Tulokset</h3>
@@ -82,7 +82,7 @@
 		Kompojen ja kilpailujen tulokset.
     </p>
     <p>
-    	<a href="{% url 'admin-results' selected_event_id %}">Siirry selaamaan tuloksia &raquo;</a>
+    	<a href="{% url 'manage:results' selected_event_id %}">Siirry selaamaan tuloksia &raquo;</a>
     </p>
     
     <h3>Äänestyskoodit</h3>
@@ -91,7 +91,7 @@
 		ei voi enää varata sitä samassa tapahtumassa.
     </p>
     <p>
-    	<a href="{% url 'admin-votecodes' selected_event_id %}">Siirry muokkaamaan äänestuskoodeja &raquo;</a>
+    	<a href="{% url 'manage:votecodes' selected_event_id %}">Siirry muokkaamaan äänestuskoodeja &raquo;</a>
     </p>
     
     <h3>Äänestyskoodipyynnöt</h3>
@@ -100,6 +100,6 @@
 		pyytää etänä äänestysoikeutta. Hallintapaneelista voidaan hyväksyä tarpeen mukaan pyyntöjä.
     </p>
     <p>
-    	<a href="{% url 'admin-votecoderequests' selected_event_id %}">Siirry selaamaan äänestyskoodipyyntöjä &raquo;</a>
+    	<a href="{% url 'manage:votecoderequests' selected_event_id %}">Siirry selaamaan äänestyskoodipyyntöjä &raquo;</a>
     </p>
 {% endblock %}

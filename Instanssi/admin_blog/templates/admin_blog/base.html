@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-blog' selected_event_id %}">Blogi</a>
+		&raquo; <a href="{% url 'manage:blog' selected_event_id %}">Blogi</a>
 {% endblock %}
 
 {% block content %}

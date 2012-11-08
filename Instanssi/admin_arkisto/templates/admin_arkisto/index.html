@@ -30,7 +30,7 @@
 		ennen näiden ominaisuuksien käyttämistä!
     </p>
     <p>
-    	<a href="{% url 'admin-archiver' selected_event_id %}">Siirry käyttämään arkistoijaa &raquo;</a>
+    	<a href="{% url 'manage:archiver' selected_event_id %}">Siirry käyttämään arkistoijaa &raquo;</a>
     </p>
     
     <h3>Videot</h3>
@@ -39,7 +39,7 @@
 		<strong>HUOM!</strong> Demoentryjen youtube-videot syötetään suoraan Entryn tietoihin Entryt-sivulla.
     </p>
     <p>
-    	<a href="{% url 'admin-vids' selected_event_id %}">Siirry muokkaamaan videoita &raquo;</a>
+    	<a href="{% url 'manage:vids' selected_event_id %}">Siirry muokkaamaan videoita &raquo;</a>
     </p>
     
     <h3>Kategoriat</h3>
@@ -48,6 +48,6 @@
 		"Seminaarit" ja "Haastattelut" jne. Demoentryjen videot saavat otsikon automaattisesti kompon nimen mukaan.
     </p>
     <p>
-    	<a href="{% url 'admin-vidcats' selected_event_id %}">Siirry muokkaamaan kategorioita &raquo;</a>
+    	<a href="{% url 'manage:vidcats' selected_event_id %}">Siirry muokkaamaan kategorioita &raquo;</a>
     </p>
 {% endblock %}

@@ -35,8 +35,8 @@
 			<tr>
 				<td>{{ compo.name }}</td>
 				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td><a href="{% url 'admin-slides-entries' selected_event_id compo.id %}">Osallistujat</a></td>
-				<td><a href="{% url 'admin-slides-results' selected_event_id compo.id %}">Tulokset</a></td>
+				<td><a href="{% url 'manage:slides-entries' selected_event_id compo.id %}">Osallistujat</a></td>
+				<td><a href="{% url 'manage:slides-results' selected_event_id compo.id %}">Tulokset</a></td>
 			</tr>
 {% endfor %}
 		</tbody>

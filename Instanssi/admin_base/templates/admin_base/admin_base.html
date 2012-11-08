@@ -58,8 +58,8 @@
 <div id="header_nav">
     <div class="limiter">
         <ul id="header_nav_left">
-            <li class="menuitem"><a href="{% url 'admin-base' %}">Etusivu</a></li>
-            <li class="menuitem"><a href="{% url 'admin-users' %}">Käyttäjät</a></li>
+            <li class="menuitem"><a href="{% url 'manage:base' %}">Etusivu</a></li>
+            <li class="menuitem"><a href="{% url 'manage:users' %}">Käyttäjät</a></li>
 {% if user.is_superuser %}
             <li class="menuitem">
                 <a href="{% url 'manage:utils-index' %}">Työkalut<span class="navmenu-icon-down"></span></a>
@@ -70,7 +70,7 @@
             </li>
 {% endif %}
             <li class="menuitem">
-            	<a href="{% url 'admin-events' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'manage:events' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
 {% render_base_events_nav %}
             	</ul>
@@ -78,15 +78,15 @@
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem">
-            	<a href="{% url 'admin-profile' %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}<span class="navmenu-icon-down"></span></a>
+            	<a href="{% url 'manage:profile' %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}<span class="navmenu-icon-down"></span></a>
 {% if not is_openiduser %}
             	<ul class="sub-level">
-            		<li class="menuitem"><a href="{% url 'admin-profile' %}">Tiedot</a></li>
-            		<li class="menuitem"><a href="{% url 'admin-password' %}">Salasana</a></li>
+            		<li class="menuitem"><a href="{% url 'manage:profile' %}">Tiedot</a></li>
+            		<li class="menuitem"><a href="{% url 'manage:password' %}">Salasana</a></li>
             	</ul>
 {% endif %}
             </li>
-            <li class="menuitem"><a href="{% url 'admin-logout' %}">Kirjaudu ulos</a></li>
+            <li class="menuitem"><a href="{% url 'manage:logout' %}">Kirjaudu ulos</a></li>
         </ul>
     </div>
 </div>

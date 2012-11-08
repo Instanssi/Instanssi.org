@@ -13,35 +13,35 @@
 {% block bottom %}
 {{ block.super }}
 	<ul id="left_nav">
-    	<li class="menuitem"><a href="{% url 'admin-blog' selected_event_id %}">Blogi</a></li>
-        <li class="menuitem"><a href="{% url 'admin-slides' selected_event_id %}">Slaidit</a></li>
-        <li class="menuitem"><a href="{% url 'admin-uploads' selected_event_id %}">Tiedostot</a></li>
-        <li class="menuitem"><a href="{% url 'admin-programme' selected_event_id %}">Ohjelma</a></li>
-        <li class="menuitem"><a href="{% url 'admin-calendar' selected_event_id %}">Aikataulu</a></li>
+    	<li class="menuitem"><a href="{% url 'manage:blog' selected_event_id %}">Blogi</a></li>
+        <li class="menuitem"><a href="{% url 'manage:slides' selected_event_id %}">Slaidit</a></li>
+        <li class="menuitem"><a href="{% url 'manage:uploads' selected_event_id %}">Tiedostot</a></li>
+        <li class="menuitem"><a href="{% url 'manage:programme' selected_event_id %}">Ohjelma</a></li>
+        <li class="menuitem"><a href="{% url 'manage:calendar' selected_event_id %}">Aikataulu</a></li>
         <li class="menuitem">
-        	<a href="{% url 'admin-archive' selected_event_id %}">Arkisto<span class="navmenu-icon-right"></span></a>
+        	<a href="{% url 'manage:archive' selected_event_id %}">Arkisto<span class="navmenu-icon-right"></span></a>
             <ul class="sub-level">
-            	<li class="menuitem"><a href="{% url 'admin-archiver' selected_event_id %}">Arkistoija</a></li>
-                <li class="menuitem"><a href="{% url 'admin-vids' selected_event_id %}">Videot</a></li>
-                <li class="menuitem"><a href="{% url 'admin-vidcats' selected_event_id %}">Kategoriat</a></li>
+            	<li class="menuitem"><a href="{% url 'manage:archiver' selected_event_id %}">Arkistoija</a></li>
+                <li class="menuitem"><a href="{% url 'manage:vids' selected_event_id %}">Videot</a></li>
+                <li class="menuitem"><a href="{% url 'manage:vidcats' selected_event_id %}">Kategoriat</a></li>
             </ul>
         </li>
     	<li class="menuitem">
-        	<a href="{% url 'admin-kompomaatti' selected_event_id %}">Kompomaatti<span class="navmenu-icon-right"></span></a>
+        	<a href="{% url 'manage:kompomaatti' selected_event_id %}">Kompomaatti<span class="navmenu-icon-right"></span></a>
             <ul class="sub-level">
-                <li class="menuitem"><a href="{% url 'admin-compos' selected_event_id %}">Kompot</a></li>
-                <li class="menuitem"><a href="{% url 'admin-entries' selected_event_id %}">Entryt</a></li>
-                <li class="menuitem"><a href="{% url 'admin-competitions' selected_event_id %}">Kilpailut</a></li>
-                <li class="menuitem"><a href="{% url 'admin-results' selected_event_id %}">Tulokset</a></li>
-                <li class="menuitem"><a href="{% url 'admin-votecodes' selected_event_id %}">Äänestyskoodit</a></li>
-                <li class="menuitem"><a href="{% url 'admin-votecoderequests' selected_event_id %}">Koodipyynnöt</a></li>
+                <li class="menuitem"><a href="{% url 'manage:compos' selected_event_id %}">Kompot</a></li>
+                <li class="menuitem"><a href="{% url 'manage:entries' selected_event_id %}">Entryt</a></li>
+                <li class="menuitem"><a href="{% url 'manage:competitions' selected_event_id %}">Kilpailut</a></li>
+                <li class="menuitem"><a href="{% url 'manage:results' selected_event_id %}">Tulokset</a></li>
+                <li class="menuitem"><a href="{% url 'manage:votecodes' selected_event_id %}">Äänestyskoodit</a></li>
+                <li class="menuitem"><a href="{% url 'manage:votecoderequests' selected_event_id %}">Koodipyynnöt</a></li>
             </ul>
         </li>
     </ul>
     <div id="contents" class="contents_events_case">
 		<div id="crumbpath">
-			<a href="{% url 'admin-base' %}">Hallinta</a> &raquo;
-			<a href="{% url 'admin-overview' selected_event_id %}">{{ selected_event_name }}</a>
+			<a href="{% url 'manage:base' %}">Hallinta</a> &raquo;
+			<a href="{% url 'manage:overview' selected_event_id %}">{{ selected_event_name }}</a>
 {% block crumbs %}{% endblock %}
 		</div>
 {% block content %}{% endblock %}

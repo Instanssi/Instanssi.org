@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-vidcats' selected_event_id %}">Kategoriat</a>
+		&raquo; <a href="{% url 'manage:vidcats' selected_event_id %}">Kategoriat</a>
 		&raquo; Selaa
 {% endblock %}
 
@@ -38,10 +38,10 @@
 				<td>{{ cat.name }}</td>
 				<td>
 {% if perms.arkisto.change_othervideocategory %}
-				<a href="{% url 'admin-vidcats-edit' selected_event_id cat.id %}" class="edit_link">Muokkaa</a>
+				<a href="{% url 'manage:vidcats-edit' selected_event_id cat.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.arkisto.delete_othervideocategory %}
-				<a href="{% url 'admin-vidcats-delete' selected_event_id cat.id %}" class="delete_link">Poista</a>
+				<a href="{% url 'manage:vidcats-delete' selected_event_id cat.id %}" class="delete_link">Poista</a>
 {% endif %}
 				</td>
 			</tr>

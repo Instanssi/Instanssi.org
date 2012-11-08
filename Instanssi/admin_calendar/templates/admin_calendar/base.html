@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'admin-calendar' selected_event_id %}">Aikataulu</a>
+		&raquo; <a href="{% url 'manage:calendar' selected_event_id %}">Aikataulu</a>
 {% endblock %}
 
 {% block content %}

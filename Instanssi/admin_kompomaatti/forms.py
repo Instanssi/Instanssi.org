@@ -59,7 +59,7 @@ class AdminParticipationEditForm(forms.ModelForm):
                 'disqualified',
                 'disqualified_reason',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -86,7 +86,7 @@ class AdminCompetitionForm(forms.ModelForm):
                 'hide_from_archive',
                 'active',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -118,7 +118,7 @@ class AdminCompoForm(forms.ModelForm):
                 'entry_view_type',
                 'hide_from_archive',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -194,7 +194,7 @@ class AdminEntryEditForm(forms.ModelForm):
                 'disqualified',
                 'disqualified_reason',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -235,7 +235,7 @@ class CreateTokensForm(forms.Form):
                 u'Generoi tokeneita',
                 'amount',
                 ButtonHolder (
-                    Submit('submit', 'Generoi')
+                    Submit('submit', u'Generoi')
                 )
             )
         )

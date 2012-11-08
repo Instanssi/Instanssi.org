@@ -17,7 +17,7 @@ class BlogEntryEditForm(forms.ModelForm):
                 'date',
                 'public',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -37,7 +37,7 @@ class BlogEntryForm(forms.ModelForm):
                 'text',
                 'public',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

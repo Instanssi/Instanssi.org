@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
                 'password',
                 'email',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -71,7 +71,7 @@ class UserEditForm(forms.ModelForm):
                 'is_staff',
                 'groups',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

@@ -16,7 +16,7 @@ class InformationChangeForm(forms.ModelForm):
                 'last_name',
                 'email',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )
@@ -43,7 +43,7 @@ class PasswordChangeForm(forms.Form):
                 'new_pw',
                 'new_pw_again',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

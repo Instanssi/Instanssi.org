@@ -38,7 +38,7 @@ class OpenIDLoginForm(forms.Form):
                 'openid_identifier',
                 'next',
                 ButtonHolder (
-                    Submit('submit-login', 'Kirjaudu sisään')
+                    Submit('submit-login', u'Kirjaudu')
                 )
             )
         )
@@ -110,7 +110,7 @@ class VoteCodeRequestForm(forms.ModelForm):
                 u'Pyydä äänestysoikeutta',
                 'text',
                 ButtonHolder (
-                    Submit('submit-vcreq', 'Pyydä äänestysoikeutta')
+                    Submit('submit-vcreq', u'Pyydä äänestysoikeutta')
                 )
             )
         )
@@ -164,7 +164,7 @@ class ParticipationForm(forms.ModelForm):
                 u'',
                 'participant_name',
                 ButtonHolder (
-                    Submit('submit', 'Osallistu')
+                    Submit('submit', u'Osallistu')
                 )
             )
         )
@@ -195,7 +195,7 @@ class EntryForm(forms.ModelForm):
                 'sourcefile',
                 'imagefile_original',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

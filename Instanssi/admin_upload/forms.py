@@ -18,7 +18,7 @@ class UploadForm(forms.ModelForm):
                 'description',
                 'file',
                 ButtonHolder (
-                    Submit('submit', 'Tallenna')
+                    Submit('submit', u'Tallenna')
                 )
             )
         )

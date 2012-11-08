@@ -1,5 +1,5 @@
 {% extends "admin_blog/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }} - Entryt{% endblock %}
@@ -75,6 +75,6 @@
 {% endif %}
 
 {% if perms.ext_blog.add_blogentry %}
-{% uni_form addform addform.helper %}
+{% crispy addform addform.helper %}
 {% endif %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "common/simple_base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}Hallinta{% endblock %}
@@ -35,10 +35,10 @@
 <p>Valitse kirjautumispalvelusi.</p>
 
 <h2>Django</h2>
-{% uni_form loginform loginform.helper %}
+{% crispy loginform loginform.helper %}
 
 <h2>OpenID</h2>
-{% uni_form openidform openidform.helper %}
+{% crispy openidform openidform.helper %}
 
 {% endblock %}
 

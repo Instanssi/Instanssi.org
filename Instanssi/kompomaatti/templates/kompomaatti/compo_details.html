@@ -1,5 +1,5 @@
 {% extends "kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %} - {{ compo.name }} - Tiedot{% endblock %}
@@ -173,7 +173,7 @@
 {% endif %}
 
 {% if compo.is_adding_open %}
-{% uni_form entryform entryform.helper %}
+{% crispy entryform entryform.helper %}
 {% endif %}
 {% endif %}
 

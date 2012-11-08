@@ -1,5 +1,5 @@
 {% extends "admin_programme/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }}{% endblock %}
@@ -75,6 +75,6 @@
 {% endif %}
 
 {% if perms.ext_programme.add_programmeevent %}
-{% uni_form eventform eventform.helper %}
+{% crispy eventform eventform.helper %}
 {% endif %}
 {% endblock %}

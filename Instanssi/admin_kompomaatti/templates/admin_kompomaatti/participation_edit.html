@@ -1,5 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }} - Kilpailut - Osallistujat - Muokkaa{% endblock %}
@@ -22,5 +22,5 @@
 {% block content %}
 {{ block.super }}
     <h2>Muokkaa osanottotietoa</h2>
-{% uni_form pform pform.helper %}
+{% crispy pform pform.helper %}
 {% endblock %}

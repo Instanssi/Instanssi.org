@@ -1,5 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Avaimet{% endblock %}
 
@@ -53,6 +53,6 @@
 {% endif %}
 
 {% if perms.kompomaatti.add_votecode %}
-{% uni_form gentokensform gentokensform.helper %}
+{% crispy gentokensform gentokensform.helper %}
 {% endif %}
 {% endblock %}

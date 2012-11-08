@@ -1,5 +1,5 @@
 {% extends "admin_arkisto/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Kategoriat{% endblock %}
 
@@ -53,6 +53,6 @@
 {% endif %}
 
 {% if perms.arkisto.add_othervideocategory %}
-{% uni_form catform catform.helper %}
+{% crispy catform catform.helper %}
 {% endif %}
 {% endblock %}

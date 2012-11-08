@@ -1,5 +1,5 @@
 {% extends "admin_arkisto/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Videot - Muokkaa{% endblock %}
 
@@ -20,5 +20,5 @@
 {% block content %}
 {{ block.super }}
     <h2>Muokkaa videota {{ vid.name }}</h2>
-{% uni_form vidform vidform.helper %}
+{% crispy vidform vidform.helper %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }} - Kilpailut - Muokkaa{% endblock %}
@@ -33,5 +33,5 @@
 {% block content %}
 {{ block.super }}
     <h2>Muokkaa kilpailua {{ competition.name }}</h2>
-{% uni_form competitionform competitionform.helper %}
+{% crispy competitionform competitionform.helper %}
 {% endblock %}

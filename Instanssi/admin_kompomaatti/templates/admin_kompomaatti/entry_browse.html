@@ -1,5 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Entryt{% endblock %}
 
@@ -64,6 +64,6 @@
 {% endif %}
 
 {% if perms.kompomaatti.add_entry %}
-{% uni_form entryform entryform.helper %}
+{% crispy entryform entryform.helper %}
 {% endif %}
 {% endblock %}

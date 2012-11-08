@@ -1,5 +1,5 @@
 {% extends "admin_users/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Käyttäjät{% endblock %}
 
@@ -66,6 +66,6 @@
 		{% include "common/pagination.html" %}
 	</div>
 {% if user.is_superuser %}
-{% uni_form userform userform.helper %}
+{% crispy userform userform.helper %}
 {% endif %}
 {% endblock %}

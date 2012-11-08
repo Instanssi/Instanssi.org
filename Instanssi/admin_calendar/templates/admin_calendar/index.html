@@ -1,5 +1,5 @@
 {% extends "admin_calendar/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }}{% endblock %}
@@ -73,6 +73,6 @@
 {% endif %}
    
 {% if perms.ext_calendar.add_calendarevent %}
-{% uni_form eventform eventform.helper %}
+{% crispy eventform eventform.helper %}
 {% endif %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "admin_arkisto/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Videot{% endblock %}
 
@@ -57,6 +57,6 @@
 {% endif %}
 
 {% if perms.arkisto.add_othervideo %}
-{% uni_form vidform vidform.helper %}
+{% crispy vidform vidform.helper %}
 {% endif %}
 {% endblock %}

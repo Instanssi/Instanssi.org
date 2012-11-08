@@ -1,5 +1,5 @@
 {% extends "kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %} - Kirjaudu sisään{% endblock %}
 
@@ -31,6 +31,6 @@
 {{ block.super }}
 <h2>Kirjaudu sisään</h2>
 <p>Valitse kirjautumispalvelusi.</p>
-{% uni_form openidform openidform.helper %}
+{% crispy openidform openidform.helper %}
 
 {% endblock %}

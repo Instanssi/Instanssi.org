@@ -1,5 +1,5 @@
 {% extends "admin_programme/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }} - Muokkaa{% endblock %}
@@ -32,5 +32,5 @@
 {% block content %}
 {{ block.super }}
     <h2>Muokkaa ohjelmatapahtumaa {{ event.title }}</h2>
-{% uni_form eventform eventform.helper %}
+{% crispy eventform eventform.helper %}
 {% endblock %}

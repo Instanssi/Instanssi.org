@@ -1,5 +1,5 @@
 {% extends "admin_kompomaatti/base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %}{{ block.super }} - Kilpailut - Pisteytys{% endblock %}
@@ -22,5 +22,5 @@
 {{ block.super }}
     <h2>Pisteytys</h2>
 
-{% uni_form scoreform scoreform.helper %}
+{% crispy scoreform scoreform.helper %}
 {% endblock %}

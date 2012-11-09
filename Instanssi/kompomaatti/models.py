@@ -75,8 +75,9 @@ class Compo(models.Model):
         (2, u'Vain kuva'), # Grafiikkakompoille
         (3, u'(deprecated)'), 
     )
-    entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Millainen näkymä näytetään entryn tiedoissa? Prioriteetti ja tyyppi. Latauslinkki näytetään aina.")
-    hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilotetaanko kompon tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.', default=False)
+    entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.")
+    hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.', default=False)
+    hide_from_frontpage = models.BooleanField(u'Piilotus etusivulta', help_text=u'Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.', default=False)
     
     def __unicode__(self):
         return self.event.name + ': ' + self.name

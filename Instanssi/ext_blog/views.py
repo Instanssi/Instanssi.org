@@ -15,7 +15,7 @@ class blog_feed(Feed):
 
     def items(self, obj):
         entries = []
-        for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('-date')[:10]:
+        for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('date'):
             entry.event_url = obj.mainurl
             entries.append(entry)
         return entries

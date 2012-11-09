@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from Instanssi.kompomaatti.models import Compo, Competition
+from Instanssi.kompomaatti.models import Compo, Competition, Event
 
 register = template.Library()
 

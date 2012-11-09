@@ -117,6 +117,7 @@ class AdminCompoForm(forms.ModelForm):
                 'show_voting_results',
                 'entry_view_type',
                 'hide_from_archive',
+                'hide_from_frontpage',
                 ButtonHolder (
                     Submit('submit', u'Tallenna')
                 )

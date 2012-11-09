@@ -18,3 +18,12 @@ def render_base_competitions_nav(event_id):
         'event_id': event_id,
         'competitions': Competition.objects.filter(active=True, event_id=event_id)
     }
+
+@register.simple_tag
+def event_name(event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+        return event.name
+    except:
+        pass
+    return ''

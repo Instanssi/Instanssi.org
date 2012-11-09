@@ -4,7 +4,7 @@
         {{ compo.name }}
     </div>
     <div class="description">
-        {{ compo.description }}
+        {{ compo.description|safe }}
     </div>
 </div>
 {% endfor %}

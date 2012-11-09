@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from common.http import Http403
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from Instanssi.kompomaatti.misc.custom_render import custom_render
 from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
 from Instanssi.kompomaatti.forms import *
 from Instanssi.kompomaatti.models import *
@@ -82,10 +82,10 @@ def index(request, event_id):
         events = events[:10]
     
     # All done, dump template
-    return custom_render(request, 'kompomaatti/index.html', {
+    return render_to_response('kompomaatti/index.html', {
         'sel_event_id': int(event_id),
         'events': events,
-    })
+    }, context_instance=RequestContext(request))
     
 def compos(request, event_id):
     # Get compos, format times
@@ -94,10 +94,10 @@ def compos(request, event_id):
         compos.append(compo_times_formatter(compo))
     
     # Dump the template
-    return custom_render(request, 'kompomaatti/compos.html', {
+    return render_to_response('kompomaatti/compos.html', {
         'sel_event_id': int(event_id),
         'compos': compos,
-    })
+    }, context_instance=RequestContext(request))
     
 def compo_details(request, event_id, compo_id):
     # Get compo
@@ -150,7 +150,7 @@ def compo_details(request, event_id, compo_id):
             has_voted = True
     
     # Dump template
-    return custom_render(request, 'kompomaatti/compo_details.html', {
+    return render_to_response('kompomaatti/compo_details.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'entryform': entryform,
@@ -158,7 +158,7 @@ def compo_details(request, event_id, compo_id):
         'all_entries': all_entries,
         'my_entries': my_entries,
         'has_voted': has_voted,
-    })
+    }, context_instance=RequestContext(request))
     
 @user_access_required
 def compo_vote(request, event_id, compo_id):
@@ -248,13 +248,13 @@ def compo_vote(request, event_id, compo_id):
         nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
     
     # Dump template
-    return custom_render(request, 'kompomaatti/compo_vote.html', {
+    return render_to_response('kompomaatti/compo_vote.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'voted_entries': voted_entries,
         'nvoted_entries': nvoted_entries,
         'has_voted': has_voted,
-    })
+    }, context_instance=RequestContext(request))
     
 @user_access_required
 def compoentry_edit(request, event_id, compo_id, entry_id):
@@ -278,12 +278,12 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
         entryform = EntryForm(instance=entry, compo=compo)
     
     # Dump template
-    return custom_render(request, 'kompomaatti/entry_edit.html', {
+    return render_to_response('kompomaatti/entry_edit.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'entry': entry,
         'entryform': entryform,
-    })
+    }, context_instance=RequestContext(request))
     
 @user_access_required
 def compoentry_delete(request, event_id, compo_id, entry_id):
@@ -310,10 +310,10 @@ def competitions(request, event_id):
         competitions.append(competition_times_formatter(competition))
     
     # Dump the template
-    return custom_render(request, 'kompomaatti/competitions.html', {
+    return render_to_response('kompomaatti/competitions.html', {
         'sel_event_id': int(event_id),
         'competitions': competitions,
-    })
+    }, context_instance=RequestContext(request))
     
 def competition_details(request, event_id, competition_id):
     # Get competition
@@ -355,7 +355,7 @@ def competition_details(request, event_id, competition_id):
             pass
     
     # All done, dump template
-    return custom_render(request, 'kompomaatti/competition_details.html', {
+    return render_to_response('kompomaatti/competition_details.html', {
         'sel_event_id': int(event_id),
         'competition': competition,
         'participation': participation,
@@ -363,7 +363,7 @@ def competition_details(request, event_id, competition_id):
         'can_participate': can_participate,
         'participationform': participationform,
         'participants': participants,
-    })
+    }, context_instance=RequestContext(request))
 
 @user_access_required
 def competition_signout(request, event_id, competition_id):
@@ -395,11 +395,11 @@ def entry_details(request, event_id, compo_id, entry_id):
     entry = get_object_or_404(Entry, pk=int(entry_id), compo=compo)
     
     # Render
-    return custom_render(request, 'kompomaatti/entry_details.html', {
+    return render_to_response('kompomaatti/entry_details.html', {
         'sel_event_id': int(event_id),
         'entry': entry,
         'compo': compo,
-    })
+    }, context_instance=RequestContext(request))
 
 @user_access_required
 def profile(request, event_id):
@@ -455,7 +455,7 @@ def profile(request, event_id):
         votecoderequestform = VoteCodeRequestForm()
     
     # Render
-    return custom_render(request, 'kompomaatti/profile.html', {
+    return render_to_response('kompomaatti/profile.html', {
         'sel_event_id': int(event_id),
         'profileform': profileform,
         'votecodeassocform': votecodeassocform,
@@ -463,15 +463,15 @@ def profile(request, event_id):
         'reserved_code': reserved_code,
         'can_vote': can_vote,
         'request_made': request_made,
-    })
+    }, context_instance=RequestContext(request))
     
 def do_login(request, event_id):
     loginform = OpenIDLoginForm(next=reverse('km:index', args=(event_id,)))
     
-    return custom_render(request, 'kompomaatti/login.html', {
+    return render_to_response('kompomaatti/login.html', {
         'sel_event_id': int(event_id),
         'openidform': loginform,
-    })
+    }, context_instance=RequestContext(request))
     
 @user_access_required
 def do_logout(request, event_id):

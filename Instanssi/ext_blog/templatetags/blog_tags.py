@@ -13,3 +13,8 @@ def render_blog(event_id):
 @register.inclusion_tag('ext_blog/blog_rss_tag.html')
 def render_blog_rss_tag(event_id):
     return {'event_id': event_id}
+
+@register.simple_tag
+def blog_rss_url(event_id):
+    return 'http://instanssi.org/blog/'+str(event_id)+'/rss/'
+

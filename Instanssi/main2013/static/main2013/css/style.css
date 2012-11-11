@@ -1,0 +1,141 @@
+/*
+	Theme: Instanssi 2012
+	Author: Janne Leppänen
+	
+	font-family: 'Open Sans', sans-serif;
+*/
+
+/* general */
+html , body { font-family: helvetica;   background: url('../images/snow.png'); }
+.clearer { clear: both; }
+img { max-width: 97% !important; height: auto !important; }
+body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
+h1{ font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h2 { font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+
+
+/* structure */
+.container { width: 900px; margin: 0 auto; padding: 0px 0px;  }
+
+
+/* header */
+#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat top center #111;  margin-bottom: 40px; box-shadow: 0 1px 10px #fff;}
+#page-header .header-top { }
+#page-header .header-top .logo { margin: 30px 0px; }
+
+
+/* navigation */
+#page-header nav {  bottom: 0px; position: relative; bottom: 0px; }
+#page-header nav ul{ margin: 0px; background: rgba( 0,0,0,0.7);}
+#page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; *display: inline; *zoom: 1; }
+#page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; }
+#page-header nav ul .menu-item a:hover { }
+#page-header nav ul .current-menu-item { background: #fff; }
+#page-header nav ul .current-menu-item a { color: #333; text-shadow: none;}
+
+/* content */
+#primary { float: left; width: 500px; margin-right: 20px; min-height:600px; }
+#primary ul{ list-style: disc; margin: 0px 0px 10px 30px;}
+#primary ol{ list-style-type: decimal; margin: 0px 0px 10px 30px;}
+#primary a { color: #1468E5; text-decoration: underline; }
+#primary a:hover {  color: #1F86F4; } 
+#primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
+
+#primary p { margin-bottom: 10px;  }
+#primary table {  }
+#primary table tr {  }
+#primary table th { color: #fff; background: #26A8D3; font-weight: 700; text-align: left; padding: 10px; }
+#primary table th { color: #fff; background: #26A8D3; font-weight: 700; text-align: left; padding: 10px; }
+#primary table td { padding: 10px; }
+#primary table .title { font-weight: bold; }
+#primary table tr:nth-child( 2n +1 ) { background: #eee; }
+#primary table td img{ width: 100px; height: auto; border: none; box-shadow: none; }
+#primary .btn { background: #26A8D3; color: #fff; text-decoration: none; display: inline-block; padding: 10px; border-radius: 2px; /*ie-inline-block*/ *display: inline; zoom: 1; }
+#primary .btn:hover { color: #fff; opacity: 0.9; }
+
+/* content - blog */
+#primary .message { padding-bottom: 20px; margin-bottom: 20px; }
+#primary .message header { margin-bottom: 20px; }
+#primary .message .title a {  font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; text-decoration: none; display: block; }
+#primary .message .date { color: #666; border-top: 1px solid #ccc; text-align: right; margin-top: 20px; font-size: 11px; }
+
+
+/* sidebar */
+#twitter-widget {  float: left; width: 300px; }
+#twitter-widget a { color: #1468E5; text-decoration: underline; }
+#twitter-widget a:hover {  color: #1F86F4; } 
+#twitter-widget .social-media a { margin-right: 20px;}
+#twitter-widget .social-media a:hover {  }
+#twitter-widget .widget { margin-bottom: 20px; }
+#twitter-widget #tweets .link a, #tweets .time { font-size: 11px; }
+#twitter-widget #tweets li { margin-bottom: 20px; }
+#twitter-widget a.ticket-button { text-decoration: none; background: #26A8D3; border-radius: 3px; padding: 10px; font-size: 20px; color: #fff; text-shadow: 1px 1px 0px #2684A0; display: block; }
+#twitter-widget a.ticket-button:hover { color: #fff; opacity: 0.9; }
+
+
+/* footer */
+#page-footer { width: 100%;  background: #111; }
+#page-footer section { float: left; }
+#page-footer section h1 { font-size: 18px; color: #fff; font-weight: bold; }
+#page-footer .sitemap { width: 150px; }
+#page-footer .sponsors { width: 600px; margin-right: 20px; }
+#page-footer .sponsors  h1 { margin-left: 10px; }
+#page-footer .sponsors .sponsor-placeholder { width: 128px; height: 71px; border: 1px dashed #333; float: left; margin: 10px; }
+#page-footer .contact { width: 150px;  }
+
+
+/* footer always bottom */
+html, body { margin: 0; padding: 0; height: 100%; }
+#page-footer { height: 330px; position: absolute; bottom: 0px; padding-top: 20px; }
+#content { padding-bottom: 390px; }
+#page-wrap { min-height: 100%; position: relative; }
+
+
+/* Large desktop */
+@media (min-width: 1200px) { 
+	.container { width: 1024px; margin: 0 auto; }
+	#content #primary{ width:500px;  margin-right: 100px;  }
+	#twitter-widget{ width: 300px; }
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	.container { width:750px; margin: 0 auto; }
+	#content #primary{ width: 450px;  margin-right: 20px;  }
+	#twitter-widget{ width: 200px; }
+	
+	#page-footer .sitemap { width: 20%; margin: 0; }
+	#page-footer .sponsors { width: 80%; margin: 0;}
+	#page-footer .contact { float: none; }
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	.container { width: 92%; padding: 0 4%; }
+	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
+	#twitter-widget{ width: 100%; }
+	
+	#page-footer .sponsors, #footer .sitemap, #footer .contact { width: 92%; margin: 0% 4%; margin-bottom: 20px;  }
+	#page-footer .sponsors .sponsor-placeholder { margin: 1%; }
+	#page-footer .sponsors h1 { margin: 0; }
+	
+	/* footer always bottom */
+	#page-footer { position: static; height: auto; }
+	#content { padding-bottom: 40px; }
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+	#page-header { background: #111; background-image: none; }
+	#page-header .header-top { background: #3ABCED; }
+	#page-header nav ul .menu-item { width: 49%; }
+	#page-header nav ul{ background: transparent; }
+	
+	#primary th{ display: none; visibility: hidden; }
+	#primary tr,
+	#primary table, #primary tbody { display: block; width: 100%; }
+	#primary table td { display: block; width: 92%; padding: 1% 4%;}
+	
+}

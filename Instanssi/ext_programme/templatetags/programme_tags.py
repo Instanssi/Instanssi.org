@@ -15,7 +15,7 @@ def render_programme(event_id):
     }
 
 
-@register.inclusion_tag('ext_calendar/tags/calendar.html')
+@register.inclusion_tag('ext_programme/tags/calendar.html')
 def render_calendar(event_id):
     compos = Compo.objects.filter(event_id=event_id)
     progs = ProgrammeEvent.objects.filter(event_id=event_id)

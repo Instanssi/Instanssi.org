@@ -12,8 +12,8 @@ class ProgrammeEvent(models.Model):
     end = models.DateTimeField(u'Loppu', help_text=u'Tapahtuman loppumisaika.', null=True, blank=True)
     description = models.TextField(u'Kuvaus')
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=64)
-    presenters = models.CharField(u'Henkilöt', help_text=u'Esityksen pitäjät tms.', max_length=256)
-    presenters_titles = models.CharField(u'Nimikkeet', help_text=u'Henkilön arvo-, ammatti- tai virkanimike.', max_length=256)
+    presenters = models.CharField(u'Henkilöt', help_text=u'Esityksen pitäjät tms.', max_length=256, blank=True)
+    presenters_titles = models.CharField(u'Nimikkeet', help_text=u'Henkilön arvo-, ammatti- tai virkanimike.', max_length=256, blank=True)
     icon_original = models.ImageField(u'Kuva', upload_to='programme/images/', help_text=u"Kuva tapahtumalle.", blank=True)
     icon_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon_original', format='PNG')
     email = models.EmailField(u'Sähköposti', help_text=u'Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).', blank=True)
@@ -23,6 +23,11 @@ class ProgrammeEvent(models.Model):
     facebook_url = models.URLField(u'Facebook', help_text=u'Tapahtumaan liittyvä facebook-url.', blank=True)
     linkedin_url = models.URLField(u'LinkedIn', help_text=u'Tapahtumaan liittyvä LinkedIn-url.', blank=True)
     wiki_url = models.URLField(u'Wikipedia', help_text=u'Tapahtumaan liittyvä Wikipedia-url.', blank=True)
+    EVENT_TYPES = (
+        (0, u'Yksinkertainen'),
+        (1, u'Monipuolinen'),
+    )
+    event_type = models.IntegerField(u'Tapahtuman tyyppi', choices=EVENT_TYPES, default=0, help_text=u"Määrittää tapahtuman tyypin. Monipuoliset tapahtumat näkyvät etusivun tapahtumalistassa.")
 
     def save(self, *args, **kwargs):
         # Delete old icon file when editing

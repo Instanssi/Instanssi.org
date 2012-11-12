@@ -43,20 +43,11 @@
     
     <h3>Ohjelma</h3>
     <p>
-    	Ohjelma-sivulle tallennetaan esimerkiksi esitysten tai puheiden pitäjät.
-    	Ohjelma-sivun tiedot tulevat näkymään yhdessä kompojen, muiden kilpailujen ja aikataulun kanssa tapahtuman sivuilla.
+    	Ohjelma-sivulle tallennetaan esimerkiksi esitysten tai puheiden pitäjät sekä muiden tapahtumien ajat, esim. "Ovet aukeavat",
+    	"Valot pois" jne. Ohjelma-sivun tiedot tulevat näkymään yhdessä kompojen ja muiden kilpailujen kanssa tapahtuman sivuilla.
     </p>
     <p>
     	<a href="{% url 'manage-programme:index' selected_event_id %}">Siirry muokkaamaan ohjelmaa &raquo;</a>
-    </p>
-
-    <h3>Aikataulu</h3>
-    <p>
-    	Aikataulu-sivulle voidaan tallentaa lyhyesti kuvattavia tapahtumia, esimerkiksi "Ovet avautuvat" tai "Tapahtuma päättyy" jne.
-    	Aikataulu-sivun tiedot tulevat näkymään yhdessä kompojen, muiden kilpailujen ja ohjelman kanssa tapahtuman sivuilla.
-    </p>
-    <p>
-    	<a href="{% url 'manage-calendar:index' selected_event_id %}">Siirry muokkaamaan kalenteria &raquo;</a>
     </p>
     
     <h3>Arkisto</h3>

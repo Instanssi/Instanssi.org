@@ -26,11 +26,11 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; Muokkaa ohjelmatapahtumaa
+		&raquo; Muokkaa tapahtumaa
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-    <h2>Muokkaa ohjelmatapahtumaa {{ event.title }}</h2>
+    <h2>Muokkaa tapahtumaa {{ event.title }}</h2>
 {% crispy eventform eventform.helper %}
 {% endblock %}

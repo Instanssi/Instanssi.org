@@ -42,7 +42,7 @@
 		<thead>
 			<tr>
 				<th>Otsikko</th>
-				<th>Esiintyjät</th>
+				<th>Tyyppi</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th class="sorter-false management_field"></th>
@@ -52,7 +52,7 @@
 {% for event in pevs %}
 			<tr>
 				<td>{{ event.title }}</td>
-				<td>{{ event.presenters }}</td>
+				<td>{% if event.type == 0 %}Yksinkertainen{% else %}Yksityiskohtainen{% endif %}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>

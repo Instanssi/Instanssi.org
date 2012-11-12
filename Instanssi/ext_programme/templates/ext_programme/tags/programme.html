@@ -1,0 +1,40 @@
+{% load static %}
+{% if progs %}
+<div id="programme">
+{% for prog in progs %}
+    <div class="item">
+        <div class="title">
+            {{ prog.title }}
+        </div>
+        <div class="person">
+            <div class="icon">
+{% if prog.icon_original %}
+                <img src="{{ prog.icon_small.url }}" 
+                     width="{{ prog.icon_small.width }}" 
+                     height="{{ prog.icon_small.height }}" 
+                     alt="{{ prog.presenters }}" />
+{% endif %}
+            </div>
+            <div class="personalinfo">
+                <span class="names">{{ prog.presenters }}</span>
+                <span class="titles">{{ prog.presenters_titles }}</span>
+            </div>
+        </div>
+        <div class="description">
+            {{ prog.description|safe }}
+        </div>
+        <div class="serviceicons">
+{% if prog.home_url %}<a href="{{ prog.home_url }}"><img src="{% static 'ext_programme/images/link.png' %}" width="16" height="16" alt="Kotisivu" /></a>{% endif %}
+{% if prog.email %}<a href="mailto:{{ prog.email }}"><img src="{% static 'ext_programme/images/email.png' %}" width="16" height="16" alt="Sähköpostiosoite" /></a>{% endif %}
+{% if prog.twitter_url %}<a href="mailto:{{ prog.twitter_url }}"><img src="{% static 'ext_programme/images/twitter.png' %}" width="16" height="16" alt="Twitter" /></a>{% endif %}
+{% if prog.github_url %}<a href="mailto:{{ prog.github_url }}"><img src="{% static 'ext_programme/images/git.png' %}" width="16" height="16" alt="Github" /></a>{% endif %}
+{% if prog.facebook_url %}<a href="mailto:{{ prog.facebook_url }}"><img src="{% static 'ext_programme/images/facebook.png' %}" width="16" height="16" alt="Facebook" /></a>{% endif %}
+{% if prog.linkedin_url %}<a href="mailto:{{ prog.linkedin_url }}"><img src="{% static 'ext_programme/images/linkedin.png' %}" width="16" height="16" alt="Linkedin" /></a>{% endif %}
+{% if prog.wiki_url %}<a href="mailto:{{ prog.wiki_url }}"><img src="{% static 'ext_programme/images/wiki.png' %}" width="16" height="16" alt="Wikipedia" /></a>{% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% else %}
+<p>Ei määriteltyä ohjelmaa.</p>
+{% endif %}

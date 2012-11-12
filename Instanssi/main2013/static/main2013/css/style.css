@@ -14,16 +14,25 @@ h1{ font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8
 h2 { font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
-
+b { font-weight: bold; }
+strong { font-weight: bold; }
+i { font-style: italic; }
+blockquote {
+ font-size:125%;
+ font-style:italic;
+ margin-left: 4%;
+ margin-bottom: 10px; 
+}
 
 /* structure */
 .container { width: 900px; margin: 0 auto; padding: 0px 0px;  }
 
 
 /* header */
-#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat top center #111;  margin-bottom: 40px; box-shadow: 0 1px 10px #fff;}
-#page-header .header-top { }
-#page-header .header-top .logo { margin: 30px 0px; }
+#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat top center #0088C3;  margin-bottom: 40px; box-shadow: 0 1px 10px #fff; }
+#page-header .header-top { min-height: 258px; }
+#page-header .header-top .logo { margin: 8px 0px 0px 0px; }
+#page-header .header-top h1 { margin:0px;}
 
 
 /* navigation */
@@ -37,9 +46,10 @@ h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A
 
 /* content */
 #primary { float: left; width: 500px; margin-right: 20px; min-height:600px; }
-#primary ul{ list-style: disc; margin: 0px 0px 10px 30px;}
-#primary ol{ list-style-type: decimal; margin: 0px 0px 10px 30px;}
-#primary a { color: #1468E5; text-decoration: underline; }
+#primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
+#primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
+#primary li { margin-bottom: 5px; }
+#primary a { color: #0977BC; text-decoration: underline; }
 #primary a:hover {  color: #1F86F4; } 
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
 
@@ -64,7 +74,7 @@ h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A
 
 /* sidebar */
 #twitter-widget {  float: left; width: 300px; }
-#twitter-widget a { color: #1468E5; text-decoration: underline; }
+#twitter-widget a { color: #0977BC; text-decoration: underline; }
 #twitter-widget a:hover {  color: #1F86F4; } 
 #twitter-widget .social-media a { margin-right: 20px;}
 #twitter-widget .social-media a:hover {  }
@@ -84,7 +94,8 @@ h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A
 #page-footer .sponsors  h1 { margin-left: 10px; }
 #page-footer .sponsors .sponsor-placeholder { width: 128px; height: 71px; border: 1px dashed #333; float: left; margin: 10px; }
 #page-footer .contact { width: 150px;  }
-
+#page-footer .menu-item a{ color: #ccc; text-decoration: none; }
+#page-footer .current-menu-item a{ color: #000; background: #fff; text-decoration: none; padding: 0px 10px; }
 
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
@@ -129,7 +140,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 /* Landscape phones and down */
 @media (max-width: 480px) { 
 	#page-header { background: #111; background-image: none; }
-	#page-header .header-top { background: #3ABCED; }
+	#page-header .header-top { background: #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; }
 	#page-header nav ul{ background: transparent; }
 	

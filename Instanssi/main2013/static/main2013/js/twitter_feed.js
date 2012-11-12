@@ -79,7 +79,9 @@ function getLatestTweets(user, limit, doneCb) {
 }
 
 function constructTweetUI($parent, entries) {
-    var out = '<ul>';
+    $parent.hide();
+	
+	var out = '<ul>';
     $.each(entries, function(i, k) {
         out += '<li>';
         out += '<span class="author">@'+k.author+': </span>';
@@ -89,7 +91,7 @@ function constructTweetUI($parent, entries) {
         out += '</li>';
     });
     out += '</ul>';
-    $parent.append(out);
+    $parent.append(out).fadeIn( 500 );
 }
 
 function twitterWidget($parent, users, amount) {

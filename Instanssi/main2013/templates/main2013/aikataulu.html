@@ -1,5 +1,5 @@
 {% extends "main2013/base.html" %}
-{% load blog_tags %}
+{% load calendar_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -86,5 +86,7 @@
 </table>
 
 <a href="#" class="btn">Button</a>
+
+{% render_calendar event_id %}
 
 {% endblock %}

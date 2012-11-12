@@ -87,7 +87,7 @@ function constructTweetUI($parent, entries) {
         out += '<span class="author">@'+k.author+': </span>';
         out += '<span class="text">'+k.text+'</span><br />';
         out += '<span class="time">'+k.time+'</span> &middot; ';
-        out += '<span class="link"><a href="http://twitter.com/'+k.author+'/status/'+k.tid+'">Details</a></span>';
+        out += '<span class="link"><a href="http://twitter.com/'+k.author+'/status/'+k.tid+'">Lue twitterissä »</a></span>';
         out += '</li>';
     });
     out += '</ul>';

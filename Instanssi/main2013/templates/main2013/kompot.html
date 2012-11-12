@@ -1,5 +1,5 @@
 {% extends "main2013/base.html" %}
-{% load blog_tags %}
+{% load kompomaatti_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -12,5 +12,5 @@
 {% block content %}
 {{ block.super }}
 
-
+{% render_frontpage_compolist event_id %}
 {% endblock %}

@@ -28,17 +28,17 @@ def render_calendar(event_id):
     for compo in compos:
         events.append({
             'date': compo.adding_end,
-            'title': compo.name+': Deadline.',
+            'title': compo.name + u': ilmoittautuminen päättyy..',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
         })
         events.append({
             'date': compo.compo_start,
-            'title': compo.name+': kompo alkaa.',
+            'title': compo.name + u': kompo alkaa.',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
         })
         events.append({
             'date': compo.voting_start,
-            'title': compo.name+': äänestys alkaa.',
+            'title': compo.name + u': äänestys alkaa.',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
         })
     
@@ -46,12 +46,12 @@ def render_calendar(event_id):
     for comp in comps:
         events.append({
             'date': comp.participation_end,
-            'title': comp.name+': Deadline.',
+            'title': comp.name + u': ilmoittautuminen päättyy.',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
         })
         events.append({
             'date': comp.start,
-            'title': comp.name+': kilpailu alkaa.',
+            'title': comp.name + u': kilpailu alkaa.',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
         })
         

@@ -30,7 +30,37 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
     });
-    $("#event_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],]}).tablesorterPager({container: $("#event_pager")}); 
+    $("#event_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],]}).tablesorterPager({container: $("#event_pager")});
+    
+    function change_event_form() {
+        var ac_list = Array(
+            '#id_description',
+            '#id_presenters',
+            '#id_presenters_titles',
+            '#id_icon_original',
+            '#id_email',
+            '#id_home_url',
+            '#id_twitter_url',
+            '#id_github_url',
+            '#id_facebook_url',
+            '#id_linkedin_url',
+            '#id_wiki_url'
+        );
+        var c = $('#id_event_type').val();
+        $.each(ac_list, function(index, value) {
+           if(c == 0) {
+               $(value).parent().hide(); 
+           } else {
+               $(value).parent().show(); 
+           }
+        });
+    }
+    
+    change_event_form();
+    $("#id_event_type").change(function() {
+        change_event_form();
+    });
+    
 {% endblock %}
 
 {% block content %}
@@ -52,7 +82,7 @@
 {% for event in pevs %}
 			<tr>
 				<td>{{ event.title }}</td>
-				<td>{% if event.type == 0 %}Yksinkertainen{% else %}Yksityiskohtainen{% endif %}</td>
+				<td>{% if event.event_type == 1 %}Yksityiskohtainen{% else %}Yksinkertainen{% endif %}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>

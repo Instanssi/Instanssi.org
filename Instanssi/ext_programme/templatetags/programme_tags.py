@@ -32,16 +32,22 @@ def render_calendar(event_id):
             'date': compo.adding_end,
             'title': compo.name + u': ilmoittautuminen päättyy..',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'icon': '',
+            'desc': '',
         })
         events.append({
             'date': compo.compo_start,
             'title': compo.name + u': kompo alkaa.',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'icon': '',
+            'desc': '',
         })
         events.append({
             'date': compo.voting_start,
             'title': compo.name + u': äänestys alkaa.',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'icon': '',
+            'desc': '',
         })
     
     # Handle competitions
@@ -50,29 +56,72 @@ def render_calendar(event_id):
             'date': comp.participation_end,
             'title': comp.name + u': ilmoittautuminen päättyy.',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
+            'icon': '',
+            'desc': '',
         })
         events.append({
             'date': comp.start,
             'title': comp.name + u': kilpailu alkaa.',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
+            'icon': '',
+            'desc': '',
         })
         
     # Handle programmeevents
     for prog in progs:
-        events.append({
-            'date': prog.start,
-            'title': prog.title,
-            'url': None,
-        })
+        icon = None
+        if prog.icon_small:
+            icon = prog.icon_small.url
+        if prog.event_type == 0:
+            events.append({
+                'date': prog.start,
+                'title': prog.title,
+                'icon': icon,
+                'url': '',
+                'desc': '',
+            })
+        else:
+            events.append({
+                'date': prog.start,
+                'title': prog.presenters,
+                'icon': icon,
+                'url': '',
+                'desc': prog.title,
+            })
 
     # Sort list 
     def helper(object):
         return time.mktime(object['date'].timetuple())
     events = sorted(events, key=helper)
     
-    # TODO: Group by day
-    # TODO: Combine similar stuff that happens at the same time
-
+    # Group by day
+    grouped_events = {}
+    keys = []
+    for event in events:
+        d = event['date'].date()
+        if d not in grouped_events:
+            grouped_events[d] = []
+            keys.append(d)
+        grouped_events[d].append(event)
+    
+    # Final list for template
+    events = []
+    for key in keys:
+        days = [
+            u'Maanantai',
+            u'Tiistai',
+            u'Keskiviikko',
+            u'Torstai',
+            u'Perjantai',
+            u'Lauantai',
+            u'Sunnuntai',
+        ]
+        events.append({
+            'items': grouped_events[key],
+            'title': days[key.weekday()] + u' ' + key.strftime('%d.%m.'),
+        })
+        
+    # All done
     return {
         'event_id': event_id,
         'events': events,

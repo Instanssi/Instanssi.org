@@ -1,0 +1,31 @@
+{% if events %}
+<div id="events">
+{% for day in events %}
+    <div class="header">
+        {{ day.title }}
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="time">Aika</th>
+                <th class="image">Kuva</th>
+                <th class="title">Otsikko</th>
+                <th class="description"></th>
+            </tr>
+        </thead>
+        <tbody>
+{% for event in day.items %}
+            <tr>
+                <td class="time">{{ event.date|date:"H:i" }}</td>
+                <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
+                <td class="title">{{ event.title }}</td>
+                <td class="description">{{ event.desc }}</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+</div>
+{% else %}
+<p>Ei tapahtumia.</p>
+{% endif %}

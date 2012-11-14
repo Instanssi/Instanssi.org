@@ -13,7 +13,8 @@
     $(function() {
         var event_id = {{ event_id }};
         var clock_timer = 0;
-        var data_timer = 0;
+        var events_timer = 0;
+        var irc_timer = 0;
         
         $('#jmpress').jmpress();
 
@@ -29,33 +30,43 @@
             var datetext = (day < 10 ? "9"+day : day) +'.'+ (month < 10 ? "9"+month : month) +'.'+ (year < 10 ? "9"+year : year);
             $('.time').html(timetext);
             $('.date').html(datetext);
+            init_update_clock();
         }
         
         function init_update_clock() {
-            clock_timer = setInterval(function() {
-                update_clock();
-            }, 1000);
+            clock_timer = setTimeout(update_data, 1000);
         }
         
-        function update_data() {
-            $.getJSON("{% url 'screen:api' event_id %}", function(data) {
+        function update_events() {
+            $.getJSON("{% url 'screen:events-api' event_id %}", function(data) {
                 output = '';
                 console.log(data);
                 $.each(data['events'], function(key, value) {
                     console.log(value);
-                    output += '<p>'+value['date']+': '+value['title']+'</p>';
+                    output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
                 });
                 $('#events').html(output);
-                init_update_data();
+                init_update_events();
             });
         }
         
-        function init_update_data() {
-            data_timer = setTimeout(update_data, 10000);
+        function init_update_events() {
+            events_timer = setTimeout(update_data, 60000);
         }
         
-        init_update_clock();
-        update_data();
+        function update_irc() {
+            $.getJSON("{% url 'screen:irc-api' event_id %}", function(data) {
+                init_update_irc();
+            });
+        }
+        
+        function init_update_irc() {
+            irc_timer = setTimeout(update_irc, 1000);
+        }
+        
+        update_events();
+        update_irc();
+        update_clock();
     });
     </script>
 </head>

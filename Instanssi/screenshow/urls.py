@@ -4,6 +4,6 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.screenshow.views',
-    url(r'^$', 'index', name="index"),
-	url(r'^api/', 'api', name="api"),
+    url(r'^(?P<event_id>\d+)/$', 'index', name="index"),
+	url(r'^(?P<event_id>\d+)/api/', 'api', name="api"),
 )

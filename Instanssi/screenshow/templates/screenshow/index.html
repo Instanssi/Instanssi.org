@@ -11,13 +11,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
     <script type="text/javascript">
     $(function() {
+        var event_id = {{ event_id }};
+        var clock_timer = 0;
+        var data_timer = 0;
+        
         $('#jmpress').jmpress();
-        
-        var switch_timer = setInterval(function(){
-            $('#jmpress').jmpress('next');
-        }, 5000);
-        
-        var clock_timer = setInterval(function() {
+
+        function update_clock() {
             var now = new Date();
             var hour = now.getHours();
             var minute = now.getMinutes();
@@ -29,27 +29,53 @@
             var datetext = (day < 10 ? "9"+day : day) +'.'+ (month < 10 ? "9"+month : month) +'.'+ (year < 10 ? "9"+year : year);
             $('.time').html(timetext);
             $('.date').html(datetext);
-        }, 1000);
+        }
+        
+        function init_update_clock() {
+            clock_timer = setInterval(function() {
+                update_clock();
+            }, 1000);
+        }
+        
+        function update_data() {
+            $.getJSON("{% url 'screen:api' event_id %}", function(data) {
+                output = '';
+                console.log(data);
+                $.each(data['events'], function(key, value) {
+                    console.log(value);
+                    output += '<p>'+value['date']+': '+value['title']+'</p>';
+                });
+                $('#events').html(output);
+                init_update_data();
+            });
+        }
+        
+        function init_update_data() {
+            data_timer = setTimeout(update_data, 10000);
+        }
+        
+        init_update_clock();
+        update_data();
     });
     </script>
 </head>
 <body>
 <div id="jmpress">
-    <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0">
+    <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="5000">
         Instanssi
     </div>
-    <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2">
-        <p class="gone_a">&nbsp;&nbsp; 12:30 Mennyt tapahtuma 1</p>
-        <p class="gone_b">&nbsp;&nbsp; 12:45 Mennyt tapahtuma 2</p>
-        <p>&raquo; 13:30 Tapahtuva Tapahtuma 1</p>
-        <p>&nbsp;&nbsp; 23:00 Tulossa 1</p>
-        <p>&nbsp;&nbsp; 23:10 Tulossa 2</p>
+    <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000">
+        <p>&raquo; 12:30 Alkaa kohta</p>
+        <p>&nbsp;&nbsp; 12:45 Tulossa 1</p>
+        <p>&nbsp;&nbsp; 13:30 Tulossa 2</p>
+        <p>&nbsp;&nbsp; 23:00 Tulossa 3</p>
+        <p>&nbsp;&nbsp; 23:10 Tulossa 4</p>
     </div>
-    <div id="clock" class="step dohide" data-x="900" data-y="0" data-z="-600" data-rotate-z="310" data-rotate-y="100" date-scale="0.2">
+    <div id="clock" class="step dohide" data-x="900" data-y="0" data-z="-600" data-rotate-z="310" data-rotate-y="100" date-scale="0.2" data-duration="8000">
         <p class="time">00:00</p>
         <p class="date">00.00.0000</p>
     </div>
-    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2">
+    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="10000">
         <p>20:33 &lt;@Tinuzka&gt; oho</p>
         <p>20:33 &lt;@Tinuzka&gt; :D tarkoitin</p>
         <p>20:34 &lt;@Katajakasa&gt; okkei</p>

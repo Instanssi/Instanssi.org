@@ -26,6 +26,14 @@
                 <li class="menuitem"><a href="{% url 'manage-arkisto:vidcats' selected_event_id %}">Kategoriat</a></li>
             </ul>
         </li>
+        <li class="menuitem">
+            <a href="{% url 'manage-screenshow:index' selected_event_id %}">Screenshow<span class="navmenu-icon-right"></span></a>
+            <ul class="sub-level">
+                <li class="menuitem"><a href="">Sponsorit</a></li>
+                <li class="menuitem"><a href="">Viestit</a></li>
+                <li class="menuitem"><a href="">Irclog</a></li>
+            </ul>
+        </li>
     	<li class="menuitem">
         	<a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti<span class="navmenu-icon-right"></span></a>
             <ul class="sub-level">

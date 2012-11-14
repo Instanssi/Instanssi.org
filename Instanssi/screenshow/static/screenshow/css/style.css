@@ -1,0 +1,56 @@
+div.step {
+    font-family: 'Open Sans', sans-serif;
+    width: 1700px;
+    padding: 40px;
+    
+    -webkit-transition: opacity 1s;
+    -moz-transition:    opacity 1s;
+    -ms-transition:     opacity 1s;
+    -o-transition:      opacity 1s;
+    transition:         opacity 1s;
+}
+
+div.dohide:not(.active) {
+    opacity: 0.0;
+}
+
+div.nohide:not(.active) {
+    opacity: 0.2;
+}
+
+div#nametext {
+    font-size: 400px;
+    font-weight: bold;
+    color: #282828 ;
+}
+
+div#events p {
+    font-size: 80px;
+    font-weight: bold;
+    margin: 40px;
+    text-shadow: #aaaaaa 0px 0px 10px;
+}
+
+div#events p.gone_a {
+    opacity: 0.3;
+}
+
+div#events p.gone_b {
+    opacity: 0.5;
+    padding-bottom: 20px;
+}
+
+div#irc p {
+    font-family: 'Consolas', monospace;
+    margin: 8px;
+    font-size: 30px;
+}
+
+div#clock p.time {
+    font-size: 300px;
+}
+
+div#clock p.date {
+    font-size: 140px;
+    padding-left: 25px;
+}

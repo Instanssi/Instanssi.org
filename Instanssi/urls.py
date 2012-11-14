@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^arkisto/', include('Instanssi.arkisto.urls', namespace='archive')),
     url(r'^kompomaatti/(?P<event_id>\d+)/', include('Instanssi.kompomaatti.urls', namespace="km")),
     url(r'^kompomaatti/', include('Instanssi.kompomaatti_eventselect.urls', namespace="kme")),
+    url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^$', include('Instanssi.main2012.urls')),
 )
 

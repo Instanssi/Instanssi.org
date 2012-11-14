@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'Instanssi.kompomaatti_eventselect',
     'Instanssi.ext_blog',
     'Instanssi.ext_programme',
+    'Instanssi.screenshow',
     'imagekit',
     'south',
     'crispy_forms',

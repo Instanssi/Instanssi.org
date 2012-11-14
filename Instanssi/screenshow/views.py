@@ -9,7 +9,7 @@ from Instanssi.kompomaatti.misc.events import get_upcoming
 def index(request, event_id):
     return render_to_response('screenshow/index.html', {'event_id': event_id}, context_instance=RequestContext(request))
 
-def api(request, event_id):
+def events_api(request, event_id):
     e = get_object_or_404(Event, pk=event_id)
 
     # Get upcoming stuff
@@ -24,4 +24,7 @@ def api(request, event_id):
         if k >= 5:
             break;
 
-    return JSONResponse({'events': events});
+    return JSONResponse({'error': 0, 'events': events});
+
+def irc_api(request, event_id):
+    return JSONResponse({'error': 0, 'log': []})

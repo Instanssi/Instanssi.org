@@ -1,0 +1,20 @@
+{% extends "admin_base/events_base.html" %}
+
+{% block title %} - Screenshow{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="{% url 'manage-screenshow:index' selected_event_id %}">Screenshow</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

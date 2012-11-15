@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.contrib import admin
 from Instanssi.kompomaatti.models import Event
 
 class Sponsor(models.Model):
@@ -20,8 +21,11 @@ class Sponsor(models.Model):
             this = Sponsor.objects.get(id=self.id)
             if this.logo != self.logo:
                 this.logo.delete(save=False)
-        except: 
+        except Sponsor.DoesNotExist: 
             pass 
+        
+        # Continue with normal save
+        super(Sponsor, self).save(*args, **kwargs)
             
 
 class Message(models.Model):
@@ -49,3 +53,11 @@ class IRCMessage(models.Model):
     class Meta:
         verbose_name=u"irc-viesti"
         verbose_name_plural=u"irc-viestit"
+
+# Register to admin-panel
+try:
+    admin.site.register(IRCMessage)
+    admin.site.register(Message)
+    admin.site.register(Sponsor)
+except:
+    pass

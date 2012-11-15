@@ -38,7 +38,10 @@ class Message(models.Model):
     text = models.TextField(u'Viesti', help_text=u'Viestin leipäteksti. Katso ettei tästä tule liian pitkä.')
     
     def __unicode__(self):
-        return self.text[:32]+u' ...'
+        if len(self.text) > 32:
+            return self.text[:32]+u' ...'
+        else:
+            return self.text
     
     class Meta:
         verbose_name=u"viesti"
@@ -51,7 +54,10 @@ class IRCMessage(models.Model):
     message = models.TextField(u'Viesti')
     
     def __unicode__(self):
-        return self.message[:32]+u' ...'
+        if len(self.message) > 32:
+            return self.message[:32]+u' ...'
+        else:
+            return self.message
     
     class Meta:
         verbose_name=u"irc-viesti"

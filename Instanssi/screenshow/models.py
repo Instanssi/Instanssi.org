@@ -21,7 +21,7 @@ class Sponsor(models.Model):
             this = Sponsor.objects.get(id=self.id)
             if this.logo != self.logo:
                 this.logo.delete(save=False)
-        except Sponsor.DoesNotExist: 
+        except: 
             pass 
         
         # Continue with normal save

@@ -60,5 +60,9 @@
 * High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
 * Facebookki/twitter-tiedot jonnekin
 
+### IRC Bot
+
+* Display deadlines etc. on IRC channel
+
 ### admin_stream
 * Telkkaristreamin alareunan tapahtumajutskien generointi

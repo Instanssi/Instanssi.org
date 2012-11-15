@@ -10,7 +10,7 @@ from Instanssi.screenshow.models import *
 def index(request, event_id):
     # Get sponsors
     sponsors = []
-    x = -300
+    x = 900
     for sponsor in Sponsor.objects.filter(event_id=event_id):
         sponsor.x = x
         sponsor.z = 500
@@ -19,7 +19,7 @@ def index(request, event_id):
         sponsor.rot_y = 30
         sponsor.rot_z = 90
         sponsors.append(sponsor)
-        x += 100
+        x -= 100
         
     # Render the show
     return render_to_response('screenshow/index.html', {

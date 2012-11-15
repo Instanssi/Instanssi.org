@@ -135,12 +135,6 @@
         <p class="time">00:00</p>
         <p class="date">00.00.0000</p>
     </div>
-    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="30000">
-        <p>No IRC logs yet!</p>
-    </div>
-    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="4000">
-        <p>Tähän tulee viestit</p>
-    </div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
          class="step dohide" 
@@ -159,6 +153,12 @@
         {% endif %}
     </div>
 {% endfor %}
+    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="4000">
+        <p>Tähän tulee viestit</p>
+    </div>
+    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000">
+        <p>No IRC logs yet!</p>
+    </div>
 </div>
 </body>
 </html>

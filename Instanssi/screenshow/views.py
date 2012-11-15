@@ -2,7 +2,6 @@
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.utils import simplejson
 from common.responses import JSONResponse
 from Instanssi.kompomaatti.models import Event
 from Instanssi.kompomaatti.misc.events import get_upcoming
@@ -49,15 +48,12 @@ def messages_api(request, event_id):
     return JSONResponse({'messages': Message.objects.filter(event_id=event_id)});
 
 def irc_api(request, event_id):
-    filter_id = 0
-    
     # See if we got request data
-    if request.is_ajax():
-        try:
-            data = simplejson.loads(request.raw_post_data)
-            filter_id = data['last_id']
-        except:
-            pass
+    filter_id = 0
+    try:
+        filter_id = request.GET['last_id']
+    except:
+        pass
         
     # handle datetimes
     messages = []

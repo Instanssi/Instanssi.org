@@ -51,7 +51,7 @@
                 }, 
                 timeout: 3000,
                 error: function(jqXHR, status, errorThrown) {
-                    console.log("Timeout while fetching event data.");
+                    console.log("There was a problem while fetching event data.");
                     init_update_events();
                 } 
             });
@@ -70,7 +70,7 @@
                 }, 
                 timeout: 3000,
                 error: function(jqXHR, status, errorThrown) {
-                    console.log("Timeout while fetching IRC data.");
+                    console.log("There was a problem while fetching IRC data.");
                     init_update_irc();
                 } 
             });
@@ -122,6 +122,24 @@
         <p>20:40 &lt;@Katajakasa&gt; mut se on helppo heittää, ja onpa sitten isolla ruudulla aina välillä :P</p>
         <p>20:40 &lt;@Tinuzka&gt; joo :)</p>
     </div>
+{% for sponsor in sponsors %}
+    <div id="sponsor_{{ sponsor.id }}" 
+         class="step dohide" 
+         data-x="{{ sponsor.x }}" 
+         data-y="{{ sponsor.y }}" 
+         data-z="{{ sponsor.z }}"
+         data-rotate-x="{{ sponsor.rot_x }}" 
+         data-rotate-y="{{ sponsor.rot_y }}" 
+         data-rotate-z="{{ sponsor.rot_z }}"
+         data-scale="0.1"
+         data-duration="1500">
+        {% if sponsor.logo %}
+        <img class="sponsorimage" src="{{ sponsor.logo_scaled.url }}" alt="{{ sponsor.name }}" width="{{ sponsor.logo_scaled.width }}" height="{{ sponsor.logo_scaled.height  }}" />
+        {% else %}
+        <p class="sponsorname">{{ sponsor.name }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
 </div>
 </body>
 </html>

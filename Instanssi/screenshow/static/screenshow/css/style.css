@@ -46,3 +46,8 @@ div#clock p.date {
     font-size: 140px;
     padding-left: 25px;
 }
+
+p.sponsorname {
+    font-size: 140px;
+    font-weight: bold;
+}

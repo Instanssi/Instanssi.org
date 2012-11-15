@@ -57,7 +57,6 @@
 
 * Twitter
 * Twitter/IRC feedin disablointi
-* JSON-päivitykset voisi tehdä vaan silloin, kun dia on esillä jossa niitä tarvitaan (ei tuu turhaa spammia servulle).
 * High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
 * Facebookki/twitter-tiedot jonnekin
 

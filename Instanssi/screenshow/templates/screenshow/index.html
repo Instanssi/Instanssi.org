@@ -37,6 +37,7 @@
         }
         
         function init_update_clock() {
+            window.clearTimeout(clock_timer);
             if(clock_run) {
                 clock_timer = setTimeout(update_clock, 1000);
             }
@@ -118,6 +119,7 @@
         }
         
         function init_update_irc() {
+            window.clearTimeout(irc_timer);
             if(irc_run) {
                 irc_timer = setTimeout(update_irc, 1000);
             }

@@ -156,7 +156,9 @@ def sponsor_delete(request, sel_event_id, sponsor_id):
     
     # Attempt to delete
     try:
-        Sponsor.objects.get(pk=sponsor_id).delete()
+        sponsor = Sponsor.objects.get(pk=sponsor_id)
+        sponsor.logo.delete()
+        sponsor.delete()
     except Sponsor.DoesNotExist:
         pass
     

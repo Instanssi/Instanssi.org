@@ -36,6 +36,7 @@ div#irc p {
     font-family: 'Consolas', monospace;
     margin: 8px;
     font-size: 30px;
+    white-space: pre-wrap;
 }
 
 div#irc .ircnick {

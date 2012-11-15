@@ -38,15 +38,22 @@
         }
         
         function update_events() {
-            $.getJSON("{% url 'screen:events-api' event_id %}", function(data) {
-                output = '';
-                console.log(data);
-                $.each(data['events'], function(key, value) {
-                    console.log(value);
-                    output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
-                });
-                $('#events').html(output);
-                init_update_events();
+            $.ajax({ 
+                url: "{% url 'screen:events-api' event_id %}", 
+                dataType: 'json', 
+                success: function(data) {
+                    output = '';
+                    $.each(data['events'], function(key, value) {
+                        output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
+                    });
+                    $('#events').html(output);
+                    init_update_events();
+                }, 
+                timeout: 3000,
+                error: function(jqXHR, status, errorThrown) {
+                    console.log("Timeout while fetching event data.");
+                    init_update_events();
+                } 
             });
         }
         
@@ -55,8 +62,17 @@
         }
         
         function update_irc() {
-            $.getJSON("{% url 'screen:irc-api' event_id %}", function(data) {
-                init_update_irc();
+            $.ajax({ 
+                url: "{% url 'screen:irc-api' event_id %}", 
+                dataType: 'json', 
+                success: function(data) {
+                    init_update_irc();
+                }, 
+                timeout: 3000,
+                error: function(jqXHR, status, errorThrown) {
+                    console.log("Timeout while fetching IRC data.");
+                    init_update_irc();
+                } 
             });
         }
         

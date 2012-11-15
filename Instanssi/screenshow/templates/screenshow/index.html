@@ -81,7 +81,7 @@
             
             var output = '';
             $.each(irc_cache, function(key, value) {
-                output += '<p>'+value['time']+' &lt;'+value['nick']+'&gt; '+value['text']+'</p>';
+                output += '<p><span class="irctime">'+value['time']+'</span> <span class="ircnick">&lt;'+value['nick']+'&gt;</span> '+value['text']+'</p>';
                 
             });
             $('#irc').html(output);

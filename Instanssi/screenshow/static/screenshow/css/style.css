@@ -38,6 +38,14 @@ div#irc p {
     font-size: 30px;
 }
 
+div#irc .ircnick {
+    color: #0B1183;
+}
+
+div#irc .irctime {
+    color: #0B1183;
+}
+
 div#clock p.time {
     font-size: 300px;
 }

@@ -59,3 +59,9 @@ p.sponsorname {
     font-size: 140px;
     font-weight: bold;
 }
+
+p#message_content {
+    display: none;
+    font-size: 140px;
+    font-weight: bold;
+}

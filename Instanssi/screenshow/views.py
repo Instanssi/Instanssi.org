@@ -6,6 +6,7 @@ from common.responses import JSONResponse
 from Instanssi.kompomaatti.models import Event
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
+from datetime import datetime
 
 def index(request, event_id):
     # Get sponsors
@@ -45,7 +46,11 @@ def events_api(request, event_id):
     return JSONResponse({'events': events});
 
 def messages_api(request, event_id):
-    return JSONResponse({'messages': Message.objects.filter(event_id=event_id)});
+    messages = []
+    for msg in Message.objects.filter(event_id=event_id):
+        if msg.show_start <= datetime.now() and msg.show_end >= datetime.now():
+            messages.append(msg.text)
+    return JSONResponse({'messages': messages});
 
 def irc_api(request, event_id):
     # See if we got request data

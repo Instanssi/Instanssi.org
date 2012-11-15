@@ -21,6 +21,23 @@
         var irc_last_id = 0;
         var irc_cache = Array();
         
+        var messages_cache = Array();
+        var messages_showing = -1;
+        
+        function update_messages() {
+            $.ajax({ 
+                url: "{% url 'screen:messages-api' event_id %}", 
+                dataType: 'json', 
+                success: function(data) {
+                    messages_cache = data['messages'];
+                }, 
+                timeout: 3000,
+                error: function(jqXHR, status, errorThrown) {
+                    console.log("There was a problem while fetching message data.");
+                } 
+            });
+        }
+        
         function update_clock() {
             var now = new Date();
             var hour = now.getHours();
@@ -62,12 +79,10 @@
                         output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
                     });
                     $('#events').html(output);
-                    init_update_events();
                 }, 
                 timeout: 3000,
                 error: function(jqXHR, status, errorThrown) {
                     console.log("There was a problem while fetching event data.");
-                    init_update_events();
                 } 
             });
         }
@@ -139,9 +154,27 @@
             irc_run = false;
         }
         
+        function messages_play() {
+            if(messages_showing >= messages_cache.length) {
+                messages_showing = -1;
+                $('#jmpress').jmpress('next');
+                return;
+            }
+            if(messages_showing > -1) {
+                $('#messages').html('<p id="message_content">'+messages_cache[messages_showing]+'</p>');
+                messages_showing += 1;
+                $('#message_content').fadeIn(1000).delay(3000).fadeOut(1000, messages_play);
+                return;
+            }
+            
+            messages_showing = 0;
+            setTimeout(messages_play, 2000);
+        }
+        
         update_events();
         update_irc();
         update_clock();
+        update_messages();
         
         $('#jmpress').jmpress({
             beforeChange: function(element, eventData) {
@@ -152,11 +185,20 @@
                 }
                 if(element.attr('id') == 'nametext') {
                     update_events();
+                    update_messages();
                 }
                 if(element.attr('id') == 'irc') {
                     irc_start();
                 } else {
                     irc_stop();
+                }
+                if(element.attr('id') == 'messages') {
+                    if(messages_cache.length > 0) {
+                        messages_play();
+                    } else {
+                        eventData.cancel();
+                        $("#jmpress").jmpress("select", "#irc");
+                    }
                 }
             }
         });
@@ -193,9 +235,7 @@
         {% endif %}
     </div>
 {% endfor %}
-    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="4000">
-        <p>Tähän tulee viestit</p>
-    </div>
+    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2"></div>
     <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000">
         <p>No IRC logs yet!</p>
     </div>

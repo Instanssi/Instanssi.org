@@ -77,7 +77,7 @@
         }
         
         function init_update_irc() {
-            irc_timer = setTimeout(update_irc, 1000);
+            irc_timer = setTimeout(update_irc, 60000);
         }
         
         update_events();
@@ -94,7 +94,7 @@
     <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000">
         <p>No data.</p>
     </div>
-    <div id="clock" class="step dohide" data-x="500" data-y="800" data-z="-700" data-rotate-z="270" data-rotate-y="150" date-scale="0.2" data-duration="8000">
+    <div id="clock" class="step dohide" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="170" date-scale="0.2" data-duration="8000">
         <p class="time">00:00</p>
         <p class="date">00.00.0000</p>
     </div>
@@ -122,6 +122,9 @@
         <p>20:40 &lt;@Katajakasa&gt; mut se on helppo heittää, ja onpa sitten isolla ruudulla aina välillä :P</p>
         <p>20:40 &lt;@Tinuzka&gt; joo :)</p>
     </div>
+    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="4000">
+        <p>Tähän tulee viestit</p>
+    </div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
          class="step dohide" 
@@ -132,7 +135,7 @@
          data-rotate-y="{{ sponsor.rot_y }}" 
          data-rotate-z="{{ sponsor.rot_z }}"
          data-scale="0.1"
-         data-duration="1500">
+         data-duration="1200">
         {% if sponsor.logo %}
         <img class="sponsorimage" src="{{ sponsor.logo_scaled.url }}" alt="{{ sponsor.name }}" width="{{ sponsor.logo_scaled.width }}" height="{{ sponsor.logo_scaled.height  }}" />
         {% else %}

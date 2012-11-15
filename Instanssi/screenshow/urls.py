@@ -7,4 +7,5 @@ urlpatterns = patterns(
     url(r'^(?P<event_id>\d+)/$', 'index', name="index"),
 	url(r'^(?P<event_id>\d+)/api/events/', 'events_api', name="events-api"),
     url(r'^(?P<event_id>\d+)/api/irc/', 'irc_api', name="irc-api"),
+    url(r'^(?P<event_id>\d+)/api/messages/', 'messages_api', name="messages-api"),
 )

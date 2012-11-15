@@ -21,7 +21,7 @@ div.nohide:not(.active) {
 div#nametext {
     font-size: 400px;
     font-weight: bold;
-    color: #282828 ;
+    color: #282828;
 }
 
 div#events p {

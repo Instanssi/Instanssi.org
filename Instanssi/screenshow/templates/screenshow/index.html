@@ -70,17 +70,18 @@
             var lines = 0;
             var i = 0;
             for(i = irc_cache.length-1; i > 0; i--) {
-                lines += ((irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9) / 100) | 0 + 1;
-                last_id = irc_cache[i]['id'];
-                if(lines >= 25) {
+                lc = ((irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9) / 100) | 0 + 1;
+                if(lines+lc >= 23) {
                     break;
                 }
+                lines += lc;
+                last_id = irc_cache[i]['id'];
             }
             irc_cache = irc_cache.slice(i);
             
             var output = '';
             $.each(irc_cache, function(key, value) {
-                output += '<p>'+value['time']+'<'+value['nick']+'> '+value['text']+'</p>';
+                output += '<p>'+value['time']+' &lt;'+value['nick']+'&gt; '+value['text']+'</p>';
                 
             });
             $('#irc').html(output);

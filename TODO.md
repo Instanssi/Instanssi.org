@@ -55,11 +55,12 @@
 
 * Tehty
   
-### admin_screenshow
+### screenshow
 
-* Hakisi tietoja aikataulusta ja demokompoista, ja näyttäisi niiden tietoja screenillä satunnaisesti
-* Voisi myös näyttää upload-palvelulla upattuja kuvia kun halutaan (sponsorit?)
-* Ääntä, videoita ? (HTML5)
+* Twitter
+* Twitter/IRC feedin disablointi
+* JSON-päivitykset voisi tehdä vaan silloin, kun dia on esillä jossa niitä tarvitaan (ei tuu turhaa spammia servulle).
+* High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
 
 ### admin_stream
 * Telkkaristreamin alareunan tapahtumajutskien generointi

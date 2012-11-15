@@ -63,6 +63,7 @@ def irc_api(request, event_id):
     messages = []
     for msg in IRCMessage.objects.filter(id__gt=filter_id, event_id=event_id):
         messages.append({
+            'id': msg.id,
             'text': msg.message,
             'nick': msg.nick,
             'time': msg.date.strftime("%H:%M"),

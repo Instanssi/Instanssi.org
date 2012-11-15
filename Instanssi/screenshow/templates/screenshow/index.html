@@ -13,10 +13,10 @@
     $(function() {
         var event_id = {{ event_id }};
         
-        var clock_run = true;
+        var clock_run = false;
         var clock_timer = 0;
         
-        var irc_run = true;
+        var irc_run = false;
         var irc_timer = 0;
         var irc_last_id = 0;
         var irc_cache = Array();
@@ -62,7 +62,7 @@
         
         function clock_start() {
             clock_run = true;
-            init_update_clock();
+            update_clock();
         }
         
         function clock_stop() {
@@ -147,7 +147,7 @@
         
         function irc_start() {
             irc_run = true;
-            init_update_irc();
+            update_irc();
         }
         
         function irc_stop() {

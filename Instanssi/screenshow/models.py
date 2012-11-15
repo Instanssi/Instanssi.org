@@ -35,7 +35,7 @@ class Message(models.Model):
     text = models.TextField(u'Viesti', help_text=u'Viestin leipäteksti. Katso ettei tästä tule liian pitkä.')
     
     def __unicode__(self):
-        return self.text[:16]+u' ...'
+        return self.text[:32]+u' ...'
     
     class Meta:
         verbose_name=u"viesti"
@@ -48,7 +48,7 @@ class IRCMessage(models.Model):
     message = models.TextField(u'Viesti')
     
     def __unicode__(self):
-        return self.message[:16]+u' ...'
+        return self.message[:32]+u' ...'
     
     class Meta:
         verbose_name=u"irc-viesti"

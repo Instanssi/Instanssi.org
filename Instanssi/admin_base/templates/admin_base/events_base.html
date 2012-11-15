@@ -29,9 +29,9 @@
         <li class="menuitem">
             <a href="{% url 'manage-screenshow:index' selected_event_id %}">Screenshow<span class="navmenu-icon-right"></span></a>
             <ul class="sub-level">
-                <li class="menuitem"><a href="">Sponsorit</a></li>
-                <li class="menuitem"><a href="">Viestit</a></li>
-                <li class="menuitem"><a href="">Irclog</a></li>
+                <li class="menuitem"><a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a></li>
+                <li class="menuitem"><a href="{% url 'manage-screenshow:messages' selected_event_id %}">Viestit</a></li>
+                <li class="menuitem"><a href="{% url 'manage-screenshow:ircmessages' selected_event_id %}">IRC-Loki</a></li>
             </ul>
         </li>
     	<li class="menuitem">

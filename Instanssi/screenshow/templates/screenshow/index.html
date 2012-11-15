@@ -14,7 +14,11 @@
         var event_id = {{ event_id }};
         var clock_timer = 0;
         var events_timer = 0;
+        
+        var irc_run = true;
         var irc_timer = 0;
+        var irc_last_id = 0;
+        var irc_cache = Array();
         
         $('#jmpress').jmpress();
 
@@ -61,13 +65,43 @@
             events_timer = setTimeout(update_events, 60000);
         }
         
+        function update_irclog_content() {
+            var last_id = 0;
+            var lines = 0;
+            var i = 0;
+            for(i = irc_cache.length-1; i > 0; i--) {
+                lines += ((irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9) / 100) | 0 + 1;
+                last_id = irc_cache[i]['id'];
+                if(lines >= 25) {
+                    break;
+                }
+            }
+            irc_cache = irc_cache.slice(i);
+            
+            var output = '';
+            $.each(irc_cache, function(key, value) {
+                output += '<p>'+value['time']+'<'+value['nick']+'> '+value['text']+'</p>';
+                
+            });
+            $('#irc').html(output);
+        }
+        
         function update_irc() {
             $.ajax({ 
                 url: "{% url 'screen:irc-api' event_id %}", 
                 dataType: 'json', 
                 success: function(data) {
+                    $.each(data['log'], function(key, value) {
+                        irc_cache.push(value);
+                        irc_last_id = value['id'];
+                    });
+                    update_irclog_content();
                     init_update_irc();
-                }, 
+                },
+                data: {
+                    'last_id': irc_last_id,
+                },
+                type: 'GET',
                 timeout: 3000,
                 error: function(jqXHR, status, errorThrown) {
                     console.log("There was a problem while fetching IRC data.");
@@ -77,7 +111,9 @@
         }
         
         function init_update_irc() {
-            irc_timer = setTimeout(update_irc, 60000);
+            if(irc_run) {
+                irc_timer = setTimeout(update_irc, 1000);
+            }
         }
         
         update_events();
@@ -98,7 +134,7 @@
         <p class="time">00:00</p>
         <p class="date">00.00.0000</p>
     </div>
-    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="10000">
+    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="30000">
         <p>20:33 &lt;@Tinuzka&gt; oho</p>
         <p>20:33 &lt;@Tinuzka&gt; :D tarkoitin</p>
         <p>20:34 &lt;@Katajakasa&gt; okkei</p>

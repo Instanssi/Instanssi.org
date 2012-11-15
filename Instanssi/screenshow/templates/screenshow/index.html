@@ -12,16 +12,15 @@
     <script type="text/javascript">
     $(function() {
         var event_id = {{ event_id }};
+        
+        var clock_run = true;
         var clock_timer = 0;
-        var events_timer = 0;
         
         var irc_run = true;
         var irc_timer = 0;
         var irc_last_id = 0;
         var irc_cache = Array();
         
-        $('#jmpress').jmpress();
-
         function update_clock() {
             var now = new Date();
             var hour = now.getHours();
@@ -38,7 +37,18 @@
         }
         
         function init_update_clock() {
-            clock_timer = setTimeout(update_clock, 1000);
+            if(clock_run) {
+                clock_timer = setTimeout(update_clock, 1000);
+            }
+        }
+        
+        function clock_start() {
+            clock_run = true;
+            init_update_clock();
+        }
+        
+        function clock_stop() {
+            clock_run = false;
         }
         
         function update_events() {
@@ -59,10 +69,6 @@
                     init_update_events();
                 } 
             });
-        }
-        
-        function init_update_events() {
-            events_timer = setTimeout(update_events, 60000);
         }
         
         function update_irclog_content() {
@@ -117,9 +123,36 @@
             }
         }
         
+        function irc_start() {
+            irc_run = true;
+            init_update_irc();
+        }
+        
+        function irc_stop() {
+            irc_run = false;
+        }
+        
         update_events();
         update_irc();
         update_clock();
+        
+        $('#jmpress').jmpress({
+            beforeChange: function(element, eventData) {
+                if(element.attr('id') == 'clock') {
+                    clock_start();
+                } else {
+                    clock_stop();
+                }
+                if(element.attr('id') == 'nametext') {
+                    update_events();
+                }
+                if(element.attr('id') == 'irc') {
+                    irc_start();
+                } else {
+                    irc_stop();
+                }
+            }
+        });
     });
     </script>
 </head>

@@ -77,8 +77,9 @@
             var lines = 0;
             var i = 0;
             for(i = irc_cache.length-1; i > 0; i--) {
-                lc = ((irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9) / 100) | 0 + 1;
-                if(lines+lc >= 23) {
+                var kr = (irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9);
+                var lc = Math.floor(kr / 100) + 1;
+                if(lines+lc > 26) {
                     break;
                 }
                 lines += lc;

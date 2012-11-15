@@ -14,7 +14,7 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#pager")}); 
 {% endblock %}
 
 {% block content %}
@@ -33,13 +33,16 @@
     <tbody>
 {% for message in messages %}
         <tr>
-            <td>{{ message.date }}</td>
+            <td>{{ message.date|date:"d.m.Y \k\l\o\. H:i:s" }}</td>
             <td>{{ message.nick }}</td>
             <td>{{ message.message }}</td>
         </tr>
 {% endfor %}
     </tbody>
 </table>
+    <div id="pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
 {% else %}
 <p>Ei tallennettuja irkkiviestejä.</p>
 {% endif %}

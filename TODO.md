@@ -10,16 +10,14 @@
 
 ### Kompomaatti
 * Ei turhaan kysytä pikkukuvaa musiikkitiedostoille. Entryn lisääminen voisi olla hieman kustomoitavampi.
-* Äänestysjärjestelmää voisi vielä miettiä ...
 
 ### main2012, main2013, ...
 
 * Jatketaan joka vuodelle oma sivunsa, jätetään vanhat talteen
-* Aikataulun jne. voisi sijoitella omiin järjestelmiinsä, jotka ladataan templatetageilla
 
 ### Arkisto
 
-* Pitää osata näyttää kilpailujen tulokset (kompojen ja videoiden lisäksi)
+* Tehty
 
 ### openidauth
 
@@ -33,11 +31,11 @@
 
 ### admin_blog
 
-* CSS Vaatii vielä säätöä.
+* Tehty
 
-### admin_calendar, admin_programme
+### admin_programme
 
-* Saisi minne vaan näkyviin templatetagilla {% render_schedule %} (pääsivulle)
+* Tehty
 
 ### admin_upload
 
@@ -61,6 +59,7 @@
 * Twitter/IRC feedin disablointi
 * JSON-päivitykset voisi tehdä vaan silloin, kun dia on esillä jossa niitä tarvitaan (ei tuu turhaa spammia servulle).
 * High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
+* Facebookki/twitter-tiedot jonnekin
 
 ### admin_stream
 * Telkkaristreamin alareunan tapahtumajutskien generointi

@@ -1,0 +1,61 @@
+{% extends "admin_screenshow/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Sponsorit{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a>
+		&raquo; Selaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa sponsorin ?"); 
+    });
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Sponsorit</h2>
+
+{% if sponsors %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Logo</th>
+            <th class="sorter-false management_field"></th>
+        </tr>
+    </thead>
+    <tbody>
+{% for sponsor in sponsors %}
+        <tr>
+            <td>{{ sponsor.name }}</td>
+            <td>{% if sponsor.logo %}<a href="{{ sponsor.logo.url }}">Logo</a>{% endif %}</td>
+            <td>
+{% if perms.admin_screenshow.change_sponsor %}
+                    <a href="{% url 'manage-screenshow:edit-sponsor' selected_event_id sponsor.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.admin_screenshow.delete_sponsor %}
+                    <a href="{% url 'manage-screenshow:delete-sponsor' selected_event_id sponsor.id %}" class="delete_link">Poista</a>
+{% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ei tallennettuja sponsoreita.</p>
+{% endif %}
+
+{% if perms.admin_screenshow.add_sponsor %}
+{% crispy sponsorform sponsorform.helper %}
+{% endif %}
+{% endblock %}

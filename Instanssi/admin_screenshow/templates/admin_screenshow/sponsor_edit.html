@@ -1,0 +1,24 @@
+{% extends "admin_screenshow/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Sponsorit - Muokkaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a>
+		&raquo; Muokkaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Muokkaa Sponsoria</h2>
+{% crispy sponsorform sponsorform.helper %}
+{% endblock %}

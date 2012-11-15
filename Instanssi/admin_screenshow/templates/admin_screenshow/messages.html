@@ -1,0 +1,63 @@
+{% extends "admin_screenshow/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Viestit{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-screenshow:messages' selected_event_id %}">Viestit</a>
+		&raquo; Selaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa viestin ?"); 
+    });
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Viestit</h2>
+
+{% if messages %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>Teksti</th>
+            <th>Alkaa</th>
+            <th>Päättyy</th>
+            <th class="sorter-false management_field"></th>
+        </tr>
+    </thead>
+    <tbody>
+{% for message in messages %}
+        <tr>
+            <td>{{ message.text }}</td>
+            <td>{{ message.show_start|date:"d.m.y \k\l\o\. H:i" }}</td>
+            <td>{{ message.show_end|date:"d.m.y \k\l\o\. H:i" }}</td>
+            <td>
+{% if perms.admin_screenshow.change_message %}
+                    <a href="{% url 'manage-screenshow:edit-message' selected_event_id message.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.admin_screenshow.delete_message %}
+                    <a href="{% url 'manage-screenshow:delete-message' selected_event_id message.id %}" class="delete_link">Poista</a>
+{% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ei tallennettuja viestejä.</p>
+{% endif %}
+
+{% if perms.admin_screenshow.add_message %}
+{% crispy messageform messageform.helper %}
+{% endif %}
+{% endblock %}

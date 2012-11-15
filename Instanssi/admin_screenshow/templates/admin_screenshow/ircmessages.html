@@ -1,0 +1,46 @@
+{% extends "admin_screenshow/base.html" %}
+
+{% block title %}{{ block.super }} - IRC-Viestit{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-screenshow:ircmessages' selected_event_id %}">IRC-Viestit</a>
+		&raquo; Selaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>IRC-Viestit</h2>
+
+{% if messages %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>Aika</th>
+            <th>Nimimerkki</th>
+            <th>Viesti</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for message in messages %}
+        <tr>
+            <td>{{ message.date }}</td>
+            <td>{{ message.nick }}</td>
+            <td>{{ message.message }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ei tallennettuja irkkiviestejä.</p>
+{% endif %}
+{% endblock %}

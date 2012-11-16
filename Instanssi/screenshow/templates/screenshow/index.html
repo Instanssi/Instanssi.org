@@ -24,6 +24,8 @@
         var messages_cache = Array();
         var messages_showing = -1;
         
+        var events_has_data = false;
+        
         function update_messages() {
             $.ajax({ 
                 url: "{% url 'screen:messages-api' event_id %}", 
@@ -78,6 +80,7 @@
                     $.each(data['events'], function(key, value) {
                         output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
                     });
+                    events_has_data = (output.length > 0);
                     $('#events').html(output);
                 }, 
                 timeout: 3000,
@@ -177,19 +180,38 @@
             beforeChange: function(element, eventData) {
                 if(element.attr('id') == 'clock') {
                     clock_start();
+                    return;
                 } else {
                     clock_stop();
                 }
+                
                 if(element.attr('id') == 'nametext') {
                     update_events();
                     update_messages();
                     update_irc();
+                    return;
                 }
+              
                 if(element.attr('id') == 'irc') {
-                    irc_start();
+                    if(irc_cache.length > 0) {
+                        irc_start();
+                    } else {
+                        eventData.cancel();
+                        $("#jmpress").jmpress("select", "#nametext");
+                    }
+                    return;
                 } else {
                     irc_stop();
                 }
+                
+                if(element.attr('id') == 'events') {
+                    if(!events_has_data) {
+                        eventData.cancel();
+                        $("#jmpress").jmpress("select", "#clock");
+                    }
+                    return;
+                }
+                
                 if(element.attr('id') == 'messages') {
                     if(messages_cache.length > 0) {
                         messages_play();
@@ -197,6 +219,7 @@
                         eventData.cancel();
                         $("#jmpress").jmpress("select", "#irc");
                     }
+                    return;
                 }
             }
         });

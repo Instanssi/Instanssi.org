@@ -19,7 +19,7 @@ En jaksa kirjoittaa suomeksi, lue ylläolevat :D
 Oppaita
 -------
 * Djangon asennus: https://docs.djangoproject.com/en/dev/topics/install/?from=olddocs#installing-an-official-release
-* Tutoriaali: https://docs.djangoproject.com/en/1.3/intro/tutorial01/
+* Tutoriaali: https://docs.djangoproject.com/en/1.4/intro/tutorial01/
 
 Ympäristön asentaminen Windowsille
 ----------------------------------

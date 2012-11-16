@@ -171,7 +171,6 @@
             setTimeout(messages_play, 2000);
         }
         
-        update_irc();
         update_clock();
         
         $('#jmpress').jmpress({
@@ -184,6 +183,7 @@
                 if(element.attr('id') == 'nametext') {
                     update_events();
                     update_messages();
+                    update_irc();
                 }
                 if(element.attr('id') == 'irc') {
                     irc_start();

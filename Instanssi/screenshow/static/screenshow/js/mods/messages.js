@@ -16,10 +16,6 @@ function ScreenMessages(jmobj, obj, url) {
     this.run = false;
     this.showing = 0;
     
-    this.getObj = function() {
-        return this.obj;
-    }
-    
     this.init = function() {
         this.obj.html('<p id="message_content"></p>');
         this.content_obj = $('#message_content');

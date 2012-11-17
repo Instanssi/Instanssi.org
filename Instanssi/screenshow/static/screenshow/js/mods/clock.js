@@ -14,10 +14,6 @@ function ScreenClock(jmobj, obj) {
     this.timer = 0;
     this.time_obj = 0;
     this.date_obj = 0;
-    
-    this.getObj = function() {
-        return this.obj;
-    }
 
     this.init = function() {
         this.obj.html('<p id="clock_time"></p><p id="clock_date"></p>');

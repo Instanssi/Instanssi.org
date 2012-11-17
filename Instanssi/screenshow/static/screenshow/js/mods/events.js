@@ -11,10 +11,6 @@ function ScreenEvents(jmobj, obj, url) {
     this.jmobj = jmobj;
     this.timeout = 3000;
     
-    this.getObj = function() {
-        return this.obj;
-    }
-    
     this.init = function() {}
     
     this.fetch_success = function(data) {

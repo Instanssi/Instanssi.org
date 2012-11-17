@@ -1,0 +1,53 @@
+{% extends "admin_users/base.html" %}
+
+{% block title %}{{ block.super }} - Loki{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; Loki
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#pager")}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Loki</h2>
+
+{% if entries %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>Aika</th>
+            <th>Käyttäjä</th>
+            <th>Tapahtuma</th>
+            <th>Taso</th>
+            <th>Teksti</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for entry in entries %}
+        <tr>
+            <td>{{ entry.date|date:"d.m.Y k\l\o\. H:i:s" }}</td>
+            <td>{% if entry.user.email %}{{ entry.user.email }}{% else %}{{ entry.user.username }}{% endif %}</td>
+            <td>{{ entry.event }}</td>
+            <td>{{ entry.level }}</td>
+            <td>{{ entry.message }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+<div id="pager" class="pager">
+    {% include "common/pagination.html" %}
+</div>
+{% else %}
+<p>Ei lokientryjä.</p>
+{% endif %}
+
+{% endblock %}

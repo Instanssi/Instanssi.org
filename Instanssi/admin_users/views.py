@@ -9,6 +9,14 @@ from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required, su_access_required
+from Instanssi.dblog.models import DBLogEntry
+
+@staff_access_required
+def log(request):
+    # Render response
+    return admin_render(request, "admin_users/log.html", {
+        'entries': DBLogEntry.objects.all(),
+    })
 
 @staff_access_required
 def users(request):

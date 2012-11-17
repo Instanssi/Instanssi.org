@@ -59,7 +59,13 @@
     <div class="limiter">
         <ul id="header_nav_left">
             <li class="menuitem"><a href="{% url 'manage-base:index' %}">Etusivu</a></li>
-            <li class="menuitem"><a href="{% url 'manage-users:index' %}">Käyttäjät</a></li>
+            <li class="menuitem">
+                <a href="{% url 'manage-users:index' %}">Käyttäjät</a>
+                <ul class="sub-level">
+                    <li class="menuitem"><a href="{% url 'manage-users:users' %}">Käyttäjät</a></li>
+                    <li class="menuitem"><a href="{% url 'manage-users:log' %}">Loki</a></li>
+                </ul>
+            </li>
 {% if user.is_superuser %}
             <li class="menuitem">
                 <a href="{% url 'manage-utils:index' %}">Työkalut<span class="navmenu-icon-down"></span></a>

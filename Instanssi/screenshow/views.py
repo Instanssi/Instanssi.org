@@ -54,7 +54,7 @@ def messages_api(request, event_id):
 
 def playlist_api(request, event_id):
     playlist = []
-    for v in PlaylistVideo.objects.filter(event_id=event_id).order_by('-index'):
+    for v in PlaylistVideo.objects.filter(event_id=event_id).order_by('index'):
         playlist.append({
             'name': v.name,
             'url': v.url,

@@ -40,10 +40,10 @@
             <td>{{ sponsor.name }}</td>
             <td>{% if sponsor.logo %}<a href="{{ sponsor.logo.url }}">Logo</a>{% endif %}</td>
             <td>
-{% if perms.admin_screenshow.change_sponsor %}
+{% if perms.screenshow.change_sponsor %}
                     <a href="{% url 'manage-screenshow:edit-sponsor' selected_event_id sponsor.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
-{% if perms.admin_screenshow.delete_sponsor %}
+{% if perms.screenshow.delete_sponsor %}
                     <a href="{% url 'manage-screenshow:delete-sponsor' selected_event_id sponsor.id %}" class="delete_link">Poista</a>
 {% endif %}
             </td>
@@ -55,7 +55,7 @@
 <p>Ei tallennettuja sponsoreita.</p>
 {% endif %}
 
-{% if perms.admin_screenshow.add_sponsor %}
+{% if perms.screenshow.add_sponsor %}
 {% crispy sponsorform sponsorform.helper %}
 {% endif %}
 {% endblock %}

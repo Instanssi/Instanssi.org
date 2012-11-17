@@ -42,10 +42,10 @@
             <td>{{ message.show_start|date:"d.m.y \k\l\o\. H:i" }}</td>
             <td>{{ message.show_end|date:"d.m.y \k\l\o\. H:i" }}</td>
             <td>
-{% if perms.admin_screenshow.change_message %}
+{% if perms.screenshow.change_message %}
                     <a href="{% url 'manage-screenshow:edit-message' selected_event_id message.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
-{% if perms.admin_screenshow.delete_message %}
+{% if perms.screenshow.delete_message %}
                     <a href="{% url 'manage-screenshow:delete-message' selected_event_id message.id %}" class="delete_link">Poista</a>
 {% endif %}
             </td>
@@ -57,7 +57,7 @@
 <p>Ei tallennettuja viestejä.</p>
 {% endif %}
 
-{% if perms.admin_screenshow.add_message %}
+{% if perms.screenshow.add_message %}
 {% crispy messageform messageform.helper %}
 {% endif %}
 {% endblock %}

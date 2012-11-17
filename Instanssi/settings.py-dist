@@ -183,6 +183,10 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'log_db': {
+            'level': 'INFO',
+            'class': 'Instanssi.dblog.handlers.DBLogHandler',
         }
     },
     'loggers': {
@@ -191,6 +195,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'Instanssi.admin_arkisto': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

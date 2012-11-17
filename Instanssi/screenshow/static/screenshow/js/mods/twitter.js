@@ -19,7 +19,7 @@ function ScreenTwitter(jmobj, obj) {
         $.each(this.cache, function(i, k) {
             out += '<div class="twittermsg">';
             out += '<span class="author">@'+k.author+': </span>';
-            out += '<span class="text">'+k.text+'</span><br />';
+            out += '<span class="message">'+k.text+'</span><br />';
             out += '<span class="time">&raquo; '+k.time+'</span>';
             out += '</div>';
         });

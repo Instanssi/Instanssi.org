@@ -56,6 +56,11 @@ div#irc .irctime {
     color: #0B1183;
 }
 
+div#twitter {
+    padding-left: 800px;
+    font-size: 50px;
+}
+
 p#clock_time {
     font-size: 300px;
 }

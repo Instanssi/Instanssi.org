@@ -5,6 +5,7 @@
     <title>Screenshow</title>
     <meta name="viewport" content="width=1920, height=1080" />
     <script type="text/javascript" src="{% static 'libs/js/jquery/jquery-1.8.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
     
     <script type="text/javascript" src="{% static 'screenshow/js/mods/clock.js' %}"></script>
@@ -12,6 +13,7 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/front.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/irc.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/messages.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/twitter.js' %}"></script>
     
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
@@ -35,6 +37,7 @@
         modules.push(new ScreenMessages(jm, $('#messages'), messages_api_url));
         modules.push(new ScreenClock(jm, $('#clock')));
         modules.push(new ScreenFrontpage(jm, $('#nametext')));
+        modules.push(new ScreenTwitter(jm, $('#twitter')));
         
         // Init all modules
         $.each(modules, function(key, module){
@@ -59,6 +62,7 @@
 <body>
 <div id="jmpress">
     <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
+    <div id="twitter" class="step dohide" data-x="-200" data-y="800" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000">Content</div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
          class="step dohide" 

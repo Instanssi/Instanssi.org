@@ -24,12 +24,58 @@ def ircmessages(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
         'messages': messages,
     })
+    
+@staff_access_required
+def ircmessage_edit(request, sel_event_id, message_id):
+    # Check for permissions
+    if not request.user.has_perm('screenshow.change_ircmessage'):
+        raise Http403
+    
+    # Get initial data
+    message = get_object_or_404(IRCMessage, pk=message_id)
+    
+    # Check for form data
+    if request.method == 'POST':
+        messageform = IRCMessageForm(request.POST, instance=message)
+        if messageform.is_valid():
+            messageform.save()
+            return HttpResponseRedirect(reverse('manage-screenshow:ircmessages', args=(sel_event_id,)))
+    else:
+        messageform = IRCMessageForm(instance=message)
+    
+    # Dump template
+    return admin_render(request, "admin_screenshow/ircmessage_edit.html", {
+        'selected_event_id': int(sel_event_id),
+        'message_id': int(message_id),
+        'messageform': messageform,
+    })
+    
+@staff_access_required
+def ircmessage_delete(request, sel_event_id, message_id):
+    # Check for permissions
+    if not request.user.has_perm('screenshow.delete_ircmessage'):
+        raise Http403
+    
+    # Attempt to delete
+    try:
+        IRCMessage.objects.get(pk=message_id).delete()
+    except Message.DoesNotExist:
+        pass
+    
+    # Dump template
+    return HttpResponseRedirect(reverse('manage-screenshow:ircmessages', args=(sel_event_id,)))
+
 
 
 @staff_access_required
 def messages(request, sel_event_id):
     # Check for form data
     if request.method == 'POST':
+        # Check for permissions
+        if not request.user.has_perm('screenshow.add_message'):
+            raise Http403
+        
+        # Handle data
         messageform = MessageForm(request.POST)
         if messageform.is_valid():
             data = messageform.save(commit=False)
@@ -60,11 +106,6 @@ def message_edit(request, sel_event_id, message_id):
     
     # Check for form data
     if request.method == 'POST':
-        # Check for permissions
-        if not request.user.has_perm('screenshow.add_message'):
-            raise Http403
-        
-        # Handle data
         messageform = MessageForm(request.POST, instance=message)
         if messageform.is_valid():
             messageform.save()

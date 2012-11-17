@@ -14,6 +14,9 @@
 
 {% block jquery %}
 {{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa viestin ?"); 
+    });
     $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#pager")}); 
 {% endblock %}
 
@@ -28,6 +31,7 @@
             <th>Aika</th>
             <th>Nimimerkki</th>
             <th>Viesti</th>
+            <th class="sorter-false management_field"></th>
         </tr>
     </thead>
     <tbody>
@@ -36,6 +40,14 @@
             <td>{{ message.date|date:"d.m.Y \k\l\o\. H:i:s" }}</td>
             <td>{{ message.nick }}</td>
             <td>{{ message.message }}</td>
+            <td>
+{% if perms.screenshow.change_ircmessage %}
+                    <a href="{% url 'manage-screenshow:edit-ircmessage' selected_event_id message.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.screenshow.delete_ircmessage %}
+                    <a href="{% url 'manage-screenshow:delete-ircmessage' selected_event_id message.id %}" class="delete_link">Poista</a>
+{% endif %}
+            </td>
         </tr>
 {% endfor %}
     </tbody>

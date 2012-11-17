@@ -5,6 +5,8 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns(
     'Instanssi.admin_screenshow.views',
     url(r'^$', 'index', name="index"),
+    url(r'^ircmessages/(?P<message_id>\d+)/delete/', 'ircmessage_delete', name="delete-ircmessage"),
+    url(r'^ircmessages/(?P<message_id>\d+)/edit/', 'ircmessage_edit', name="edit-ircmessage"),
     url(r'^ircmessages/', 'ircmessages', name="ircmessages"),
     url(r'^messages/(?P<message_id>\d+)/delete/', 'message_delete', name="delete-message"),
     url(r'^messages/(?P<message_id>\d+)/edit/', 'message_edit', name="edit-message"),

@@ -7,6 +7,26 @@ from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.screenshow.models import Sponsor,Message,IRCMessage
 import os
 
+class IRCMessageForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(IRCMessageForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'IRC-Viesti',
+                'nick',
+                'date',
+                'message',
+                ButtonHolder (
+                    Submit('submit', u'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = IRCMessage
+        fields = ('nick','message','date')
+
 class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)

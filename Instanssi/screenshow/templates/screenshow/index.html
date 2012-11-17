@@ -18,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
     <script type="text/javascript">
     $(function() {
+        "use strict";
+        
         // URLs to APIs
         var events_api_url = '{% url 'screen:events-api' event_id %}';
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';

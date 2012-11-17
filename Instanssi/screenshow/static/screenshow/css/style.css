@@ -4,7 +4,7 @@ body {
 
 div.step {
     font-family: 'Open Sans', sans-serif;
-    width: 1700px;
+    width: 1860px;
     padding: 40px;
     
     -webkit-transition: opacity 1s;
@@ -23,7 +23,7 @@ div.nohide:not(.active) {
 }
 
 div#nametext {
-    font-size: 400px;
+    font-size: 430px;
     font-weight: bold;
     color: #282828;
 }
@@ -39,7 +39,7 @@ div#events p {
 div#irc p {
     font-family: 'Consolas', monospace;
     margin: 8px;
-    font-size: 30px;
+    font-size: 32px;
     white-space: pre-wrap;
 }
 

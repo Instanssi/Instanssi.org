@@ -12,6 +12,10 @@ from Instanssi.admin_arkisto.misc import utils
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
 @staff_access_required
 def index(request, sel_event_id):
     # Render response
@@ -26,7 +30,8 @@ def removeoldvotes(request, sel_event_id):
         raise Http403
     
     # Don't proceed if the event is still ongoing
-    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+    event = get_object_or_404(Event, pk=int(sel_event_id))
+    if utils.is_event_ongoing(event):
         raise Http404
     
     # Find compos belonging to this event
@@ -39,6 +44,9 @@ def removeoldvotes(request, sel_event_id):
     # Delete votes belonging to compos in this event
     Vote.objects.filter(compo__in=compo_ids).delete()
     
+    # Log it
+    logger.info('Event old votes removed.', extra={'user': request.user, 'event': event})
+    
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
@@ -49,7 +57,8 @@ def transferrights(request, sel_event_id):
         raise Http403
     
     # Don't allow this function if the event is still ongoing
-    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+    event = get_object_or_404(Event, pk=int(sel_event_id))
+    if utils.is_event_ongoing(event):
         raise Http404
     
     # Get archive user, compo id's and competition id's
@@ -61,6 +70,9 @@ def transferrights(request, sel_event_id):
     Entry.objects.filter(compo__in=compo_ids).update(user=archiveuser)
     CompetitionParticipation.objects.filter(competition__in=competition_ids).update(user=archiveuser)
     
+    # Log it
+    logger.info('Event rights transferred.', extra={'user': request.user, 'event': event})
+    
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
     
@@ -71,7 +83,8 @@ def optimizescores(request, sel_event_id):
         raise Http403
     
     # Don't allow this function if the event is still ongoing
-    if utils.is_event_ongoing(get_object_or_404(Event, pk=int(sel_event_id))):
+    event = get_object_or_404(Event, pk=int(sel_event_id))
+    if utils.is_event_ongoing(event):
         raise Http404
     
     # Get compo id's
@@ -83,6 +96,9 @@ def optimizescores(request, sel_event_id):
         entry.archive_rank = entry.get_rank()
         entry.archive_score = entry.get_score()
         entry.save()
+
+    # Log it
+    logger.info('Event scores optimized.', extra={'user': request.user, 'event': event})
 
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
@@ -147,6 +163,9 @@ def show(request, sel_event_id):
     event.archived = True
     event.save()
     
+    # Log it
+    logger.info('Event set as visible in archive.', extra={'user': request.user, 'event': event})
+    
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
 @staff_access_required
@@ -159,6 +178,9 @@ def hide(request, sel_event_id):
     event = get_object_or_404(Event, pk=sel_event_id)
     event.archived = False
     event.save()
+    
+    # Log it
+    logger.info('Event set as hidden in archive.', extra={'user': request.user, 'event': event})
     
     return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
 
@@ -176,7 +198,8 @@ def vids(request, sel_event_id):
         # Handle form
         vidform = VideoForm(request.POST, event=event)
         if vidform.is_valid():
-            vidform.save()
+            video = vidform.save()
+            logger.info('Added archive video '+video.name, extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(event=event)
@@ -212,7 +235,8 @@ def editvid(request, sel_event_id, video_id):
     if request.method == "POST":
         vidform = VideoForm(request.POST, instance=video, event=event)
         if vidform.is_valid():
-            vidform.save()
+            r_video = vidform.save()
+            logger.info('Edited archive video '+r_video.name, extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
     else:
         vidform = VideoForm(instance=video, event=event)
@@ -231,10 +255,15 @@ def deletevid(request, sel_event_id, video_id):
     if not request.user.has_perm('arkisto.delete_othervideo'):
         raise Http403
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Attempt to delete video
     try:
-        OtherVideo.objects.get(id=video_id).delete()
-    except:
+        video = OtherVideo.objects.get(id=video_id)
+        video.delete()
+        logger.info('Deleted archive video '+video.name, extra={'user': request.user, 'event': event})
+    except OtherVideo.DoesNotExist:
         pass
     
     # Redirect
@@ -242,6 +271,9 @@ def deletevid(request, sel_event_id, video_id):
     
 @staff_access_required
 def cats(request, sel_event_id):
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Handle form
     if request.method == "POST":
         # Check for permissions
@@ -252,8 +284,9 @@ def cats(request, sel_event_id):
         catform = VideoCategoryForm(request.POST)
         if catform.is_valid():
             cat = catform.save(commit=False)
-            cat.event_id = int(sel_event_id)
+            cat.event = event
             cat.save()
+            logger.info('Added archive video category '+cat.name, extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm()
@@ -274,14 +307,18 @@ def editcat(request, sel_event_id, category_id):
     if not request.user.has_perm('arkisto.change_othervideocategory'):
         raise Http403
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Get category
-    category = get_object_or_404(OtherVideoCategory, pk=category_id)
+    category = get_object_or_404(OtherVideoCategory, pk=category_id, event=event)
     
     # Handle form
     if request.method == "POST":
         catform = VideoCategoryForm(request.POST, instance=category)
         if catform.is_valid():
-            catform.save()
+            r_cat = catform.save()
+            logger.info('Edited archive video category '+r_cat.name, extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
     else:
         catform = VideoCategoryForm(instance=category)
@@ -299,10 +336,15 @@ def deletecat(request, sel_event_id, category_id):
     if not request.user.has_perm('arkisto.delete_othervideocategory'):
         raise Http403
     
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+    
     # Attempt to delete category
     try:
-        OtherVideoCategory.objects.get(id=category_id).delete()
-    except:
+        cat = OtherVideoCategory.objects.get(id=category_id, event=event)
+        cat.delete()
+        logger.info('Deleted archive video category '+cat.name, extra={'user': request.user, 'event': event})
+    except OtherVideoCategory.DoesNotExist:
         pass
     
     # Redirect

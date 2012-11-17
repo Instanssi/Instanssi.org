@@ -16,7 +16,7 @@ function ScreenIrc(jmobj, obj, url) {
     this.cache = [];
     this.timer = 0;
     this.last_id = 0;
-    this.lines_per_screen = 26; // Screen can fit about 26 lines of text
+    this.lines_per_screen = 25; // Screen can fit about 26 lines of text
     this.chars_per_line = 100; // Screen can fit about 100 characters per line
     
     this.init = function() {

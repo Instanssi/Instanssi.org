@@ -6,6 +6,19 @@ from Instanssi.kompomaatti.models import Event
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 
+class PlaylistVideo(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
+    name = models.CharField(u'Nimi', max_length="64", help_text=u'Videon nimi tai otsikko.')
+    url = models.URLField('Osoite', help_text=u'Linkki Youtube-videoon.')
+    index = models.IntegerField('Järjestysindeksi', help_text=u'Indeksi toistolistan järjestelemiseen. Pienimmällä numerolla varustetut toistetaan ensimmäiseksi.')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name=u"toistolistavideo"
+        verbose_name_plural=u"toistolistavideot"
+
 class Sponsor(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Sponsorin nimi')

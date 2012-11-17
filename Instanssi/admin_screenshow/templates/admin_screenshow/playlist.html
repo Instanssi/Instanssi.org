@@ -1,0 +1,61 @@
+{% extends "admin_screenshow/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Toistolista{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-screenshow:playlist' selected_event_id %}">Toistolista</a>
+		&raquo; Selaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa videon ?"); 
+    });
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[1,0],]}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Toistolista</h2>
+
+{% if videos %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Indeksi</th>
+            <th class="sorter-false management_field"></th>
+        </tr>
+    </thead>
+    <tbody>
+{% for video in videos %}
+        <tr>
+            <td>{{ video.name }}</td>
+            <td>{{ video.index }}</td>
+            <td>
+{% if perms.screenshow.change_playlistvideo %}
+                    <a href="{% url 'manage-screenshow:edit-playlist' selected_event_id video.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.screenshow.delete_playlistvideo %}
+                    <a href="{% url 'manage-screenshow:delete-playlist' selected_event_id video.id %}" class="delete_link">Poista</a>
+{% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Toistolistalla ei ole videoita.</p>
+{% endif %}
+
+{% if perms.screenshow.add_playlistvideo %}
+{% crispy playlistform playlistform.helper %}
+{% endif %}
+{% endblock %}

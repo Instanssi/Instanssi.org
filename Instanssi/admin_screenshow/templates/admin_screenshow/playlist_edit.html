@@ -1,0 +1,24 @@
+{% extends "admin_screenshow/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Toistolista - Muokkaa{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-screenshow:playlist' selected_event_id %}">Toistolista</a>
+		&raquo; Muokkaa
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Muokkaa toistolistan videota</h2>
+{% crispy playlistform playlistform.helper %}
+{% endblock %}

@@ -2,17 +2,90 @@
 
 from common.http import Http403
 from django.http import Http404,HttpResponseRedirect
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from Instanssi.admin_screenshow.forms import *
+import os
 
 @staff_access_required
 def index(request, sel_event_id):
     return admin_render(request, "admin_screenshow/index.html", {
         'selected_event_id': int(sel_event_id),
     })
+
+@staff_access_required
+def playlist(request, sel_event_id):
+    # Check for form data
+    if request.method == 'POST':
+        # Check for permissions
+        if not request.user.has_perm('screenshow.add_playlistvideo'):
+            raise Http403
+        
+        # Handle data
+        playlistform = PlaylistVideoForm(request.POST)
+        if playlistform.is_valid():
+            data = playlistform.save(commit=False)
+            data.event_id = sel_event_id
+            data.save()
+            return HttpResponseRedirect(reverse('manage-screenshow:playlist', args=(sel_event_id,)))
+    else:
+        playlistform = PlaylistVideoForm()
+    
+    # Get messages
+    videos = PlaylistVideo.objects.filter(event_id=sel_event_id).order_by('-index')
+    
+    # Dump template
+    return admin_render(request, "admin_screenshow/playlist.html", {
+        'selected_event_id': int(sel_event_id),
+        'videos': videos,
+        'playlistform': playlistform,
+    })
+    
+@staff_access_required
+def playlist_edit(request, sel_event_id, video_id):
+    # Check for permissions
+    if not request.user.has_perm('screenshow.change_playlistvideo'):
+        raise Http403
+    
+    # Get initial data
+    playlist = get_object_or_404(PlaylistVideo, pk=video_id)
+    
+    # Check for form data
+    if request.method == 'POST':
+        playlistform = PlaylistVideoForm(request.POST, instance=playlist)
+        if playlistform.is_valid():
+            playlistform.save()
+            return HttpResponseRedirect(reverse('manage-screenshow:playlist', args=(sel_event_id,)))
+    else:
+        playlistform = PlaylistVideoForm(instance=playlist)
+    
+    # Dump template
+    return admin_render(request, "admin_screenshow/playlist_edit.html", {
+        'selected_event_id': int(sel_event_id),
+        'video_id': int(video_id),
+        'playlistform': playlistform,
+    })
+    
+@staff_access_required
+def playlist_delete(request, sel_event_id, video_id):
+    # Check for permissions
+    if not request.user.has_perm('screenshow.delete_playlistvideo'):
+        raise Http403
+    
+    # Attempt to delete
+    try:
+        PlaylistVideo.objects.get(pk=video_id).delete()
+    except PlaylistVideo.DoesNotExist:
+        pass
+    
+    # Dump template
+    return HttpResponseRedirect(reverse('manage-screenshow:playlist', args=(sel_event_id,)))
+
+
+    
 
 @staff_access_required
 def ircmessages(request, sel_event_id):
@@ -198,7 +271,9 @@ def sponsor_delete(request, sel_event_id, sponsor_id):
     # Attempt to delete
     try:
         sponsor = Sponsor.objects.get(pk=sponsor_id)
-        sponsor.logo.delete()
+        full_name = os.path.join(settings.MEDIA_ROOT, sponsor.logo.name)
+        if sponsor.logo and os.path.exists(full_name):
+            sponsor.logo.delete()
         sponsor.delete()
     except Sponsor.DoesNotExist:
         pass

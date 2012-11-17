@@ -51,11 +51,11 @@ div#irc .irctime {
     color: #0B1183;
 }
 
-div#clock p.time {
+p#clock_time {
     font-size: 300px;
 }
 
-div#clock p.date {
+p#clock_date {
     font-size: 140px;
     padding-left: 25px;
 }

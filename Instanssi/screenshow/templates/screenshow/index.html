@@ -6,238 +6,59 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <script type="text/javascript" src="{% static 'libs/js/jquery/jquery-1.8.2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
+    
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/clock.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/events.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/front.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/irc.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/messages.js' %}"></script>
+    
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
     <script type="text/javascript">
     $(function() {
-        var event_id = {{ event_id }};
+        // URLs to APIs
+        var events_api_url = '{% url 'screen:events-api' event_id %}';
+        var irc_api_url = '{% url 'screen:irc-api' event_id %}';
+        var messages_api_url = '{% url 'screen:messages-api' event_id %}';
         
-        var clock_run = false;
-        var clock_timer = 0;
+        // Set jmpress element
+        var jm = $('#jmpress');
         
-        var irc_run = false;
-        var irc_timer = 0;
-        var irc_last_id = 0;
-        var irc_cache = Array();
+        // Set modules
+        var modules = [];
+        modules.push(new ScreenIrc(jm, $('#irc'), irc_api_url));
+        modules.push(new ScreenEvents(jm, $('#events'), events_api_url));
+        modules.push(new ScreenMessages(jm, $('#messages'), messages_api_url));
+        modules.push(new ScreenClock(jm, $('#clock')));
+        modules.push(new ScreenFrontpage(jm, $('#nametext')));
         
-        var messages_cache = Array();
-        var messages_showing = -1;
+        // Init all modules
+        $.each(modules, function(key, module){
+            module.init(); 
+        });
         
-        var events_has_data = false;
-        
-        function update_messages() {
-            $.ajax({ 
-                url: "{% url 'screen:messages-api' event_id %}", 
-                dataType: 'json', 
-                success: function(data) {
-                    messages_cache = data['messages'];
-                }, 
-                timeout: 3000,
-                error: function(jqXHR, status, errorThrown) {
-                    console.log("There was a problem while fetching message data.");
-                } 
-            });
-        }
-        
-        function update_clock() {
-            var now = new Date();
-            var hour = now.getHours();
-            var minute = now.getMinutes();
-            var second = now.getSeconds();
-            var day = now.getDate();
-            var month = now.getMonth();
-            var year = now.getFullYear();
-            var timetext = (hour < 10 ? "0"+hour : hour) +':'+ (minute < 10 ? "0"+minute : minute) +':'+ (second < 10 ? "0"+second : second);
-            var datetext = (day < 10 ? "9"+day : day) +'.'+ (month < 10 ? "9"+month : month) +'.'+ (year < 10 ? "9"+year : year);
-            $('.time').html(timetext);
-            $('.date').html(datetext);
-            init_update_clock();
-        }
-        
-        function init_update_clock() {
-            window.clearTimeout(clock_timer);
-            if(clock_run) {
-                clock_timer = setTimeout(update_clock, 1000);
-            }
-        }
-        
-        function clock_start() {
-            clock_run = true;
-            update_clock();
-        }
-        
-        function clock_stop() {
-            clock_run = false;
-        }
-        
-        function update_events() {
-            $.ajax({ 
-                url: "{% url 'screen:events-api' event_id %}", 
-                dataType: 'json', 
-                success: function(data) {
-                    output = '';
-                    $.each(data['events'], function(key, value) {
-                        output += '<p>'+value['date']+' &raquo; '+value['title']+'</p>';
-                    });
-                    events_has_data = (output.length > 0);
-                    $('#events').html(output);
-                }, 
-                timeout: 3000,
-                error: function(jqXHR, status, errorThrown) {
-                    console.log("There was a problem while fetching event data.");
-                } 
-            });
-        }
-        
-        function update_irclog_content() {
-            var last_id = 0;
-            var lines = 0;
-            var i = 0;
-            for(i = irc_cache.length-1; i > 0; i--) {
-                var kr = (irc_cache[i]['text'].length+irc_cache[i]['nick'].length+9);
-                var lc = Math.floor(kr / 100) + 1;
-                if(lines+lc > 26) {
-                    break;
-                }
-                lines += lc;
-                last_id = irc_cache[i]['id'];
-            }
-            irc_cache = irc_cache.slice(i);
-            
-            var output = '';
-            $.each(irc_cache, function(key, value) {
-                output += '<p><span class="irctime">'+value['time']+'</span> <span class="ircnick">&lt;'+value['nick']+'&gt;</span> '+value['text']+'</p>';
-                
-            });
-            $('#irc').html(output);
-        }
-        
-        function update_irc() {
-            $.ajax({ 
-                url: "{% url 'screen:irc-api' event_id %}", 
-                dataType: 'json', 
-                success: function(data) {
-                    var new_last_id = irc_last_id;
-                    $.each(data['log'], function(key, value) {
-                        irc_cache.push(value);
-                        new_last_id = value['id'];
-                    });
-                    if(irc_last_id != new_last_id) {
-                        update_irclog_content();
-                        irc_last_id = new_last_id;
-                    }
-                    init_update_irc();
-                },
-                data: {
-                    'last_id': irc_last_id,
-                },
-                type: 'GET',
-                timeout: 3000,
-                error: function(jqXHR, status, errorThrown) {
-                    console.log("There was a problem while fetching IRC data.");
-                    init_update_irc();
-                } 
-            });
-        }
-        
-        function init_update_irc() {
-            window.clearTimeout(irc_timer);
-            if(irc_run) {
-                irc_timer = setTimeout(update_irc, 1000);
-            }
-        }
-        
-        function irc_start() {
-            irc_run = true;
-            update_irc();
-        }
-        
-        function irc_stop() {
-            irc_run = false;
-        }
-        
-        function messages_play() {
-            if(messages_showing >= messages_cache.length) {
-                messages_showing = -1;
-                $('#jmpress').jmpress('next');
-                return;
-            }
-            if(messages_showing > -1) {
-                $('#messages').html('<p id="message_content">'+messages_cache[messages_showing]+'</p>');
-                messages_showing += 1;
-                $('#message_content').fadeIn(1000).delay(3000).fadeOut(1000, messages_play);
-                return;
-            }
-            
-            messages_showing = 0;
-            setTimeout(messages_play, 2000);
-        }
-        
-        update_clock();
-        
-        $('#jmpress').jmpress({
-            beforeChange: function(element, eventData) {
-                if(element.attr('id') == 'clock') {
-                    clock_start();
-                    return;
-                } else {
-                    clock_stop();
-                }
-                
+        // Init jmpress
+        jm.jmpress({
+            beforeChange: function(element, eventData) { 
+                // Update all on nametext slide
                 if(element.attr('id') == 'nametext') {
-                    update_events();
-                    update_messages();
-                    update_irc();
-                    return;
+                    $.each(modules, function(key, module){
+                        module.update();
+                    });
                 }
-              
-                if(element.attr('id') == 'irc') {
-                    if(irc_cache.length > 0) {
-                        irc_start();
-                    } else {
-                        eventData.cancel();
-                        $("#jmpress").jmpress("select", "#nametext");
-                    }
-                    return;
-                } else {
-                    irc_stop();
-                }
-                
-                if(element.attr('id') == 'events') {
-                    if(!events_has_data) {
-                        eventData.cancel();
-                        $("#jmpress").jmpress("select", "#clock");
-                    }
-                    return;
-                }
-                
-                if(element.attr('id') == 'messages') {
-                    if(messages_cache.length > 0) {
-                        messages_play();
-                    } else {
-                        eventData.cancel();
-                        $("#jmpress").jmpress("select", "#irc");
-                    }
-                    return;
-                }
-            }
+            },
+            mouse: { clickSelects: false }
         });
     });
     </script>
 </head>
 <body>
 <div id="jmpress">
-    <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="5000">
-        Instanssi
-    </div>
-    <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000">
-        <p>No data.</p>
-    </div>
-    <div id="clock" class="step dohide" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="170" date-scale="0.2" data-duration="8000">
-        <p class="time">00:00</p>
-        <p class="date">00.00.0000</p>
-    </div>
+    <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
+    <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000"></div>
+    <div id="clock" class="step dohide" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="170" date-scale="0.2" data-duration="8000"></div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
          class="step dohide" 
@@ -256,10 +77,8 @@
         {% endif %}
     </div>
 {% endfor %}
-    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2"></div>
-    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000">
-        <p>No IRC logs yet!</p>
-    </div>
+    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="8000"></div>
+    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000"></div>
 </div>
 </body>
 </html>

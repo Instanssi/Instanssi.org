@@ -27,7 +27,7 @@
         var events_api_url = '{% url 'screen:events-api' event_id %}';
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';
         var messages_api_url = '{% url 'screen:messages-api' event_id %}';
-        var youtube_api_url = '';
+        var youtube_api_url = '{% url 'screen:playlist-api' event_id %}';
         
         // Set jmpress element
         var jm = $('#jmpress');

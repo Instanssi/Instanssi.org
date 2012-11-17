@@ -50,7 +50,19 @@ def messages_api(request, event_id):
     for msg in Message.objects.filter(event_id=event_id):
         if msg.show_start <= datetime.now() and msg.show_end >= datetime.now():
             messages.append(msg.text)
-    return JSONResponse({'messages': messages});
+    return JSONResponse({'messages': messages})
+
+def playlist_api(request, event_id):
+    playlist = []
+    for v in PlaylistVideo.objects.filter(event_id=event_id).order_by('-index'):
+        playlist.append({
+            'name': v.name,
+            'url': v.url,
+            'id': v.id,
+            'index': v.index
+        })
+    
+    return JSONResponse({'playlist': playlist})
 
 def irc_api(request, event_id):
     # See if we got request data

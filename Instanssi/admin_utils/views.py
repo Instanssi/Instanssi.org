@@ -10,6 +10,7 @@ from Instanssi.kompomaatti.models import Entry
 from django.conf import settings
 import os
 
+
 @su_access_required
 def diskcleaner(request):
     ENTRYDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entryfiles/')

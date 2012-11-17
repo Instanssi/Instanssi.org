@@ -13,7 +13,7 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".tsorter").tablesorter({widgets: ['zebra'], sortList: [[1,1],]});
+    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[1,1],]});
     $("#cleanup-button").button();
     $("#unforeseen_consequences").button();
     $("#unforeseen_consequences").click(function() {
@@ -43,7 +43,7 @@
 
 <h3>Entryfiles</h3>
 {% if orphan_entryfiles %}
-<table class="tsorter">
+<table class="tablesorter">
     <thead>
         <tr>
             <th>Nimi</th>
@@ -65,7 +65,7 @@
 
 <h3>Sourcefiles</h3>
 {% if orphan_sourcefiles %}
-<table class="tsorter">
+<table class="tablesorter">
     <thead>
         <tr>
             <th>Nimi</th>
@@ -87,7 +87,7 @@
 
 <h3>Imagefiles</h3>
 {% if orphan_imagefiles %}
-<table class="tsorter">
+<table class="tablesorter">
     <thead>
         <tr>
             <th>Nimi</th>

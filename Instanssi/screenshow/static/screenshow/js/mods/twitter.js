@@ -20,17 +20,17 @@ function ScreenTwitter(jmobj, obj) {
             out += '<div class="twittermsg">';
             out += '<span class="author">@'+k.author+': </span>';
             out += '<span class="text">'+k.text+'</span><br />';
-            out += '<span class="time">'+k.time+'</span> &middot; ';
+            out += '<span class="time">&raquo; '+k.time+'</span>';
             out += '</div>';
         });
         this.obj.html(out);
     }
     
-    this.handleTweets = function(tweets) {
+    this.handleTweets = function(tweets, options) {
         // Parse tweets
-        var tweets = [];
+        var r = [];
         $.each(tweets, function(i, k) {
-            tweets.push({
+            r.push({
                 author: k.user.screen_name,
                 text: twitterlib.ify.clean(twitterlib.expandLinks(k)),
                 time: twitterlib.time.relative(k.created_at),
@@ -38,7 +38,7 @@ function ScreenTwitter(jmobj, obj) {
                 publishedDate: k.created_at
             });
         });
-        this.cache = tweets;
+        this.cache = r;
         
         // Check if we want to show the irc slide
         this.obj.data("stepData").exclude = (this.cache.length == 0);
@@ -46,6 +46,6 @@ function ScreenTwitter(jmobj, obj) {
     }
     
     this.update = function() {
-        twitterlib.timeline('Instanssi', { limit: 5 }, $.proxy(this.handleTweets, this));
+        twitterlib.timeline('Instanssi', { page: 1, limit: 5 }, $.proxy(this.handleTweets, this));
     }
 }

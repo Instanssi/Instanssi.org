@@ -14,6 +14,7 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/irc.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/messages.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/twitter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'screenshow/js/mods/youtube.js' %}"></script>
     
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
@@ -26,6 +27,7 @@
         var events_api_url = '{% url 'screen:events-api' event_id %}';
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';
         var messages_api_url = '{% url 'screen:messages-api' event_id %}';
+        var youtube_api_url = '';
         
         // Set jmpress element
         var jm = $('#jmpress');
@@ -38,6 +40,7 @@
         modules.push(new ScreenClock(jm, $('#clock')));
         modules.push(new ScreenFrontpage(jm, $('#nametext')));
         modules.push(new ScreenTwitter(jm, $('#twitter')));
+        modules.push(new ScreenYoutube(jm, $('#youtube'), youtube_api_url));
         
         // Init all modules
         $.each(modules, function(key, module){
@@ -61,11 +64,12 @@
 </head>
 <body>
 <div id="jmpress">
-    <div id="nametext" class="step nohide" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
-    <div id="twitter" class="step dohide" data-x="-200" data-y="800" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000">Content</div>
+    <div id="nametext" class="step nohide text" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
+    <div id="twitter" class="step dohide text" data-x="-200" data-y="800" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
+    <div id="youtube" class="step dohide fullscreen" data-x="-200" data-y="-750" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
-         class="step dohide" 
+         class="step dohide text" 
          data-x="{{ sponsor.x }}" 
          data-y="{{ sponsor.y }}" 
          data-z="{{ sponsor.z }}"
@@ -81,10 +85,10 @@
         {% endif %}
     </div>
 {% endfor %}
-    <div id="events" class="step dohide" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000"></div>
-    <div id="clock" class="step dohide" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="170" date-scale="0.2" data-duration="8000"></div>
-    <div id="messages" class="step dohide" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="8000"></div>
-    <div id="irc" class="step dohide" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000"></div>
+    <div id="events" class="step dohide text" data-x="900" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="8000"></div>
+    <div id="clock" class="step dohide text" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="170" date-scale="0.2" data-duration="8000"></div>
+    <div id="messages" class="step dohide text" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="8000"></div>
+    <div id="irc" class="step dohide text" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000"></div>
 </div>
 </body>
 </html>

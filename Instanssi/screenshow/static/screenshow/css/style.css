@@ -4,14 +4,21 @@ body {
 
 div.step {
     font-family: 'Open Sans', sans-serif;
-    width: 1860px;
-    padding: 40px;
-    
     -webkit-transition: opacity 1s;
     -moz-transition:    opacity 1s;
     -ms-transition:     opacity 1s;
     -o-transition:      opacity 1s;
     transition:         opacity 1s;
+}
+
+.text {
+    width: 1860px;
+    padding: 40px;
+}
+
+.fullscreen {
+    width: 1920px;
+    height: 1080px;
 }
 
 div.dohide:not(.active) {
@@ -56,9 +63,19 @@ div#irc .irctime {
     color: #0B1183;
 }
 
-div#twitter {
-    padding-left: 800px;
+div.twittermsg {
+    margin-left: 350px;
     font-size: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+div.twittermsg .author {
+    color: #0B1183;
+}
+
+div.twittermsg .time {
+    font-size: 35px;
 }
 
 p#clock_time {

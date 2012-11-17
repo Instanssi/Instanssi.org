@@ -7,6 +7,7 @@
 	
 	<!-- fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
 	
 	<!-- styles -->
 	<link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
@@ -41,7 +42,15 @@
 					<p class="place">Jyväskylä</p>
 				</a>
 			</div>
+			
+			
 			<nav class="container">
+				<div class="nav-btn">
+					<div class="line" ></div>
+					<div class="line" ></div>
+					<div class="line" ></div>
+				</div>
+				<div class="clearer"></div>
 				<ul>
 					<li class="menu-item" ><a href="{% url 'main2013:index' %}">Instanssi</a></li>
 					<li class="menu-item" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>

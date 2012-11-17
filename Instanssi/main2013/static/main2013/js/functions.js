@@ -16,6 +16,20 @@ $(document).ready(function (){
 		$( this ).stop().animate( { 'opacity' : 1.0, 'top' : '0px' }, 200 );
 	});
 	
+	/* mobile nav button */
+	$( 'nav .nav-btn' ).click( function(){
+		$( '#page-header nav ul' ).slideToggle( 400 );
+	});
+	$(window).resize(function() {
+		if( window.innerWidth  > 480 && !$( '#page-header nav ul' ).is(':visible')  ){
+			$( '#page-header nav ul' ).show();
+		} else {
+			
+		}
+
+	});
+	
+	
 	/* Nice bunch of spagetti, which adds curren-menu-item class in a right place */
 	$( '.menu-item' ).each(function(){
 		if( $( this ).find( 'a' ).attr('href') == window.location.pathname ) $( this ).addClass( 'current-menu-item' );

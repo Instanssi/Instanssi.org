@@ -3,6 +3,7 @@
 	Author: Janne Leppänen
 	
 	font-family: 'Open Sans', sans-serif;
+	font-family: 'Exo', sans-serif;
 */
 
 /* general */
@@ -10,8 +11,13 @@ html , body { font-family: helvetica;   background: url('../images/snow.png'); }
 .clearer { clear: both; }
 img { max-width: 97% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
-h1{ font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+
+.item .title,
+.header,
 h2 { font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+
+
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 b { font-weight: bold; }
@@ -34,22 +40,23 @@ blockquote {
 #page-header .header-top .logo { margin: 8px 0px 0px 0px; }
 
 #page-header a { text-decoration: none; }
-#page-header .header-top h1 {font-size: 48px; color: #fff; font-weight: 800; font-variant: small-caps; margin:0px;}
-#page-header .header-top .tagline { font-size: 21px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
-#page-header .header-top .time { font-size: 74px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
-#page-header .header-top .place { font-size: 61px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 5px; }
-
-
+#page-header .header-top h1 {font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
+#page-header .header-top .tagline { font-family: 'Exo', sans-serif; font-size: 20px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
+#page-header .header-top .time { font-family: 'Exo', sans-serif; font-size: 65px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
+#page-header .header-top .place { font-size: 52px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
 
 
 /* navigation */
-#page-header nav {  bottom: 0px; position: relative; bottom: 0px; }
-#page-header nav ul{ margin: 0px; background: rgba( 0,0,0,0.7);}
+#page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #26A8D3; float: right; cursor: pointer; }
+#page-header nav .nav-btn .line { width: 16px; padding: 2px; background: #fff; margin: 3px 0px; }
+
+#page-header nav { bottom: 0px; position: relative; bottom: 0px; }
+#page-header nav ul { margin: 0px; background: rgba( 0,0,0,0.7); }
 #page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; *display: inline; *zoom: 1; }
 #page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; }
 #page-header nav ul .menu-item a:hover { }
 #page-header nav ul .current-menu-item { background: #fff; }
-#page-header nav ul .current-menu-item a { color: #333; text-shadow: none;}
+#page-header nav ul .current-menu-item a { color: #333; text-shadow: none; }
 
 /* content */
 #primary { float: left; width: 500px; margin-right: 20px; min-height:600px; }
@@ -60,8 +67,8 @@ blockquote {
 #primary a:hover {  color: #1F86F4; } 
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
 
-#primary p { margin-bottom: 10px;  }
-#primary table {  }
+#primary p { margin-bottom: 10px; }
+#primary table { margin-bottom: 20px; width: 100%; }
 #primary table tr {  }
 #primary table th { color: #fff; background: #26A8D3; font-weight: 700; text-align: left; padding: 10px; }
 #primary table th { color: #fff; background: #26A8D3; font-weight: 700; text-align: left; padding: 10px; }
@@ -71,6 +78,12 @@ blockquote {
 #primary table td img{ width: 100px; height: auto; border: none; box-shadow: none; }
 #primary .btn { background: #26A8D3; color: #fff; text-decoration: none; display: inline-block; padding: 10px; border-radius: 2px; /*ie-inline-block*/ *display: inline; zoom: 1; }
 #primary .btn:hover { color: #fff; opacity: 0.9; }
+
+/* ohjelma */
+#primary .personalinfo { font-weight: bold; margin-bottom: 10px; }
+#primary .serviceicons { text-align: right; }
+#primary .serviceicons a img { box-shadow: 0px 0px 0px transparent;  }
+#primary .item { border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px; }
 
 /* content - blog */
 #primary .message { padding-bottom: 20px; margin-bottom: 20px; }
@@ -99,9 +112,9 @@ blockquote {
 #page-footer section { float: left; }
 #page-footer section h1 { font-size: 18px; color: #fff; font-weight: bold; }
 #page-footer .sitemap { width: 150px; }
-#page-footer .sponsors { width: 600px; margin-right: 20px; }
-#page-footer .sponsors  h1 { margin-left: 10px; }
-#page-footer .sponsors .sponsor-placeholder { width: 128px; height: 71px; border: 1px dashed #333; float: left; margin: 10px; }
+#page-footer .sponsors { width: 600px;  }
+#page-footer .sponsors  h1 {  }
+#page-footer .sponsors .sponsor-placeholder { width: 128px; height: 71px; border: 1px dashed #333; float: left; margin: 0px 20px 20px 0px; }
 #page-footer .contact { width: 150px;  }
 #page-footer .menu-item a{ color: #ccc; text-decoration: none; }
 #page-footer .current-menu-item a{ color: #000; background: #fff; text-decoration: none; padding: 0px 10px; }
@@ -137,7 +150,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
 	#twitter-widget{ width: 100%; }
 	
-	#page-footer .sponsors, #footer .sitemap, #footer .contact { width: 92%; margin: 0% 4%; margin-bottom: 20px;  }
+	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 92%; margin-bottom: 20px;  }
 	#page-footer .sponsors .sponsor-placeholder { margin: 1%; }
 	#page-footer .sponsors h1 { margin: 0; }
 	
@@ -146,16 +159,30 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	#content { padding-bottom: 40px; }
 }
  
-/* Landscape phones and down */
+/* Landscape phones */
 @media (max-width: 480px) { 
+	#page-header nav .nav-btn { display: block; }
+
 	#page-header { background: #111; background-image: none; }
 	#page-header .header-top { background: url('../images/header-bg.png') center top #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; }
-	#page-header nav ul{ background: transparent; }
+	#page-header nav ul{ background: transparent; display: none; }
 	
 	#primary th{ display: none; visibility: hidden; }
 	#primary tr,
 	#primary table, #primary tbody { display: block; width: 100%; }
 	#primary table td { display: block; width: 92%; padding: 1% 4%;}
+	
+	#page-footer .sponsors .sponsor-placeholder { width: 46%; margin: 1%;  }
+	
+}
+
+/* portrait phones and down */
+@media (max-width: 320px) { 
+	#page-header .header-top h1 {font-size: 32px; }
+	#page-header .header-top .tagline { font-size: 14px; }
+	#page-header .header-top .time { font-size: 46px; }
+	#page-header .header-top .place { font-size: 36px; }
+
 	
 }

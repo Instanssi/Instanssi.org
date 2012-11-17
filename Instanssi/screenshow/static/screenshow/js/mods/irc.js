@@ -16,7 +16,7 @@ function ScreenIrc(jmobj, obj, url) {
     this.cache = [];
     this.timer = 0;
     this.last_id = 0;
-    this.lines_per_screen = 25; // Screen can fit about 26 lines of text
+    this.lines_per_screen = 24; // Screen can fit about 26 lines of text
     this.chars_per_line = 100; // Screen can fit about 100 characters per line
     
     this.init = function() {
@@ -43,7 +43,7 @@ function ScreenIrc(jmobj, obj, url) {
         this.cache = this.cache.slice(i);
         
         // Write HTML from cache
-        var output = '';
+        var output = '<p id="ircheader">#instanssi @ IRCNet</p>';
         $.each(this.cache, function(key, value) {
             output += '<p><span class="irctime">';
             output += value['time'];

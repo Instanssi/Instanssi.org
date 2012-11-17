@@ -43,6 +43,11 @@ div#irc p {
     white-space: pre-wrap;
 }
 
+div#irc #ircheader {
+    font-weight: bold;
+    border-bottom: 2px dotted black;
+}
+
 div#irc .ircnick {
     color: #0B1183;
 }

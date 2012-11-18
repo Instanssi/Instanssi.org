@@ -198,7 +198,8 @@ LOGGING = {
         'Instanssi.admin_arkisto': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_users': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_blog': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_events': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_events': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_kompomaatti': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

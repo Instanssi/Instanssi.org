@@ -20,6 +20,10 @@ import hashlib
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
 @staff_access_required
 def index(request, sel_event_id):
     # Render response
@@ -42,6 +46,7 @@ def competition_score(request, sel_event_id, competition_id):
         scoreform = AdminCompetitionScoreForm(request.POST, competition=competition)
         if scoreform.is_valid():
             scoreform.save()
+            logger.info('Competition scores set.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id))) 
     else:
         scoreform = AdminCompetitionScoreForm(competition=competition)
@@ -79,6 +84,7 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
         pform = AdminParticipationEditForm(request.POST, instance=participant)
         if pform.is_valid():
             pform.save()
+            logger.info('Competition participation information edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:participations', args=(sel_event_id, competition_id,)))
     else:
         pform = AdminParticipationEditForm(instance=participant)
@@ -108,6 +114,7 @@ def competitions_browse(request, sel_event_id):
             data = competitionform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
+            logger.info('Competition "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id))) 
     else:
         competitionform = AdminCompetitionForm()
@@ -132,7 +139,8 @@ def competition_edit(request, sel_event_id, competition_id):
     if request.method == "POST":
         competitionform = AdminCompetitionForm(request.POST, instance=competition)
         if competitionform.is_valid():
-            competitionform.save()
+            c = competitionform.save()
+            logger.info('Competition "'+c.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm(instance=competition)
@@ -152,7 +160,9 @@ def competition_delete(request, sel_event_id, competition_id):
     
     # Delete competition
     try:
-        Competition.objects.get(pk=competition_id).delete()
+        c = Competition.objects.get(pk=competition_id)
+        c.delete()
+        logger.info('Competition "'+c.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except:
         pass
     
@@ -176,6 +186,7 @@ def compo_browse(request, sel_event_id):
             data = compoform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
+            logger.info('Compo "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id))) 
     else:
         compoform = AdminCompoForm()
@@ -200,7 +211,8 @@ def compo_edit(request, sel_event_id, compo_id):
     if request.method == "POST":
         editform = AdminCompoForm(request.POST, instance=compo)
         if editform.is_valid():
-            editform.save()
+            c = editform.save()
+            logger.info('Compo "'+c.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id))) 
     else:
         editform = AdminCompoForm(instance=compo)
@@ -220,7 +232,9 @@ def compo_delete(request, sel_event_id, compo_id):
     
     # Delete competition
     try:
-        Compo.objects.get(pk=compo_id).delete()
+        c = Compo.objects.get(pk=compo_id)
+        c.delete()
+        logger.info('Compo "'+c.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except:
         pass
     
@@ -241,7 +255,8 @@ def entry_browse(request, sel_event_id):
         # Handle form
         entryform = AdminEntryAddForm(request.POST, request.FILES, event=event)
         if entryform.is_valid():
-            entryform.save()
+            e = entryform.save()
+            logger.info('Compo entry "'+e.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
     else:
         entryform = AdminEntryAddForm(event=event)
@@ -273,7 +288,8 @@ def entry_edit(request, sel_event_id, entry_id):
     if request.method == "POST":
         editform = AdminEntryEditForm(request.POST, request.FILES, instance=entry, event=event)
         if editform.is_valid():
-            editform.save()
+            e = editform.save()
+            logger.info('Compo entry "'+e.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
     else:
         editform = AdminEntryEditForm(instance=entry, event=event)
@@ -300,6 +316,7 @@ def entry_delete(request, sel_event_id, entry_id):
         if entry.imagefile_original:
             entry.imagefile_original.delete()
         entry.delete()
+        logger.info('Compo entry "'+entry.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except:
         pass
     
@@ -352,6 +369,8 @@ def votecodes(request, sel_event_id):
                     c.save()
                 except IntegrityError:
                     n = n-1 # Ugly, may cause infinite loop...
+                    
+            logger.info('Votecodes generated.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:votecodes', args=(sel_event_id))) 
     else:
         gentokensform = CreateTokensForm()
@@ -433,6 +452,7 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
             c.associated_to = vcr.user
             c.time = datetime.now()
             c.save()
+            logger.info('Votecode request from "'+vcr.user.username+'" accepted.', extra={'user': request.user, 'event_id': sel_event_id})
             done = True
             break;
         except IntegrityError:

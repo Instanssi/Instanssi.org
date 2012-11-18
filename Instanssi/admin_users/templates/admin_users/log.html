@@ -28,6 +28,7 @@
             <th>Käyttäjä</th>
             <th>Tapahtuma</th>
             <th>Taso</th>
+            <th>Moduuli</th>
             <th>Teksti</th>
         </tr>
     </thead>
@@ -38,6 +39,7 @@
             <td>{% if entry.user.email %}{{ entry.user.email }}{% else %}{{ entry.user.username }}{% endif %}</td>
             <td>{{ entry.event }}</td>
             <td>{{ entry.level }}</td>
+            <td>{{ entry.module }}</td>
             <td>{{ entry.message }}</td>
         </tr>
 {% endfor %}

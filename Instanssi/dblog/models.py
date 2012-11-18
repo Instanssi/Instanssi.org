@@ -9,6 +9,7 @@ class DBLogEntry(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     event = models.ForeignKey(Event, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
+    module = models.CharField(max_length=64, blank=True)
     level = models.CharField(max_length=10)
     message = models.TextField()
 

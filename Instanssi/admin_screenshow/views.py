@@ -10,6 +10,10 @@ from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from Instanssi.admin_screenshow.forms import *
 import os
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
 @staff_access_required
 def index(request, sel_event_id):
     return admin_render(request, "admin_screenshow/index.html", {
@@ -30,6 +34,7 @@ def playlist(request, sel_event_id):
             data = playlistform.save(commit=False)
             data.event_id = sel_event_id
             data.save()
+            logger.info('Video "'+data.name+'" added to playlist.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:playlist', args=(sel_event_id,)))
     else:
         playlistform = PlaylistVideoForm()
@@ -57,7 +62,8 @@ def playlist_edit(request, sel_event_id, video_id):
     if request.method == 'POST':
         playlistform = PlaylistVideoForm(request.POST, instance=playlist)
         if playlistform.is_valid():
-            playlistform.save()
+            v = playlistform.save()
+            logger.info('Video "'+v.name+'" edited on playlist.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:playlist', args=(sel_event_id,)))
     else:
         playlistform = PlaylistVideoForm(instance=playlist)
@@ -77,7 +83,9 @@ def playlist_delete(request, sel_event_id, video_id):
     
     # Attempt to delete
     try:
-        PlaylistVideo.objects.get(pk=video_id).delete()
+        v = PlaylistVideo.objects.get(pk=video_id)
+        v.delete()
+        logger.info('Video "'+v.name+'" deleted from playlist.', extra={'user': request.user, 'event_id': sel_event_id})
     except PlaylistVideo.DoesNotExist:
         pass
     
@@ -112,6 +120,7 @@ def ircmessage_edit(request, sel_event_id, message_id):
         messageform = IRCMessageForm(request.POST, instance=message)
         if messageform.is_valid():
             messageform.save()
+            logger.info('IRC Message '+str(message.id)+' edited', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:ircmessages', args=(sel_event_id,)))
     else:
         messageform = IRCMessageForm(instance=message)
@@ -132,6 +141,7 @@ def ircmessage_delete(request, sel_event_id, message_id):
     # Attempt to delete
     try:
         IRCMessage.objects.get(pk=message_id).delete()
+        logger.info('IRC Message '+str(message_id)+' deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except Message.DoesNotExist:
         pass
     
@@ -154,6 +164,7 @@ def messages(request, sel_event_id):
             data = messageform.save(commit=False)
             data.event_id = sel_event_id
             data.save()
+            logger.info('Message added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:messages', args=(sel_event_id,)))
     else:
         messageform = MessageForm()
@@ -182,6 +193,7 @@ def message_edit(request, sel_event_id, message_id):
         messageform = MessageForm(request.POST, instance=message)
         if messageform.is_valid():
             messageform.save()
+            logger.info('Message edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:messages', args=(sel_event_id,)))
     else:
         messageform = MessageForm(instance=message)
@@ -202,6 +214,7 @@ def message_delete(request, sel_event_id, message_id):
     # Attempt to delete
     try:
         Message.objects.get(pk=message_id).delete()
+        logger.info('Message deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except Message.DoesNotExist:
         pass
     
@@ -223,6 +236,7 @@ def sponsors(request, sel_event_id):
             data = sponsorform.save(commit=False)
             data.event_id = sel_event_id
             data.save()
+            logger.info('Sponsor "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:sponsors', args=(sel_event_id,)))
     else:
         sponsorform = SponsorForm()
@@ -250,7 +264,8 @@ def sponsor_edit(request, sel_event_id, sponsor_id):
     if request.method == 'POST':
         sponsorform = SponsorForm(request.POST, request.FILES, instance=sponsor)
         if sponsorform.is_valid():
-            sponsorform.save()
+            s = sponsorform.save()
+            logger.info('Sponsor "'+s.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-screenshow:sponsors', args=(sel_event_id,)))
     else:
         sponsorform = SponsorForm(instance=sponsor)
@@ -275,6 +290,7 @@ def sponsor_delete(request, sel_event_id, sponsor_id):
         if sponsor.logo and os.path.exists(full_name):
             sponsor.logo.delete()
         sponsor.delete()
+        logger.info('Sponsor "'+sponsor.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except Sponsor.DoesNotExist:
         pass
     

@@ -202,7 +202,8 @@ LOGGING = {
         'Instanssi.admin_kompomaatti': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_programme': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

@@ -11,6 +11,9 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from datetime import datetime
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
 
 @staff_access_required
 def index(request, sel_event_id):
@@ -28,6 +31,7 @@ def index(request, sel_event_id):
             entry.date = datetime.now()
             entry.user = request.user
             entry.save()
+            logger.info('Blog entry "'+entry.title+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
     else:
         form = BlogEntryForm()
@@ -55,7 +59,8 @@ def edit(request, sel_event_id, entry_id):
     if request.method == 'POST':
         form = BlogEntryEditForm(request.POST, instance=entry)
         if form.is_valid():
-            form.save()
+            entry = form.save()
+            logger.info('Blog entry "'+entry.title+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
     else:
         form = BlogEntryEditForm(instance=entry)
@@ -75,7 +80,9 @@ def delete(request, sel_event_id, entry_id):
     
     # Delete entry
     try:
-        BlogEntry.objects.get(id=entry_id).delete()
+        entry = BlogEntry.objects.get(id=entry_id)
+        entry.delete()
+        logger.info('Blog entry "'+entry.title+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
     except BlogEntry.DoesNotExist:
         pass
     

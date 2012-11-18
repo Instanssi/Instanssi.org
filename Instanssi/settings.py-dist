@@ -196,7 +196,8 @@ LOGGING = {
             'propagate': True,
         },
         'Instanssi.admin_arkisto': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_users': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_users': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_blog': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

@@ -25,8 +25,6 @@
 
 ## Admineille näkyvä osio
 
-* Laajenna logitus muuallekin kuin admin_archiveen
-
 ### admin_users
 
 * Tehty
@@ -60,7 +58,6 @@
 * Twitter/IRC feedin disablointi
 * High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
 * Facebookki/twitter-tiedot jonnekin
-* Youtube-videot
 
 ### IRC Bot
 

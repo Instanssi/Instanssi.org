@@ -11,11 +11,15 @@ from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required, su_access_required
 from Instanssi.dblog.models import DBLogEntry
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
 @staff_access_required
 def log(request):
     # Render response
     return admin_render(request, "admin_users/log.html", {
-        'entries': DBLogEntry.objects.all(),
+        'entries': DBLogEntry.objects.all().order_by('-date'),
     })
 
 @staff_access_required
@@ -26,6 +30,7 @@ def users(request):
             userform = UserCreationForm(request.POST)
             if userform.is_valid():
                 userform.save()
+                logger.info('User added.', extra={'user': request.user})
                 return HttpResponseRedirect(reverse('manage-users:index'))
         else:
             userform = UserCreationForm()
@@ -57,6 +62,9 @@ def edit(request, su_id):
     else:
         userform = UserEditForm(instance=user)
     
+    # Log it
+    logger.info('User '+user.username+' edited.', extra={'user': request.user})
+    
     # Render response
     return admin_render(request, "admin_users/edit.html", {
         'userform': userform,
@@ -72,6 +80,9 @@ def delete(request, su_id):
         user.is_active = False
         user.save()
 
+    # Log event
+    logger.info('User '+user.username+' deactivated.', extra={'user': request.user})
+    
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-users:index'))
 

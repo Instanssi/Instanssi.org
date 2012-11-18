@@ -7,7 +7,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 
 class ScreenConfig(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', unique=True)
     enable_videos = models.BooleanField(u'Näytä videoita', help_text=u'Näytetäänkö esityksessä videoita playlistiltä.', default=True)
     enable_twitter = models.BooleanField(u'Näytä twitterfeed', help_text=u'Näytetäänkö esityksessä twittersyötteen sisältävä slaidi.', default=True)
     enable_irc = models.BooleanField(u'Näytä IRC', help_text=u'Näytetäänkö esityksessä irc-lokin sisältävä slaidi.', default=True)

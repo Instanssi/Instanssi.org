@@ -27,36 +27,41 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
     this.player = 0;
     
     this.init = function() {
-        this.obj.html('<div id="popcorn" style="display: block;"></div>');
+        this.obj.html('<div id="ytplayer" style="display: block;"></div>');
+        this.player = $('#ytplayer');
+        this.player.tubeplayer({
+            width: 1920,
+            height: 1080,
+            allowFullScreen: "false",
+            initialVideo: "DeumyOzKqgI",
+            preferredQuality: "hd1080",
+            iframed: true,
+            onStop: $.proxy(function() {
+                this.jmobj.jmpress('next');
+            }, this)
+        });
         this.obj.on('enterStep', $.proxy(this.start, this));
         this.obj.on('leaveStep', $.proxy(this.stop, this));
+    }
+    
+    this.parse_url = function(url) {
+        var code = url;
+        if(code[code.length-1] == '/') {
+            code = code.substring(0, code.length-1);
+        }
+        code = code.substring(code.lastIndexOf('/')+1);
+        return code;
     }
     
     this.start = function() {
         // Get video
         var video = this.cache[this.position++];
-        
-        // Start playback
-        if(this.player) {
-            this.player.media.src = video.url;
-            this.player.media.children[0].src = video.url;
-            this.player.load();
-        } else {
-            this.player = Popcorn.youtube('#popcorn', video.url);
-        }
-        this.player.on('ended', $.proxy(this.done, this));
-        this.player.play();
-        
-        console.log(this.player.media.src);
+        this.player.tubeplayer('play', this.parse_url(video.url));
         
         // Start over if needed
         if(this.position >= this.cache.length) {
             this.position = 0;
         }
-    }
-    
-    this.done = function() {
-        this.jmobj.jmpress('next');
     }
     
     this.stop = function() {
@@ -71,10 +76,8 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
         }
         
         // Disable if there are no videos
-        if(this.cache.length == 0) {
-            this.obj.data("stepData").exclude = true;
-            this.jmobj.jmpress('reapply', this.obj);
-        }
+        this.obj.data("stepData").exclude = (this.cache.length == 0);
+        this.jmobj.jmpress('reapply', this.obj);
     }
     
     this.fetch_error = function(jqXHR, status, errorThrown) {

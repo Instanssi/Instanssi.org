@@ -19,6 +19,38 @@ def index(request, sel_event_id):
     return admin_render(request, "admin_screenshow/index.html", {
         'selected_event_id': int(sel_event_id),
     })
+    
+@staff_access_required
+def config(request, sel_event_id):
+    # Try to get configuration for event
+    conf = None
+    try:
+        conf = ScreenConfig.objects.get(event_id=sel_event_id)
+    except:
+        pass
+    
+    # Handle post data
+    if request.method == 'POST':
+        # Check for permissions
+        if not request.user.has_perm('screenshow.change_screenconfig'):
+            raise Http403
+         
+        # Handle form
+        configform = ScreenConfigForm(request.POST, instance=conf)
+        if configform.is_valid():
+            data = configform.save(commit=False)
+            data.event_id = sel_event_id
+            data.save()
+            logger.info('Screenshow configuration changed.', extra={'user': request.user, 'event_id': sel_event_id})
+            return HttpResponseRedirect(reverse('manage-screenshow:config', args=(sel_event_id,)))
+    else:
+        configform = ScreenConfigForm(instance=conf)
+    
+    # Dump template contents
+    return admin_render(request, "admin_screenshow/config.html", {
+        'selected_event_id': int(sel_event_id),
+        'configform': configform,
+    })
 
 @staff_access_required
 def playlist(request, sel_event_id):

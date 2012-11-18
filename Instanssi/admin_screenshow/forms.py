@@ -4,9 +4,30 @@ from django import forms
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-from Instanssi.screenshow.models import Sponsor,Message,IRCMessage,PlaylistVideo
+from Instanssi.screenshow.models import *
 import os
 import urlparse
+
+class ScreenConfigForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ScreenConfigForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Asetukset',
+                'enable_videos',
+                'enable_twitter',
+                'enable_irc',
+                'video_interval',
+                ButtonHolder (
+                    Submit('submit', u'Tallenna')
+                )
+            )
+        )
+        
+    class Meta:
+        model = ScreenConfig
+        fields = ('enable_videos','enable_twitter','enable_irc','video_interval')
 
 class PlaylistVideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

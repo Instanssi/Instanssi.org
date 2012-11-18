@@ -6,6 +6,20 @@ from Instanssi.kompomaatti.models import Event
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 
+class ScreenConfig(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
+    enable_videos = models.BooleanField(u'Näytä videoita', help_text=u'Näytetäänkö esityksessä videoita playlistiltä.', default=True)
+    enable_twitter = models.BooleanField(u'Näytä twitterfeed', help_text=u'Näytetäänkö esityksessä twittersyötteen sisältävä slaidi.', default=True)
+    enable_irc = models.BooleanField(u'Näytä IRC', help_text=u'Näytetäänkö esityksessä irc-lokin sisältävä slaidi.', default=True)
+    video_interval = models.IntegerField(u'Videoiden näyttöväli', help_text=u'Kuinka usein videoita näytetään? Arvo annetaan minuuteissa. 0 = Joka kierroksella.', default=5)
+    
+    def __unicode__(self):
+        return u'Asetukset tapahtumalle '+self.event.name
+    
+    class Meta:
+        verbose_name=u"screenikonffi"
+        verbose_name_plural=u"screenikonffit"
+
 class PlaylistVideo(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     name = models.CharField(u'Nimi', max_length="64", help_text=u'Videon nimi tai otsikko.')

@@ -47,4 +47,13 @@
 <p>
     <a href="{% url 'manage-screenshow:ircmessages' selected_event_id %}">Siirry selaamaan irkkiviestejä &raquo;</a>
 </p>
+
+<h3>Toistolista</h3>
+<p>
+    Toistolistaan voi lisätä screenillä toistettavia youtube-videoita. Videoita toistetaan heti, kun toistolistasta löytyy
+    jotain toistettavaa. Kun toistettava loppuu, aloitetaan alusta. Muutokset listaan näkyvät screenillä hetkeen viiveellä.
+</p> 
+<p>
+    <a href="{% url 'manage-screenshow:playlist' selected_event_id %}">Siirry hallinnoimaan soittolistaa &raquo;</a>
+</p>
 {% endblock %}

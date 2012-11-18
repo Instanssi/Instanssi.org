@@ -55,7 +55,6 @@
   
 ### screenshow
 
-* Twitter/IRC feedin disablointi
 * High priority-viestit, esim. "TULIPALO!" tai "Kompo alkaa!" tjsp.
 * Facebookki/twitter-tiedot jonnekin
 

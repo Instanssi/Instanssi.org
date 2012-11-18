@@ -10,6 +10,9 @@ from Instanssi.kompomaatti.models import Entry
 from django.conf import settings
 import os
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
 
 @su_access_required
 def diskcleaner(request):
@@ -76,6 +79,7 @@ def diskcleaner(request):
             os.remove(file['local_path'])
         for file in orphan_imagefiles:
             os.remove(file['local_path'])
+        logger.info('Diskcleaner run.', extra={'user': request.user})
         return HttpResponseRedirect(reverse('manage-utils:diskcleaner'))
     
     # Render response

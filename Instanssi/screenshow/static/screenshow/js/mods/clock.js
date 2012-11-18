@@ -19,6 +19,9 @@ function ScreenClock(jmobj, obj) {
         this.obj.html('<p id="clock_time"></p><p id="clock_date"></p>');
         this.time_obj = $('#clock_time');
         this.date_obj = $('#clock_date');
+    }
+    
+    this.post_init = function() {
         this.obj.on('enterStep', $.proxy(this.start, this));
         this.obj.on('leaveStep', $.proxy(this.stop, this));
     }

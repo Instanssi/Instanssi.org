@@ -24,8 +24,13 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
     this.cache = [];
     this.timeout = 3000;
     this.position = 0;
-    this.player = 0;
+    this.player = null;
+    this.timer = null;
+    this.video_interval = 5*60*1000; // 5 minutes
     
+    /**
+     * Initialize the player with a random video 
+     */
     this.init = function() {
         this.obj.html('<div id="ytplayer" style="display: block;"></div>');
         this.player = $('#ytplayer');
@@ -40,10 +45,21 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
                 this.jmobj.jmpress('next');
             }, this)
         });
+    }
+    
+    /**
+     * Initialize jmpress related stuff. 
+     */
+    this.post_init = function() {
+        this.obj.data("stepData").exclude = true;
+        this.jmobj.jmpress('reapply', this.obj);
         this.obj.on('enterStep', $.proxy(this.start, this));
         this.obj.on('leaveStep', $.proxy(this.stop, this));
     }
     
+    /**
+     * Parses the code part from embedded youtube url.
+     */
     this.parse_url = function(url) {
         var code = url;
         if(code[code.length-1] == '/') {
@@ -53,6 +69,9 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
         return code;
     }
     
+    /**
+     * Pick the next video from the playlist and start playing it. 
+     */
     this.start = function() {
         // Get video
         var video = this.cache[this.position++];
@@ -64,10 +83,48 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
         }
     }
     
+    /**
+     * Make the video slide invisible and attempt to restart the timer. 
+     */
     this.stop = function() {
-
+        this.obj.data("stepData").exclude = true;
+        this.jmobj.jmpress('reapply', this.obj);
+        this.timer = null;
+        this.attempt_start_timer();
     }
 
+    /**
+     * Timer hit. Make video available. this.play will automatically pick
+     * the next video from the playlist when slide is shown. 
+     */
+    this.set_available = function() {
+        this.obj.data("stepData").exclude = false;
+        this.jmobj.jmpress('reapply', this.obj);
+    }
+    
+    /**
+     * Handle timer
+     * - If cache has items, and timer is already on, do nothing.
+     * - If cache has items, but timer is not on, start it
+     * - If cache has no items, kill timer.
+     */
+    this.attempt_start_timer = function() {
+        if(this.cache.length > 0) {
+            if(this.timer == null) {
+                this.timer = setTimeout($.proxy(this.set_available, this), this.video_interval);
+            }
+        } else {
+            if(this.timer != null) {
+                window.clearTimeout(this.timer);
+            }
+            this.timer = null;
+        }
+    }
+
+    /**
+     * If the JSON playlist request was successful, this will be executed.
+     * Save cache, handle position changes and attempt to start playback timer. 
+     */
     this.fetch_success = function(data) {
         // Save received data to cache
         this.cache = data['playlist'];
@@ -75,15 +132,19 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
             this.position = 0;
         }
         
-        // Disable if there are no videos
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
-        this.jmobj.jmpress('reapply', this.obj);
+        this.attempt_start_timer();
     }
     
+    /**
+     * Handle playlist fetch errors. 
+     */
     this.fetch_error = function(jqXHR, status, errorThrown) {
         console.log("Error while fetching video playlist!");
     }
     
+    /**
+     * Attempts to update the playlist from the server. 
+     */
     this.update = function() {
         $.ajax({ 
             url: this.url, 

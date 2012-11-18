@@ -50,6 +50,11 @@
         
         // Init jmpress
         jm.jmpress({
+            afterInit: function(element, eventData) {
+                $.each(modules, function(key, module){
+                    module.post_init(); 
+                });
+            },
             beforeChange: function(element, eventData) { 
                 // Update all on nametext slide
                 if(element.attr('id') == 'nametext') {

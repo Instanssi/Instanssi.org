@@ -12,6 +12,7 @@ function ScreenEvents(jmobj, obj, url) {
     this.timeout = 3000;
     
     this.init = function() {}
+    this.post_init = function() {}
     
     this.fetch_success = function(data) {
         // Fetch and render data

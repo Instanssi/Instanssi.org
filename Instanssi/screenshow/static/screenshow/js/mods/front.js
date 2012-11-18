@@ -10,5 +10,6 @@ function ScreenFrontpage(jmobj, obj) {
     this.obj = obj;
 
     this.init = function() { this.obj.html("Instanssi"); }
+    this.post_init = function() {}
     this.update = function() {}
 }

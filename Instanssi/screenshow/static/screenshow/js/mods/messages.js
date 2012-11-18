@@ -19,6 +19,9 @@ function ScreenMessages(jmobj, obj, url) {
     this.init = function() {
         this.obj.html('<p id="message_content"></p>');
         this.content_obj = $('#message_content');
+    }
+    
+    this.post_init = function() {
         this.obj.on('enterStep', $.proxy(this.start, this));
         this.obj.on('leaveStep', $.proxy(this.stop, this));
     }

@@ -19,7 +19,9 @@ function ScreenIrc(jmobj, obj, url) {
     this.lines_per_screen = 24; // Screen can fit about 26 lines of text
     this.chars_per_line = 100; // Screen can fit about 100 characters per line
     
-    this.init = function() {
+    this.init = function() {}
+    
+    this.post_init = function() {
         this.obj.on('enterStep', $.proxy(this.start, this));
         this.obj.on('leaveStep', $.proxy(this.stop, this));
     }

@@ -10,7 +10,9 @@ function ScreenTwitter(jmobj, obj) {
     this.jmobj = jmobj;
     this.cache = [];
     
-    this.init = function() {
+    this.init = function() {}
+    
+    this.post_init = function() {
         this.obj.on('enterStep', $.proxy(this.render, this));
     }
     

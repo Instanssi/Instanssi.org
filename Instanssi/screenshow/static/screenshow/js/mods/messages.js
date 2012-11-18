@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenMessages(jmobj, obj, url) {
+function ScreenMessages(settings, jmobj, obj, url) {
+    this.settings = settings; 
     this.obj = obj;
     this.url = url;
     this.jmobj = jmobj;

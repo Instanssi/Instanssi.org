@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenClock(jmobj, obj) {
+function ScreenClock(settings, jmobj, obj) {
+    this.settings = settings; 
     this.obj = obj;
     this.jmobj = jmobj;
     this.updatefreq = 1000;

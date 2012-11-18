@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenTwitter(jmobj, obj) {
+function ScreenTwitter(settings, jmobj, obj) {
+    this.settings = settings;
     this.obj = obj;
     this.jmobj = jmobj;
     this.cache = [];
@@ -43,7 +44,11 @@ function ScreenTwitter(jmobj, obj) {
         this.cache = r;
         
         // Check if we want to show the irc slide
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
+        if(this.settings.get('enable_twitter')) {
+            this.obj.data("stepData").exclude = (this.cache.length == 0);
+        } else {
+            this.obj.data("stepData").exclude = true;
+        }
         this.jmobj.jmpress('reapply', this.obj);
     }
     

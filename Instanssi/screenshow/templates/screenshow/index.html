@@ -9,6 +9,7 @@
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/jquery.tubeplayer.min.js' %}"></script>
     
+    <script type="text/javascript" src="{% static 'screenshow/js/settings.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/clock.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/events.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/front.js' %}"></script>
@@ -29,19 +30,24 @@
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';
         var messages_api_url = '{% url 'screen:messages-api' event_id %}';
         var youtube_api_url = '{% url 'screen:playlist-api' event_id %}';
+        var settings_api_url = '{% url 'screen:settings-api' event_id %}';
         
         // Set jmpress element
         var jm = $('#jmpress');
         
+        // Load settings
+        var settings = new Settings(settings_api_url);
+        settings.update();
+        
         // Set modules
         var modules = [];
-        modules.push(new ScreenIrc(jm, $('#irc'), irc_api_url));
-        modules.push(new ScreenEvents(jm, $('#events'), events_api_url));
-        modules.push(new ScreenMessages(jm, $('#messages'), messages_api_url));
-        modules.push(new ScreenClock(jm, $('#clock')));
-        modules.push(new ScreenFrontpage(jm, $('#nametext')));
-        modules.push(new ScreenTwitter(jm, $('#twitter')));
-        modules.push(new ScreenYoutube(jm, $('#youtube'), youtube_api_url));
+        modules.push(new ScreenIrc(settings, jm, $('#irc'), irc_api_url));
+        modules.push(new ScreenEvents(settings, jm, $('#events'), events_api_url));
+        modules.push(new ScreenMessages(settings, jm, $('#messages'), messages_api_url));
+        modules.push(new ScreenClock(settings, jm, $('#clock')));
+        modules.push(new ScreenFrontpage(settings, jm, $('#nametext')));
+        modules.push(new ScreenTwitter(settings, jm, $('#twitter')));
+        modules.push(new ScreenYoutube(settings, jm, $('#youtube'), youtube_api_url));
         
         // Init all modules
         $.each(modules, function(key, module){

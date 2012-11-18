@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenYoutube(jmobj, obj, url, testurl) {
+function ScreenYoutube(settings, jmobj, obj, url, testurl) {
+    this.settings = settings; 
     this.obj = obj;
     this.url = url;
     this.jmobj = jmobj;
@@ -85,11 +86,17 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
 
     /**
      * Timer hit. Make video available. this.play will automatically pick
-     * the next video from the playlist when slide is shown. 
+     * the next video from the playlist when slide is shown. If, however, 
+     * video playback is switched off from settings, restart the timer.
      */
     this.set_available = function() {
-        this.obj.data("stepData").exclude = false;
-        this.jmobj.jmpress('reapply', this.obj);
+        if(this.settings.get('enable_videos')) {
+            this.obj.data("stepData").exclude = false;
+            this.jmobj.jmpress('reapply', this.obj);
+        } else {
+            this.timer = null;
+            this.attempt_start_timer();
+        }
     }
     
     /**
@@ -133,9 +140,24 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
     }
     
     /**
-     * Attempts to update the playlist from the server. 
+     * Attempts to update the playlist from the server,
+     * and handles possible timer timeout changes.
      */
     this.update = function() {
+        // Handle timer time change
+        var newtime = this.settings.get('video_interval') * 60 * 1000;
+        if(newtime < 100) {
+            newtime = 100; // minimum of 100 milliseconds.
+        }
+        if(newtime != this.video_interval) {
+            this.video_interval = newtime;
+            if(this.timer != null) {
+                window.clearTimeout(this.timer);
+                this.timer = null;
+            }
+        }
+        
+        // Request playlist changes
         $.ajax({ 
             url: this.url, 
             dataType: 'json', 

@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenIrc(jmobj, obj, url) {
+function ScreenIrc(settings, jmobj, obj, url) {
+    this.settings = settings; 
     this.obj = obj;
     this.url = url;
     this.jmobj = jmobj;
@@ -58,6 +59,15 @@ function ScreenIrc(jmobj, obj, url) {
         this.obj.html(output);
     }
     
+    this.toggle = function() {
+        if(this.settings.get('enable_irc')) {
+            this.obj.data("stepData").exclude = (this.cache.length == 0);
+        } else {
+            this.obj.data("stepData").exclude = true;
+        }
+        this.jmobj.jmpress('reapply', this.obj);
+    }
+    
     this.fetch_success = function(data) {
         // Read data fron JSON, and dump it to cache
         var size = data['log'].length;
@@ -68,9 +78,8 @@ function ScreenIrc(jmobj, obj, url) {
         }
 
         // Check if we want to show the irc slide
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
-        this.jmobj.jmpress('reapply', this.obj);
-        
+        this.toggle();
+
         // Start the timer again
         this.init_timer();
     }
@@ -78,6 +87,7 @@ function ScreenIrc(jmobj, obj, url) {
     this.fetch_error = function(jqXHR, status, errorThrown) {
         // Dump error message to console and restart the timer
         console.log("There was a problem while fetching IRC data.");
+        this.toggle();
         this.init_timer();
     }
     

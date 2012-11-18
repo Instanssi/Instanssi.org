@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenFrontpage(jmobj, obj) {
+function ScreenFrontpage(settings, jmobj, obj) {
+    this.settings = settings; 
     this.jmobj = jmobj;
     this.obj = obj;
 

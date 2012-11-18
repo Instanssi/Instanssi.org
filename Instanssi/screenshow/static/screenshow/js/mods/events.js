@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenEvents(jmobj, obj, url) {
+function ScreenEvents(settings, jmobj, obj, url) {
+    this.settings = settings; 
     this.obj = obj;
     this.url = url;
     this.jmobj = jmobj;

@@ -5,7 +5,8 @@
  * Author: Tuomas Virtanen
  */
 
-function ScreenExample(jmobj, obj) {
+function ScreenExample(settings, jmobj, obj) {
+    this.settings = settings; // Settings object
     this.jmobj = jmobj; // This is the jmpress element
     this.obj = obj; // This is the element owned by the module
 

@@ -32,11 +32,11 @@ function ScreenYoutube(jmobj, obj, url, testurl) {
         this.player.tubeplayer({
             width: 1920,
             height: 1080,
-            allowFullScreen: "false",
+            allowFullScreen: "true",
             initialVideo: "DeumyOzKqgI",
             preferredQuality: "hd1080",
             iframed: true,
-            onStop: $.proxy(function() {
+            onPlayerEnded: $.proxy(function() {
                 this.jmobj.jmpress('next');
             }, this)
         });

@@ -5,16 +5,6 @@
  * Author: Tuomas Virtanen
  */
 
-var _youtube_ready = false;
-function onYouTubePlayerReady(id) {
-    _youtube_ready = true;
-}
-
-var _youtube_status = -1;
-function onYoutubeStateChange(status) {
-    _youtube_status = status;
-}
-
 function ScreenYoutube(jmobj, obj, url, testurl) {
     this.obj = obj;
     this.url = url;

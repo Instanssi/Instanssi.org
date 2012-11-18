@@ -28,6 +28,22 @@ def index(request, event_id):
         'sponsors': sponsors,
     }, context_instance=RequestContext(request))
 
+def settings_api(request, event_id):
+    # Attempt to fetch custom settings from database
+    try:
+        settings = {}
+        s = ScreenConfig.objects.get(event_id=event_id)
+        settings['enable_twitter'] = s.enable_twitter
+        settings['enable_irc'] = s.enable_irc
+        settings['enable_videos'] = s.enable_videos
+        settings['video_interval'] = s.video_interval
+        return JSONResponse({'settings': settings})
+    except:
+        pass
+    
+    # Return settings
+    return JSONResponse({})
+
 def events_api(request, event_id):
     e = get_object_or_404(Event, pk=event_id)
 

@@ -13,9 +13,14 @@ class DBLogHandler(Handler, object):
         entry = _LogEntry()
         entry.level = record.levelname
         entry.message = self.format(record)
-        if record.event:
+        entry.module = record.name
+        try:
             entry.event = record.event
-        if record.user:
+        except:
+            pass
+        try:
             entry.user = record.user
+        except:
+            pass
         entry.save()
 

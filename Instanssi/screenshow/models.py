@@ -95,5 +95,7 @@ try:
     admin.site.register(IRCMessage)
     admin.site.register(Message)
     admin.site.register(Sponsor)
+    admin.site.register(PlaylistVideo)
+    admin.site.register(ScreenConfig)
 except:
     pass

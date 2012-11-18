@@ -17,7 +17,10 @@ class DBLogHandler(Handler, object):
         try:
             entry.event = record.event
         except:
-            pass
+            try:
+                entry.event_id = record.event_id
+            except:
+                pass
         try:
             entry.user = record.user
         except:

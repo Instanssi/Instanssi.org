@@ -10,6 +10,10 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from datetime import datetime
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
 @staff_access_required
 def index(request, sel_event_id):
     # Handle form data, if any
@@ -26,6 +30,7 @@ def index(request, sel_event_id):
             data.date = datetime.now()
             data.event_id = int(sel_event_id)
             data.save()
+            logger.info('File "'+data.file.name+'" uploaded.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id)))
     else:
         uploadform = UploadForm()
@@ -49,6 +54,7 @@ def deletefile(request, sel_event_id, file_id):
     # Delete the file
     try:
         rec = UploadedFile.objects.get(id=file_id)
+        logger.info('File "'+rec.file.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
         rec.file.delete()
         rec.delete()
     except UploadedFile.DoesNotExist:
@@ -69,7 +75,8 @@ def editfile(request, sel_event_id, file_id):
     if request.method == 'POST':
         uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
         if uploadform.is_valid():
-            uploadform.save()
+            data = uploadform.save()
+            logger.info('File "'+data.file.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id)))
     else:
         uploadform = UploadForm(instance=uploadedfile)

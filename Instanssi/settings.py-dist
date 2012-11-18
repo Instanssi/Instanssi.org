@@ -200,7 +200,8 @@ LOGGING = {
         'Instanssi.admin_blog': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_events': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_kompomaatti': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_programme': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_programme': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

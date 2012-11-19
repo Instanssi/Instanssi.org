@@ -25,6 +25,8 @@
 
 ## Admineille näkyvä osio
 
+* Levennä edit/delete -nappeja.
+
 ### admin_users
 
 * Tehty

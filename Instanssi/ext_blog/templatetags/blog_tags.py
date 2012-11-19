@@ -7,14 +7,14 @@ register = template.Library()
 
 @register.inclusion_tag('ext_blog/blog_messages.html')
 def render_blog(event_id):
-    entries = BlogEntry.objects.filter(event_id=int(event_id), public=True)
+    entries = BlogEntry.objects.filter(event_id__lte=int(event_id), public=True)[:10]
     return {'entries': entries}
 
 @register.inclusion_tag('ext_blog/blog_rss_tag.html')
-def render_blog_rss_tag(event_id):
-    return {'event_id': event_id}
+def render_blog_rss_tag():
+    return {}
 
 @register.simple_tag
-def blog_rss_url(event_id):
-    return 'http://instanssi.org/blog/'+str(event_id)+'/rss/'
+def blog_rss_url():
+    return 'http://instanssi.org/blog/rss/'
 

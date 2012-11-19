@@ -37,7 +37,7 @@ class Sponsor(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Sponsorin nimi')
     logo = models.ImageField(u'Kuva', upload_to='screen/sponsorlogos/', help_text=u"Sponsorin logo", blank=True)
-    logo_scaled = ImageSpecField([ResizeToFit(800, 800, True)], image_field='logo', format='JPEG', options={'quality': 95})
+    logo_scaled = ImageSpecField([ResizeToFit(800, 800, True)], image_field='logo', format='PNG')
 
     def __unicode__(self):
         return self.name

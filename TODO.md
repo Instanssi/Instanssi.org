@@ -35,7 +35,7 @@
 
 ### admin_programme
 
-* Tehty
+* Härpäke, jolla voisi siirtää enemmän ohjelmaa eteen- tai taaksepäin n. minuuttia.
 
 ### admin_upload
 

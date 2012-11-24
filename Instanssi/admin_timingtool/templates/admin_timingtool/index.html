@@ -10,6 +10,7 @@
 
 {% block jquery %}
 {{ block.super }}
+    $("#event_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],]});
 {% endblock %}
 
 {% block crumbs %}
@@ -18,9 +19,38 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Ajastintyökalu</h2>
+<h2>Ajastintyökalu</h2>
     
-    <p>Ei vielä toiminnassa!</p>
-    
-{% crispy timingform timingform.helper %}
+{% if events %}
+<form method="post" class="uniForm">
+    <table id="event_table">
+        <thead>
+            <tr>
+                <th>Valitse</th>
+                <th>Tyyppi</th>
+                <th>Nimi</th>
+                <th>Alkaa</th>
+                <th>Päättyy</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for event in events %}
+            <tr>
+                <td><input type="checkbox" name="event[]" value="{{ event.type }}_{{ event.id }}" /></td>
+                <td>{{ event.typename }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.start }}</td>
+                <td>{{ event.end }}</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <fieldset>
+        <legend>Siirtotyökalu</legend>
+        {{ timingform|crispy }}
+    </fieldset>
+</form>
+{% else %}
+    <p>Ei tapahtumia!</p>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,20 @@
+{% extends "admin_base/events_base.html" %}
+
+{% block title %} - Ajastintyökalu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; <a href="{% url 'manage-timingtool:index' selected_event_id %}">Ajastintyökalu</a>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}

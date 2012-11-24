@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'Instanssi.admin_events_overview',
     'Instanssi.admin_utils',
     'Instanssi.admin_screenshow',
+    'Instanssi.admin_timingtool',
     'Instanssi.kompomaatti',
     'Instanssi.kompomaatti_eventselect',
     'Instanssi.ext_blog',
@@ -203,7 +204,8 @@ LOGGING = {
         'Instanssi.admin_programme': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' }
     }
 }
 

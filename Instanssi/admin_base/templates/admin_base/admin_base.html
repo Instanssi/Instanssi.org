@@ -34,8 +34,28 @@
 		$('.datetimeinput').datetimepicker({
 			dateFormat: 'yy-mm-dd',
 			timeFormat: 'hh:mm:ss',
-			stepMinute: 5
+			stepMinute: 5,
+            timeOnlyTitle: 'Valitse aika',
+            timeText: 'Aika',
+            hourText: 'Tunti',
+            minuteText: 'Minuutti',
+            secondText: 'Sekunti',
+            millisecText: 'Millisekunti',
+            currentText: 'Nyt',
+            closeText: 'Sulje',
 		});
+		$('.timeinput').timepicker({
+            timeFormat: 'hh:mm:ss',
+            stepMinute: 5,
+            timeOnlyTitle: 'Valitse aika',
+            timeText: 'Aika',
+            hourText: 'Tunti',
+            minuteText: 'Minuutti',
+            secondText: 'Sekunti',
+            millisecText: 'Millisekunti',
+            currentText: 'Nyt',
+            closeText: 'Sulje',
+        });
 		$('form.uniForm').uniform();
 		$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
 		$('.ui-widget').css('font-size','14px');

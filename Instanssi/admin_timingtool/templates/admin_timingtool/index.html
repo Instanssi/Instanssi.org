@@ -39,8 +39,8 @@
                 <td><input type="checkbox" name="event[]" value="{{ event.type }}_{{ event.id }}" /></td>
                 <td>{{ event.typename }}</td>
                 <td>{{ event.name }}</td>
-                <td>{{ event.start }}</td>
-                <td>{{ event.end }}</td>
+                <td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
+                <td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
             </tr>
 {% endfor %}
         </tbody>

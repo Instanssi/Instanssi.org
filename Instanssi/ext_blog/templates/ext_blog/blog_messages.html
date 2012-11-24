@@ -2,9 +2,9 @@
 <div id="blog">
 {% for entry in entries %}
 	<div class="message">
-		<div class="title"><a name="blog{{ entry.id }}">{{ entry.title }}</a></div>
+		<h2>{{ entry.title }}</h2>
 		{{ entry.text|safe }}
-		<div class="date">{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</div>
+		<time datetime="{{ entry.date|date:"Y-m-d\TH:i" }}"class="date">{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</time> 
 	</div>
 {% endfor %}
 </div>

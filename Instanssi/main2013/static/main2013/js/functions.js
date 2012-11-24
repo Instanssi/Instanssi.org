@@ -9,16 +9,26 @@ $(document).ready(function (){
 	});
 	
 	/* nav effect */
-	$('nav li a').mouseenter(function(){
+	/*$('nav li a').mouseenter(function(){
 		$( this ).stop().animate( { 'opacity' : 0.9, 'top' : '-3px' }, 200 );
 	});
 	$('nav li a').mouseleave(function(){
 		$( this ).stop().animate( { 'opacity' : 1.0, 'top' : '0px' }, 200 );
-	});
+	});*/
+	
 	
 	/* mobile nav button */
 	$( 'nav .nav-btn' ).click( function(){
-		$( '#page-header nav ul' ).slideToggle( 400 );
+		
+		var page_header_nav_ul = $( '#page-header nav ul' );
+		
+		if( !page_header_nav_ul.is(':visible') ){
+			$('html, body').animate({
+				scrollTop: $("#page-header nav").offset().top
+			}, 400);
+		}
+		
+		page_header_nav_ul.slideToggle( 400 );
 	});
 	$(window).resize(function() {
 		if( window.innerWidth  > 480 && !$( '#page-header nav ul' ).is(':visible')  ){

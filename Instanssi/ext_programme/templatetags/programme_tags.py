@@ -49,6 +49,13 @@ def render_calendar(event_id):
             'icon': '',
             'desc': '',
         })
+        events.append({
+            'date': compo.voting_end,
+            'title': compo.name + u': äänestys päättyy.',
+            'url': reverse('km:compo', args=(event_id, compo.id,)),
+            'icon': '',
+            'desc': '',
+        })
     
     # Handle competitions
     for comp in comps:

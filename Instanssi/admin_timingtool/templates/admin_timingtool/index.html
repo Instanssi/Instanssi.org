@@ -48,6 +48,12 @@
     <fieldset>
         <legend>Siirtotyökalu</legend>
         {{ timingform|crispy }}
+        
+        <!-- uniForm buttonholder -->
+        {% csrf_token %}
+        <div class="buttonHolder">
+            <input type="submit" name="submit" value="Tallenna" class="submit submitButton" id="submit-id-submit" />
+        </div>
     </fieldset>
 </form>
 {% else %}

@@ -50,6 +50,10 @@
 <body>
 	<div id="page-wrap">
 		<header id="page-header">
+			<header id="header-top">
+				<a href="#">Stream</a>
+				<a href="{% url 'archive:index' %}">Arkisto</a>
+			</header>	
 			<div class="header-top container">
 				<a href="{% url 'main2013:index' %}" class="logo">
 					<h1>Instanssi2013</h1>
@@ -68,17 +72,15 @@
 				</div>
 				<div class="clearer"></div>
 				<ul>
-					<li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Instanssi</a></li>
+					<li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
+					<li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
+					<li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
 					<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
 					<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
 					<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
-					<li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
-					<li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
 					<li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
 					<li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
-					<li class="menu-item" ><a href="{% url 'archive:index' %}">Arkisto</a></li>
 					<div class="clearer"></div>
-					<div class="nav-marker"></div>
 				</ul>
 			</nav>
 		</header>
@@ -87,6 +89,18 @@
 				{% block content %}{% endblock %}
 			</section>
 			<aside id="twitter-widget" >
+				<section class="widget widget-twitter">
+					<h2>Twitter</h2>
+					<div id="tweets">
+					</div>
+				</section>
+				<section class="widget">
+					<h2>Instanssiin vielä</h2>
+					<p><span id="countdown"></span></p>
+				</section>
+				<section class="widget">
+					<a href="#" class="btn full-width">Osta Lippu! </a>
+				</section>
 				<section class="widget widget-socialmedias">
 					<h2>Sosiaaliset mediat</h2>
 					<div class="social-media">
@@ -100,18 +114,6 @@
 						<p>#instanssi @ IRCNet</p>
 					</div>
 				</section>
-				<section class="widget">
-					<h2>Instanssiin vielä</h2>
-					<p><span id="countdown"></span></p>
-				</section>
-				<section class="widget">
-					<a href="#" class="btn full-width">Osta Lippu! </a>
-				</section>
-				<section class="widget widget-twitter">
-					<h2>Twitter</h2>
-					<div id="tweets">
-					</div>
-				</section>
 			</aside>
 			<div class="clearer"></div>
 		</div>
@@ -120,17 +122,15 @@
 				<section class="sitemap">
 					<h1>Sivukartta</h1>
 					<ul>
-						<li class="menu-item" ><a href="{% url 'main2013:index' %}">Instanssi</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:info' %}">Info</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
-						<li class="menu-item" ><a href="{% url 'main2013:english' %}">In English</a></li>
-						<li class="menu-item" ><a href="{% url 'archive:index' %}">Arkisto</a></li>
+						<li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
+						<li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
+						<li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
+						<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
+						<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
+						<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
+						<li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
+						<li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
 						<div class="clearer"></div>
-						<div class="nav-marker"></div>
 					</ul>
 				</nav>
 			</section>

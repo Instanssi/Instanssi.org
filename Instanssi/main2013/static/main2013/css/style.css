@@ -193,13 +193,14 @@ table th,
 /* Landscape phones */
 @media (max-width: 480px) { 
 	#page-header nav .nav-btn { display: block; }
-
+	
+	
 	#page-header { background: #111; background-image: none; }
 	#page-header .header-top { background: url('../images/header-bg.png') center top #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
-	#page-header nav ul{ background: transparent; display: none; }
+	#page-header nav ul{ background: transparent; display: none; overflow: hidden; }
 	
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 100%; }
 	#page-footer .menu-item { float: left; width: 49%; padding: 0px; }

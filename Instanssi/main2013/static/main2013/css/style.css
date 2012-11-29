@@ -127,6 +127,14 @@ html, body { margin: 0; padding: 0; height: 100%; }
 #page-wrap { min-height: 100%; position: relative; }
 
 /* animations */
+#page-header nav ul {
+	-webkit-transition: all 0.6s ease-in-out;
+	-moz-transition: all 0.6s ease-in-out;
+	-o-transition: all 0.6s ease-in-out;
+	-ms-transition: all 0.6s ease-in-out;
+	transition: all 0.6s ease-in-out;
+}
+
 #page-header a,
 .btn,
 #twitter-widget .social-media a,
@@ -198,14 +206,17 @@ table th,
 /* Landscape phones */
 @media (max-width: 480px) { 
 	#page-header nav .nav-btn { display: block; }
-	
+	.no-js #page-header nav .nav-btn { display: none; }
 	
 	#page-header { background: #111; background-image: none; }
 	#page-header .header-top { background: url('../images/header-bg.png') center top #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
-	#page-header nav ul{ background: transparent; display: none; overflow: hidden; }
+	#page-header nav ul { background: transparent; max-height: 0px; overflow: hidden; }
+	.no-js #page-header nav ul,
+	#page-header nav ul.active { max-height: 255px; }
+	
 	
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 100%; }
 	#page-footer .menu-item { float: left; width: 49%; padding: 0px; }

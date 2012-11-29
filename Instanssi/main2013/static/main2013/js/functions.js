@@ -1,6 +1,10 @@
 $(document).ready(function (){
-
+	
+	$( 'nav .nav-btn' ).click( function(){
+		$( '#page-header nav ul' ).toggleClass( 'active' );
+	});
 	/* mobile nav button */
+	/*
 	$( 'nav .nav-btn' ).click( function(){
 		
 		var page_header_nav_ul = $( '#page-header nav ul' );
@@ -22,6 +26,8 @@ $(document).ready(function (){
 		}
 
 	});
+	*/
+	
 	
 	/* Countdown */
 	countDown( new Date("March 7, 2013 18:00:00") );

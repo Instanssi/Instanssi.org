@@ -13,4 +13,5 @@ urlpatterns = patterns(
     url(r'^liput/', 'pageloader', {'templatename': 'liput'}, name="liput"),
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
     url(r'^yhteystiedot/', 'pageloader', {'templatename': 'yhteystiedot'}, name="yhteystiedot"),
+    url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
 )

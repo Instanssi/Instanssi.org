@@ -23,9 +23,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* buttons */
-.btn { color: #fff !important; text-decoration: none !important; display: inline-block; padding: 10px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;
-
-}
+.btn { color: #fff !important; text-decoration: none !important; display: inline-block; padding: 10px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
 .btn:hover { color: #fff; opacity: 0.9; }
 
 
@@ -37,7 +35,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #26A8D3; }
-#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat top center #0088C3;  margin-bottom: 40px; box-shadow: 0 10px 10px #fff; }
+#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat bottom center #0088C3;  margin-bottom: 40px; box-shadow: 0 10px 10px #fff; }
 #page-header .header-top { min-height: 258px; }
 #page-header .header-top .logo { margin: 8px 0px 0px 0px; }
 #page-header a { text-decoration: none; }
@@ -59,6 +57,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-header nav ul .current-menu-item { background: #fff; }
 #page-header nav ul .current-menu-item a { color: #333; text-shadow: none; }
 
+
 /* content */
 #primary { float: left; width: 500px; margin-right: 20px; min-height:600px; }
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
@@ -79,9 +78,11 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* ohjelma */
-#primary .personalinfo { margin-bottom: 10px; }
-#primary .personalinfo .names { font-weight: bold; }
-#primary .personalinfo .titles { color: #aaa; font-style: italic; }
+#primary .icon { float: left; margin-right: 15px; }
+#primary .personalinfo { padding-top: 10px; }
+#primary .personalinfo .names { display: block; font-weight: bold; }
+#primary .personalinfo .titles { display: block; color: #aaa; font-style: italic; }
+#primary .description { clear: both; }
 #primary .serviceicons { text-align: right; }
 #primary .serviceicons a img { box-shadow: 0px 0px 0px transparent;  }
 #primary .item { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; }
@@ -96,7 +97,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* sidebar */
-#twitter-widget {  float: left; width: 300px; }
+#twitter-widget {  float: left; width: 300px; margin-top: 30px; }
 #twitter-widget a { color: #0977BC; text-decoration: underline; }
 #twitter-widget a:hover { color: #1F86F4; }
 #twitter-widget .social-media { margin-bottom: 20px; }
@@ -120,11 +121,13 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-footer .menu-item a:hover { padding-left: 5px; }
 #page-footer .current-menu-item a{ color: #000; background: #fff; text-decoration: none; padding: 0px 10px; }
 
+
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
 #page-footer { height: 330px; position: absolute; bottom: 0px; padding-top: 20px; }
 #content { padding-bottom: 390px; }
 #page-wrap { min-height: 100%; position: relative; }
+
 
 /* animations */
 #page-header nav ul {
@@ -134,7 +137,6 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	-ms-transition: all 0.6s ease-in-out;
 	transition: all 0.6s ease-in-out;
 }
-
 #page-header a,
 .btn,
 #twitter-widget .social-media a,
@@ -146,6 +148,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	-ms-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
+
 
 /* gradients */
 h2, .item .title, .header,
@@ -167,12 +170,14 @@ table th,
 	);
 }
 
+
 /* Large desktop */
 @media (min-width: 1200px) { 
 	.container { width: 1024px; margin: 0 auto; }
 	#content #primary{ width:500px;  margin-right: 100px;  }
 	#twitter-widget{ width: 300px; }
 }
+ 
  
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
@@ -184,6 +189,7 @@ table th,
 	#page-footer .sponsors { width: 80%; margin: 0;}
 	#page-footer .contact { float: none; }
 }
+ 
  
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
@@ -202,6 +208,7 @@ table th,
 	#page-footer { position: static; height: auto; }
 	#content { padding-bottom: 40px; }
 }
+ 
  
 /* Landscape phones */
 @media (max-width: 480px) { 
@@ -229,6 +236,7 @@ table th,
 	
 	#page-footer .sponsors .sponsor-placeholder { width: 47%; margin: 1%;  }
 }
+
 
 /* portrait phones and down */
 @media (max-width: 320px) { 

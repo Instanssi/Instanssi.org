@@ -41,7 +41,8 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-header .header-top { min-height: 258px; }
 #page-header .header-top .logo { margin: 8px 0px 0px 0px; }
 #page-header a { text-decoration: none; }
-#page-header .header-top h1 {font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
+#page-header a:hover { opacity: 0.8; }
+#page-header .header-top h1 { font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
 #page-header .header-top .tagline { font-family: 'Exo', sans-serif; font-size: 20px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
 #page-header .header-top .time { font-family: 'Exo', sans-serif; font-size: 68px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
 #page-header .header-top .place { font-size: 58px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
@@ -106,7 +107,6 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #twitter-widget #tweets li { margin-bottom: 20px; }
 
 
-
 /* footer */
 #page-footer { width: 100%;  background: #111; }
 #page-footer section { float: left; }
@@ -127,6 +127,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 #page-wrap { min-height: 100%; position: relative; }
 
 /* animations */
+#page-header a,
 .btn,
 #twitter-widget .social-media a,
 #page-footer .menu-item a,

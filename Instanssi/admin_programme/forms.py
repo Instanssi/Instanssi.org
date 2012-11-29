@@ -27,6 +27,7 @@ class ProgrammeEventForm(forms.ModelForm):
                 'facebook_url',
                 'linkedin_url',
                 'wiki_url',
+                'gplus_url',
                 ButtonHolder (
                     Submit('submit', u'Tallenna')
                 )

@@ -32,18 +32,18 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* header */
-#header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; }
+#header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
-#header-top a:hover { color: #26A8D3; }
+#header-top a:hover { color: #36B3D9; }
 #page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat bottom center #0088C3;  margin-bottom: 40px; box-shadow: 0 10px 10px #fff; }
-#page-header .header-top { min-height: 258px; }
-#page-header .header-top .logo { margin: 8px 0px 0px 0px; }
+#page-header .header-info { min-height: 258px; }
+#page-header .header-info .logo { margin: 8px 0px 0px 0px; }
 #page-header a { text-decoration: none; }
 #page-header a:hover { opacity: 0.8; }
-#page-header .header-top h1 { font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
-#page-header .header-top .tagline { font-family: 'Exo', sans-serif; font-size: 20px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
-#page-header .header-top .time { font-family: 'Exo', sans-serif; font-size: 68px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
-#page-header .header-top .place { font-size: 58px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
+#page-header .header-info h1 { font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
+#page-header .header-info .tagline { font-family: 'Exo', sans-serif; font-size: 20px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
+#page-header .header-info .time { font-family: 'Exo', sans-serif; font-size: 68px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
+#page-header .header-info .place { font-size: 58px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
 
 
 /* navigation */
@@ -59,7 +59,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* content */
-#primary { float: left; width: 500px; margin-right: 20px; min-height:600px; }
+#primary { float: left; width: 500px; margin-right: 20px; }
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
 #primary li { margin-bottom: 5px; }
@@ -216,7 +216,7 @@ table th,
 	.no-js #page-header nav .nav-btn { display: none; }
 	
 	#page-header { background: #111; background-image: none; }
-	#page-header .header-top { background: url('../images/header-bg.png') center top #0088C3; }
+	#page-header .header-info { background: url('../images/header-bg.png') center top #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
@@ -240,8 +240,8 @@ table th,
 
 /* portrait phones and down */
 @media (max-width: 320px) { 
-	#page-header .header-top h1 {font-size: 32px; }
-	#page-header .header-top .tagline { font-size: 14px; }
-	#page-header .header-top .time { font-size: 46px; }
-	#page-header .header-top .place { font-size: 36px; }
+	#page-header .header-info h1 {font-size: 32px; }
+	#page-header .header-info .tagline { font-size: 14px; }
+	#page-header .header-info .time { font-size: 46px; }
+	#page-header .header-info .place { font-size: 36px; }
 }

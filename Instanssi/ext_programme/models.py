@@ -23,6 +23,7 @@ class ProgrammeEvent(models.Model):
     facebook_url = models.URLField(u'Facebook', help_text=u'Tapahtumaan liittyvä facebook-url.', blank=True)
     linkedin_url = models.URLField(u'LinkedIn', help_text=u'Tapahtumaan liittyvä LinkedIn-url.', blank=True)
     wiki_url = models.URLField(u'Wikipedia', help_text=u'Tapahtumaan liittyvä Wikipedia-url.', blank=True)
+    gplus_url = models.URLField(u'Google+', help_text=u'Tapahtumaan liittyvä Google Plus-url.', blank=True)
     EVENT_TYPES = (
         (0, u'Yksinkertainen'),
         (1, u'Yksityiskohtainen'),

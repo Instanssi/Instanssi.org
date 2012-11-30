@@ -2,14 +2,11 @@
 
 {% block head %}
 {{ block.super }}
-{% if not debug %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&amp;sensor=false"></script>
-{% endif %}
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-{% if not debug %}
     var position = new google.maps.LatLng(62.239850, 25.72460);
     var mapopts = {
         center: position,
@@ -22,7 +19,6 @@
         map: map,
         title: "Instanssi"
     });
-{% endif %}
 {% endblock %}
 
 {% block content %}

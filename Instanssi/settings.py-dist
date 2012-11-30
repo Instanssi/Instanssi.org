@@ -122,8 +122,15 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'common.context_processors.openid_helper',
 )
 
+# Internal ip addresses
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
+# Root urls.py file
 ROOT_URLCONF = 'Instanssi.urls'
 
+# This is a root templates dir for pages such as 404.html, 500.html, etc.
 TEMPLATE_DIRS = (
     os.path.join(CONTENTDIR, 'templates/'),
 )
@@ -166,11 +173,13 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 
+# Authentication backends, notice the openid backend here.
 AUTHENTICATION_BACKENDS = (
     'django_openid_auth.auth.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Log handlers, insert our own database log handler
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

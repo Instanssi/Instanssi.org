@@ -30,7 +30,7 @@ $(document).ready(function (){
 	
 	
 	/* Countdown */
-	countDown( new Date("March 7, 2013 18:00:00") );
+	countDown( new Date("March 1, 2013 18:00:00") );
 	setInterval( function() { countDown( new Date("March 7, 2013 18:00:00") ); }, 1000*60 );
 	function countDown( date ){
 		var today = new Date();

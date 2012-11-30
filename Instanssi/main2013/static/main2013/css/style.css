@@ -245,3 +245,12 @@ table th,
 	#page-header .header-info .time { font-size: 46px; }
 	#page-header .header-info .place { font-size: 36px; }
 }
+
+/* This is for the map on info page */
+#map_canvas{ 
+    width: 493px; 
+    height: 300px; 
+    display: block; 
+    border: 1px solid black; 
+    margin: 20px 0 20px 0;
+}

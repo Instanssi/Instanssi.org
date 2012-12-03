@@ -4,4 +4,6 @@
 <h3>{{ compo.name }}</h3>
 {{ compo.description|safe }}
 {% endfor %}
+{% else %}
+<p>Kompoja ei ole vielä määritelty.</p>
 {% endif %}

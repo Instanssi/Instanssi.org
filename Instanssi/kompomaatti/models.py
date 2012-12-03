@@ -80,7 +80,7 @@ class Compo(models.Model):
     hide_from_frontpage = models.BooleanField(u'Piilotus etusivulta', help_text=u'Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.', default=False)
     THUMBNAIL_REQ = (
         (0, u'Vaadi erillinen pikkukuva.'),
-        (1, u'Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg/gif-tiedostoille).'),
+        (1, u'Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).'),
         (2, u'Salli pikkukuva (ei vaadittu).'),
         (3, u'Älä salli pikkukuvaa.'),
     )

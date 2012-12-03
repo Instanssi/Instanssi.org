@@ -1,33 +1,19 @@
 $(document).ready(function (){
 	
-	$( 'nav .nav-btn' ).click( function(){
-		$( '#page-header nav ul' ).toggleClass( 'active' );
-	});
+	
 	/* mobile nav button */
-	/*
 	$( 'nav .nav-btn' ).click( function(){
-		
 		var page_header_nav_ul = $( '#page-header nav ul' );
 		
-		if( !page_header_nav_ul.is(':visible') ){
+		page_header_nav_ul.toggleClass( 'active' );
+		
+		if( page_header_nav_ul.hasClass('active') ){
 			$('html, body').animate({
 				scrollTop: $("#page-header nav").offset().top
 			}, 400);
+			console.log('ok');
 		}
-		
-		page_header_nav_ul.slideToggle( 400 );
 	});
-	
-	$(window).resize(function() {
-		if( window.innerWidth  > 480 && !$( '#page-header nav ul' ).is(':visible')  ){
-			$( '#page-header nav ul' ).show();
-		} else {
-			
-		}
-
-	});
-	*/
-	
 	
 	/* Countdown */
 	countDown( new Date("March 1, 2013 18:00:00") );

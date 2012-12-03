@@ -12,7 +12,7 @@ html , body { font-family: helvetica;   background: url('../images/snow.png'); }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
-h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; line-height: 90%; }
 h2, .item .title, .header  { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
@@ -42,7 +42,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-header a:hover { opacity: 0.8; }
 #page-header .header-info h1 { font-size: 46px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
 #page-header .header-info .tagline { font-family: 'Exo', sans-serif; font-size: 20px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
-#page-header .header-info .time { font-family: 'Exo', sans-serif; font-size: 68px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
+#page-header .header-info .time { font-family: 'Exo', sans-serif; font-size: 90px; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
 #page-header .header-info .place { font-size: 58px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
 
 
@@ -59,7 +59,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* content */
-#primary { float: left; width: 500px; margin-right: 20px; }
+#primary { float: left; width: 550px; margin-right: 20px; }
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
 #primary li { margin-bottom: 5px; }
@@ -97,7 +97,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* sidebar */
-#twitter-widget {  float: left; width: 300px; margin-top: 30px; }
+#twitter-widget {  float: left; width: 300px; }
 #twitter-widget a { color: #0977BC; text-decoration: underline; }
 #twitter-widget a:hover { color: #1F86F4; }
 #twitter-widget .social-media { margin-bottom: 20px; }
@@ -106,6 +106,10 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #twitter-widget .widget { margin-bottom: 20px; }
 #twitter-widget #tweets .link a, #tweets .time { font-size: 11px; }
 #twitter-widget #tweets li { margin-bottom: 20px; }
+
+
+/* google maps */
+#map_canvas{  width: 100%; height: 300px; display: block;  box-shadow: 0px 0px 5px #bbb; margin: 20px 0 20px 0; }
 
 
 /* footer */
@@ -174,7 +178,7 @@ table th,
 /* Large desktop */
 @media (min-width: 1200px) { 
 	.container { width: 1024px; margin: 0 auto; }
-	#content #primary{ width:500px;  margin-right: 100px;  }
+	#content #primary{ width: 600px;  margin-right: 100px;  }
 	#twitter-widget{ width: 300px; }
 }
  
@@ -246,11 +250,4 @@ table th,
 	#page-header .header-info .place { font-size: 36px; }
 }
 
-/* This is for the map on info page */
-#map_canvas{ 
-    width: 493px; 
-    height: 300px; 
-    display: block; 
-    border: 1px solid black; 
-    margin: 20px 0 20px 0;
-}
+

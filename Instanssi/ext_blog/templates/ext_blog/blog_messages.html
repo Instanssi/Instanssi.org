@@ -3,8 +3,8 @@
 {% for entry in entries %}
 	<div class="message">
 		<h2>{{ entry.title }}</h2>
-		{{ entry.text|safe }}
 		<time datetime="{{ entry.date|date:"Y-m-d\TH:i" }}"class="date">{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</time> 
+		{{ entry.text|safe }}
 	</div>
 {% endfor %}
 </div>

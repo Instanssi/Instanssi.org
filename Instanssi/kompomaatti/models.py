@@ -78,6 +78,13 @@ class Compo(models.Model):
     entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.")
     hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.', default=False)
     hide_from_frontpage = models.BooleanField(u'Piilotus etusivulta', help_text=u'Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.', default=False)
+    THUMBNAIL_REQ = (
+        (0, u'Vaadi erillinen pikkukuva.'),
+        (1, u'Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg/gif-tiedostoille).'),
+        (2, u'Salli pikkukuva (ei vaadittu).'),
+        (3, u'Älä salli pikkukuvaa.'),
+    )
+    thumbnail_pref = models.IntegerField(u'Pikkukuvan asetukset', choices=THUMBNAIL_REQ, default=2, help_text=u'Pikkukuvan luonti ja asettaminen.')
     
     def __unicode__(self):
         return self.event.name + ': ' + self.name

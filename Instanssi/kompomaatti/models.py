@@ -65,8 +65,9 @@ class Compo(models.Model):
     voting_end = models.DateTimeField(u'Äänestyksen päättymisaika', help_text=u'Päättymisaika entryjen äänestykselle.')
     entry_sizelimit = models.IntegerField(u'Kokoraja entryille', help_text=u"Kokoraja entrytiedostoille (tavua).", default=134217728) # Default to 128M
     source_sizelimit = models.IntegerField(u'Kokoraja sorsille', help_text=u"Kokoraja sorsatiedostoille (tavua).", default=134217728) # Default to 128M
-    formats = models.CharField(u'Sallitut tiedostopäätteet', max_length=128, help_text=u"Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. \"png|jpg|gif\".", default="zip|7z|gz|bz2")
+    formats = models.CharField(u'Sallitut tiedostopäätteet', max_length=128, help_text=u"Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. \"png|jpg\".", default="zip|7z|gz|bz2")
     source_formats = models.CharField(u'Sallitut lähdekoodipaketin päätteet', max_length=128, help_text=u"Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna", default="zip|7z|gz|bz2")
+    image_formats = models.CharField(u'Sallitut kuvatiedoston päätteet', max_length=128, help_text=u"Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna", default="png|jpg")
     active = models.BooleanField(u'Aktiivinen', help_text=u"Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.", default=True)
     show_voting_results = models.BooleanField(u'Näytä tulokset', help_text=u"Näytä äänestustulokset.", default=False)
     ENTRY_VIEW_TYPES = (
@@ -118,6 +119,9 @@ class Compo(models.Model):
     
     def readable_source_formats(self):
         return ', '.join(self.source_formats.split('|'))
+    
+    def readable_image_formats(self):
+        return ', '.join(self.image_formats.split('|'))
 
 class Entry(models.Model):
     user = models.ForeignKey(User, verbose_name=u"käyttäjä", help_text=u"Käyttäjä jolle entry kuuluu")

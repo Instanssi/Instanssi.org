@@ -113,6 +113,7 @@ class AdminCompoForm(forms.ModelForm):
                 'source_sizelimit',
                 'formats',
                 'source_formats',
+                'image_formats',
                 'thumbnail_pref',
                 'active',
                 'show_voting_results',

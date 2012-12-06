@@ -69,7 +69,7 @@ def compo_details(request, event_id, compo_id):
             pass
         
     # Handle entry adding
-    if request.method == 'POST' and compo.is_adding_open() and can_vote:
+    if request.method == 'POST' and compo.is_adding_open():
         # Make sure user is authenticated
         if not request.user.is_active or not request.user.is_authenticated():
             raise Http403

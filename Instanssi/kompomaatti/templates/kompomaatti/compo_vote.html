@@ -89,8 +89,8 @@
 {% for entry in nvoted_entries %}
         <li id="{{ entry.id }}" class="vote-list-item">
             <span class="vote-entry" title="{{ entry.name }} by {{ entry.creator }}">
-                {{ entry.name|truncatechars:22 }}<br />
-                <span class="vote-entry-desc">by {{ entry.creator|truncatechars:30 }}</span>
+                {{ entry.name|truncatechars:30 }}<br />
+                <span class="vote-entry-desc">by {{ entry.creator|truncatechars:35 }}</span>
             </span>
             <div class="vote-right">
                 <span class="vote-rank"></span>
@@ -103,8 +103,8 @@
 {% for entry in voted_entries %}
         <li id="{{ entry.id }}" class="vote-list-item">
             <span class="vote-entry" title="{{ entry.name }} by {{ entry.creator }}">
-                {{ entry.name|truncatechars:22 }}<br />
-                <span class="vote-entry-desc">by {{ entry.creator|truncatechars:30 }}</span>
+                {{ entry.name|truncatechars:30 }}<br />
+                <span class="vote-entry-desc">by {{ entry.creator|truncatechars:35 }}</span>
             </span>
             <div class="vote-right">
                 <span class="vote-rank"></span>

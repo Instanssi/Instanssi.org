@@ -54,15 +54,21 @@ eng = 465
 }
 
 #content #blog .message {
+    margin-top: 1em;
     text-align: justify;
+    margin-bottom: 0px;
 }
 
-#content #blog .title {
+#content #blog h2 {
 	color: #1fa3f5; 
-	margin-top: 20px; 
 	font-variant: small-caps; 
 	font-size: 16px; 
 	letter-spacing: 2px;
+	margin-bottom: 0;
+}
+
+#content #blog time {
+    margin: 0px;
 }
 
 #content #blog img {

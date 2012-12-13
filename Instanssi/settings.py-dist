@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'Instanssi.ext_programme',
     'Instanssi.screenshow',
     'Instanssi.dblog',
+    'Instanssi.json_api',
     'imagekit',
     'south',
     'crispy_forms',

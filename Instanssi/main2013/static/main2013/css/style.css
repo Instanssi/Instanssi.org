@@ -43,8 +43,8 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
 #page-header .header-info h1 { font-size: 47px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 60px 0px 0px 0px; line-height: 20%; }
 #page-header .header-info .tagline { font-size: 20px; font-family: 'Exo', sans-serif;  color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
-#page-header .header-info .time { font-size: 40px; font-family: 'Exo', sans-serif; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
-#page-header .header-info .place { font-size: 40px; color: #fff; font-weight: 800; font-variant: small-caps;line-height: 80%; letter-spacing: 2px; }
+#page-header .header-info .time { font-size: 30px; font-family: 'Exo', sans-serif; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
+
 
 
 /* navigation */
@@ -268,8 +268,7 @@ background-image: -webkit-gradient(
 @media (max-width: 480px) { 
 	#page-header .header-info h1 {font-size: 36px; }
 	#page-header .header-info .tagline { font-size: 16px; }
-	#page-header .header-info .time { font-size: 30px; }
-	#page-header .header-info .place { font-size: 30px; }
+	#page-header .header-info .time { font-size: 26px; }
 }
 
 

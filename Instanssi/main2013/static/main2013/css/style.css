@@ -118,9 +118,13 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-footer section { float: left; }
 #page-footer section h1 { font-size: 18px; color: #fff; font-weight: bold; }
 #page-footer .sitemap { width: 150px; }
-#page-footer .sponsors { width: 600px;  }
+#page-footer .sponsors { width: 740px;  }
 #page-footer .sponsors  h1 {  }
-#page-footer .sponsors .sponsor-placeholder { width: 128px; height: 71px; border: 1px dashed #333; float: left; margin: 0px 20px 20px 0px; }
+#page-footer .sponsors .sponsor { float: left; margin: 0% 1% 1% 0%; }
+#page-footer .sponsors .sponsors-container { }
+#page-footer .sponsors .sponsor.white { background: #fff; }
+#page-footer .sponsors .sponsor a { display: block; line-height: 0px; }
+#page-footer .sponsors .sponsor img { background: #fff; padding: 4%; }
 #page-footer .contact { width: 150px;  }
 #page-footer .menu-item a { color: #ccc; text-decoration: none; }
 #page-footer .menu-item a:hover { padding-left: 5px; }
@@ -202,6 +206,8 @@ background-image: -webkit-gradient(
 	#content aside { width: 324px; }
 	#twitter-widget{ width: 300px; }
 
+	#page-footer .sponsors { width: 800px; }
+
 }
  
  
@@ -212,7 +218,7 @@ background-image: -webkit-gradient(
 	#twitter-widget{ width: 200px; }
 	
 	#page-footer .sitemap { width: 20%; margin: 0; }
-	#page-footer .sponsors { width: 80%; margin: 0;}
+	#page-footer .sponsors { width: 100%; margin: 0;}
 	#page-footer .contact { float: none; }
 }
  
@@ -260,7 +266,7 @@ background-image: -webkit-gradient(
 	#primary table, #primary tbody { display: block; width: 100%; }
 	#primary table td { display: block; width: 92%; padding: 1% 4%;}
 	
-	#page-footer .sponsors .sponsor-placeholder { width: 47%; margin: 1%;  }
+	#page-footer .sponsors .sponsor { width: 42%; margin: 4%;  }
 }
 
 

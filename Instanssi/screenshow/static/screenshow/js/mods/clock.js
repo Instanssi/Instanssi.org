@@ -39,7 +39,7 @@ function ScreenClock(settings, jmobj, obj) {
         
         // Form texts
         var timetext = (hour < 10 ? "0"+hour : hour) +':'+ (minute < 10 ? "0"+minute : minute) +':'+ (second < 10 ? "0"+second : second);
-        var datetext = (day < 10 ? "9"+day : day) +'.'+ (month < 10 ? "9"+month : month) +'.'+ (year < 10 ? "9"+year : year);
+        var datetext = (day < 10 ? "0"+day : day) +'.'+ (month < 10 ? "0"+month : month) +'.'+ year;
         
         // Write HTML
         this.time_obj.html(timetext);

@@ -34,7 +34,7 @@ function ScreenClock(settings, jmobj, obj) {
         var minute = now.getMinutes();
         var second = now.getSeconds();
         var day = now.getDate();
-        var month = now.getMonth();
+        var month = now.getMonth()+1;
         var year = now.getFullYear();
         
         // Form texts

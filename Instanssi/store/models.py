@@ -3,8 +3,10 @@
 from django.db import models
 from django.contrib import admin
 from datetime import datetime
+from Instanssi.kompomaatti.models import Event
 
 class StoreItem(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', blank=True, null=True)
     name = models.CharField(u'Tuotteen nimi', max_length=255)
     description = models.TextField(u'Tuotteen kuvaus')
     price = models.FloatField(u'Tuotteen hinta')

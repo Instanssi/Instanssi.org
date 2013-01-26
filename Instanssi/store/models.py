@@ -18,6 +18,11 @@ class StoreItem(models.Model):
     def __unicode__(self):
         return self.name
 
+    @staticmethod
+    def itemsForEvent(event_id):
+        return StoreItem.objects.filter(max__gt=0, available=True,
+                                        event_id=event_id)
+
 
 class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', max_length=255)

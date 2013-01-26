@@ -5,8 +5,14 @@ from django.db import transaction
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from common.responses import JSONResponse
-from Instanssi.store.forms import StoreTransactionForm
+#from Instanssi.settings import SVM_ID, SVM_SECRET
+from Instanssi.store.svmlib import svm_request
+from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
+
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Shows a simple error message
@@ -36,14 +42,10 @@ def transaction_handler(request):
 @transaction.commit_on_success
 def purchase_handler(request):
     if request.method == 'POST':
-        transaction_form = StoreTransactionForm(request.POST)
+        transaction_form = StoreOrderForm(request.POST)
         if transaction_form.is_valid():
             new_transaction = transaction_form.save(commit=False)
             new_transaction.time = datetime.now()
-
-            # generate secret hash id for event
-            new_transaction.token = "super secret hash goes here"
-
             new_transaction.save()
 
             # create TransactionItems for each item
@@ -66,17 +68,15 @@ def purchase_handler(request):
                 transaction_items.append(new_item)
 
             # call Suomen Verkkomaksut API (TODO!)
-            # res = svm_query(new_transaction, transaction_items)
+            #message = svm_query(SVM_ID, SVM_SECRET,
 
             # redirect user to SV
             # ... or not. Waiting for implementation.
             return JSONResponse({
-                'error': 'Unimplemented! We got your data though.',
-                'transaction': unicode(new_transaction),
-                'transaction_items': transaction_items
+                'error': 'Unimplemented! We got your data though.'
             })
     else:
-        transaction_form = StoreTransactionForm()
+        transaction_form = StoreOrderForm()
 
     # Copypasta from Instanssi.main2013.views
     templatename = 'liput'

@@ -87,7 +87,6 @@ TEST_RUNNER = 'testing.customrunner.CustomRunner'
 # Suomen Verkkomaksut
 VMAKSUT_ID = u'13466'; # Test ID 
 VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'; # Test secret
-VMAKSUT_URL = 'https://payment.verkkomaksut.fi';
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG

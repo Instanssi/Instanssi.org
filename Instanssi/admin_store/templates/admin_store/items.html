@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ block.super }}{% endblock %}
+{% block title %}{{ block.super }} - Tuotteet{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -14,10 +14,11 @@
 
 {% block crumbs %}
 {{ block.super }}
+        &raquo; <a href="{% url 'manage-store:items' selected_event_id %}">Tuotteet</a>
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Verkkokauppa</h2>
+<h2>Tuotteet</h2>
 
 {% endblock %}

@@ -11,8 +11,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 @staff_access_required
-def index(request, sel_event_id):
+def items(request, sel_event_id):
 
     # Render response
-    return admin_render(request, "admin_store/index.html", {
+    return admin_render(request, "admin_store/items.html", {
+        'selected_event_id': int(sel_event_id),
+    })
+    
+    
+@staff_access_required
+def status(request, sel_event_id):
+
+    # Render response
+    return admin_render(request, "admin_store/status.html", {
+        'selected_event_id': int(sel_event_id),
     })

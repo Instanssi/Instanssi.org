@@ -20,6 +20,13 @@
         <li class="menuitem"><a href="{% url 'manage-programme:index' selected_event_id %}">Ohjelma</a></li>
         <li class="menuitem"><a href="{% url 'manage-timingtool:index' selected_event_id %}">Ajastus</a></li>
         <li class="menuitem">
+            <a href="{% url 'manage-store:index' selected_event_id %}">Kauppa<span class="navmenu-icon-right"></span></a>
+            <ul class="sub-level">
+                <li class="menuitem"><a href="{% url 'manage-store:items' selected_event_id %}">Tuotteet</a></li>
+                <li class="menuitem"><a href="{% url 'manage-store:status' selected_event_id %}">Tila</a></li>
+            </ul>
+        </li>
+        <li class="menuitem">
         	<a href="{% url 'manage-arkisto:index' selected_event_id %}">Arkisto<span class="navmenu-icon-right"></span></a>
             <ul class="sub-level">
             	<li class="menuitem"><a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Arkistoija</a></li>

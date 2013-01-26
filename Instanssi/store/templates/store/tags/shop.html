@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% if store_items %}
+<form id="instanssi_store" method="post" action="{% url 'store:purchase' %}">
+<fieldset>
+    <legend>Tuotteet</legend>
+    <ul class="store-catalog">
+    {% for item in store_items %}
+    <li class="catalog-item">
+        <div class="item-title">{{ item.name }}</div>
+        <div class="item-description">{{ item.description }}</div>
+        <div class="item-price">{{ item.price }} €</div>
+        <input class="item-amount" type="number"
+               name="item-{{ item.id }}" value="0"/>
+    </li>
+{% endfor %}
+</ul>
+</fieldset>
+{% crispy transaction_form %}
+</form>
+<script type="text/javascript" src="{% static 'store/js/store.js' %}">
+</script>
+{% else %}
+No items! Wat.
+{% endif %}

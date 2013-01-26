@@ -1,4 +1,5 @@
 {% extends "main2013/base.html" %}
+{% load store_tags %}
 
 {% block head %}
 {{ block.super }}
@@ -12,8 +13,6 @@
 {{ block.super }}
 
 <h1>Liput</h1>
-<p>
-    Lipunmyynti avataan tammikuun kuluessa.
-</p>
+{% render_store event_id transaction_form|default:"" %}
 
 {% endblock %}

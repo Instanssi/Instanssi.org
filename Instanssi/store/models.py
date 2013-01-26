@@ -19,7 +19,7 @@ class StoreItem(models.Model):
         return self.name
 
     @staticmethod
-    def itemsForEvent(event_id):
+    def items_for_event(event_id):
         return StoreItem.objects.filter(max__gt=0, available=True,
                                         event_id=event_id)
 

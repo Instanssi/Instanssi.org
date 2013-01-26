@@ -14,7 +14,7 @@ class StoreOrderForm(forms.ModelForm):
         self.helper.form_tag = False
 
         item_fields = Fieldset(u'Saatavilla')
-        for item in StoreItem.itemsForEvent(event_id):
+        for item in StoreItem.items_for_event(event_id):
             name = "item-%s" % item.id
             self.fields[name] = forms.IntegerField()
             self.fields[name].label = item.name

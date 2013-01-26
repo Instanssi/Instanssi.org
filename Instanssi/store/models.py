@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib import admin
 from datetime import datetime
 from Instanssi.kompomaatti.models import Event
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', blank=True, null=True)
@@ -12,6 +14,8 @@ class StoreItem(models.Model):
     price = models.FloatField(u'Tuotteen hinta')
     max = models.IntegerField(u'Kappaletta saatavilla')
     available = models.BooleanField(u'Ostettavissa', default=False)
+    imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
+    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
     def __unicode__(self):
         return self.name
 

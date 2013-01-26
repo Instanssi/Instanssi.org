@@ -16,6 +16,7 @@ class StoreItem(models.Model):
     available = models.BooleanField(u'Ostettavissa', default=False)
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
+    
     def __unicode__(self):
         return self.name
 
@@ -34,6 +35,7 @@ class StoreTransaction(models.Model):
     postalcode = models.CharField(u'Postinumero', max_length=16)
     city = models.CharField(u'Postitoimipaikka', max_length=64)
     country = models.CharField(u'Maa', max_length=2)
+    
     def __unicode__(self):
         return self.firstname + u' ' + self.lastname
     
@@ -41,5 +43,6 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
     amount = models.IntegerField(u'Ostettu')
+    
     def __unicode__(self):
         return '"'+self.item.title + u'" for ' + self.item.transaction

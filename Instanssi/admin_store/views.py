@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from Instanssi.store.models import *
-from Instanssi.admin_store.forms import StoreItemForm, StoreItemEditForm
+from Instanssi.admin_store.forms import StoreItemForm
 
 # Logging related
 import logging
@@ -65,13 +65,13 @@ def edit_item(request, item_id):
         
     # Handle form data
     if request.method == 'POST':
-        form = StoreItemEditForm(request.POST, instance=item)
+        form = StoreItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
             logger.info('Store Item "'+item.name+'" edited.', extra={'user': request.user})
             return HttpResponseRedirect(reverse('manage-store:items'))
     else:
-        form = StoreItemEditForm(instance=item)
+        form = StoreItemForm(instance=item)
 
     # Render response
     return admin_render(request, "admin_store/itemedit.html", {

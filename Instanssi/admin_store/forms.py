@@ -28,26 +28,3 @@ class StoreItemForm(forms.ModelForm):
     class Meta:
         model = StoreItem
         exclude = ('imagefile_thumbnail')
-        
-class StoreItemEditForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(StoreItemEditForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Fieldset(
-                u'Tuote',
-                'event',
-                'name',
-                'description',
-                'price',
-                'available',
-                'imagefile_original',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
-                )
-            )
-        )
-        
-    class Meta:
-        model = StoreItem
-        exclude = ('imagefile_thumbnail','max')

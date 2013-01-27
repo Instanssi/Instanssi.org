@@ -1,4 +1,4 @@
-{% extends "admin_base/events_base.html" %}
+{% extends "admin_base/generic_base.html" %}
 
 {% block title %} - Verkkokauppa{% endblock %}
 
@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-store:index' selected_event_id %}">Verkkokauppa</a>
+		&raquo; <a href="{% url 'manage-store:index' %}">Verkkokauppa</a>
 {% endblock %}
 
 {% block content %}

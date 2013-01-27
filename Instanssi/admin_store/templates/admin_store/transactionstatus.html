@@ -1,0 +1,107 @@
+{% extends "admin_store/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Tila - Myyntitapahtuman tiedot{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-store:status' %}">Tila</a>
+        &raquo; <a href="{% url 'manage-store:transactionstatus' transaction_id %}">Myyntitapahtuman tiedot</a>
+        &raquo; Selaa
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Tila</h2>
+<h3>Maksajan tiedot</h3>
+<table style="width: auto;">
+    <thead>
+        <tr>
+            <th style="min-width: 150px;">Kenttä</th>
+            <th style="min-width: 200px;">Tieto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Etunimi</th>
+            <td>{{ transaction.firstname }}</td>
+        </tr>
+        <tr>
+            <th>Sukunimi</th>
+            <td>{{ transaction.lastname }}</td>
+        </tr>
+        <tr>
+            <th>Yritys</th>
+            <td>{{ transaction.company }}</td>
+        </tr>
+        <tr>
+            <th>Sähköposti</th>
+            <td>{{ transaction.email }}</td>
+        </tr>
+        <tr>
+            <th>Puhelin</th>
+            <td>{{ transaction.telephone }}</td>
+        </tr>
+        <tr>
+            <th>Kännykkä</th>
+            <td>{{ transaction.mobile }}</td>
+        </tr>
+        <tr>
+            <th>Katuosoite</th>
+            <td>{{ transaction.street }}</td>
+        </tr>
+        <tr>
+            <th>Postikoodi</th>
+            <td>{{ transaction.postalcode }}</td>
+        </tr>
+        <tr>
+            <th>Kaupunki</th>
+            <td>{{ transaction.city }}</td>
+        </tr>
+        <tr>
+            <th>Maa</th>
+            <td>{{ transaction.country }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Tilauksen tiedot</h3>
+{% if items %}
+    <table id="items_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nimi</th>
+                <th>Määrä</th>
+                <th>Yhteensä</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.item.name }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.total }} &euro;</td>
+            </tr>
+{% endfor %}
+            <tr>
+                <td colspan="3" style="text-align: right;">Yhteensä:</td>
+                <td>{{ transaction.total }} &euro;</td>
+            </tr>
+        </tbody>
+    </table>
+{% else %}
+    <p>Ei ostettuja tuotteita (mtäh? Nyt bugittaa.)</p>
+{% endif %}
+
+{% endblock %}

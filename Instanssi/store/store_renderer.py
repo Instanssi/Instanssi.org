@@ -1,31 +1,77 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from django.db import transaction
-from django.template import RequestContext
-from common.responses import JSONResponse
-from Instanssi.store.svmlib import svm_request
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from Instanssi.store.svmlib import svm_request,SVMException
 from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 
-def render_store(request, event_id):
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+
+# Renders store form, handles requests to Suomen Verkkomaksut
+def render_store(request, event_id, domain, success_url, failure_url):
     if request.method == 'POST':
         transaction_form = StoreOrderForm(request.POST, event_id=event_id)
 
         if transaction_form.is_valid():
-            new_transaction = transaction_form.save()
+            ta = transaction_form.save()
 
-            # call Suomen Verkkomaksut API (TODO!)
-            #message = svm_query(SVM_ID, SVM_SECRET,
+            product_list = []
+            for item in TransactionItem.objects.filter(transaction=ta):
+                product_list.append({
+                    'title': item.item.name,
+                    'code': str(item.item.id),
+                    'amount': str(item.amount),
+                    'price': str(item.item.price),
+                    'vat': '0',
+                    'type': 1,
+                })
 
-            # redirect user to SV
-            # ... or not. Waiting for implementation.
-            return JSONResponse({
-                'error': 'Unimplemented! We got your data though.'
-            })
+            svm_data = {
+                'orderNumber': str(ta.id),
+                'currency': 'EUR',
+                'locale': 'fi_FI',
+                'urlSet': {
+                    'success': domain+success_url,
+                    'failure': domain+failure_url,
+                    'notification': domain+reverse('store:notify'),
+                    'pending': '',
+                },
+                'orderDetails': {
+                    'includeVat': 1,
+                    'contact': {
+                        'telephone': ta.telephone,
+                        'mobile': ta.mobile,
+                        'email': ta.email,
+                        'firstName': ta.firstname,
+                        'lastName': ta.lastname,
+                        'companyName': ta.company,
+                        'address': {
+                            'street': ta.street,
+                            'postalCode': ta.postalcode,
+                            'postalOffice': ta.city,
+                            'country': ta.country.code
+                        }
+                    },
+                    'products': product_list,
+                },
+            }
             
-            # Redirect
-            #return HttpResponseRedirect("")
+            # Make a request
+            msg = None
+            try:
+                msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
+            except SVMException as ex:
+                return HttpResponseRedirect(failure_url)
+
+            # Save token, redirect
+            ta.token = msg['token']
+            ta.save()
+            return HttpResponseRedirect(msg['url'])
     else:
         transaction_form = StoreOrderForm(event_id=event_id)
         

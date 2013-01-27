@@ -97,6 +97,13 @@
             </li>
 {% endif %}
             <li class="menuitem">
+                <a href="{% url 'manage-store:index' %}">Verkkokauppa<span class="navmenu-icon-down"></span></a>
+                <ul class="sub-level">
+                    <li class="menuitem"><a href="{% url 'manage-store:items' %}">Tuotteet</a></li>
+                    <li class="menuitem"><a href="{% url 'manage-store:status' %}">Tila</a></li>
+                </ul>
+            </li>
+            <li class="menuitem">
             	<a href="{% url 'manage-events:index' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
             	<ul class="sub-level">
 {% render_base_events_nav %}

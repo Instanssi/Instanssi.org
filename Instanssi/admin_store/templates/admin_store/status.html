@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ block.super }} - Tila{% endblock %}
+{% block title %}{{ block.super }} - Ostotapahtumat{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -15,13 +15,13 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-store:status' %}">Tila</a>
+        &raquo; <a href="{% url 'manage-store:status' %}">Ostotapahtumat</a>
         &raquo; Selaa
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Tila</h2>
+<h2>Ostotapahtumat</h2>
 {% if transactions %}
     <table id="transactions_table" class="tablesorter">
         <thead>

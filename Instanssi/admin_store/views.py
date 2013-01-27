@@ -56,9 +56,17 @@ def transaction_status(request, transaction_id):
     if not request.user.has_perm('store.view_storetransaction'):
         raise Http403
     
+    # Get transaction
+    transaction = get_object_or_404(StoreTransaction, pk=transaction_id)
+    
+    # Get items
+    items = TransactionItem.objects.filter(transaction_id=transaction_id)
+    
     # Render response
     return admin_render(request, "admin_store/transactionstatus.html", {
         'transaction_id': int(transaction_id),
+        'transaction': transaction,
+        'items': items,
     })
     
 @staff_access_required

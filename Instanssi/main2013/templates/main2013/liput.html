@@ -1,8 +1,31 @@
 {% extends "main2013/base.html" %}
 {% load store_tags %}
+{% load static %}
 
 {% block head %}
 {{ block.super }}
+    <style type="text/css">
+        #instanssi_store fieldset {
+            border: 1px solid black;
+            width: 100%;
+            padding: 0.5em;
+        }
+        #instanssi_store .ctrlHolder {
+            padding: 0.1em;
+        }
+        #instanssi_store label {
+
+        }
+        #instanssi_store .formHint {
+
+            width: 100%;
+        }
+        #instanssi_store .textinput {
+            display: inline-block;
+            right: 0px;
+            width: 50%;
+        }
+    </style>
 {% endblock %}
 
 {% block jquery %}

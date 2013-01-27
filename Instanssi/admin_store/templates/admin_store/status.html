@@ -33,6 +33,7 @@
                 <th>Sähköposti</th>
                 <th>Aika</th>
                 <th>Yhteensä</th>
+                <th class="sorter-false">Lisätiedot</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.time|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.total }} &euro;</td>
+                <td><a href="{% url 'manage-store:transactionstatus' item.id %}">Tiedot</a></td>
             </tr>
 {% endfor %}
         </tbody>

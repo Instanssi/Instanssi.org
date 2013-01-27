@@ -41,6 +41,9 @@ def items(request):
     
 @staff_access_required
 def status(request):
+    if not request.user.has_perm('store.view_storetransaction'):
+        raise Http403
+    
     transactions = StoreTransaction.objects.all()
 
     # Render response
@@ -50,6 +53,9 @@ def status(request):
     
 @staff_access_required
 def transaction_status(request, transaction_id):
+    if not request.user.has_perm('store.view_storetransaction'):
+        raise Http403
+    
     # Render response
     return admin_render(request, "admin_store/transactionstatus.html", {
         'transaction_id': int(transaction_id),
@@ -88,8 +94,9 @@ def delete_item(request, item_id):
     # Delete entry
     try:
         item = StoreItem.objects.get(id=item_id)
-        item.delete()
-        logger.info('Store Item "'+item.name+'" deleted.', extra={'user': request.user})
+        if item.sold() == 0:
+            item.delete()
+            logger.info('Store Item "'+item.name+'" deleted.', extra={'user': request.user})
     except StoreItem.DoesNotExist:
         pass
     

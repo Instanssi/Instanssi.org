@@ -59,6 +59,7 @@ class StoreTransaction(models.Model):
     class Meta:
         verbose_name=u"transaktio"
         verbose_name_plural=u"transaktiot"
+        permissions = (("view_storetransaction", "Can view store transactions"),)
     
 class TransactionItem(models.Model):
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')

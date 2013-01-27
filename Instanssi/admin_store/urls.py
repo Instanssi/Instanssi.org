@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     'Instanssi.admin_store.views',
-    url(r'^$', 'status', name="index"),
+    url(r'^$', 'items', name="index"),
     url(r'^items/', 'items', name="items"),
     url(r'^status/', 'status', name="status"),
     url(r'^transactionstatus/(?P<transaction_id>\d+)/', 'transaction_status', name="transactionstatus"),

@@ -55,7 +55,7 @@
 {% if perms.store.change_storeitem %}
                     <a href="{% url 'manage-store:edit_item' item.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
-{% if perms.store.delete_storeitem %}
+{% if perms.store.delete_storeitem and item.sold == 0 %}
                     <a href="{% url 'manage-store:delete_item' item.id%}" class="delete_link">Poista</a>
 {% endif %}
                 </td>

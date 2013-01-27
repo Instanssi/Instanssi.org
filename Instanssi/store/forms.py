@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Forms for the Instanssi store.
 
-from datetime import datetime
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Hidden
@@ -70,7 +69,6 @@ class StoreOrderForm(forms.ModelForm):
         for each item in the post data."""
 
         new_transaction = super(StoreOrderForm, self).save(commit=False)
-        new_transaction.time = datetime.now()
 
         if commit:
             new_transaction.save()

@@ -32,7 +32,10 @@ class StoreItem(models.Model):
         return min(self.max - self.sold(), self.max_per_order)
 
     def sold(self):
-        res = TransactionItem.objects.filter(transaction__paid=1, item=self).aggregate(Sum('amount'))
+        res = TransactionItem.objects.filter(
+            transaction__time_paid__isnull=False,
+            item=self
+        ).aggregate(Sum('amount'))
         if res['amount__sum'] is None:
             return 0
         return res['amount__sum']
@@ -45,8 +48,8 @@ class StoreItem(models.Model):
 
 class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
-    time = models.DateTimeField(u'Aika', help_text=u'Maksuaika')
-    paid = models.BooleanField(u'Maksettu', help_text=u'Onko tuote maksettu')
+    time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
+    time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
 
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
@@ -61,6 +64,10 @@ class StoreTransaction(models.Model):
 
     def __unicode__(self):
         return u'%s %s %s' % (self.firstname, self.lastname, self.time)
+
+    @property
+    def paid(self):
+        return self.time_paid is not None
 
     def total(self):
         ret = 0.0

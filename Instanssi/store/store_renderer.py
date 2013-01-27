@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from django.db import transaction
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -69,6 +70,7 @@ def render_store(request, event_id, domain, success_url, failure_url):
                 return HttpResponseRedirect(failure_url)
 
             # Save token, redirect
+            ta.time_created = datetime.now()
             ta.token = msg['token']
             ta.save()
             return HttpResponseRedirect(msg['url'])

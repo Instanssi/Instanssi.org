@@ -10,15 +10,67 @@
 
 {% block jquery %}
 {{ block.super }}
+    $("#items_table").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#items_pager")});
+    $(".delete_link").click(function(){
+        return confirm("Haluatko varmasti poistaa tuotteen ?"); 
+    });
 {% endblock %}
 
 {% block crumbs %}
 {{ block.super }}
         &raquo; <a href="{% url 'manage-store:items' %}">Tuotteet</a>
+        &raquo; Selaa
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 <h2>Tuotteet</h2>
+{% if items %}
+    <table id="items_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tapahtuma</th>
+                <th>Nimi</th>
+                <th>Hinta</th>
+                <th>Saatavilla</th>
+                <th>Ostettu</th>
+                <th>Ostettavissa</th>
+                <th>Kuva</th>
+                <th class="sorter-false management_field"></th>
+            </tr>
+        </thead>
+        <tbody>
+{% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.event.name }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }} &euro;</td>
+                <td>{{ item.max }}</td>
+                <td>---</td>
+                <td>{% if item.available %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{% if item.imagefile_original %}<a href="{{ item.imagefile_original.url }}">Linkki</a>{% else %}Ei kuvaa.{% endif %}</td>
+                <td>
+{% if perms.store.change_storeitem %}
+                    <a href="{% url 'manage-store:edit_item' item.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+{% if perms.store.delete_storeitem %}
+                    <a href="{% url 'manage-store:delete_item' item.id%}" class="delete_link">Poista</a>
+{% endif %}
+                </td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <div id="items_pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
+{% else %}
+    <p>Ei tuotteita!</p>
+{% endif %}
 
+{% if perms.store.add_storeitem %}
+{% crispy addform addform.helper %}
+{% endif %}
 {% endblock %}

@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ block.super }} - Tila{% endblock %}
+{% block title %}{{ block.super }} - Tila - Myyntitapahtuman tiedot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -15,6 +15,7 @@
 {% block crumbs %}
 {{ block.super }}
         &raquo; <a href="{% url 'manage-store:status' %}">Tila</a>
+        &raquo; <a href="{% url 'manage-store:transactionstatus' transaction_id %}">Myyntitapahtuman tiedot</a>
         &raquo; Selaa
 {% endblock %}
 

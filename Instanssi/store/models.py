@@ -9,12 +9,12 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 class StoreItem(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', blank=True, null=True)
-    name = models.CharField(u'Tuotteen nimi', max_length=255)
-    description = models.TextField(u'Tuotteen kuvaus')
-    price = models.FloatField(u'Tuotteen hinta')
-    max = models.IntegerField(u'Kappaletta saatavilla')
-    available = models.BooleanField(u'Ostettavissa', default=False)
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
+    name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
+    description = models.TextField(u'Tuotteen kuvaus', help_text=u'Tuotteen pitkä kuvaus.')
+    price = models.FloatField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa.')
+    max = models.IntegerField(u'Kappaletta saatavilla', help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
+    available = models.BooleanField(u'Ostettavissa', default=False, help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
     
@@ -32,9 +32,9 @@ class StoreItem(models.Model):
         return res['amount__sum']
 
 class StoreTransaction(models.Model):
-    token = models.CharField(u'Palvelutunniste', max_length=255)
-    time = models.DateTimeField(u'Aika')
-    paid = models.BooleanField(u'Maksettu')
+    token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
+    time = models.DateTimeField(u'Aika', help_text=u'Maksuaika')
+    paid = models.BooleanField(u'Maksettu', help_text=u'Onko tuote maksettu')
     
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)

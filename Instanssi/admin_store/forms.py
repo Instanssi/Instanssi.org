@@ -5,6 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.store.models import StoreItem
 
+
 class StoreItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StoreItemForm, self).__init__(*args, **kwargs)
@@ -18,13 +19,14 @@ class StoreItemForm(forms.ModelForm):
                 'price',
                 'max',
                 'available',
+                'max_per_order',
                 'imagefile_original',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
         )
-        
+
     class Meta:
         model = StoreItem
         exclude = ('imagefile_thumbnail')

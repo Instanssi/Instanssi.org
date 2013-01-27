@@ -35,6 +35,7 @@
                 <th>Hinta</th>
                 <th>Saatavilla</th>
                 <th>Ostettu</th>
+                <th>Maksimi per tilaus</th>
                 <th>Ostettavissa</th>
                 <th>Kuva</th>
                 <th class="sorter-false management_field"></th>
@@ -49,6 +50,7 @@
                 <td>{{ item.price }} &euro;</td>
                 <td>{{ item.max }}</td>
                 <td>{{ item.sold }}</td>
+                <td>{{ item.max_per_order }}</td>
                 <td>{% if item.available %}Kyllä{% else %}Ei{% endif %}</td>
                 <td>{% if item.imagefile_original %}<a href="{{ item.imagefile_original.url }}">Linkki</a>{% else %}Ei kuvaa.{% endif %}</td>
                 <td>

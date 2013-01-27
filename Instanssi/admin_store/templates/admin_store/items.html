@@ -48,7 +48,7 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.price }} &euro;</td>
                 <td>{{ item.max }}</td>
-                <td>---</td>
+                <td>{{ item.sold }}</td>
                 <td>{% if item.available %}Kyllä{% else %}Ei{% endif %}</td>
                 <td>{% if item.imagefile_original %}<a href="{{ item.imagefile_original.url }}">Linkki</a>{% else %}Ei kuvaa.{% endif %}</td>
                 <td>

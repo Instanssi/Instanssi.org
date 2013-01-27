@@ -10,6 +10,7 @@
 
 {% block jquery %}
 {{ block.super }}
+    $("#transactions_table").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#transactions_pager")});
 {% endblock %}
 
 {% block crumbs %}
@@ -21,5 +22,37 @@
 {% block content %}
 {{ block.super }}
 <h2>Tila</h2>
-
+{% if transactions %}
+    <table id="transactions_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Maksettu</th>
+                <th>Etunimi</th>
+                <th>Sukunimi</th>
+                <th>Sähköposti</th>
+                <th>Aika</th>
+                <th>Yhteensä</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for item in transactions %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{% if item.paid %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{{ item.firstname }}</td>
+                <td>{{ item.lastname }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.time|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.totalcost }} &euro;</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <div id="transactions_pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
+{% else %}
+    <p>Ei transaktioita.</p>
+{% endif %}
 {% endblock %}

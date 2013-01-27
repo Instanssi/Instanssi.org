@@ -1,0 +1,60 @@
+{% extends "admin_store/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Ostotapahtumat{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $("#transactions_table").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#transactions_pager")});
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-store:status' %}">Ostotapahtumat</a>
+        &raquo; Selaa
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Ostotapahtumat</h2>
+{% if transactions %}
+    <table id="transactions_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Maksettu</th>
+                <th>Etunimi</th>
+                <th>Sukunimi</th>
+                <th>Sähköposti</th>
+                <th>Aika</th>
+                <th>Yhteensä</th>
+                <th class="sorter-false">Lisätiedot</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for item in transactions %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{% if item.paid %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{{ item.firstname }}</td>
+                <td>{{ item.lastname }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.time|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.total }} &euro;</td>
+                <td><a href="{% url 'manage-store:transactionstatus' item.id %}">Tiedot</a></td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <div id="transactions_pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
+{% else %}
+    <p>Ei transaktioita.</p>
+{% endif %}
+{% endblock %}

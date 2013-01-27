@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ block.super }}{% endblock %}
+{% block title %}{{ block.super }} - Tuotteet - Muokkaa{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -14,10 +14,12 @@
 
 {% block crumbs %}
 {{ block.super }}
+        &raquo; <a href="{% url 'manage-store:items' %}">Tuotteet</a>
+        &raquo; Muokkaa
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-<h2>Verkkokauppa</h2>
-
+<h2>Muokkaa tuotetta</h2>
+{% crispy editform editform.helper %}
 {% endblock %}

@@ -50,7 +50,7 @@ class StoreTransaction(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.firstname, self.lastname)
     
-    def totalcost(self):
+    def total(self):
         ret = 0.0
         for item in TransactionItem.objects.filter(transaction=self):
             ret += item.total()

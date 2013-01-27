@@ -43,29 +43,9 @@ def transaction_handler(request):
 def purchase_handler(request):
     if request.method == 'POST':
         transaction_form = StoreOrderForm(request.POST)
+
         if transaction_form.is_valid():
-            new_transaction = transaction_form.save(commit=False)
-            new_transaction.time = datetime.now()
-            new_transaction.save()
-
-            # create TransactionItems for each item
-            post_items = filter(
-                lambda (k, v): k.startswith("item-") and k[5:] and v,
-                request.POST.items()
-            )
-            items = [(k[5:], v) for (k, v) in post_items]
-
-            transaction_items = []
-
-            for (item_id, amount) in items:
-                store_item = StoreItem.objects.get(id=int(item_id))
-                new_item = TransactionItem(
-                    item=store_item,
-                    transaction=new_transaction,
-                    amount=amount
-                )
-                new_item.save()
-                transaction_items.append(new_item)
+            new_transaction = transaction_form.save()
 
             # call Suomen Verkkomaksut API (TODO!)
             #message = svm_query(SVM_ID, SVM_SECRET,

@@ -26,6 +26,9 @@ class StoreItem(models.Model):
         verbose_name = u"tuote"
         verbose_name_plural = u"tuotteet"
 
+    def num_available(self):
+        return self.max - self.sold()
+
     def sold(self):
         res = TransactionItem.objects.filter(transaction__paid=1, item=self).aggregate(Sum('amount'))
         if res['amount__sum'] is None:

@@ -1,26 +1,29 @@
 {% extends "main2013/base.html" %}
 {% load store_tags %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block head %}
 {{ block.super }}
+    <script type="text/javascript" src="{% static 'store/js/store.js' %}"></script>
+    
     <style type="text/css">
-        #instanssi_store fieldset {
+        .uniForm fieldset {
             border: 1px solid black;
             width: 100%;
             padding: 0.5em;
         }
-        #instanssi_store .ctrlHolder {
+        .uniForm .ctrlHolder {
             padding: 0.1em;
         }
-        #instanssi_store label {
+        .uniForm label {
 
         }
-        #instanssi_store .formHint {
+        .uniForm .formHint {
 
             width: 100%;
         }
-        #instanssi_store .textinput {
+        .uniForm .textinput {
             display: inline-block;
             right: 0px;
             width: 50%;
@@ -36,6 +39,6 @@
 {{ block.super }}
 
 <h1>Liput</h1>
-{% render_store event_id transaction_form|default:"" %}
 
+{% crispy transaction_form transaction_form.helper %}
 {% endblock %}

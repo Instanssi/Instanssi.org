@@ -13,7 +13,6 @@ class StoreOrderForm(forms.ModelForm):
         self.event_id = kwargs.pop('event_id', None)
         super(StoreOrderForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
 
         item_fields = Fieldset(u'Saatavilla')
         for item in StoreItem.items_for_event(self.event_id):

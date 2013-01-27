@@ -2,9 +2,25 @@
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from Instanssi.store.store_renderer import render_store
 
 def pageloader(request, templatename):
     return render_to_response('main2013/'+templatename+'.html', {
         'event_id': 5, 
         'templatename': templatename,
     }, context_instance=RequestContext(request))
+    
+def tickets(request):
+    # Handle store request
+    ret = render_store(request, 5)
+    if type(ret) is not dict:
+        return ret
+    
+    # Template variables
+    vars = {
+        'event_id': 5, 
+        'templatename': 'liput',
+    }
+    
+    # Render page
+    return render_to_response('main2013/liput.html', dict(vars.items() + ret.items()), context_instance=RequestContext(request))

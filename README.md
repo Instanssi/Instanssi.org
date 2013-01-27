@@ -51,6 +51,7 @@ Kirjastot
 ---------
 * [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`

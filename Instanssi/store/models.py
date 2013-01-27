@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django_countries import CountryField
 from django.db.models import Sum
 from django.contrib import admin
 from datetime import datetime
@@ -56,7 +57,7 @@ class StoreTransaction(models.Model):
     street = models.CharField(u'Katuosoite', max_length=128)
     postalcode = models.CharField(u'Postinumero', max_length=16)
     city = models.CharField(u'Postitoimipaikka', max_length=64)
-    country = models.CharField(u'Maa', max_length=2)
+    country = CountryField(u'Maa', default='FI')
 
     def __unicode__(self):
         return u'%s %s %s' % (self.firstname, self.lastname, self.time)

@@ -307,19 +307,18 @@ def entry_delete(request, sel_event_id, entry_id):
     if not request.user.has_perm('kompomaatti.delete_entry'):
         raise Http403
     
-    # Delete entry
-    try:
-        entry = Entry.objects.get(pk=entry_id)
-        entry.entryfile.delete()
-        if entry.sourcefile:
-            entry.sourcefile.delete()
-        if entry.imagefile_original:
-            entry.imagefile_original.delete()
-        entry.delete()
-        logger.info('Compo entry "'+entry.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
-    except:
-        pass
+    # Get entry
+    entry = get_object_or_404(Entry, pk=entry_id)
     
+    # Delete entry
+    entry.entryfile.delete()
+    if entry.sourcefile:
+        entry.sourcefile.delete()
+    if entry.imagefile_original:
+        entry.imagefile_original.delete()
+    entry.delete()
+    logger.info('Compo entry "'+entry.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
+
     # Redirect
     return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
     

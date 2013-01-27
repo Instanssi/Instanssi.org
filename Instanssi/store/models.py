@@ -1,22 +1,36 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.db.models import Sum
 from django.contrib import admin
 from datetime import datetime
 from Instanssi.kompomaatti.models import Event
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class StoreItem(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', blank=True,
-                              null=True)
-    name = models.CharField(u'Tuotteen nimi', max_length=255)
-    description = models.TextField(u'Tuotteen kuvaus')
-    price = models.FloatField(u'Tuotteen hinta')
-    max = models.IntegerField(u'Kappaletta saatavilla')
-    available = models.BooleanField(u'Ostettavissa', default=False)
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
+    name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
+    description = models.TextField(u'Tuotteen kuvaus', help_text=u'Tuotteen pitkä kuvaus.')
+    price = models.FloatField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa.')
+    max = models.IntegerField(u'Kappaletta saatavilla', help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
+    available = models.BooleanField(u'Ostettavissa', default=False, help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
+    imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
+    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name = u"tuote"
+        verbose_name_plural = u"tuotteet"
+
+    def sold(self):
+        res = TransactionItem.objects.filter(transaction__paid=1, item=self).aggregate(Sum('amount'))
+        if res['amount__sum'] is None:
+            return 0
+        return res['amount__sum']
 
     @staticmethod
     def items_for_event(event_id):
@@ -25,9 +39,9 @@ class StoreItem(models.Model):
 
 
 class StoreTransaction(models.Model):
-    token = models.CharField(u'Palvelutunniste', max_length=255)
-    time = models.DateTimeField(u'Aika')
-    paid = models.BooleanField(u'Maksettu')
+    token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
+    time = models.DateTimeField(u'Aika', help_text=u'Maksuaika')
+    paid = models.BooleanField(u'Maksettu', help_text=u'Onko tuote maksettu')
 
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
@@ -40,22 +54,35 @@ class StoreTransaction(models.Model):
     city = models.CharField(u'Postitoimipaikka', max_length=64)
     country = models.CharField(u'Maa', max_length=2)
 
-    def _fullname(self):
-        return '%s %s' % (self.firstname, self.lastname)
-
     def __unicode__(self):
-        return "%s %s" % (self._fullname(), self.time)
+        return u'%s %s %s' % (self.firstname, self.lastname, self.time)
+
+    def total(self):
+        ret = 0.0
+        for item in TransactionItem.objects.filter(transaction=self):
+            ret += item.total()
+        return ret
+
+    class Meta:
+        verbose_name = u"transaktio"
+        verbose_name_plural = u"transaktiot"
+        permissions = (("view_storetransaction", "Can view store transactions"),)
 
 
 class TransactionItem(models.Model):
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
-    transaction = models.ForeignKey(StoreTransaction,
-                                    verbose_name=u'Ostotapahtuma')
+    transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
     amount = models.IntegerField(u'Määrä')
 
+    def total(self):
+        return self.amount * self.item.price
+
     def __unicode__(self):
-        return "%s (%i) for %s" % (self.item.name, self.amount,
-                                   self.transaction.__unicode__())
+        return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)
+
+    class Meta:
+        verbose_name = u"transaktiotuote"
+        verbose_name_plural = u"transaktiotuotteet"
 
 try:
     admin.site.register(StoreItem)

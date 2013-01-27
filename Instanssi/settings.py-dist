@@ -84,6 +84,10 @@ TEST_EXCLUDE = (
 TEST_RUN_ALL = False
 TEST_RUNNER = 'testing.customrunner.CustomRunner'
 
+# Suomen Verkkomaksut
+VMAKSUT_ID = u'13466'; # Test ID 
+VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'; # Test secret
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -154,6 +158,7 @@ INSTALLED_APPS = (
     'Instanssi.admin_utils',
     'Instanssi.admin_screenshow',
     'Instanssi.admin_timingtool',
+    'Instanssi.admin_store',
     'Instanssi.kompomaatti',
     'Instanssi.kompomaatti_eventselect',
     'Instanssi.ext_blog',

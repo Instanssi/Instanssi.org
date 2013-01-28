@@ -140,4 +140,4 @@ class StoreOrderForm(forms.ModelForm):
 
     class Meta:
         model = StoreTransaction
-        exclude = ('time_created', 'time_paid', 'token', 'paid')  # filled in later
+        exclude = ('time_created', 'time_paid', 'token', 'paid', 'key')

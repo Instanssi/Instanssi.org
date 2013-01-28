@@ -13,7 +13,7 @@ html , body { font-family: helvetica;   background: url('../images/snow.png'); }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
 h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; line-height: 90%; }
-h2, .item .title, .header  { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
+h2, .item .title, .header, form legend { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 b { font-weight: bold; }
@@ -23,8 +23,8 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 
 /* buttons */
-.btn { color: #fff !important; text-decoration: none !important; display: inline-block; padding: 10px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
-.btn:hover { color: #fff; opacity: 0.9; }
+.btn { border: 1px solid #FC9402; color: #fff !important; text-decoration: none !important; display: inline-block; padding: 6px 20px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
+.btn:hover { color: #fff; opacity: 0.8; }
 
 
 /* structure */
@@ -114,7 +114,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #map_canvas img { border:0; box-shadow: 0px 0px 0px #000; }
 
 /* footer */
-#page-footer { width: 100%;  background: #111; }
+#page-footer { width: 100%;  background: #333; }
 #page-footer section { float: left; }
 #page-footer section h1 { font-size: 18px; color: #fff; font-weight: bold; }
 #page-footer .sitemap { width: 150px; }
@@ -158,11 +158,22 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	transition: all 0.2s ease-in-out;
 }
 
+/* forms */
+form fieldset { border: none !important; }
+form legend { padding: 0px 10px; }
+form label { min-width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
+form .ctrlHolder { margin-bottom: 10px;  }
+form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px; }
+form input[type="text"] { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
+form select { width: 290px; padding: 5px; }
+form input[type="text"]:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
+.errorField { color: #FF0094; float: right; }
 
 /* gradients */
 h2, .item .title, .header,
 table th,
-.btn {
+.btn,
+form legend {
 	background: #26A8D3;
 	background-image: linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
 	background-image: -o-linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
@@ -178,8 +189,12 @@ table th,
 		color-stop(0.54, rgb(54,179,217))
 	);
 }
+
 .btn {
-	
+
+text-shadow: 0px 1px 1px #FF6600;
+border: 1px solid #FF9400;
+cursor: pointer;
 
 background-image: linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
 background-image: -o-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
@@ -220,6 +235,12 @@ background-image: -webkit-gradient(
 	#page-footer .sitemap { width: 20%; margin: 0; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
 	#page-footer .contact { float: none; }
+
+	/* forms */
+	form label {  }
+	form input[type="text"] { width: 96%; padding: 2%; }
+	form .errorField {   }
+
 }
  
  
@@ -240,8 +261,15 @@ background-image: -webkit-gradient(
 	#page-footer { position: static; height: auto; }
 	#content { padding-bottom: 40px; }
 }
- 
- 
+
+@media (max-width: 700px) { 	
+	/* forms */
+	form label { min-width: 1px; display: block; }
+	form input[type="text"] { width: 96%; padding: 2%; }
+	form select { width: 100%; }
+	form .errorField { padding: 0px; }
+}
+
 /* Landscape phones */
 @media (max-width: 480px) { 
 	#page-header nav .nav-btn { display: block; }
@@ -255,8 +283,7 @@ background-image: -webkit-gradient(
 	#page-header nav ul { background: transparent; max-height: 0px; overflow: hidden; }
 	.no-js #page-header nav ul,
 	#page-header nav ul.active { max-height: 255px; }
-	
-	
+
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 100%; }
 	#page-footer .menu-item { float: left; width: 49%; padding: 0px; }
 	#page-footer .menu-item a {display: block; padding: 15px 15px; }

@@ -14,5 +14,30 @@
 {% block content %}
 {{ block.super }}
 <h1>Lippu</h1>
-<p>Yhden liput tiedot</p>
+<table>
+    <tbody>
+        <tr>
+            <th>Tapahtuma:</th>
+            <td>{{ ticket.event.name }}</td>
+        </tr>
+        <tr>
+            <th>Lipun tyyppi:</th>
+            <td>{{ ticket.storeitem.name }}</td>
+        </tr>
+        <tr>
+            <th>Lipun omistaja/ostaja:</th>
+            <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
+        </tr>
+        <tr>
+            <th>Lipun omistajan sähköposti:</th>
+            <td>{{ ticket.owner_email }}</td>
+        </tr>
+        <tr>
+            <th>Tunniste:</th>
+            <td>{{ ticket.key }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ticket.key }}" width="160" height="160" alt="Lopun QR-koodi." />
 {% endblock %}

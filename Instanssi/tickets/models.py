@@ -11,6 +11,9 @@ class Ticket(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     key = models.CharField(u'Avain', max_length=40, help_text=u'Lippuavain')
     used = models.BooleanField(u'Käytetty', default=False, help_text=u'Lippu on käytetty')
+    owner_firstname = models.CharField(u'Etunimi', max_length=64, help_text=u'Lipun omistajan etunimi')
+    owner_lastname = models.CharField(u'Sukunimi', max_length=64, help_text=u'Lipun omistajan sukunimi')
+    owner_email = models.CharField(u'Sähköposti', max_length=255, help_text=u'Lipun omistajan sähköposti')
     
     def __unicode__(self):
         return self.key

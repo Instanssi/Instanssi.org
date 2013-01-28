@@ -8,3 +8,4 @@ content/uploads/*
 !content/static/index.html
 !content/uploads/index.html
 Instanssi/settings.py
+testing/output/*

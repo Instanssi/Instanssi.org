@@ -72,3 +72,17 @@ IDEjä
 * Eclipse (addonit: PyDev + EGIt)
 * Aptana Studio 3
 
+Testitapausten ajaminen
+-----------------------
+
+testing/ -hakemistossa on esimerkkejä Robot Framework - Selenium 2 -testeistä, joilla voidaan automatisoida nettisivujen klikkailua.
+
+Testien ajamiseen tarvitset robotframework-selenium2library -palikan:
+
+    pip install robotframework-selenium2library
+
+Tämän jälkeen testin voi ajaa testing-hakemistossa komennolla
+
+    pybot -d output/ testinnimi.txt
+
+Testi tuottaa output-hakemistoon testiraportin ja kuvakaappauksen lopputilastaan.

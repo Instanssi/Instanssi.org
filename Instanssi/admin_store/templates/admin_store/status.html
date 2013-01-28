@@ -31,7 +31,8 @@
                 <th>Etunimi</th>
                 <th>Sukunimi</th>
                 <th>Sähköposti</th>
-                <th>Aika</th>
+                <th>Ostettu</th>
+                <th>Maksettu</th>
                 <th>Yhteensä</th>
                 <th class="sorter-false">Lisätiedot</th>
             </tr>
@@ -44,7 +45,8 @@
                 <td>{{ item.firstname }}</td>
                 <td>{{ item.lastname }}</td>
                 <td>{{ item.email }}</td>
-                <td>{{ item.time|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.time_sold|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.time_paid|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.total }} &euro;</td>
                 <td><a href="{% url 'manage-store:transactionstatus' item.id %}">Tiedot</a></td>
             </tr>

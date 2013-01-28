@@ -70,7 +70,7 @@ class StoreTransaction(models.Model):
     country = CountryField(u'Maa', default='FI')
 
     def __unicode__(self):
-        return u'%s %s %s' % (self.firstname, self.lastname, self.time)
+        return u'%s %s' % (self.firstname, self.lastname)
 
     @property
     def paid(self):

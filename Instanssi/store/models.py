@@ -10,6 +10,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 
+
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
     name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
@@ -20,6 +21,13 @@ class StoreItem(models.Model):
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
     max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
+    DELIVERY_CHOICES=(
+        (0, u'Ei toimitusta'),
+        (1, u'Lippu'),
+        (2, u'Postitus'),
+        (3, u'Toimitus tapahtumassa')
+    )
+    delivery_type = models.IntegerField(u'Toimitustyyppi', default=0, choices=DELIVERY_CHOICES, help_text=u'Miten tuote toimitetaan asiakkaalle')
 
     def __unicode__(self):
         return self.name

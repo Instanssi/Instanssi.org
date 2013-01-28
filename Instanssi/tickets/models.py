@@ -16,7 +16,7 @@ class Ticket(models.Model):
     owner_email = models.CharField(u'Sähköposti', max_length=255, help_text=u'Lipun omistajan sähköposti')
     
     def __unicode__(self):
-        return self.key
+        return u'%s %s (%s)' % (self.owner_firstname, self.owner_lastname, self.key)
 
     class Meta:
         verbose_name = u"lippu"

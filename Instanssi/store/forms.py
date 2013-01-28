@@ -2,6 +2,7 @@
 # Forms for the Instanssi store.
 
 from django import forms
+from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import \
     Submit, Layout, Fieldset, ButtonHolder, Hidden, Div, HTML
@@ -15,12 +16,20 @@ class StoreOrderForm(forms.ModelForm):
         label=u'Vahvista sähköposti', max_length=25
     )
 
+    read_terms = forms.BooleanField(
+        label=u'Hyväksyn käyttöehdot', required=True
+    )
+
     def __init__(self, *args, **kwargs):
         self.event_id = kwargs.pop('event_id', None)
         super(StoreOrderForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'store'
+
+        self.fields['read_terms'].help_text = \
+            u'Olen lukenut <a href="%s" target="_blank">käyttöehdot</a> ' \
+            u'ja hyväksyn ne.' % reverse('store:terms')
 
         item_fields = Fieldset(u'Saatavilla', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):
@@ -54,6 +63,7 @@ class StoreOrderForm(forms.ModelForm):
                 'postalcode',
                 'city',
                 'country',
+                'read_terms',
                 ButtonHolder(
                     Submit('Buy', u'Osta')
                 ),

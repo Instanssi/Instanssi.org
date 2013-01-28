@@ -176,6 +176,7 @@ fieldset.store-items input[type="text"] { width: 140px; }
 .store-items .errorField { margin-right: 5%; max-width: 140px; }
 .store-details .errorField { margin-top: 8px; }
 .store-details .ctrlHolder { clear: both; }
+#div_id_read_terms label { width: auto; }
 
 /* gradients */
 h2, .item .title, .header,

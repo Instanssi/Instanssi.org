@@ -9,6 +9,7 @@ def pageloader(request, templatename):
     return render_to_response('main2013/'+templatename+'.html', {
         'event_id': 5, 
         'templatename': templatename,
+        'is_secure': request.is_secure(),
     }, context_instance=RequestContext(request))
     
 def tickets(request):
@@ -24,6 +25,7 @@ def tickets(request):
     vars = {
         'event_id': 5, 
         'templatename': 'liput',
+        'is_secure': request.is_secure(),
     }
     
     # Render page

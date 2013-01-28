@@ -4,17 +4,15 @@ import httplib
 import json
 import string
 import base64
-
+import hashlib
 
 class SVMException(Exception):
     pass
-
 
 def svm_validate(orderno, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
     return (authcode == m.hexdigest().upper())
-
 
 def svm_request(id, secret, data):
     # Some basic data

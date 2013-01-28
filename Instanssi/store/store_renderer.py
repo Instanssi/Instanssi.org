@@ -5,13 +5,14 @@ from django.db import transaction
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
-from Instanssi.store.svmlib import svm_request,SVMException
+from Instanssi.store.svmlib import svm_request, SVMException
 from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
+
 
 # Renders store form, handles requests to Suomen Verkkomaksut
 def render_store(request, event_id, domain, success_url, failure_url):
@@ -37,9 +38,9 @@ def render_store(request, event_id, domain, success_url, failure_url):
                 'currency': 'EUR',
                 'locale': 'fi_FI',
                 'urlSet': {
-                    'success': domain+success_url,
-                    'failure': domain+failure_url,
-                    'notification': domain+reverse('store:notify'),
+                    'success': domain + success_url,
+                    'failure': domain + failure_url,
+                    'notification': domain + reverse('store:notify'),
                     'pending': '',
                 },
                 'orderDetails': {
@@ -61,14 +62,14 @@ def render_store(request, event_id, domain, success_url, failure_url):
                     'products': product_list,
                 },
             }
-            
+
             # Make a request
             msg = None
             try:
                 msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
             except SVMException as ex:
-                a,b = ex.args
-                logger.warning('(%s) %s' % (b,a))
+                a, b = ex.args
+                logger.warning('(%s) %s' % (b, a))
                 return HttpResponseRedirect(failure_url)
             except Exception as ex:
                 logger.warning('%s.' % (ex))
@@ -81,5 +82,5 @@ def render_store(request, event_id, domain, success_url, failure_url):
             return HttpResponseRedirect(msg['url'])
     else:
         transaction_form = StoreOrderForm(event_id=event_id)
-        
+
     return {'transaction_form': transaction_form}

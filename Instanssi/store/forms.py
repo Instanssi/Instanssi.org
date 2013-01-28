@@ -3,26 +3,41 @@
 
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder, Hidden
+from crispy_forms.layout import \
+    Submit, Layout, Fieldset, ButtonHolder, Hidden, Div, HTML
 from Instanssi.store.models import StoreItem, TransactionItem, StoreTransaction
 
 
 class StoreOrderForm(forms.ModelForm):
+    """Displays an order form with items for a specific event listed."""
+
+    email_confirm = forms.EmailField(
+        label=u'Vahvista sähköposti', max_length=25
+    )
+
     def __init__(self, *args, **kwargs):
         self.event_id = kwargs.pop('event_id', None)
         super(StoreOrderForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
 
-        item_fields = Fieldset(u'Saatavilla')
+        self.helper = FormHelper()
+        self.helper.form_class = 'store'
+
+        item_fields = Fieldset(u'Saatavilla', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):
-            name = "item-%s" % item.id
+            name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
-                min_value=0, max_value=item.num_available()
+                initial=0, min_value=0, max_value=item.num_available(),
+                label=u'%s' % (item.name),
+                help_text=item.description, required=False
             )
-            self.fields[name].label = item.name
-            self.fields[name].help_text = item.description
-            self.fields[name].initial = 0
-            item_fields.fields.append(name)
+
+            item_fields.fields.append(
+                Div(
+                    HTML(u'<span class="item-price">%.2f €/kpl</span>'
+                         % item.price),
+                    name,
+                )
+            )
 
         self.helper.layout = Layout(
             item_fields,
@@ -31,6 +46,7 @@ class StoreOrderForm(forms.ModelForm):
                 'firstname',
                 'lastname',
                 'email',
+                'email_confirm',
                 'telephone',
                 'mobile',
                 'company',
@@ -40,28 +56,53 @@ class StoreOrderForm(forms.ModelForm):
                 'country',
                 ButtonHolder(
                     Submit('Buy', u'Osta')
-                )
+                ),
+                css_class='store-details'
             )
         )
 
     def _dataitems(self):
-        item_keys = filter(
-            lambda k: k.startswith('item-'),
-            [x for x in self.data]
-        )
-        return [(k[5:], int(self.data[k][0])) for k in item_keys]
+        for key, value in self.data.iteritems():
+            try:
+                if key.startswith('item-') and int(value):
+                    yield (key[5:], int(value))
+            except:
+                continue
 
     def clean(self):
         cleaned_data = super(StoreOrderForm, self).clean()
+        total_items = 0
+
+        fails = []
 
         # also check that the purchase amount for each field makes sense
         for (item_id, amount) in self._dataitems():
             store_item = StoreItem.objects.get(id=int(item_id))
+            total_items += amount
             if store_item.num_available() < amount:
-                raise forms.ValidationError(
-                    u"Esinettä '%s' ei ole saatavilla riittävästi!"
+                fails.append(
+                    u'Esinettä "%s" ei ole saatavilla riittävästi!'
                     % store_item.name
                 )
+
+        if not total_items:
+            fails.append(u'Tilauksessa on oltava ainakin yksi esine!')
+
+        if 'email' in self.data and 'email_confirm' in self.data:
+            if self.data['email'] != self.data['email_confirm']:
+                if not 'email_confirm' in self._errors:
+                    self._errors['email_confirm'] = self.error_class()
+                self._errors['email_confirm'].append(
+                    u'Osoitteet eivät täsmää!'
+                )
+                fails.append(
+                    u'Vahvista sähköpostiosoitteesi kirjoittamalla sama '
+                    u'osoite molempiin kenttiin!'
+                )
+
+        if fails:
+            raise forms.ValidationError(fails)
+
         return cleaned_data
 
     def save(self, commit=True):

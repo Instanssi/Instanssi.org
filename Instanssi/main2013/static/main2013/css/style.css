@@ -161,13 +161,21 @@ html, body { margin: 0; padding: 0; height: 100%; }
 /* forms */
 form fieldset { border: none !important; }
 form legend { padding: 0px 10px; }
-form label { min-width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
-form .ctrlHolder { margin-bottom: 10px;  }
+form label { width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
+form .ctrlHolder { margin-bottom: 10px; }
 form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px; }
 form input[type="text"] { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
 form select { width: 290px; padding: 5px; }
 form input[type="text"]:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
-.errorField { color: #FF0094; float: right; }
+fieldset.store-items input[type="text"] { width: 140px; }
+
+.store-details label, .store-details input { vertical-align: middle; }
+.item-price { font-family: 'Exo',sans-serif; font-size: 16px; }
+.errorField, .item-price { float: right; }
+.errorField, #errorMsg li { color: #FF0094; }
+.store-items .errorField { margin-right: 5%; max-width: 140px; }
+.store-details .errorField { margin-top: 8px; }
+.store-details .ctrlHolder { clear: both; }
 
 /* gradients */
 h2, .item .title, .header,
@@ -240,7 +248,6 @@ background-image: -webkit-gradient(
 	form label {  }
 	form input[type="text"] { width: 96%; padding: 2%; }
 	form .errorField {   }
-
 }
  
  

@@ -34,7 +34,7 @@ def render_store(request, event_id, domain, success_url, failure_url):
 
             svm_data = {
                 'orderNumber': str(ta.id),
-                #'currency': 'EUR',
+                'currency': 'EUR',
                 'locale': 'fi_FI',
                 'urlSet': {
                     'success': domain+success_url,

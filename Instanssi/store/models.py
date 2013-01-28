@@ -9,8 +9,6 @@ from Instanssi.kompomaatti.models import Event
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
-
-
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
     name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
@@ -58,6 +56,7 @@ class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
     time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
+    key = models.CharField(u'Avain', max_length=40, help_text=u'Paikallinen maksukohtainen tunniste')
 
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)

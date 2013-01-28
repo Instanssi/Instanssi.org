@@ -222,7 +222,10 @@ LOGGING = {
         'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_store': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.main2013': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
     }
 }
 

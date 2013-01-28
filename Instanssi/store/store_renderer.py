@@ -34,7 +34,7 @@ def render_store(request, event_id, domain, success_url, failure_url):
 
             svm_data = {
                 'orderNumber': str(ta.id),
-                'currency': 'EUR',
+                #'currency': 'EUR',
                 'locale': 'fi_FI',
                 'urlSet': {
                     'success': domain+success_url,
@@ -67,6 +67,11 @@ def render_store(request, event_id, domain, success_url, failure_url):
             try:
                 msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
             except SVMException as ex:
+                a,b = ex.args
+                logger.warning('(%s) %s' % (b,a))
+                return HttpResponseRedirect(failure_url)
+            except Exception as ex:
+                logger.warning('%s.' % (ex))
                 return HttpResponseRedirect(failure_url)
 
             # Save token, redirect

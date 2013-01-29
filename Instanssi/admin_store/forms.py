@@ -9,6 +9,7 @@ from Instanssi.store.models import StoreItem
 class StoreItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StoreItemForm, self).__init__(*args, **kwargs)
+        self.fields['event'].required = True
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(

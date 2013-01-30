@@ -9,7 +9,7 @@ class Ticket(models.Model):
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma', null=True, blank=True)
     storeitem = models.ForeignKey(StoreItem, verbose_name=u'Kauppatavara')
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
-    key = models.CharField(u'Avain', max_length=40, help_text=u'Lippuavain')
+    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
     used = models.BooleanField(u'Käytetty', default=False, help_text=u'Lippu on käytetty')
     owner_firstname = models.CharField(u'Etunimi', max_length=64, help_text=u'Lipun omistajan etunimi')
     owner_lastname = models.CharField(u'Sukunimi', max_length=64, help_text=u'Lipun omistajan sukunimi')

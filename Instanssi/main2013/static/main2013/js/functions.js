@@ -55,6 +55,8 @@ $(document).ready(function (){
 		$button.parent().parent().find( "input" ).val( newVal );
 		storeSum();
 	});
+	
+	$( ".store-items input" ).change(function() { storeSum(); });
 
 	/* count money sum of store items  */
 	function storeSum(){

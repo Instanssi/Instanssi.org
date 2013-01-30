@@ -158,6 +158,11 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	transition: all 0.2s ease-in-out;
 }
 
+/* store */
+.store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; }
+.store-items > div { margin-bottom: 30px; }
+.store-items .formHint { margin-top: 10px; }
+
 /* forms */
 form fieldset { border: none !important; }
 form legend { padding: 0px 0px; }
@@ -167,7 +172,7 @@ form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px;
 form input[type="text"] { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
 form select { width: 290px; padding: 5px; }
 form input[type="text"]:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
-fieldset.store-items input[type="text"] { width: 140px; }
+fieldset.store-items input[type="text"] { max-width: 60px; }
 
 .store-details label, .store-details input { vertical-align: middle; }
 .item-price { font-family: 'Exo',sans-serif; font-size: 16px; }

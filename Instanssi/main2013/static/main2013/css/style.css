@@ -167,17 +167,18 @@ form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px;
 form input[type="text"] { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
 form select { width: 290px; padding: 5px; }
 form input[type="text"]:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
-fieldset.store-items input[type="text"] { max-width: 60px; height: 10px; padding: 15px; }
+fieldset.store-items input[type="text"] { max-width: 60px;  padding: 10px; }
 
 
 /* store */
+.store-sum,
 .store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; }
 .store-items > div { margin-bottom: 50px; }
 .store-items .formHint { margin-top: 25px; }
-.store-items input { height: 20px; padding: 10px; }
 .store-items img { float: left; margin-right: 20px; }
 
 .inc-dec-btn { display: inline-block; /* ie fix */ *display: inline; *zoom: 1; position: relative; top: 12px; }
+.ie .inc-dec-btn { top: 8px; }
 .inc-dec-btn div { font-size: 18px; color: #fff; width: 21px; height: 21px; line-height: 20px; text-align: center; background: #999; }
 .inc-dec-btn div:hover { cursor: pointer; background: #aaa; }
 
@@ -216,6 +217,8 @@ form legend {
 text-shadow: 0px 1px 1px #FF6600;
 border: 1px solid #FF9400;
 cursor: pointer;
+
+background: #FEBA32;
 
 background-image: linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
 background-image: -o-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);

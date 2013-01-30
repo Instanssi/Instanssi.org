@@ -58,13 +58,16 @@ $(document).ready(function (){
 
 	/* count money sum of store items  */
 	function storeSum(){
-		var  storeSum = 0;
+		var storeSum = 0;
 		$( ".store-items input" ).each( function() {
 			// amount * price
-			storeSum += parseFloat( $( this ).val() ) * parseFloat( $( this ).parent().parent().find('.item-price').html() )
+			console.log( parseFloat( $( this ).val() ) );
+			console.log( parseFloat( $( this ).parent().parent().find('.item-price').html()) );
+			storeSum += parseFloat( $( this ).val() ) * parseFloat( $( this ).parent().parent().find('.item-price').html() );
 		});
-		$('.store .store-sum').html( storeSum.toFixed(2) );
+		$( '.store-sum span' ).html( storeSum.toFixed(2) );
 	}
 
-	
+	$('.store-items').append('<div class="store-sum">Yhteensä: <span></span> €</div>');
+	storeSum();
 });

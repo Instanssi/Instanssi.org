@@ -39,7 +39,6 @@ def login_action(request):
 def logout_page(request):
     return render_to_response("admin_auth/loggedout.html")
 
-@staff_access_required
 def logout_action(request):
     logout(request)
     return HttpResponseRedirect(reverse('manage-auth:logout-page'))

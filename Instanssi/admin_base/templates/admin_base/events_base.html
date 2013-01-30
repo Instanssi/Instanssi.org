@@ -14,6 +14,7 @@
 {% block bottom %}
 {{ block.super }}
 	<ul id="left_nav">
+	    <li class="menuitem"><a href="{% url 'manage-tickets:index' selected_event_id %}">Liput</a></li>
     	<li class="menuitem"><a href="{% url 'manage-blog:index' selected_event_id %}">Blogi</a></li>
         <li class="menuitem"><a href="{% url 'manage-slides:index' selected_event_id %}">Slaidit</a></li>
         <li class="menuitem"><a href="{% url 'manage-uploads:index' selected_event_id %}">Tiedostot</a></li>

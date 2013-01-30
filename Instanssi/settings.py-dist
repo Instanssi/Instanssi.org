@@ -55,6 +55,10 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = False
 
+# Hackish, but will do for now
+SSL_ON = True
+DOMAIN = 'instanssi.org'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
@@ -159,6 +163,7 @@ INSTALLED_APPS = (
     'Instanssi.admin_screenshow',
     'Instanssi.admin_timingtool',
     'Instanssi.admin_store',
+    'Instanssi.admin_tickets',
     'Instanssi.kompomaatti',
     'Instanssi.kompomaatti_eventselect',
     'Instanssi.ext_blog',
@@ -167,6 +172,7 @@ INSTALLED_APPS = (
     'Instanssi.dblog',
     'Instanssi.json_api',
     'Instanssi.store',
+    'Instanssi.tickets',
     'imagekit',
     'south',
     'crispy_forms',
@@ -212,6 +218,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_arkisto': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_users': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_blog': { 'handlers': ['log_db'], 'level': 'INFO' },
@@ -221,7 +228,11 @@ LOGGING = {
         'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' }
+        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.admin_store': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.main2013': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.tickets': { 'handlers': ['log_db'], 'level': 'INFO' },
     }
 }
 

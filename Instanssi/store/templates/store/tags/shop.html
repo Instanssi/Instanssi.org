@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<form id="instanssi_store" class="uniForm" method="post" action="">
+{% crispy transaction_form %}
+</form>
+<script type="text/javascript" src="{% static 'store/js/store.js' %}">
+</script>

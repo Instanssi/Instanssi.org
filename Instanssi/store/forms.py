@@ -13,7 +13,7 @@ class StoreOrderForm(forms.ModelForm):
     """Displays an order form with items for a specific event listed."""
 
     email_confirm = forms.EmailField(
-        label=u'Vahvista sähköposti', max_length=25
+        label=u'Vahvista sähköposti', max_length=255
     )
 
     read_terms = forms.BooleanField(
@@ -91,12 +91,12 @@ class StoreOrderForm(forms.ModelForm):
             total_items += amount
             if store_item.num_available() < amount:
                 fails.append(
-                    u'Esinettä "%s" ei ole saatavilla riittävästi!'
+                    u'Tuotetta "%s" ei ole saatavilla riittävästi!'
                     % store_item.name
                 )
 
         if not total_items:
-            fails.append(u'Tilauksessa on oltava ainakin yksi esine!')
+            fails.append(u'Tilauksessa on oltava ainakin yksi tuote!')
 
         if 'email' in self.data and 'email_confirm' in self.data:
             if self.data['email'] != self.data['email_confirm']:

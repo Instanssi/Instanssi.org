@@ -30,8 +30,20 @@ def render_store(request, event_id, success_url, failure_url):
         transaction_form = StoreOrderForm(request.POST, event_id=event_id)
 
         if transaction_form.is_valid():
-            ta = transaction_form.save()
+            ta = transaction_form.save(commit=False)
+            
+            # Generate key
+            # Let's make sure there are no collisions. Not that they are very likely, though.
+            # Actually, if anybody ever finds a collisioon, please attempt lottery next.
+            for i in range(10):
+                try:
+                    ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.id, ta.token, time.time(), random.random()))
+                    ta.save()
+                    break
+                except IntegrityError as ex:
+                    logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
 
+            # Form data for JSON query
             product_list = []
             for item in TransactionItem.objects.filter(transaction=ta):
                 product_list.append({
@@ -88,18 +100,8 @@ def render_store(request, event_id, success_url, failure_url):
             # Save token, redirect
             ta.time_created = datetime.now()
             ta.token = msg['token']
-            
-            # Generate key
-            # Let's make sure there are no collisions. Not that they are very likely, though.
-            # Actually, if anybody ever finds a collisioon, please attempt lottery next.
-            for i in range(10):
-                try:
-                    ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.id, ta.token, time.time(), random.random()))
-                    ta.save()
-                    break
-                except IntegrityError as ex:
-                    logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
-            
+            ta.save()
+
             # All done, redirect user
             return HttpResponseRedirect(msg['url'])
     else:

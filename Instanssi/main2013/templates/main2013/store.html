@@ -1,0 +1,18 @@
+{% extends "main2013/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+{{ block.super }}
+    <script type="text/javascript" src="{% static 'store/js/store.js' %}"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Liput</h1>
+{% crispy transaction_form transaction_form.helper %}
+{% endblock %}

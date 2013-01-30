@@ -1,13 +1,8 @@
 {% extends "main2013/base.html" %}
-{% load store_tags %}
 {% load static %}
-{% load crispy_forms_tags %}
 
 {% block head %}
 {{ block.super }}
-
-    <script type="text/javascript" src="{% static 'store/js/store.js' %}"></script>
-
 {% endblock %}
 
 {% block jquery %}
@@ -16,8 +11,44 @@
 
 {% block content %}
 {{ block.super }}
-
 <h1>Liput</h1>
 
-{% crispy transaction_form transaction_form.helper %}
+<p>
+    Liput tulevat myyntiin helmikuun alkupuolella tälle nettisivulle! 
+    Niitä voi ostaa myös tapahtumassa ovelta, jos niitä on vielä jäljellä.
+</p>
+<p>
+    Tässä mainittujen lippujen lisäksi ovelta voi ostaa parilla eurolla tutustumislipun, 
+    jolla pääsee  vain kerran sisään. Se ei siis sisällä ranneketta, eikä oikeutta 
+    äänestää  kilpailuissa. Lipulla voi käydä katsomassa millainen Instanssi on, ja 
+    jos viihtyy tapahtumassa, lipun voi päivittää infopisteessä kävijälippuun tai 
+    muuhun lipputyyppiin. 
+</p>
+
+
+<h2>Kävijälippu 5 &euro;</h2>
+<ul>
+    <li>Sisäänpääsy tapahtumaan koko viikonlopun ajan mihin tahansa vuorokaudenaikaan</li>
+    <li>Oikeus osallistua kaikkiin kilpailuihin ja mahdollisiin työpajoihin</li>
+    <li>Mahdollisuus nukkua paikan päällä (ota oma patja ja makuupussi mukaan)</li>
+    <li>Mahdollisuus käyttää suihkuja</li>
+</ul>
+
+<h2>Läppäripaikka 10 &euro;</h2> 
+<p>Samat kuin edellä ja lisäksi:</p>
+<ul>
+    <li>Hinta 10 &euro;</li>
+    <li>Pöytätilaa kannettavalle tietokoneelle sekä tuoli</li>
+    <li>Sähköpistoke</li>
+    <li>Ei langallista verkkoa, mutta langaton verkko pyritään mitoittamaan riittäväksi läppäripaikan ostaneille</li>
+</ul>
+
+<h2>Konepaikka 15 &euro;</h2>
+<p>Samat kuin kävijälipussa ja lisäksi:</p>
+<ul>
+    <li>Pöytätilaa tietokoneen keskusyksikölle ja näytölle sekä tuoli</li>
+    <li>Sähköpistoke (ota mukaan oma jatkoroikka)</li>
+    <li>Langallinen verkko (ota mukaan oma 10 metrin lähiverkkokaapeli)</li>
+</ul>
+
 {% endblock %}

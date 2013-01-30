@@ -101,6 +101,13 @@ STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),
 )
 
+# Email backend
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 DEFAULT_FILE_STORAGE = 'common.storage.ASCIIFileSystemStorage'
 
 # How to find static files

@@ -13,9 +13,10 @@ urlpatterns = patterns(
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
     url(r'^yhteystiedot/', 'pageloader', {'templatename': 'yhteystiedot'}, name="yhteystiedot"),
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
+    url(r'^liput/', 'pageloader', {'templatename': 'liput'}, name="liput"),
     
     # Store related
-    url(r'^liput/', 'tickets', name="liput"),
+    url(r'^store/', 'store', name="store"),
     url(r'^store_success/', 'pageloader', {'templatename': 'store_success'}, name="store_success"),
     url(r'^store_failure/', 'pageloader', {'templatename': 'store_failure'}, name="store_failure"),
 )

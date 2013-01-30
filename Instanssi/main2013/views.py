@@ -12,7 +12,7 @@ def pageloader(request, templatename):
         'is_secure': request.is_secure(),
     }, context_instance=RequestContext(request))
     
-def tickets(request):
+def store(request):
     # Handle store request
     success = reverse('main2013:store_success')
     failure = reverse('main2013:store_failure')
@@ -23,9 +23,9 @@ def tickets(request):
     # Template variables
     vars = {
         'event_id': 5, 
-        'templatename': 'liput',
+        'templatename': 'store',
         'is_secure': request.is_secure(),
     }
     
     # Render page
-    return render_to_response('main2013/liput.html', dict(vars.items() + ret.items()), context_instance=RequestContext(request))
+    return render_to_response('main2013/store.html', dict(vars.items() + ret.items()), context_instance=RequestContext(request))

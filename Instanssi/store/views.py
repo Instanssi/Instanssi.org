@@ -3,12 +3,15 @@
 from datetime import datetime
 import hashlib
 import time
-from django.db import transaction
+import random
+
+from django.db import transaction, IntegrityError
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
+
 from Instanssi.store.svmlib import svm_validate
 from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
@@ -43,7 +46,16 @@ def notify_handler(request):
             raise Http404
         
         # Generate key
-        keyhash = gen_sha('%s|%s|%s' % (ta.id, ta.token, time.time()))
+        # Let's make sure there are no collisions. Not that they are very likely, though.
+        # Actually, if anybody ever finds a collisioon, please attempt lottery next.
+        for i in range(10):
+            try:
+                ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.id, ta.token, time.time(), random.random()))
+                ta.save()
+                break
+            except IntegrityError as ex:
+                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
+
         
         # Deliver email.
         mailer = ReceiptMailer('noreply@'+settings.DOMAIN, ta.email, 'Instanssi.org kuitti')
@@ -72,7 +84,7 @@ def notify_handler(request):
             proto = 'http://'
             if settings.SSL_ON:
                 proto = 'https://'
-            ticketurl = proto + settings.DOMAIN + reverse('tickets:tickets', args=(keyhash,))
+            ticketurl = proto + settings.DOMAIN + reverse('tickets:tickets', args=(ta.key,))
             mailer.ticketurl(ticketurl)
             
         # Send mail
@@ -84,7 +96,6 @@ def notify_handler(request):
         
         # Mark as paid
         ta.time_paid = datetime.now()
-        ta.key = keyhash
         ta.save()
         
         # Generate ticket information for tickets
@@ -92,14 +103,19 @@ def notify_handler(request):
             if titem.item.delivery_type == 1:
                 for i in range(titem.amount):
                     ticket = Ticket()
-                    ticket.key = gen_sha('%s|%s|%s|%s|%s' % (i, titem.id, titem.item.id, ta.token, time.time()))
                     ticket.transaction = ta
                     ticket.storeitem = titem.item
                     ticket.event = titem.item.event
                     ticket.owner_firstname = ta.firstname
                     ticket.owner_lastname = ta.lastname
                     ticket.owner_email = ta.email
-                    ticket.save()
+                    for i in range(10):
+                        try:
+                            ticket.key = gen_sha('%s|%s|%s|%s|%s|%s' % (i, titem.id, titem.item.id, ta.token, time.time(), random.random()))
+                            ticket.save()
+                            break
+                        except IntegrityError as ex:
+                            logger.warning("SHA-1 Collision in ticket (WTF!) Key: %s, exception: %s." % (ticket.key, ex))
     else:
         logger.warning("Error while attempting to validate svm notification!")
         raise Http404

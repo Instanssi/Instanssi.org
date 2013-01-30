@@ -3,10 +3,13 @@
 import hashlib
 import time
 import random
+
 from common.http import Http403
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.db import IntegrityError
+
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 from Instanssi.tickets.models import Ticket
@@ -38,8 +41,13 @@ def index(request, sel_event_id):
         if ticketform.is_valid():
             ticket = ticketform.save(commit=False)
             ticket.event = event
-            ticket.key = gen_sha('0|%s|%s|%s|%s' % (event.id, ticket.storeitem.id, random.random(), time.time()))
-            ticket.save()
+            for i in range(10):
+                try:
+                    ticket.key = gen_sha('0|%s|%s|%s|%s' % (event.id, ticket.storeitem.id, random.random(), time.time()))
+                    ticket.save()
+                except IntegrityError as ex:
+                    logger.warning("SHA-1 Collision in admin-ticket (WTF!) Key: %s, exception: %s." % (ticket.key, ex))
+                
             logger.info('New ticket created.', extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-tickets:index', args=(sel_event_id)))
     else:

@@ -26,6 +26,8 @@ def ticket(request, ticket_key):
 def tickets(request, transaction_key):
     # Get transaction
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
+    if not transaction.paid:
+        raise Http404
     
     # Get all tickets by this transaction
     tickets = Ticket.objects.filter(transaction=transaction)

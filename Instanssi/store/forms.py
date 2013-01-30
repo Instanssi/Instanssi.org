@@ -39,6 +39,11 @@ class StoreOrderForm(forms.ModelForm):
                 label=u'%s' % (item.name),
                 help_text=item.description, required=False
             )
+            
+            if item.imagefile_thumbnail:
+                item_fields.fields.append(
+                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotakuva" />' % (item.imagefile_thumbnail.url)),
+                )
 
             item_fields.fields.append(
                 Div(

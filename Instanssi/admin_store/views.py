@@ -20,7 +20,7 @@ def items(request):
         if not request.user.has_perm('store.add_storeitem'):
             raise Http403
         
-        form = StoreItemForm(request.POST)
+        form = StoreItemForm(request.POST, request.FILES)
         if form.is_valid():
             item = form.save(commit=False)
             logger.info('Store Item "'+item.name+'" added.', extra={'user': request.user})
@@ -79,7 +79,7 @@ def edit_item(request, item_id):
         
     # Handle form data
     if request.method == 'POST':
-        form = StoreItemForm(request.POST, instance=item)
+        form = StoreItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
             logger.info('Store Item "'+item.name+'" edited.', extra={'user': request.user})

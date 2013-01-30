@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import random
+import time
+
 from django.db import transaction
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
+
 from Instanssi.store.svmlib import svm_request, SVMException
 from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
@@ -12,7 +16,6 @@ from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
-
 
 # Renders store form, handles requests to Suomen Verkkomaksut
 def render_store(request, event_id, success_url, failure_url):
@@ -85,7 +88,19 @@ def render_store(request, event_id, success_url, failure_url):
             # Save token, redirect
             ta.time_created = datetime.now()
             ta.token = msg['token']
-            ta.save()
+            
+            # Generate key
+            # Let's make sure there are no collisions. Not that they are very likely, though.
+            # Actually, if anybody ever finds a collisioon, please attempt lottery next.
+            for i in range(10):
+                try:
+                    ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.id, ta.token, time.time(), random.random()))
+                    ta.save()
+                    break
+                except IntegrityError as ex:
+                    logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
+            
+            # All done, redirect user
             return HttpResponseRedirect(msg['url'])
     else:
         transaction_form = StoreOrderForm(event_id=event_id)

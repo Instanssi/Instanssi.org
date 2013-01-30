@@ -44,19 +44,7 @@ def notify_handler(request):
         if ta.paid:
             logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
             raise Http404
-        
-        # Generate key
-        # Let's make sure there are no collisions. Not that they are very likely, though.
-        # Actually, if anybody ever finds a collisioon, please attempt lottery next.
-        for i in range(10):
-            try:
-                ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.id, ta.token, time.time(), random.random()))
-                ta.save()
-                break
-            except IntegrityError as ex:
-                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
 
-        
         # Deliver email.
         mailer = ReceiptMailer('noreply@'+settings.DOMAIN, ta.email, 'Instanssi.org kuitti')
         mailer.ordernumber(ta.id)

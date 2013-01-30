@@ -8,6 +8,9 @@ from crispy_forms.layout import \
     Submit, Layout, Fieldset, ButtonHolder, Hidden, Div, HTML
 from Instanssi.store.models import StoreItem, TransactionItem, StoreTransaction
 
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
 
 class StoreOrderForm(forms.ModelForm):
     """Displays an order form with items for a specific event listed."""
@@ -128,20 +131,26 @@ class StoreOrderForm(forms.ModelForm):
 
         new_transaction = super(StoreOrderForm, self).save(commit=False)
 
-        if commit:
-            new_transaction.save()
+        for i in range(10):
+            try:
+                ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.firstname, ta.lastname, time.time(), random.random()))
+                ta.save()
+                break
+            except IntegrityError as ex:
+                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
 
+        
         transaction_items = []
-
         for (item_id, amount) in self._dataitems():
-            store_item = StoreItem.objects.get(id=int(item_id))
-            new_item = TransactionItem(
-                item=store_item,
-                transaction=new_transaction,
-                amount=amount
-            )
-            new_item.save()
-            transaction_items.append(new_item)
+            if amount > 0:
+                store_item = StoreItem.objects.get(id=int(item_id))
+                new_item = TransactionItem(
+                    item=store_item,
+                    transaction=new_transaction,
+                    amount=amount
+                )
+                new_item.save()
+                transaction_items.append(new_item)
 
         return new_transaction
 

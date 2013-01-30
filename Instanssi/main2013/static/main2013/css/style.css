@@ -160,7 +160,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 
 /* forms */
 form fieldset { border: none !important; }
-form legend { padding: 0px 10px; }
+form legend { padding: 0px 0px; }
 form label { width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
 form .ctrlHolder { margin-bottom: 10px; }
 form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px; }

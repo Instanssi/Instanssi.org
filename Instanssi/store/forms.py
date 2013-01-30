@@ -31,7 +31,7 @@ class StoreOrderForm(forms.ModelForm):
             u'Olen lukenut <a href="%s" target="_blank">käyttöehdot</a> ' \
             u'ja hyväksyn ne.' % reverse('store:terms')
 
-        item_fields = Fieldset(u'Saatavilla', css_class='store-items')
+        item_fields = Fieldset(u'', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
@@ -49,9 +49,11 @@ class StoreOrderForm(forms.ModelForm):
             )
 
         self.helper.layout = Layout(
+            HTML(u'<h2>Tuotteet</h2>'),
             item_fields,
+            HTML(u'<h2>Maksajan tiedot</h2>'),
             Fieldset(
-                u'Maksajan tiedot',
+                u'',
                 'firstname',
                 'lastname',
                 'email',

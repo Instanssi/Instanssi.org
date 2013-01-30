@@ -4,7 +4,7 @@ from datetime import datetime
 import random
 import time
 
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings

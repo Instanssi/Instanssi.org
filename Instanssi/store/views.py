@@ -97,9 +97,9 @@ def notify_handler(request):
                     ticket.owner_firstname = ta.firstname
                     ticket.owner_lastname = ta.lastname
                     ticket.owner_email = ta.email
-                    for i in range(10):
+                    for k in range(10):
                         try:
-                            ticket.key = gen_sha('%s|%s|%s|%s|%s|%s' % (i, titem.id, titem.item.id, ta.token, time.time(), random.random()))
+                            ticket.key = gen_sha('%s|%s|%s|%s|%s|%s|%s' % (i, titem.id, titem.item.id, ta.token, time.time(), random.random(), k))
                             ticket.save()
                             break
                         except IntegrityError as ex:

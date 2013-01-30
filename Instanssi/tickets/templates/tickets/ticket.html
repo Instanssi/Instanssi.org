@@ -1,0 +1,43 @@
+{% extends "tickets/base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Lippu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Lippu</h1>
+<table>
+    <tbody>
+        <tr>
+            <th>Tapahtuma:</th>
+            <td>{{ ticket.event.name }}</td>
+        </tr>
+        <tr>
+            <th>Lipun tyyppi:</th>
+            <td>{{ ticket.storeitem.name }}</td>
+        </tr>
+        <tr>
+            <th>Lipun ostaja:</th>
+            <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
+        </tr>
+        <tr>
+            <th>Sähköposti:</th>
+            <td>{{ ticket.owner_email }}</td>
+        </tr>
+        <tr>
+            <th>Tunniste:</th>
+            <td>{{ ticket.key }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ticket.key }}" width="160" height="160" alt="Lopun QR-koodi." />
+{% endblock %}

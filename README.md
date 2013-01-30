@@ -37,6 +37,7 @@ Ympäristön asentaminen Linuxeille
 2. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot joko käyttäen PIP:iä tai distrosi pakettienhallintaa. 
    PIL-kirjaston asennus käyttäen PIP:ä saattaa vaatia jotain lisäkirjastoja kääntämiseen. Lisäkirjastojen asentamisen
    saattaa pystyä välttämään asentamalla PIL:n suoraan distron pakettienhallinnasta, esim. `apt-get install python-imaging` tjsp.
+   Mikäli asennat virtualenv:n, kannattaa käyttää PIL-kirjaston sijasta PILLOW-kirjastoa.
 
 Projektin asentaminen
 ---------------------
@@ -51,21 +52,37 @@ Kirjastot
 ---------
 * [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South] (http://south.aeracode.org/) `pip install south`
 * [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
+* [django-countries] (http://pypi.python.org/pypi/django-countries) `pip install django-countries`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django django-openid-auth python-openid pil django-imagekit south django-crispy-forms reportlab
+    pip install django django-openid-auth python-openid django-countries django-imagekit south django-crispy-forms reportlab pil
 
 IDEjä
 -----
 * Eclipse (addonit: PyDev + EGIt)
 * Aptana Studio 3
 
+Testitapausten ajaminen
+-----------------------
+
+testing/ -hakemistossa on esimerkkejä Robot Framework - Selenium 2 -testeistä, joilla voidaan automatisoida nettisivujen klikkailua.
+
+Testien ajamiseen tarvitset robotframework-selenium2library -palikan:
+
+    pip install robotframework-selenium2library
+
+Tämän jälkeen testin voi ajaa testing-hakemistossa komennolla
+
+    pybot -d output/ testinnimi.txt
+
+Testi tuottaa output-hakemistoon testiraportin ja kuvakaappauksen lopputilastaan.

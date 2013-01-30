@@ -1,0 +1,37 @@
+Hei,
+
+Tilauksenne numerolla {{ ordernumber }} on nyt käsitelty. Mikäli huomaatte virheitä
+tilausluettelossa, ottakaa yhteys meihin välittömästi (webmaster@instanssi.org).
+Ohessa seuraa tilausluettelo.
+
+Ostajan tiedot:
+---------------
+
+Nimi:          {{ firstname }} {{ lastname }}
+Sähköposti:    {{ email }}
+Yritys:        {{ company }}
+Puhelinnumero: {{ telephone }}
+Kännykkä:      {{ mobile }}
+Katuosoite:    {{ street }}
+Kaupunki:      {{ city }}
+Postinumero:   {{ postalcode }}
+Maakoodi:      {{ country }}
+
+Tilausluettelo:
+---------------
+
+ID     Määrä Tuoteseloste                               Hinta  Yhteensä
+=======================================================================
+{% for item in items %}{{ item.id|ljust:"6" }} {{ item.amount|ljust:"5" }} {{ item.name|ljust:"42" }} {{ item.price|ljust:"6" }} {{ item.total|ljust:"8" }}
+{% endfor %}
+Yhteensä: {{ total }} eur
+
+{% if ticketurl %}Liput:
+------
+
+Tilauksenne sisältämät liput voitte noutaa osoitteesta 
+{{ ticketurl }}
+{% endif %}
+-- 
+Instanssi.org verkkokauppa
+http://instanssi.org

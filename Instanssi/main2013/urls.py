@@ -10,8 +10,12 @@ urlpatterns = patterns(
     url(r'^english/', 'pageloader', {'templatename': 'english'}, name="english"),
     url(r'^kompot/', 'pageloader', {'templatename': 'kompot'}, name="kompot"),
     url(r'^ohjelma/', 'pageloader', {'templatename': 'ohjelma'}, name="ohjelma"),
-    url(r'^liput/', 'pageloader', {'templatename': 'liput'}, name="liput"),
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
     url(r'^yhteystiedot/', 'pageloader', {'templatename': 'yhteystiedot'}, name="yhteystiedot"),
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
+    
+    # Store related
+    url(r'^liput/', 'tickets', name="liput"),
+    url(r'^store_success/', 'pageloader', {'templatename': 'store_success'}, name="store_success"),
+    url(r'^store_failure/', 'pageloader', {'templatename': 'store_failure'}, name="store_failure"),
 )

@@ -1,0 +1,64 @@
+{% extends "admin_tickets/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $("#tickets_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#tickets_pager")}); 
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+		&raquo; Selaa
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Liput</h2>
+{% if tickets %}
+    <table id="tickets_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>Avain</th>
+                <th>Ostettu</th>
+                <th>Käytetty</th>
+                <th>Ostaja</th>
+                <th>Sähköposti</th>
+                <th>Lippu</th>
+                <th class="sorter-false management_field"></th>
+            </tr>
+        </thead>
+        <tbody>
+{% for ticket in tickets %}
+            <tr>
+                <td><a href="{% url 'tickets:ticket' ticket.key %}">{{ ticket.key }}</a></td>
+                <td>{% if ticket.transaction %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{% if ticket.used %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
+                <td>{{ ticket.owner_email }}</td>
+                <td>{{ ticket.storeitem.name }}</td>
+                <td>
+{% if perms.tickets.change_ticket %}
+                	<a href="{% url 'manage-tickets:edit' selected_event_id ticket.id %}" class="edit_link">Muokkaa</a>
+{% endif %}
+                </td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+	<div id="tickets_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
+{% else %}
+    <p>Ei lippuja!</p>
+{% endif %}
+
+{% if perms.tickets.add_ticket %}
+{% crispy ticketform ticketform.helper %}
+{% endif %}
+{% endblock %}

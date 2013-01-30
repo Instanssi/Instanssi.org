@@ -15,7 +15,14 @@ logger = logging.getLogger(__name__)
 
 
 # Renders store form, handles requests to Suomen Verkkomaksut
-def render_store(request, event_id, domain, success_url, failure_url):
+def render_store(request, event_id, success_url, failure_url):
+    # Form domain
+    proto = u'http://'
+    if settings.SSL_ON:
+        proto = u'https://'
+    domain = proto + settings.DOMAIN
+    
+    # Handle request
     if request.method == 'POST':
         transaction_form = StoreOrderForm(request.POST, event_id=event_id)
 
@@ -69,10 +76,10 @@ def render_store(request, event_id, domain, success_url, failure_url):
                 msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
             except SVMException as ex:
                 a, b = ex.args
-                logger.warning('(%s) %s' % (b, a))
+                logger.error('(%s) %s' % (b, a))
                 return HttpResponseRedirect(failure_url)
             except Exception as ex:
-                logger.warning('%s.' % (ex))
+                logger.error('%s.' % (ex))
                 return HttpResponseRedirect(failure_url)
 
             # Save token, redirect

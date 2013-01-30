@@ -55,6 +55,10 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = False
 
+# Hackish, but will do for now
+SSL_ON = True
+DOMAIN = 'instanssi.org'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 

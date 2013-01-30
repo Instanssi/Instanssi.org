@@ -14,10 +14,9 @@ def pageloader(request, templatename):
     
 def tickets(request):
     # Handle store request
-    domain = u'http://instanssi.org'
-    success_url = reverse('main2013:store_success')
-    failure_url = reverse('main2013:store_failure')
-    ret = render_store(request, 5, domain, success_url, failure_url)
+    success = reverse('main2013:store_success')
+    failure = reverse('main2013:store_failure')
+    ret = render_store(request, 5, success, failure)
     if type(ret) is not dict:
         return ret
     

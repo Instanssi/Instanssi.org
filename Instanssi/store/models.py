@@ -56,7 +56,7 @@ class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
     time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
-    key = models.CharField(u'Avain', max_length=40, help_text=u'Paikallinen maksukohtainen tunniste')
+    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
     company = models.CharField(u'Yritys', max_length=128, blank=True)

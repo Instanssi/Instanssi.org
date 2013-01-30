@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 # Forms for the Instanssi store.
 
+import time
+import random
+import hashlib
+import logging
+
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -9,9 +14,15 @@ from crispy_forms.layout import \
     Submit, Layout, Fieldset, ButtonHolder, Hidden, Div, HTML
 from Instanssi.store.models import StoreItem, TransactionItem, StoreTransaction
 
-# Logging related
-import logging
+# Logger
 logger = logging.getLogger(__name__)
+
+# for creating ticket key hash
+def gen_sha(text):
+    print text
+    h = hashlib.sha1()
+    h.update(text)
+    return h.hexdigest()
 
 class StoreOrderForm(forms.ModelForm):
     """Displays an order form with items for a specific event listed."""
@@ -134,8 +145,8 @@ class StoreOrderForm(forms.ModelForm):
 
         for i in range(10):
             try:
-                ta.key = gen_sha('%s|%s|%s|%s|%s' % (i, ta.firstname, ta.lastname, time.time(), random.random()))
-                ta.save()
+                new_transaction.key = gen_sha('%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random()))
+                new_transaction.save()
                 break
             except IntegrityError as ex:
                 logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))

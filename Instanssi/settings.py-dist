@@ -135,6 +135,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'common.context_processors.short_language_code',
     'common.context_processors.google_settings',
     'common.context_processors.openid_helper',
+    'common.context_processors.request',
 )
 
 # Internal ip addresses

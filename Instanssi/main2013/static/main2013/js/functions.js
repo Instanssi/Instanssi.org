@@ -52,11 +52,21 @@ $(document).ready(function (){
 		     	var newVal = parseFloat( oldValue ) - 1;
 		  	}
 		}
+		if( isNaN( newVal) ){
+			// if new value is not a number, force it to be 0
+			newVal = 0;
+		} 
 		$button.parent().parent().find( "input" ).val( newVal );
 		storeSum();
 	});
 	
-	$( ".store-items input" ).change(function() { storeSum(); });
+	$( ".store-items input" ).change(function() { 
+		if( isNaN( parseFloat( $(this ).val() ) ) ){
+			// if new value is not a number, force it to be 0
+			$(this ).val( 0 );
+		} 
+		storeSum(); 
+	});
 
 	/* count money sum of store items  */
 	function storeSum(){

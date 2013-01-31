@@ -69,7 +69,7 @@ $(document).ready(function (){
 
 
 	function filterNewStoreAmount( input ){
-		if( isNaN( parseFloat( input.val() ) ) ){
+		if( isNaN( parseInt( input.val() ) ) ){
 			// if new value is not a number, force it to be 0
 			input.val( 0 );
 		}

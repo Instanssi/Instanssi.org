@@ -73,7 +73,7 @@ $(document).ready(function (){
 			// if new value is not a number, force it to be 0
 			input.val( 0 );
 		}
-		else if( parseInt( input.val() ) > input.attr('data-maxvalue') ){
+		else if( parseInt( input.val() ) > parseInt(input.attr('data-maxvalue')) ){
 			input.val( input.attr('data-maxvalue') );
 		}
 		else if( parseInt( input.val() ) < 0 ){

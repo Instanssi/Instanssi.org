@@ -52,22 +52,33 @@ class StoreOrderForm(forms.ModelForm):
             self.fields[name] = forms.IntegerField(
                 initial=0, min_value=0, max_value=item.num_available(),
                 label=u'%s' % (item.name),
-                help_text=item.description, required=False
+                help_text=item.description, 
+                required=False
             )
             
+            self.fields[name].widget.attrs['data-maxvalue'] = item.num_available()
+            
+            mdiv = Div()
+            
+            # Print message if item is sold out
+            if item.num_in_store() <= 0:
+                self.fields[name].widget.attrs['disabled'] = True
+                mdiv.fields.append(
+                    HTML('<span class="item-soldout">Lopussa!</span>')
+                )
+            
+            # Print img tag if item has image
             if item.imagefile_thumbnail:
-                item_fields.fields.append(
+                mdiv.fields.append(
                     HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotakuva" data-bigimg="%s" />' 
                          % (item.imagefile_thumbnail.url, item.imagefile_original.url)),
                 )
 
-            item_fields.fields.append(
-                Div(
-                    HTML(u'<span class="item-price">%.2f €/kpl</span>'
-                         % item.price),
-                    name,
-                )
+            mdiv.fields.append(
+                HTML(u'<span class="item-price">%.2f €/kpl</span>' % item.price)
             )
+            mdiv.fields.append(name)
+            item_fields.fields.append(mdiv)
 
         self.helper.layout = Layout(
             HTML(u'<h2>Tuotteet</h2>'),

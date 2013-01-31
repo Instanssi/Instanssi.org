@@ -37,6 +37,9 @@ class StoreItem(models.Model):
     def num_available(self):
         return min(self.max - self.sold(), self.max_per_order)
 
+    def num_in_store(self):
+        return self.max - self.sold()
+
     def sold(self):
         res = TransactionItem.objects.filter(
             transaction__time_paid__isnull=False,

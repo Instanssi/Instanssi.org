@@ -17,6 +17,7 @@ $.tablesorter.addParser({
         return false;
     }, 
     format: function(s) { 
+        if(s.length == 0) return "";
         var sp = s.split(" ");
         var value = parseFloat(sp[0]);
         if(isNaN(value)) return $.tablesorter.formatFloat(0);
@@ -34,7 +35,7 @@ $.tablesorter.addParser({
 
 $.tablesorter.addParser({ 
     id: 'fiDate', 
-    is: function(s) { 
+    is: function(s) {
         var spaceindex = s.indexOf(" ");
         if(spaceindex == -1) return false;
         
@@ -52,7 +53,8 @@ $.tablesorter.addParser({
         
         return true;
     }, 
-    format: function(s) { 
+    format: function(s) {
+        if(s.length == 0) return "";
         var dtsplit = s.split(" ");
         var dates = dtsplit[0].split(".");
         var times = dtsplit[1].split(":");

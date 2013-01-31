@@ -70,6 +70,7 @@ class StoreTransaction(models.Model):
     postalcode = models.CharField(u'Postinumero', max_length=16)
     city = models.CharField(u'Postitoimipaikka', max_length=64)
     country = CountryField(u'Maa', default='FI')
+    information = models.TextField(u'Lisätiedot', blank=True)
 
     def __unicode__(self):
         return u'%s %s' % (self.firstname, self.lastname)

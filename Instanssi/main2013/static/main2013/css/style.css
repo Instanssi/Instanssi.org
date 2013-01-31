@@ -171,6 +171,7 @@ fieldset.store-items input[type="text"] { max-width: 60px;  padding: 10px; }
 
 
 /* store */
+.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; }
 .store-sum,
 .store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; }
 .store-items > div { margin-bottom: 50px; }

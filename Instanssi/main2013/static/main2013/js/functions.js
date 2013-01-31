@@ -41,8 +41,13 @@ $(document).ready(function (){
 	/* increase and decrease buttton logic  */ 
 	$(".store-items .inc-dec-btn div").click(function() {
 	    var $button = $( this );
-	    var oldValue = $button.parent().parent().find( "input" ).val();
+	    var input = $button.parent().parent().find( "input" );
+	    var oldValue = input.val();
 	    var newVal = oldValue;
+	
+	    if( input.is(':disabled') ){	
+	    	return;
+	    }
 
 	    if ( $button.text() == "+" ) {
 		 	var newVal = parseFloat( oldValue ) + 1;
@@ -52,35 +57,40 @@ $(document).ready(function (){
 		     	var newVal = parseFloat( oldValue ) - 1;
 		  	}
 		}
-		if( isNaN( newVal) ){
-			// if new value is not a number, force it to be 0
-			newVal = 0;
-		} 
 		$button.parent().parent().find( "input" ).val( newVal );
+		filterNewStoreAmount( input );
 		storeSum();
 	});
 	
 	$( ".store-items input" ).change(function() { 
-		if( isNaN( parseFloat( $(this ).val() ) ) ){
-			// if new value is not a number, force it to be 0
-			$(this ).val( 0 );
-		} 
+		filterNewStoreAmount( $( this ) );
 		storeSum(); 
 	});
+
+
+	function filterNewStoreAmount( input ){
+		if( isNaN( parseFloat( input.val() ) ) ){
+			// if new value is not a number, force it to be 0
+			input.val( 0 );
+		}
+		else if( parseFloat( input.val() ) > input.attr('data-maxvalue') ){
+			input.val( input.attr('data-maxvalue') );
+		} 
+	}
+
 
 	/* count money sum of store items  */
 	function storeSum(){
 		var storeSum = 0;
 		$( ".store-items input" ).each( function() {
 			// amount * price
-			console.log( parseFloat( $( this ).val() ) );
-			console.log( parseFloat( $( this ).parent().parent().find('.item-price').html()) );
 			storeSum += parseFloat( $( this ).val() ) * parseFloat( $( this ).parent().parent().find('.item-price').html() );
 		});
 		$( '.store-sum span' ).html( storeSum.toFixed(2) );
 	}
 	$('.store-items').append('<div class="store-sum">Yhteensä: <span></span> €</div>');
 	storeSum();
+
 
 	/* fancybox for images */
 	$('.item-image').wrap( function(){

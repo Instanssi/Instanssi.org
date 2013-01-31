@@ -171,12 +171,13 @@ fieldset.store-items input[type="text"] { max-width: 60px;  padding: 10px; }
 
 
 /* store */
-.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; }
+.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; display: block; }
 .store-sum,
-.store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; }
-.store-items > div { margin-bottom: 50px; }
+.store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; width: auto; display: block; }
+.store-items > div { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 25px; }
+.store-items > div.store-sum { border: none; }
 .store-items .formHint { margin-top: 25px; }
-.store-items img { float: left; margin-right: 20px; }
+.store-items img { float: left; margin-right: 20px; position: relative; top: 8px; }
 
 .inc-dec-btn { display: inline-block; /* ie fix */ *display: inline; *zoom: 1; position: relative; top: 12px; }
 .ie .inc-dec-btn { top: 8px; }
@@ -305,6 +306,10 @@ background-image: -webkit-gradient(
 	#page-header nav .nav-btn { display: block; }
 	.no-js #page-header nav .nav-btn { display: none; }
 	
+	#page-header .header-info h1 {font-size: 36px; }
+	#page-header .header-info .tagline { font-size: 16px; }
+	#page-header .header-info .time { font-size: 26px; }
+
 	#page-header { background: #111; background-image: none; }
 	#page-header .header-info { background: url('../images/header-bg.png') center top #0088C3; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
@@ -324,14 +329,11 @@ background-image: -webkit-gradient(
 	#primary table td { display: block; width: 92%; padding: 1% 4%;}
 	
 	#page-footer .sponsors .sponsor { width: 42%; margin: 4%;  }
+
+	/* store */
+	.store-items img { float: none; margin-bottom: 20px; }
+	.store-items label { display: block; float: none; width: 100%; }
 }
 
-
-/* portrait phones and down */
-@media (max-width: 480px) { 
-	#page-header .header-info h1 {font-size: 36px; }
-	#page-header .header-info .tagline { font-size: 16px; }
-	#page-header .header-info .time { font-size: 26px; }
-}
 
 

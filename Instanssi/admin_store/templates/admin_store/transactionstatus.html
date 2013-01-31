@@ -42,6 +42,10 @@
             <th>Maksettu?</th>
             <td>{% if transaction.paid %}Kyllä{% else %}Ei{% endif %}</td>
         </tr>
+        <tr>
+            <th>Muut tiedot</th>
+            <td>{{ transaction.information }}</td>
+        </tr>
     </tbody>
 </table>
 

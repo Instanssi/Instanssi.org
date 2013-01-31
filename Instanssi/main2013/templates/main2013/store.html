@@ -4,7 +4,6 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static 'store/js/store.js' %}"></script>
 {% endblock %}
 
 {% block jquery %}
@@ -13,6 +12,6 @@
 
 {% block content %}
 {{ block.super }}
-<h1>Liput</h1>
+<h1>Kauppa</h1>
 {% crispy transaction_form transaction_form.helper %}
 {% endblock %}

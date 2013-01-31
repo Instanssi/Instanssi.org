@@ -38,6 +38,10 @@
             <th>Avain</th>
             <td>{{ transaction.key }}</td>
         </tr>
+        <tr>
+            <th>Maksettu?</th>
+            <td>{% if transaction.paid %}Kyllä{% else %}Ei{% endif %}</td>
+        </tr>
     </tbody>
 </table>
 

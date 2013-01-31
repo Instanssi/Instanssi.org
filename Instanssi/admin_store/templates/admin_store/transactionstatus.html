@@ -22,6 +22,25 @@
 {% block content %}
 {{ block.super }}
 <h2>Tila</h2>
+<table style="width: auto;">
+    <thead>
+        <tr>
+            <th style="min-width: 150px;">Kenttä</th>
+            <th style="min-width: 200px;">Tieto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Tilausnumero</th>
+            <td>{{ transaction.id }}</td>
+        </tr>
+        <tr>
+            <th>Avain</th>
+            <td>{{ transaction.key }}</td>
+        </tr>
+    </tbody>
+</table>
+
 <h3>Maksajan tiedot</h3>
 <table style="width: auto;">
     <thead>

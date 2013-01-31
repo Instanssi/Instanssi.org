@@ -57,7 +57,8 @@ class StoreOrderForm(forms.ModelForm):
             
             if item.imagefile_thumbnail:
                 item_fields.fields.append(
-                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotakuva" data-bigimg="%s" />' % (item.imagefile_thumbnail.url, item.imagefile_original.url)),
+                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotakuva" data-bigimg="%s" />' 
+                         % (item.imagefile_thumbnail.url, item.imagefile_original.url)),
                 )
 
             item_fields.fields.append(

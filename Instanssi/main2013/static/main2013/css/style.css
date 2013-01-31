@@ -160,18 +160,18 @@ html, body { margin: 0; padding: 0; height: 100%; }
 
 /* forms */
 form fieldset { border: none !important; }
-form legend { padding: 0px 0px; }
+form legend { padding: 0; }
 form label { width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
 form .ctrlHolder { margin-bottom: 10px; }
 form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px; }
-form input[type="text"] { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
+form input[type="text"], form textarea { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
 form select { width: 290px; padding: 5px; }
-form input[type="text"]:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
+form input[type="text"]:focus, form textarea:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
 fieldset.store-items input[type="text"] { max-width: 60px;  padding: 10px; }
-
+form textarea { height: 100px; }
 
 /* store */
-.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; display: block; }
+.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; }
 .store-sum,
 .store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; width: auto; display: block; }
 .store-items > div { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 25px; }

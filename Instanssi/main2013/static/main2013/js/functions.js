@@ -57,7 +57,7 @@ $(document).ready(function (){
 		     	var newVal = parseFloat( oldValue ) - 1;
 		  	}
 		}
-		$button.parent().parent().find( "input" ).val( newVal );
+		input.val( newVal );
 		filterNewStoreAmount( input );
 		storeSum();
 	});
@@ -73,9 +73,14 @@ $(document).ready(function (){
 			// if new value is not a number, force it to be 0
 			input.val( 0 );
 		}
-		else if( parseFloat( input.val() ) > input.attr('data-maxvalue') ){
+		else if( parseInt( input.val() ) > input.attr('data-maxvalue') ){
 			input.val( input.attr('data-maxvalue') );
-		} 
+		}
+		else if( parseInt( input.val() ) < 0 ){
+			input.val( 0 );
+		}
+		
+		input.val( parseInt( input.val(), 10 ) );
 	}
 
 

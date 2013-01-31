@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
+from django.conf import settings
 from Instanssi.ext_blog.models import BlogEntry
 
 register = template.Library()
@@ -16,5 +17,5 @@ def render_blog_rss_tag():
 
 @register.simple_tag
 def blog_rss_url():
-    return 'http://instanssi.org/blog/rss/'
+    return 'http://'+settings.DOMAIN+'/blog/rss/'
 

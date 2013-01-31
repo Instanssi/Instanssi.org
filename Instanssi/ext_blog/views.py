@@ -2,6 +2,7 @@
 
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import Event
 
@@ -15,7 +16,7 @@ class blog_feed_all(Feed):
 
     def items(self, obj):
         entries = []
-        for entry in BlogEntry.objects.filter(public=True).order_by('date'):
+        for entry in BlogEntry.objects.filter(public=True).order_by('-date'):
             entry.event_url = entry.event.mainurl
             entries.append(entry)
         return entries
@@ -30,7 +31,7 @@ class blog_feed_all(Feed):
         print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#blog'+str(item.id)
-        return "http://instanssi.org/#blog"+str(item.id)
+        return "http://"+settings.DOMAIN+"/#blog"+str(item.id)
 
 class blog_feed(Feed):
     title = "Instanssi.org Blogi"
@@ -42,7 +43,7 @@ class blog_feed(Feed):
 
     def items(self, obj):
         entries = []
-        for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('date'):
+        for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('-date'):
             entry.event_url = obj.mainurl
             entries.append(entry)
         return entries
@@ -57,4 +58,5 @@ class blog_feed(Feed):
         print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#blog'+str(item.id)
-        return "http://instanssi.org/#blog"+str(item.id)
+        return "http://"+settings.DOMAIN+"/#blog"+str(item.id)
+    

@@ -56,16 +56,16 @@ class StoreOrderForm(forms.ModelForm):
                 required=False
             )
             
+            # Set data-maxvalue attr for field, just for javascript stuff
             self.fields[name].widget.attrs['data-maxvalue'] = item.num_available()
             
+            # Container
             mdiv = Div()
             
             # Print message if item is sold out
             if item.num_in_store() <= 0:
                 self.fields[name].widget.attrs['disabled'] = True
-                mdiv.fields.append(
-                    HTML('<span class="item-soldout">Lopussa!</span>')
-                )
+                self.fields[name].label += u' <span class="item-soldout">(Lopussa)</span>'
             
             # Print img tag if item has image
             if item.imagefile_thumbnail:
@@ -97,6 +97,7 @@ class StoreOrderForm(forms.ModelForm):
                 'postalcode',
                 'city',
                 'country',
+                'information',
                 'read_terms',
                 ButtonHolder(
                     Submit('Buy', u'Osta')

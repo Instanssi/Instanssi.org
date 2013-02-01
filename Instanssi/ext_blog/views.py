@@ -30,8 +30,8 @@ class blog_feed_all(Feed):
     def item_link(self, item):
         print item.event_url
         if item.event_url and len(item.event_url) > 0:
-            return item.event_url + '#blog'+str(item.id)
-        return "http://"+settings.DOMAIN+"/#blog"+str(item.id)
+            return item.event_url + '#'+str(item.id)
+        return "http://"+settings.DOMAIN+"/#"+str(item.id)
 
 class blog_feed(Feed):
     title = "Instanssi.org Blogi"
@@ -57,6 +57,6 @@ class blog_feed(Feed):
     def item_link(self, item):
         print item.event_url
         if item.event_url and len(item.event_url) > 0:
-            return item.event_url + '#blog'+str(item.id)
-        return "http://"+settings.DOMAIN+"/#blog"+str(item.id)
+            return item.event_url + '#'+str(item.id)
+        return "http://"+settings.DOMAIN+"/#"+str(item.id)
     

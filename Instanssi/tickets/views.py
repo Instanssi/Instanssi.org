@@ -7,25 +7,24 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from Instanssi.tickets.models import Ticket
 from Instanssi.store.models import StoreTransaction
-from django.views.decorators.cache import never_cache
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
 
 # Shows information about a single ticket
-@never_cache
 def ticket(request, ticket_key):
     # Find ticket
     ticket = get_object_or_404(Ticket, key=ticket_key)
     
     # Render ticket
-    return render_to_response('tickets/ticket.html', {
+    response = render_to_response('tickets/ticket.html', {
         'ticket': ticket,
     }, context_instance=RequestContext(request))
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    return response
 
 # Lists all tickets
-@never_cache
 def tickets(request, transaction_key):
     # Get transaction
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
@@ -36,7 +35,10 @@ def tickets(request, transaction_key):
     tickets = Ticket.objects.filter(transaction=transaction)
     
     # Render tickets
-    return render_to_response('tickets/tickets.html', {
+    response = render_to_response('tickets/tickets.html', {
         'transaction': transaction,
         'tickets': tickets,
     }, context_instance=RequestContext(request))
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    return response
+

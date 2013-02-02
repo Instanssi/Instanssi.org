@@ -34,6 +34,8 @@ Yhteensä: {{ total }} eur
 
 Tilauksenne sisältämät liput voitte noutaa osoitteesta 
 {{ ticketurl }}
+Muistathan tyhjentää selaimesi sivuhistorian ja välimuistin käytyäsi lippusivulla, 
+mikäli tietokonettasi käyttää useampi henkilö!
 {% endif %}
 -- 
 Instanssi.org verkkokauppa

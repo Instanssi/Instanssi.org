@@ -7,12 +7,14 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from Instanssi.tickets.models import Ticket
 from Instanssi.store.models import StoreTransaction
+from django.views.decorators.cache import never_cache
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
 
 # Shows information about a single ticket
+@never_cache
 def ticket(request, ticket_key):
     # Find ticket
     ticket = get_object_or_404(Ticket, key=ticket_key)
@@ -23,6 +25,7 @@ def ticket(request, ticket_key):
     }, context_instance=RequestContext(request))
 
 # Lists all tickets
+@never_cache
 def tickets(request, transaction_key):
     # Get transaction
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)

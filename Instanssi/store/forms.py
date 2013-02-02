@@ -32,7 +32,7 @@ class StoreOrderForm(forms.ModelForm):
     )
 
     read_terms = forms.BooleanField(
-        label=u'Hyväksyn käyttöehdot', required=True
+        label=u'Hyväksyn toimitusehdot', required=True
     )
 
     def __init__(self, *args, **kwargs):
@@ -44,8 +44,7 @@ class StoreOrderForm(forms.ModelForm):
 
         self.fields['read_terms'].help_text = \
             u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
-            u'sekä <a href="%s" target="_blank">rekisteriselosteen</a> ' \
-            u'ja hyväksyn ne.' % (reverse('store:terms'), reverse('store:privacy'))
+            u'ja hyväksyn ne. (Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' % (reverse('store:terms'), reverse('store:privacy'))
 
         item_fields = Fieldset(u'', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):

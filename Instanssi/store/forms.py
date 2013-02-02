@@ -43,8 +43,9 @@ class StoreOrderForm(forms.ModelForm):
         self.helper.form_class = 'store'
 
         self.fields['read_terms'].help_text = \
-            u'Olen lukenut <a href="%s" target="_blank">käyttöehdot</a> ' \
-            u'ja hyväksyn ne.' % reverse('store:terms')
+            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
+            u'sekä <a href="%s" target="_blank">rekisteriselosteen</a> ' \
+            u'ja hyväksyn ne.' % (reverse('store:terms'), reverse('store:privacy'))
 
         item_fields = Fieldset(u'', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):

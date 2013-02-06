@@ -62,10 +62,16 @@ def notify_handler(request):
         # Add items to email
         # Also, heck if transaction contains tickets
         hastickets = False
+        hassnailmail = False
+        hasevdelivered = False
         for titem in TransactionItem.objects.filter(transaction=ta):
             mailer.add_item(titem.item.id, titem.item.name, titem.item.price, titem.amount)
-            if titem.item.delivery_type == 1 and not hastickets:
+            if titem.item.delivery_type == 1:
                 hastickets = True
+            if titem.item.delivery_type == 2:
+                hassnailmail = True
+            if titem.item.delivery_type == 3:
+                hasevdelivered = True
         
         # Form ticket url
         if hastickets:
@@ -84,6 +90,11 @@ def notify_handler(request):
         
         # Mark as paid
         ta.time_paid = datetime.now()
+        ta.status = 1
+        if hastickets and not hassnailmail and not hasevdelivered:
+            ta.status = 2
+        if hastickets and (hassnailmail or hasevdelivered):
+            ta.status = 3
         ta.save()
         
         # Generate ticket information for tickets

@@ -18,5 +18,5 @@ urlpatterns = patterns(
     # Store related
     url(r'^store/', 'store', name="store"),
     url(r'^store_success/', 'pageloader', {'templatename': 'store_success'}, name="store_success"),
-    url(r'^store_failure/', 'pageloader', {'templatename': 'store_failure'}, name="store_failure"),
+    url(r'^store_failure/', 'store_failure', name="store_failure"),
 )

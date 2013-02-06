@@ -13,7 +13,7 @@ class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
     name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
     description = models.TextField(u'Tuotteen kuvaus', help_text=u'Tuotteen pitkä kuvaus.')
-    price = models.FloatField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa.')
+    price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa.')
     max = models.IntegerField(u'Kappaletta saatavilla', help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
     available = models.BooleanField(u'Ostettavissa', default=False, help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)

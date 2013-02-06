@@ -60,6 +60,15 @@ class StoreTransaction(models.Model):
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
     time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
+    
+    STATUS_CHOICES=(
+        (0, u'Tuotteet valittu'),
+        (1, u'Maksettu'),
+        (2, u'Toimitettu'),
+        (3, u'Osittain toimitettu'),
+        (4, u'Peruutettu')
+    )
+    status = models.IntegerField(u'Tila', choices=STATUS_CHOICES, default=0)
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
     company = models.CharField(u'Yritys', max_length=128, blank=True)

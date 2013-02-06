@@ -75,7 +75,7 @@ class StoreOrderForm(forms.ModelForm):
                 )
 
             mdiv.fields.append(
-                HTML(u'<span class="item-price">%.2f €/kpl</span>' % item.price)
+                HTML(u'<span class="item-price">%d €/kpl</span>' % item.price)
             )
             mdiv.fields.append(name)
             item_fields.fields.append(mdiv)

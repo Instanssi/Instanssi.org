@@ -89,9 +89,9 @@ $(document).ready(function (){
 		var storeSum = 0;
 		$( ".store-items input" ).each( function() {
 			// amount * price
-			storeSum += parseFloat( $( this ).val() ) * parseFloat( $( this ).parent().parent().find('.item-price').html() );
+			storeSum += parseInt( $( this ).val() ) * parseInt( $( this ).parent().parent().find('.item-price').html() );
 		});
-		$( '.store-sum span' ).html( storeSum.toFixed(2) );
+		$( '.store-sum span' ).html( storeSum );
 	}
 	$('.store-items').append('<div class="store-sum">Yhteensä: <span></span> €</div>');
 	storeSum();

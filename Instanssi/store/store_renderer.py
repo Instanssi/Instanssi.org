@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
-from Instanssi.store.svmlib import svm_request, SVMException, svm_validate
+from Instanssi.store.svmlib import svm_request, SVMException, svm_validate, svm_validate_cancelled
 from Instanssi.store.forms import StoreOrderForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 
@@ -22,19 +22,14 @@ def handle_cancel(request):
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
-    paid = request.GET.get('PAID', '')
-    method = request.GET.get('METHOD', '')
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
     
     # Validata & handle
-    if svm_validate(order_number, timestamp, paid, method, authcode, secret):
-        try:
-            ta = StoreTransaction.objects.get(pk=int(order_number))
-            ta.status = 4
-            ta.save()
-        except:
-            pass
+    if svm_validate_cancelled(order_number, timestamp, authcode, secret):
+        ta = StoreTransaction.objects.get(pk=int(order_number))
+        ta.status = 4
+        ta.save()
 
 # Renders store form, handles requests to Suomen Verkkomaksut
 def render_store(request, event_id, success_url, failure_url):

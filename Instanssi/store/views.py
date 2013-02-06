@@ -46,7 +46,7 @@ def notify_handler(request):
             raise Http404
 
         # Deliver email.
-        mailer = ReceiptMailer('noreply@'+settings.DOMAIN, ta.email, 'Instanssi.org kuitti')
+        mailer = ReceiptMailer('"Instanssi" <noreply@'+settings.DOMAIN+'>', ta.email, 'Instanssi.org kuitti')
         mailer.ordernumber(ta.id)
         mailer.firstname(ta.firstname)
         mailer.lastname(ta.lastname)

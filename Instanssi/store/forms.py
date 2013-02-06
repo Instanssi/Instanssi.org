@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 # for creating ticket key hash
 def gen_sha(text):
-    print text
     h = hashlib.sha1()
     h.update(text)
     return h.hexdigest()
@@ -158,7 +157,7 @@ class StoreOrderForm(forms.ModelForm):
 
         for i in range(10):
             try:
-                new_transaction.key = gen_sha('%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random()))
+                new_transaction.key = gen_sha('%s|%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random(), random.random()))
                 new_transaction.save()
                 break
             except IntegrityError as ex:

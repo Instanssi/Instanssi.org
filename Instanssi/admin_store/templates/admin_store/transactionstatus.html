@@ -43,6 +43,10 @@
             <td>{% if transaction.paid %}Kyllä{% else %}Ei{% endif %}</td>
         </tr>
         <tr>
+            <th>Tila</th>
+            <td>{{ transaction.get_status_display }}</td>
+        </tr>
+        <tr>
             <th>Muut tiedot</th>
             <td>{{ transaction.information }}</td>
         </tr>

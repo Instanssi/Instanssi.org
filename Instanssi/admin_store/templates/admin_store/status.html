@@ -27,12 +27,11 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Maksettu</th>
-                <th>Etunimi</th>
-                <th>Sukunimi</th>
+                <th>Nimi</th>
                 <th>Sähköposti</th>
                 <th>Ostettu</th>
                 <th>Maksettu</th>
+                <th>Tila</th>
                 <th>Yhteensä</th>
                 <th class="sorter-false">Lisätiedot</th>
             </tr>
@@ -41,12 +40,11 @@
 {% for item in transactions %}
             <tr>
                 <td>{{ item.id }}</td>
-                <td>{% if item.paid %}Kyllä{% else %}Ei{% endif %}</td>
-                <td>{{ item.firstname }}</td>
-                <td>{{ item.lastname }}</td>
+                <td>{{ item.firstname }} {{ item.lastname }}</td>
                 <td>{{ item.email }}</td>
                 <td>{{ item.time_created|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.time_paid|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.get_status_display }}</td>
                 <td>{{ item.total }} &euro;</td>
                 <td><a href="{% url 'manage-store:transactionstatus' item.id %}">Tiedot</a></td>
             </tr>

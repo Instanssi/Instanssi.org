@@ -27,9 +27,12 @@ def handle_cancel(request):
     
     # Validata & handle
     if svm_validate_cancelled(order_number, timestamp, authcode, secret):
-        ta = StoreTransaction.objects.get(pk=int(order_number))
-        ta.status = 4
-        ta.save()
+        try:
+            ta = StoreTransaction.objects.get(pk=int(order_number))
+            ta.status = 4
+            ta.save()
+        except:
+            pass
 
 # Renders store form, handles requests to Suomen Verkkomaksut
 def render_store(request, event_id, success_url, failure_url):

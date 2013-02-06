@@ -13,5 +13,8 @@
 {% block content %}
 {{ block.super }}
 <h1>Kauppa</h1>
+<p>
+    Tarkistathan lippujen tarkemmat tiedot <a href="{% url 'main2013:liput' %}">Liput-sivulta</a>!
+</p>
 {% crispy transaction_form transaction_form.helper %}
 {% endblock %}

@@ -2,7 +2,7 @@ Hei,
 
 Tilauksenne numerolla {{ ordernumber }} on nyt käsitelty. Mikäli huomaatte virheitä
 tilausluettelossa, ottakaa yhteys meihin välittömästi (webmaster@instanssi.org).
-Ohessa seuraa tilausluettelo{% if ticketurl %} sekä liput{% endif %}.
+Ohessa seuraa tilausluettelo{% if ticketurl %} sekä linkki lippuihin{% endif %}.
 
 Huom! Tilauksen sisältämät tuotteet kuten T-paidat voi noutaa tapahtuman aikana 
 lipunmyynnistä.

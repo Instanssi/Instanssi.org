@@ -15,14 +15,14 @@
 {{ block.super }}
 <h1 class="noPrint">Tilaustiedot</h1>
 <p class="noPrint">
-    Tältä sivulta löytyvät sekä tuotteiden että lippujen lunastukseen vaadittavat QR-koodit helposti tulostettavassa muodossa.
-    Huomaa! Tämän sivun URL-osoite sekä (QR-)tilauskoodi on henkilökohtainen, eikä sitä saa jakaa muille.
+    Tältä sivulta löytyvät sekä tuotteiden että lippujen lunastukseen vaadittavat QR-tunnisteet helposti tulostettavassa muodossa.
+    Huomaa! Tämän sivun URL-osoite sekä (QR-)tilaustunniste on henkilökohtainen, eikä sitä saa jakaa muille. Tunnisteen voi esittää 
+    tapahtumassa lipputiskillä joko paperitulosteena tai suoraan mobiililaitteen näytöltä.
 </p>
 <div class="order">
 <h2>Tilaus</h2>
 <p class="noPrint">
-    Tilaukseen liittyvät tuotteet (kuten T-paidat) voi lunastaa lipputiskiltä tilaukseen liittyvällä QR-koodilla (alla).
-    Koodin voi esittää joko paperitulosteena tai suoraan mobiililaitteen näytöltä.
+    Tilaukseen liittyvät tuotteet (kuten T-paidat) voi lunastaa lipputiskiltä allaolevalla tunnisteella.
 </p>
 <table>
     <tbody>
@@ -42,8 +42,8 @@
 {% if tickets %}
 <h1 class="noPrint">Liput</h1>
 <p class="noPrint">
-    Alla ovat kaikki tilaukseen liittyvät liput. Mikäli haluat, voit jakaa yksittäisen lipun URL-osoitteen
-    sen käyttäjälle.
+    Tilaukseen kuuluvat liput voi tulostaa allaolevilla tunnisteilla. Mikäli haluat, voit jakaa yksittäisen lipun URL-osoitteen
+    suoraan sen käyttäjälle.
 </p>
 {% for ticket in tickets %}
 <div class="ticket">

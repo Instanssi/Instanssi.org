@@ -29,6 +29,7 @@ class ProgrammeEvent(models.Model):
         (1, u'Yksityiskohtainen'),
     )
     event_type = models.IntegerField(u'Tapahtuman tyyppi', choices=EVENT_TYPES, default=0, help_text=u"Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.")
+    active = models.BooleanField(u'Aktiivinen', help_text=u'Deaktivoidut piilotetaan.', default=True)
 
     def save(self, *args, **kwargs):
         # Delete old icon file when editing

@@ -74,6 +74,7 @@
 			<tr>
 				<th>Otsikko</th>
 				<th>Tyyppi</th>
+				<th>Aktiivinen</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
 				<th class="sorter-false management_field"></th>
@@ -84,6 +85,7 @@
 			<tr>
 				<td>{{ event.title }}</td>
 				<td>{% if event.event_type == 1 %}Yksityiskohtainen{% else %}Yksinkertainen{% endif %}</td>
+				<td>{% if event.active %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>

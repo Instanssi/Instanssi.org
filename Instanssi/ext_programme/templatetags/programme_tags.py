@@ -10,7 +10,7 @@ register = template.Library()
 
 @register.inclusion_tag('ext_programme/tags/programme.html')
 def render_programme(event_id):
-    progs = ProgrammeEvent.objects.filter(event_id=event_id, event_type=1)
+    progs = ProgrammeEvent.objects.filter(event_id=event_id, event_type=1, active=True)
     return {
         'event_id': event_id,
         'progs': progs,

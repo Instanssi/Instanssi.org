@@ -120,11 +120,12 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-footer .sitemap { width: 150px; }
 #page-footer .sponsors { width: 740px;  }
 #page-footer .sponsors  h1 {  }
-#page-footer .sponsors .sponsor { float: left; margin: 0% 1% 1% 0%; }
+#page-footer .sponsors .sponsor { width: 128px; float: left; padding: 0% 1% 1% 0%; }
 #page-footer .sponsors .sponsors-container { }
 #page-footer .sponsors .sponsor.white { background: #fff; }
-#page-footer .sponsors .sponsor a { display: block; line-height: 0px; }
-#page-footer .sponsors .sponsor img { background: #fff; padding: 4%; }
+#page-footer .sponsors .sponsor a { display: block; line-height: 0px; padding: 4%; background: #fff; }
+#page-footer .sponsors .sponsor a:hover { opacity: 0.9; }
+#page-footer .sponsors .sponsor img { background: #fff;  }
 #page-footer .contact { width: 150px;  }
 #page-footer .menu-item a { color: #ccc; text-decoration: none; }
 #page-footer .menu-item a:hover { padding-left: 5px; }
@@ -272,6 +273,10 @@ background-image: -webkit-gradient(
 	form label {  }
 	form input[type="text"] { width: 96%; padding: 2%; }
 	form .errorField {   }
+
+	/* footer always bottom */
+	#page-footer { height: 370px; position: absolute; bottom: 0px; padding-top: 20px; }
+	#content { padding-bottom: 430px; }
 }
  
  
@@ -286,7 +291,7 @@ background-image: -webkit-gradient(
 	#page-footer .menu-item a:hover { padding-left: 15px; }
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 92%; margin-bottom: 20px;  }
 	#page-footer .sponsors .sponsor-placeholder { margin: 1%; }
-	#page-footer .sponsors h1 { margin: 0; }
+	#page-footer .sponsors h1 { margin: 0px 0px 20px 0px; }
 	
 	/* footer always bottom */
 	#page-footer { position: static; height: auto; }
@@ -328,7 +333,9 @@ background-image: -webkit-gradient(
 	#primary table, #primary tbody { display: block; width: 100%; }
 	#primary table td { display: block; width: 92%; padding: 1% 4%;}
 	
-	#page-footer .sponsors .sponsor { width: 42%; margin: 4%;  }
+	#page-footer .sponsors .sponsor  { width: 46%; padding: 2%; }
+	#page-footer .sponsors .sponsor  a { width: auto; padding: 4%;  }
+	#page-footer .sponsors .sponsor img { width: 100%;  }
 
 	/* store */
 	.store-items img { float: none; margin-bottom: 20px; }

@@ -45,6 +45,9 @@ class StoreOrderForm(forms.ModelForm):
             u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
             u'ja hyväksyn ne. (Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' % (reverse('store:terms'), reverse('store:privacy'))
 
+        self.fields['information'].widget.attrs['placeholder'] = \
+            u'Mikäli tilauksessasi on T-paita, lisää tähän kenttään sen haluttu koko.'
+
         item_fields = Fieldset(u'', css_class='store-items')
         for item in StoreItem.items_for_event(self.event_id):
             name = 'item-%s' % item.id

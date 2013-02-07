@@ -44,6 +44,7 @@
 				<th>Nimi</th>
 				<th>Aktiivinen</th>
 				<th>Arkistossa</th>
+				<th>Etusivulla</th>
 				<th>Aika</th>
 				<th class="sorter-false management_field"></th>
 			</tr>
@@ -54,6 +55,7 @@
 				<td>{{ compo.name }}</td>
 				<td>{% if compo.active %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>{% if compo.hide_from_archive %}Ei{% else %}Kyllä{% endif %}</td>
+				<td>{% if compo.hide_from_frontpage %}Ei{% else %}Kyllä{% endif %}</td>
 				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>
 {% if perms.kompomaatti.change_compo %}

@@ -39,6 +39,7 @@
 <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ transaction.key }}" width="160" height="160" alt="Tilauksen QR-koodi." />
 </div>
 
+{% if tickets %}
 <h1 class="noPrint">Liput</h1>
 <p class="noPrint">
     Alla ovat kaikki tilaukseen liittyvät liput. Mikäli haluat, voit jakaa yksittäisen lipun URL-osoitteen
@@ -77,4 +78,5 @@
 <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ticket.key }}" width="160" height="160" alt="Lipun QR-koodi." />
 </div>
 {% endfor %}
+{% endif %}
 {% endblock %}

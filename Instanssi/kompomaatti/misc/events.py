@@ -6,9 +6,9 @@ from Instanssi.kompomaatti.models import Compo,Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
 
 def get_upcoming(event):
-    compos = Compo.objects.filter(event=event, voting_end__gt=datetime.now())
-    progs = ProgrammeEvent.objects.filter(event=event, start__gt=datetime.now())
-    comps = Competition.objects.filter(event=event, start__gt=datetime.now())
+    compos = Compo.objects.filter(event=event, voting_end__gt=datetime.now(), active=True)
+    progs = ProgrammeEvent.objects.filter(event=event, start__gt=datetime.now(), active=True)
+    comps = Competition.objects.filter(event=event, start__gt=datetime.now(), active=True)
     events = []
     
     # Handle compos

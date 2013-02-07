@@ -13,7 +13,7 @@ class Ticket(models.Model):
     used = models.BooleanField(u'Käytetty', default=False, help_text=u'Lippu on käytetty')
     owner_firstname = models.CharField(u'Etunimi', max_length=64, help_text=u'Lipun omistajan etunimi')
     owner_lastname = models.CharField(u'Sukunimi', max_length=64, help_text=u'Lipun omistajan sukunimi')
-    owner_email = models.CharField(u'Sähköposti', max_length=255, help_text=u'Lipun omistajan sähköposti')
+    owner_email = models.CharField(u'Sähköposti', max_length=255, help_text=u'Lipun omistajan sähköposti', blank=True)
     
     def __unicode__(self):
         return u'%s %s (%s)' % (self.owner_firstname, self.owner_lastname, self.key)

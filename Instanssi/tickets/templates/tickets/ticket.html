@@ -28,10 +28,12 @@
             <th>Lipun ostaja:</th>
             <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
         </tr>
+{% if ticket.owner_email %}
         <tr>
             <th>Sähköposti:</th>
             <td>{{ ticket.owner_email }}</td>
         </tr>
+{% endif %}
         <tr>
             <th>Tunniste:</th>
             <td>{{ ticket.key }}</td>

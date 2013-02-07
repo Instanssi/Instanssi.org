@@ -74,7 +74,7 @@ def notify_handler(request):
                 hasevdelivered = True
         
         # Form ticket url
-        if hastickets:
+        if hastickets or hasevdelivered:
             proto = 'http://'
             if settings.SSL_ON:
                 proto = 'https://'

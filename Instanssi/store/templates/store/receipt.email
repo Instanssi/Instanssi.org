@@ -2,7 +2,8 @@ Hei,
 
 Tilauksenne numerolla {{ ordernumber }} on nyt käsitelty. Mikäli huomaatte virheitä
 tilausluettelossa, ottakaa yhteys meihin välittömästi (webmaster@instanssi.org).
-Ohessa seuraa tilausluettelo{% if ticketurl %} sekä linkki lippuihin{% endif %}.
+Ohessa seuraa tilausluettelo{% if ticketurl %} sekä linkki tuotteiden ja lippujen lunastukseen vaadittaviin
+tunnisteisiin{% endif %}.
 
 Huom! Tilauksen sisältämät tuotteet kuten T-paidat voi noutaa tapahtuman aikana 
 lipunmyynnistä.
@@ -29,14 +30,17 @@ ID     Määrä Tuoteseloste                               Hinta  Yhteensä
 {% endfor %}
 Yhteensä: {{ total }} eur
 
-{% if ticketurl %}Liput:
-------
+{% if ticketurl %}
+Tuotteiden nouto & liput:
+-------------------------
 
-Tilauksenne sisältämät liput voitte noutaa osoitteesta 
+Mikäli tilaukseenne kuuluu lippuja tai tapahtuman aikana noudettavia tuotteita, voitte
+tulostaa allaolevasta osoitteesta niiden lunastukseen vaadittavat tunnisteet:
 {{ ticketurl }}
-Muistathan tyhjentää selaimesi sivuhistorian ja välimuistin käytyäsi lippusivulla, 
+
+Muista tyhjentää selaimesi sivuhistorian ja välimuistin käytyäsi lippusivulla, 
 mikäli tietokonettasi käyttää useampi henkilö!
 {% endif %}
 -- 
-Instanssi.org verkkokauppa
+Instanssi 2013
 http://instanssi.org

@@ -157,7 +157,8 @@ class StoreOrderForm(forms.ModelForm):
 
         for i in range(10):
             try:
-                new_transaction.key = gen_sha(u'%s|%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random(), random.random()))
+                str = u'%s|%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random(), random.random())
+                new_transaction.key = gen_sha(str.encode('utf-8'))
                 new_transaction.save()
                 break
             except IntegrityError as ex:

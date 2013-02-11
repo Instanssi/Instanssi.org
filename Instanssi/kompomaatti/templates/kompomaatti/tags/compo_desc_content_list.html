@@ -1,0 +1,7 @@
+{% if compos %}
+<ul>
+{% for compo in compos %}
+    <li><a href="#{{ compo.id }}">{{ compo.name }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}

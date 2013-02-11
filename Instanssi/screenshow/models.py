@@ -6,6 +6,23 @@ from Instanssi.kompomaatti.models import Event
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 
+class NPSong(models.Model):
+    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
+    title = models.CharField(u'Kappale', max_length=255, blank=True)
+    artist = models.CharField(u'Artisti', max_length=255, blank=True)
+    time = models.DateTimeField(u'Aikaleima')
+    state = models.IntegerField(u'Tila', choices=((0, u'Play'),(1, u'Stop')))
+    
+    def __unicode__(self):
+        if self.state == 0:
+            return u'[Play] %s %s' % (self.title, self.artist)
+        else:
+            return u'[Stop]'
+    
+    class Meta:
+        verbose_name=u"soitettava kappale"
+        verbose_name_plural=u"soitettavat kappaleet"
+
 class ScreenConfig(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', unique=True)
     enable_videos = models.BooleanField(u'Näytä videoita', help_text=u'Näytetäänkö esityksessä videoita playlistiltä.', default=True)
@@ -97,5 +114,6 @@ try:
     admin.site.register(Sponsor)
     admin.site.register(PlaylistVideo)
     admin.site.register(ScreenConfig)
+    admin.site.register(NPSong)
 except:
     pass

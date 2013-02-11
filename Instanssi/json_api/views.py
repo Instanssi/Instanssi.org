@@ -59,10 +59,19 @@ def screen_np_get(request):
     except:
         raise Http404
     
-    return JSONResponse({
-        'title': song.title,
-        'artist': song.artist    
-    });
+    # Respond with correct state
+    if song.state == 1:
+        return JSONResponse({
+            'state': u'stop',
+            'title': u'',
+            'artist': u''
+        });                     
+    else:
+        return JSONResponse({
+            'state': u'play',
+            'title': song.title,
+            'artist': song.artist    
+        });
 
 def screen_np_set(request):
     if not type_ok(request):
@@ -74,7 +83,8 @@ def screen_np_set(request):
         key = data['key']
         title = data['title']
         event_id = data['event_id']
-        artist = date['artist']
+        artist = data['artist']
+        type = data['type']
     except:
         return JSONResponse({'error': 'Invalid JSON request'});
     
@@ -93,6 +103,8 @@ def screen_np_set(request):
         song.artist = artist
         song.time = datetime.now()
         song.state = 0
+        if type == 'stop':
+            song.state = 1
         song.save()
     except:
         return JSONResponse({'error': 'Database error'});

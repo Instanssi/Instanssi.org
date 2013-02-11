@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+import json
+from django.conf import settings
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+
 from common.responses import JSONResponse
+from common.http import Http403
 from Instanssi.kompomaatti.models import Event
 from Instanssi.kompomaatti.misc.events import get_upcoming
-from datetime import datetime
+from Instanssi.screenshow.models import NPSong
+
+def type_ok(request):
+    type = request.META.get('CONTENT_TYPE')
+    return (type == 'application/json')
 
 def happenings_api(request):
     happenings = []
@@ -30,3 +41,65 @@ def events_api(request, hid):
         events.append(event)
 
     return JSONResponse({'events': events});
+
+def screen_np_get(request):
+    if not type_ok(request):
+        raise Http404
+
+    # Make sure the request is ok
+    try:
+        data = json.loads(request.raw_post_data)
+        event_id = data['event_id']
+    except:
+        return JSONResponse({'error': 'Invalid JSON request'});
+
+    # Get song
+    try:
+        song = NPSong.objects.filter(event_id=event_id).latest('time')
+    except:
+        raise Http404
+    
+    return JSONResponse({
+        'title': song.title,
+        'artist': song.artist    
+    });
+
+def screen_np_set(request):
+    if not type_ok(request):
+        raise Http404
+   
+    # Make sure the request is ok
+    try:
+        data = json.loads(request.raw_post_data)
+        key = data['key']
+        title = data['title']
+        event_id = data['event_id']
+        artist = date['artist']
+    except:
+        return JSONResponse({'error': 'Invalid JSON request'});
+    
+    # Check the key
+    if settings.JSON_KEY != key:
+        raise Http403
+    
+    # Get event, make sure it exists.
+    event = get_object_or_404(Event, pk=event_id)
+    
+    # Save as new song
+    try:
+        song = NPSong()
+        song.event = event
+        song.title = title
+        song.artist = artist
+        song.time = datetime.now()
+        song.state = 0
+        song.save()
+    except:
+        return JSONResponse({'error': 'Database error'});
+    
+    # Delete earliest NPSong
+    if NPSong.objects.count() >= 10:
+        NPSong.objects.earliest('time').delete()
+    
+    # All done. Just return nothing.
+    return JSONResponse({});

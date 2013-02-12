@@ -80,14 +80,14 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 /* ohjelma */
 #primary .icon { float: left; margin-right: 15px; }
-#primary .personalinfo { padding-top: 10px; }
+#primary .personalinfo { }
 #primary .personalinfo .names { display: block; font-weight: bold; }
 #primary .personalinfo .titles { display: block; color: #aaa; font-style: italic; }
 #primary .description { clear: both; }
 #primary .serviceicons { text-align: right; }
 #primary .serviceicons a img { box-shadow: 0px 0px 0px transparent;  }
-#primary .item { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; }
-
+#primary .item { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+#programme .item { border: none; }
 
 /* blogi */
 #primary .message { padding-bottom: 20px; margin-bottom: 20px; }

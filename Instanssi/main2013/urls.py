@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^yhteystiedot/', 'pageloader', {'templatename': 'yhteystiedot'}, name="yhteystiedot"),
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
     url(r'^liput/', 'pageloader', {'templatename': 'liput'}, name="liput"),
+    url(r'^kilpailusopimus/', 'pageloader', {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
     
     # Store related
     url(r'^store/', 'store', name="store"),

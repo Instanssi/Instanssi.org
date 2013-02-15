@@ -80,14 +80,14 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 /* ohjelma */
 #primary .icon { float: left; margin-right: 15px; }
-#primary .personalinfo { padding-top: 10px; }
+#primary .personalinfo { }
 #primary .personalinfo .names { display: block; font-weight: bold; }
 #primary .personalinfo .titles { display: block; color: #aaa; font-style: italic; }
 #primary .description { clear: both; }
 #primary .serviceicons { text-align: right; }
 #primary .serviceicons a img { box-shadow: 0px 0px 0px transparent;  }
-#primary .item { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; }
-
+#primary .item { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+#programme .item { border: none; }
 
 /* blogi */
 #primary .message { padding-bottom: 20px; margin-bottom: 20px; }
@@ -117,7 +117,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 #page-footer { width: 100%;  background: #333; }
 #page-footer section { float: left; }
 #page-footer section h1 { font-size: 18px; color: #fff; font-weight: bold; }
-#page-footer .sitemap { width: 150px; }
+#page-footer .sitemap { width: 150px; margin-bottom: 20px; }
 #page-footer .sponsors { width: 740px;  }
 #page-footer .sponsors  h1 {  }
 #page-footer .sponsors .sponsor { width: 128px; float: left; padding: 0% 1% 1% 0%; }
@@ -134,7 +134,7 @@ blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 
 
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
-#page-footer { height: 330px; position: absolute; bottom: 0px; padding-top: 20px; }
+#page-footer { height: 310px; position: absolute; bottom: 0px; padding-top: 20px; }
 #content { padding-bottom: 390px; }
 #page-wrap { min-height: 100%; position: relative; }
 
@@ -265,7 +265,7 @@ background-image: -webkit-gradient(
 	#content #primary{ width: 530px;  margin-right: 20px;  }
 	#twitter-widget{ width: 200px; }
 	
-	#page-footer .sitemap { width: 20%; margin: 0; }
+	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
 	#page-footer .contact { float: none; }
 
@@ -275,8 +275,8 @@ background-image: -webkit-gradient(
 	form .errorField {   }
 
 	/* footer always bottom */
-	#page-footer { height: 370px; position: absolute; bottom: 0px; padding-top: 20px; }
-	#content { padding-bottom: 430px; }
+	#page-footer { height: 500px; position: absolute; bottom: 0px; padding-top: 20px; }
+	#content { padding-bottom: 550px; }
 }
  
  

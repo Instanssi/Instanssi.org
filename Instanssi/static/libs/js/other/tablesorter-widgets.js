@@ -87,6 +87,7 @@ $.tablesorter.addParser({
         return true;
     }, 
     format: function(s) { 
+        if(s.length == 0) return "";
         var dtsplit = s.split(" ");
         var dates = dtsplit[0].split(".");
         var times = dtsplit[2].split(":");

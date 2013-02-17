@@ -20,6 +20,7 @@ class ProgrammeEventForm(forms.ModelForm):
                 'presenters',
                 'presenters_titles',
                 'icon_original',
+                'icon2_original',
                 'email',
                 'home_url',
                 'twitter_url',

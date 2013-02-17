@@ -14,8 +14,13 @@ class ProgrammeEvent(models.Model):
     title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko.', max_length=128)
     presenters = models.CharField(u'Henkilöt', help_text=u'Esityksen pitäjät tms.', max_length=256, blank=True)
     presenters_titles = models.CharField(u'Nimikkeet', help_text=u'Henkilön arvo-, ammatti- tai virkanimike.', max_length=256, blank=True)
-    icon_original = models.ImageField(u'Kuva', upload_to='programme/images/', help_text=u"Kuva tapahtumalle.", blank=True)
+    
+    # This is suck a hackish solution that it makes me want to throw up. Oh well.
+    icon_original = models.ImageField(u'Kuva 1', upload_to='programme/images/', help_text=u"Kuva 1 tapahtumalle.", blank=True)
     icon_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon_original', format='PNG')
+    icon2_original = models.ImageField(u'Kuva 2', upload_to='programme/images/', help_text=u"Kuva 2 tapahtumalle.", blank=True)
+    icon2_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon_original', format='PNG')
+    
     email = models.EmailField(u'Sähköposti', help_text=u'Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).', blank=True)
     home_url = models.URLField(u'Kotiurli', help_text=u'Tapahtumaan liittyvä URL.', blank=True)
     twitter_url = models.URLField(u'Twitter', help_text=u'Tapahtumaan liittyvä Twitter-url.', blank=True)

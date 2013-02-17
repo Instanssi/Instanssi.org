@@ -12,7 +12,13 @@
                 <img src="{{ prog.icon_small.url }}" 
                      width="{{ prog.icon_small.width }}" 
                      height="{{ prog.icon_small.height }}" 
-                     alt="{{ prog.presenters }}" />
+                     alt="Icon 1" />
+{% endif %}
+{% if prog.icon2_original %}
+                <img src="{{ prog.icon2_small.url }}" 
+                     width="{{ prog.icon2_small.width }}" 
+                     height="{{ prog.icon2_small.height }}" 
+                     alt="Icon 2" />
 {% endif %}
             </div>
             <div class="personalinfo">

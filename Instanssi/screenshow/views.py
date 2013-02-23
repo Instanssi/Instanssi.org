@@ -61,6 +61,16 @@ def events_api(request, event_id):
 
     return JSONResponse({'events': events});
 
+def playing_api(request, event_id):
+    playlist = []
+    for item in NPSong.objects.filter(event_id=event_id):
+        playlist.append({
+            'title': item.title,
+            'artist': item.artist,
+            'state': item.state,
+        })
+    return JSONResponse({'playlist': playlist})
+
 def messages_api(request, event_id):
     messages = []
     for msg in Message.objects.filter(event_id=event_id):

@@ -10,4 +10,5 @@ urlpatterns = patterns(
     url(r'^(?P<event_id>\d+)/api/messages/', 'messages_api', name="messages-api"),
     url(r'^(?P<event_id>\d+)/api/playlist/', 'playlist_api', name="playlist-api"),
     url(r'^(?P<event_id>\d+)/api/settings/', 'settings_api', name="settings-api"),
+    url(r'^(?P<event_id>\d+)/api/playing/', 'playing_api', name="playing-api"),
 )

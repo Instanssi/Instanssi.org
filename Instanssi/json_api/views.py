@@ -5,16 +5,13 @@ import json
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
 from common.responses import JSONResponse
 from common.http import Http403
 from Instanssi.kompomaatti.models import Event
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import NPSong
-
-def type_ok(request):
-    type = request.META.get('CONTENT_TYPE')
-    return (type == 'application/json')
 
 def happenings_api(request):
     happenings = []
@@ -42,10 +39,8 @@ def events_api(request, hid):
 
     return JSONResponse({'events': events});
 
+@csrf_exempt
 def screen_np_get(request):
-    if not type_ok(request):
-        raise Http404
-
     # Make sure the request is ok
     try:
         data = json.loads(request.raw_post_data)
@@ -73,20 +68,24 @@ def screen_np_get(request):
             'artist': song.artist    
         });
 
+@csrf_exempt
 def screen_np_set(request):
-    if not type_ok(request):
-        raise Http404
-   
     # Make sure the request is ok
     try:
         data = json.loads(request.raw_post_data)
         key = data['key']
-        title = data['title']
         event_id = data['event_id']
-        artist = data['artist']
         type = data['type']
     except:
         return JSONResponse({'error': 'Invalid JSON request'});
+    
+    # Get artist and title, if they exist
+    try:
+        artist = data['artist']
+        title = data['title']
+    except:
+        artist = u''
+        title = u''
     
     # Check the key
     if settings.JSON_KEY != key:

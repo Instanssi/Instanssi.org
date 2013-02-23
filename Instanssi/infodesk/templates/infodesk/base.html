@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Infodesk{% block title %}{% endblock %}</title>
+    <title>Infodesk :: {{ event.name }}{% block title %}{% endblock %}</title>
     <meta name="viewport" content="initial-scale=1.0" />
     
     <!-- Library CSS -->
@@ -31,7 +31,7 @@
 </head>
 <body>
 <div class="base">
-    <div class="header"><h1>Infodesk</h1></div>
+    <div class="header"><h1>Infodesk :: {{ event.name }}</h1></div>
     <div class="content">
 {% block content %}{% endblock %}
     </div>

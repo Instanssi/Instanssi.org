@@ -16,6 +16,7 @@ h1 {
     position: relative;
     top: 10px;
     left: 10px;
+    text-shadow: 0 0 3px #888;
 }
 
 h2 {

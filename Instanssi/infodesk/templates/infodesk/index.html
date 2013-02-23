@@ -1,0 +1,25 @@
+{% extends "infodesk/base.html" %}
+
+{% block title %} - Etusivu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('#scan_ticket').button();
+    $('#scan_transaction').button();
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Etusivu</h2>
+<p>
+    <a href="{% url 'infodesk:ticket_check' %}" id="scan_ticket">Skannaa lippu</a>
+</p>
+<p>
+    <a href="{% url 'infodesk:store_check' %}" id="scan_transaction">Skannaa ostos</a>
+</p>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+body {
+    
+}
+
+.base {
+    width: 700px;
+    background-color: #eee;
+    box-shadow: 0 0 5px #555;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+p,h1,h2,li,ul,div,span {
+    font-family: "Open Sans", sans-serif;
+}
+
+p {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+p,ul,li,div,span {
+    font-size: 14px;
+}
+
+.header {
+    height: 60px;
+    background: #e0e0e0;
+    background: -moz-linear-gradient(top,  #e0e0e0 0%, #d0d0d0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0e0e0), color-stop(100%,#d0d0d0));
+    background: -webkit-linear-gradient(top,  #e0e0e0 0%,#d0d0d0 100%);
+    background: -o-linear-gradient(top,  #e0e0e0 0%,#d0d0d0 100%);
+    background: -ms-linear-gradient(top,  #e0e0e0 0%,#d0d0d0 100%);
+    background: linear-gradient(to bottom,  #e0e0e0 0%,#d0d0d0 100%);
+}
+
+.content {
+    padding: 10px;
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Screenshow</title>
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="viewport" content="width=1280, height=720" />
     <script type="text/javascript" src="{% static 'libs/js/jquery/jquery-1.8.2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
@@ -77,8 +77,8 @@
 <body>
 <div id="jmpress">
     <div id="nametext" class="step nohide text" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
-    <div id="twitter" class="step dohide text" data-x="-200" data-y="800" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
-    <div id="clock" class="step dohide text" data-x="-200" data-y="-750" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
+    <div id="twitter" class="step dohide text" data-x="0" data-y="540" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
+    <div id="clock" class="step dohide text" data-x="0" data-y="-500" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
          class="step dohide text" 

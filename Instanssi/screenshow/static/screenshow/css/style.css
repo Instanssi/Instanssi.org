@@ -12,13 +12,13 @@ div.step {
 }
 
 .text {
-    width: 1860px;
+    width: 1240px;
     padding: 40px;
 }
 
 .fullscreen {
-    width: 1920px;
-    height: 1080px;
+    width: 1280px;
+    height: 720px;
 }
 
 div.dohide:not(.active) {
@@ -30,13 +30,13 @@ div.nohide:not(.active) {
 }
 
 div#nametext {
-    font-size: 430px;
+    font-size: 220pt;
     font-weight: bold;
     color: #282828;
 }
 
 div#events p {
-    font-size: 80px;
+    font-size: 60px;
     margin: 18px;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -46,7 +46,7 @@ div#events p {
 div#irc p {
     font-family: 'Consolas', monospace;
     margin: 8px;
-    font-size: 32px;
+    font-size: 21px;
     white-space: pre-wrap;
 }
 
@@ -64,7 +64,7 @@ div#irc .irctime {
 }
 
 div.twittermsg {
-    margin-left: 350px;
+    margin-left: 0px;
     font-size: 50px;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -79,11 +79,11 @@ div.twittermsg .time {
 }
 
 p#clock_time {
-    font-size: 350px;
+    font-size: 190pt;
 }
 
 p#clock_date {
-    font-size: 180px;
+    font-size: 100pt;
     padding-left: 25px;
 }
 

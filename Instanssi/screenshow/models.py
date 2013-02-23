@@ -15,7 +15,7 @@ class NPSong(models.Model):
     
     def __unicode__(self):
         if self.state == 0:
-            return u'[Play] %s %s' % (self.title, self.artist)
+            return u'[Play] %s - %s' % (self.title, self.artist)
         else:
             return u'[Stop]'
     

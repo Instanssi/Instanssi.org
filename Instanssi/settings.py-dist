@@ -184,6 +184,7 @@ INSTALLED_APPS = (
     'Instanssi.json_api',
     'Instanssi.store',
     'Instanssi.tickets',
+    'Instanssi.infodesk',
     'imagekit',
     'south',
     'crispy_forms',

@@ -26,11 +26,11 @@ function ScreenYoutube(settings, jmobj, obj, url, testurl) {
         this.obj.html('<div id="ytplayer" style="display: block;"></div>');
         this.player = $('#ytplayer');
         this.player.tubeplayer({
-            width: 1920,
-            height: 1080,
+            width: 1280,
+            height: 720,
             allowFullScreen: "true",
             initialVideo: "DeumyOzKqgI",
-            preferredQuality: "hd1080",
+            preferredQuality: "hd720",
             iframed: true,
             onPlayerEnded: $.proxy(function() {
                 this.jmobj.jmpress('next');

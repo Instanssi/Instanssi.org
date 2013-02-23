@@ -109,8 +109,14 @@ def screen_np_set(request):
         return JSONResponse({'error': 'Database error'});
     
     # Delete earliest NPSong
-    if NPSong.objects.count() >= 10:
-        NPSong.objects.earliest('time').delete()
+    scount = NPSong.objects.count()
+    if scount > 10:
+        k = scount - 10
+        for song in NPSong.objects.order_by('id'):
+            if k <= 0:
+                break
+            k -= 1
+            song.delete()
     
     # All done. Just return nothing.
     return JSONResponse({});

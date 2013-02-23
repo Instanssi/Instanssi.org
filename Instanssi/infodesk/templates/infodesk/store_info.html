@@ -14,4 +14,14 @@
 {{ block.super }}
 <h2>Tuotteen tiedot</h2>
 
+<p>
+    Voit palata alkuvalikkoon allaolevista napeista. Voit joko merkata ostoksen toimitetuksi, tai jättää sen merkkaamatta.
+</p>
+<p>
+    <a href="{% url 'infodesk:index' event.id %}" class="button">Palaa (ei merkata)</a>
+</p>
+<p>
+    <a href="" class="button">Merkkaa ja palaa.</a>
+</p>
+
 {% endblock %}

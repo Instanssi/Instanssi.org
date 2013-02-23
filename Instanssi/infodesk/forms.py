@@ -37,7 +37,6 @@ class TransactionKeyScanForm(forms.Form):
     key = forms.CharField(label=u'Tunniste')
 
     def __init__(self, *args, **kwargs):
-        self.event = kwargs.pop('event', None)
         super(TransactionKeyScanForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -53,7 +52,7 @@ class TransactionKeyScanForm(forms.Form):
     def clean_key(self):
         key = self.cleaned_data['key']
         try:
-            self.transaction = StoreTransaction.objects.get(event=self.event, key=key)
+            self.transaction = StoreTransaction.objects.get(key=key)
         except StoreTransaction.DoesNotExist:
             raise ValidationError(u'Virheellinen ostos-avain!')
         return key

@@ -15,7 +15,9 @@ from Instanssi.kompomaatti.models import Event
 @infodesk_access_required
 def index(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    return render_to_response('infodesk/index.html', {'event': event}, context_instance=RequestContext(request))
+    return render_to_response('infodesk/index.html', {
+        'event': event
+    }, context_instance=RequestContext(request))
 
 @infodesk_access_required
 def ticket_check(request, event_id):
@@ -28,29 +30,41 @@ def ticket_check(request, event_id):
     else:
         form = TicketKeyScanForm(event=event)
     
-    return render_to_response('infodesk/ticket_check.html', {'event': event, 'form': form}, context_instance=RequestContext(request))
+    return render_to_response('infodesk/ticket_check.html', {
+        'event': event, 
+        'form': form
+    }, context_instance=RequestContext(request))
 
 @infodesk_access_required
 def store_check(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     
     if request.method == 'POST':
-        form = TransactionKeyScanForm(request.POST, event=event)
+        form = TransactionKeyScanForm(request.POST)
         if form.is_valid():
             return HttpResponseRedirect(reverse('infodesk:store_info', args=(event.id, form.transaction.id,)))
     else:
-        form = TransactionKeyScanForm(event=event)
+        form = TransactionKeyScanForm()
     
-    return render_to_response('infodesk/store_check.html', {'event': event, 'form': form}, context_instance=RequestContext(request))
+    return render_to_response('infodesk/store_check.html', {
+        'event': event, 
+        'form': form
+    }, context_instance=RequestContext(request))
 
 @infodesk_access_required
 def ticket_info(request, event_id, ticket_id):
     event = get_object_or_404(Event, pk=event_id)
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    return render_to_response('infodesk/ticket_info.html', {'event': event, 'ticket': ticket}, context_instance=RequestContext(request))
+    return render_to_response('infodesk/ticket_info.html', {
+        'event': event, 
+        'ticket': ticket
+    }, context_instance=RequestContext(request))
 
 @infodesk_access_required
 def store_info(request, event_id, transaction_id):
     event = get_object_or_404(Event, pk=event_id)
     transaction = get_object_or_404(StoreTransaction, pk=transaction_id)
-    return render_to_response('infodesk/store_info.html', {'event': event, 'transaction': transaction}, context_instance=RequestContext(request))
+    return render_to_response('infodesk/store_info.html', {
+        'event': event, 
+        'transaction': transaction
+    }, context_instance=RequestContext(request))

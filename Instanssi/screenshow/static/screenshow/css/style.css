@@ -46,7 +46,7 @@ div#events p {
 div#irc p {
     font-family: 'Consolas', monospace;
     margin: 8px;
-    font-size: 21px;
+    font-size: 20px;
     white-space: pre-wrap;
 }
 
@@ -88,7 +88,7 @@ p#clock_date {
 }
 
 p.sponsorname {
-    font-size: 140px;
+    font-size: 90pt;
     font-weight: bold;
 }
 

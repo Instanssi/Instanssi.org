@@ -63,6 +63,17 @@ div#irc .irctime {
     color: #0B1183;
 }
 
+p.playing_title {
+    font-size: 40pt;
+    margin-bottom: 20px;
+}
+
+p.playing_song {
+    font-size: 30pt;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
 div.twittermsg {
     margin-left: 220px;
     font-size: 30px;

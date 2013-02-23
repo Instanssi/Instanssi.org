@@ -63,7 +63,7 @@ def events_api(request, event_id):
 
 def playing_api(request, event_id):
     playlist = []
-    for item in NPSong.objects.filter(event_id=event_id):
+    for item in NPSong.objects.filter(event_id=event_id).order_by('-id'):
         playlist.append({
             'title': item.title,
             'artist': item.artist,

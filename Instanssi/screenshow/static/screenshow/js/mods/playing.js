@@ -25,15 +25,21 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
     this.render = function(data) {
         // Write HTML from cache
         var output = '';
+        var k = 0;
         $.each(this.cache, function(key, value) {
-            output += '<p>';
-            output += value['artist'];
-            output += ' &middot; ';
-            output += value['title'];
-            output += '</p>';
-            console.log(value);
+            if(k < 5 && value['state'] == 0) {
+                output += '<p class="playing_song" style="color: #' +(k*2)+(k*2)+(k*2)+ ';">';
+                if(k == 0) {
+                    output += '&raquo; ';
+                }
+                output += value['artist'];
+                output += ' &middot; ';
+                output += value['title'];
+                output += '</p>';
+                k++;
+            }
         });
-        this.obj.html(output);
+        this.obj.html('<p class="playing_title">Toistossa:</p>' + output);
     }
     
     this.fetch_success = function(data) {
@@ -42,11 +48,11 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         this.render();
         
         // Set jmpress stuff
-        is_stopped = false
+        /*is_stopped = false
         if(this.cache.length > 0) {
             is_stopped = (this.cache[0]['state'] == 1);
         }
-        this.obj.data("stepData").exclude = (this.cache.length == 0 || is_stopped);
+        this.obj.data("stepData").exclude = (this.cache.length == 0 || is_stopped);*/
         this.jmobj.jmpress('reapply', this.obj);
     }
     

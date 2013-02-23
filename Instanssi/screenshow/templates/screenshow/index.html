@@ -50,7 +50,7 @@
         modules.push(new ScreenFrontpage(settings, jm, $('#nametext')));
         modules.push(new ScreenTwitter(settings, jm, $('#twitter')));
         modules.push(new ScreenYoutube(settings, jm, $('#youtube'), youtube_api_url));
-        modules.push(new ScreenYoutube(settings, jm, $('#playing'), playing_api_url));
+        modules.push(new ScreenNowPlaying(settings, jm, $('#playing'), playing_api_url));
         
         // Init all modules
         $.each(modules, function(key, module){

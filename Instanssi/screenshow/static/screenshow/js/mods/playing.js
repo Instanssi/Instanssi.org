@@ -13,7 +13,7 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
     
     this.timeout = 3000;
     this.cache = [];
-    this.run = false;
+    this.is_stopped = false;
     
     this.init = function() {}
     
@@ -48,11 +48,11 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         this.render();
         
         // Set jmpress stuff
-        /*is_stopped = false
         if(this.cache.length > 0) {
-            is_stopped = (this.cache[0]['state'] == 1);
+            this.is_stopped = (this.cache[0]['state'] == 1);
+            console.log(this.cache[0]);
         }
-        this.obj.data("stepData").exclude = (this.cache.length == 0 || is_stopped);*/
+        this.obj.data("stepData").exclude = (this.cache.length == 0 || this.is_stopped);
         this.jmobj.jmpress('reapply', this.obj);
     }
     

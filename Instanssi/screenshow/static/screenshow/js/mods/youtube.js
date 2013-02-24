@@ -18,6 +18,8 @@ function ScreenYoutube(settings, jmobj, obj, url, testurl) {
     this.player = null;
     this.timer = null;
     this.video_interval = 5*60*1000; // 5 minutes
+    this.res_x = 1280;
+    this.res_y = 720;
     
     /**
      * Initialize the player with a random video 
@@ -26,10 +28,10 @@ function ScreenYoutube(settings, jmobj, obj, url, testurl) {
         this.obj.html('<div id="ytplayer" style="display: block;"></div>');
         this.player = $('#ytplayer');
         this.player.tubeplayer({
-            width: 1280,
-            height: 720,
+            width: this.res_x,
+            height: this.res_y,
             allowFullScreen: "true",
-            initialVideo: "DeumyOzKqgI",
+            initialVideo: "M_eYSuPKP3Y",
             preferredQuality: "hd720",
             iframed: true,
             onPlayerEnded: $.proxy(function() {
@@ -64,10 +66,10 @@ function ScreenYoutube(settings, jmobj, obj, url, testurl) {
      * Pick the next video from the playlist and start playing it. 
      */
     this.start = function() {
-        // Get video
+        // Start playback.
         var video = this.cache[this.position++];
         this.player.tubeplayer('play', this.parse_url(video.url));
-        
+
         // Start over if needed
         if(this.position >= this.cache.length) {
             this.position = 0;

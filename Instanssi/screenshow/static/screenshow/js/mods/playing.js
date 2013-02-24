@@ -50,7 +50,6 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         // Set jmpress stuff
         if(this.cache.length > 0) {
             this.is_stopped = (this.cache[0]['state'] == 1);
-            console.log(this.cache[0]);
         }
         this.obj.data("stepData").exclude = (this.cache.length == 0 || this.is_stopped);
         this.jmobj.jmpress('reapply', this.obj);

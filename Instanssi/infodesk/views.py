@@ -52,6 +52,20 @@ def store_check(request, event_id):
     }, context_instance=RequestContext(request))
 
 @infodesk_access_required
+def ticket_mark(request, event_id, ticket_id):
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+    ticket.used = True
+    ticket.save()
+    return HttpResponseRedirect(reverse('infodesk:index', args=(event_id,)))
+
+@infodesk_access_required
+def store_mark(request, event_id, transaction_id):
+    ta = get_object_or_404(StoreTransaction, pk=transaction_id)
+    ta.status = 2
+    ta.save()
+    return HttpResponseRedirect(reverse('infodesk:index', args=(event_id,)))
+
+@infodesk_access_required
 def ticket_info(request, event_id, ticket_id):
     event = get_object_or_404(Event, pk=event_id)
     ticket = get_object_or_404(Ticket, pk=ticket_id)

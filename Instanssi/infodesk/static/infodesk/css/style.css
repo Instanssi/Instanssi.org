@@ -24,6 +24,12 @@ h2 {
     margin-bottom: 15px;
 }
 
+h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
 p,h1,h2,li,ul,div,span {
     font-family: "Open Sans", sans-serif;
 }
@@ -50,4 +56,20 @@ p,ul,li,div,span {
 
 .content {
     padding: 10px;
+}
+
+.infotable {
+    border: 1px solid #dcdcdc;
+    width: 100%;
+}
+
+.infotable th {
+    text-align: left;
+    padding: 5px;
+    background-color: #cccccc;
+    width: 100px;
+}
+
+.infotable td {
+    padding: 5px;
 }

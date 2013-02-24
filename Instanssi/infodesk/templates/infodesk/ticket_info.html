@@ -14,14 +14,54 @@
 {{ block.super }}
 <h2>Lipun tiedot</h2>
 
+<h3>Tiedot</h3>
+<table class="infotable">
+    <tbody>
+        <tr>
+            <th>Lipun tyyppi</th>
+            <td>{{ ticket.storeitem.name }}</td>
+        </tr>
+        <tr>
+            <th>Käytetty</th>
+            <td>
+                {% if ticket.used %}
+                <div class="ui-state-error ui-corner-all" style="padding: 5px;">
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <strong>Lippu on jo lunastettu!</strong>
+                </div>
+                {% else %}
+                Ei
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Etunimi</th>
+            <td>{{ ticket.owner_firstname }}</td>
+        </tr>
+        <tr>
+            <th>Sukunimi</th>
+            <td>{{ ticket.owner_lastname }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ ticket.owner_email }}</td>
+        </tr>
+        <tr>
+            <th>Avain</th>
+            <td>{{ ticket.key }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Toiminnot</h3>
 <p>
     Voit palata alkuvalikkoon allaolevista napeista. Voit joko merkata lipun käytetyksi, tai jättää sen merkkaamatta.
 </p>
 <p>
-    <a href="{% url 'infodesk:index' event.id %}" class="button">Palaa (ei merkata)</a>
-</p>
-<p>
-    <a href="" class="button">Merkkaa ja palaa.</a>
+    <a href="{% url 'infodesk:index' event.id %}" class="button">Palaa alkuun</a> &nbsp; 
+    {% if not ticket.used %}
+    <a href="{% url 'infodesk:mark_ticket' event.id ticket.id %}" class="button">Merkkaa toimitetuksi.</a>
+    {% endif %}
 </p>
 
 

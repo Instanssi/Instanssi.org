@@ -3,7 +3,7 @@ body {
 }
 
 .base {
-    width: 700px;
+    max-width: 700px;
     background-color: #eee;
     box-shadow: 0 0 5px #555;
     margin-left: auto;
@@ -14,8 +14,7 @@ h1 {
     font-size: 32px;
     font-weight: bold;
     position: relative;
-    top: 10px;
-    left: 10px;
+    padding: 10px;
     text-shadow: 0 0 3px #888;
 }
 
@@ -44,7 +43,7 @@ p,ul,li,div,span {
 }
 
 .header {
-    height: 60px;
+    min-height: 60px;
     background: #e0e0e0;
     background: -moz-linear-gradient(top,  #e0e0e0 0%, #d0d0d0 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0e0e0), color-stop(100%,#d0d0d0));
@@ -59,17 +58,48 @@ p,ul,li,div,span {
 }
 
 .infotable {
-    border: 1px solid #dcdcdc;
-    width: 100%;
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
 }
+
+.infotable tbody { display: block; }
+.infotable, .infotable tbody, .infotable tr { width: 100%; }
 
 .infotable th {
+    background-color: #ddd;
+    font-weight: bold;
     text-align: left;
-    padding: 5px;
-    background-color: #cccccc;
-    width: 100px;
 }
 
-.infotable td {
-    padding: 5px;
+.infotable td, .infotable th {
+    padding: .5em;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.infotable td { width: 100%; }
+
+a.button {
+    display: block;
+    margin: 1em 0;
+    padding: 1em;
+}
+
+@media screen {
+    .uniForm .ctrlHolder,
+    .uniForm .buttonHolder {
+        padding: 1em;
+    }
+    .uniForm .ctrlHolder input,
+    .uniForm .buttonHolder input {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: .5em
+    }
+    .uniForm input[type="text"] {
+        width: 100%;
+    }
+    .uniForm input[type="submit"] {
+        padding: .5em 1em;
+    }
 }

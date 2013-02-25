@@ -15,7 +15,7 @@
 <h2>Lipun tiedot</h2>
 
 <h3>Tiedot</h3>
-<table class="infotable">
+<table class="infotable ticket">
     <tbody>
         <tr>
             <th>Lipun tyyppi</th>
@@ -35,12 +35,8 @@
             </td>
         </tr>
         <tr>
-            <th>Etunimi</th>
-            <td>{{ ticket.owner_firstname }}</td>
-        </tr>
-        <tr>
-            <th>Sukunimi</th>
-            <td>{{ ticket.owner_lastname }}</td>
+            <th>Nimi</th>
+            <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
         </tr>
         <tr>
             <th>Email</th>

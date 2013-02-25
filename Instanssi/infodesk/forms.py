@@ -31,8 +31,8 @@ class TicketKeyScanForm(forms.Form):
         except Ticket.DoesNotExist:
             raise ValidationError(u'Virheellinen lippuavain!')
         return key
-    
-    
+
+
 class TransactionKeyScanForm(forms.Form):
     key = forms.CharField(label=u'Tunniste')
 

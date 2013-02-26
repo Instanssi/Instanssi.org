@@ -2,7 +2,7 @@
 {% if progs %}
 <div id="programme">
 {% for prog in progs %}
-    <div class="item">
+    <div class="item" id="{{ prog.id }}">
         <div class="title">
             {{ prog.title }}
         </div>

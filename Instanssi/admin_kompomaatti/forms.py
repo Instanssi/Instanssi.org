@@ -120,6 +120,7 @@ class AdminCompoForm(forms.ModelForm):
                 'entry_view_type',
                 'hide_from_archive',
                 'hide_from_frontpage',
+                'is_votable',
                 ButtonHolder (
                     Submit('submit', u'Tallenna')
                 )

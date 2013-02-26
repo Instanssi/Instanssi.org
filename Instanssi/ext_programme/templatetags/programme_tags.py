@@ -30,28 +30,29 @@ def render_calendar(event_id):
     for compo in compos:
         events.append({
             'date': compo.adding_end,
-            'title': compo.name + u': ilmoittautuminen päättyy..',
+            'title': compo.name + u': ilmoittautuminen päättyy',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'desc': '',
         })
         events.append({
             'date': compo.compo_start,
-            'title': compo.name + u': kompo alkaa.',
+            'title': compo.name + u': kompo alkaa',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'desc': '',
         })
-        events.append({
+        '''events.append({
             'date': compo.voting_start,
-            'title': compo.name + u': äänestys alkaa.',
+            'title': compo.name + u': äänestys alkaa',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'desc': '',
         })
+        '''
         events.append({
             'date': compo.voting_end,
-            'title': compo.name + u': äänestys päättyy.',
+            'title': compo.name + u': äänestys päättyy',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'desc': '',
@@ -61,14 +62,14 @@ def render_calendar(event_id):
     for comp in comps:
         events.append({
             'date': comp.participation_end,
-            'title': comp.name + u': ilmoittautuminen päättyy.',
+            'title': comp.name + u': ilmoittautuminen päättyy',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
             'desc': '',
         })
         events.append({
             'date': comp.start,
-            'title': comp.name + u': kilpailu alkaa.',
+            'title': comp.name + u': kilpailu alkaa',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
             'desc': '',

@@ -22,13 +22,6 @@ function attr(k, v) {
     return target.getItem(k);
 }
 
-function orderEntries(entries, limit) {
-    entries.sort(function(a, b) {
-        return a.publishedDate < b.publishedDate? 1: -1;
-    });
-    return entries.slice(0, limit);
-}
-
 function getLatestTweets(user, limit, doneCb) {
     var count = 0;
     var tweetCache = attr('tweetCache');
@@ -94,20 +87,10 @@ function constructTweetUI($parent, entries) {
     $parent.append(out).fadeIn( 500 );
 }
 
-function twitterWidget($parent, users, amount) {
-    var parsedData = [];
-    var found = 0;
-
-    $.each(users, function(i, user) {
-        getLatestTweets(user, 3, function(data) {
-            parsedData = parsedData.concat(data);
-            found++;
-      
-            if(found == users.length) {
-                var entries = orderEntries(parsedData, amount);
-                constructTweetUI($parent, entries);
-            }
-        });
+function twitterWidget($parent, user, amount) {
+    getLatestTweets(user, amount, function(data) {
+        console.log(data);
+        constructTweetUI($parent, data);
     });
 }
 
@@ -115,13 +98,13 @@ function twitterWidget($parent, users, amount) {
 (function($){
 $.fn.twitterfeed = function(options) {
     var defaults = {
-        users: [],
+        user: '',
         tweetcount: 5
     };
     var options = $.extend(defaults, options);
     
     return this.each(function() {
-        twitterWidget($(this), options.users, options.tweetcount); 
+        twitterWidget($(this), options.user, options.tweetcount); 
     });
 };
 })(jQuery);

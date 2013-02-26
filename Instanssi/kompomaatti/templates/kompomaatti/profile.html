@@ -25,7 +25,7 @@
 <h3>Käyttäjätiedot</h3>
 {% crispy profileform profileform.helper %}
 
-<h3>Äänestysoikeus</h3>
+<h3 id="voting">Äänestysoikeus</h3>
 {% if can_vote %}
     <p>Sinulla on oikeus äänestää.</p>
     <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>

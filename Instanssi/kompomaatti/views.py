@@ -37,10 +37,19 @@ def index(request, event_id):
         if k >= 10:
             break
     
+    # Check if user has an associated vote code
+    votecode_associated = False
+    try:
+        VoteCode.objects.get(event=event_id, associated_to=request.user)
+        votecode_associated = True
+    except VoteCode.DoesNotExist:
+        pass
+    
     # All done, dump template
     return render_to_response('kompomaatti/index.html', {
         'sel_event_id': int(event_id),
         'events': events,
+        'votecode_associated': votecode_associated,
     }, context_instance=RequestContext(request))
     
 def compos(request, event_id):

@@ -12,6 +12,10 @@ from Instanssi.tickets.models import Ticket
 from Instanssi.store.models import StoreTransaction
 from Instanssi.kompomaatti.models import Event
     
+# Logging related
+import logging
+logger = logging.getLogger(__name__)
+    
 @infodesk_access_required
 def index(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
@@ -56,6 +60,7 @@ def ticket_mark(request, event_id, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     ticket.used = True
     ticket.save()
+    logger.info('Ticket %d marked as used.' % (ticket.id,), extra={'user': request.user, 'event_id': event_id})
     return HttpResponseRedirect(reverse('infodesk:index', args=(event_id,)))
 
 @infodesk_access_required
@@ -63,6 +68,7 @@ def store_mark(request, event_id, transaction_id):
     ta = get_object_or_404(StoreTransaction, pk=transaction_id)
     ta.status = 2
     ta.save()
+    logger.info('Transaction %d marked as delivered.' % (ta.id,), extra={'user': request.user, 'event_id': event_id})
     return HttpResponseRedirect(reverse('infodesk:index', args=(event_id,)))
 
 @infodesk_access_required

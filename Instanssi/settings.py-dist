@@ -138,7 +138,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'common.context_processors.short_language_code',
     'common.context_processors.google_settings',
     'common.context_processors.openid_helper',
-    'common.context_processors.request',
+    'django.core.context_processors.request',
 )
 
 # Internal ip addresses
@@ -245,6 +245,7 @@ LOGGING = {
         'Instanssi.main2013': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.tickets': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.infodesk': { 'handlers': ['log_db'], 'level': 'INFO' },
     }
 }
 

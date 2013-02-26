@@ -79,6 +79,7 @@ class Compo(models.Model):
     entry_view_type = models.IntegerField(u'Entryesittely', choices=ENTRY_VIEW_TYPES, default=0, help_text=u"Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.")
     hide_from_archive = models.BooleanField(u'Piilotus arkistosta', help_text=u'Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.', default=False)
     hide_from_frontpage = models.BooleanField(u'Piilotus etusivulta', help_text=u'Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.', default=False)
+    is_votable = models.BooleanField(u'Äänestettävissä', help_text=u'Teosta voi äänestää', default=True)
     THUMBNAIL_REQ = (
         (0, u'Vaadi erillinen pikkukuva.'),
         (1, u'Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).'),
@@ -95,6 +96,8 @@ class Compo(models.Model):
         verbose_name_plural=u"kompot"
             
     def is_voting_open(self):
+        if not self.is_votable:
+            return False
         if datetime.now() > self.voting_start and datetime.now() < self.voting_end:
             return True
         return False
@@ -110,6 +113,8 @@ class Compo(models.Model):
         return False
     
     def has_voting_started(self):
+        if not self.is_votable:
+            return False
         if datetime.now() > self.voting_start:
             return True
         return False

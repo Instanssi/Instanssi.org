@@ -67,7 +67,7 @@
     </tr>
 </table>
 
-
+{% if compo.is_votable %}
 {% if user.is_authenticated %}
 <h3>Äänestys</h3>
 {% if can_vote and compo.is_voting_open %}
@@ -83,13 +83,14 @@
 
 {% endif %}
 {% if not can_vote and compo.is_voting_open %}
-<p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Käy hakemassa äänioikeutta profiili-paneelissa.</p>
+<p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Voit hakea äänioikeutta <a href="{% url 'km:profile' sel_event_id %}#voting">profiilipaneelista</a>.</p>
 {% endif %}
 {% if can_vote and not compo.is_voting_open %}
 <p>Äänestys on kiinni.</p>
 {% endif %}
 {% if not can_vote and not compo.is_voting_open %}
 <p>Äänestys on kiinni.</p>
+{% endif %}
 {% endif %}
 {% endif %}
 

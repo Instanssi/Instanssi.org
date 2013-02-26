@@ -86,7 +86,7 @@ def render_calendar(event_id):
                 'date': prog.start,
                 'title': prog.title,
                 'icon': icon,
-                'url': '',
+                'url': None,
                 'desc': '',
             })
         else:
@@ -94,7 +94,7 @@ def render_calendar(event_id):
                 'date': prog.start,
                 'title': prog.presenters,
                 'icon': icon,
-                'url': '',
+                'url': '../ohjelma/#%d' % (prog.id,),
                 'desc': prog.title,
             })
 

@@ -19,7 +19,10 @@
                 <td class="time">{{ event.date|date:"H:i" }}</td>
                 <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
                 <td class="title">{{ event.title }}</td>
-                <td class="description">{{ event.desc }}</td>
+                <td class="description">
+                    {{ event.desc }}
+                    {% if event.url %}<a href="{{ event.url }}" style="font-size: 80%;">Lisätietoa &raquo;</a>{% endif %}
+                </td>
             </tr>
 {% endfor %}
         </tbody>

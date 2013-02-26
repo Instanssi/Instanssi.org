@@ -33,7 +33,12 @@
     <p>Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.</p>
     {% crispy votecodeassocform votecodeassocform.helper %}
     {% if request_made %}
-    <p>Olet jo pyytänyt äänestysoikeutta, odota rauhassa ...</p>
+    <p>
+    <div class="ui-state-highlight ui-corner-all" style="padding: .7em;">
+        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        <strong>HUOM!</strong> Olet jo pyytänyt äänestysoikeutta, odota rauhassa ...
+    </div>
+    </p>
     {% else %}
     {% crispy votecoderequestform votecoderequestform.helper %}
     {% endif %}

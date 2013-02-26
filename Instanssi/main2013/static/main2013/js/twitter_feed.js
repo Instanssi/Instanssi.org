@@ -89,7 +89,6 @@ function constructTweetUI($parent, entries) {
 
 function twitterWidget($parent, user, amount) {
     getLatestTweets(user, amount, function(data) {
-        console.log(data);
         constructTweetUI($parent, data);
     });
 }

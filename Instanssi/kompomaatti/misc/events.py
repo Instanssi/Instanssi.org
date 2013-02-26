@@ -32,6 +32,7 @@ def get_upcoming(event):
                 'icon': '',
             })
             
+        '''
         if compo.voting_start > datetime.now():
             events.append({
                 'id': compo.id,
@@ -40,13 +41,15 @@ def get_upcoming(event):
                 'type': 1,
                 'icon': '',
             })
-        events.append({
-            'id': compo.id,
-            'date': compo.voting_end,
-            'title': compo.name + u': äänestys päättyy.',
-            'type': 1,
-            'icon': '',
-        })
+        '''
+        if compo.is_votable:
+            events.append({
+                'id': compo.id,
+                'date': compo.voting_end,
+                'title': compo.name + u': äänestys päättyy.',
+                'type': 1,
+                'icon': '',
+            })
     
     # Handle competitions
     for comp in comps:

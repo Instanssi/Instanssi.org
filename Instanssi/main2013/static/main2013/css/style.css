@@ -75,7 +75,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary table td { padding: 10px; }
 #primary table .title { font-weight: bold; }
 #primary table tr:nth-child(even){ background: #eee; }
-#primary table td img { height: auto; border: none; box-shadow: none; width: 48px; height: auto; }
+#primary table td img { height: auto; border: none; box-shadow: none; width: 48px; height: auto; vertical-align: middle; }
 #primary table .time { font-size: 18px; font-weight: bold; width: 31px;}
 #primary table .image { width: 48px; }
 

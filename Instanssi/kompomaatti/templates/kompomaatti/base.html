@@ -43,13 +43,13 @@
                 <a href="{% url 'km:index' sel_event_id %}">Etusivu</a>
             </li>
             <li class="menuitem">
-                <a href="{% url 'km:compos' sel_event_id %}">Kompot<span class="navmenu-icon-down"></span></a>
+                <a href="{% url 'km:compos' sel_event_id %}">Kompot ({% render_base_compos_count sel_event_id %})<span class="navmenu-icon-down"></span></a>
                 <ul class="sub-level">
 {% render_base_compos_nav sel_event_id  %}
                 </ul>
             </li>
             <li class="menuitem">
-                <a href="{% url 'km:competitions' sel_event_id %}">Kilpailut<span class="navmenu-icon-down"></span></a>
+                <a href="{% url 'km:competitions' sel_event_id %}">Kilpailut ({% render_base_competitions_count sel_event_id %})<span class="navmenu-icon-down"></span></a>
                 <ul class="sub-level">
 {% render_base_competitions_nav sel_event_id  %}
                 </ul>

@@ -18,6 +18,14 @@ def render_base_competitions_nav(event_id):
         'event_id': event_id,
         'competitions': Competition.objects.filter(active=True, event_id=event_id)
     }
+    
+@register.inclusion_tag('kompomaatti/tags/count.html')
+def render_base_compos_count(event_id):
+    return {'count': Compo.objects.filter(active=True, event_id=event_id).count()}
+    
+@register.inclusion_tag('kompomaatti/tags/count.html')
+def render_base_competitions_count(event_id):
+    return {'count': Competition.objects.filter(active=True, event_id=event_id).count()}
 
 @register.simple_tag
 def event_name(event_id):

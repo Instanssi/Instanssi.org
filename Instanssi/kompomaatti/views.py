@@ -39,11 +39,14 @@ def index(request, event_id):
     
     # Check if user has an associated vote code
     votecode_associated = False
-    try:
-        VoteCode.objects.get(event=event_id, associated_to=request.user)
+    if request.user.is_authenticated():
+        try:
+            VoteCode.objects.get(event=event_id, associated_to=request.user)
+            votecode_associated = True
+        except VoteCode.DoesNotExist:
+            pass
+    else:
         votecode_associated = True
-    except VoteCode.DoesNotExist:
-        pass
     
     # All done, dump template
     return render_to_response('kompomaatti/index.html', {

@@ -21,6 +21,9 @@ strong {
 	font-weight: bold; 
 }
 
+sup { font-size: 70%; vertical-align: super; }
+sub { font-size: 70%; vertical-align: sub; }
+
 h1 {
     padding-top: 15px;
     padding-left: 10px;

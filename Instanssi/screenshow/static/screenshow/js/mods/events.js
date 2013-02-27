@@ -17,14 +17,15 @@ function ScreenEvents(settings, jmobj, obj, url) {
     
     this.fetch_success = function(data) {
         // Fetch and render data
-        var output = '';
+        var output = '<table>';
         $.each(data['events'], function(key, value) {
-            output += '<p>';
+            output += '<tr><td>';
             output += value['date'];
-            output += ' &raquo; ';
+            output += '</td><td>&raquo;</td><td>';
             output += value['title'];
-            output += '</p>';
+            output += '</td></tr>';
         });
+        output += '</table>';
         this.obj.html(output);
         
         // Show only if there is data to show :)

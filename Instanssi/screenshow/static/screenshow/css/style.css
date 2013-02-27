@@ -29,12 +29,33 @@ div.nohide:not(.active) {
     opacity: 0.2;
 }
 
-div#nametext {
+div#nametext #front_header {
     font-family: 'Exo', sans-serif;
     font-size: 235pt;
     font-weight: bold;
     font-variant: small-caps;
     color: #282828;
+    margin-bottom: 0;
+}
+
+div#nametext .front_information {
+    display: hidden;
+    font-size: 40pt;
+    color: #282828;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100#;
+}
+
+div#nametext .front_right {
+    text-align: right;
+    border-top: 2px dotted #AAAAAA;
+}
+
+div#nametext .front_left {
+    text-align: left;
+    border-bottom: 2px dotted #AAAAAA;
 }
 
 div#events td {
@@ -44,9 +65,9 @@ div#events td {
     text-shadow: #aaaaaa 0px 0px 10px;
 }
 
-div#irc p {
+div#irc td {
     font-family: 'Consolas', monospace;
-    margin: 8px;
+    padding: 3px;
     font-size: 20px;
     white-space: pre-wrap;
 }
@@ -58,6 +79,8 @@ div#irc #ircheader {
 
 div#irc .ircnick {
     color: #0B1183;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 div#irc .irctime {

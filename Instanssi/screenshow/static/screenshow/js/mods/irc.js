@@ -46,15 +46,17 @@ function ScreenIrc(settings, jmobj, obj, url) {
         this.cache = this.cache.slice(i);
         
         // Write HTML from cache
-        var output = '<p id="ircheader">#instanssi @ IRCNet</p>';
+        var output = '';
         $.each(this.cache, function(key, value) {
-            output += '<p><span class="irctime">';
+            output += '<table>';
+            output += '<tr><td class="irctime">';
             output += value['time'];
-            output += '</span> <span class="ircnick">&lt;';
+            output += '</td><td class="ircnick">&lt;';
             output += value['nick'];
-            output += '&gt;</span> ';
+            output += '&gt;</td><td class="ircmessage">';
             output += value['text'];
-            output += '</p>';
+            output += '</td></tr>';
+            output += '</table>';
         });
         this.obj.html(output);
     }

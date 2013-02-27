@@ -50,12 +50,10 @@ div#nametext .front_information {
 
 div#nametext .front_right {
     text-align: right;
-    border-top: 2px dotted #AAAAAA;
 }
 
 div#nametext .front_left {
     text-align: left;
-    border-bottom: 2px dotted #AAAAAA;
 }
 
 div#events td {

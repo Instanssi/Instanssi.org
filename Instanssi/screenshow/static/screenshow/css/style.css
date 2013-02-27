@@ -1,5 +1,5 @@
 body {
-    background-color: #e5e5e5;
+    background: url('../images/snow.png');
 }
 
 div.step {
@@ -30,13 +30,15 @@ div.nohide:not(.active) {
 }
 
 div#nametext {
-    font-size: 220pt;
+    font-family: 'Exo', sans-serif;
+    font-size: 235pt;
     font-weight: bold;
+    font-variant: small-caps;
     color: #282828;
 }
 
 div#events p {
-    font-size: 60px;
+    font-size: 50px;
     margin: 18px;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -105,6 +107,6 @@ p.sponsorname {
 
 p#message_content {
     display: none;
-    font-size: 140px;
+    font-size: 80px;
     font-weight: bold;
 }

@@ -15,6 +15,7 @@ urlpatterns = patterns(
     url(r'^stream/', 'pageloader', {'templatename': 'stream'}, name="stream"),
     url(r'^liput/', 'pageloader', {'templatename': 'liput'}, name="liput"),
     url(r'^kilpailusopimus/', 'pageloader', {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
+    url(r'^valot/', 'pageloader', {'templatename': 'valot'}, name="valot"),
     
     # Store related
     url(r'^store/', 'store', name="store"),

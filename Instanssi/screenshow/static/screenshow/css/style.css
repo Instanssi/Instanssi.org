@@ -67,7 +67,7 @@ div#events td {
 
 div#irc td {
     font-family: 'Consolas', monospace;
-    padding: 3px;
+    padding: 4px;
     font-size: 20px;
     white-space: pre-wrap;
 }
@@ -79,8 +79,8 @@ div#irc #ircheader {
 
 div#irc .ircnick {
     color: #0B1183;
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 div#irc .irctime {

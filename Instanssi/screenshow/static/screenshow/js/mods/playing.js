@@ -28,12 +28,15 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         var k = 0;
         $.each(this.cache, function(key, value) {
             if(k < 5 && value['state'] == 0) {
-                output += '<p class="playing_song" style="color: #' +(k*2)+(k*2)+(k*2)+ ';">';
                 if(k == 0) {
-                    output += '&raquo; ';
+                    output += '<p class="playing_song">';
+                } else {
+                    output += '<p class="old_song">';
                 }
                 output += value['artist'];
-                output += ' &middot; ';
+                if(value['artist'] != '' && value['title'] != '') {
+                    output += ' &middot; ';
+                } 
                 output += value['title'];
                 output += '</p>';
                 k++;

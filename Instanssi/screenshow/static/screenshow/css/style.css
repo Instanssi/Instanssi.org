@@ -73,7 +73,15 @@ p.playing_title {
 p.playing_song {
     font-size: 30pt;
     margin-bottom: 25px;
+    letter-spacing: 0.1em;
     margin-top: 25px;
+}
+
+p.old_song {
+    font-size: 30pt;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    color: #888888;
 }
 
 div.twittermsg {

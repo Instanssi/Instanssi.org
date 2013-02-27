@@ -29,7 +29,7 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         $.each(this.cache, function(key, value) {
             if(k < 5 && value['state'] == 0) {
                 if(k == 0) {
-                    output += '<p class="playing_song">';
+                    output += '<p class="playing_song">&raquo; ';
                 } else {
                     output += '<p class="old_song">';
                 }

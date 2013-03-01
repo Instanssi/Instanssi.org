@@ -29,7 +29,7 @@ def ticket_lookup_autocomplete(request, event_id):
     lookup = request.GET['term']
 
     # lookup name in people who have bought something
-    txns = StoreTransaction.objects.filter(lastname__icontains=lookup)
+    txns = StoreTransaction.objects.filter(lastname__istartswith=lookup)
     return JSONResponse(['%s, %s' % (t.lastname, t.firstname) for t in txns])
 
 

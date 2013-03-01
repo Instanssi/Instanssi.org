@@ -14,14 +14,18 @@ class Ticket(models.Model):
     owner_firstname = models.CharField(u'Etunimi', max_length=64, help_text=u'Lipun omistajan etunimi')
     owner_lastname = models.CharField(u'Sukunimi', max_length=64, help_text=u'Lipun omistajan sukunimi')
     owner_email = models.CharField(u'Sähköposti', max_length=255, help_text=u'Lipun omistajan sähköposti', blank=True)
-    
+
     def __unicode__(self):
         return u'%s %s (%s)' % (self.owner_firstname, self.owner_lastname, self.key)
+
+    @staticmethod
+    def tickets_for_transaction(transaction):
+        return Ticket.objects.filter(transaction=transaction)
 
     class Meta:
         verbose_name = u"lippu"
         verbose_name_plural = u"liput"
-        
+
 try:
     admin.site.register(Ticket)
 except:

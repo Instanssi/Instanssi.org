@@ -4,10 +4,10 @@ from django.db import models
 from django_countries import CountryField
 from django.db.models import Sum
 from django.contrib import admin
-from datetime import datetime
 from Instanssi.kompomaatti.models import Event
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+
 
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
@@ -93,6 +93,12 @@ class StoreTransaction(models.Model):
         for item in TransactionItem.objects.filter(transaction=self):
             ret += item.total()
         return ret
+
+    def get_items(self):
+        return TransactionItem.objects.filter(transaction=self)
+
+    def get_tickets(self):
+        return Ticket.objects.filter(transaction=self)
 
     class Meta:
         verbose_name = u"transaktio"

@@ -1,5 +1,5 @@
 body {
-    
+
 }
 
 .base {
@@ -77,6 +77,10 @@ p,ul,li,div,span {
     border-bottom: 1px solid rgba(0,0,0,.05);
 }
 .infotable td { width: 100%; }
+
+.infotable.lookup td { width: auto; }
+.infotable.lookup ul { padding-left: 2em;}
+.infotable.lookup li { display: list-item; list-style: disc outside none;}
 
 a.button {
     display: block;

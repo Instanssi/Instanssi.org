@@ -11,4 +11,6 @@ urlpatterns = patterns(
     url(r'^(?P<event_id>\d+)/store/info/(?P<transaction_id>\d+)/', 'store_info', name="store_info"),
     url(r'^(?P<event_id>\d+)/ticket/mark/(?P<ticket_id>\d+)/', 'ticket_mark', name="mark_ticket"),
     url(r'^(?P<event_id>\d+)/store/mark/(?P<transaction_id>\d+)/', 'store_mark', name="mark_transaction"),
+    url(r'^(?P<event_id>\d+)/ticket_lookup_ac', 'ticket_lookup_autocomplete', name="ticket_lookup_autocomplete"),
+    url(r'^(?P<event_id>\d+)/ticket_lookup', 'ticket_lookup', name="ticket_lookup"),
 )

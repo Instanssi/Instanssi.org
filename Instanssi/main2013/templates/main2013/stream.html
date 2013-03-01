@@ -7,25 +7,33 @@
 
 {% block jquery %}
 {{ block.super }}
-	$f("live", "http://releases.flowplayer.org/swf/flowplayer-3.2.16.swf", {
-	    clip: {
-	        url: 'myStream',
-	        live: true,
-	        provider: 'influxis'
-	    },
-	    plugins: {
-	        influxis: {
-	            url: "flowplayer.rtmp-3.2.12.swf",
-	            netConnectionUrl: 'rtmp://qek5.kyla.fi/live'
-	        }
-	    }
-	});
+    $f("live", "http://releases.flowplayer.org/swf/flowplayer-3.2.16.swf", {
+     
+        clip: {
+            url: 'myStream',
+            live: true,
+            // configure clip to use influxis as our provider, it uses our rtmp plugin
+            provider: 'influxis'
+        },
+     
+        // streaming plugins are configured under the plugins node
+        plugins: {
+     
+            // here is our rtpm plugin configuration
+            influxis: {
+                url: "flowplayer.rtmp-3.2.12.swf",
+     
+                // netConnectionUrl defines where the streams are found
+                netConnectionUrl: 'rtmp://qek5.kyla.fi/live/myStream/'
+            }
+        }
+    });
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 <h1>Stream</h1>
-<div id="live" style="width:644px; height:276px; margin:0 auto; text-align:center">
-    <img src="/media/img/player/splash_black.jpg" height="276" width="548" />
+<div id="live" style="width:644px;height:276px;margin:0 auto;text-align:center">
+    <img src="https://dl.dropbox.com/u/41714970/black.png" height="1280" width="720" />
 </div>
 {% endblock %}

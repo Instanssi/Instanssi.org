@@ -20,7 +20,7 @@ def index(request, event_id):
         sponsor.rot_y = 30
         sponsor.rot_z = 90
         sponsors.append(sponsor)
-        x += 50
+        x += 75
         
     # Render the show
     return render_to_response('screenshow/index.html', {

@@ -51,17 +51,9 @@ table {
 }
 
 body {
-    font-family: 'Cantarell', sans-serif;
-    
-    min-height: 740px;
-
-    background: rgb(215, 215, 215);
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(190, 190, 190)));
-    background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:      -o-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:         radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-
+    font-family: 'Open Sans', sans-serif;
+    min-height: 700px;
+    background: url('../images/snow.png');
     -webkit-font-smoothing: antialiased;
 }
 
@@ -83,7 +75,10 @@ div.centered {
 }
 
 p.componame {
-	font-size: 2.5em;
+	font-size: 3.5em;
+	font-family: 'Exo', sans-serif;
+	font-weight: bold;
+	font-variant: small-caps;
 }
 
 p.entry {
@@ -98,15 +93,15 @@ p.score {
 }
 
 p.name {
-	font-size: 3em;
+	font-size: 2.6em;
 }
 
 p.by {
-	font-size: 2em;
+	font-size: 1.5em;
 }
 
 p.creator {
-	font-size: 3em;
+	font-size: 2.6em;
 }
 
 p.compothanks {
@@ -121,7 +116,7 @@ p.compothanks {
 /* COMMON STEP STYLES */
 
 .step {
-    width: 1800px;
+    width: 1200px;
     padding: 40px;
 
     -webkit-box-sizing: border-box;
@@ -130,9 +125,9 @@ p.compothanks {
     -o-box-sizing:      border-box;
     box-sizing:         border-box;
 
-    font-family: 'Cantarell', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 
-    font-size: 48px;
+    font-size: 42px;
     line-height: 1.5;
 }
 
@@ -152,7 +147,7 @@ p.compothanks {
 /* IMPRESS NOT SUPPORTED STYLES */
 
 .fallback-message {
-    font-family: 'Cantarell', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     line-height: 1.3;
     
     display: none;

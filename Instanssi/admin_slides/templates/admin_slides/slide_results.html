@@ -21,6 +21,7 @@
 	</div>
 </div>
 {% endfor %}
+{% if r_entries %}
 <div id="demo_last_information" class="step" data-x="{{ endinfo_x }}" data-y="{{ endinfo_y }}" data-z="{{ endinfo_z }}">
     <div class="centered">
  {% for entry in r_entries %}
@@ -28,6 +29,7 @@
 {% endfor %}
     </div>
 </div>
+{% endif %}
 <div id="end" class="step" data-x="{{ last_x }}" data-y="{{ last_y }}" data-z="{{ last_z }}">
 	<div class="centered">
 		<p class="compothanks">That's all, folks!</p>

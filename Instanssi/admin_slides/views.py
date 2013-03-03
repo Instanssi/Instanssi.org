@@ -25,33 +25,46 @@ def slide_results(request, sel_event_id, compo_id):
     s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
     
     i = 0
-    rot = 0
     f_entries = []
-    for entry in s_entries:
+    for entry in reversed(s_entries[:3]):
         f_entries.append({
             'id': entry.id,
             'creator': entry.creator,
             'name': entry.name,
             'score': entry.get_score(),
-            'score_x': i * 4000,
-            'score_y': 0,
-            'score_z': i * 500,
-            'score_rot_y': 50,
-            'info_x': (i+1) * 4000,
-            'info_y': 0,
-            'info_z': (i+1) * 500,
-            'info_rot_y': 120,
+            'score_x': 0,
+            'score_y': i * 2000,
+            'score_z': i * 2000,
+            'info_x': 0,
+            'info_y': i * 2000 + 2000,
+            'info_z': i * 2000 + 2000,
+            'rank': entry.get_rank(),
         })
         i = i + 2
-        rot = rot + 20
+
+    r_entries = []
+    for entry in s_entries[3:]:
+        r_entries.append({
+            'id': entry.id,
+            'creator': entry.creator,
+            'name': entry.name,
+            'score': entry.get_score(),
+            'rank': entry.get_rank(),
+        })
+
+    i = i + 1
 
     # Render
     return admin_render(request, 'admin_slides/slide_results.html', {
         'entries': f_entries,
+        'r_entries': r_entries,
         'compo': c,
-        'last_x': i * 4000,
-        'last_z': i * 500,
-        'last_rot_y': rot+10,
+        'endinfo_x': 0,
+        'endinfo_y': (i+1) * 2000,
+        'endinfo_z': (i+1) * 2000,
+        'last_x': 0,
+        'last_y': (i+2) * 2000,
+        'last_z': (i+2) * 2000,
         'selected_event_id': int(sel_event_id),
     })
     

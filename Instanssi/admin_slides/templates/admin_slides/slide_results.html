@@ -1,19 +1,19 @@
 {% extends "admin_slides/impressbase.html" %}
 
 {% block content %}
-<div id="title" class="step" data-x="0" data-y="0" data-z="2000" data-rotate-y="90">
+<div id="title" class="step" data-x="0" data-y="-2000" data-z="-2000" data-rotate-y="0">
 	<div class="centered">
 		<p class="componame">{{ compo.name }}</p>
 	</div>
 </div>
 {% for entry in entries %}
-<div id="demo_{{ entry.id }}_score" class="step" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}" data-rotate-y="{{ entry.score_rot_y }}">
+<div id="demo_{{ entry.id }}_score" class="step" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}">
 	<div class="centered">
-		<p class="entry pos">{{ forloop.counter }}. Sija</p>
+		<p class="entry pos">{{ entry.rank }}. Sija</p>
 		<p class="entry score">{{ entry.score|floatformat:"2" }} pistettä</p>
 	</div>
 </div>
-<div id="demo_{{ entry.id }}_information" class="step" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}" data-rotate-y="{{ entry.info_rot_y }}">
+<div id="demo_{{ entry.id }}_information" class="step" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}">
 	<div class="centered">
 		<p class="entry name">{{ entry.name }}</p>
 		<p class="entry by">by</p>
@@ -21,7 +21,14 @@
 	</div>
 </div>
 {% endfor %}
-<div id="end" class="step" data-x="{{ last_x }}" data-y="0" data-z="{{ last_z }}" data-rotate-y="{{ last_rot_y }}">
+<div id="demo_last_information" class="step" data-x="{{ endinfo_x }}" data-y="{{ endinfo_y }}" data-z="{{ endinfo_z }}">
+    <div class="centered">
+ {% for entry in r_entries %}
+        <p class="entry" style="font-size: 32px;">{{ entry.rank }}. {{ entry.name }} - {{ entry.creator }}</p>
+{% endfor %}
+    </div>
+</div>
+<div id="end" class="step" data-x="{{ last_x }}" data-y="{{ last_y }}" data-z="{{ last_z }}">
 	<div class="centered">
 		<p class="compothanks">That's all, folks!</p>
 		<a href="{% url 'manage-slides:index' selected_event_id %}">Pois &raquo;</a>

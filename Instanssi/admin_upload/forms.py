@@ -29,7 +29,7 @@ class UploadForm(forms.ModelForm):
 
     def clean_file(self):
         # Check format
-        allowed = ['png','jpg','gif','zip','rar','7z','gz','tar','bz2']
+        allowed = ['png','jpg','gif','zip','rar','7z','gz','tar','bz2','odt','odp','doc','docx','pdf','txt','ppt','pptx','xls','xlsx']
         if not self.field_format_ok("file", allowed):
             raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: ' + ', '.join(allowed) + '.')
         

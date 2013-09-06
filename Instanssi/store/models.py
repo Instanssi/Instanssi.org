@@ -17,7 +17,7 @@ class StoreItem(models.Model):
     max = models.IntegerField(u'Kappaletta saatavilla', help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
     available = models.BooleanField(u'Ostettavissa', default=False, help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
-    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], image_field='imagefile_original', format='PNG')
+    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source='imagefile_original', format='PNG')
     max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
     DELIVERY_CHOICES=(
         (0, u'Ei toimitusta'),

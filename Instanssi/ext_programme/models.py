@@ -17,9 +17,9 @@ class ProgrammeEvent(models.Model):
     
     # This is such a hackish solution that it makes me want to throw up. Oh well.
     icon_original = models.ImageField(u'Kuva 1', upload_to='programme/images/', help_text=u"Kuva 1 tapahtumalle.", blank=True)
-    icon_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon_original', format='PNG')
+    icon_small = ImageSpecField([ResizeToFill(64, 64)], source='icon_original', format='PNG')
     icon2_original = models.ImageField(u'Kuva 2', upload_to='programme/images/', help_text=u"Kuva 2 tapahtumalle.", blank=True)
-    icon2_small = ImageSpecField([ResizeToFill(64, 64)], image_field='icon2_original', format='PNG')
+    icon2_small = ImageSpecField([ResizeToFill(64, 64)], source='icon2_original', format='PNG')
     
     email = models.EmailField(u'Sähköposti', help_text=u'Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).', blank=True)
     home_url = models.URLField(u'Kotiurli', help_text=u'Tapahtumaan liittyvä URL.', blank=True)

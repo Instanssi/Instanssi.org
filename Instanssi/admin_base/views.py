@@ -36,8 +36,8 @@ def index(request):
             disk_usage += entry.sourcefile.size
         if entry.imagefile_original:
             disk_usage += entry.imagefile_original.size
-            disk_usage += entry.imagefile_thumbnail.size
-            disk_usage += entry.imagefile_medium.size
+        #    disk_usage += entry.imagefile_thumbnail.size
+        #    disk_usage += entry.imagefile_medium.size
             
     # Get some statistics
     stats = {

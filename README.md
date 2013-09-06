@@ -50,7 +50,7 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.4 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [Django 1.5 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
 * [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
@@ -59,7 +59,6 @@ Kirjastot
 * [South] (http://south.aeracode.org/) `pip install south`
 * [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
-* [django-countries] (http://pypi.python.org/pypi/django-countries) `pip install django-countries`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------

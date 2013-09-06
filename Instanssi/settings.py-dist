@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'Instanssi.arkisto',
     'Instanssi.main2012',
     'Instanssi.main2013',
+    'Instanssi.main2014',
     'Instanssi.admin_base',
     'Instanssi.admin_auth',
     'Instanssi.admin_arkisto',

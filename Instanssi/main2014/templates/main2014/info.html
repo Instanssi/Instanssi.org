@@ -1,0 +1,72 @@
+{% extends "main2014/base.html" %}
+
+{% block head %}
+{{ block.super }}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&amp;sensor=false"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    var position = new google.maps.LatLng(62.239850, 25.72460);
+    var mapopts = {
+        center: position,
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapopts);
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title: "Instanssi"
+    });
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Info</h1>
+
+<h2>Mikä on Instanssi?</h2>
+<p>
+    Instanssi on ainejärjestö Linkki Jyväskylä ry:n jo vuotuisesti, jo vuodesta 2010 lähtien 
+    järjestämä digitaalisen tekemisen festivaali Jyväskylässä.
+</p>
+<p>
+    Instanssi on aloittelijaystävällinen viikonloppu, jonka ohjelma koostuu kilpailuista 
+    kompoista, esitelmistä ja työpajoista. Tapahtuman erikoisuuksina ovat ohjelmoitavat 
+    valot ja kompoista erityisesti Summamutikka, jossa tavoitteena on mahdollisimman suuri 
+    hämmennys vapaavalintaisella esittämistavalla. 
+</p>
+<!--
+<p>
+    Instanssi 2013 järjestetään yhteistyössä Voionmaan lukion kanssa lukion liikuntasalissa 
+    ja sen ympäristössä. Instanssi on voittoa tavoittelematon ja se järjestetään 
+    vapaaehtoisvoimin.
+</p>
+
+<h2>Mitä mukaan?</h2>
+<p>
+    Instansseille tullessaan on hyvä varautua samaan malliin kuin laneille tai muille 
+    demopartyille tullessa. Tässäpä lista, huomaa kahvikuppi:
+</p>
+<ul>
+    <li>Tietokone tarvikkeineen, 10 metrin verkkojohto on hyvä idea, samoin jatkojohto jossa riittää reikiä kaikille tuomillesi laitteille. Merkitse etenkin johtosi, mutta mielellään muutkin tuomasi tavarat, jotta löydät omasi helposti lähtiessäsi.</li>
+	<li>Makuupussi ja -alusta tai vastaavat yöpymisvälineet</li>
+    <li>Vaihtovaatteita viikonlopun tarpeiksi</li>
+    <li>Henkilökohtaiset hygieniavälineet: pyyhe, hammasharja ja sitä rataa. Paikalla on suihku.</li>
+	<li>Käteistä rahaa mm. ovelta ostettavia lippuja tai t-paitoja varten.</li>
+	<li>Oma kahvikuppi ilmaista kahvia ja teetä varten</li>
+    <li>Pientä purtavaa ja (alkoholitonta, myös täysi-ikäisillä) juotavaa kannattaa olla omastakin takaa. Huomioi eväissä, että tapahtumapaikalla ei ole yleisön käytössä olevaa jääkaappia, mutta mikroaaltouuni löytyy.</li>
+    <li>Hilpeää partyfiilistä!</li>
+</ul>
+
+<h2>Aika ja paikka</h2>
+<p>
+    Instanssi 2013 järjestetään 1.-3.3.2013 Voionmaan lukiolla osoitteessa Voionmaankatu 
+    17-19, Jyväskylä. Pysäköinti lukion pihalla merkityillä paikoilla ja Okkerinkadun 
+    varressa. Google maps-kartta alla.
+</p> 
+
+<div id="map_canvas"></div>-->
+
+
+{% endblock %}

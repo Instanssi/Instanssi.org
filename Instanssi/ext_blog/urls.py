@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls import patterns, url, include
 from Instanssi.ext_blog.views import blog_feed, blog_feed_all
 
 urlpatterns = patterns(

@@ -10,7 +10,8 @@ def pageloader(request, templatename):
         'event_id': 5, 
         'templatename': templatename,
     }, context_instance=RequestContext(request))
-    
+
+'''
 def store_failure(request):
     handle_cancel(request)
     return render_to_response('main2013/store_failure.html', {
@@ -34,3 +35,5 @@ def store(request):
     
     # Render page
     return render_to_response('main2013/store.html', dict(vars.items() + ret.items()), context_instance=RequestContext(request))
+'''
+ 

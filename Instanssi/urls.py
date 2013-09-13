@@ -40,7 +40,7 @@ urlpatterns = patterns('',
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^tickets/', include('Instanssi.tickets.urls', namespace='tickets')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', include('Instanssi.main2013.urls')),
+    url(r'^$', include('Instanssi.main2014.urls')),
 )
 
 # Add admin panel link if debug mode is on

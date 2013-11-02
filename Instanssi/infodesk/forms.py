@@ -7,6 +7,7 @@ from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.tickets.models import Ticket
 from Instanssi.store.models import StoreTransaction
 
+
 class TicketKeyScanForm(forms.Form):
     key = forms.CharField(label=u'Tunniste')
 
@@ -18,7 +19,7 @@ class TicketKeyScanForm(forms.Form):
             Fieldset(
                 u'',
                 'key',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'OK')
                 )
             )
@@ -43,7 +44,7 @@ class TransactionKeyScanForm(forms.Form):
             Fieldset(
                 u'',
                 'key',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'OK')
                 )
             )
@@ -56,4 +57,3 @@ class TransactionKeyScanForm(forms.Form):
         except StoreTransaction.DoesNotExist:
             raise ValidationError(u'Virheellinen ostos-avain!')
         return key
-    

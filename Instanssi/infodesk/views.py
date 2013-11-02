@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from common.responses import JSONResponse
+from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -29,7 +30,8 @@ def ticket_lookup_autocomplete(request, event_id):
     lookup = request.GET['term']
 
     # lookup name in people who have bought something
-    txns = StoreTransaction.objects.filter(lastname__istartswith=lookup)
+    txns = StoreTransaction.objects.filter(
+        Q(lastname__icontains=lookup) | Q(firstname__icontains=lookup))
     return JSONResponse(['%s, %s' % (t.lastname, t.firstname) for t in txns])
 
 

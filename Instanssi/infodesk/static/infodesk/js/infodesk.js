@@ -4,6 +4,7 @@ $(function () {
     $("#lookup").select2({
         placeholder: "Kirjoita osa haettavasta nimestä",
         minimumInputLength: 2,
+        width: "17em",
         ajax: {
             url: "ticket_lookup_ac",
             datatype: "json",

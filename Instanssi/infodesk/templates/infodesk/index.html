@@ -1,14 +1,15 @@
 {% extends "infodesk/base.html" %}
+{% load static %}
 
 {% block title %} - Etusivu{% endblock %}
 
 {% block head %}
 {{ block.super }}
+<script type="text/javascript" src="{% static 'infodesk/js/infodesk.js' %}"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-$("#lookup").autocomplete({ source: "ticket_lookup_ac" })
 {% endblock %}
 
 {% block content %}

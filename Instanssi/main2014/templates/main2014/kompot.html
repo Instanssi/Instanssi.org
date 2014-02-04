@@ -1,0 +1,128 @@
+{% extends "main2014/base.html" %}
+{% load kompomaatti_tags %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<h1>Kompot</h1>
+
+{% render_frontpage_compolist_contents event_id %}
+
+<h2 id="yleista">Yleistä kompoista</h2>
+
+<h3 id="yleiset">Yleiset säännöt:</h3>
+<p>
+	Kompoteos kannustetaan julkaistavaksi avoimena lähdekoodina. 
+	Työn alla olevista teoksista sopii keskustella julkisesti vaikkapa ohjelmointivinkkien
+	etsimiseksi.
+</p>
+<p>
+	Vain aiemmin julkaisemattomilla teoksilla voi osallistua. Aiemmin julkaisulla 
+	tarkoitetaan osallistumista muihin kilpailuihin, julkaisemista sovelluskaupassa 
+	tai tuotoksen jakelua muilla tavoin valmiina teoksena. Julkaisemiseksi ei 
+	kuitenkaan katsota julkista kehittämistä esimerkiksi GitHub-profiilissa.
+</p>
+<p>
+	Sääntömuutoksia tehdään tarvittaessa yllättäen ja mielivaltaisesti, joskaan 
+	ei perusteettomasti tahi asiasta informoimatta.
+</p>
+<p>
+	Teoksen tai esityksen osana hyödynnettävään materiaaliin on
+	oltava lupa.  Tämä tarkoittaa sitä, että materiaali on joko
+	tekijän itse tekemää tai se on yhteensopiva <a
+	href="../kilpailusopimus" title="Lue koko sopimus">Instanssin
+	kilpailusopimuksen</a> kanssa. Tämä sääntö koskee myös
+	Summamutikan ja yllätyskompojen kilpailuteoksia!
+</p>
+<p>
+	Suosiota saavuttaneet hissipuheet palaavat! Kaikissa kompoissa tarjotaan 
+	kaikkien teosten kohdalla tekijöille mahdollisuus piipahtaa juuri ennen 
+	teoksen esittämistä lavalla esittäytymässä sekä esittelemässä ja kenties 
+	kehaisemassakin tuotostaan. Pakko ei ole, mikäli ei halua. Kannustamme kuitenkin 
+	keksimään markkinointihengessä tai vaikkapa kieli poskessa pari sanasta.
+</p>
+
+<h3 id="takarajat">Osallistumistakarajat:</h3>
+<p>
+	Teosten kompomaattiin rekisteröinnin takaraja tulee olemaan perjantain 
+	ja lauantain välisenä yönä. Tässä vaiheessa on jo toimitettava julkaisukelpoinen 
+	teos. Teosta saa kuitenkin päivittää järjestelmään vielä tämän jälkeen, komposta 
+	riippuen lähes kompon alkuun saakka. Tarkat takarajat näkyvät tapahtuman aikana 
+	kompomaatissa. Erikoistapauksissa neuvotteluvaraa on.
+</p>
+
+<h3 id="etaosallistuminen">Etäosallistuminen:</h3>
+<p>
+	Etäosallistuminen on sallittua tietyin rajauksin. Etäosallistuminen tarkoittaa 
+	osallistumista johonkin kompoon ilman että tekijä tai tekijää edustava taho on 
+	tapahtumassa paikan päällä. Mikäli haluat lähettää etäentryn, ota yhteyttä järjestäjiin.
+</p>
+<p>
+	Järjestäjät voivat hylätä mahdollisuuden etäosallistumiseen, mikäli kilpasarjassa 
+	on riittävästi osallistujia tai jos teoksen esittäminen osoittautuu muutoin 
+	ongelmalliseksi. Järjestäjillä ei ole velvollisuutta perustella karsintaan 
+	johtaneita syitä. Riskiä karsiutumiseen voi pienentää laatimalla järjestäjille 
+	seikkaperäiset esittämisohjeet, erityisesti silloin, kun teos poikkeaa ympäristöltään 
+	tai vaatimuksiltaan tyypillisestä. Etäentryn yhteydessä menettää tietysti mahdollisuuden 
+	mainospuheen pitämiseen kompon yhteydessä.
+</p>
+<p>
+	Edustajan välityksellä tapahtuva kilpaan osallistuminen on suositeltavampi 
+	vaihtoehto ja se on mahdollista missä tahansa kompossa. Tällöin tapahtumassa 
+	paikan päällä oleva kävijä huolehtii teoksen lähettämisestä kompomaattiin, 
+	mahdollisen mainospuheen pitämisestä kompon yhteydessä sekä mahdollisen palkinnon 
+	vastaanottamisesta.
+</p>
+
+<!--
+<h3 id="laitteisto">Laitteisto</h3>
+<p>
+	Suoritettavat teokset tulee olla lopetettavissa alustalle ominaisella tavalla. 
+	Tämä tarkoittaa joko Esc-painikkeen painamista tai mobiilialustalla Home-nappulaa.
+</p>
+<p>
+	Teokset esitetään valkokankaalla resoluutiolla 720p. Vanhempia laitteita 
+	varten hyväksymme myös esimerkiksi 640×480- ja PAL-tarkkuuksien käytön. Näissä 
+	tapauksessa kannattaa olla etukäteen yhteydessä järjestäjiin.
+</p>
+<p>
+	Kompokone 1:
+</p>
+<ul>
+    <li>Windows 7 64bit</li>
+    <li>Intel i5 3570K 3.4GHz</li>
+    <li>16GB DDR3</li>
+    <li>Intel SSD 330</li>
+    <li>nVidia Geforce GTX660TI</li>
+</ul>
+
+<p>
+    Kompokone 2:
+</p>
+<ul>
+    <li>Ubuntu Linux 12.04 LTS 64bit</li>
+    <li>Intel i7 2600 3.4GHz</li>
+    <li>8GB DDR3</li>
+    <li>Intel SSD 510</li>
+    <li>nVidia Geforce GTX580</li>
+</ul>
+
+<p>
+    Kompokone 3:
+</p>
+<ul>
+    <li>Asus Slider SL101</li>
+    <li>Android 4</li>
+</ul>
+-->
+
+{% render_frontpage_compolist event_id %}
+{% endblock %}

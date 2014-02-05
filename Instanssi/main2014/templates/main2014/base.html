@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}{% load blog_tags %}
+<!DOCTYPE html>{% load static blog_tags twitter_tag %}
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
@@ -11,8 +11,8 @@
 	<link rel="shortcut icon" href="{% static 'main2014/images/icons/icon-favicon.png' %}" />
 	
 	<!-- fonts -->
-	<link href='http{% if request.is_secure %}s{% endif %}://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-	<link href='http{% if request.is_secure %}s{% endif %}://fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
 	
 	<!-- styles -->
 	<link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
@@ -20,7 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
 
 	<!-- scripts -->
-	<script type="text/javascript" src="http{% if request.is_secure %}s{% endif %}://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript" src="{% static 'main2014/js/modernizr-1.7.min.js' %}"></script>
 
     <!-- RSS -->
@@ -50,12 +50,7 @@
 
     <script type="text/javascript">
     $(function() {
-{% block jquery %}
-	$('#tweets').twitterfeed({
-		user: "Instanssi", 
-		tweetcount: 4
-	});
-{% endblock %}
+{% block jquery %}{% endblock %}
     });
     </script>
 </head>
@@ -73,8 +68,6 @@
 					<p class="time">28. - 30.3. Jyväskylä</p>
 				</a>
 			</div>
-			
-			
 			<nav class="container">
 				<div class="nav-btn">
 					<div class="line" ></div>
@@ -97,6 +90,22 @@
 				{% block content %}{% endblock %}
 			</section>
 			<aside id="twitter-widget" >
+				<section class="widget widget-twitter">
+					<h2>Twitter</h2>
+					<div id="tweets">
+					    {% get_tweets for "instanssi" as tweets exclude "replies" limit 5 %}
+					    <ul>
+                        {% for tweet in tweets %}
+                            <li>
+                                <span class="author">@{{ tweet.user.name }}: </span>
+                                <span class="text">{{ tweet.text }}</span><br />
+                                <span class="time">{{ tweet.datetime|date:"d.m.Y H:i" }}</span> &middot;
+                                <span class="link"><a href="http://twitter.com/instanssi/status/{{ tweet.id }}">Lue twitterissä &raquo;</a></span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+					</div>
+				</section>
 				<section class="widget widget-socialmedias">
 					<h2>Sosiaaliset mediat</h2>
 					<div class="social-media">

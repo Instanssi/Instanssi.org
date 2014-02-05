@@ -59,12 +59,13 @@ Kirjastot
 * [South] (http://south.aeracode.org/) `pip install south`
 * [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
+* [django-twitter-tag] (https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django django-openid-auth python-openid django-countries django-imagekit south django-crispy-forms reportlab pil
+    pip install django django-openid-auth python-openid django-countries django-imagekit south django-crispy-forms reportlab pil django-twitter-tag
 
 IDEjä
 -----

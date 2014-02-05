@@ -62,6 +62,12 @@ DOMAIN = 'instanssi.org'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
+# Twitter
+TWITTER_OAUTH_TOKEN = ''
+TWITTER_OAUTH_SECRET = ''
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
@@ -110,7 +116,7 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
+# Default file storage
 DEFAULT_FILE_STORAGE = 'common.storage.ASCIIFileSystemStorage'
 
 # How to find static files
@@ -188,6 +194,7 @@ INSTALLED_APPS = (
     'Instanssi.infodesk',
     'imagekit',
     'south',
+    'twitter_tag',
     'crispy_forms',
     'django_openid_auth',
     'django.contrib.auth',

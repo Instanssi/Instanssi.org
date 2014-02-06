@@ -50,7 +50,7 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.5 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [Django 1.5] (https://www.djangoproject.com/download/) `pip install django==1.5.5`
 * [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
 * [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
 * [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`

@@ -23,6 +23,10 @@ class Ticket(models.Model):
     def tickets_for_transaction(transaction):
         return Ticket.objects.filter(transaction=transaction)
 
+    @property
+    def qr_code(self):
+        return self.key
+
     class Meta:
         verbose_name = u"lippu"
         verbose_name_plural = u"liput"

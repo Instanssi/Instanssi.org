@@ -100,6 +100,10 @@ class StoreTransaction(models.Model):
     def get_tickets(self):
         return Ticket.objects.filter(transaction=self)
 
+    @property
+    def qr_code(self):
+        return self.key
+
     class Meta:
         verbose_name = u"transaktio"
         verbose_name_plural = u"transaktiot"

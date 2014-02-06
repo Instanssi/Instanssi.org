@@ -5,6 +5,7 @@ from django.contrib import admin
 from Instanssi.kompomaatti.models import Event
 from Instanssi.store.models import StoreItem, StoreTransaction
 
+
 class Ticket(models.Model):
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma', null=True, blank=True)
     storeitem = models.ForeignKey(StoreItem, verbose_name=u'Kauppatavara')

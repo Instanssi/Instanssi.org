@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from Instanssi.tickets.models import Ticket
@@ -12,11 +10,12 @@ from Instanssi.store.models import StoreTransaction
 import logging
 logger = logging.getLogger(__name__)
 
+
 # Shows information about a single ticket
 def ticket(request, ticket_key):
     # Find ticket
     ticket = get_object_or_404(Ticket, key=ticket_key)
-    
+
     # Render ticket
     response = render_to_response('tickets/ticket.html', {
         'ticket': ticket,
@@ -24,16 +23,17 @@ def ticket(request, ticket_key):
     response["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
     return response
 
+
 # Lists all tickets
 def tickets(request, transaction_key):
     # Get transaction
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
     if not transaction.paid:
         raise Http404
-    
+
     # Get all tickets by this transaction
     tickets = Ticket.objects.filter(transaction=transaction)
-    
+
     # Render tickets
     response = render_to_response('tickets/tickets.html', {
         'transaction': transaction,
@@ -41,4 +41,3 @@ def tickets(request, transaction_key):
     }, context_instance=RequestContext(request))
     response["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
     return response
-

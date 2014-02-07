@@ -25,7 +25,11 @@ sup { font-size: 75%; vertical-align: super; }
 sub { font-size: 75%; vertical-align: sub; }
 
 h1 {
-    padding-top: 15px;
+    font-family: 'Exo', sans-serif;
+    font-weight: bold;
+    font-variant: small-caps;
+    letter-spacing: 2px;
+    padding-top: 18px;
     padding-left: 10px;
     font-size: 250%;
     color: #eeeeee;

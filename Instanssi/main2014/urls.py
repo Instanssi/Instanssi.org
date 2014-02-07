@@ -7,6 +7,7 @@ urlpatterns = patterns(
     url(r'^$', 'pageloader', {'templatename': 'index'}, name="index"),
 	url(r'^info/', 'pageloader', {'templatename': 'info'}, name="info"),
     url(r'^english/', 'pageloader', {'templatename': 'english'}, name="english"),
+    url(r'^yhteystiedot/', 'pageloader', {'templatename': 'info'}, name="yhteystiedot"), # Show Info page
     url(r'^kompot/', 'pageloader', {'templatename': 'kompot'}, name="kompot"),
     url(r'^kilpailusopimus/', 'pageloader', {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
 )

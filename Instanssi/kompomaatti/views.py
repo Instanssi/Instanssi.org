@@ -13,7 +13,18 @@ from Instanssi.kompomaatti.misc import awesometime
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from django.contrib.auth import logout
 from datetime import datetime
+
+def eventselect(request):
+    # Check if user selected an event without Javascript
+    if request.method == 'POST':
+        event_id = int(request.POST['eventsel'])
+        return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
     
+    # Render page
+    return render_to_response('kompomaatti/event_select.html', {
+        'events': Event.objects.all().order_by('-date'),
+    }, context_instance=RequestContext(request))
+
 def index(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     

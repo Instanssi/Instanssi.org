@@ -1,4 +1,5 @@
-{% extends "kompomaatti/base.html" %}
+{% extends "kompomaatti/event_base.html" %}
+{% load kompomaatti_base_tags %}
 
 {% block title %} - Etusivu{% endblock %}
 
@@ -17,7 +18,7 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Etusivu</h2>
+<h2>{% event_name sel_event_id %}</h2>
 <p>
     Tervetuloa Kompomaattiin, Instanssien viralliseen entryjenhallinta- ja äänestyspalveluun!
 </p>

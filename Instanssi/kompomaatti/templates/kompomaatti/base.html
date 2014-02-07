@@ -1,8 +1,8 @@
-<!DOCTYPE html>{% load static %}{% load kompomaatti_base_tags %}
+<!DOCTYPE html>{% load static %}
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Kompomaatti - {% event_name sel_event_id %}{% block title %}{% endblock %}</title>
+    <title>Kompomaatti{% block title %}{% endblock %}</title>
     <meta name="viewport" content="initial-scale=1.0" />
     
     <!-- Library CSS -->
@@ -40,43 +40,14 @@
 <div id="header_nav">
     <div class="limiter">
         <ul id="header_nav_left">
-            <li class="menuitem">
-                <a href="{% url 'km:index' sel_event_id %}">Etusivu</a>
-            </li>
-            <li class="menuitem">
-                <a href="{% url 'km:compos' sel_event_id %}">Kompot ({% render_base_compos_count sel_event_id %})<span class="navmenu-icon-down"></span></a>
-                <ul class="sub-level">
-{% render_base_compos_nav sel_event_id  %}
-                </ul>
-            </li>
-            <li class="menuitem">
-                <a href="{% url 'km:competitions' sel_event_id %}">Kilpailut ({% render_base_competitions_count sel_event_id %})<span class="navmenu-icon-down"></span></a>
-                <ul class="sub-level">
-{% render_base_competitions_nav sel_event_id  %}
-                </ul>
-            </li>
-        </ul>
-        <ul id="header_nav_right">
-{% if user.is_authenticated %}
-            <li class="menuitem">
-                <a href="{% url 'km:profile' sel_event_id %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}</a>
-            </li>
-{% endif %}
-            <li class="menuitem">
-{% if user.is_authenticated %}
-                <a href="{% url 'km:logout' sel_event_id %}">Kirjaudu ulos</a>
-{% else %}
-                <a href="{% url 'km:login' sel_event_id %}">Kirjaudu sisään</a>
-{% endif %}
-            </li>
+{% block headernav %}{% endblock %}
         </ul>
     </div>
 </div>
 <div id="base">
     <div id="contents">
         <div id="crumbpath">
-            Kompomaatti &raquo; 
-            <a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a>
+            <a href="{% url 'km:eventselect' %}">Kompomaatti</a>
 {% block crumbs %}{% endblock %}
         </div>
 {% block content %}{% endblock %}

@@ -27,6 +27,10 @@ def gen_sha(text):
     h.update(text)
     return h.hexdigest()
 
+# Index page for store
+def index(request):
+    return render_to_response('store/index.html', {}, context_instance=RequestContext(request))
+
 # Handles the actual success notification from SVM
 def notify_handler(request):
     # Get parameters

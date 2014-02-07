@@ -35,7 +35,7 @@ class OpenIDLoginForm(forms.Form):
         
         # Build form
         self.helper = FormHelper()
-        self.helper.form_action = reverse('openid-login')
+        self.helper.form_action = reverse('social:begin', args=('openid',))
         self.helper.layout = Layout(
             Fieldset(
                 u'',

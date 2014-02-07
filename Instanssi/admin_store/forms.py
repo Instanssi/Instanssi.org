@@ -31,4 +31,4 @@ class StoreItemForm(forms.ModelForm):
 
     class Meta:
         model = StoreItem
-        exclude = ('imagefile_thumbnail')
+        exclude = ('imagefile_thumbnail',)

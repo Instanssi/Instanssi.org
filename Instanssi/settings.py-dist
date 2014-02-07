@@ -74,12 +74,6 @@ MEDIA_URL = '/uploads/'
 STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
 
-# OpenID Auth
-LOGIN_URL = '/openid/login/'
-LOGIN_REDIRECT_URL = '/kompomaatti/'
-OPENID_CREATE_USERS = True
-OPENID_UPDATE_DETAILS_FROM_SREG = True
-
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 
@@ -143,7 +137,8 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS += (
     'common.context_processors.short_language_code',
     'common.context_processors.google_settings',
-    'common.context_processors.openid_helper',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
     'django.core.context_processors.request',
 )
 
@@ -194,7 +189,7 @@ INSTALLED_APPS = (
     'south',
     'twitter_tag',
     'crispy_forms',
-    'django_openid_auth',
+    'social.apps.django_app.default',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -206,7 +201,7 @@ INSTALLED_APPS = (
 
 # Authentication backends, notice the openid backend here.
 AUTHENTICATION_BACKENDS = (
-    'django_openid_auth.auth.OpenIDBackend',
+    'social.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 

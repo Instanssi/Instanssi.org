@@ -53,10 +53,9 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.5] (https://www.djangoproject.com/download/) `pip install django==1.5.5`
-* [django-openid-auth] (https://launchpad.net/django-openid-auth) `pip install django-openid-auth`
+* [Django 1.5 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [python-social-auth] (https://github.com/omab/python-social-auth) `pip install python-social-auth`
 * [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
-* [python-openid] (https://github.com/openid/python-openid/) `pip install python-openid`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
 * [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
 * [South] (http://south.aeracode.org/) `pip install south`
@@ -68,7 +67,7 @@ Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django django-openid-auth python-openid django-countries django-imagekit south django-crispy-forms reportlab pil django-twitter-tag
+    pip install django python-social-auth django-countries django-imagekit django-twitter-tag south django-crispy-forms reportlab pil
 
 IDEjä
 -----

@@ -1,5 +1,5 @@
 {% extends "kompomaatti/event_base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block title %} - Kirjaudu sisään{% endblock %}
 
@@ -7,7 +7,7 @@
 {{ block.super }}
     <style type="text/css">
     #id_openid_identifier {
-        background: url({% url 'openid-logo' %}) no-repeat;
+        background: url({% static 'common/img/openid.gif' %}) no-repeat;
         background-position: 5px 50%;
         padding-left: 26px;
         width: 50%;

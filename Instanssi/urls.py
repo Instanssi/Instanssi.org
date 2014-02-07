@@ -10,7 +10,7 @@ if settings.DEBUG:
 
 # URLS
 urlpatterns = patterns('',
-    url(r'^openid/', include('django_openid_auth.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^2012/', include('Instanssi.main2012.urls', namespace="main2012")),
     url(r'^2013/', include('Instanssi.main2013.urls', namespace="main2013")),
     url(r'^2014/', include('Instanssi.main2014.urls', namespace="main2014")),
@@ -42,13 +42,9 @@ urlpatterns = patterns('',
 )
 
 # Add admin panel link if debug mode is on
+# Also, serve media files through static.serve when running in debug mode
 if settings.DEBUG:
     urlpatterns += patterns('',
         url(r'^admin/', include(admin.site.urls)),
-    )
-
-# Serve media files through static.serve when running in debug mode
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

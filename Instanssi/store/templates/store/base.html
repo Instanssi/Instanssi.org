@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Instanssi Store{% block title %}{% endblock %}</title>
+    <title>Instanssi Kauppa{% block title %}{% endblock %}</title>
     <meta name="viewport" content="initial-scale=1.0" />
     
     <!-- Library CSS -->
@@ -34,7 +34,7 @@
 <body>
 <div id="header">
     <div class="limiter">
-        <h1>Instanssi Store</h1>
+        <h1>Instanssi Kauppa</h1>
     </div>
 </div>
 <div id="header_nav">
@@ -52,7 +52,7 @@
 <div id="base">
     <div id="contents">
         <div id="crumbpath">
-            <a href="{% url 'store:index' %}">Instanssi Store</a>
+            <a href="{% url 'store:index' %}">Instanssi Kauppa</a>
 {% block crumbs %}{% endblock %}
         </div>
 {% block content %}{% endblock %}

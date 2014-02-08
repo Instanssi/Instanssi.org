@@ -5,16 +5,16 @@ import hashlib
 import time
 import random
 
-from django.db import transaction, IntegrityError
+from django.db import IntegrityError
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 
 from Instanssi.store.svmlib import svm_validate
-from Instanssi.store.forms import StoreOrderForm
-from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
+from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
 from Instanssi.tickets.models import Ticket
 from Instanssi.store.store_email import ReceiptMailer
 
@@ -40,7 +40,7 @@ def notify_handler(request):
     method = request.GET.get('METHOD', '')
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
-    
+
     # Validata & handle
     if svm_validate(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
@@ -125,3 +125,29 @@ def notify_handler(request):
         
     # Just respond with something
     return HttpResponse("")
+
+
+def ta_view(request, transaction_key):
+    """Displays the details of a specific transaction."""
+
+    transaction = get_object_or_404(StoreTransaction, key=transaction_key)
+    ta_items = TransactionItem.objects.filter(transaction=transaction)
+
+    res = render(request, "store/transaction.html", {
+        "transaction": transaction,
+        "ta_items": ta_items
+    })
+    res["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    return res
+
+
+def ti_view(request, item_key):
+    """Displays the details of a specific purchased item."""
+
+    ta_item = get_object_or_404(TransactionItem, key=item_key)
+
+    res = render(request, "store/transaction_item.html", {
+        "ta_item": ta_item
+    })
+    res["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    return res

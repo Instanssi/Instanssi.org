@@ -20,6 +20,7 @@
     $('#id_sps').change(function() {
         $('#id_openid_identifier').val($('#id_sps').val());
     });
+    $('.login-button').button();
 {% endblock %}
 
 {% block crumbs %}
@@ -31,6 +32,9 @@
 {{ block.super }}
 <h2>Kirjaudu sisään</h2>
 <p>Valitse kirjautumispalvelusi.</p>
+
+<a class="login-button" href="{% url 'social:begin' 'twitter' %}">Twitter</a>
+
 {% crispy openidform openidform.helper %}
 
 {% endblock %}

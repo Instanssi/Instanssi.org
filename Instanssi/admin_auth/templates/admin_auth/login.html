@@ -6,9 +6,12 @@
 
 {% block head %}
 {{ block.super }}
+    <!-- Form validation -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "admin_auth/css/style.css" %}" />
     <style type="text/css">
     #id_openid_identifier {
@@ -26,6 +29,7 @@
     $('#id_sps').change(function() {
         $('#id_openid_identifier').val($('#id_sps').val());
     });
+    $('.login-button').button();
 {% endblock %}
 
 {% block content %}
@@ -33,6 +37,8 @@
 <h1>Hallinta</h1>
 
 <p>Valitse kirjautumispalvelusi.</p>
+
+<a class="login-button" href="{% url 'social:begin' 'twitter' %}">Twitter</a>
 
 <h2>Django</h2>
 {% crispy loginform loginform.helper %}

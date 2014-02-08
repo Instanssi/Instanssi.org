@@ -68,11 +68,9 @@ TWITTER_OAUTH_SECRET = ''
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
 
-# Facebook
-SOCIAL_AUTH_FACEBOOK_KEY = ''
-SOCIAL_AUTH_FACEBOOK_SECRET = ''
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'locale': 'fi_FI'}
+# Twitter for social auth
+SOCIAL_AUTH_TWITTER_KEY = TWITTER_CONSUMER_KEY
+SOCIAL_AUTH_TWITTER_SECRET = TWITTER_CONSUMER_SECRET
 
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
@@ -208,6 +206,7 @@ INSTALLED_APPS = (
 # Authentication backends, notice the openid backend here.
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
+    'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 

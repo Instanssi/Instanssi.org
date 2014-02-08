@@ -68,10 +68,6 @@ TWITTER_OAUTH_SECRET = ''
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
 
-# Twitter for social auth
-SOCIAL_AUTH_TWITTER_KEY = TWITTER_CONSUMER_KEY
-SOCIAL_AUTH_TWITTER_SECRET = TWITTER_CONSUMER_SECRET
-
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
@@ -206,7 +202,6 @@ INSTALLED_APPS = (
 # Authentication backends, notice the openid backend here.
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
-    'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 

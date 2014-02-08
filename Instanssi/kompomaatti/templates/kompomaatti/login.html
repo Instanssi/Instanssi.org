@@ -33,8 +33,6 @@
 <h2>Kirjaudu sisään</h2>
 <p>Valitse kirjautumispalvelusi.</p>
 
-<a class="login-button" href="{% url 'social:begin' 'twitter' %}">Twitter</a>
-
 {% crispy openidform openidform.helper %}
 
 {% endblock %}

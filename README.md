@@ -19,11 +19,6 @@ Mikä on tämä ?
 --------------
 En jaksa kirjoittaa suomeksi, lue ylläolevat :D
 
-Oppaita
--------
-* Djangon asennus: https://docs.djangoproject.com/en/dev/topics/install/?from=olddocs#installing-an-official-release
-* Tutoriaali: https://docs.djangoproject.com/en/1.4/intro/tutorial01/
-
 Ympäristön asentaminen Windowsille
 ----------------------------------
 1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin juurikansio (se josta löytyy python.exe)
@@ -68,11 +63,6 @@ Onelineri kirjastojen asentamiseen
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
     pip install django python-social-auth django-countries django-imagekit django-twitter-tag south django-crispy-forms reportlab pil
-
-IDEjä
------
-* Eclipse (addonit: PyDev + EGIt)
-* Aptana Studio 3
 
 Testitapausten ajaminen
 -----------------------

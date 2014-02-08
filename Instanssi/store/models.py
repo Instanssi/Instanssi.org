@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
-from django_countries import CountryField
-from django.db.models import Sum
+from django.conf import settings
 from django.contrib import admin
-from Instanssi.kompomaatti.models import Event
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models import Sum
+from django_countries import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from Instanssi.kompomaatti.models import Event
+
+
+def get_url(path):
+    proto = 'https://' if settings.SSL_ON else 'http://'
+    host = settings.DOMAIN
+    return '%s%s%s' % (proto, host, path or '')
 
 
 class StoreItem(models.Model):
@@ -102,7 +110,7 @@ class StoreTransaction(models.Model):
 
     @property
     def qr_code(self):
-        return self.key
+        return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
 
     class Meta:
         verbose_name = u"transaktio"
@@ -118,6 +126,10 @@ class TransactionItem(models.Model):
 
     def total(self):
         return self.item.price
+
+    @property
+    def qr_code(self):
+        return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
 
     def __unicode__(self):
         return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)

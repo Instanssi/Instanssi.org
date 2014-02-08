@@ -111,12 +111,12 @@ class StoreTransaction(models.Model):
 
 
 class TransactionItem(models.Model):
+    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
-    amount = models.IntegerField(u'Määrä')
 
     def total(self):
-        return self.amount * self.item.price
+        return self.item.price
 
     def __unicode__(self):
         return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)

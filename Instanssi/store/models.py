@@ -114,6 +114,7 @@ class TransactionItem(models.Model):
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
+    delivered = models.BooleanField(u'Toimitettu', default=False, help_text=u'Tuote on toimitettu')
 
     def total(self):
         return self.item.price

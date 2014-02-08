@@ -43,6 +43,10 @@
 {% for ta_item in ta_items %}
     <div class="item">
         <h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}</a></h2>
+        <table><tbody>
+            <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
+            <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
+        </tbody></table>
         <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostetun tuotteen QR-koodi." />
     </div>
 {% endfor %}

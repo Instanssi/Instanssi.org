@@ -127,6 +127,13 @@ def notify_handler(request):
     return HttpResponse("")
 
 
+def has_infodesk_access(request):
+    return request.user.is_authenticated() \
+        and request.user.is_active \
+        and request.user.has_perm('tickets.change_ticket') \
+        and request.user.has_perm('store.change_storetransaction')
+
+
 def ta_view(request, transaction_key):
     """Displays the details of a specific transaction."""
 
@@ -135,7 +142,8 @@ def ta_view(request, transaction_key):
 
     res = render(request, "store/transaction.html", {
         "transaction": transaction,
-        "ta_items": ta_items
+        "ta_items": ta_items,
+        "has_infodesk_access": has_infodesk_access(request)
     })
     res["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
     return res
@@ -147,7 +155,8 @@ def ti_view(request, item_key):
     ta_item = get_object_or_404(TransactionItem, key=item_key)
 
     res = render(request, "store/transaction_item.html", {
-        "ta_item": ta_item
+        "ta_item": ta_item,
+        "has_infodesk_access": has_infodesk_access(request),
     })
     res["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
     return res

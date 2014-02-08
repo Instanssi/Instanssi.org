@@ -24,4 +24,10 @@
 </table>
 
 <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
+{% if has_infodesk_access %}
+<form method="post" action=".">
+<input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
+<input type="submit" value="Merkitse toimitetuksi"/>
+</form>
+{% endif %}
 {% endblock %}

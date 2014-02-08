@@ -33,6 +33,14 @@
     </tbody>
 </table>
 <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ transaction.qr_code }}" width="160" height="160" alt="Tilauksen QR-koodi." />
+
+{% if has_infodesk_access %}
+<form method="post" action=".">
+<input type="hidden" name="ta_key" value="{{ transaction.key }}" />
+<input type="submit" value="Merkitse kaikki toimitetuksi"/>
+</form>
+{% endif %}
+
 </div>
 
 {% if ta_items %}
@@ -48,6 +56,12 @@
             <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
         </tbody></table>
         <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostetun tuotteen QR-koodi." />
+        {% if has_infodesk_access %}
+        <form method="post" action="{% url 'store:ti_view' ta_item.key %}">
+        <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
+        <input type="submit" value="Merkitse toimitetuksi"/>
+        </form>
+        {% endif %}
     </div>
 {% endfor %}
 

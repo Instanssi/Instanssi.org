@@ -49,13 +49,10 @@ class StoreItem(models.Model):
         return self.max - self.sold()
 
     def sold(self):
-        res = TransactionItem.objects.filter(
+        return TransactionItem.objects.filter(
             transaction__time_paid__isnull=False,
             item=self
-        ).aggregate(Sum('amount'))
-        if res['amount__sum'] is None:
-            return 0
-        return res['amount__sum']
+        ).count()
 
     @staticmethod
     def items_for_event(event_id):

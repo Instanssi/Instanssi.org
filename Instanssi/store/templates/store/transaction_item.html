@@ -13,22 +13,24 @@
 
 {% block content %}
 {{ block.super }}
+<div class="item">
 <h1>{{ta_item.item.name}}</h1>
-<p class="noprint">Voit lunastaa tämän tuotteen esittämällä allaolevan tunnisteen joko tulosteena tai oman laitteen näytöltä.</p>
-<p class="noprint">Huomaa, että sivun URL-osoite ja tunniste ovat henkilökohtaisia, eikä niitä pidä jakaa muille, jos tarkoitus ei ole lahjoittaa tilattua tuotetta.</p>
-<table>
-    <tbody>
-        <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
-        <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
-    </tbody>
-</table>
+    <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
+    <table class="item-details">
+        <tbody>
+            <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
+            <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
+        </tbody>
+    </table>
 
-<img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
-{% if has_infodesk_access %}
-<form method="post" action=".">
-{% csrf_token %}
-<input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
-<input type="submit" value="Merkitse toimitetuksi"/>
-</form>
-{% endif %}
+    {% if has_infodesk_access %}
+    <form class="item-manage" method="post" action=".">
+    {% csrf_token %}
+    <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
+    <input type="submit" value="Merkitse toimitetuksi"/>
+    </form>
+    {% endif %}
+</div>
+<p class="noprint">Voit lunastaa tämän tuotteen esittämällä ylläolevan tunnisteen joko tulosteena tai oman laitteen näytöltä.</p>
+<p class="noprint">Huomaa, että sivun URL-osoite ja tunniste ovat henkilökohtaisia, eikä niitä pidä jakaa muille, jos tarkoitus ei ole lahjoittaa tilattua tuotetta.</p>
 {% endblock %}

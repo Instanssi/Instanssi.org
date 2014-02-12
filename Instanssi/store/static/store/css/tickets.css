@@ -53,3 +53,20 @@ td {
 
 .item { position: relative; }
 .item-manage { position: absolute; bottom: 20px; left: 20px; }
+
+.item.delivered h2::after {
+    z-index: 9001;
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    content: 'TOIMITETTU';
+    opacity: .4;
+    color: red;
+    font-weight: bold;
+    font-size: 140%;
+    border: .2em dotted red;
+    padding: .5em;
+    -moz-transform: rotate(-.5rad);
+    -webkit-transform: rotate(-.5rad);
+    transform: rotate(-.5rad);
+}

@@ -1,51 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Käyttöehdot</title>
-</head>
-<body>
-<h1>Rekisteriseloste</h1>
+{% extends "store/base.html" %}
+
+{% block title %} - Verkkokaupan käyttöehdot{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    &raquo; Verkkokaupan käyttöehdot
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Rekisteriseloste</h2>
 <p>
     Henkilötietolain (523 /99)10 §:n mukainen REKISTERISELOSTE
 </p>
 
-<h2>Rekisterinpitäjä</h2>
-<h3>Nimi</h3>
+<h3>Rekisterinpitäjä</h3>
 <p>
-    Linkki Jyväskylä ry
-</p>
-<h3>Osoite</h3>
-<p>
+    Linkki Jyväskylä ry<br />
     Agora, Ag C233.2<br />
     PL 35<br />
     40014 Jyväskylän yliopisto
 </p>
 
-<h2>Rekisteriasioista vastaava henkilö ja/tai yhteyshenkilö</h2>
-<h3>Nimi</h3>
-<p>
-    Tuomas Virtanen
-</p>
-<h3>Osoite</h3>
+<h3>Rekisteriasioista vastaava henkilö ja/tai yhteyshenkilö</h3>
 <p>
     Instanssin webmaster<br />
-    Tuomas Virtanen<br />
+    Tuomas Virtanen &lt;webmaster@instanssi.org&gt;<br />
     Linkki Jyväskylä ry.<br />
     Agora, Ag C233.2<br />
     PL 35<br />
     40014 Jyväskylän yliopisto
 </p>
-<h3>Muut yhteystiedot</h3>
-<p>
-    webmaster@instanssi.org
-</p>
 
-<h2>Rekisterin nimi</h2>
+
+<h3>Rekisterin nimi</h3>
 <p>
     Asiakasrekisteri
 </p>
 
-<h2>Henkilötietojen käsittelyn tarkoitus / rekisterin käyttötarkoitus</h2>
+<h3>Henkilötietojen käsittelyn tarkoitus / rekisterin käyttötarkoitus</h3>
 <p>
     Asiakasrekisteri sisältää tiedot kaikista Instanssi-tapahtumaan lippuja 
     tai muita tuotteita tilanneista. Rekisteriin kuuluvien henkilötietoja 
@@ -53,7 +54,7 @@
     muutosten tiedottamiseen.
 </p>
 
-<h2>Rekisterin tietosisältö</h2>
+<h3>Rekisterin tietosisältö</h3>
 <ul>
     <li><strong>etunimi</strong></li>
     <li><strong>sukunimi</strong></li>
@@ -71,30 +72,29 @@
     Lihavoinnilla merkityt tiedot ovat pakollisia, muut vapaaehtoisia.
 </p>
 
-<h2>Säännönmukaiset tietolähteet</h2>
+<h3>Säännönmukaiset tietolähteet</h3>
 <p>
     Asiakkaan ilmoittamat tiedot tilauksen yhteydessä.
 </p>
 
-<h2>Säännönmukaiset tietojen luovutukset ja tietojen siirto EU:n tai Euroopan talousalueen ulkopuolelle:</h2>
+<h3>Säännönmukaiset tietojen luovutukset ja tietojen siirto EU:n tai Euroopan talousalueen ulkopuolelle:</h3>
 <p>
     Tietoja ei luovuteta ko. alueiden ulkopuolelle.
 </p>
 
-<h2>Rekisterin tietojen luovutukset ulkopuolisille</h2>
+<h3>Rekisterin tietojen luovutukset ulkopuolisille</h3>
 <p>
     Tietoja ei luovuteta ulkopuolisille.
 </p>
 
-<h2>Rekisterin suojauksen periaatteet</h2>
-<h3>A. Manuaalinen aineisto (säilytyspaikka ja suojaaminen)</h3>
+<h3>Rekisterin suojauksen periaatteet</h3>
+<h4>A. Manuaalinen aineisto (säilytyspaikka ja suojaaminen)</h4>
 <p>
     Asiakasrekisteristä ei ole tulosteita.
 </p>
-<h3>B. ATK:lle talletetut tiedot (rekisterin käyttöoikeuden periaatteet ja käytön valvonta sekä laitteiden fyysinen suojaus)</h3>
+
+<h4>B. ATK:lle talletetut tiedot (rekisterin käyttöoikeuden periaatteet ja käytön valvonta sekä laitteiden fyysinen suojaus)</h4>
 <p>
     Asiakasrekisteri sijaitsee palveluntarjoajan tietokantapalvelimella, jonne on käyttöoikeus Instanssi-tapahtuman järjestäjillä.
 </p>
-
-</body>
-</html>
+{% endblock %}

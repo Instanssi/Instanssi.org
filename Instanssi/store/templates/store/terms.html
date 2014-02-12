@@ -1,15 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Verkkokaupan toimitusehdot</title>
-</head>
-<body>
-<h1>Verkkokaupan toimitusehdot</h1>
+{% extends "store/base.html" %}
+
+{% block title %} - Verkkokaupan toimitusehdot{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    &raquo; Verkkokaupan toimitusehdot
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Verkkokaupan toimitusehdot</h2>
 <p>
     Voimassa 27.01.2013 alkaen.
 </p>
 
-<h2>Yleistä verkkokaupasta</h2>
+<h3>Yleistä verkkokaupasta</h3>
 <p>
     Verkkokaupan tuotteita myy Linkki Jyväskylä ry, Y-tunnus 2147178-4. 
     Tuotteita myydään täysi-ikäisille yksityishenkilöille Suomeen 
@@ -18,7 +31,7 @@
     tarvitse maksaa. Pidätämme oikeuden hintojen ja toimituskulujen muutoksiin.
 </p>
 
-<h2>Tilaaminen</h2>
+<h3>Tilaaminen</h3>
 <p>
     Tuotteet tilataan pääsääntöisesti Internetin välityksellä 
     osoitteesta http://instanssi.org/ .
@@ -30,7 +43,7 @@
     Asiakas sitoutuu jokaisen tilauksen yhteydessä voimassa oleviin toimitusehtoihin.
 </p>
 
-<h2>Tilausvahvistus</h2>
+<h3>Tilausvahvistus</h3>
 <p>Lähetämme sähköpostitse tilausvahvistuksen, josta näet:</p>
 <ul>
     <li>viitenumeron</li>
@@ -39,7 +52,7 @@
     <li>laskun loppusumman</li>
 </ul>
 
-<h2>Maksutavat</h2>
+<h3>Maksutavat</h3>
 <p>
     Tuotteet maksetaan tilauksen yhteydessä. Verkkokaupassa voidaan maksaa 
     seuraavilla maksutavoilla: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, 
@@ -47,7 +60,7 @@
     Ålandsbanken sekä luottokortit. Maksaminen tapahtuu Paytrail Oyj:n kautta.
 </p>
 
-<h2>Maksut Visa, Visa Electron tai MasterCard-korteilla</h2>
+<h3>Maksut Visa, Visa Electron tai MasterCard-korteilla</h3>
 <p>
     Maksettaessa Visa, Visa Electron tai MasterCard-korteilla Linkki Jyväskylä 
     ry toimii ainoastaan tuotteiden ja palveluiden markkinoijana ja lisäksi 
@@ -60,7 +73,7 @@
     velvoitteet. Paytrail Oyj on myös maksun saaja.
 </p>
 
-<h3>Paytrail Oyj</h3>
+<h4>Paytrail Oyj</h4>
 <p>
     Y-tunnus: 2122839-7
 </p>
@@ -71,7 +84,7 @@
     Puhelin: 0207 181830
 </p>
 
-<h2>Verkkopankit</h2>
+<h3>Verkkopankit</h3>
 <p>
     Verkkopankkimaksamiseen liittyvän maksu- ja rahoituspalvelun toteuttaa 
     Paytrail Oyj (2122839-7) yhteistyössä suomalaisten pankkien ja luottolaitosten 
@@ -79,7 +92,7 @@
     Käyttäjän kannalta palvelu toimii aivan kuten perinteinen verkkomaksaminenkin.
 </p>
 
-<h2>Toimitustapa ja toimituskulut</h2>
+<h3>Toimitustapa ja toimituskulut</h3>
 <p>
     Liput toimitetaan vain elektronisessa muodossa. Tilausvahvistuksen mukana 
     lähetetään linkki sivulle, missä lippu on nähtävillä.
@@ -90,7 +103,7 @@
     tuotteilla ei ole toimituskuluja.
 </p>
 
-<h2>Vaihto- ja palautusehdot</h2>
+<h3>Vaihto- ja palautusehdot</h3>
 <p>
     Maksettuja lippuja ei vaihdeta eikä palauteta. Tilaisuuden järjestäjä vastaa 
     tilaisuudesta ja sen mahdollisesta peruuntumisesta tai muutoksista ohjelmassa 
@@ -114,7 +127,7 @@
     ongelmatilanteissa tai kysymyksissä.
 </p>
 
-<h2>Muuta</h2>
+<h3>Muuta</h3>
 <p>
     Pidätämme oikeuden muuttaa toimitusehtojamme. Asiakkaan on ennen tilaustaan tutustuttava 
     kulloinkin voimassa oleviin toimitusehtoihin.
@@ -122,6 +135,4 @@
 <p>
     Linkki Jyväskylä ry käsittelee kaikki asiakastiedot täysin luottamuksellisesti.
 </p>
-
-</body>
-</html>
+{% endblock %}

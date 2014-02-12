@@ -55,9 +55,8 @@ class StoreItem(models.Model):
         ).count()
 
     @staticmethod
-    def items_for_event(event_id):
-        return StoreItem.objects.filter(max__gt=0, available=True,
-                                        event_id=event_id)
+    def items_available():
+        return StoreItem.objects.filter(max__gt=0, available=True)
 
 
 class StoreTransaction(models.Model):

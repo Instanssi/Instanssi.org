@@ -1,4 +1,5 @@
 {% extends "store/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %} - Etusivu{% endblock %}
 
@@ -8,6 +9,7 @@
 
 {% block jquery %}
 {{ block.super }}
+    $('.emailinput').addClass('textInput');
 {% endblock %}
 
 {% block crumbs %}
@@ -21,4 +23,10 @@
 <p>
     Tervetuloa Instanssin lippu- ja oheistuotekauppaan!
 </p>
+{% if has_products %}
+{% crispy transaction_form transaction_form.helper %}
+{% else %}
+    <p>Kaupassa ei ole tällä hetkellä tuotteita.</p>
+{% endif %}
+
 {% endblock %}

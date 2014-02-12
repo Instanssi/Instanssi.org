@@ -35,9 +35,7 @@ class StoreOrderForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        self.event_id = kwargs.pop('event_id', None)
         super(StoreOrderForm, self).__init__(*args, **kwargs)
-
         self.helper = FormHelper()
         self.helper.form_class = 'store'
 
@@ -49,7 +47,7 @@ class StoreOrderForm(forms.ModelForm):
             u'Mikäli tilauksessasi on T-paita, lisää tähän kenttään sen haluttu koko.'
 
         item_fields = Fieldset(u'', css_class='store-items')
-        for item in StoreItem.items_for_event(self.event_id):
+        for item in StoreItem.items_available():
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
                 initial=0, min_value=0, max_value=item.num_available(),
@@ -72,7 +70,7 @@ class StoreOrderForm(forms.ModelForm):
             # Print img tag if item has image
             if item.imagefile_thumbnail:
                 mdiv.fields.append(
-                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotakuva" data-bigimg="%s" />' 
+                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotekuva" data-bigimg="%s" />' 
                          % (item.imagefile_thumbnail.url, item.imagefile_original.url)),
                 )
 
@@ -83,9 +81,9 @@ class StoreOrderForm(forms.ModelForm):
             item_fields.fields.append(mdiv)
 
         self.helper.layout = Layout(
-            HTML(u'<h2>Tuotteet</h2>'),
+            HTML(u'<h3>Tuotteet</h3>'),
             item_fields,
-            HTML(u'<h2>Maksajan tiedot</h2>'),
+            HTML(u'<h3>Maksajan tiedot</h3>'),
             Fieldset(
                 u'',
                 'firstname',
@@ -119,7 +117,6 @@ class StoreOrderForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(StoreOrderForm, self).clean()
         total_items = 0
-
         fails = []
 
         # also check that the purchase amount for each field makes sense
@@ -132,9 +129,11 @@ class StoreOrderForm(forms.ModelForm):
                     % store_item.name
                 )
 
+        # Make sure we have at least SOME items in the order
         if not total_items:
             fails.append(u'Tilauksessa on oltava ainakin yksi tuote!')
 
+        # Make sure the email fields match
         if 'email' in self.data and 'email_confirm' in self.data:
             if self.data['email'] != self.data['email_confirm']:
                 if not 'email_confirm' in self._errors:
@@ -147,9 +146,11 @@ class StoreOrderForm(forms.ModelForm):
                     u'osoite molempiin kenttiin!'
                 )
 
+        # Dump errors
         if fails:
             raise forms.ValidationError(fails)
 
+        # All worked out, that's it
         return cleaned_data
 
     def save(self, commit=True):

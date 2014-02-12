@@ -5,13 +5,14 @@ import hashlib
 import time
 import random
 
-from django.db import IntegrityError
 from django.conf import settings
-from django.http import HttpResponse, Http404
-from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+from django.db import IntegrityError
+from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from Instanssi.store.svmlib import svm_request, SVMException, svm_validate, svm_validate_cancelled
 from Instanssi.store.forms import StoreOrderForm
@@ -227,19 +228,26 @@ def has_infodesk_access(request):
         and request.user.has_perm('store.change_storetransaction')
 
 
-def mark_item_delivered(item_key):
+def mark_item_delivered(request, item_key):
+    if not has_infodesk_access(request):
+        raise PermissionDenied()
+
     item = TransactionItem.objects.get(key=item_key)
     item.delivered = True
     item.save()
 
 
-def ta_view(request, transaction_key):
-    """Displays the details of a specific transaction."""
-
+def handle_status_update(request):
     if request.method == 'POST':
         item_key = request.POST.get('ta_item_key')
         if item_key:
-            mark_item_delivered(item_key)
+            mark_item_delivered(request, item_key)
+
+
+def ta_view(request, transaction_key):
+    """Displays the details of a specific transaction."""
+
+    handle_status_update(request)
 
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
     ta_items = TransactionItem.objects.filter(transaction=transaction)
@@ -256,10 +264,7 @@ def ta_view(request, transaction_key):
 def ti_view(request, item_key):
     """Displays the details of a specific purchased item."""
 
-    if request.method == 'POST':
-        item_key = request.POST.get('ta_item_key')
-        if item_key:
-            mark_item_delivered(item_key)
+    handle_status_update(request)
 
     ta_item = get_object_or_404(TransactionItem, key=item_key)
 

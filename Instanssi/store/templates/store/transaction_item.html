@@ -23,11 +23,11 @@
         </tbody>
     </table>
 
-    {% if has_infodesk_access %}
+    {% if has_infodesk_access and not ta_item.delivered %}
     <form class="item-manage" method="post" action=".">
-    {% csrf_token %}
-    <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
-    <input type="submit" value="Merkitse toimitetuksi"/>
+        {% csrf_token %}
+        <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
+        <input type="submit" value="Merkitse toimitetuksi"/>
     </form>
     {% endif %}
 </div>

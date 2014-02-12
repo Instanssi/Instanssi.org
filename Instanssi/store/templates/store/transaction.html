@@ -34,14 +34,6 @@
     </tbody>
 </table>
 
-{% if has_infodesk_access %}
-<form method="post" action=".">
-{% csrf_token %}
-<input type="hidden" name="ta_key" value="{{ transaction.key }}" />
-<input type="submit" value="Merkitse kaikki toimitetuksi"/>
-</form>
-{% endif %}
-
 </div>
 
 {% if ta_items %}
@@ -58,8 +50,8 @@
             <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
             <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
         </tbody></table>
-        {% if has_infodesk_access %}
-        <form class="item-manage" method="post" action="{% url 'store:ti_view' ta_item.key %}">
+        {% if has_infodesk_access and not ta_item.delivered %}
+        <form class="item-manage" method="post" action="{% url 'store:ta_view' transaction.key %}">
             {% csrf_token %}
             <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
             <input type="submit" value="Merkitse toimitetuksi"/>

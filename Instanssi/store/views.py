@@ -227,8 +227,19 @@ def has_infodesk_access(request):
         and request.user.has_perm('store.change_storetransaction')
 
 
+def mark_item_delivered(item_key):
+    item = TransactionItem.objects.get(key=item_key)
+    item.delivered = True
+    item.save()
+
+
 def ta_view(request, transaction_key):
     """Displays the details of a specific transaction."""
+
+    if request.method == 'POST':
+        item_key = request.POST.get('ta_item_key')
+        if item_key:
+            mark_item_delivered(item_key)
 
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
     ta_items = TransactionItem.objects.filter(transaction=transaction)
@@ -244,6 +255,11 @@ def ta_view(request, transaction_key):
 
 def ti_view(request, item_key):
     """Displays the details of a specific purchased item."""
+
+    if request.method == 'POST':
+        item_key = request.POST.get('ta_item_key')
+        if item_key:
+            mark_item_delivered(item_key)
 
     ta_item = get_object_or_404(TransactionItem, key=item_key)
 

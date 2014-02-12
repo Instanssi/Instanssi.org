@@ -1,10 +1,6 @@
-h1,h2,h3,h4,h5,p,td,th,span {
-    font-family: 'Open Sans';
-}
-
 body {
-    margin-left: 20px;
-    margin-top: 20px;
+    font-family: 'Open Sans', sans-serif;
+    padding: 20px;
 }
 
 h1 {
@@ -13,10 +9,8 @@ h1 {
     margin-top: 40px;
     border-bottom: 1px dotted black;
 }
-h2 {
-    margin-top: 40px;
-    font-size: 16pt;
-}
+
+h2 { font-size: 18pt; }
 
 table {
     font-size: 12pt;
@@ -50,3 +44,12 @@ td {
         display:none;
     }
 }
+
+.item { border: 1px dashed #bbb; padding: 20px; margin-bottom: 20px; }
+.item h2 { }
+/* This hack wraps the .item to any floats within it */
+.item:after { content: ' '; display: table; clear: both; }
+.item-code { float: right; }
+
+.item { position: relative; }
+.item-manage { position: absolute; bottom: 20px; left: 20px; }

@@ -13,9 +13,9 @@
 
 {% block content %}
 {{ block.super }}
-<div class="item">
-<h1>{{ta_item.item.name}}</h1>
+<div class="item{% if ta_item.delivered %} delivered{% endif %}" >
     <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
+    <h2>{{ta_item.item.name}}</h2>
     <table class="item-details">
         <tbody>
             <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>

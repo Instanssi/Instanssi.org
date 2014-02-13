@@ -19,9 +19,11 @@
     <table class="item-details">
         <tbody>
             <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
-            <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
         </tbody>
     </table>
+    {% if ta_item.delivered %}
+    <div class="delivered-stamp">Toimitettu</div>
+    {% endif %}
 
     {% if has_infodesk_access and not ta_item.delivered %}
     <form class="item-manage" method="post" action=".">

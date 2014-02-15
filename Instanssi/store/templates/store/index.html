@@ -1,0 +1,25 @@
+{% extends "store/base.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %} - Etusivu{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Etusivu
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Etusivu</h2>
+
+<p>Tähän jotain tervetulojuttua, ohjeita, jne.</p>
+
+{% endblock %}

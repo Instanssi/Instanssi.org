@@ -1,0 +1,46 @@
+{% extends "store/base.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %} - Tilaus{% endblock %}
+
+{% block head %}
+{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
+    <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $(".fancybox").fancybox();
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Tilaus
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Tilaus</h2>
+
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+<form action="" method="post">{% csrf_token %}
+<table>
+{{ wizard.management_form }}
+{% if wizard.form.forms %}
+    {{ wizard.form.management_form }}
+    {% for form in wizard.form.forms %}
+        {{ form }}
+    {% endfor %}
+{% else %}
+    {{ wizard.form }}
+{% endif %}
+</table>
+{% if wizard.steps.prev %}
+<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Takaisin</button>
+{% endif %}
+<input type="submit" value="Eteenpäin"/>
+</form>
+
+{% endblock %}

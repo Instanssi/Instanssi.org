@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 
 from Instanssi.store.svmlib import svm_request, SVMException, svm_validate, svm_validate_cancelled
-from Instanssi.store.forms import StoreOrderForm
+from Instanssi.store.forms import StoreProductsForm
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 
 # Logging related

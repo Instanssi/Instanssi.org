@@ -12,12 +12,14 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from django.contrib.formtools.wizard.views import CookieWizardView
 
 from Instanssi.store.svmlib import svm_request, SVMException, svm_validate, svm_validate_cancelled
-from Instanssi.store.forms import StoreOrderForm
+from Instanssi.store.forms import StoreProductsForm,StoreInfoForm,StorePaymentMethodForm
 from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
 from Instanssi.tickets.models import Ticket
 from Instanssi.store.store_email import ReceiptMailer
+
 
 # Logging related
 import logging
@@ -28,100 +30,25 @@ def gen_sha(text):
     h.update(text)
     return h.hexdigest()
 
+# Terms page
 def terms(request):
     return render_to_response('store/terms.html', {}, context_instance=RequestContext(request))
 
+# Privacy info page
 def privacy(request):
     return render_to_response('store/privacy.html', {}, context_instance=RequestContext(request))
 
+# Store view
+class StoreWizard(CookieWizardView):
+    form_list = [StoreProductsForm, StoreInfoForm, StorePaymentMethodForm]
+    template_name = 'store/store.html'
+    
+    def done(self, form_list, **kwargs):
+        return HttpResponseRedirect('/store/')
+
 # Index page for store
 def index(request):
-    # Form domain
-    proto = u'http://'
-    if settings.SSL_ON:
-        proto = u'https://'
-    domain = proto + settings.DOMAIN
-    
-    # Handle request
-    if request.method == 'POST':
-        transaction_form = StoreOrderForm(request.POST)
-
-        if transaction_form.is_valid():
-            ta = transaction_form.save()
-            
-            # Form data for JSON query
-            product_list = []
-            for item in TransactionItem.objects.filter(transaction=ta):
-                product_list.append({
-                    'title': item.item.name,
-                    'code': str(item.item.id),
-                    'amount': str(item.amount),
-                    'price': str(item.item.price),
-                    'vat': '0',
-                    'type': 1,
-                })
-
-            svm_data = {
-                'orderNumber': str(ta.id),
-                'currency': 'EUR',
-                'locale': 'fi_FI',
-                'urlSet': {
-                    'success': domain + success_url,
-                    'failure': domain + failure_url,
-                    'notification': domain + reverse('store:notify'),
-                    'pending': '',
-                },
-                'orderDetails': {
-                    'includeVat': 1,
-                    'contact': {
-                        'telephone': ta.telephone,
-                        'mobile': ta.mobile,
-                        'email': ta.email,
-                        'firstName': ta.firstname,
-                        'lastName': ta.lastname,
-                        'companyName': ta.company,
-                        'address': {
-                            'street': ta.street,
-                            'postalCode': ta.postalcode,
-                            'postalOffice': ta.city,
-                            'country': ta.country.code
-                        }
-                    },
-                    'products': product_list,
-                },
-            }
-
-            # Make a request
-            msg = None
-            try:
-                msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
-            except SVMException as ex:
-                a, b = ex.args
-                logger.error('(%s) %s' % (b, a))
-                return HttpResponseRedirect(failure_url)
-            except Exception as ex:
-                logger.error('%s.' % (ex))
-                return HttpResponseRedirect(failure_url)
-
-            # Save token, redirect
-            ta.time_created = datetime.now()
-            ta.token = msg['token']
-            ta.save()
-
-            # All done, redirect user
-            return HttpResponseRedirect(msg['url'])
-    else:
-        transaction_form = StoreOrderForm()
-
-    # Check if we have any products to sell
-    has_products = False
-    if len(StoreItem.items_available()) > 0:
-        has_products = True
-
-    # Dump form to index page
     return render_to_response('store/index.html', {
-        'transaction_form': transaction_form,
-        'has_products': has_products,
     }, context_instance=RequestContext(request))
 
 # Handles the actual success notification from SVM

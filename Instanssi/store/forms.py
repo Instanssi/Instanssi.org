@@ -23,28 +23,10 @@ def gen_sha(text):
     h.update(text)
     return h.hexdigest()
 
-class StoreOrderForm(forms.ModelForm):
-    """Displays an order form with items for a specific event listed."""
-
-    email_confirm = forms.EmailField(
-        label=u'Vahvista sähköposti', max_length=255
-    )
-
-    read_terms = forms.BooleanField(
-        label=u'Hyväksyn toimitusehdot', required=True
-    )
-
+class StoreProductsForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        super(StoreOrderForm, self).__init__(*args, **kwargs)
+        super(StoreProductsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'store'
-
-        self.fields['read_terms'].help_text = \
-            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
-            u'ja hyväksyn ne. (Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' % (reverse('store:terms'), reverse('store:privacy'))
-
-        self.fields['information'].widget.attrs['placeholder'] = \
-            u'Mikäli tilauksessasi on T-paita, lisää tähän kenttään sen haluttu koko.'
 
         item_fields = Fieldset(u'', css_class='store-items')
         for item in StoreItem.items_available():
@@ -70,8 +52,8 @@ class StoreOrderForm(forms.ModelForm):
             # Print img tag if item has image
             if item.imagefile_thumbnail:
                 mdiv.fields.append(
-                    HTML('<img class="item-image" src="%s" width="64" height="64" alt="Tuotekuva" data-bigimg="%s" />' 
-                         % (item.imagefile_thumbnail.url, item.imagefile_original.url)),
+                    HTML('<a class="item-image fancybox" href="%s"><img src="%s" width="64" height="64" alt="Tuotekuva" /></a>' 
+                         % (item.imagefile_original.url, item.imagefile_thumbnail.url)),
                 )
 
             mdiv.fields.append(
@@ -79,11 +61,52 @@ class StoreOrderForm(forms.ModelForm):
             )
             mdiv.fields.append(name)
             item_fields.fields.append(mdiv)
+            
+        self.helper.layout = Layout(item_fields,)
+        
+    def _dataitems(self):
+        for key, value in self.data.iteritems():
+            try:
+                if key.startswith('item-') and int(value):
+                    yield (key[5:], int(value))
+            except:
+                continue
 
+    def clean(self):
+        cleaned_data = super(StoreProductsForm, self).clean()
+        total_items = 0
+        fails = []
+
+        # also check that the purchase amount for each field makes sense
+        for (item_id, amount) in self._dataitems():
+            store_item = StoreItem.objects.get(id=int(item_id))
+            total_items += amount
+            if store_item.num_available() < amount:
+                fails.append(
+                    u'Tuotetta "%s" ei ole saatavilla riittävästi!'
+                        % store_item.name
+                )
+
+        # Make sure we have at least SOME items in the order
+        if not total_items:
+            fails.append(u'Tilauksessa on oltava ainakin yksi tuote!')
+
+        # Dump errors
+        if fails:
+            raise forms.ValidationError(fails)
+
+        # All worked out, that's it
+        return cleaned_data
+
+class StoreInfoForm(forms.ModelForm):
+    email_confirm = forms.EmailField(
+        label=u'Vahvista sähköposti', max_length=255
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(StoreInfoForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
         self.helper.layout = Layout(
-            HTML(u'<h3>Tuotteet</h3>'),
-            item_fields,
-            HTML(u'<h3>Maksajan tiedot</h3>'),
             Fieldset(
                 u'',
                 'firstname',
@@ -98,40 +121,12 @@ class StoreOrderForm(forms.ModelForm):
                 'city',
                 'country',
                 'information',
-                'read_terms',
-                ButtonHolder(
-                    Submit('Buy', u'Osta')
-                ),
-                css_class='store-details'
             )
         )
 
-    def _dataitems(self):
-        for key, value in self.data.iteritems():
-            try:
-                if key.startswith('item-') and int(value):
-                    yield (key[5:], int(value))
-            except:
-                continue
-
     def clean(self):
-        cleaned_data = super(StoreOrderForm, self).clean()
-        total_items = 0
+        cleaned_data = super(StoreInfoForm, self).clean()
         fails = []
-
-        # also check that the purchase amount for each field makes sense
-        for (item_id, amount) in self._dataitems():
-            store_item = StoreItem.objects.get(id=int(item_id))
-            total_items += amount
-            if store_item.num_available() < amount:
-                fails.append(
-                    u'Tuotetta "%s" ei ole saatavilla riittävästi!'
-                    % store_item.name
-                )
-
-        # Make sure we have at least SOME items in the order
-        if not total_items:
-            fails.append(u'Tilauksessa on oltava ainakin yksi tuote!')
 
         # Make sure the email fields match
         if 'email' in self.data and 'email_confirm' in self.data:
@@ -153,36 +148,26 @@ class StoreOrderForm(forms.ModelForm):
         # All worked out, that's it
         return cleaned_data
 
-    def save(self, commit=True):
-        """Saves a store transaction form, also generating TransactionItems
-        for each item in the post data."""
-
-        new_transaction = super(StoreOrderForm, self).save(commit=False)
-
-        for i in range(10):
-            try:
-                str = u'%s|%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random(), random.random())
-                new_transaction.key = gen_sha(str.encode('utf-8'))
-                new_transaction.save()
-                break
-            except IntegrityError as ex:
-                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
-
-        
-        transaction_items = []
-        for (item_id, amount) in self._dataitems():
-            if amount > 0:
-                store_item = StoreItem.objects.get(id=int(item_id))
-                new_item = TransactionItem(
-                    item=store_item,
-                    transaction=new_transaction,
-                    amount=amount
-                )
-                new_item.save()
-                transaction_items.append(new_item)
-
-        return new_transaction
-
     class Meta:
         model = StoreTransaction
         exclude = ('time_created', 'time_paid', 'token', 'paid', 'key', 'status')
+        
+class StorePaymentMethodForm(forms.Form):
+    read_terms = forms.BooleanField(
+        label=u'Hyväksyn toimitusehdot', required=True
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(StorePaymentMethodForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        
+        self.fields['read_terms'].help_text = \
+            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
+            u'ja hyväksyn ne. (Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' % (reverse('store:terms'), reverse('store:privacy'))
+
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Maksutavan valinta',
+                'read_terms',
+            )
+        )

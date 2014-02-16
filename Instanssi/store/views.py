@@ -14,145 +14,52 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.formtools.wizard.views import CookieWizardView
 
-from Instanssi.store.svmlib import svm_request, SVMException, svm_validate, svm_validate_cancelled
-from Instanssi.store.forms import StoreProductsForm,StoreInfoForm,StorePaymentMethodForm
+from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
 from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
-from Instanssi.tickets.models import Ticket
-from Instanssi.store.store_email import ReceiptMailer
-
+from Instanssi.store.methods import paytrail
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
 
-def gen_sha(text):
-    h = hashlib.sha1()
-    h.update(text)
-    return h.hexdigest()
-
 # Terms page
 def terms(request):
+    """Displays the terms page."""
     return render_to_response('store/terms.html', {}, context_instance=RequestContext(request))
 
 # Privacy info page
 def privacy(request):
+    """Displays the privacy page"""
     return render_to_response('store/privacy.html', {}, context_instance=RequestContext(request))
 
-# Store view
 class StoreWizard(CookieWizardView):
+    """Displays the order form"""
+    
     form_list = [StoreProductsForm, StoreInfoForm, StorePaymentMethodForm]
     template_name = 'store/store.html'
     
     def done(self, form_list, **kwargs):
-        return HttpResponseRedirect('/store/')
-
+        items_form = form_list[0]
+        info_form = form_list[1]
+        method_form = form_list[2]
+        
+        # TODO: Check for errors
+        transaction = info_form.save()
+        items_form.save(transaction)
+        
+        # Todo: Change this to real payment method handling
+        return render_to_response('store/success.html')
+        
 # Index page for store
 def index(request):
     return render_to_response('store/index.html', {
     }, context_instance=RequestContext(request))
-
-# Handles the actual success notification from SVM
-def notify_handler(request):
-    # Get parameters
-    order_number = request.GET.get('ORDER_NUMBER', '')
-    timestamp = request.GET.get('TIMESTAMP', '')
-    paid = request.GET.get('PAID', '')
-    method = request.GET.get('METHOD', '')
-    authcode = request.GET.get('RETURN_AUTHCODE', '')
-    secret = settings.VMAKSUT_SECRET
-
-    # Validata & handle
-    if svm_validate(order_number, timestamp, paid, method, authcode, secret):
-        # Get transaction
-        ta = get_object_or_404(StoreTransaction, pk=int(order_number))
-        if ta.paid:
-            logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
-            raise Http404
-
-        # Deliver email.
-        mailer = ReceiptMailer('"Instanssi" <noreply@'+settings.DOMAIN+'>', ta.email, 'Instanssi.org kuitti')
-        mailer.ordernumber(ta.id)
-        mailer.firstname(ta.firstname)
-        mailer.lastname(ta.lastname)
-        mailer.email(ta.email)
-        mailer.company(ta.company)
-        mailer.mobile(ta.mobile)
-        mailer.telephone(ta.telephone)
-        mailer.street(ta.street)
-        mailer.city(ta.city)
-        mailer.postalcode(ta.postalcode)
-        mailer.country(ta.country)
-        
-        # Add items to email
-        # Also, heck if transaction contains tickets
-        hastickets = False
-        hassnailmail = False
-        hasevdelivered = False
-        for titem in TransactionItem.objects.filter(transaction=ta):
-            mailer.add_item(titem.item.id, titem.item.name, titem.item.price, titem.amount)
-            if titem.item.delivery_type == 1:
-                hastickets = True
-            if titem.item.delivery_type == 2:
-                hassnailmail = True
-            if titem.item.delivery_type == 3:
-                hasevdelivered = True
-        
-        # Form ticket url
-        if hastickets or hasevdelivered:
-            proto = 'http://'
-            if settings.SSL_ON:
-                proto = 'https://'
-            ticketurl = proto + settings.DOMAIN + reverse('tickets:tickets', args=(ta.key,))
-            mailer.ticketurl(ticketurl)
-            
-        # Send mail
-        try:
-            mailer.send()
-        except Exception as ex:
-            logger.error('%s.' % (ex))
-            raise Http404
-        
-        # Mark as paid
-        ta.time_paid = datetime.now()
-        ta.status = 1
-        if hastickets and not hassnailmail and not hasevdelivered:
-            ta.status = 2
-        if hastickets and (hassnailmail or hasevdelivered):
-            ta.status = 3
-        ta.save()
-        
-        # Generate ticket information for tickets
-        for titem in TransactionItem.objects.filter(transaction=ta):
-            if titem.item.delivery_type == 1:
-                for i in range(titem.amount):
-                    ticket = Ticket()
-                    ticket.transaction = ta
-                    ticket.storeitem = titem.item
-                    ticket.event = titem.item.event
-                    ticket.owner_firstname = ta.firstname
-                    ticket.owner_lastname = ta.lastname
-                    ticket.owner_email = ta.email
-                    for k in range(10):
-                        try:
-                            ticket.key = gen_sha('%s|%s|%s|%s|%s|%s|%s' % (i, titem.id, titem.item.id, ta.token, time.time(), random.random(), k))
-                            ticket.save()
-                            break
-                        except IntegrityError as ex:
-                            logger.warning("SHA-1 Collision in ticket (WTF!) Key: %s, exception: %s." % (ticket.key, ex))
-    else:
-        logger.warning("Error while attempting to validate svm notification!")
-        raise Http404
-        
-    # Just respond with something
-    return HttpResponse("")
-
 
 def has_infodesk_access(request):
     return request.user.is_authenticated() \
         and request.user.is_active \
         and request.user.has_perm('tickets.change_ticket') \
         and request.user.has_perm('store.change_storetransaction')
-
 
 def ta_view(request, transaction_key):
     """Displays the details of a specific transaction."""

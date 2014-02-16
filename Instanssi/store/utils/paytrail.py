@@ -9,17 +9,17 @@ import hashlib
 class PaytrailException(Exception):
     pass
 
-def paytrail_validate_cancelled(orderno, timestamp, authcode, secret):
+def validate_cancelled(orderno, timestamp, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s' % (orderno, timestamp, secret))
     return (authcode == m.hexdigest().upper())
 
-def paytrail_validate(orderno, timestamp, paid, method, authcode, secret):
+def validate(orderno, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
     return (authcode == m.hexdigest().upper())
 
-def paytrail_request(id, secret, data):
+def request(id, secret, data):
     # Some basic data
     host = 'payment.verkkomaksut.fi'
     auth = 'Basic ' + string.strip(base64.encodestring(id + ':' + secret))
@@ -39,7 +39,7 @@ def paytrail_request(id, secret, data):
 
     # Handle errors
     if res.status != 201:
-        raise SVMException(message['errorMessage'], message['errorCode'])
+        raise PaytrailException(message['errorMessage'], message['errorCode'])
 
     # Return parsed JSON
     return message

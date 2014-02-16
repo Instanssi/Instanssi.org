@@ -3,8 +3,6 @@
 
 import time
 import random
-import hashlib
-import logging
 
 from django import forms
 from django.core.urlresolvers import reverse
@@ -12,8 +10,10 @@ from django.db import IntegrityError
 from django.utils.html import format_html
 
 from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
+from Instanssi.store.utils.hash import gen_sha
 
 # Logger
+import logging
 logger = logging.getLogger(__name__)
 
 class StoreProductsForm(forms.Form):
@@ -69,6 +69,23 @@ class StoreProductsForm(forms.Form):
 
         # All worked out, that's it
         return cleaned_data
+    
+    def save(self, transaction):
+        for (item_id, amount) in self._dataitems():
+            if amount > 0:
+                store_item = StoreItem.objects.get(id=item_id)
+                for i in range(amount):
+                    new_item = TransactionItem()
+                    new_item.item = store_item
+                    new_item.transaction = transaction
+                    for i in range(10):
+                        try:
+                            str = u'%s|%s|%s|%s' % (i, store_item.name, time.time(), random.random())
+                            new_item.key = gen_sha(str.encode('utf-8'))
+                            new_item.save()
+                            break
+                        except IntegrityError as ex:
+                            logger.warning("SHA-1 Collision in item (WTF!) Key: %s, exception: %s." % (new_item.key, ex))
 
 class StoreInfoForm(forms.ModelForm):
     email_confirm = forms.EmailField(
@@ -117,6 +134,22 @@ class StoreInfoForm(forms.ModelForm):
 
         # All worked out, that's it
         return cleaned_data
+
+    def save(self, commit=True):
+        """Saves the form content to a new transaction"""
+
+        new_transaction = super(StoreInfoForm, self).save(commit=False)
+
+        for i in range(10):
+            try:
+                str = u'%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random())
+                new_transaction.key = gen_sha(str.encode('utf-8'))
+                new_transaction.save()
+                break
+            except IntegrityError as ex:
+                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
+
+        return new_transaction
 
     class Meta:
         model = StoreTransaction

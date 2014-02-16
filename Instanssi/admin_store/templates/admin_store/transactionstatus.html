@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <th>Avain</th>
-            <td>{{ transaction.key }}</td>
+            <td><a href="{% url 'store:ta_view' transaction.key %}">{{ transaction.key }}</a></td>
         </tr>
         <tr>
             <th>Maksettu?</th>
@@ -112,7 +112,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nimi</th>
-                <th>Määrä</th>
+                <th>Avain</th>
                 <th>Yhteensä</th>
             </tr>
         </thead>
@@ -121,7 +121,7 @@
             <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.item.name }}</td>
-                <td>{{ item.amount }}</td>
+                <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
                 <td>{{ item.total }} &euro;</td>
             </tr>
 {% endfor %}

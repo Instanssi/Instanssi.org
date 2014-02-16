@@ -22,7 +22,7 @@ class ReceiptMailer(Mailer):
             'postalcode': '',
             'country': '',
             'items': [],
-            'ticketurl': '',
+            'transactionurl': '',
             'total': 0.0,
         }
     
@@ -59,8 +59,8 @@ class ReceiptMailer(Mailer):
     def country(self, var):
         self.params['country'] = var
     
-    def ticketurl(self, var):
-        self.params['ticketurl'] = var
+    def transactionurl(self, var):
+        self.params['transactionurl'] = var
         
     def add_item(self, id, name, price, amount):
         itemtotal = price * amount

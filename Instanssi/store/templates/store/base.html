@@ -37,7 +37,13 @@
     <div class="limiter">
         <ul id="header_nav_left">
             <li class="menuitem">
-                <a href="/">Takaisin Instanssin etusivulle</a>
+                <a href="/">Instanssi</a>
+            </li>
+            <li class="menuitem">
+                <a href="{% url 'store:index' %}">Etusivu</a>
+            </li>
+            <li class="menuitem">
+                <a href="{% url 'store:order' %}">Tilaus</a>
             </li>
         </ul>
         <ul id="header_nav_right">

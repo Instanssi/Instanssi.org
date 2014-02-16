@@ -38,7 +38,7 @@ Tilaukseenne kuuluvat liput ja tuotteet lunastetaan tapahtuman aikana infotiskil
 Tuotteiden ja lippujen lunastukseen tarvitaan tosite, joka löytyy allaolevasta osoitteesta. 
 Tositteen voi joko tulostaa tai esittää mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.
 
-{{ ticketurl }}
+{{ transactionurl }}
 
 Muista tyhjentää selaimesi sivuhistoria ja välimuisti käytyäsi lippusivulla, 
 mikäli tietokonettasi käyttää useampi henkilö!

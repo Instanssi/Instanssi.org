@@ -123,6 +123,12 @@ class StoreInfoForm(forms.ModelForm):
         fields = ('firstname', 'lastname', 'email', 'telephone', 'mobile', 'company', 'street', 'postalcode', 'city', 'country', 'information')
         
 class StorePaymentMethodForm(forms.Form):
+    payment_method = forms.ChoiceField(
+        label = u'Maksutapa',
+        required = True,
+        choices = [(0, u'Bitcoin'),(1, u'Verkkomaksu')],
+        widget = forms.RadioSelect(),
+    )
     read_terms = forms.BooleanField(
         label=u'Hyväksyn toimitusehdot', 
         required=True,
@@ -131,7 +137,10 @@ class StorePaymentMethodForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StorePaymentMethodForm, self).__init__(*args, **kwargs)
         
+        self.fields['payment_method'].help_text = \
+            u'Valitse mieleisesi maksutapa. Verkkomaksu-valinta kattaa sekä verkkopankki- että luottokorttimaksut.'
         self.fields['read_terms'].help_text = \
-            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ' \
-            u'ja hyväksyn ne. (Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' % (reverse('store:terms'), reverse('store:privacy'))
+            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ja hyväksyn ne. ' \
+            u'(Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' \
+            % (reverse('store:terms'), reverse('store:privacy'))
 

@@ -272,9 +272,10 @@ ul.sub-level { z-index: 99; }
 .field-label {
     width: 50%;
     float: left;
+    vertical-align: top;
 }
 
-.required-field label:before {
+.required-field:first-child:before {
     content: '* ';
     font-weight: bold;
     color: red;
@@ -285,11 +286,17 @@ ul.sub-level { z-index: 99; }
     display: inline-block;
 }
 
-.field-label input {
+.field-label input
     width: 300px;
 }
 .field-label textarea {
     width: 400px;
+}
+.field-label ul {
+    width: 300px;
+}
+.field-label li {
+    list-style-type: none;
 }
 
 .field-desc .errorlist {
@@ -299,4 +306,5 @@ ul.sub-level { z-index: 99; }
 .field-desc {
     float: left;
     padding: 4px;
+    width: 49%;
 }

@@ -67,7 +67,7 @@ def start_process(ta):
     # Make a request
     msg = None
     try:
-        msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
+        msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
     except paytrail.PaytrailException as ex:
         a, b = ex.args
         logger.error('(%s) %s' % (b, a))
@@ -92,7 +92,7 @@ def handle_failure(request):
     secret = settings.VMAKSUT_SECRET
     
     # Validata & handle
-    if paytrail.validate_cancelled(order_number, timestamp, authcode, secret):
+    if paytrail.validate_failure(order_number, timestamp, authcode, secret):
         try:
             ta = StoreTransaction.objects.get(pk=int(order_number))
             ta.status = 4
@@ -117,7 +117,7 @@ def handle_notify(request):
     secret = settings.VMAKSUT_SECRET
 
     # Validata & handle
-    if paytrail.validate(order_number, timestamp, paid, method, authcode, secret):
+    if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         if ta.paid:

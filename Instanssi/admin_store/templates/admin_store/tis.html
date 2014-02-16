@@ -1,0 +1,59 @@
+{% extends "admin_store/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Transaktiotuotteet{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $("#items_table").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#items_pager")});
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+        &raquo; <a href="{% url 'manage-store:items' %}">Transaktiotuotteet</a>
+        &raquo; Selaa
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Transaktiotuotteet</h2>
+{% if items %}
+    <table id="items_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nimi</th>
+                <th>Etunimi</th>
+                <th>Sukunimi</th>
+                <th>Omistaja</th>
+                <th>Lunastettu</th>
+                <th>Avain</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.item.name }}</td>
+                <td>{{ item.transaction.firstname }}</td>
+                <td>{{ item.transaction.lastname }}</td>
+                <td>{{ item.transaction.email }}</td>
+                <td>{% if item.delivered %}Kyllä{% else %}Ei{% endif %}</td>
+                <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <div id="items_pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
+{% else %}
+    <p>Ei tuotteita!</p>
+{% endif %}
+
+{% endblock %}

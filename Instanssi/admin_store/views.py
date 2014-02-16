@@ -52,6 +52,18 @@ def status(request):
     })
     
 @staff_access_required
+def tis(request):
+    if not request.user.has_perm('store.view_storetransaction'):
+        raise Http403
+    
+    items = TransactionItem.objects.all()
+
+    # Render response
+    return admin_render(request, "admin_store/tis.html", {
+        'items': items,
+    })
+    
+@staff_access_required
 def transaction_status(request, transaction_id):
     if not request.user.has_perm('store.view_storetransaction'):
         raise Http403

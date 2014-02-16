@@ -36,7 +36,6 @@ urlpatterns = patterns('',
     url(r'^kompomaatti/', include('Instanssi.kompomaatti.urls', namespace="km")),
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
-    url(r'^tickets/', include('Instanssi.tickets.urls', namespace='tickets')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
     url(r'^$', include('Instanssi.main2014.urls')),
 )

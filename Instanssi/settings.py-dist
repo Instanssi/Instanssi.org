@@ -17,10 +17,6 @@ import os
 CONTENTDIR = os.path.dirname(__file__)
 PROJECTDIR = os.path.dirname(CONTENTDIR)
 
-# Use Django 1.5 style url-templatetags
-import django.template
-django.template.add_to_builtins('django.templatetags.future')
-
 # Settings
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -183,7 +179,6 @@ INSTALLED_APPS = (
     'Instanssi.dblog',
     'Instanssi.json_api',
     'Instanssi.store',
-    'Instanssi.tickets',
     'Instanssi.infodesk',
     'imagekit',
     'south',

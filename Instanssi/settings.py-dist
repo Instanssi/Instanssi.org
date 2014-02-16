@@ -171,7 +171,6 @@ INSTALLED_APPS = (
     'Instanssi.admin_utils',
     'Instanssi.admin_screenshow',
     'Instanssi.admin_store',
-    'Instanssi.admin_tickets',
     'Instanssi.kompomaatti',
     'Instanssi.ext_blog',
     'Instanssi.ext_programme',

@@ -8,13 +8,80 @@ from django.db import transaction, IntegrityError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.shortcuts import render_to_response
 
-import Instanssi.store.utils.paytrail
+from Instanssi.store.utils import paytrail
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
+
+def get_url(path):
+    proto = 'https://' if settings.SSL_ON else 'http://'
+    host = settings.DOMAIN
+    return '%s%s%s' % (proto, host, path or '')
+
+def start_process(ta):
+    product_list = []
+    for item in TransactionItem.objects.filter(transaction=ta):
+        product_list.append({
+            'title': item.item.name,
+            'code': str(item.item.id),
+            'amount': str(item.amount()),
+            'price': str(item.item.price),
+            'vat': '0',
+            'type': 1,
+        })
+
+    data = {
+        'orderNumber': str(ta.id),
+        'currency': 'EUR',
+        'locale': 'fi_FI',
+        'urlSet': {
+            'success': get_url(reverse('store:pm:paytrail-success')),
+            'failure': get_url(reverse('store:pm:paytrail-failure')),
+            'notification': get_url(reverse('store:pm:paytrail-notify')),
+            'pending': '',
+        },
+        'orderDetails': {
+            'includeVat': 1,
+            'contact': {
+                'telephone': ta.telephone,
+                'mobile': ta.mobile,
+                'email': ta.email,
+                'firstName': ta.firstname,
+                'lastName': ta.lastname,
+                'companyName': ta.company,
+                'address': {
+                    'street': ta.street,
+                    'postalCode': ta.postalcode,
+                    'postalOffice': ta.city,
+                    'country': ta.country.code
+                }
+            },
+            'products': product_list,
+        },
+    }
+
+    # Make a request
+    msg = None
+    try:
+        msg = svm_request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, svm_data)
+    except paytrail.PaytrailException as ex:
+        a, b = ex.args
+        logger.error('(%s) %s' % (b, a))
+        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+    except Exception as ex:
+        logger.error('%s.' % (ex))
+        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+
+    # Save token, redirect
+    ta.token = msg['token']
+    ta.save()
+
+    # All done, redirect user
+    return HttpResponseRedirect(msg['url'])
 
 # Handle failure message from paytrail
 def handle_failure(request):
@@ -25,7 +92,7 @@ def handle_failure(request):
     secret = settings.VMAKSUT_SECRET
     
     # Validata & handle
-    if svm_validate_cancelled(order_number, timestamp, authcode, secret):
+    if paytrail.validate_cancelled(order_number, timestamp, authcode, secret):
         try:
             ta = StoreTransaction.objects.get(pk=int(order_number))
             ta.status = 4
@@ -33,11 +100,11 @@ def handle_failure(request):
         except:
             pass
 
-    return render_to_response('store/store_failure.html', {}, context_instance=RequestContext(request))
+    return render_to_response('store/failure.html')
         
 # Handle success message from paytrail
 def handle_success(request):
-    return render_to_response('store/store_success.html', {}, context_instance=RequestContext(request))
+    return render_to_response('store/success.html')
 
 # Handles the actual success notification from SVM
 def handle_notify(request):
@@ -50,7 +117,7 @@ def handle_notify(request):
     secret = settings.VMAKSUT_SECRET
 
     # Validata & handle
-    if svm_validate(order_number, timestamp, paid, method, authcode, secret):
+    if paytrail.validate(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         if ta.paid:

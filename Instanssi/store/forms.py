@@ -3,6 +3,7 @@
 
 import time
 import random
+from datetime import datetime
 
 from django import forms
 from django.core.urlresolvers import reverse
@@ -139,6 +140,7 @@ class StoreInfoForm(forms.ModelForm):
         """Saves the form content to a new transaction"""
 
         new_transaction = super(StoreInfoForm, self).save(commit=False)
+        new_transaction.time_created = datetime.now()
 
         for i in range(10):
             try:

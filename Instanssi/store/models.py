@@ -123,6 +123,9 @@ class TransactionItem(models.Model):
     def total(self):
         return self.item.price
 
+    def amount(self):
+        return TransactionItem.objects.filter(item=self.item,transaction=self.transaction).count()
+
     @property
     def qr_code(self):
         return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))

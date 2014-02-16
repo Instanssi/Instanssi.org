@@ -43,12 +43,17 @@ class StoreWizard(CookieWizardView):
         info_form = form_list[1]
         method_form = form_list[2]
         
-        # TODO: Check for errors
+        # Save transaction and items
         transaction = info_form.save()
         items_form.save(transaction)
         
-        # Todo: Change this to real payment method handling
-        return render_to_response('store/success.html')
+        # Handle payment
+        if method_form.cleaned_data['payment_method'] == 0:
+            # Handle bitcoin payment
+            pass
+        else:
+            # Handle paytrail payment
+            return paytrail.start_process(transaction)
         
 # Index page for store
 def index(request):

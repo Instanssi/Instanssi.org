@@ -12,7 +12,7 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".fancybox").fancybox();
+    $(".item-fancybox").fancybox();
 {% endblock %}
 
 {% block crumbs %}
@@ -25,22 +25,25 @@
 <h2>Tilaus</h2>
 
 <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form action="" method="post">{% csrf_token %}
-<table>
-{{ wizard.management_form }}
-{% if wizard.form.forms %}
-    {{ wizard.form.management_form }}
-    {% for form in wizard.form.forms %}
-        {{ form }}
+<form class="store-form" action="" method="post">
+    {% csrf_token %}
+    <div>
+    {{ wizard.management_form }}
+    
+    {{ wizard.form.non_field_errors }}
+    {% for field in wizard.form %}
+        <div class="field-wrapper">
+            {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
+            <div class="field-label">{{ field.label_tag }}</div>
+            <div class="field-input">{{ field }}</div>
+        </div>
     {% endfor %}
-{% else %}
-    {{ wizard.form }}
-{% endif %}
-</table>
-{% if wizard.steps.prev %}
-<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Takaisin</button>
-{% endif %}
-<input type="submit" value="Eteenpäin"/>
+    
+    </div>
+    {% if wizard.steps.prev %}
+    <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Takaisin</button>
+    {% endif %}
+    <input type="submit" value="Eteenpäin" />
 </form>
 
 {% endblock %}

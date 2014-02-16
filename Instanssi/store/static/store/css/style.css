@@ -47,7 +47,6 @@ h3 {
 	font-size: 120%;
     margin-top: 1.5em;
     margin-bottom: 0.75em;
-    border-bottom: 1px dotted black;
 }
 
 p,pre,blockquote,ul,ol {
@@ -188,10 +187,116 @@ ul.sub-level { z-index: 99; }
 #contents ol li,
 #contents ul li { margin-top: 0.8em; margin-bottom: 0.8em; }
 
-/* ---------- Store form ---------- */
+/* ---------- Store items ---------- */
 
-.storeitem {
-    border: 1px solid black;
-    margin: 1em;    
+.item-wrapper {
+    border-top: 1px dotted black;
+    padding: 1em;
+    vertical-align: top;
+    overflow: hidden;
 }
 
+.item-image {
+    display: block;
+    box-shadow: 0 0 1px 1px #555;
+    width: 65px;
+    height: 65px;
+    float: left;
+}
+
+.item-text {
+    margin-left: 10px;
+    float: left;
+    margin-left: 1em;
+}
+
+.item-text h3 {
+    font-size: 120%;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.item-field {
+    float: right;
+}
+
+/* Store form */
+
+.store-data input,
+.store-data textarea,
+.store-data select {
+    border: 1px solid #555;
+    margin: 5px;
+    padding: 2px;
+}
+
+.store-form {
+    background-color: #eee;
+    border: 1px dotted #555;
+}
+
+.store-header p {
+    text-align: center;
+}
+
+.store-nav {
+    border-top: 1px dotted black;
+    padding: 1em;
+    overflow: hidden;
+}
+
+.store-nav input { float: right; }
+.store-nav button { float: left; }
+
+.store-errors {
+    border-top: 1px dotted black;
+    background-color: #B81900;
+    overflow: hidden;
+}
+
+/* Store other fields */
+
+.store-form .light {
+    background-color: #e6e6e6;
+}
+
+.store-form .dark {
+    background-color: #dddddd;
+}
+
+.field-wrapper {
+    padding: 5px;
+    overflow: hidden;
+}
+
+.field-label {
+    width: 50%;
+    float: left;
+}
+
+.required-field label:before {
+    content: '* ';
+    font-weight: bold;
+    color: red;
+}
+
+.field-label label {
+    width: 200px;
+    display: inline-block;
+}
+
+.field-label input {
+    width: 300px;
+}
+.field-label textarea {
+    width: 400px;
+}
+
+.field-desc .errorlist {
+    color: red;
+}
+
+.field-desc {
+    float: left;
+    padding: 4px;
+}

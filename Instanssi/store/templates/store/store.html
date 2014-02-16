@@ -12,7 +12,9 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".item-fancybox").fancybox();
+    $(".item-image a").fancybox();
+    $(".store-nav button").button();
+    $(".store-nav input").button();
 {% endblock %}
 
 {% block crumbs %}
@@ -24,26 +26,57 @@
 {{ block.super }}
 <h2>Tilaus</h2>
 
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 <form class="store-form" action="" method="post">
+    <div class="store-header"><p>Vaihe {{ wizard.steps.step1 }} / {{ wizard.steps.count }}</p></div>
     {% csrf_token %}
     <div>
     {{ wizard.management_form }}
     
-    {{ wizard.form.non_field_errors }}
-    {% for field in wizard.form %}
-        <div class="field-wrapper">
-            {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
-            <div class="field-label">{{ field.label_tag }}</div>
-            <div class="field-input">{{ field }}</div>
-        </div>
-    {% endfor %}
-    
+    {% if wizard.form.non_field_errors %}
+    <div class="store-errors">
+        {{ wizard.form.non_field_errors }}
     </div>
-    {% if wizard.steps.prev %}
-    <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Takaisin</button>
     {% endif %}
-    <input type="submit" value="Eteenpäin" />
+    
+    <div class="store-data">
+    {% for field in wizard.form %}
+    {% if wizard.steps.step0 == 0 %}
+        <div class="item-wrapper">
+            <div class="item-image">
+                <a href="{{ field.field.image_large }}">
+                    <img src="{{ field.field.image_small }}" width="64" height="64" alt="Tuotekuva" />
+                </a>
+            </div>
+            <div class="item-text">
+                <h3>
+                    {{ field.label }} 
+                    ({{ field.field.price }} €) 
+                    {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
+                </h3>
+                {{ field.help_text|safe }}
+            </div>
+            <div class="item-field">
+                {{ field }}
+                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="field-wrapper {% cycle 'light' 'dark' %}">
+            <div class="field-label {% if field.field.required %}required-field{% endif %}">{{ field.label_tag }} {{ field }}</div>
+            <div class="field-desc">
+                {{ field.help_text|safe }}
+                {% if field.errors %}{{ field.errors }}{% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    <div class="store-nav">
+        {% if wizard.steps.prev %}
+        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">&laquo; Takaisin</button>
+        {% endif %}
+        <input type="submit" value="Eteenpäin &raquo;" />
+    </div>
 </form>
 
 {% endblock %}

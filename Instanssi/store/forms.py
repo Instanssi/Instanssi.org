@@ -16,45 +16,6 @@ from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
 # Logger
 logger = logging.getLogger(__name__)
 
-# for creating ticket key hash
-def gen_sha(text):
-    h = hashlib.sha1()
-    h.update(text)
-    return h.hexdigest()
-
-class ProductWidget(forms.NumberInput):
-    def __init__(self, attrs=None):
-        self.large_image = attrs.pop('large_image')
-        self.small_image = attrs.pop('small_image')
-        self.price = attrs.pop('price')
-        self.available = attrs.pop('available')
-        super(ProductWidget, self).__init__(attrs)
-    
-    def render(self, name, value, attrs=None):
-        num_field = super(ProductWidget, self).render(name, value, attrs)
-        
-        # Form HTML for sold out field
-        available_html = u''
-        if self.available <= 0:
-            available_html = u'<div class="item-soldout">(Lopussa)</div>\n'
-        
-        # Form final HTML
-        return format_html('\n\
-            <div class="item-image">\n\
-                <a class="item-fancybox" href="{0}">\n\
-                    <img src="{1}" width="64" height="64" alt="Tuotekuva" />\n\
-                </a>\n\
-            </div>\n\
-            <div class="item-field">{2}</div>\n\
-            <div class="item-price">{3} €/kpl</div>\n\
-            {4}', 
-            self.large_image,  
-            self.small_image, 
-            num_field, 
-            self.price, 
-            available_html
-        )
-    
 class StoreProductsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StoreProductsForm, self).__init__(*args, **kwargs)
@@ -62,12 +23,6 @@ class StoreProductsForm(forms.Form):
         for item in StoreItem.items_available():
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
-                widget=ProductWidget(attrs={
-                    'small_image': item.imagefile_thumbnail.url,
-                    'large_image': item.imagefile_original.url,
-                    'available': item.num_in_store(),
-                    'price': item.price,
-                }),
                 initial=0, 
                 min_value=0, 
                 max_value=item.num_available(),
@@ -75,6 +30,10 @@ class StoreProductsForm(forms.Form):
                 help_text=item.description, 
                 required=False
             )
+            self.fields[name].image_large = item.imagefile_original.url
+            self.fields[name].image_small = item.imagefile_thumbnail.url
+            self.fields[name].available = item.num_in_store()
+            self.fields[name].price = item.price
             
     def _dataitems(self):
         for key, value in self.data.iteritems():
@@ -114,27 +73,43 @@ class StoreProductsForm(forms.Form):
 class StoreInfoForm(forms.ModelForm):
     email_confirm = forms.EmailField(
         label=u'Vahvista sähköposti', 
-        max_length=255
+        max_length=255,
+        required=True
     )
 
     def __init__(self, *args, **kwargs):
         super(StoreInfoForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = [
+            'firstname',
+            'lastname',
+            'email',
+            'email_confirm',
+            'telephone',
+            'mobile',
+            'company',
+            'street',
+            'postalcode',
+            'city',
+            'country',
+            'information'
+        ]
 
     def clean(self):
         cleaned_data = super(StoreInfoForm, self).clean()
         fails = []
 
         # Make sure the email fields match
-        if cleaned_data['email'] != cleaned_data['email_confirm']:
-            if not 'email_confirm' in self._errors:
-                self._errors['email_confirm'] = self.error_class()
-            self._errors['email_confirm'].append(
-                u'Osoitteet eivät täsmää!'
-            )
-            fails.append(
-                u'Vahvista sähköpostiosoitteesi kirjoittamalla sama '
-                u'osoite molempiin kenttiin!'
-            )
+        if 'email' in cleaned_data and 'email_confirm' in cleaned_data:
+            if cleaned_data['email'] != cleaned_data['email_confirm']:
+                if not 'email_confirm' in self._errors:
+                    self._errors['email_confirm'] = self.error_class()
+                self._errors['email_confirm'].append(
+                    u'Osoitteet eivät täsmää!'
+                )
+                fails.append(
+                    u'Vahvista sähköpostiosoitteesi kirjoittamalla sama '
+                    u'osoite molempiin kenttiin!'
+                )
 
         # Dump errors
         if fails:

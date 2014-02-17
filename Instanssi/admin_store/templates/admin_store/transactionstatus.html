@@ -36,7 +36,11 @@
         </tr>
         <tr>
             <th>Avain</th>
-            <td><a href="{% url 'store:ta_view' transaction.key %}">{{ transaction.key }}</a></td>
+            <td>
+                {% if transaction.is_paid %}
+                <a href="{% url 'store:ta_view' transaction.key %}">{{ transaction.key }}</a>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Maksettu?</th>
@@ -121,7 +125,11 @@
             <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.item.name }}</td>
-                <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
+                <td>
+                    {% if transaction.is_paid %}
+                    <a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a>
+                    {% endif %}
+                </td>
                 <td>{{ item.purchase_price }} &euro;</td>
             </tr>
 {% endfor %}

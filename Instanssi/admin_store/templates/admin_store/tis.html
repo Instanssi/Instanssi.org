@@ -32,6 +32,7 @@
                 <th>Sukunimi</th>
                 <th>Omistaja</th>
                 <th>Lunastettu</th>
+                <th>Maksettu</th>
                 <th>Avain</th>
             </tr>
         </thead>
@@ -43,8 +44,19 @@
                 <td>{{ item.transaction.firstname }}</td>
                 <td>{{ item.transaction.lastname }}</td>
                 <td>{{ item.transaction.email }}</td>
-                <td>{% if item.is_delivered %}Kyllä{% else %}Ei{% endif %}</td>
-                <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
+                <td>
+                    {% if item.transaction.is_paid %}
+                    {% if item.is_delivered %}Kyllä{% else %}Ei{% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.transaction.is_paid %}Kyllä{% else %}Ei{% endif %}
+                </td>
+                <td>
+                    {% if item.transaction.is_paid %}
+                    <a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a>
+                    {% endif %}
+                </td>
             </tr>
 {% endfor %}
         </tbody>

@@ -1,37 +1,34 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-import hashlib
-import time
-import random
 
-from django.conf import settings
+from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
-from django.db import IntegrityError
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.contrib.formtools.wizard.views import CookieWizardView
 
 from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
-from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
+from Instanssi.store.models import StoreTransaction, TransactionItem
 from Instanssi.store.methods import paytrail
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
 
+
 # Terms page
 def terms(request):
     """Displays the terms page."""
     return render_to_response('store/terms.html', {}, context_instance=RequestContext(request))
 
+
 # Privacy info page
 def privacy(request):
     """Displays the privacy page"""
     return render_to_response('store/privacy.html', {}, context_instance=RequestContext(request))
+
 
 class StoreWizard(CookieWizardView):
     """Displays the order form"""

@@ -48,7 +48,8 @@ class StoreItem(models.Model):
 class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
-    time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
+    time_paid = models.DateTimeField(u'Maksun varmistumisaika', null=True, blank=True)
+    time_pending = models.DateTimeField(u'Maksun maksuaika', null=True, blank=True)
     time_cancelled = models.DateTimeField(u'Peruutusaika', null=True, blank=True)
     payment_method_name = models.CharField(u'Maksutapa', help_text=u'Tapa jolla tilaus maksettiin', max_length=32, blank=True, default=u'')
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
@@ -73,6 +74,10 @@ class StoreTransaction(models.Model):
         return self.time_cancelled is not None
 
     @property
+    def is_pending(self):
+        return self.time_pending is not None
+
+    @property
     def is_delivered(self):
         for item in self.get_items():
             if not item.is_delivered:
@@ -90,6 +95,8 @@ class StoreTransaction(models.Model):
             return u'Toimitettu'
         if self.is_paid:
             return u'Maksettu'
+        if self.is_pending:
+            return u'Vireillä'
         return u'Tuotteet valittu'
 
     def get_total_price(self):

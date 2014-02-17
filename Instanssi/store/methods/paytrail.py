@@ -91,7 +91,7 @@ def handle_failure(request):
 
     # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
-        ta = StoreTransaction.objects.get(pk=int(order_number))
+        ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         ta_common.handle_cancellation(ta)
 
     return render_to_response('store/failure.html')
@@ -99,6 +99,20 @@ def handle_failure(request):
 
 def handle_success(request):
     """ Handles the success user redirect from Paytrail """
+    
+    # Get parameters
+    order_number = request.GET.get('ORDER_NUMBER', '')
+    timestamp = request.GET.get('TIMESTAMP', '')
+    paid = request.GET.get('PAID', '')
+    method = request.GET.get('METHOD', '')
+    authcode = request.GET.get('RETURN_AUTHCODE', '')
+    secret = settings.VMAKSUT_SECRET
+
+    # Validate, and mark transaction as pending
+    if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
+        ta = get_object_or_404(StoreTransaction, pk=int(order_number))
+        ta_common.handle_pending(ta)
+    
     return render_to_response('store/success.html')
 
 

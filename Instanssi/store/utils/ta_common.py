@@ -16,6 +16,9 @@ def handle_cancellation(ta):
     ta.time_cancelled = datetime.now()
     ta.save()
 
+def handle_pending(ta):
+    ta.time_pending = datetime.now()
+    ta.save()
 
 def handle_payment(ta):
     # Deliver email.

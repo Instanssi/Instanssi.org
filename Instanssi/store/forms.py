@@ -149,7 +149,7 @@ class StoreInfoForm(forms.ModelForm):
                 new_transaction.save()
                 break
             except IntegrityError as ex:
-                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (ta.key, ex))
+                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (new_transaction.key, ex))
 
         return new_transaction
 

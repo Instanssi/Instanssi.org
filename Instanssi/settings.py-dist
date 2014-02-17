@@ -19,6 +19,7 @@ PROJECTDIR = os.path.dirname(CONTENTDIR)
 
 # Settings
 DEBUG = True
+ADMIN = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

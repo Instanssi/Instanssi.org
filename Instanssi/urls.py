@@ -40,9 +40,13 @@ urlpatterns = patterns('',
 )
 
 # Add admin panel link if debug mode is on
-# Also, serve media files through static.serve when running in debug mode
-if settings.DEBUG:
+if settings.DEBUG or settings.ADMIN:
     urlpatterns += patterns('',
         url(r'^admin/', include(admin.site.urls)),
+    )
+
+# Serve media files through static.serve when running in debug mode
+if settings.DEBUG:
+    urlpatterns += patterns('',
         url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

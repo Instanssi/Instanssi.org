@@ -50,6 +50,7 @@ class StoreTransaction(models.Model):
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
     time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
     time_cancelled = models.DateTimeField(u'Peruutusaika', null=True, blank=True)
+    payment_method_name = models.CharField(u'Maksutapa', help_text=u'Tapa jolla tilaus maksettiin', max_length=32, blank=True, default=u'')
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)

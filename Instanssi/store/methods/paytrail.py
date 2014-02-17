@@ -73,6 +73,7 @@ def start_process(ta):
 
     # Save token, redirect
     ta.token = msg['token']
+    ta.payment_method_name = u'Paytrail'
     ta.save()
 
     # All done, redirect user

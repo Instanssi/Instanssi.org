@@ -4,14 +4,13 @@ from datetime import datetime
 import random
 import time
 
-from django.db import transaction, IntegrityError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 
 from common.misc import get_url
-from Instanssi.store.utils import paytrail
+from Instanssi.store.utils import paytrail, ta_common
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 from Instanssi.store.utils.emailer import ReceiptMailer
 
@@ -95,12 +94,8 @@ def handle_failure(request):
     
     # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
-        try:
-            ta = StoreTransaction.objects.get(pk=int(order_number))
-            ta.time_cancelled = datetime.now()
-            ta.save()
-        except:
-            pass
+        ta = StoreTransaction.objects.get(pk=int(order_number))
+        ta_common.handle_cancellation(ta)
 
     return render_to_response('store/failure.html')
         
@@ -125,41 +120,13 @@ def handle_notify(request):
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         if ta.is_paid:
             logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
-            raise Http404
+            return HttpResponse("")
 
-        # Deliver email.
-        mailer = ReceiptMailer('"Instanssi" <noreply@'+settings.DOMAIN+'>', ta.email, 'Instanssi.org kuitti')
-        mailer.ordernumber(ta.id)
-        mailer.firstname(ta.firstname)
-        mailer.lastname(ta.lastname)
-        mailer.email(ta.email)
-        mailer.company(ta.company)
-        mailer.mobile(ta.mobile)
-        mailer.telephone(ta.telephone)
-        mailer.street(ta.street)
-        mailer.city(ta.city)
-        mailer.postalcode(ta.postalcode)
-        mailer.country(ta.country)
-        
-        # Add items to email
-        for item in TransactionItem.get_distinct_storeitems(ta):
-            amount = TransactionItem.get_transaction_item_amount(ta, item)
-            mailer.add_item(item.id, item.name, item.price, amount)
-
-        # Form transaction url
-        transaction_url = get_url(reverse('store:ta_view', args=(ta.key,)))
-        mailer.transactionurl(transaction_url)
-            
-        # Send mail
-        try:
-            mailer.send()
-        except Exception as ex:
-            logger.error('%s.' % (ex))
+        # Use common functions to handle the payment
+        # If handling the payment fails, cause 404. 
+        # This will tell paytrail to try notifying again later.
+        if not ta_common.handle_payment(ta):
             raise Http404
-        
-        # Mark as paid
-        ta.time_paid = datetime.now()
-        ta.save()
     else:
         logger.warning("Error while attempting to validate paytrail notification!")
         raise Http404

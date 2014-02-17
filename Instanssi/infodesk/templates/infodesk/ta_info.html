@@ -1,6 +1,6 @@
 {% extends "infodesk/base.html" %}
 
-{% block title %} - Tuotteen tiedot{% endblock %}
+{% block title %} - Tilauksen tiedot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -12,7 +12,7 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Tuotteen tiedot</h2>
+<h2>Tilauksen tiedot</h2>
 
 <h3>Tilaustiedot</h3>
 <table class="infotable">
@@ -28,7 +28,7 @@
         <tr>
             <th>Maksettu?</th>
             <td>
-                {% if transaction.paid %}
+                {% if transaction.is_paid %}
                 Kyllä
                 {% else %}
                 <div class="ui-state-error ui-corner-all" style="padding: 5px;">
@@ -40,16 +40,7 @@
         </tr>
         <tr>
             <th>Tila</th>
-            <td>
-                {% if transaction.status == 2 %}
-                <div class="ui-state-error ui-corner-all" style="padding: 5px;">
-                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                    <strong>Tuotteet on jo lunastettu!</strong>
-                </div>
-                {% else %}
-                {{ transaction.get_status_display }}
-                {% endif %}
-            </td>
+            <td>{{ transaction.get_status_text }}</td>
         </tr>
         <tr>
             <th>Muut tiedot</th>
@@ -102,13 +93,10 @@
 
 <h3>Toiminnot</h3>
 <p>
-    Voit palata alkuvalikkoon allaolevista napeista. Voit joko merkata ostoksen toimitetuksi, tai jättää sen merkkaamatta.
+    Voit palata alkuvalikkoon allaolevista napeista.
 </p>
 <p>
-    <a href="{% url 'infodesk:index' event.id %}" class="button">Palaa alkuun</a> &nbsp; 
-    {% if transaction.status != 2 %}
-    <a href="{% url 'infodesk:mark_transaction' event.id transaction.id %}" class="button">Merkkaa toimitetuksi.</a>
-    {% endif %}
+    <a href="{% url 'infodesk:index' %}" class="button">Palaa alkuun</a> &nbsp; 
 </p>
 
 {% endblock %}

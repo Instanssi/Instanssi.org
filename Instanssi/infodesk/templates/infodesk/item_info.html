@@ -1,6 +1,6 @@
 {% extends "infodesk/base.html" %}
 
-{% block title %} - Lipun tiedot{% endblock %}
+{% block title %} - Tuotteen tiedot{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -12,22 +12,22 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Lipun tiedot</h2>
+<h2>Tuote</h2>
 
 <h3>Tiedot</h3>
-<table class="infotable ticket">
+<table class="infotable item">
     <tbody>
         <tr>
-            <th>Lipun tyyppi</th>
-            <td>{{ ticket.storeitem.name }}</td>
+            <th>Tuote</th>
+            <td>{{ item.item.name }}</td>
         </tr>
         <tr>
-            <th>Käytetty</th>
+            <th>Toimitettu</th>
             <td>
-                {% if ticket.used %}
+                {% if item.is_delivered %}
                 <div class="ui-state-error ui-corner-all" style="padding: 5px;">
                     <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                    <strong>Lippu on jo lunastettu!</strong>
+                    <strong>Tuote on jo lunastettu!</strong>
                 </div>
                 {% else %}
                 Ei
@@ -36,15 +36,15 @@
         </tr>
         <tr>
             <th>Nimi</th>
-            <td>{{ ticket.owner_firstname }} {{ ticket.owner_lastname }}</td>
+            <td>{{ item.transaction.firstname }} {{ item.transaction.lastname }}</td>
         </tr>
         <tr>
             <th>Email</th>
-            <td>{{ ticket.owner_email }}</td>
+            <td>{{ item.transaction.email }}</td>
         </tr>
         <tr>
             <th>Avain</th>
-            <td>{{ ticket.key }}</td>
+            <td>{{ item.key }}</td>
         </tr>
     </tbody>
 </table>
@@ -54,9 +54,9 @@
     Voit palata alkuvalikkoon allaolevista napeista. Voit joko merkata lipun käytetyksi, tai jättää sen merkkaamatta.
 </p>
 <p>
-    <a href="{% url 'infodesk:index' event.id %}" class="button">Palaa alkuun</a> &nbsp; 
-    {% if not ticket.used %}
-    <a href="{% url 'infodesk:mark_ticket' event.id ticket.id %}" class="button">Merkkaa toimitetuksi.</a>
+    <a href="{% url 'infodesk:index' %}" class="button">Palaa alkuun</a> &nbsp; 
+    {% if not item.is_delivered %}
+    <a href="{% url 'infodesk:item_mark' item.id %}" class="button">Merkkaa toimitetuksi.</a>
     {% endif %}
 </p>
 

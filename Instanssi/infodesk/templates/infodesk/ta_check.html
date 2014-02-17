@@ -1,7 +1,7 @@
 {% extends "infodesk/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %} - Lipun tunnisteen lukeminen{% endblock %}
+{% block title %} - Ostoksen tunnisteen lukeminen{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -14,6 +14,6 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Lipun tunnisteen lukeminen</h2>
+<h2>Ostoksen tunnisteen lukeminen</h2>
 {% crispy form form.helper %}
 {% endblock %}

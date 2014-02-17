@@ -1,0 +1,40 @@
+{% extends "infodesk/base.html" %}
+
+{% block title %} - Shobbarihaku{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Ostokset - {{ name }}</h2>
+<table class="infotable lookup">
+<tr>
+  <th>Tilausnumero</th>
+  <th>Luotu</th>
+  <th>Tila</th>
+  <th>Tuotteet</th>
+</tr>
+{% for transaction in transactions %}
+<tr>
+  <td>{{ transaction.id }}</td>
+  <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\. H:i" }}</td>
+  <td>{{ transaction.get_status_text }}</td>
+  <td><ul>{% for item in transaction.get_items %}
+     <li><a href="{% url 'infodesk:item_info' item.id %}">
+      {{ item.item.name }}</a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
+     </li>
+  {% endfor %}</ul></td>
+</tr>
+{% endfor %}
+</table>
+{% if not transactions %}
+<p>Ei tuloksia!</p>
+{% endif %}
+<p>Palaa <a href="{% url 'infodesk:index' %}">infodeskin etusivulle</a></p>
+{% endblock %}

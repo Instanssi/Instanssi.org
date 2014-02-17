@@ -14,6 +14,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 @staff_access_required
+def index(request):
+    return admin_render(request, "admin_store/index.html", {})
+
+@staff_access_required
 def items(request):
     # Handle form data
     if request.method == 'POST':

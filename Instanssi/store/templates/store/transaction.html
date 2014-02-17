@@ -37,7 +37,7 @@
 </div>
 
 {% if ta_items %}
-<h1 class="noPrint">Tuotteet</h1>
+<h2 id="items" class="noPrint">Tuotteet</h1>
 <p class="noPrint">
     Allaolevilla koodeilla tai linkeillä voi lunastaa yksittäisiä tilaukseen kuuluvia tuotteita. Voit lahjoittaa tuotteita kavereille jakamalla heille QR-koodeja tai ostosten URL-osoitteita. Huomaa, että jokainen koodi voidaan lunastaa vain kerran.
 </p>
@@ -48,10 +48,12 @@
         <h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}</a></h2>
         <table class="item-details"><tbody>
             <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
-            <tr><th>Toimitettu:</th><td>{{ ta_item.delivered }}</td></tr>
         </tbody></table>
+        {% if ta_item.delivered %}
+        <div class="delivered-stamp">Toimitettu</div>
+        {% endif %}
         {% if has_infodesk_access and not ta_item.delivered %}
-        <form class="item-manage" method="post" action="{% url 'store:ta_view' transaction.key %}">
+        <form class="item-manage" method="post" action="{% url 'store:ta_view' transaction.key %}#items">
             {% csrf_token %}
             <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
             <input type="submit" value="Merkitse toimitetuksi"/>

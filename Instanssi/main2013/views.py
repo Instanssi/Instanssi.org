@@ -2,7 +2,9 @@
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+'''
 from Instanssi.store.store_renderer import render_store, handle_cancel
+'''
 from django.core.urlresolvers import reverse
 
 def pageloader(request, templatename):

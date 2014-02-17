@@ -1,0 +1,27 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %} - Tilaus epäonnistui{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+	&raquo; Tilaus epäonnistui
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Tilaus epäonnistui</h2>
+<p>
+    Osto keskeytyi. Mikäli kyseessä on virhetilanne, ota yhteyttä osoitteeseen webmaster@instanssi.org.
+</p>
+
+{% endblock %}

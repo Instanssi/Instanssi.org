@@ -101,9 +101,6 @@ class StoreTransaction(models.Model):
     def get_items(self):
         return TransactionItem.objects.filter(transaction=self)
 
-    def get_tickets(self):
-        return Ticket.objects.filter(transaction=self)
-
     @property
     def qr_code(self):
         return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
@@ -122,6 +119,20 @@ class TransactionItem(models.Model):
 
     def total(self):
         return self.item.price
+
+    def amount(self):
+        return TransactionItem.objects.filter(item=self.item,transaction=self.transaction).count()
+
+    @staticmethod
+    def get_distinct_storeitems(ta):
+        qlist = []
+        for item in TransactionItem.objects.filter(transaction=ta).values('item').distinct():
+            qlist.append(item['item'])
+        return StoreItem.objects.filter(id__in=qlist)
+
+    @staticmethod
+    def get_transaction_item_amount(ta, item):
+        return TransactionItem.objects.filter(item=item,transaction=ta).count()
 
     @property
     def qr_code(self):

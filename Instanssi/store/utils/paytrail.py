@@ -6,22 +6,22 @@ import string
 import base64
 import hashlib
 
-class SVMException(Exception):
+class PaytrailException(Exception):
     pass
 
-def svm_validate_cancelled(orderno, timestamp, authcode, secret):
+def validate_failure(orderno, timestamp, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s' % (orderno, timestamp, secret))
     return (authcode == m.hexdigest().upper())
 
-def svm_validate(orderno, timestamp, paid, method, authcode, secret):
+def validate_success(orderno, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
     return (authcode == m.hexdigest().upper())
 
-def svm_request(id, secret, data):
+def request(id, secret, data):
     # Some basic data
-    host = 'payment.verkkomaksut.fi'
+    host = 'payment.paytrail.com'
     auth = 'Basic ' + string.strip(base64.encodestring(id + ':' + secret))
     body = json.dumps(data)
     headers = {
@@ -37,9 +37,13 @@ def svm_request(id, secret, data):
     res = c.getresponse()
     message = json.loads(res.read())
 
-    # Handle errors
+    # Paytrail responded with error
+    if res.status == 401:
+        raise PaytrailException(message['errorMessage'], message['errorCode'])
+
+    # No response from paytrail (other error)
     if res.status != 201:
-        raise SVMException(message['errorMessage'], message['errorCode'])
+        raise PaytrailException(u'HTTP request failure.', res.status)
 
     # Return parsed JSON
     return message

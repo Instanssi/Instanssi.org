@@ -47,7 +47,6 @@ h3 {
 	font-size: 120%;
     margin-top: 1.5em;
     margin-bottom: 0.75em;
-    border-bottom: 1px dotted black;
 }
 
 p,pre,blockquote,ul,ol {
@@ -115,7 +114,6 @@ p {
     background: -o-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
     background: -ms-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
     background: linear-gradient(to bottom, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111139', endColorstr='#111121',GradientType=0 );
     height: 60px;
 }
 
@@ -189,25 +187,124 @@ ul.sub-level { z-index: 99; }
 #contents ol li,
 #contents ul li { margin-top: 0.8em; margin-bottom: 0.8em; }
 
-/* ---------- Tablesorter pagination ---------- */
+/* ---------- Store items ---------- */
 
-div.pager { vertical-align: middle; }
-div.pager img { margin-bottom: 2px; }
-div.pager select, div.pager input { border: 1px solid #777777; }
+.item-wrapper {
+    border-top: 1px dotted black;
+    padding: 1em;
+    vertical-align: top;
+    overflow: hidden;
+}
 
-/* ---------- Generic tables ---------- */
+.item-image {
+    display: block;
+    box-shadow: 0 0 1px 1px #555;
+    width: 65px;
+    height: 65px;
+    float: left;
+}
 
-table {  border-collapse: collapse; width: 100%; }
-table th, table td { padding: 5px; border: 1px solid #aaaaaa; }
-table th { background-color: #dddddd; text-align: left; }
-table td { background-color: #eeeeee; }
+.item-text {
+    margin-left: 10px;
+    float: left;
+    margin-left: 1em;
+}
 
-/* ---------- uniForm tweaks ---------- */
+.item-text h3 {
+    font-size: 120%;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
 
-form.uniForm { margin-top: 1.0em; }
-form.uniForm .ctrlHolder, form.uniForm .error { border-bottom: 1px dotted #aaaaaa;  }
-form.uniForm .buttonHolder { margin: 0; }
-form.uniForm .error { margin: 0.5em; }
-form.uniForm fieldset { border: 1px solid #999999; }
-form.uniForm legend {  padding: 0.3em; }
+.item-field {
+    float: right;
+}
 
+/* Store form */
+
+.store-data input,
+.store-data textarea,
+.store-data select {
+    border: 1px solid #555;
+    margin: 5px;
+    padding: 2px;
+}
+
+.store-form {
+    background-color: #eee;
+    border: 1px dotted #555;
+}
+
+.store-header p {
+    text-align: center;
+}
+
+.store-nav {
+    border-top: 1px dotted black;
+    padding: 1em;
+    overflow: hidden;
+}
+
+.store-nav input { float: right; }
+.store-nav button { float: left; }
+
+.store-errors {
+    border-top: 1px dotted black;
+    background-color: #B81900;
+    overflow: hidden;
+}
+
+/* Store other fields */
+
+.store-form .light {
+    background-color: #e6e6e6;
+}
+
+.store-form .dark {
+    background-color: #dddddd;
+}
+
+.field-wrapper {
+    padding: 5px;
+    overflow: hidden;
+}
+
+.field-label {
+    width: 50%;
+    float: left;
+    vertical-align: top;
+}
+
+.required-field:first-child:before {
+    content: '* ';
+    font-weight: bold;
+    color: red;
+}
+
+.field-label label {
+    width: 200px;
+    display: inline-block;
+}
+
+.field-label input
+    width: 300px;
+}
+.field-label textarea {
+    width: 400px;
+}
+.field-label ul {
+    width: 300px;
+}
+.field-label li {
+    list-style-type: none;
+}
+
+.field-desc .errorlist {
+    color: red;
+}
+
+.field-desc {
+    float: left;
+    padding: 4px;
+    width: 49%;
+}

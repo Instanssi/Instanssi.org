@@ -58,6 +58,21 @@
             <th>Maksutapa</th>
             <td>{{ transaction.payment_method_name }}</td>
         </tr>
+        <tr>
+            <th>Luotu</th>
+            <td>{{ transaction.time_created|date:"d.m.Y H:i" }}</td>
+        <tr>
+            <th>Vireillä</th>
+            <td>{{ transaction.time_pending|date:"d.m.Y H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Maksettu</th>
+            <td>{{ transaction.time_paid|date:"d.m.Y H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Peruttu</th>
+            <td>{{ transaction.time_cancelled|date:"d.m.Y H:i" }}</td>
+        </tr>
     </tbody>
 </table>
 

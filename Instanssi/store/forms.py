@@ -83,6 +83,7 @@ class StoreProductsForm(forms.Form):
                         try:
                             str = u'%s|%s|%s|%s' % (i, store_item.name, time.time(), random.random())
                             new_item.key = gen_sha(str.encode('utf-8'))
+                            new_item.purchase_price = store_item.price
                             new_item.save()
                             break
                         except IntegrityError as ex:

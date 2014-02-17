@@ -93,7 +93,7 @@ class StoreTransaction(models.Model):
     def get_total_price(self):
         ret = 0
         for item in TransactionItem.objects.filter(transaction=self):
-            ret += item.item.price
+            ret += item.purchase_price
         return ret
 
     def get_items(self):
@@ -113,6 +113,7 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
     time_delivered = models.DateTimeField(u'Toimitusaika', null=True, blank=True)
+    purchase_price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa ostoshetkellä.')
 
     @property
     def is_delivered(self):

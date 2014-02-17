@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -9,13 +8,7 @@ from django_countries import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
-
-
-def get_url(path):
-    proto = 'https://' if settings.SSL_ON else 'http://'
-    host = settings.DOMAIN
-    return '%s%s%s' % (proto, host, path or '')
-
+from common.misc import get_url
 
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)

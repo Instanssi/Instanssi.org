@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 
+from common.misc import get_url
 from Instanssi.store.utils import paytrail
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 from Instanssi.store.utils.emailer import ReceiptMailer
@@ -18,12 +19,9 @@ from Instanssi.store.utils.emailer import ReceiptMailer
 import logging
 logger = logging.getLogger(__name__)
 
-def get_url(path):
-    proto = 'https://' if settings.SSL_ON else 'http://'
-    host = settings.DOMAIN
-    return '%s%s%s' % (proto, host, path or '')
-
 def start_process(ta):
+    """This should be used to start the paytrail payment process. Will redirect as necessary."""
+    
     product_list = []
 
     for item in TransactionItem.get_distinct_storeitems(ta):
@@ -86,8 +84,9 @@ def start_process(ta):
     # All done, redirect user
     return HttpResponseRedirect(msg['url'])
 
-# Handle failure message from paytrail
 def handle_failure(request):
+    """ Handles failure message from paytrail """
+    
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
@@ -105,12 +104,13 @@ def handle_failure(request):
 
     return render_to_response('store/failure.html')
         
-# Handle success message from paytrail
 def handle_success(request):
+    """ Handles the success user redirect from Paytrail """
     return render_to_response('store/success.html')
 
-# Handles the actual success notification from SVM
 def handle_notify(request):
+    """ Handles the actual success notification from Paytrail """
+   
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')

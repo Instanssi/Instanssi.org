@@ -34,6 +34,15 @@ class StoreWizard(CookieWizardView):
     form_list = [StoreProductsForm, StoreInfoForm, StorePaymentMethodForm]
     template_name = 'store/store.html'
 
+    def get_context_data(self, form, **kwargs):
+        context = super(StoreWizard, self).get_context_data(form=form, **kwargs)
+        context['friendly_steps'] = [
+            (1, u'Tuotteet', 0),
+            (2, u'Asiakastiedot', 1),
+            (3, u'Maksu', 2)
+        ]
+        return context
+
     def done(self, form_list, **kwargs):
         items_form = form_list[0]
         info_form = form_list[1]

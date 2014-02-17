@@ -27,7 +27,19 @@
 <h2>Tilaus</h2>
 
 <form class="store-form" action="" method="post">
-    <div class="store-header"><p>Vaihe {{ wizard.steps.step1 }} / {{ wizard.steps.count }}</p></div>
+    <div class="store-header"><p>
+        {% for step, name, num in friendly_steps %}
+        <span class="step{% if step == wizard.steps.step1 %} current{% endif %}">
+            {% if step < wizard.steps.step1 %}
+            <button name="wizard_goto_step" type="submit" value="{{num}}">
+                {{ step }}. {{ name }}
+            </button>
+            {% else %}
+                {{ step }}. {{ name }}
+            {% endif %}
+        </span>
+        {% endfor %}
+    </p></div>
     {% csrf_token %}
     <div>
     {{ wizard.management_form }}

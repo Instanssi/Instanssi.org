@@ -239,6 +239,24 @@ ul.sub-level { z-index: 99; }
     text-align: center;
 }
 
+.store-header .step {
+    padding: 0 .5em;
+}
+.store-header .step.current {
+    font-weight: bold;
+}
+.store-header .step button {
+    border: 0;
+    background: transparent;
+    color: #2040C0;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 0;
+}
+.store-header .step button:hover {
+    text-decoration: underline;
+}
+
 .store-nav {
     border-top: 1px dotted black;
     padding: 1em;

@@ -28,13 +28,6 @@ class StoreItem(models.Model):
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source='imagefile_original', format='PNG')
     max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
 
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = u"tuote"
-        verbose_name_plural = u"tuotteet"
-
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)
 
@@ -51,6 +44,12 @@ class StoreItem(models.Model):
     def items_available():
         return StoreItem.objects.filter(max__gt=0, available=True)
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u"tuote"
+        verbose_name_plural = u"tuotteet"
 
 class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
@@ -70,9 +69,6 @@ class StoreTransaction(models.Model):
     country = CountryField(u'Maa', default='FI')
     information = models.TextField(u'Lisätiedot', blank=True)
 
-    def __unicode__(self):
-        return u'%s %s' % (self.firstname, self.lastname)
-
     @property
     def is_paid(self):
         return self.time_paid is not None
@@ -84,16 +80,20 @@ class StoreTransaction(models.Model):
     @property
     def is_delivered(self):
         for item in TransactionItem.objects.filter(transaction=self):
-            if not item.is_delivered():
+            if not item.is_delivered:
                 return False
         return True
 
+    @property
+    def qr_code(self):
+        return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
+
     def get_status_text(self):
-        if self.is_cancelled():
+        if self.is_cancelled:
             return u'Peruutettu'
-        if self.is_delivered():
+        if self.is_delivered:
             return u'Toimitettu'
-        if self.is_paid():
+        if self.is_paid:
             return u'Maksettu'
         return u'Tuotteet valittu'
 
@@ -106,9 +106,8 @@ class StoreTransaction(models.Model):
     def get_items(self):
         return TransactionItem.objects.filter(transaction=self)
 
-    @property
-    def qr_code(self):
-        return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
+    def __unicode__(self):
+        return u'%s %s' % (self.firstname, self.lastname)
 
     class Meta:
         verbose_name = u"transaktio"
@@ -126,6 +125,10 @@ class TransactionItem(models.Model):
     def is_delivered(self):
         return self.time_delivered is not None
 
+    @property
+    def qr_code(self):
+        return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
+
     @staticmethod
     def get_distinct_storeitems(ta):
         qlist = []
@@ -136,10 +139,6 @@ class TransactionItem(models.Model):
     @staticmethod
     def get_transaction_item_amount(ta, item):
         return TransactionItem.objects.filter(item=item,transaction=ta).count()
-
-    @property
-    def qr_code(self):
-        return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
 
     def __unicode__(self):
         return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)

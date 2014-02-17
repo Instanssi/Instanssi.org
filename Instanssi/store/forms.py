@@ -31,8 +31,10 @@ class StoreProductsForm(forms.Form):
                 help_text=item.description,
                 required=False
             )
-            self.fields[name].image_large = item.imagefile_original.url
-            self.fields[name].image_small = item.imagefile_thumbnail.url
+            self.fields[name].image_large = item.imagefile_original.url \
+                if item.imagefile_original else None
+            self.fields[name].image_small = item.imagefile_thumbnail.url \
+                if item.imagefile_thumbnail else None
             self.fields[name].available = item.num_in_store()
             self.fields[name].price = item.price
 

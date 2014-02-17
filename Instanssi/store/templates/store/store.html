@@ -43,9 +43,11 @@
     {% if wizard.steps.step0 == 0 %}
         <div class="item-wrapper">
             <div class="item-image">
+                {% if field.field.image_large %}
                 <a href="{{ field.field.image_large }}">
                     <img src="{{ field.field.image_small }}" width="64" height="64" alt="Tuotekuva" />
                 </a>
+                {% endif %}
             </div>
             <div class="item-text">
                 <h3>

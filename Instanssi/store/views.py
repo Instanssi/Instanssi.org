@@ -72,7 +72,7 @@ def mark_item_delivered(request, item_key):
         raise PermissionDenied()
 
     item = TransactionItem.objects.get(key=item_key)
-    item.delivered = True
+    item.time_delivered = datetime.now()
     item.save()
 
 

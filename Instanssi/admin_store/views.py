@@ -72,7 +72,7 @@ def transaction_status(request, transaction_id):
     transaction = get_object_or_404(StoreTransaction, pk=transaction_id)
     
     # Get items
-    items = TransactionItem.objects.filter(transaction_id=transaction_id)
+    items = transaction.get_items()
     
     # Render response
     return admin_render(request, "admin_store/transactionstatus.html", {
@@ -114,7 +114,7 @@ def delete_item(request, item_id):
     # Delete entry
     try:
         item = StoreItem.objects.get(id=item_id)
-        if item.sold() == 0:
+        if item.num_sold() == 0:
             item.delete()
             logger.info('Store Item "'+item.name+'" deleted.', extra={'user': request.user})
     except StoreItem.DoesNotExist:

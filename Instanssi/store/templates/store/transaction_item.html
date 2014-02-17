@@ -13,7 +13,7 @@
 
 {% block content %}
 {{ block.super }}
-<div class="item{% if ta_item.delivered %} delivered{% endif %}" >
+<div class="item{% if ta_item.is_delivered %} delivered{% endif %}" >
     <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
     <h2>{{ta_item.item.name}}</h2>
     <table class="item-details">
@@ -21,11 +21,11 @@
             <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
         </tbody>
     </table>
-    {% if ta_item.delivered %}
+    {% if ta_item.is_delivered %}
     <div class="delivered-stamp">Toimitettu</div>
     {% endif %}
 
-    {% if has_infodesk_access and not ta_item.delivered %}
+    {% if has_infodesk_access and not ta_item.is_delivered %}
     <form class="item-manage" method="post" action=".">
         {% csrf_token %}
         <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />

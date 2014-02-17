@@ -43,7 +43,7 @@
                 <td>{{ item.transaction.firstname }}</td>
                 <td>{{ item.transaction.lastname }}</td>
                 <td>{{ item.transaction.email }}</td>
-                <td>{% if item.delivered %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{% if item.is_delivered %}Kyllä{% else %}Ei{% endif %}</td>
                 <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
             </tr>
 {% endfor %}

@@ -26,7 +26,7 @@
     <thead>
         <tr>
             <th style="min-width: 150px;">Kenttä</th>
-            <th style="min-width: 200px;">Tieto</th>
+            <th style="min-width: 200px;">Arvo</th>
         </tr>
     </thead>
     <tbody>
@@ -40,11 +40,11 @@
         </tr>
         <tr>
             <th>Maksettu?</th>
-            <td>{% if transaction.paid %}Kyllä{% else %}Ei{% endif %}</td>
+            <td>{% if transaction.is_paid %}Kyllä{% else %}Ei{% endif %}</td>
         </tr>
         <tr>
             <th>Tila</th>
-            <td>{{ transaction.get_status_display }}</td>
+            <td>{{ transaction.get_status_text }}</td>
         </tr>
         <tr>
             <th>Muut tiedot</th>
@@ -122,12 +122,12 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.item.name }}</td>
                 <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
-                <td>{{ item.total }} &euro;</td>
+                <td>{{ item.item.price }} &euro;</td>
             </tr>
 {% endfor %}
             <tr>
                 <td colspan="3" style="text-align: right;">Yhteensä:</td>
-                <td>{{ transaction.total }} &euro;</td>
+                <td>{{ transaction.get_total_price }} &euro;</td>
             </tr>
         </tbody>
     </table>

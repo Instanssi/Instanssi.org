@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 
+from common.misc import get_url
 from Instanssi.store.utils import paytrail
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
 from Instanssi.store.utils.emailer import ReceiptMailer
@@ -18,12 +19,9 @@ from Instanssi.store.utils.emailer import ReceiptMailer
 import logging
 logger = logging.getLogger(__name__)
 
-def get_url(path):
-    proto = 'https://' if settings.SSL_ON else 'http://'
-    host = settings.DOMAIN
-    return '%s%s%s' % (proto, host, path or '')
-
 def start_process(ta):
+    """This should be used to start the paytrail payment process. Will redirect as necessary."""
+    
     product_list = []
 
     for item in TransactionItem.get_distinct_storeitems(ta):
@@ -86,31 +84,33 @@ def start_process(ta):
     # All done, redirect user
     return HttpResponseRedirect(msg['url'])
 
-# Handle failure message from paytrail
 def handle_failure(request):
+    """ Handles failure message from paytrail """
+    
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
     
-    # Validata & handle
+    # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
         try:
             ta = StoreTransaction.objects.get(pk=int(order_number))
-            ta.status = 4
+            ta.time_cancelled = datetime.now()
             ta.save()
         except:
             pass
 
     return render_to_response('store/failure.html')
         
-# Handle success message from paytrail
 def handle_success(request):
+    """ Handles the success user redirect from Paytrail """
     return render_to_response('store/success.html')
 
-# Handles the actual success notification from SVM
 def handle_notify(request):
+    """ Handles the actual success notification from Paytrail """
+   
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
@@ -123,7 +123,7 @@ def handle_notify(request):
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
-        if ta.paid:
+        if ta.is_paid:
             logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
             raise Http404
 
@@ -159,7 +159,6 @@ def handle_notify(request):
         
         # Mark as paid
         ta.time_paid = datetime.now()
-        ta.status = 1
         ta.save()
     else:
         logger.warning("Error while attempting to validate paytrail notification!")

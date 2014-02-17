@@ -27,13 +27,6 @@ class StoreItem(models.Model):
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source='imagefile_original', format='PNG')
     max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
-    DELIVERY_CHOICES=(
-        (0, u'Ei toimitusta'),
-        (1, u'Lippu'),
-        (2, u'Postitus'),
-        (3, u'Toimitus tapahtumassa')
-    )
-    delivery_type = models.IntegerField(u'Toimitustyyppi', default=0, choices=DELIVERY_CHOICES, help_text=u'Miten tuote toimitetaan asiakkaalle')
 
     def __unicode__(self):
         return self.name
@@ -43,12 +36,12 @@ class StoreItem(models.Model):
         verbose_name_plural = u"tuotteet"
 
     def num_available(self):
-        return min(self.max - self.sold(), self.max_per_order)
+        return min(self.max - self.num_sold(), self.max_per_order)
 
     def num_in_store(self):
-        return self.max - self.sold()
+        return self.max - self.num_sold()
 
-    def sold(self):
+    def num_sold(self):
         return TransactionItem.objects.filter(
             transaction__time_paid__isnull=False,
             item=self
@@ -63,16 +56,8 @@ class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
     time_paid = models.DateTimeField(u'Maksuaika', null=True, blank=True)
+    time_cancelled = models.DateTimeField(u'Peruutusaika', null=True, blank=True)
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
-    
-    STATUS_CHOICES=(
-        (0, u'Tuotteet valittu'),
-        (1, u'Maksettu'),
-        (2, u'Toimitettu'),
-        (3, u'Osittain toimitettu'),
-        (4, u'Peruutettu')
-    )
-    status = models.IntegerField(u'Tila', choices=STATUS_CHOICES, default=0)
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
     company = models.CharField(u'Yritys', max_length=128, blank=True)
@@ -89,13 +74,33 @@ class StoreTransaction(models.Model):
         return u'%s %s' % (self.firstname, self.lastname)
 
     @property
-    def paid(self):
+    def is_paid(self):
         return self.time_paid is not None
-
-    def total(self):
-        ret = 0.0
+    
+    @property
+    def is_cancelled(self):
+        return self.time_cancelled is not None
+    
+    @property
+    def is_delivered(self):
         for item in TransactionItem.objects.filter(transaction=self):
-            ret += item.total()
+            if not item.is_delivered():
+                return False
+        return True
+
+    def get_status_text(self):
+        if self.is_cancelled():
+            return u'Peruutettu'
+        if self.is_delivered():
+            return u'Toimitettu'
+        if self.is_paid():
+            return u'Maksettu'
+        return u'Tuotteet valittu'
+
+    def get_total_price(self):
+        ret = 0
+        for item in TransactionItem.objects.filter(transaction=self):
+            ret += item.item.price
         return ret
 
     def get_items(self):
@@ -115,13 +120,11 @@ class TransactionItem(models.Model):
     key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
-    delivered = models.BooleanField(u'Toimitettu', default=False, help_text=u'Tuote on toimitettu')
+    time_delivered = models.DateTimeField(u'Toimitusaika', null=True, blank=True)
 
-    def total(self):
-        return self.item.price
-
-    def amount(self):
-        return TransactionItem.objects.filter(item=self.item,transaction=self.transaction).count()
+    @property
+    def is_delivered(self):
+        return self.time_delivered is not None
 
     @staticmethod
     def get_distinct_storeitems(ta):

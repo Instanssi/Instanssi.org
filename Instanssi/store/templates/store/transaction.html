@@ -45,18 +45,18 @@
 {% for ta_item in ta_items %}
     <div class="item{% if ta_item.is_delivered %} delivered{% endif %}" >
         <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostetun tuotteen QR-koodi." />
-        <h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}</a></h2>
-        <table class="item-details"><tbody>
-            <tr><th>Tunniste:</th><td>{{ ta_item.key }}</td></tr>
-        </tbody></table>
+        <div class="item-heading"><h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}</a></h2> <span class="item-key">{{ ta_item.key }}</span></div>
+        <div class="item-description">{{ ta_item.item.description|safe }}</div>
+
         {% if ta_item.is_delivered %}
         <div class="delivered-stamp">Toimitettu</div>
         {% endif %}
-        {% if has_infodesk_access and not ta_item.is_delivered %}
+
+        {% if has_infodesk_access %}
         <form class="item-manage" method="post" action="{% url 'store:ta_view' transaction.key %}#items">
             {% csrf_token %}
             <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />
-            <input type="submit" value="Merkitse toimitetuksi"/>
+            <input type="submit" value="Merkitse toimitetuksi" {% if ta_item.is_delivered %}disabled="disabled"{% endif %}/>
         </form>
         {% endif %}
     </div>

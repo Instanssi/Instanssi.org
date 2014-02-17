@@ -49,6 +49,7 @@ td {
 .item h2 { }
 /* This hack wraps the .item to any floats within it */
 .item:after { content: ' '; display: table; clear: both; }
+.item-key { font-family: monospace; }
 .item-code { float: right; }
 
 .item { position: relative; }

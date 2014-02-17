@@ -29,8 +29,9 @@
                 <th>ID</th>
                 <th>Nimi</th>
                 <th>Sähköposti</th>
-                <th>Ostettu</th>
+                <th>Tilattu</th>
                 <th>Maksettu</th>
+                <th>Peruutettu</th>
                 <th>Tila</th>
                 <th>Yhteensä</th>
                 <th class="sorter-false">Lisätiedot</th>
@@ -44,8 +45,9 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.time_created|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.time_paid|date:"d.m.Y H:i" }}</td>
-                <td>{{ item.get_status_display }}</td>
-                <td>{{ item.total }} &euro;</td>
+                <td>{{ item.time_cancelled|date:"d.m.Y H:i" }}</td>
+                <td>{{ item.get_status_text }}</td>
+                <td>{{ item.get_total_price }} &euro;</td>
                 <td><a href="{% url 'manage-store:transactionstatus' item.id %}">Tiedot</a></td>
             </tr>
 {% endfor %}

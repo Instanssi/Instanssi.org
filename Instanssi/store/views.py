@@ -89,6 +89,10 @@ def ta_view(request, transaction_key):
     handle_status_update(request)
 
     transaction = get_object_or_404(StoreTransaction, key=transaction_key)
+
+    if not transaction.is_paid:
+        raise Http404
+
     ta_items = TransactionItem.objects.filter(transaction=transaction)
 
     res = render(request, "store/transaction.html", {
@@ -106,6 +110,9 @@ def ti_view(request, item_key):
     handle_status_update(request)
 
     ta_item = get_object_or_404(TransactionItem, key=item_key)
+
+    if not ta_item.transaction.is_paid:
+        raise Http404
 
     res = render(request, "store/transaction_item.html", {
         "ta_item": ta_item,

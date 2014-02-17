@@ -122,7 +122,7 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.item.name }}</td>
                 <td><a href="{% url 'store:ti_view' item.key %}">{{ item.key }}</a></td>
-                <td>{{ item.item.price }} &euro;</td>
+                <td>{{ item.purchase_price }} &euro;</td>
             </tr>
 {% endfor %}
             <tr>

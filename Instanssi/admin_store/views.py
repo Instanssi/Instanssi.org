@@ -41,8 +41,8 @@ def items(request):
         'items': items,
         'addform': form,
     })
-    
-    
+
+
 @staff_access_required
 def status(request):
     if not request.user.has_perm('store.view_storetransaction'):

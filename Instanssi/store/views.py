@@ -32,19 +32,19 @@ def privacy(request):
 
 class StoreWizard(CookieWizardView):
     """Displays the order form"""
-    
+
     form_list = [StoreProductsForm, StoreInfoForm, StorePaymentMethodForm]
     template_name = 'store/store.html'
-    
+
     def done(self, form_list, **kwargs):
         items_form = form_list[0]
         info_form = form_list[1]
         method_form = form_list[2]
-        
+
         # Save transaction and items
         transaction = info_form.save()
         items_form.save(transaction)
-        
+
         # Handle payment
         if method_form.cleaned_data['payment_method'] == 0:
             # Handle bitcoin payment
@@ -52,17 +52,20 @@ class StoreWizard(CookieWizardView):
         else:
             # Handle paytrail payment
             return paytrail.start_process(transaction)
-        
+
+
 # Index page for store
 def index(request):
     return render_to_response('store/index.html', {
     }, context_instance=RequestContext(request))
+
 
 def has_infodesk_access(request):
     return request.user.is_authenticated() \
         and request.user.is_active \
         and request.user.has_perm('tickets.change_ticket') \
         and request.user.has_perm('store.change_storetransaction')
+
 
 def mark_item_delivered(request, item_key):
     if not has_infodesk_access(request):

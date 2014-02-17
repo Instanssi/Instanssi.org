@@ -3,12 +3,12 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Sum
 from django_countries import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
 from common.misc import get_url
+
 
 class StoreItem(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
@@ -44,6 +44,7 @@ class StoreItem(models.Model):
         verbose_name = u"tuote"
         verbose_name_plural = u"tuotteet"
 
+
 class StoreTransaction(models.Model):
     token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
     time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
@@ -65,11 +66,11 @@ class StoreTransaction(models.Model):
     @property
     def is_paid(self):
         return self.time_paid is not None
-    
+
     @property
     def is_cancelled(self):
         return self.time_cancelled is not None
-    
+
     @property
     def is_delivered(self):
         for item in self.get_items():
@@ -132,7 +133,7 @@ class TransactionItem(models.Model):
 
     @staticmethod
     def get_transaction_item_amount(ta, item):
-        return TransactionItem.objects.filter(item=item,transaction=ta).count()
+        return TransactionItem.objects.filter(item=item, transaction=ta).count()
 
     def __unicode__(self):
         return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)

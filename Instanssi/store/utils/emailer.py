@@ -6,6 +6,7 @@ Mailer class sends emails with given parameters.
 
 from common.mail import Mailer
 
+
 class ReceiptMailer(Mailer):
     def __init__(self, email_from, email_to, subject):
         super(ReceiptMailer, self).__init__('store/receipt.email', email_from, email_to, subject)
@@ -25,43 +26,43 @@ class ReceiptMailer(Mailer):
             'transactionurl': '',
             'total': 0.0,
         }
-    
+
     def ordernumber(self, var):
         self.params['ordernumber'] = var
-     
+
     def firstname(self, var):
         self.params['firstname'] = var
-    
+
     def lastname(self, var):
         self.params['lastname'] = var
-       
+
     def email(self, var):
         self.params['email'] = var
-        
+
     def mobile(self, var):
         self.params['mobile'] = var
- 
+
     def telephone(self, var):
         self.params['telephone'] = var
 
     def company(self, var):
         self.params['company'] = var
-        
+
     def street(self, var):
         self.params['street'] = var
-      
+
     def city(self, var):
         self.params['city'] = var
-        
+
     def postalcode(self, var):
         self.params['postalcode'] = var
-    
+
     def country(self, var):
         self.params['country'] = var
-    
+
     def transactionurl(self, var):
         self.params['transactionurl'] = var
-        
+
     def add_item(self, id, name, price, amount):
         itemtotal = price * amount
         self.params['items'].append({

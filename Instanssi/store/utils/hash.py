@@ -2,6 +2,7 @@
 
 import hashlib
 
+
 # for creating ticket key hash
 def gen_sha(text):
     h = hashlib.sha1()

@@ -1,26 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-import random
-import time
-
+from common.misc import get_url
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
-
-from common.misc import get_url
+from Instanssi.store.models import StoreTransaction, TransactionItem
 from Instanssi.store.utils import paytrail, ta_common
-from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
-from Instanssi.store.utils.emailer import ReceiptMailer
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
 
+
 def start_process(ta):
     """This should be used to start the paytrail payment process. Will redirect as necessary."""
-    
+
     product_list = []
 
     for item in TransactionItem.get_distinct_storeitems(ta):
@@ -83,29 +78,32 @@ def start_process(ta):
     # All done, redirect user
     return HttpResponseRedirect(msg['url'])
 
+
 def handle_failure(request):
     """ Handles failure message from paytrail """
-    
+
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
-    
+
     # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
         ta = StoreTransaction.objects.get(pk=int(order_number))
         ta_common.handle_cancellation(ta)
 
     return render_to_response('store/failure.html')
-        
+
+
 def handle_success(request):
     """ Handles the success user redirect from Paytrail """
     return render_to_response('store/success.html')
 
+
 def handle_notify(request):
     """ Handles the actual success notification from Paytrail """
-   
+
     # Get parameters
     order_number = request.GET.get('ORDER_NUMBER', '')
     timestamp = request.GET.get('TIMESTAMP', '')
@@ -123,13 +121,13 @@ def handle_notify(request):
             return HttpResponse("")
 
         # Use common functions to handle the payment
-        # If handling the payment fails, cause 404. 
+        # If handling the payment fails, cause 404.
         # This will tell paytrail to try notifying again later.
         if not ta_common.handle_payment(ta):
             raise Http404
     else:
         logger.warning("Error while attempting to validate paytrail notification!")
         raise Http404
-        
+
     # Just respond with something
     return HttpResponse("")

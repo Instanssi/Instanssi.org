@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 
+import base64
+import hashlib
 import httplib
 import json
 import string
-import base64
-import hashlib
+
 
 class PaytrailException(Exception):
     pass
+
 
 def validate_failure(orderno, timestamp, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s' % (orderno, timestamp, secret))
     return (authcode == m.hexdigest().upper())
 
+
 def validate_success(orderno, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
     m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
     return (authcode == m.hexdigest().upper())
+
 
 def request(id, secret, data):
     # Some basic data

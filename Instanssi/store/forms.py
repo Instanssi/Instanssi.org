@@ -8,7 +8,6 @@ from datetime import datetime
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.utils.html import format_html
 
 from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
 from Instanssi.store.utils.hash import gen_sha
@@ -17,6 +16,7 @@ from Instanssi.store.utils.hash import gen_sha
 import logging
 logger = logging.getLogger(__name__)
 
+
 class StoreProductsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StoreProductsForm, self).__init__(*args, **kwargs)
@@ -24,18 +24,18 @@ class StoreProductsForm(forms.Form):
         for item in StoreItem.items_available():
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
-                initial=0, 
-                min_value=0, 
+                initial=0,
+                min_value=0,
                 max_value=item.num_available(),
                 label=u'%s' % (item.name),
-                help_text=item.description, 
+                help_text=item.description,
                 required=False
             )
             self.fields[name].image_large = item.imagefile_original.url
             self.fields[name].image_small = item.imagefile_thumbnail.url
             self.fields[name].available = item.num_in_store()
             self.fields[name].price = item.price
-            
+
     def _dataitems(self):
         for key, value in self.data.iteritems():
             try:
@@ -57,7 +57,7 @@ class StoreProductsForm(forms.Form):
             if store_item.num_available() < amount:
                 fails.append(
                     u'Tuotetta "%s" ei ole saatavilla riittävästi!'
-                        % store_item.name
+                    % store_item.name
                 )
 
         # Make sure we have at least SOME items in the order
@@ -70,7 +70,7 @@ class StoreProductsForm(forms.Form):
 
         # All worked out, that's it
         return cleaned_data
-    
+
     def save(self, transaction):
         for (item_id, amount) in self._dataitems():
             if amount > 0:
@@ -89,9 +89,10 @@ class StoreProductsForm(forms.Form):
                         except IntegrityError as ex:
                             logger.warning("SHA-1 Collision in item (WTF!) Key: %s, exception: %s." % (new_item.key, ex))
 
+
 class StoreInfoForm(forms.ModelForm):
     email_confirm = forms.EmailField(
-        label=u'Vahvista sähköposti', 
+        label=u'Vahvista sähköposti',
         max_length=255,
         required=True
     )
@@ -157,26 +158,26 @@ class StoreInfoForm(forms.ModelForm):
     class Meta:
         model = StoreTransaction
         fields = ('firstname', 'lastname', 'email', 'telephone', 'mobile', 'company', 'street', 'postalcode', 'city', 'country', 'information')
-        
+
+
 class StorePaymentMethodForm(forms.Form):
     payment_method = forms.ChoiceField(
-        label = u'Maksutapa',
-        required = True,
-        choices = [(0, u'Bitcoin'),(1, u'Verkkomaksu')],
-        widget = forms.RadioSelect(),
+        label=u'Maksutapa',
+        required=True,
+        choices=[(0, u'Bitcoin'), (1, u'Verkkomaksu')],
+        widget=forms.RadioSelect(),
     )
     read_terms = forms.BooleanField(
-        label=u'Hyväksyn toimitusehdot', 
+        label=u'Hyväksyn toimitusehdot',
         required=True,
     )
 
     def __init__(self, *args, **kwargs):
         super(StorePaymentMethodForm, self).__init__(*args, **kwargs)
-        
+
         self.fields['payment_method'].help_text = \
             u'Valitse mieleisesi maksutapa. Verkkomaksu-valinta kattaa sekä verkkopankki- että luottokorttimaksut.'
         self.fields['read_terms'].help_text = \
             u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ja hyväksyn ne. ' \
             u'(Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' \
             % (reverse('store:terms'), reverse('store:privacy'))
-

@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-
 from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
-from Instanssi.store.models import StoreTransaction, TransactionItem
 from Instanssi.store.methods import paytrail
+from Instanssi.store.models import StoreTransaction, TransactionItem
 
 # Logging related
 import logging

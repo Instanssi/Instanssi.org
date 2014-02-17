@@ -94,11 +94,11 @@ def handle_failure(request):
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
     
-    # Validata & handle
+    # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
         try:
             ta = StoreTransaction.objects.get(pk=int(order_number))
-            ta.status = 4
+            ta.time_cancelled = datetime.now()
             ta.save()
         except:
             pass
@@ -123,7 +123,7 @@ def handle_notify(request):
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
-        if ta.paid:
+        if ta.is_paid:
             logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
             raise Http404
 
@@ -159,7 +159,6 @@ def handle_notify(request):
         
         # Mark as paid
         ta.time_paid = datetime.now()
-        ta.status = 1
         ta.save()
     else:
         logger.warning("Error while attempting to validate paytrail notification!")

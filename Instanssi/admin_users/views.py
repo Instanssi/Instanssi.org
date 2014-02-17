@@ -58,12 +58,10 @@ def edit(request, su_id):
         userform = UserEditForm(request.POST, instance=user)
         if userform.is_valid():
             userform.save()
+            logger.info('User '+user.username+' edited.', extra={'user': request.user})
             return HttpResponseRedirect(reverse('manage-users:index'))
     else:
         userform = UserEditForm(instance=user)
-    
-    # Log it
-    logger.info('User '+user.username+' edited.', extra={'user': request.user})
     
     # Render response
     return admin_render(request, "admin_users/edit.html", {
@@ -77,12 +75,10 @@ def delete(request, su_id):
     if user.is_superuser or user.username == "arkisto":
         raise Http403
     else:
+        logger.info('User '+user.username+' deactivated.', extra={'user': request.user})
         user.is_active = False
         user.save()
 
-    # Log event
-    logger.info('User '+user.username+' deactivated.', extra={'user': request.user})
-    
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-users:index'))
 

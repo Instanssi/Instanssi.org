@@ -16,15 +16,15 @@
 {{ block.super }}
 <h2>Etusivu</h2>
 <p>
-    <a href="{% url 'infodesk:ticket_check' event.id %}" class="button">Skannaa lippu</a>
+    <a href="{% url 'infodesk:item_check' %}" class="button">Skannaa tuotetunnus</a>
 </p>
 <p>
-    <a href="{% url 'infodesk:store_check' event.id %}" class="button">Skannaa ostos</a>
+    <a href="{% url 'infodesk:transaction_check' %}" class="button">Skannaa ostostunnus</a>
 </p>
 
 <h3>Etsi asiakkaita</h3>
 <p>Hae kirjoittamalla osa nimeä, jolla ostos on tehty.</p>
-<form method="get" action="{% url 'infodesk:ticket_lookup' event.id %}">
+<form method="get" action="{% url 'infodesk:ta_lookup' %}">
   <input id="lookup" type="text" name="name"></input>
   <input type="submit" value="Etsi"></input>
 </form>

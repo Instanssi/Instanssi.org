@@ -6,7 +6,7 @@ $(function () {
         minimumInputLength: 2,
         width: "17em",
         ajax: {
-            url: "ticket_lookup_ac",
+            url: "ta_lookup_ac",
             datatype: "json",
             data: function (term, page) {
                 return {

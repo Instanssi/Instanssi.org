@@ -55,19 +55,23 @@ td {
 .item { position: relative; }
 .item-manage { position: absolute; bottom: 20px; left: 20px; }
 
-.item.delivered .delivered-stamp {
+.delivered-stamp {
     z-index: 9001;
     position: absolute;
     left: 30%;
     top: 30%;
     opacity: .4;
     color: red;
-    font-weight: bold;
-    font-size: 200%;
     border: .2em dotted red;
+    text-align: center;
     padding: .5em;
-    text-transform: uppercase;
     -moz-transform: rotate(-.5rad);
     -webkit-transform: rotate(-.5rad);
     transform: rotate(-.5rad);
+    font-weight: bold;
 }
+.delivered-stamp .stamp-title {
+    text-transform: uppercase;
+    font-size: 200%;
+}
+

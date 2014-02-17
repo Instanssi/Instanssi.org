@@ -49,7 +49,10 @@
         <div class="item-description">{{ ta_item.item.description|safe }}</div>
 
         {% if ta_item.is_delivered %}
-        <div class="delivered-stamp">Toimitettu</div>
+        <div class="delivered-stamp">
+            <div class="stamp-title">Toimitettu</div>
+            <div class="stamp-date">{{ ta_item.time_delivered|date:"d.n.Y H:i O" }}</div>
+        </div>
         {% endif %}
 
         {% if has_infodesk_access %}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static blog_tags twitter_tag %}
+<!DOCTYPE html>{% load static blog_tags twitter_tag cache %}
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
@@ -90,6 +90,7 @@
 				<section class="widget widget-twitter">
 					<h2>Twitter</h2>
 					<div id="tweets">
+					    {% cache 600 twitter_bar %}
 					    {% get_tweets for "instanssi" as tweets exclude "replies" limit 5 %}
 					    <ul>
                         {% for tweet in tweets %}
@@ -101,6 +102,7 @@
                             </li>
                         {% endfor %}
                         </ul>
+                        {% endcache %}
 					</div>
 				</section>
 				<section class="widget widget-socialmedias">

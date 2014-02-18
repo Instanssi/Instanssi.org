@@ -24,10 +24,7 @@ def start_process(ta):
     data = {
         'price': '0.01',
         'currency': 'EUR',
-        'posData': {
-            'transaction_id': str(ta.id),
-            'transaction_key': ta.key,
-        },
+        'posData': str(ta.id),
         'fullNotifications': True, 
         'notificationURL': get_url(reverse('store:pm:bitpay-notify')),
         'transactionSpeed': settings.BITPAY_SPEED,
@@ -76,8 +73,7 @@ def handle_notify(request):
     # Get data, and make sure it looks right
     try:
         data = json.loads(request.body)
-        transaction_id = int(data['posData']['transaction_id'])
-        transaction_key = data['posData']['transaction_key']
+        transaction_id = int(data['posData'])
         bitpay_id = data['id']
         status = data['status']
     except Exception as ex:
@@ -88,7 +84,7 @@ def handle_notify(request):
     # If transactions is not found, this will throw 404.
     ta_is_valid = False
     try:
-        ta = StoreTransaction.objects.get(pk=transaction_id, key=transaction_key, token=bitpay_id)
+        ta = StoreTransaction.objects.get(pk=transaction_id, token=bitpay_id)
         
         # If transaction is paid and confirmed, stop here.
         if ta.is_paid:

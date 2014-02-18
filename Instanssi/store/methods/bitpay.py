@@ -29,22 +29,23 @@ def start_process(ta):
         amount = TransactionItem.get_transaction_item_amount(ta, item)
         total += amount * item.price
 
+    # Skip extra personal information because Bitpay doesn't require them
     data = {
         'price': str(total),
         'currency': 'EUR',
-        'posData': str(ta.id),
+        'posData': {
+            'transaction_id': str(ta.id),
+            'transaction_key': ta.key,
+        }, 
         'notificationURL': get_url(reverse('store:pm:bitpay-notify')),
         'transactionSpeed': settings.BITPAY_SPEED,
         'notificationEmail': settings.BITPAY_EMAIL,
         'redirectURL': get_url(reverse('store:pm:bitpay-success')),
         'buyerName': ta.firstname + ' ' + ta.lastname,
         'buyerEmail': ta.email
-        # Skip extra personal information because Bitpay doesn't require them
-        },
     }
 
     # Make a request
-
     msg = None
     try:
         msg = bitpay.request(settings.BITPAY_KEY, data)
@@ -57,33 +58,17 @@ def start_process(ta):
         return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
 
     # Save token, redirect
-    ta.token = msg['token']
+    ta.token = msg['id']
     ta.save()
 
     # All done, redirect user
     return HttpResponseRedirect(msg['url'])
 
 def handle_failure(request):
-    """ Handles failure message from bitpay """
+    """ Handles failure message caused by exceptions """
     
     # FIXME this never comes from bitpay but is here because of
     # mysterious Exception redirects in previous function.
-    # Currently contains some fluff from paytrail module
-
-    # Get parameters
-    order_number = request.GET.get('ORDER_NUMBER', '')
-    timestamp = request.GET.get('TIMESTAMP', '')
-    authcode = request.GET.get('RETURN_AUTHCODE', '')
-    secret = settings.VMAKSUT_SECRET
-    
-    # Validate, and mark transaction as cancelled
-    if paytrail.validate_failure(order_number, timestamp, authcode, secret):
-        try:
-            ta = StoreTransaction.objects.get(pk=int(order_number))
-            ta.time_cancelled = datetime.now()
-            ta.save()
-        except:
-            pass
 
     return render_to_response('store/failure.html')
         
@@ -93,67 +78,40 @@ def handle_success(request):
 
 def handle_notify(request):
     """ Handles the actual success notification from Paytrail """
-    res = request.getresponse()
-    message = json.loads(res.read())
-
-    if message.status != 'confirmed':
-        # Not paid yet or gets expired or something...
-
-    # Get parameters
-    timestamp =  message.currentTime # TODO milliseconds, is this OK
-
-    # FIXME unmodified paytrail stuff..
-
-    order_number = request.GET.get('ORDER_NUMBER', '')
-    paid = request.GET.get('PAID', '')
-    method = request.GET.get('METHOD', '')
-    authcode = request.GET.get('RETURN_AUTHCODE', '')
-    secret = settings.VMAKSUT_SECRET
-
-    # Validata & handle
-    if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
-        # Get transaction
-        ta = get_object_or_404(StoreTransaction, pk=int(order_number))
-        if ta.is_paid:
-            logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
-            raise Http404
-
-        # Deliver email.
-        mailer = ReceiptMailer('"Instanssi" <noreply@'+settings.DOMAIN+'>', ta.email, 'Instanssi.org kuitti')
-        mailer.ordernumber(ta.id)
-        mailer.firstname(ta.firstname)
-        mailer.lastname(ta.lastname)
-        mailer.email(ta.email)
-        mailer.company(ta.company)
-        mailer.mobile(ta.mobile)
-        mailer.telephone(ta.telephone)
-        mailer.street(ta.street)
-        mailer.city(ta.city)
-        mailer.postalcode(ta.postalcode)
-        mailer.country(ta.country)
-        
-        # Add items to email
-        for item in TransactionItem.get_distinct_storeitems(ta):
-            amount = TransactionItem.get_transaction_item_amount(ta, item)
-            mailer.add_item(item.id, item.name, item.price, amount)
-
-        # Form transaction url
-        transaction_url = get_url(reverse('store:ta_view', args=(ta.key,)))
-        mailer.transactionurl(transaction_url)
-            
-        # Send mail
-        try:
-            mailer.send()
-        except Exception as ex:
-            logger.error('%s.' % (ex))
-            raise Http404
-        
-        # Mark as paid
-        ta.time_paid = datetime.now()
-        ta.save()
-    else:
-        logger.warning("Error while attempting to validate paytrail notification!")
+    
+    # Get data, and make sure it looks right
+    try:
+        data = json.loads(request.raw_post_data)
+        transaction_id = int(data['posData']['transaction_id'])
+        transaction_key = data['posData']['transaction_key']
+        bitpay_id = data['id']
+        status = data['status']
+    except:
+        raise Http404
+    
+    # Try to find correct transaction
+    # If transactions is not found, this will throw 404.
+    ta_is_valid = False
+    try:
+        ta = StoreTransaction.objects.get(pk=transaction_id, key=transaction_key, token=bitpay_id)
+        ta_is_valid = True
+    except StoreTransaction.DoesNotExist:
+        logger.warning("Error while attempting to validate bitpay notification!")
         raise Http404
         
+    if ta_is_valid:
+        if status == 'confirmed':
+            ta.time_paid = datetime.now()
+            ta.save()
+            pass
+            
+        if status == 'paid':
+            # Paid but not confirmed
+            pass
+            
+        if status == 'expired':
+            # Paument expired, assume cancelled
+            pass
+
     # Just respond with something
     return HttpResponse("")

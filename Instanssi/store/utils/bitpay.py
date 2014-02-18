@@ -9,16 +9,6 @@ import hashlib
 class BitpayException(Exception):
     pass
 
-def validate_failure(orderno, timestamp, authcode, secret):
-    m = hashlib.md5()
-    m.update('%s|%s|%s' % (orderno, timestamp, secret))
-    return (authcode == m.hexdigest().upper())
-
-def validate_success(orderno, timestamp, paid, method, authcode, secret):
-    m = hashlib.md5()
-    m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
-    return (authcode == m.hexdigest().upper())
-
 def request(key, data):
     # Some basic data
     host = 'bitpay.com'
@@ -36,13 +26,13 @@ def request(key, data):
     res = c.getresponse()
     message = json.loads(res.read())
 
-    # Paytrail responded with error
+    # Bitpay responded with error
     if res.status < 200 or res.status >= 400:
-        raise BitpayException(message['errorMessage'], message['errorCode'])
+        raise BitpayException("Http request error", res.status)
 
     # No response from bitpay (other error)
-    if message.status != 'new'
-        raise BitpayException(u'Invcoice generation failure.', message.status)
+    if message['status'] != 'new':
+        raise BitpayException(u'Invoice generation failure.', message.status)
 
     # Return parsed JSON
     return message

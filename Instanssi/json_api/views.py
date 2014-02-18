@@ -43,7 +43,7 @@ def events_api(request, hid):
 def screen_np_get(request):
     # Make sure the request is ok
     try:
-        data = json.loads(request.raw_post_data)
+        data = json.loads(request.body)
         event_id = data['event_id']
     except:
         return JSONResponse({'error': 'Invalid JSON request'});
@@ -72,7 +72,7 @@ def screen_np_get(request):
 def screen_np_set(request):
     # Make sure the request is ok
     try:
-        data = json.loads(request.raw_post_data)
+        data = json.loads(request.body)
         key = data['key']
         event_id = data['event_id']
         type = data['type']

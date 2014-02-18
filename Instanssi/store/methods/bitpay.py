@@ -102,16 +102,19 @@ def handle_notify(request):
             # Paid and confirmed.
             if not ta_common.handle_payment(ta):
                 raise Http404
+            return HttpResponse("")
             
         if status == 'paid':
             # Paid but not confirmed
             ta_common.handle_pending(ta)
-            pass
-            
+            return HttpResponse("")
+                        
         if status == 'expired':
             # Paument expired, assume cancelled
             ta_common.handle_cancellation(ta)
-            pass
+            return HttpResponse("")
+
+    logger.warning("Unhandled bitpay notification '%s' for id %d." % (status,ta.id,))
 
     # Just respond with something
     return HttpResponse("")

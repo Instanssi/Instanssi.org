@@ -98,7 +98,7 @@ def handle_notify(request):
     
     # We have a valid transaction. Do something about it.
     if ta_is_valid:
-        if status == 'confirmed':
+        if status == 'confirmed' or status == 'complete':
             # Paid and confirmed.
             if not ta_common.handle_payment(ta):
                 raise Http404

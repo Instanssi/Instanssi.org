@@ -77,7 +77,7 @@ def handle_notify(request):
         bitpay_id = data['id']
         status = data['status']
     except Exception as ex:
-        logger.error("%s: '%s'" % (ex, request.body))
+        logger.error("%s" % (ex,))
         raise Http404
     
     # Try to find correct transaction

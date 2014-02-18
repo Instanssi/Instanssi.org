@@ -3,6 +3,7 @@
 from common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from Instanssi.store.models import StoreTransaction, TransactionItem
@@ -67,6 +68,7 @@ def handle_success(request):
     """ Handles the success user redirect from Paytrail """
     return render_to_response('store/success.html')
 
+@csrf_exempt
 def handle_notify(request):
     """ Handles the actual success notification from Paytrail """
     

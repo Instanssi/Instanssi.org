@@ -25,7 +25,8 @@ def start_process(ta):
         'posData': {
             'transaction_id': str(ta.id),
             'transaction_key': ta.key,
-        }, 
+        },
+        'fullNotifications': True, 
         'notificationURL': get_url(reverse('store:pm:bitpay-notify')),
         'transactionSpeed': settings.BITPAY_SPEED,
         'notificationEmail': settings.BITPAY_EMAIL,

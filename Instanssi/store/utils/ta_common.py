@@ -15,10 +15,12 @@ logger = logging.getLogger(__name__)
 def handle_cancellation(ta):
     ta.time_cancelled = datetime.now()
     ta.save()
+    logger.info('Store transaction %d cancelled.' % (ta.id))
 
 def handle_pending(ta):
     ta.time_pending = datetime.now()
     ta.save()
+    logger.info('Store transaction %d paid, pending confirmation.' % (ta.id))
 
 def handle_payment(ta):
     # Deliver email.
@@ -54,4 +56,5 @@ def handle_payment(ta):
     # Mark as paid
     ta.time_paid = datetime.now()
     ta.save()
+    logger.info('Store transaction %d confirmed.' % (ta.id))
     return True

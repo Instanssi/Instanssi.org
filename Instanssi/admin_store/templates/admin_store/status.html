@@ -28,7 +28,6 @@
             <tr>
                 <th>ID</th>
                 <th>Nimi</th>
-                <th>Sähköposti</th>
                 <th>Tilattu</th>
                 <th>Vireillä</th>
                 <th>Maksettu</th>
@@ -44,7 +43,6 @@
             <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.firstname }} {{ item.lastname }}</td>
-                <td>{{ item.email }}</td>
                 <td>{{ item.time_created|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.time_pending|date:"d.m.Y H:i" }}</td>
                 <td>{{ item.time_paid|date:"d.m.Y H:i" }}</td>

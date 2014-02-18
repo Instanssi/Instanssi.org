@@ -53,7 +53,8 @@ class StoreWizard(CookieWizardView):
         items_form.save(transaction)
 
         # Handle payment
-        if method_form.cleaned_data['payment_method'] == 0:
+        print method_form.cleaned_data['payment_method']
+        if int(method_form.cleaned_data['payment_method']) == 0:
             # Handle bitpay payment
             return bitpay.start_process(transaction)
         else:

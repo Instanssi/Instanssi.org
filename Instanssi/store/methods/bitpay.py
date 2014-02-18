@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-import random
-import time
-
-from django.db import transaction, IntegrityError
+from common.misc import get_url
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
-
-from common.misc import get_url
-from Instanssi.store.utils import bitpay
-from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem
-from Instanssi.store.utils.emailer import ReceiptMailer
+from Instanssi.store.models import StoreTransaction, TransactionItem
+from Instanssi.store.utils import bitpay, ta_common
 
 # Logging related
 import logging
@@ -22,16 +15,9 @@ logger = logging.getLogger(__name__)
 def start_process(ta):
     """This should be used to start the bitpay payment process. Will redirect as necessary."""
     
-    product_list = []
-    total = 0
-
-    for item in TransactionItem.get_distinct_storeitems(ta):
-        amount = TransactionItem.get_transaction_item_amount(ta, item)
-        total += amount * item.price
-
     # Skip extra personal information because Bitpay doesn't require them
     data = {
-        'price': str(total),
+        'price': str(ta.get_total_price()),
         'currency': 'EUR',
         'posData': {
             'transaction_id': str(ta.id),
@@ -59,6 +45,7 @@ def start_process(ta):
 
     # Save token, redirect
     ta.token = msg['id']
+    ta.payment_method_name = u'Bitpay'
     ta.save()
 
     # All done, redirect user
@@ -94,23 +81,32 @@ def handle_notify(request):
     ta_is_valid = False
     try:
         ta = StoreTransaction.objects.get(pk=transaction_id, key=transaction_key, token=bitpay_id)
+        
+        # If transaction is paid and confirmed, stop here.
+        if ta.is_paid:
+            return HttpResponse("")
+        
+        # Okay, transaction found and it's good.
         ta_is_valid = True
     except StoreTransaction.DoesNotExist:
         logger.warning("Error while attempting to validate bitpay notification!")
         raise Http404
-        
+    
+    # We have a valid transaction. Do something about it.
     if ta_is_valid:
         if status == 'confirmed':
-            ta.time_paid = datetime.now()
-            ta.save()
-            pass
+            # Paid and confirmed.
+            if not ta_common.handle_payment(ta):
+                raise Http404
             
         if status == 'paid':
             # Paid but not confirmed
+            ta_common.handle_pending(ta)
             pass
             
         if status == 'expired':
             # Paument expired, assume cancelled
+            ta_common.handle_cancellation(ta)
             pass
 
     # Just respond with something

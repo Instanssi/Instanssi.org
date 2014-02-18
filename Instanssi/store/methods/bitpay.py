@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 from common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse

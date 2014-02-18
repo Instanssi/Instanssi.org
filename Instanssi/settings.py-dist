@@ -88,7 +88,8 @@ TEST_RUNNER = 'testing.customrunner.CustomRunner'
 # JSON api key
 JSON_KEY = u'12341234'
 
-# Suomen Verkkomaksut
+# Paytrail aka. Suomen Verkkomaksut
+# See http://docs.paytrail.com/fi/index-all.html for API specs
 VMAKSUT_ID = u'13466'; # Test ID 
 VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'; # Test secret
 

@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
-from Instanssi.store.methods import paytrail
+from Instanssi.store.methods import paytrail, bitpay
 from Instanssi.store.models import StoreTransaction, TransactionItem
 
 # Logging related
@@ -54,8 +54,8 @@ class StoreWizard(CookieWizardView):
 
         # Handle payment
         if method_form.cleaned_data['payment_method'] == 0:
-            # Handle bitcoin payment
-            pass
+            # Handle bitpay payment
+            return bitpay.start_process(transaction)
         else:
             # Handle paytrail payment
             return paytrail.start_process(transaction)

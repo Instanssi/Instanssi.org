@@ -1,11 +1,15 @@
 {% extends "arkisto/base.html" %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
+{% block title %}{{ block.super }} - {{ event.name }} - {{ video.name }}{% endblock %}
 
-{% block jquery %}
+{% block head %}{{ block.super }}{% endblock %}
+
+{% block jquery %}{{ block.super }}{% endblock %}
+
+{% block crumbs %}
 {{ block.super }}
+    &raquo; <a href="{% url 'archive:event' event.id %}">{{ event.name }}</a>
+    &raquo; <a href="{% url 'archive:video' video.id %}">{{ video.name }}</a>
 {% endblock %}
 
 {% block content %}

@@ -1,12 +1,16 @@
 {% extends "arkisto/base.html" %}
 {% load static %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
+{% block title %}{{ block.super }} - {{ event.name }} - {{ entry.name }}{% endblock %}
 
-{% block jquery %}
+{% block head %}{{ block.super }}{% endblock %}
+
+{% block jquery %}{{ block.super }}{% endblock %}
+
+{% block crumbs %}
 {{ block.super }}
+    &raquo; <a href="{% url 'archive:event' event.id %}">{{ event.name }}</a>
+    &raquo; <a href="{% url 'archive:entry' entry.id %}">{{ entry.name }}</a>
 {% endblock %}
 
 {% block content %}

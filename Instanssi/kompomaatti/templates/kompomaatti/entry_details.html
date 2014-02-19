@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %} - {{ compo.name }} - {{ entry.name }} - Tiedot{% endblock %}
+{% block title %}{{ block.super }} - {{ compo.name }} - {{ entry.name }} - Tiedot{% endblock %}
 
 {% block head %}
 {{ block.super }}

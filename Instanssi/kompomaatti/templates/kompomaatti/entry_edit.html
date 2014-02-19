@@ -1,7 +1,7 @@
 {% extends "kompomaatti/event_base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %} - {{ compo.name }} - {{ entry.name }}{% endblock %}
+{% block title %}{{ block.super }} - {{ compo.name }} - {{ entry.name }}{% endblock %}
 
 {% block head %}
 {{ block.super }}

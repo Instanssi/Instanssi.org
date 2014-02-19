@@ -1,7 +1,7 @@
 {% extends "kompomaatti/event_base.html" %}
 {% load crispy_forms_tags static %}
 
-{% block title %} - Kirjaudu sisään{% endblock %}
+{% block title %}{{ block.super }} - Kirjaudu sisään{% endblock %}
 
 {% block head %}
 {{ block.super }}

@@ -1,7 +1,7 @@
 {% extends "kompomaatti/base.html" %}
 {% load static kompomaatti_base_tags %}
 
-{% block title %} - {% event_name sel_event_id %}{% endblock %}
+{% block title %}{{ block.super }} - {% event_name sel_event_id %}{% endblock %}
 
 {% block head %}
 {{ block.super }}

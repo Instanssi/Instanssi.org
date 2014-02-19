@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %} - {{ competition.name }}{% endblock %}
+{% block title %}{{ block.super }} - {{ competition.name }}{% endblock %}
 
 {% block head %}
 {{ block.super }}

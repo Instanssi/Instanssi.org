@@ -1,7 +1,7 @@
 {% extends "kompomaatti/event_base.html" %}
 {% load kompomaatti_base_tags %}
 
-{% block title %} - Etusivu{% endblock %}
+{% block title %}{{ block.super }} - Etusivu{% endblock %}
 
 {% block head %}
 {{ block.super }}

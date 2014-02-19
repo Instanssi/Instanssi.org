@@ -1,7 +1,7 @@
 {% extends "kompomaatti/event_base.html" %}
 {% load static %}
 
-{% block title %} - {{ compo.name }} - Äänestä{% endblock %}
+{% block title %}{{ block.super }} - {{ compo.name }} - Äänestä{% endblock %}
 
 {% block head %}
 {{ block.super }}

@@ -32,8 +32,15 @@ h1 {
     padding-top: 18px;
     padding-left: 10px;
     font-size: 250%;
-    color: #eeeeee;
-    text-shadow: #aaaaaa 0px 0px 3px;
+    color: #eee;
+    text-shadow: #aaa 0px 0px 3px;
+}
+h1 a, h1 a:visited {
+    color: #eee;
+    text-decoration: none;
+}
+h1 a:hover {
+    text-shadow: #eee 0 0 3px;
 }
 
 h2 {

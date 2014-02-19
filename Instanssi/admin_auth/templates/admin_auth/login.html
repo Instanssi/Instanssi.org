@@ -2,7 +2,7 @@
 {% load static crispy_forms_tags %}
 
 {% block title %}Hallinta - Sisäänkirjautuminen{% endblock %}
-{% block headername %}Hallinta{% endblock %}
+{% block headername %}<a href="{% url 'manage-base:index' %}">Hallinta</a>{% endblock %}
 
 {% block head %}
     <!-- Login panel specific -->

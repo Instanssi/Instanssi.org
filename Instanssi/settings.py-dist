@@ -175,6 +175,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'Instanssi.base_layout',
     'Instanssi.arkisto',
     'Instanssi.main2012',
     'Instanssi.main2013',

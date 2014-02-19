@@ -151,7 +151,7 @@ p {
     width: 16px;
     height: 16px;
     margin-left: 6px;
-    background-image: url('/static/admin_base/img/arrow_right.png');
+    background-image: url('../img/arrow_right.png');
 }
 
 .menuitem:hover {

@@ -1,8 +1,12 @@
 
-#box {
-    background-color: #28343b;
-}
-
 p.errortext {
     padding: 4px;
+}
+
+form.uniForm .error {
+    margin: 0.5em;
+}
+
+.uniForm fieldset {
+    border: 1px solid #999999;
 }

@@ -1,17 +1,14 @@
-{% extends "common/simple_base.html" %}
-{% load crispy_forms_tags %}
-{% load static %}
+{% extends "base_layout/base.html" %}
+{% load static crispy_forms_tags %}
 
-{% block title %}Hallinta{% endblock %}
+{% block title %}Hallinta - Sisäänkirjautuminen{% endblock %}
+{% block headername %}Hallinta{% endblock %}
 
 {% block head %}
-{{ block.super }}
-    <!-- Form validation -->
+    <!-- Login panel specific -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
-    
-    <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "admin_auth/css/style.css" %}" />
     <style type="text/css">
     #id_openid_identifier {
@@ -24,7 +21,6 @@
 {% endblock %}
 
 {% block jquery %}
-{{ block.super }}
     $('form.uniForm').uniform();
     $('#id_sps').change(function() {
         $('#id_openid_identifier').val($('#id_sps').val());
@@ -32,19 +28,29 @@
     $('.login-button').button();
 {% endblock %}
 
+{% block headernav %}
+        <ul id="header_nav_right">
+            <li class="menuitem">
+                <li class="menuitem"><a href="{% url 'manage-auth:login' %}">Kirjaudu sisään</a></li>
+            </li>
+        </ul>
+{% endblock %}
+
+{% block crumbs %}
+    <a href="{% url 'manage-base:index' %}">Hallinta</a> &raquo;
+    Sisäänkirjautuminen
+{% endblock %}
+
 {% block content %}
-{{ block.super }}
-<h1>Hallinta</h1>
+<h2>Sisäänkirjautuminen</h2>
 
 <p>Valitse kirjautumispalvelusi.</p>
 
 <h2>Django</h2>
-{% crispy loginform loginform.helper %}
+{% crispy loginform loginform.helper %}<br />
 
 <h2>OpenID</h2>
 {% crispy openidform openidform.helper %}
-
 {% endblock %}
-
 
 

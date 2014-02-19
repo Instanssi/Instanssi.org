@@ -61,6 +61,10 @@
                 </a>
                 {% endif %}
             </div>
+            <div class="item-field">
+                {{ field }}
+                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
+            </div>
             <div class="item-text">
                 <h3>
                     {{ field.label }} 
@@ -68,10 +72,6 @@
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
                 {{ field.help_text|safe }}
-            </div>
-            <div class="item-field">
-                {{ field }}
-                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
         </div>
     {% else %}

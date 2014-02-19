@@ -27,21 +27,15 @@
 }
 
 .item-wrapper h3 {
-    border: 0px;
-} 
+    border: 0;
+}
 
 .item-image {
-    display: block;
     box-shadow: 0 0 1px 1px #555;
     width: 65px;
     height: 65px;
     float: left;
-}
-
-.item-text {
-    margin-left: 10px;
-    float: left;
-    margin-left: 1em;
+    margin-right: 1em;
 }
 
 .item-text h3 {

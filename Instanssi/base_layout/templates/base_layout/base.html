@@ -28,18 +28,18 @@
 </div>
 <div id="header_nav">
     <div class="limiter">
-        <ul id="header_nav_left">
 {% block headernav %}{% endblock %}
-        </ul>
     </div>
 </div>
 <div id="base">
+    {% block base_begin %}{% endblock %}
     <div id="contents">
         <div id="crumbpath">
 {% block crumbs %}{% endblock %}
         </div>
 {% block content %}{% endblock %}
     </div>
+    {% block base_end %}{% endblock %}
 </div>
 </body>
 </html>

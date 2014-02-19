@@ -16,6 +16,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 @staff_access_required
+def index(request):
+    return admin_render(request, "admin_users/index.html", {})
+
+@staff_access_required
 def log(request):
     # Render response
     return admin_render(request, "admin_users/log.html", {

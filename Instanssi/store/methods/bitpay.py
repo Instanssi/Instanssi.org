@@ -18,11 +18,8 @@ def start_process(ta):
     """This should be used to start the bitpay payment process. Will redirect as necessary."""
     
     # Skip extra personal information because Bitpay doesn't require them
-    
-    # TODO: 'price': str(ta.get_total_price()),
-    
     data = {
-        'price': '0.01',
+        'price': str(ta.get_total_price()),
         'currency': 'EUR',
         'posData': str(ta.id),
         'fullNotifications': True, 

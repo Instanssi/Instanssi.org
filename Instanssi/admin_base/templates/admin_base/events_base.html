@@ -1,17 +1,21 @@
 {% extends "admin_base/admin_base.html" %}
 {% load event_name from admin_base_tags %}
 
-{% block title %} - Blog{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
 
 {% block head %}
 {{ block.super }}
+    <style type="text/css">
+        #contents {
+            padding-top: 5px;
+            margin-left: 150px;
+        }
+    </style>
 {% endblock %}
 
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
+{% block jquery %}{{ block.super }}{% endblock %}
 
-{% block bottom %}
+{% block base_begin %}
 {{ block.super }}
 	<ul id="left_nav">
     	<li class="menuitem"><a href="{% url 'manage-blog:index' selected_event_id %}">Blogi</a></li>
@@ -48,12 +52,9 @@
             </ul>
         </li>
     </ul>
-    <div id="contents" class="contents_events_case">
-		<div id="crumbpath">
-			<a href="{% url 'manage-base:index' %}">Hallinta</a> &raquo;
-			<a href="{% url 'manage-overview:index' selected_event_id %}">{% event_name selected_event_id %}</a>
-{% block crumbs %}{% endblock %}
-		</div>
-{% block content %}{% endblock %}
-    </div>
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    &raquo; <a href="{% url 'manage-overview:index' selected_event_id %}">{% event_name selected_event_id %}</a>
 {% endblock %}

@@ -1,22 +1,11 @@
 {% extends "admin_base/admin_base.html" %}
 
-{% block title %} - Blog{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
+{% block head %}{{ block.super }}{% endblock %}
 
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
+{% block jquery %}{{ block.super }}{% endblock %}
 
-{% block bottom %}
-{{ block.super }}
-    <div id="contents">
-		<div id="crumbpath">
-			<a href="{% url 'manage-base:index' %}">Hallinta</a>
-{% block crumbs %}{% endblock %}
-		</div>
-{% block content %}{% endblock %}
-    </div>
-{% endblock %}
+{% block crumbs %}{{ block.super }}{% endblock %}
+
+{% block content %}{{ block.super }}{% endblock %}

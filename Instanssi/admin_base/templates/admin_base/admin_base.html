@@ -1,12 +1,12 @@
-<!DOCTYPE html>{% load static %}{% load render_base_events_nav from admin_base_tags %}
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Hallinta{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="initial-scale=1.0" />
-    
-    <!-- Library CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+{% extends "base_layout/base.html" %}
+{% load render_base_events_nav from admin_base_tags %}
+{% load static %}
+
+{% block title %}Hallinta{% endblock %}
+{% block headername %}Hallinta{% endblock %}
+
+{% block head %}
+    <!-- Management CSS (lib) -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/theme.default.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/jquery.tablesorter.pager.css" %}" />
@@ -14,39 +14,22 @@
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/datetimepicker/jquery.ui.datetime.css" %}" />
     
-    <!-- Library JS -->
-    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-1.8.2.min.js" %}"></script>
+    <!-- Management JS (lib) -->
     <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/datetimepicker/jquery-ui-timepicker-addon.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "libs/js/other/tablesorter-widgets.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/other/tablesorter-widgets.js" %}"></script>
     
-    <!-- Admin panel CSS -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href='//fonts.googleapis.com/css?family=Exo:400,900' />
+    <!-- Management custom fluff -->
     <link rel="stylesheet" type="text/css" href="{% static "admin_base/css/style.css" %}" />
-    
-{% block head %}{% endblock %}
-    <script type="text/javascript">
-    $(function() {
-		$('.datetimeinput').datetimepicker({
-			dateFormat: 'yy-mm-dd',
-			timeFormat: 'hh:mm:ss',
-			stepMinute: 5,
-            timeOnlyTitle: 'Valitse aika',
-            timeText: 'Aika',
-            hourText: 'Tunti',
-            minuteText: 'Minuutti',
-            secondText: 'Sekunti',
-            millisecText: 'Millisekunti',
-            currentText: 'Nyt',
-            closeText: 'Sulje',
-		});
-		$('.timeinput').timepicker({
-		    showButtonPanel: false,
+{% endblock %}
+
+{% block jquery %}
+        $('.datetimeinput').datetimepicker({
+            dateFormat: 'yy-mm-dd',
             timeFormat: 'hh:mm:ss',
             stepMinute: 5,
             timeOnlyTitle: 'Valitse aika',
@@ -58,30 +41,33 @@
             currentText: 'Nyt',
             closeText: 'Sulje',
         });
-		$('form.uniForm').uniform();
-		$('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
-		$('.ui-widget').css('font-size','14px');
-		
-		$('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
-		$('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
-		$('.management_field').css('width','42px');
-		
-		$('.emailinput').addClass('textInput');
-		$('.numberinput').addClass('textInput');
-		$('.urlinput').addClass('textInput');
-{% block jquery %}{% endblock %}
-    });
-    </script>
+        $('.timeinput').timepicker({
+            showButtonPanel: false,
+            timeFormat: 'hh:mm:ss',
+            stepMinute: 5,
+            timeOnlyTitle: 'Valitse aika',
+            timeText: 'Aika',
+            hourText: 'Tunti',
+            minuteText: 'Minuutti',
+            secondText: 'Sekunti',
+            millisecText: 'Millisekunti',
+            currentText: 'Nyt',
+            closeText: 'Sulje',
+        });
+        $('form.uniForm').uniform();
+        $('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
+        $('.ui-widget').css('font-size','14px');
+        
+        $('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
+        $('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
+        $('.management_field').css('width','42px');
+        
+        $('.emailinput').addClass('textInput');
+        $('.numberinput').addClass('textInput');
+        $('.urlinput').addClass('textInput');
+{% endblock %}
 
-</head>
-<body>
-<div id="header">
-    <div class="limiter">
-        <h1>Hallinta</h1>
-    </div>
-</div>
-<div id="header_nav">
-    <div class="limiter">
+{% block headernav %}
         <ul id="header_nav_left">
             <li class="menuitem"><a href="{% url 'manage-base:index' %}">Etusivu</a></li>
             <li class="menuitem">
@@ -111,28 +97,28 @@
                 </ul>
             </li>
             <li class="menuitem">
-            	<a href="{% url 'manage-events:index' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
-            	<ul class="sub-level">
+                <a href="{% url 'manage-events:index' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
+                <ul class="sub-level">
 {% render_base_events_nav %}
-            	</ul>
+                </ul>
             </li>
         </ul>
         <ul id="header_nav_right">
             <li class="menuitem">
-            	<a href="{% url 'manage-profile:index' %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}<span class="navmenu-icon-down"></span></a>
+                <a href="{% url 'manage-profile:index' %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}<span class="navmenu-icon-down"></span></a>
 {% if not is_openiduser %}
-            	<ul class="sub-level">
-            		<li class="menuitem"><a href="{% url 'manage-profile:index' %}">Tiedot</a></li>
-            		<li class="menuitem"><a href="{% url 'manage-profile:password' %}">Salasana</a></li>
-            	</ul>
+                <ul class="sub-level">
+                    <li class="menuitem"><a href="{% url 'manage-profile:index' %}">Tiedot</a></li>
+                    <li class="menuitem"><a href="{% url 'manage-profile:password' %}">Salasana</a></li>
+                </ul>
 {% endif %}
             </li>
             <li class="menuitem"><a href="{% url 'manage-auth:logout' %}">Kirjaudu ulos</a></li>
         </ul>
-    </div>
-</div>
-<div id="base">
-{% block bottom %}{% endblock %}
-</div>
-</body>
-</html>
+{% endblock %}
+
+{% block crumbs %}
+    <a href="{% url 'manage-base:index' %}">Hallinta</a>
+{% endblock %}
+
+{% block content %}{% endblock %}

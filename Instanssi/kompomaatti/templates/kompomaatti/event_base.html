@@ -13,6 +13,7 @@
 
 {% block headernav %}
 {{ block.super }}
+        <ul id="header_nav_left">
             <li class="menuitem">
                 <a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a>
             </li>
@@ -42,8 +43,9 @@
                 <a href="{% url 'km:login' sel_event_id %}">Kirjaudu sisään</a>
 {% endif %}
             </li>
+        </ul>
 {% endblock %}
-
+        
 {% block crumbs %}
 {{ block.super }}
     &raquo; <a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a>

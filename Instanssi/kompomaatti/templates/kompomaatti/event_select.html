@@ -17,9 +17,11 @@
 
 {% block headernav %}
 {{ block.super }}
+        <ul id="header_nav_left">
             <li class="menuitem">
                 <a href="{% url 'km:eventselect' %}">Tapahtumat</a>
             </li>
+        </ul>
 {% endblock %}
 
 {% block crumbs %}

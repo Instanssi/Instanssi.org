@@ -1,40 +1,25 @@
-<!DOCTYPE html>{% load static %}
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Instanssi Kauppa{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="initial-scale=1.0" />
-    
-    <!-- Library CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
-    
-    <!-- Library JS -->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href='//fonts.googleapis.com/css?family=Exo:400,900' />
-    <link rel="stylesheet" type="text/css" href="{% static "store/css/style.css" %}" />
-    
-{% block head %}{% endblock %}
-    <script type="text/javascript">
-    $(function() {
-        $('.ui-widget').css('font-size','14px');
-{% block jquery %}{% endblock %}
-    });
-    </script>
+{% extends "base_layout/base.html" %}
+{% load static %}
 
-</head>
-<body>
-<div id="header">
-    <div class="limiter">
-        <h1>Instanssi Kauppa</h1>
-    </div>
-</div>
-<div id="header_nav">
-    <div class="limiter">
+{% block title %}Instanssi Kauppa{% endblock %}
+{% block headername %}Instanssi Kauppa{% endblock %}
+
+{% block head %}
+    <!-- Store -->
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "store/css/style.css" %}" />
+{% endblock %}
+
+{% block jquery %}
+    $('.ui-widget').css('font-size','14px');
+{% endblock %}
+
+{% block crumbs %}
+    <a href="{% url 'store:index' %}">Instanssi Kauppa</a>
+{% endblock %}
+
+{% block headernav %}
         <ul id="header_nav_left">
             <li class="menuitem">
                 <a href="/">Instanssi</a>
@@ -49,16 +34,6 @@
         <ul id="header_nav_right">
             &nbsp;
         </ul>
-    </div>
-</div>
-<div id="base">
-    <div id="contents">
-        <div id="crumbpath">
-            <a href="{% url 'store:index' %}">Instanssi Kauppa</a>
-{% block crumbs %}{% endblock %}
-        </div>
+{% endblock %}
+
 {% block content %}{% endblock %}
-    </div>
-</div>
-</body>
-</html>

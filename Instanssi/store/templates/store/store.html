@@ -1,7 +1,7 @@
 {% extends "store/base.html" %}
 {% load crispy_forms_tags static %}
 
-{% block title %} - Tilaus{% endblock %}
+{% block title %}{{ block.super }} - Tilaus{% endblock %}
 
 {% block head %}
 {{ block.super }}

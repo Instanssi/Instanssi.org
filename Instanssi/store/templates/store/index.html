@@ -1,7 +1,7 @@
 {% extends "store/base.html" %}
 {% load crispy_forms_tags static %}
 
-{% block title %} - Etusivu{% endblock %}
+{% block title %}{{ block.super }} - Etusivu{% endblock %}
 
 {% block head %}
 {{ block.super }}

@@ -1,57 +1,25 @@
-<!DOCTYPE html>{% load static %}
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Kompomaatti{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="initial-scale=1.0" />
-    
-    <!-- Library CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+{% extends "base_layout/base.html" %}
+{% load static %}
+
+{% block title %}Kompomaatti{% endblock %}
+{% block headername %}Kompomaatti{% endblock %}
+
+{% block head %}
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
-    
-    <!-- Library JS -->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
     <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
-    
-    <!-- Kompomaatti CSS -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href='//fonts.googleapis.com/css?family=Exo:400,900' />
-    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
-    
-{% block head %}{% endblock %}
-    <script type="text/javascript">
-    $(function() {
-        $('form.uniForm').uniform();
-        $('.ui-widget').css('font-size','14px');
-{% block jquery %}{% endblock %}
-    });
-    </script>
+{% endblock %}
 
-</head>
-<body>
-<div id="header">
-    <div class="limiter">
-        <h1>Kompomaatti</h1>
-    </div>
-</div>
-<div id="header_nav">
-    <div class="limiter">
-        <ul id="header_nav_left">
-{% block headernav %}{% endblock %}
-        </ul>
-    </div>
-</div>
-<div id="base">
-    <div id="contents">
-        <div id="crumbpath">
-            <a href="{% url 'km:eventselect' %}">Kompomaatti</a>
-{% block crumbs %}{% endblock %}
-        </div>
+{% block jquery %}
+    $('form.uniForm').uniform();
+    $('.ui-widget').css('font-size','14px');
+{% endblock %}
+
+{% block crumbs %}
+    <a href="{% url 'km:eventselect' %}">Kompomaatti</a>
+{% endblock %}
+
 {% block content %}{% endblock %}
-    </div>
-</div>
-</body>
-</html>

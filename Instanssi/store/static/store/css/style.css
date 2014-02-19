@@ -26,6 +26,10 @@
     overflow: hidden;
 }
 
+.item-wrapper h3 {
+    border: 0px;
+} 
+
 .item-image {
     display: block;
     box-shadow: 0 0 1px 1px #555;

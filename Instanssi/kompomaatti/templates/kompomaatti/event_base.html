@@ -48,7 +48,7 @@
         
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a>
+    <li><a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a></li>
 {% endblock %}
 
 {% block content %}

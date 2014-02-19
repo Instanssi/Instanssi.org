@@ -15,8 +15,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-store:status' %}">Ostotapahtumat</a>
-        &raquo; Selaa
+    <li><a href="{% url 'manage-store:status' %}">Ostotapahtumat</a></li>
+    <li>Selaa</li>
 {% endblock %}
 
 {% block content %}

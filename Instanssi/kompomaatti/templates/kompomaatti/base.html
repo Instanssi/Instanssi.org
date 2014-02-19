@@ -19,7 +19,8 @@
 {% endblock %}
 
 {% block crumbs %}
-    <a href="{% url 'km:eventselect' %}">Kompomaatti</a>
+{{ block.super }}
+    <li><a href="{% url 'km:eventselect' %}">Kompomaatti</a></li>
 {% endblock %}
 
 {% block content %}{% endblock %}

@@ -35,9 +35,11 @@
 <div id="base">
     {% block base_begin %}{% endblock %}
     <div id="contents">
-        <div id="crumbpath">
-{% block crumbs %}{% endblock %}
-        </div>
+        <ul id="crumbpath">
+{% block crumbs %}
+    <li><a href="/">Instanssi.org</a></li>
+{% endblock %}
+        </ul>
 {% block content %}{% endblock %}
     </div>
     {% block base_end %}{% endblock %}

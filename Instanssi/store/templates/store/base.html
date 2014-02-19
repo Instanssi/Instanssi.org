@@ -16,7 +16,8 @@
 {% endblock %}
 
 {% block crumbs %}
-    <a href="{% url 'store:index' %}">Instanssi Kauppa</a>
+{{ block.super }}
+    <li><a href="{% url 'store:index' %}">Instanssi Kauppa</a></li>
 {% endblock %}
 
 {% block headernav %}

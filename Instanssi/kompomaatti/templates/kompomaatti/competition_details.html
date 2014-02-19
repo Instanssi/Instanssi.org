@@ -15,8 +15,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'km:competition' sel_event_id competition.id %}">{{ competition.name }}</a>
-    &raquo; Tiedot
+    <li><a href="{% url 'km:competition' sel_event_id competition.id %}">{{ competition.name }}</a></li>
+    <li>Tiedot</li>
 {% endblock %}
 
 {% block content %}

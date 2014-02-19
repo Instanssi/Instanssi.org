@@ -13,8 +13,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
-	&raquo; {{ entry.name }}
+    <li><a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a></li>
+    <li>{{ entry.name }}</li>
 {% endblock %}
 
 {% block content %}

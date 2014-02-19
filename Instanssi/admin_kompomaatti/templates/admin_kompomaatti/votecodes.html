@@ -9,8 +9,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-kompomaatti:votecodes' selected_event_id %}">Avaimet</a>
-		&raquo; Selaa
+    <li><a href="{% url 'manage-kompomaatti:votecodes' selected_event_id %}">Avaimet</a></li>
+    <li>Selaa</li>
 {% endblock %}
 
 {% block jquery %}

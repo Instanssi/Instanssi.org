@@ -37,8 +37,9 @@
 {% endblock %}
 
 {% block crumbs %}
-    <a href="{% url 'manage-base:index' %}">Hallinta</a> &raquo;
-    Sisäänkirjautuminen
+{{ block.super }}
+    <li><a href="{% url 'manage-base:index' %}">Hallinta</a></li>
+    <li>Sisäänkirjautuminen</li>
 {% endblock %}
 
 {% block content %}

@@ -34,8 +34,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
-	&raquo; Tiedot
+    <li><a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a></li>
+    <li>Tiedot</li>
 {% endblock %}
 
 {% block content %}

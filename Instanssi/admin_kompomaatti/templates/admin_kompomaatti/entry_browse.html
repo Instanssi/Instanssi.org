@@ -11,8 +11,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-kompomaatti:entries' selected_event_id %}">Entryt</a>
-		&raquo; Selaa
+    <li><a href="{% url 'manage-kompomaatti:entries' selected_event_id %}">Entryt</a></li>
+    <li>Selaa</li>
 {% endblock %}
 
 {% block jquery %}

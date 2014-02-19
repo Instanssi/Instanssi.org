@@ -8,10 +8,10 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a>
-{% endblock %}
+    <li><a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a></li>
+    <li>{% eqndblock %}</li>
 
-{% block jquery %}
+    <li>{% block jquery %}</li>
 {{ block.super }}
 {% endblock %}
 

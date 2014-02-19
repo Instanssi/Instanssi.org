@@ -70,8 +70,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-	&raquo; <a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a>
-	&raquo; Äänestä
+    <li><a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a></li>
+    <li>Äänestä</li>
 {% endblock %}
 
 {% block content %}

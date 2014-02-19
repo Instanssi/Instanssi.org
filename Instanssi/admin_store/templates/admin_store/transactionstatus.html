@@ -14,9 +14,9 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-store:status' %}">Tila</a>
-        &raquo; <a href="{% url 'manage-store:transactionstatus' transaction_id %}">Myyntitapahtuman tiedot</a>
-        &raquo; Selaa
+    <li><a href="{% url 'manage-store:status' %}">Tila</a></li>
+    <li><a href="{% url 'manage-store:transactionstatus' transaction_id %}">Myyntitapahtuman tiedot</a></li>
+    <li>Selaa</li>
 {% endblock %}
 
 {% block content %}

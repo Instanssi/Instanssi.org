@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-slides:index' selected_event_id %}">Slaidit</a>
+    <li><a href="{% url 'manage-slides:index' selected_event_id %}">Slaidit</a></li>
 {% endblock %}
 
 {% block content %}

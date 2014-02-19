@@ -10,8 +10,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-kompomaatti:compos' selected_event_id %}">Kompot</a>
-		&raquo; Selaa
+    <li><a href="{% url 'manage-kompomaatti:compos' selected_event_id %}">Kompot</a></li>
+    <li>Selaa</li>
 {% endblock %}
 
 {% block jquery %}

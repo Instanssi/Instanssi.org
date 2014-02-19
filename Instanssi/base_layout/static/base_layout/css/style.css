@@ -68,10 +68,30 @@ p {
 
 /* ---------- Crumbpath ---------- */
 
-#crumbpath {
+ul#crumbpath {
 	margin-bottom: 1.0em;
 	font-size: 12px;
+    margin: 0 0 1em 0 !important;
+    padding: 0;
 }
+#crumbpath li {
+    margin: 0;
+    list-style: none;
+    display: inline;
+}
+#crumbpath li:before {
+    content: '> ';
+    padding: 0 .25em;
+    color: #555;
+}
+#crumbpath li:first-child:before {
+    content: '';
+    padding: 0;
+}
+#crumbpath li * {
+    font-size: 12px;
+}
+
 
 /* ---------- Base layout tuning ---------- */
 

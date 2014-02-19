@@ -9,8 +9,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-screenshow:ircmessages' selected_event_id %}">Viestit</a>
-		&raquo; Muokkaa
+    <li><a href="{% url 'manage-screenshow:ircmessages' selected_event_id %}">Viestit</a></li>
+    <li>Muokkaa</li>
 {% endblock %}
 
 {% block jquery %}

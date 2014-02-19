@@ -117,7 +117,8 @@
 {% endblock %}
 
 {% block crumbs %}
-    <a href="{% url 'manage-base:index' %}">Hallinta</a>
+{{ block.super }}
+    <li><a href="{% url 'manage-base:index' %}">Hallinta</a></li>
 {% endblock %}
 
 {% block content %}{% endblock %}

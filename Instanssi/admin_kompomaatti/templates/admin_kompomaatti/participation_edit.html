@@ -10,9 +10,9 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-kompomaatti:competitions' selected_event_id %}">Kilpailut</a>
-		&raquo; <a href="{% url 'manage-kompomaatti:participations' selected_event_id competition.id %}">Osallistujat</a>
-		&raquo; Muokkaa
+    <li><a href="{% url 'manage-kompomaatti:competitions' selected_event_id %}">Kilpailut</a></li>
+    <li><a href="{% url 'manage-kompomaatti:participations' selected_event_id competition.id %}">Osallistujat</a></li>
+    <li>Muokkaa</li>
 {% endblock %}
 
 {% block jquery %}

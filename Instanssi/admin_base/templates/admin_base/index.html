@@ -12,14 +12,14 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; Etusivu
+    <li>Etusivu</li>
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Hallinta</h2>
 	<p>Tervetuloa hallintapaneeliin, {{ real_name }}!</p>
-	
+
 {% if important_flag %}
 	<h3>Huomio!</h3>
 

@@ -9,8 +9,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-screenshow:playlist' selected_event_id %}">Toistolista</a>
-		&raquo; Muokkaa
+    <li><a href="{% url 'manage-screenshow:playlist' selected_event_id %}">Toistolista</a></li>
+    <li>Muokkaa</li>
 {% endblock %}
 
 {% block jquery %}

@@ -9,8 +9,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-		&raquo; <a href="{% url 'manage-arkisto:vids' selected_event_id %}">Videot</a>
-		&raquo; Muokkaa
+    <li><a href="{% url 'manage-arkisto:vids' selected_event_id %}">Videot</a></li>
+    <li><span>Muokkaa</span></li>
 {% endblock %}
 
 {% block jquery %}

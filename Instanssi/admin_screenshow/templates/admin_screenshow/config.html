@@ -9,7 +9,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-screenshow:config' selected_event_id %}">Asetukset</a>
+    <li><a href="{% url 'manage-screenshow:config' selected_event_id %}">Asetukset</a></li>
 {% endblock %}
 
 {% block jquery %}

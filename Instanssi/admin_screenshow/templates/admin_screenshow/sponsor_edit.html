@@ -9,8 +9,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-        &raquo; <a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a>
-		&raquo; Muokkaa
+    <li><a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a></li>
+    <li>Muokkaa</li>
 {% endblock %}
 
 {% block jquery %}

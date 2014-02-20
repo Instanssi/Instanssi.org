@@ -1,16 +1,17 @@
 {% extends "arkisto/base.html" %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
+{% block head %}{{ block.super }}{% endblock %}
 
-{% block jquery %}
+{% block title %}{{ block.super }} - Etusivu{% endblock %}
+
+{% block jquery %}{{ block.super }}{% endblock %}
+
+{% block crumbs %}
 {{ block.super }}
+    &raquo; Etusivu
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-
 <p>Arkistossa ei valitettavasti ole tällä hetkellä sisältöä!</p>
-
 {% endblock %}

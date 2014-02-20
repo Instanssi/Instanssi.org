@@ -1,4 +1,3 @@
 {% for event in events %}
-            <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
-            {% if not forloop.last %}<span class="separator">|</span>{% endif %}
+        <li class="menuitem"><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
 {% endfor %}

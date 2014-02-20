@@ -1,17 +1,19 @@
-<!DOCTYPE html>{% load static %}{% load render_arkisto_nav from arkisto_base_tags %}
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Arkisto</title>
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/reset.css" %}" />
+{% extends "base_layout/base.html" %}
+{% load static %}
+{% load render_arkisto_nav from arkisto_base_tags %}
+
+{% block title %}Arkisto{% endblock %}
+{% block headername %}Arkisto{% endblock %}
+
+{% block head %}
     <link rel="stylesheet" type="text/css" href="{% static "arkisto/css/style.css" %}" />
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="http://instanssi.org/arkisto/" />
     <meta property="og:image" content="http://instanssi.org{% static "main2012/images/social-media/banner-button-256x256.jpg" %}" />
     <meta property="og:title" content="Instanssi Arkisto" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Instanssi Arkisto" />
+
 {% if GOOGLE_ANALYTICS %}
     <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -25,25 +27,23 @@
     })();
     </script>
 {% endif %}
-{% block head %}{% endblock %}
-    <script type="text/javascript">
-    $(function() {
-{% block jquery %}{% endblock %}
-    });
-    </script>
-</head>
-<body>
-    <div id="header"><h1><a href="http://instanssi.org/">Instanssi</a> | <a href="{% url 'archive:index' %}">Arkisto</a></h1></div>
-    <div id="content">
-{% if event %}
-        <ul id="nav">
+{% endblock %}
+
+{% block jquery %}
+    $('.ui-widget').css('font-size','14px');
+{% endblock %}
+
+{% block crumbs %}
+    <a href="{% url 'archive:index' %}">Arkisto</a>
+{% endblock %}
+
+{% block headernav %}
+        <ul id="header_nav_left">
 {% render_arkisto_nav %}
         </ul>
-        <h2>{{ event.name }} <a href="{% url 'archive:event' event.id %}" class="see-all-results">Katso kaikki tulokset</a></h2>
-{% else %}
-    <h2>Arkisto</h2>
-{% endif %}
+        <ul id="header_nav_right">
+            &nbsp;
+        </ul>
+{% endblock %}
+
 {% block content %}{% endblock %}
-    </div>
-</body>
-</html>

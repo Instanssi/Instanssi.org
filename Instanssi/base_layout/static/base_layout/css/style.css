@@ -6,11 +6,12 @@ body {
     margin: 0px;
     padding: 0px;
     background-color: #e7e7e7;
+    font-size: 14px;
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 100%;
 }
 
 p {
@@ -135,6 +136,7 @@ ul#crumbpath {
 	-webkit-box-shadow: 0px 3px 3px #888;
 }
 #header h1 { padding-bottom: 7px; }
+#header h1 .section { margin-left: .25em; font-size: .5em;}
 
 #header_nav_left { float: left; margin: 0; }
 #header_nav_right { float: right; margin: 0; }

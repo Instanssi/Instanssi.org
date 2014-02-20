@@ -34,7 +34,8 @@
 {% endblock %}
 
 {% block crumbs %}
-     <li><a href="{% url 'archive:index' %}">Arkisto</a></li>
+{{ block.super }}
+    <li><a href="{% url 'archive:index' %}">Arkisto</a></li>
 {% endblock %}
 
 {% block headernav %}

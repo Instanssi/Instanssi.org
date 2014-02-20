@@ -47,7 +47,7 @@ def competition_score(request, sel_event_id, competition_id):
         if scoreform.is_valid():
             scoreform.save()
             logger.info('Competition scores set.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     else:
         scoreform = AdminCompetitionScoreForm(competition=competition)
     
@@ -187,7 +187,7 @@ def compo_browse(request, sel_event_id):
             data.event_id = int(sel_event_id)
             data.save()
             logger.info('Compo "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
     else:
         compoform = AdminCompoForm()
     
@@ -213,7 +213,7 @@ def compo_edit(request, sel_event_id, compo_id):
         if editform.is_valid():
             c = editform.save()
             logger.info('Compo "'+c.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
     else:
         editform = AdminCompoForm(instance=compo)
     
@@ -239,7 +239,7 @@ def compo_delete(request, sel_event_id, compo_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
     
 @staff_access_required
 def entry_browse(request, sel_event_id):
@@ -257,7 +257,7 @@ def entry_browse(request, sel_event_id):
         if entryform.is_valid():
             e = entryform.save()
             logger.info('Compo entry "'+e.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
     else:
         entryform = AdminEntryAddForm(event=event)
     
@@ -290,7 +290,7 @@ def entry_edit(request, sel_event_id, entry_id):
         if editform.is_valid():
             e = editform.save()
             logger.info('Compo entry "'+e.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
     else:
         editform = AdminEntryEditForm(instance=entry, event=event)
     
@@ -320,7 +320,7 @@ def entry_delete(request, sel_event_id, entry_id):
     logger.info('Compo entry "'+entry.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
 
     # Redirect
-    return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
     
 @staff_access_required
 def results(request, sel_event_id):
@@ -370,7 +370,7 @@ def votecodes(request, sel_event_id):
                     n = n-1 # Ugly, may cause infinite loop...
                     
             logger.info('Votecodes generated.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:votecodes', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:votecodes', args=(sel_event_id,))) 
     else:
         gentokensform = CreateTokensForm()
         
@@ -423,7 +423,7 @@ def votecodes_print(request, sel_event_id):
 @staff_access_required
 def votecoderequests(request, sel_event_id):
     # Get all requests
-    requests = VoteCodeRequest.objects.filter(event_id=int(sel_event_id))
+    requests = VoteCodeRequest.objects.filter(event_id=int(sel_event_id,))
     
     # Render response
     return admin_render(request, "admin_kompomaatti/vcrequests.html", {
@@ -464,4 +464,4 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     vcr.delete()
     
     # Return to admin page
-    return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,))) 

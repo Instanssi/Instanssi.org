@@ -50,6 +50,11 @@
 
 /* Store form */
 
+.store-data {
+    display: table;
+    width: 100%;
+}
+
 .store-data input,
 .store-data textarea,
 .store-data select {
@@ -57,7 +62,6 @@
     margin: 5px;
     padding: 2px;
 }
-
 .store-form {
     background-color: #eee;
     border: 1px dotted #555;
@@ -111,46 +115,35 @@
 }
 
 .field-wrapper {
-    padding: 5px;
+    display: table-row;
+    padding: 4px;
     overflow: hidden;
 }
-
-.field-label {
-    width: 50%;
-    float: left;
-    vertical-align: top;
+.field-wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 4px 8px;
 }
 
-.required-field:first-child:before {
-    content: '* ';
+.required-field:after {
+    content: '*';
+    padding-left: 1ex;
     font-weight: bold;
     color: red;
 }
 
-.field-label label {
-    width: 200px;
-    display: inline-block;
-}
-
-.field-label input
-    width: 300px;
-}
 .field-label textarea {
     width: 400px;
 }
-.field-label ul {
-    width: 300px;
+.field-input ul {
+    margin: 0 !important;
+    min-width: 200px;
 }
-.field-label li {
+.field-input li {
     list-style-type: none;
+    margin: 0 !important;
 }
 
 .field-desc .errorlist {
     color: red;
-}
-
-.field-desc {
-    float: left;
-    padding: 4px;
-    width: 49%;
 }

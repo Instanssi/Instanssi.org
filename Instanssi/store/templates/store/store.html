@@ -76,7 +76,8 @@
         </div>
     {% else %}
         <div class="field-wrapper {% cycle 'light' 'dark' %}">
-            <div class="field-label {% if field.field.required %}required-field{% endif %}">{{ field.label_tag }} {{ field }}</div>
+            <div class="field-label {% if field.field.required %}required-field{% endif %}">{{ field.label_tag }}</div>
+            <div class="field-input">{{ field }}</div>
             <div class="field-desc">
                 {{ field.help_text|safe }}
                 {% if field.errors %}{{ field.errors }}{% endif %}

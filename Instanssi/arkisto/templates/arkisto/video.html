@@ -8,8 +8,8 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'archive:event' event.id %}">{{ event.name }}</a>
-    &raquo; <a href="{% url 'archive:video' video.id %}">{{ video.name }}</a>
+    <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
+    <li><a href="{% url 'archive:video' video.id %}">{{ video.name }}</a></li>
 {% endblock %}
 
 {% block content %}

@@ -13,7 +13,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-    &raquo; <a href="{% url 'archive:event' event.id %}">{{ event.name }}</a>
+     <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
 {% endblock %}
 
 {% block content %}

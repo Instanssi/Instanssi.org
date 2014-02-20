@@ -31,7 +31,7 @@ def index(request, sel_event_id):
             data.event_id = int(sel_event_id)
             data.save()
             logger.info('File "'+data.file.name+'" uploaded.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:
         uploadform = UploadForm()
     
@@ -60,7 +60,7 @@ def deletefile(request, sel_event_id, file_id):
     except UploadedFile.DoesNotExist:
         pass
     
-    return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     
 @staff_access_required
 def editfile(request, sel_event_id, file_id):
@@ -77,7 +77,7 @@ def editfile(request, sel_event_id, file_id):
         if uploadform.is_valid():
             data = uploadform.save()
             logger.info('File "'+data.file.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:
         uploadform = UploadForm(instance=uploadedfile)
     

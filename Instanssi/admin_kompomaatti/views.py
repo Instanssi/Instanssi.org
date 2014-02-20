@@ -115,7 +115,7 @@ def competitions_browse(request, sel_event_id):
             data.event_id = int(sel_event_id)
             data.save()
             logger.info('Competition "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id))) 
+            return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm()
     
@@ -167,7 +167,7 @@ def competition_delete(request, sel_event_id, competition_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id))) 
+    return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     
 @staff_access_required
 def compo_browse(request, sel_event_id):

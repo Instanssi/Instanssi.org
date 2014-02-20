@@ -32,7 +32,7 @@ def index(request, sel_event_id):
             entry.user = request.user
             entry.save()
             logger.info('Blog entry "'+entry.title+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id,)))
     else:
         form = BlogEntryForm()
     
@@ -61,7 +61,7 @@ def edit(request, sel_event_id, entry_id):
         if form.is_valid():
             entry = form.save()
             logger.info('Blog entry "'+entry.title+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id,)))
     else:
         form = BlogEntryEditForm(instance=entry)
     
@@ -86,4 +86,4 @@ def delete(request, sel_event_id, entry_id):
     except BlogEntry.DoesNotExist:
         pass
     
-    return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-blog:index', args=(sel_event_id,)))

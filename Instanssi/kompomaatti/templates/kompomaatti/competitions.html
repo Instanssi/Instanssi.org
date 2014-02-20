@@ -12,7 +12,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-    <li>Kilpailut</li>
+    <li><a href="{% url 'km:competitions' sel_event_id %}">Kilpailut</a></li>
 {% endblock %}
 
 {% block content %}

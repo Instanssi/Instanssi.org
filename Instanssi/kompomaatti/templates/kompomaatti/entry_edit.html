@@ -13,8 +13,9 @@
 
 {% block crumbs %}
 {{ block.super }}
+    <li><a href="{% url 'km:compos' sel_event_id %}">Kompot</a></li>
     <li><a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a></li>
-    <li>{{ entry.name }}</li>
+    <li><a href="{% url 'km:entry-edit' sel_event_id compo.id entry.id %}">{{ entry.name }}</a></li>
 {% endblock %}
 
 {% block content %}

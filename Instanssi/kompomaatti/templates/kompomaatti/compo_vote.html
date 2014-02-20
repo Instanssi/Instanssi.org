@@ -70,8 +70,9 @@
 
 {% block crumbs %}
 {{ block.super }}
+    <li><a href="{% url 'km:compos' sel_event_id %}">Kompot</a></li>
     <li><a href="{% url 'km:compo' sel_event_id compo.id %}">{{ compo.name }}</a></li>
-    <li>Äänestä</li>
+    <li><a href="{% url 'km:compo-vote' sel_event_id compo.id %}">Äänestä</a></li>
 {% endblock %}
 
 {% block content %}

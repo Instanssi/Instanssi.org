@@ -3,5 +3,5 @@
                     <li><a href="{% url 'km:competition' event_id competition.id %}">{{ competition.name }}</a></li>
 {% endfor %}
 {% else %}
-                    <li>---</li>
+                    <li><span>---</span></li>
 {% endif %}

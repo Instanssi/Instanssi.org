@@ -3,7 +3,7 @@
 {% load render_arkisto_nav from arkisto_base_tags %}
 
 {% block title %}Arkisto{% endblock %}
-{% block headername %}Arkisto{% endblock %}
+{% block headername %}<a href="{% url 'archive:index' %}">Arkisto</a>{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{% static "arkisto/css/style.css" %}" />

@@ -65,6 +65,10 @@ p {
     text-align: justify;
 }
 
+hr {
+    border: 0; border-top: 1px dotted #0088c3;
+}
+
 /* ---------- Crumbpath ---------- */
 
 ul#crumbpath {

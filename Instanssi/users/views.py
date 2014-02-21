@@ -7,26 +7,27 @@ from django.contrib import auth
 from django.core.urlresolvers import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
 from Instanssi.users.misc.auth_decorator import user_access_required
+from common.misc import get_url_local_path
 
 def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('users:profile'))
     
     # Get referer for redirect
-    referer = request.META.get('HTTP_REFERER', None)
+    next = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
+    print next
     
     # Test django login form
     if request.method == "POST":
         djangoform = DjangoLoginForm(request.POST)
         if djangoform.is_valid():
             djangoform.login(request)
-            return HttpResponseRedirect(reverse('users:profile'))
     else:
-        djangoform = DjangoLoginForm()
+        djangoform = DjangoLoginForm(next=next)
     
     # Openid login form
     # The form will be handled elsewhere; this is only for rendering the form.
-    openidform = OpenIDLoginForm(next=reverse('users:profile'))
+    openidform = OpenIDLoginForm(next=next)
     
     # Render response
     return render_to_response("users/login.html", {

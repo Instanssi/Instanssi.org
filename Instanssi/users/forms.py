@@ -1,31 +1,42 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from crispy_forms.helper import FormHelper
+from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
-from django.contrib import auth
+from common.misc import get_url_local_path
 
 class DjangoLoginForm(forms.Form):
     username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Django-käyttäjätunnus")
     password = forms.CharField(label=u"Salasana", widget=forms.PasswordInput)
+    next = forms.CharField(widget=forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):
+        self.next = kwargs.pop('next', '')
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
+        self.fields['next'].initial = self.next
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
                 u'Django kirjautuminen',
                 'username',
                 'password',
+                'next',
                 ButtonHolder (
                     Submit('submit', u'Kirjaudu')
                 )
             )
         )
+
+    def clean_next(self):
+        next = get_url_local_path(self.cleaned_data['next'])
+        print next
+        return next
 
     def clean(self):
         # Make sure the user is valid
@@ -42,6 +53,7 @@ class DjangoLoginForm(forms.Form):
 
     def login(self, request):
         auth.login(request, self.logged_user)
+        return HttpResponseRedirect(self.cleaned_data['next'])
 
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(

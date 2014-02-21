@@ -181,7 +181,6 @@ INSTALLED_APPS = (
     'Instanssi.main2013',
     'Instanssi.main2014',
     'Instanssi.admin_base',
-    'Instanssi.admin_auth',
     'Instanssi.admin_arkisto',
     'Instanssi.admin_blog',
     'Instanssi.admin_upload',
@@ -265,7 +264,6 @@ LOGGING = {
         'Instanssi.admin_store': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.main2013': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.tickets': { 'handlers': ['log_db'], 'level': 'INFO' },
         'Instanssi.infodesk': { 'handlers': ['log_db'], 'level': 'INFO' },
     }
 }

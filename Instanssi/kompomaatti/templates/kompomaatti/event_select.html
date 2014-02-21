@@ -11,7 +11,7 @@
 {{ block.super }}
         $('#submit_button').css('display', 'none');
         $('#event_select').change(function() {
-            window.location.replace("/kompomaatti/"+$('#event_select').val()+'/');
+            $('#mform').submit();
         });
 {% endblock %}
 
@@ -32,7 +32,7 @@
 {{ block.super }}
 <h2>Tapahtuman valinta</h2>
     <p>Valitse tapahtuma.</p>
-    <form id="mform" method="POST" action="">
+    <form id="mform" method="post" action="">
         <select id="event_select" name="eventsel">
             <option value="-1">---</option>
     {% for event in events %}

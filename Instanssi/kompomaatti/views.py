@@ -18,7 +18,8 @@ def eventselect(request):
     # Check if user selected an event without Javascript
     if request.method == 'POST':
         event_id = int(request.POST['eventsel'])
-        return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
+        if event_id > -1:
+            return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
     
     # Render page
     return render_to_response('kompomaatti/event_select.html', {

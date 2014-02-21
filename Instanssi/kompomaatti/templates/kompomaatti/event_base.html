@@ -30,20 +30,6 @@
                 </ul>
             </li>
         </ul>
-        <ul id="header_nav_right">
-{% if user.is_authenticated %}
-            <li class="menuitem">
-                <a href="{% url 'km:profile' sel_event_id %}">{% if user.email %}{{ user.email }}{% else %}Profiili{% endif %}</a>
-            </li>
-{% endif %}
-            <li class="menuitem">
-{% if user.is_authenticated %}
-                <a href="{% url 'km:logout' sel_event_id %}">Kirjaudu ulos</a>
-{% else %}
-                <a href="{% url 'km:login' sel_event_id %}">Kirjaudu sisään</a>
-{% endif %}
-            </li>
-        </ul>
 {% endblock %}
         
 {% block crumbs %}

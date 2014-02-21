@@ -26,10 +26,16 @@
     <div class="container">
         <div id="usertools">
             {% if request.user.is_authenticated %}
-            <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
             <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
+            <div>
+                <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
+                <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>
+            </div>
             {% else %}
-            <a href="{% url 'users:login' %}">Login</a>
+            <div>
+                <a href="{% url 'users:login' %}">&nbsp;</a>
+                <a href="{% url 'users:login' %}">Kirjaudu sisään</a>
+            </div>
             {% endif %}
         </div>
         <h1><a href="/">Instanssi</a> <span class="section">{% block headername %}{% endblock %}</span></h1>

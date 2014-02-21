@@ -235,10 +235,22 @@ ul#crumbpath li * {
 /* ---- usertools ---- */
 #usertools {
     float: right;
-    background: #111121;
-    background: rgba(0,0,0,.7);
-    color: #eee;
     padding: 8px;
+}
+#usertools img {
+    box-shadow: 0 0 2px #555;
+    float: right;
+}
+#usertools div {
+    float: right;
+    vertical-align: middle;
+    text-align: right;
+    padding-top: 0.1em;
+}
+#usertools div a {
+    padding: 0.25em;
+    padding-right: 0.6em;
+    display: block;
 }
 #usertools a, #usertools a:visited {
     color: #eee;

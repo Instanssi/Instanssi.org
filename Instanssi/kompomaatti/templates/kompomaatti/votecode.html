@@ -13,7 +13,7 @@
 
 {% block crumbs %}
 {{ block.super }}
-    <li>Äänestyskoodi</li>
+    <li><a href="{% url 'km:votecode' sel_event_id %}">Äänestyskoodi</a></li>
 {% endblock %}
 
 {% block content %}

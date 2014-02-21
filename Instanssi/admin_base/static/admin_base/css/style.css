@@ -106,30 +106,3 @@ div.pager select,
 div.pager input {
 	border: 1px solid #777777;
 }
-
-/* ---------- uniForm tweaks ---------- */
-
-form.uniForm {
-	margin-top: 1.0em;
-}
-
-form.uniForm .ctrlHolder,
-form.uniForm .error { 
-    border-bottom: 1px dotted #aaaaaa; 
-}
-
-form.uniForm .buttonHolder {
-	margin: 0;
-}
-
-form.uniForm .error {
-    margin: 0.5em;
-}
-
-form.uniForm fieldset { 
-	border: 1px solid #999999;
-}
-
-form.uniForm legend { 
-	padding: 0.3em;	
-}

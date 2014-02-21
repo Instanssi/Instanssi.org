@@ -1,3 +1,20 @@
+
 form.uniForm fieldset {
     border: 1px solid #999999;
+}
+
+form.uniForm #errorMsg {
+    vertical-align: middle;
+}
+
+form.uniForm #errorMsg ol {
+    margin: 0;
+}
+
+form.uniForm #errorMsg li {
+    background-color: transparent;
+}
+
+form.uniForm .error {
+    margin: 0.5em;
 }

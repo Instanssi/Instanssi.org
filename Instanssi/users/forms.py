@@ -4,8 +4,10 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
+from django.core.exceptions import ValidationError
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
+from django.contrib import auth
 
 class DjangoLoginForm(forms.Form):
     username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Django-käyttäjätunnus")
@@ -24,6 +26,22 @@ class DjangoLoginForm(forms.Form):
                 )
             )
         )
+
+    def clean(self):
+        # Make sure the user is valid
+        cleaned_data = super(DjangoLoginForm, self).clean()
+        
+        if 'username' in self.cleaned_data and 'password' in self.cleaned_data:
+            self.logged_user = auth.authenticate(
+                username=self.cleaned_data['username'],
+                password=self.cleaned_data['password'])
+            if self.logged_user == None or self.logged_user.is_active == False:
+                self.logged_user = None
+                raise ValidationError(u'Väärä käyttäjätunnus tai salasana!')
+        return cleaned_data
+
+    def login(self, request):
+        auth.login(request, self.logged_user)
 
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(

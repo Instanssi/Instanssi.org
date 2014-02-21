@@ -34,7 +34,7 @@
 <h2>Kirjaudu sisään</h2>
 <p>Valitse kirjautumispalvelusi.</p>
 
-<a href="{% url 'social:begin' 'facebook-app' %}">Facebook</a><br />
+<a href="{% url 'social:begin' 'facebook' %}">Facebook</a><br />
 {% crispy openidform openidform.helper %}<br />
 {% crispy djangoform djangoform.helper %}
 {% endblock %}

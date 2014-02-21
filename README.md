@@ -48,7 +48,7 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.5 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
+* [Django 1.6 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
 * [python-social-auth] (https://github.com/omab/python-social-auth) `pip install python-social-auth`
 * [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
 * [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`

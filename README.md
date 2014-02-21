@@ -57,6 +57,7 @@ Kirjastot
 * [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
 * [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 * [django-twitter-tag] (https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
+* [django-debug-toolbar] (http://django-debug-toolbar.readthedocs.org) `pip install django-debug-toolbar`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------

@@ -1,0 +1,36 @@
+{% extends "base_layout/base.html" %}
+{% load static %}
+
+{% block title %}Käyttäjäprofiili{% endblock %}
+{% block headername %}<a href="{% url 'users:profile' %}">Käyttäjäprofiili</a>{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "users/css/style.css" %}" />
+    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
+{% endblock %}
+
+{% block jquery %}
+    $('.ui-widget').css('font-size','14px');
+{% endblock %}
+
+{% block headernav %}
+{{ block.super }}
+        <ul id="header_nav_left">
+{% if user.is_authenticated %}
+            <li class="menuitem"><a href="{% url 'users:profile' %}">Profiili</a></li>
+{% endif %}
+        </ul>
+        <ul id="header_nav_right">
+        </ul>
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li><a href="{% url 'users:profile' %}">Käyttäjäprofiili</a></li>
+{% endblock %}
+
+{% block content %}{% endblock %}

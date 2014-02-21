@@ -1,0 +1,28 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Profiili{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+    $('.emailinput').addClass('textInput');
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li>Profiili</li>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Profiili</h2>
+<p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
+
+<h3>Käyttäjätiedot</h3>
+{% crispy profileform profileform.helper %}
+
+{% endblock %}

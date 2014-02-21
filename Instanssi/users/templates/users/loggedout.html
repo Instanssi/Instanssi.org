@@ -1,0 +1,23 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Uloskirjautuminen{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li>Uloskirjautuminen</li>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Uloskirjautuminen</h2>
+<p>Kirjauduit ulos.</p>
+{% endblock %}

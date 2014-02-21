@@ -15,7 +15,5 @@ urlpatterns = patterns(
     url(r'^(?P<event_id>\d+)/competitions/', 'competitions', name="competitions"),
     url(r'^(?P<event_id>\d+)/competition/(?P<competition_id>\d+)/signout/', 'competition_signout', name="competition-signout"),
     url(r'^(?P<event_id>\d+)/competition/(?P<competition_id>\d+)/', 'competition_details', name="competition"),
-    url(r'^(?P<event_id>\d+)/profile/', 'profile', name="profile"),
-    url(r'^(?P<event_id>\d+)/logout/', 'do_logout', name="logout"),
-    url(r'^(?P<event_id>\d+)/login/', 'do_login', name="login"),
+    url(r'^(?P<event_id>\d+)/votecode/', 'votecode', name="votecode"),
 )

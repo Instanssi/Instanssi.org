@@ -29,6 +29,9 @@
 {% render_base_competitions_nav sel_event_id  %}
                 </ul>
             </li>
+            <li class="menuitem">
+                <a href="{% url 'km:votecode' sel_event_id %}">Äänestyskoodi</a>
+            </li>
         </ul>
 {% endblock %}
         

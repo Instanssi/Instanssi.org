@@ -5,107 +5,13 @@ from datetime import datetime
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.files.base import File
-
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Profile, CompetitionParticipation
 
-
-class OpenIDLoginForm(forms.Form):
-    sps = forms.ChoiceField(
-        label=u'Kirjautumispalvelu', 
-        help_text=u'Muutamia yleisimpiä kirjautumispalvelimia.')
-    openid_identifier = forms.URLField(
-        widget=forms.TextInput(), 
-        max_length=255, 
-        required=True, 
-        label=u'Osoite', 
-        help_text=u'Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.')
-    next = forms.CharField(widget=forms.HiddenInput())
-
-    def __init__(self, *args, **kwargs):
-        # Init
-        self.next = kwargs.pop('next', "")
-        super(OpenIDLoginForm, self).__init__(*args, **kwargs)
-        
-        # Build form
-        self.helper = FormHelper()
-        self.helper.form_action = reverse('social:begin', args=('openid',))
-        self.helper.layout = Layout(
-            Fieldset(
-                u'',
-                'sps',
-                'openid_identifier',
-                'next',
-                ButtonHolder (
-                    Submit('submit-login', u'Kirjaudu')
-                )
-            )
-        )
-        
-        # Initial values
-        self.fields['next'].initial = self.next
-        self.fields['sps'].choices = [
-            ('https://www.google.com/accounts/o8/id', 'Google'),
-            ('https://korppi.jyu.fi/openid/', 'Korppi'),
-            ('https://me.yahoo.com', 'Yahoo'),
-        ]
-        self.fields['sps'].initial = 0
-        self.fields['openid_identifier'].initial = 'https://www.google.com/accounts/o8/id'
-        
-
-class ProfileForm(forms.ModelForm):
-    otherinfo = forms.CharField(widget=forms.Textarea(), label=u"Muut yhteystiedot", help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", required=False)
-    
-    def __init__(self, *args, **kwargs):
-        # Init
-        self.user = kwargs.pop('user', None)
-        super(ProfileForm, self).__init__(*args, **kwargs)
-        
-        # Find profile
-        try:
-            self.profile = Profile.objects.get(user=self.user)
-        except:
-            self.profile = Profile()
-            self.profile.user = self.user
-            self.profile.otherinfo = u""
-        
-        # Build form
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Fieldset(
-                u'Käyttäjäprofiili',
-                'first_name',
-                'last_name',
-                'email',
-                'otherinfo',
-                ButtonHolder (
-                    Submit('submit-profile', 'Tallenna')
-                )
-            )
-        )
-        
-        # Finnish labels
-        self.fields['first_name'].label = u"Etunimi"
-        self.fields['last_name'].label = u"Sukunimi"
-        self.fields['email'].label = u"Sähköposti"
-        self.fields['email'].required = True
-        self.fields['otherinfo'].initial = self.profile.otherinfo
-                
-    def save(self):
-        super(ProfileForm, self).save()
-        self.profile.otherinfo = self.cleaned_data['otherinfo']
-        self.profile.save()
-        
-    class Meta:
-        model = User
-        fields = ('first_name','last_name','email')
-        
 class VoteCodeRequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(VoteCodeRequestForm, self).__init__(*args, **kwargs)

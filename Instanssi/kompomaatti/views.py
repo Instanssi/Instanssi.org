@@ -381,7 +381,7 @@ def entry_details(request, event_id, compo_id, entry_id):
     }, context_instance=RequestContext(request))
 
 @user_access_required
-def profile(request, event_id):
+def votecode(request, event_id):
     # Get event
     event = get_object_or_404(Event, pk=int(event_id))
         
@@ -402,22 +402,13 @@ def profile(request, event_id):
         request_made = True
     except VoteCodeRequest.DoesNotExist:
         pass
-        
-    # Profile form
-    if request.method == 'POST' and 'submit-profile' in request.POST:
-        profileform = ProfileForm(request.POST, instance=request.user, user=request.user)
-        if profileform.is_valid():
-            profileform.save()
-            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
-    else:
-        profileform = ProfileForm(instance=request.user, user=request.user)
-    
+
     # Votecode Association form
     if request.method == 'POST' and 'submit-vcassoc' in request.POST:
         votecodeassocform = VoteCodeAssocForm(request.POST, event=event, user=request.user)
         if votecodeassocform.is_valid():
             votecodeassocform.save()
-            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
+            return HttpResponseRedirect(reverse('km:votecode', args=(event_id,)))
     else:
         votecodeassocform = VoteCodeAssocForm(event=event, user=request.user)
     
@@ -429,31 +420,17 @@ def profile(request, event_id):
             vcr.user = request.user
             vcr.event = event
             vcr.save()
-            return HttpResponseRedirect(reverse('km:profile', args=(event_id,)))
+            return HttpResponseRedirect(reverse('km:votecode', args=(event_id,)))
     else:
         votecoderequestform = VoteCodeRequestForm()
     
     # Render
-    return render_to_response('kompomaatti/profile.html', {
+    return render_to_response('kompomaatti/votecode.html', {
         'sel_event_id': int(event_id),
-        'profileform': profileform,
         'votecodeassocform': votecodeassocform,
         'votecoderequestform': votecoderequestform,
         'reserved_code': reserved_code,
         'can_vote': can_vote,
         'request_made': request_made,
     }, context_instance=RequestContext(request))
-    
-def do_login(request, event_id):
-    loginform = OpenIDLoginForm(next=reverse('km:index', args=(event_id,)))
-    
-    return render_to_response('kompomaatti/login.html', {
-        'sel_event_id': int(event_id),
-        'openidform': loginform,
-    }, context_instance=RequestContext(request))
-    
-@user_access_required
-def do_logout(request, event_id):
-    logout(request)
-    return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
 

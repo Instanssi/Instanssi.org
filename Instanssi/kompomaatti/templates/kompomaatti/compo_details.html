@@ -83,7 +83,7 @@
 
 {% endif %}
 {% if not can_vote and compo.is_voting_open %}
-<p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Voit hakea äänioikeutta <a href="{% url 'km:profile' sel_event_id %}#voting">profiilipaneelista</a>.</p>
+<p>Äänestys on auki, mutta sinulla ei ole äänestysoikeutta! Voit hakea äänioikeutta <a href="{% url 'km:votecode' sel_event_id %}#voting">äänestyskoodisivulla</a>.</p>
 {% endif %}
 {% if can_vote and not compo.is_voting_open %}
 <p>Äänestys on kiinni.</p>

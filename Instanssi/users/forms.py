@@ -35,7 +35,6 @@ class DjangoLoginForm(forms.Form):
 
     def clean_next(self):
         next = get_url_local_path(self.cleaned_data['next'])
-        print next
         return next
 
     def clean(self):

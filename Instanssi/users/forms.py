@@ -4,7 +4,6 @@ from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
@@ -52,7 +51,6 @@ class DjangoLoginForm(forms.Form):
 
     def login(self, request):
         auth.login(request, self.logged_user)
-        return HttpResponseRedirect(self.cleaned_data['next'])
 
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(

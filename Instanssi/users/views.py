@@ -21,6 +21,7 @@ def login(request):
         djangoform = DjangoLoginForm(request.POST)
         if djangoform.is_valid():
             djangoform.login(request)
+            return HttpResponseRedirect(djangoform.cleaned_data['next'])
     else:
         djangoform = DjangoLoginForm(next=next)
     

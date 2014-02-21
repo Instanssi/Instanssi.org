@@ -69,24 +69,24 @@
 
 {% block headernav %}
         <ul id="header_nav_left">
-            <li class="menuitem">
-                <a href="{% url 'manage-users:index' %}">Käyttäjät<span class="navmenu-icon-down"></span></a>
+            <li class="menuitem menu-down-arrow">
+                <a href="{% url 'manage-users:index' %}">Käyttäjät</a>
                 <ul class="sub-level">
                     <li class="menuitem"><a href="{% url 'manage-users:users' %}">Käyttäjät</a></li>
                     <li class="menuitem"><a href="{% url 'manage-users:log' %}">Loki</a></li>
                 </ul>
             </li>
 {% if user.is_superuser %}
-            <li class="menuitem">
-                <a href="{% url 'manage-utils:index' %}">Työkalut<span class="navmenu-icon-down"></span></a>
+            <li class="menuitem menu-down-arrow">
+                <a href="{% url 'manage-utils:index' %}">Työkalut</a>
                 <ul class="sub-level">
                     <li class="menuitem"><a href="{% url 'manage-utils:diskcleaner' %}">Levynpuhdistus</a></li>
                     <li class="menuitem"><a href="{% url 'manage-utils:dbchecker' %}">Tietokantatarkastaja</a></li>
                 </ul>
             </li>
 {% endif %}
-            <li class="menuitem">
-                <a href="{% url 'manage-store:index' %}">Verkkokauppa<span class="navmenu-icon-down"></span></a>
+            <li class="menuitem menu-down-arrow">
+                <a href="{% url 'manage-store:index' %}">Verkkokauppa</a>
                 <ul class="sub-level">
                     <li class="menuitem"><a href="{% url 'manage-store:items' %}">Tuotteet</a></li>
 {% if perms.store.view_storetransaction %}
@@ -95,8 +95,8 @@
 {% endif %}
                 </ul>
             </li>
-            <li class="menuitem">
-                <a href="{% url 'manage-events:index' %}">Tapahtumat<span class="navmenu-icon-down"></span></a>
+            <li class="menuitem menu-down-arrow">
+                <a href="{% url 'manage-events:index' %}">Tapahtumat</a>
                 <ul class="sub-level">
 {% render_base_events_nav %}
                 </ul>

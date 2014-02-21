@@ -145,24 +145,13 @@ hr {
 
 /* ----------- Some common stuff for menuitems ---------- */
 
-.navmenu-icon-down {
-	float: right;
-	position: relative;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	margin-left: 6px;
-	background-image: url('../img/arrow_down.png');
-}
-
-.navmenu-icon-right {
-    float: right;
-    position: relative;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-left: 6px;
-    background-image: url('../img/arrow_right.png');
+li.menu-down-arrow { background-image: url('../img/arrow_down.png'); }
+li.menu-right-arrow { background-image: url('../img/arrow_right.png'); }
+li.menu-right-arrow,
+li.menu-down-arrow {
+    background-position: 95% center;
+    background-repeat: no-repeat;
+    padding-right: 15px;
 }
 
 .menuitem:hover {

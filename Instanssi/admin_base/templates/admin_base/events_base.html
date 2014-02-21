@@ -22,16 +22,16 @@
         <li class="menuitem"><a href="{% url 'manage-slides:index' selected_event_id %}">Slaidit</a></li>
         <li class="menuitem"><a href="{% url 'manage-uploads:index' selected_event_id %}">Tiedostot</a></li>
         <li class="menuitem"><a href="{% url 'manage-programme:index' selected_event_id %}">Ohjelma</a></li>
-        <li class="menuitem">
-        	<a href="{% url 'manage-arkisto:index' selected_event_id %}">Arkisto<span class="navmenu-icon-right"></span></a>
+        <li class="menuitem menu-right-arrow">
+        	<a href="{% url 'manage-arkisto:index' selected_event_id %}">Arkisto</a>
             <ul class="sub-level">
             	<li class="menuitem"><a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Arkistoija</a></li>
                 <li class="menuitem"><a href="{% url 'manage-arkisto:vids' selected_event_id %}">Videot</a></li>
                 <li class="menuitem"><a href="{% url 'manage-arkisto:vidcats' selected_event_id %}">Kategoriat</a></li>
             </ul>
         </li>
-        <li class="menuitem">
-            <a href="{% url 'manage-screenshow:index' selected_event_id %}">Screenshow<span class="navmenu-icon-right"></span></a>
+        <li class="menuitem menu-right-arrow">
+            <a href="{% url 'manage-screenshow:index' selected_event_id %}">Screenshow</a>
             <ul class="sub-level">
                 <li class="menuitem"><a href="{% url 'manage-screenshow:sponsors' selected_event_id %}">Sponsorit</a></li>
                 <li class="menuitem"><a href="{% url 'manage-screenshow:messages' selected_event_id %}">Viestit</a></li>
@@ -40,8 +40,8 @@
                 <li class="menuitem"><a href="{% url 'manage-screenshow:config' selected_event_id %}">Asetukset</a></li>
             </ul>
         </li>
-    	<li class="menuitem">
-        	<a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti<span class="navmenu-icon-right"></span></a>
+    	<li class="menuitem menu-right-arrow">
+        	<a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a>
             <ul class="sub-level">
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:compos' selected_event_id %}">Kompot</a></li>
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:entries' selected_event_id %}">Entryt</a></li>

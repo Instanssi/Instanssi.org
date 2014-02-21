@@ -14,7 +14,11 @@ def login(request):
         return HttpResponseRedirect(reverse('users:profile'))
     
     # Get referer for redirect
-    next = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
+    # Make sure that the referrer is a local path.
+    if 'next' in request.GET:
+        next = get_url_local_path(request.GET['next'])
+    else:
+        next = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
 
     # Test django login form
     if request.method == "POST":

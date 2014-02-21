@@ -10,5 +10,5 @@ def infodesk_access_required(view_func):
             if request.user.has_perm('store.change_storetransaction'):
                 return view_func(request, *args, **kwargs)
             raise Http403
-        return HttpResponseRedirect(reverse('users:login')) 
+        return HttpResponseRedirect(reverse('users:login')+'?next='+request.get_full_path()) 
     return _checklogin

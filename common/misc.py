@@ -12,5 +12,4 @@ def get_url_local_path(url):
     parsed = urlsplit(url)
     newlist = ('', '', parsed[2],parsed[3],parsed[4])
     new = urlunsplit(newlist)
-    print new
     return new

@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{% load static %}{% load gravatar_url from basetags %}
 <html>
 <head>
     <meta charset="utf-8" />
@@ -27,6 +27,7 @@
         <div id="usertools">
             {% if request.user.is_authenticated %}
             <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
+            <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
             {% else %}
             <a href="{% url 'users:login' %}">Login</a>
             {% endif %}

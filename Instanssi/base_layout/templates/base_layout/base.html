@@ -24,6 +24,13 @@
 <body>
 <div id="header">
     <div class="container">
+        <div id="usertools">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
+            {% else %}
+            <a href="{% url 'users:login' %}">Login</a>
+            {% endif %}
+        </div>
         <h1><a href="/">Instanssi</a> <span class="section">{% block headername %}{% endblock %}</span></h1>
     </div>
     <div id="header_nav" class="container">

@@ -241,3 +241,20 @@ ul#crumbpath li * {
         min-width: 0;
     }
 }
+
+/* ---- usertools ---- */
+#usertools {
+    float: right;
+    background: #111121;
+    background: rgba(0,0,0,.7);
+    color: #eee;
+    padding: 8px;
+}
+#usertools a, #usertools a:visited {
+    color: #eee;
+    text-decoration: none;
+}
+#usertools a:hover {
+    color: #eee;
+    text-shadow: 0 0 2px white;
+}

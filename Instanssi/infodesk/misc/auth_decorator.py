@@ -6,10 +6,9 @@ from common.http import Http403
 
 def infodesk_access_required(view_func):
     def _checklogin(request, *args, **kwargs):
-        if request.user.is_authenticated() \
-           and request.user.is_active \
-           and request.user.has_perm('tickets.change_ticket') \
-           and request.user.has_perm('store.change_storetransaction'):
-            return view_func(request, *args, **kwargs)
-        raise Http403
+        if request.user.is_authenticated() and request.user.is_active:
+            if request.user.has_perm('store.change_storetransaction'):
+                return view_func(request, *args, **kwargs)
+            raise Http403
+        return HttpResponseRedirect(reverse('users:login')) 
     return _checklogin

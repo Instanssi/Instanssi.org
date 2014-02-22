@@ -22,23 +22,12 @@
 {% if compos %}
 {% for compo in compos %}
     <h3>{{ compo.name }}</h3>
-    <table class="info">
-        <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th>Ilmoittautuminen päättyy:</th>
-                <th>Kompo alkaa:</th>
-                <th>Äänestysaika:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <th>Tila/Aika:</th>
-            <td>{{ compo.adding_time }}</td>
-            <td>{{ compo.compo_time }}</td>
-            <td>{{ compo.voting_time }}</td>
-        </tbody>
-    </table>
-    <p><a href="{% url 'km:compo' sel_event_id compo.id %}">Siirry tarkastelemaan kompon tarkempia tietoja &raquo;</a></p>
+    <ul>
+        <li>Ilmoittautuminen päättyy: <strong>{{ compo.adding_time }}</strong></li>
+        <li>Kompo alkaa: <strong>{{ compo.compo_time }}</strong></li>
+        <li>Äänestysaika: <strong>{{ compo.voting_time }}</strong></li>
+    </ul>
+    <p><a href="{% url 'km:compo' sel_event_id compo.id %}">Kompon tiedot &raquo;</a></p>
 {% endfor %}
 {% else %}
     <p>Ei kompoja.</p>

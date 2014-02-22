@@ -26,20 +26,10 @@
 {{ competition.description|safe }}
 
 <h3>Ajat</h3>
-<table class="info">
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Ilmoittautuminen päättyy:</th>
-            <th>Kilpailu alkaa:</th>
-        </tr>
-    </thead>
-    <tbody>
-        <th>Tila/Aika:</th>
-        <td>{{ competition.participation_end_time }}</td>
-        <td>{{ competition.start_time }}</td>
-    </tbody>
-</table>
+<ul>
+    <li>Ilmoittautuminen päättyy: <strong>{{ competition.participation_end_time }}</strong></li>
+    <li>Kilpailu alkaa: <strong>{{ competition.start_time }}</strong></li>
+</ul>
 
 {% if competition.show_results %}
 <h3>Tulokset</h3>

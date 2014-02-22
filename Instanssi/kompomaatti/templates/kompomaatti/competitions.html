@@ -22,21 +22,11 @@
 {% if competitions %}
 {% for competition in competitions %}
     <h3>{{ competition.name }}</h3>
-    <table class="info">
-        <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th>Ilmoittautuminen päättyy:</th>
-                <th>Kilpailu alkaa:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <th>Tila/Aika:</th>
-            <td>{{ competition.participation_end_time }}</td>
-            <td>{{ competition.start_time }}</td>
-        </tbody>
-    </table>
-    <p><a href="{% url 'km:competition' sel_event_id competition.id %}">Siirry tarkastelemaan kilpailun tarkempia tietoja &raquo;</a></p>
+    <ul>
+        <li>Ilmoittautuminen päättyy: <strong>{{ competition.participation_end_time }}</strong></li>
+        <li>Kilpailu alkaa: <strong>{{ competition.start_time }}</strong></li>
+    </ul>
+    <p><a href="{% url 'km:competition' sel_event_id competition.id %}">Kilpailun tiedot &raquo;</a></p>
 {% endfor %}
 {% else %}
     <p>Ei kilpailuja.</p>

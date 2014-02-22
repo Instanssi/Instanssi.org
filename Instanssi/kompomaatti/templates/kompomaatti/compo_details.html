@@ -42,30 +42,16 @@
 {{ block.super }}
 <h2>{{ compo.name }}</h2>
 
-
 <h3>Kuvaus</h3>
 {{ compo.description|safe }}
 
-
 <h3>Ajat</h3>
-<table class="info">
-    <tr>
-        <th style="width: 20%;">Ilmoittautuminen päättyy:</th>
-        <td>{{ compo.adding_time }}</td>
-    </tr>
-    <tr>
-        <th>Muokkausaika päättyy:</th>
-        <td>{{ compo.editing_time }}</td>
-    </tr>
-    <tr>
-        <th>Kompo alkaa:</th>
-        <td>{{ compo.compo_time }}</td>
-    </tr>
-    <tr>
-        <th>Äänestysaika:</th>
-        <td>{{ compo.voting_time }}</td>
-    </tr>
-</table>
+<ul>
+    <li>Ilmoittautuminen päättyy: <strong>{{ compo.adding_time }}</strong></li>
+    <li>Muokkausaika päättyy: <strong>{{ compo.editing_time }}</strong></li>
+    <li>Kompo alkaa: <strong>{{ compo.compo_time }}</strong></li>
+    <li>Äänestysaika: <strong>{{ compo.voting_time }}</strong></li>
+</ul>
 
 {% if compo.is_votable %}
 {% if user.is_authenticated %}

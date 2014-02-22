@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from common.http import Http403
+from common.rest import rest_api, RestResponse
+from common.auth import user_access_required
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from Instanssi.kompomaatti.misc.auth_decorator import user_access_required
+from django.contrib.auth import logout
 from Instanssi.kompomaatti.forms import *
 from Instanssi.kompomaatti.models import *
 from Instanssi.kompomaatti.misc.time_formatting import *
 from Instanssi.kompomaatti.misc import awesometime
 from Instanssi.kompomaatti.misc.events import get_upcoming
-from django.contrib.auth import logout
 from datetime import datetime
+
+@rest_api
+def json_api(request):
+    return RestResponse()
 
 def eventselect(request):
     # Check if user selected an event without Javascript

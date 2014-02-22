@@ -18,13 +18,13 @@
                 <a href="{% url 'km:index' sel_event_id %}">{% event_name sel_event_id %}</a>
             </li>
             <li class="menuitem menu-down-arrow">
-                <a href="{% url 'km:compos' sel_event_id %}">Kompot ({% render_base_compos_count sel_event_id %})</a>
+                <a href="{% url 'km:compos' sel_event_id %}">Kompot</a>
                 <ul class="sub-level">
 {% render_base_compos_nav sel_event_id  %}
                 </ul>
             </li>
             <li class="menuitem menu-down-arrow">
-                <a href="{% url 'km:competitions' sel_event_id %}">Kilpailut ({% render_base_competitions_count sel_event_id %})</a>
+                <a href="{% url 'km:competitions' sel_event_id %}">Kilpailut</a>
                 <ul class="sub-level">
 {% render_base_competitions_nav sel_event_id  %}
                 </ul>

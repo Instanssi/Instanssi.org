@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from common.http import Http403
+from common.auth import staff_access_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import reverse
@@ -8,7 +9,6 @@ from Instanssi.kompomaatti.models import *
 from Instanssi.admin_kompomaatti.forms import *
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_base.misc.auth_decorator import staff_access_required
 
 # For votecode stuff
 from django.db import IntegrityError

@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+from common.auth import infodesk_access_required
+
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -9,7 +11,6 @@ from django.http import HttpResponseRedirect,Http404
 from django.core.urlresolvers import reverse
 
 from common.responses import JSONResponse
-from Instanssi.infodesk.misc.auth_decorator import infodesk_access_required
 from Instanssi.infodesk.forms import TransactionKeyScanForm, ItemKeyScanForm
 from Instanssi.store.models import StoreTransaction, TransactionItem
 

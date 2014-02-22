@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from common.http import Http403
+from common.auth import su_access_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_base.misc.auth_decorator import su_access_required
 from Instanssi.kompomaatti.models import Entry
 from django.conf import settings
 import os

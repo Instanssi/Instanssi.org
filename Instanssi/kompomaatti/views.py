@@ -16,7 +16,7 @@ from Instanssi.kompomaatti.misc.events import get_upcoming
 from datetime import datetime
 
 @rest_api
-def json_api(request):
+def api(request):
     return RestResponse()
 
 def eventselect(request):

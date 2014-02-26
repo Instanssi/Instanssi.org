@@ -15,7 +15,7 @@ def rest_api(view_func):
     json_view.csrf_exempt = True
     return json_view
 
-def RestResponse(data={}, code=200, errortext=''):
+def RestResponse(data=None, code=200, errortext=''):
     out = {
         'code': code,
         'errortext': errortext,

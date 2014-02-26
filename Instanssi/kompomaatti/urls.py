@@ -5,7 +5,6 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns(
     'Instanssi.kompomaatti.views',
     url(r'^$', 'eventselect', name="eventselect"),
-    url(r'^api/$', 'api', name="api"),
     url(r'^(?P<event_id>\d+)/$', 'index', name="index"),
     url(r'^(?P<event_id>\d+)/compos/$', 'compos', name="compos"),
     url(r'^(?P<event_id>\d+)/compo/(?P<compo_id>\d+)/entry/(?P<entry_id>\d+)/edit/$', 'compoentry_edit', name="entry-edit"),

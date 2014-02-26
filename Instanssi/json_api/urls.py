@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
-urlpatterns = patterns(
-    'Instanssi.json_api.views',
-    url(r'^happenings/$', 'happenings_api', name="happenings-api"),
-    url(r'^screen/np/$', 'screen_np_get', name="screen_np_get"),
-    url(r'^screen/np/set/$', 'screen_np_set', name="screen_np_set"),
-    url(r'^events/(?P<hid>\d+)/$', 'events_api', name="events-api"),
+urlpatterns = patterns('',
+    url(r'^kompomaatti/', include('Instanssi.json_api.kompomaatti.urls', namespace="api_km")),
+    url(r'^screen/', include('Instanssi.json_api.screen.urls', namespace="api_screen")),
 )

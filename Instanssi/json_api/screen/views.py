@@ -10,37 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from common.responses import JSONResponse
 from common.http import Http403
 from Instanssi.kompomaatti.models import Event
-from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import NPSong
 
-def happenings_api(request):
-    happenings = []
-    for h in Event.objects.all().order_by("-date"):
-        happenings.append({
-            'id': h.id,
-            'name': h.name,
-            'date': h.date.strftime("%d.%m.%Y %H:%M"),
-        })
-    return JSONResponse({'happenings': happenings})
-
-def events_api(request, hid):
-    # Get event
-    e = None
-    try:
-        e = Event.objects.get(pk=hid)
-    except Event.DoesNotExist:
-        return JSONResponse({'error': 1});
-
-    # Get upcoming stuff
-    events = []
-    for event in get_upcoming(e):
-        event['date'] = event['date'].strftime("%d.%m.%Y %H:%M")
-        events.append(event)
-
-    return JSONResponse({'events': events});
-
 @csrf_exempt
-def screen_np_get(request):
+def song_get(request):
     # Make sure the request is ok
     try:
         data = json.loads(request.body)
@@ -69,7 +42,7 @@ def screen_np_get(request):
         });
 
 @csrf_exempt
-def screen_np_set(request):
+def song_set(request):
     # Make sure the request is ok
     try:
         data = json.loads(request.body)

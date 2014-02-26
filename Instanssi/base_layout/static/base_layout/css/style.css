@@ -92,13 +92,6 @@ hr {
 /* ---------- Header ---------- */
 
 #header {
-    background: #111121;
-    background: -moz-linear-gradient(top, rgba(17,17,57,1) 0%, rgba(17,17,33,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(17,17,57,1)), color-stop(100%,rgba(17,17,33,1)));
-    background: -webkit-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
-    background: -o-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
-    background: -ms-linear-gradient(top, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
-    background: linear-gradient(to bottom, rgba(17,17,57,1) 0%,rgba(17,17,33,1) 100%);
     background: #0088C3;
 }
 

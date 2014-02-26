@@ -70,7 +70,6 @@ def index(request):
 def has_infodesk_access(request):
     return request.user.is_authenticated() \
         and request.user.is_active \
-        and request.user.has_perm('tickets.change_ticket') \
         and request.user.has_perm('store.change_storetransaction')
 
 

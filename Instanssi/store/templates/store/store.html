@@ -27,55 +27,51 @@
 <h2>Tilaus</h2>
 
 <form class="store-form" action="" method="post">
-    <div class="store-header"><p>
+    <div class="store-header">
         {% for step, name, num in friendly_steps %}
-        <span class="step{% if step == wizard.steps.step1 %} current{% endif %}">
-            {% if step < wizard.steps.step1 %}
+        <span class="step{% if step == wizard.steps.step1 %} current{% endif %}">{% if step < wizard.steps.step1 %}
             <button name="wizard_goto_step" type="submit" value="{{num}}">
                 {{ step }}. {{ name }}
             </button>
             {% else %}
                 {{ step }}. {{ name }}
             {% endif %}
-        </span>
-        {% endfor %}
-    </p></div>
+        </span>{% endfor %}
+    </div>
     {% csrf_token %}
-    <div>
     {{ wizard.management_form }}
-    
+
     {% if wizard.form.non_field_errors %}
     <div class="store-errors">
         {{ wizard.form.non_field_errors }}
     </div>
     {% endif %}
-    
+
     <div class="store-data">
     {% for field in wizard.form %}
     {% if wizard.steps.step0 == 0 %}
-        <div class="item-wrapper">
-            <div class="item-image">
-                {% if field.field.image_large %}
-                <a href="{{ field.field.image_large }}">
-                    <img src="{{ field.field.image_small }}" width="64" height="64" alt="Tuotekuva" />
-                </a>
-                {% endif %}
-            </div>
-            <div class="item-field">
-                {{ field }}
-                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
-            </div>
-            <div class="item-text">
-                <h3>
-                    {{ field.label }} 
-                    ({{ field.field.price }} €) 
+        <div class="store-item">
+            <div class="item-details">
+                <div class="item-image">
+                    {% if field.field.image_large %}
+                    <a href="{{ field.field.image_large }}">
+                        <img src="{{ field.field.image_small }}" width="64" height="64" alt="Tuotekuva" />
+                    </a>
+                    {% endif %}
+                </div>
+                <h3 class="item-title">{{ field.label}}
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
-                {{ field.help_text|safe }}
+                <div class="item-description">{{ field.help_text|safe }}</div>
+                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
+            </div>
+            <div class="item-amount">
+                <div class="item-price">{{ field.field.price }} €</div>
+                <div class="item-field">{{ field }}</div>
             </div>
         </div>
     {% else %}
-        <div class="field-wrapper {% cycle 'light' 'dark' %}">
+        <div class="field-wrapper {% cycle 'odd' 'even' %}">
             <div class="field-label {% if field.field.required %}required-field{% endif %}">{{ field.label_tag }}</div>
             <div class="field-input">{{ field }}</div>
             <div class="field-desc">
@@ -90,7 +86,7 @@
         {% if wizard.steps.prev %}
         <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">&laquo; Takaisin</button>
         {% endif %}
-        <input type="submit" value="Eteenpäin &raquo;" />
+        <input type="submit" value="Jatka &raquo;" />
     </div>
 </form>
 

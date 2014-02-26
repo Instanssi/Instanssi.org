@@ -17,37 +17,6 @@
     background-color: #cccccc;
 }
 
-/* ---------- Store items ---------- */
-
-.item-wrapper {
-    border-top: 1px dotted black;
-    padding: 1em;
-    vertical-align: top;
-    overflow: hidden;
-}
-
-.item-wrapper h3 {
-    border: 0;
-}
-
-.item-image {
-    box-shadow: 0 0 1px 1px #555;
-    width: 65px;
-    height: 65px;
-    float: left;
-    margin-right: 1em;
-}
-
-.item-text h3 {
-    font-size: 120%;
-    margin-top: 0;
-    margin-bottom: 0.5em;
-}
-
-.item-field {
-    float: right;
-}
-
 /* Store form */
 
 .store-data {
@@ -62,21 +31,14 @@
     margin: 5px;
     padding: 2px;
 }
-.store-form {
-    background-color: #eee;
-    border: 1px dotted #555;
-}
+.store-form > * { background-color: #eee; margin: 8px 0; }
+.store-header { text-align: center; }
+.store-header, .store-nav { padding: 8px 4px; }
 
-.store-header p {
-    text-align: center;
-}
+.store-header .step { padding: 0 .5em; }
+.store-header .step.current { font-weight: bold; }
 
-.store-header .step {
-    padding: 0 .5em;
-}
-.store-header .step.current {
-    font-weight: bold;
-}
+/* Make the step buttons resemble links */
 .store-header .step button {
     border: 0;
     background: transparent;
@@ -89,30 +51,20 @@
     text-decoration: underline;
 }
 
-.store-nav {
-    border-top: 1px dotted black;
-    padding: 1em;
-    overflow: hidden;
-}
-
+.store-nav { overflow: hidden; }
 .store-nav input { float: right; }
 .store-nav button { float: left; }
 
 .store-errors {
-    border-top: 1px dotted black;
     background-color: #B81900;
     overflow: hidden;
+    color: white;
 }
 
 /* Store other fields */
 
-.store-form .light {
-    background-color: #e6e6e6;
-}
-
-.store-form .dark {
-    background-color: #dddddd;
-}
+.store-form .even { background-color: #eaeaea; }
+.store-form .odd  { background-color: #f4f4f4; }
 
 .field-wrapper {
     display: table-row;
@@ -146,4 +98,50 @@
 
 .field-desc .errorlist {
     color: red;
+}
+
+/* ---------- Store items ---------- */
+
+.store-item {
+    padding: 8px;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.item-title, .item-price {
+    border: 0;
+    font-size: 120%;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.item-image {
+    box-shadow: 0 0 1px 1px #555;
+    width: 65px;
+    height: 65px;
+    float: left;
+    margin-right: 1em;
+}
+
+.item-field {
+    float: right;
+}
+.store-form > .store-data { background: transparent;}
+.store-data > .store-item { margin: 8px 0; background: #eee;}
+
+.store-item:first-child { margin-top: 0; }
+.store-item:last-child { margin-bottom: 0; }
+
+.store-item > * {
+    float: left; position: relative; left: 100%; margin-left: -100%;
+}
+.store-item > .item-details {
+    margin-left: -100%; width: 85%;
+}
+.store-item > .item-amount {
+    margin-left: -15%; width: 15%;
+    text-align: right;
+}
+.store-item .item-amount input {
+    margin: 0;
 }

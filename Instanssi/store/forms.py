@@ -41,9 +41,9 @@ class StoreProductsForm(forms.Form):
     def _dataitems(self):
         for key, value in self.data.iteritems():
             try:
-                pos = key.rfind('item-') + 5
+                pos = key.rfind('item-')
                 if pos > -1 and int(value):
-                    yield (key[pos:], int(value))
+                    yield (key[pos + 5:], int(value))
             except:
                 continue
 

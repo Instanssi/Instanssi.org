@@ -26,7 +26,9 @@
     <div class="container">
         <div id="usertools">
             {% if request.user.is_authenticated %}
-            <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
+            <a href="{% url 'users:profile' %}">
+                <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
+            </a>
             <div>
                 <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
                 <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>

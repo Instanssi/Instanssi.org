@@ -145,3 +145,14 @@
 .store-item .item-amount input {
     margin: 0;
 }
+
+.items-summary { padding: 8px; }
+.items-summary h3 { margin: 4px 0 16px; }
+
+.items-summary table { background: #fff; width: 100%; }
+.items-summary th, .items-summary td { padding: 8px; text-align: left; }
+.items-summary th { border-bottom: 1px solid #eee;}
+.items-summary tr > * { text-align: right; }
+.items-summary tr > *:first-child { text-align: left; width: 50%;}
+.items-summary .items-total { border-top: 1px solid #eee; }
+.items-summary .items-total td { text-align: right; }

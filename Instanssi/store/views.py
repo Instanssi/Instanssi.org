@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
 from Instanssi.store.methods import paytrail, bitpay
-from Instanssi.store.models import StoreTransaction, TransactionItem
+from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
 
 # Logging related
 import logging
@@ -34,13 +34,41 @@ class StoreWizard(CookieWizardView):
     form_list = [StoreProductsForm, StoreInfoForm, StorePaymentMethodForm]
     template_name = 'store/store.html'
 
+    def get_items_data(self):
+        """Returns (count, item) tuples for items currently in the order."""
+        data = self.get_cleaned_data_for_step('0')
+        return [
+            (data[key], StoreItem.objects.get(id=key[5:]))
+            for key in data
+        ]
+
     def get_context_data(self, form, **kwargs):
+        """Provides additional data for store forms."""
         context = super(StoreWizard, self).get_context_data(form=form, **kwargs)
         context['friendly_steps'] = [
             (1, u'Tuotteet', 0),
             (2, u'Asiakastiedot', 1),
             (3, u'Maksu', 2)
         ]
+
+        # Build a summary of items for the last step.
+        if self.steps.step0 == 2:
+            items_data = self.get_items_data()
+            total = 0
+            summary = []
+            for count, item in items_data:
+                if count <= 0:
+                    continue
+                subtotal = item.price * count
+                total += subtotal
+                summary.append({
+                    'count': count,
+                    'item': item,
+                    'subtotal': subtotal
+                })
+            context['items_total'] = total
+            context['items_summary'] = summary
+
         return context
 
     def done(self, form_list, **kwargs):

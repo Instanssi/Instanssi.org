@@ -38,6 +38,29 @@
             {% endif %}
         </span>{% endfor %}
     </div>
+    {% if wizard.steps.step0 == 2 %}
+    <div class="items-summary">
+        <table>
+            <tr>
+                <th>Tuote</th>
+                <th>Hinta</th>
+                <th>Määrä</th>
+                <th>Yhteensä</th>
+            </tr>
+            {% for item in items_summary %}
+            <tr>
+                <td>{{ item.item.name }}</td>
+                <td>{{ item.item.price }} €</td>
+                <td>{{ item.count }}</td>
+                <td>{{ item.subtotal }} €</td>
+            </tr>
+            {% endfor %}
+            <tr class="items-total">
+                <td colspan="4">{{ items_total }} €</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
     {% csrf_token %}
     {{ wizard.management_form }}
 

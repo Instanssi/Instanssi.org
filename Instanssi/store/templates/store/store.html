@@ -30,11 +30,9 @@
     <div class="store-header">
         {% for step, name, num in friendly_steps %}
         <span class="step{% if step == wizard.steps.step1 %} current{% endif %}">{% if step < wizard.steps.step1 %}
-            <button name="wizard_goto_step" type="submit" value="{{num}}">
-                {{ step }}. {{ name }}
-            </button>
+            <a href="{% url 'store:order_step' step %}">{{ step }}.{{ name }}</a>
             {% else %}
-                {{ step }}. {{ name }}
+            {{ step }}. {{ name }}
             {% endif %}
         </span>{% endfor %}
     </div>
@@ -107,7 +105,7 @@
     </div>
     <div class="store-nav">
         {% if wizard.steps.prev %}
-        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">&laquo; Takaisin</button>
+        <a href="{% url 'store:order_step' wizard.steps.prev %}">&laquo; Takaisin</a>
         {% endif %}
         <input type="submit" value="Jatka &raquo;" />
     </div>

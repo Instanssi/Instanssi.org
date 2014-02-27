@@ -53,7 +53,8 @@
 
 .store-nav { overflow: hidden; }
 .store-nav input { float: right; }
-.store-nav button { float: left; }
+.store-nav > * { font-size: 100%; }
+.store-nav a { display: inline-block; padding: 4px; }
 
 .store-errors {
     background-color: #B81900;

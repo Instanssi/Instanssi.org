@@ -19,7 +19,27 @@
 {% block content %}
 {{ block.super }}
 <h2>Etusivu</h2>
+<p>
+    Lippujen ja oheistuotteiden ostaminen onnistuu <a href="{% url 'store:order' %}">tilaussivulla</a>. 
+    Huomaathan, että pääsyliput ja tuotteiden lunastamiseen vaadittavat koodit toimitetaan sähköpostitse. 
+    Verkkokaupasta ostetut tuotteet voi lunastaa tapahtuman aikana infotiskiltä, sisäänkäynnin lähettyviltä.
+</p>
 
-<p>Tähän jotain tervetulojuttua, ohjeita, jne.</p>
+<h3>Maksaminen</h3>
+<p>
+    Lipun maksaminen onnistuu luomalla itsellesi Paytrail tilin ja suorittamalla maksun
+    tiliin liitetyllä debit- tai credit kortilla. Tilin luominen ja kortin liittäminen 
+    tapahtuu maksuprosessin yhteydessä Paytrailin maksuvalintasivulta. Tiliä luodessa 
+    varaudu tunnistautumaan omilla verkkopankkitunnuksillasi (mikäli sinulla ei siis 
+    tiliä jo ole). Onnistuneen tilin luonnin ja kortin liittämisen jälkeen voit suorittaa
+    maksun loppuun ja myöhemmin tarkastella niin tätä kuin myös muita Paytrail-tilillä 
+    tekemiäsi maksuja osoitteessa <a href="http://my.paytrail.com">my.paytrail.com</a>. 
+    Maksun voit suorittaa myös Paytrail-tilin sijasta omilla verkkopankkitunnuksillasi.
+</p>
+<p>
+    Lippujen maksamisen voi suorittaa nyt myös Bitcoineilla. Huomaathan, että Instanssin verkkokaupan 
+    tuotteiden hinta on sidottu euromääräiseen arvoon, ja täten hinta bitcoineissa voi vaihdella 
+    valuuttakurssin mukaisesti.
+</p>
 
 {% endblock %}

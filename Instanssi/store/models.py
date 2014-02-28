@@ -20,6 +20,7 @@ class StoreItem(models.Model):
     imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source='imagefile_original', format='PNG')
     max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
+    sort_index = models.IntegerField(u'Järjestysarvo', default=0, help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
 
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)
@@ -35,7 +36,7 @@ class StoreItem(models.Model):
 
     @staticmethod
     def items_available():
-        return StoreItem.objects.filter(max__gt=0, available=True)
+        return StoreItem.objects.filter(max__gt=0, available=True).order_by('sort_index')
 
     def __unicode__(self):
         return self.name

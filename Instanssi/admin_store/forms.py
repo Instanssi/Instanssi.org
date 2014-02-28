@@ -21,6 +21,7 @@ class StoreItemForm(forms.ModelForm):
                 'available',
                 'max_per_order',
                 'imagefile_original',
+                'sort_index',
                 ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )

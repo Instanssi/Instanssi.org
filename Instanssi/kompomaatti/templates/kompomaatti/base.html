@@ -5,11 +5,10 @@
 {% block headername %}<a href="{% url 'km:eventselect' %}">Kompomaatti</a>{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/jquery/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+    <!-- Kompomaatti specific -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
-    <script type="text/javascript" src="{% static "libs/js/jquery/jquery-ui-1.9.1.custom.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
 {% endblock %}
 

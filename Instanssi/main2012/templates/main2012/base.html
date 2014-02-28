@@ -6,12 +6,11 @@
     <meta name="viewport" content="initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'main2012/css/style.css?v2' %}" />
-    <link rel="stylesheet" type="text/css" href="http{% if request.is_secure %}s{% endif %}://fonts.googleapis.com/css?family=Alfa+Slab+One" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Alfa+Slab+One" />
     <link rel="image_src" href="{% static 'main2012/images/social-media/banner-button-256x256.jpg' %}" />
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
     <link rel="icon" type="image/jpeg" href="/static/main2012/images/favicon.jpg">
-    <script type="text/javascript" src="http{% if request.is_secure %}s{% endif %}://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="{% static 'main2012/js/modernizr-1.7.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'main2012/js/instanssiBackground.js' %}"></script>
     <script type="text/javascript" src="{% static 'main2012/js/twitter_feed.js' %}"></script>
@@ -39,10 +38,6 @@
     <script type="text/javascript">
     $(function() {
 {% block jquery %}
-    $('#tweets').twitterfeed({
-        users: ["Instanssi"], 
-        tweetcount: 5
-    });
 {% endblock %}
     });
     </script>

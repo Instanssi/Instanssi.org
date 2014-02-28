@@ -55,6 +55,9 @@
 .store-nav input { float: right; }
 .store-nav > * { font-size: 100%; }
 .store-nav a { display: inline-block; padding: 4px; }
+a.wizard-nav-button {
+    padding: 0;
+}
 
 .store-errors {
     background-color: #B81900;

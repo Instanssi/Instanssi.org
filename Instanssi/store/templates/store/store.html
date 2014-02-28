@@ -14,6 +14,8 @@
 {{ block.super }}
     $(".item-image a").fancybox();
     
+    $('.wizard-nav-button').button();
+    
     function clean_field(field) {
         var min = field.attr('min');
         var max = field.attr('max');
@@ -130,9 +132,9 @@
     {% endif %}
     <div class="store-nav">
         {% if wizard.steps.prev %}
-        <a href="{% url 'store:order_step' wizard.steps.prev %}">&laquo; Takaisin</a>
+        <a href="{% url 'store:order_step' wizard.steps.prev %}" class="wizard-nav-button">&laquo; Takaisin</a>
         {% endif %}
-        <input type="submit" value="Jatka &raquo;" />
+        <input type="submit" value="Jatka &raquo;" class="wizard-nav-button" />
     </div>
 </form>
 

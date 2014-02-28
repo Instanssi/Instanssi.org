@@ -103,6 +103,11 @@
 
 /* ---------- Store items ---------- */
 
+.total-price {
+    padding: 8px 4px;
+    text-align: right;
+}
+
 .store-item {
     padding: 8px;
     vertical-align: top;

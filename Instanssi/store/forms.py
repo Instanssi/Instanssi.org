@@ -31,6 +31,8 @@ class StoreProductsForm(forms.Form):
                 help_text=item.description,
                 required=False
             )
+            self.fields[name].widget.attrs['data-price'] = item.price
+            self.fields[name].widget.attrs['class'] = 'item-amount-field'
             self.fields[name].image_large = item.imagefile_original.url \
                 if item.imagefile_original else None
             self.fields[name].image_small = item.imagefile_thumbnail.url \

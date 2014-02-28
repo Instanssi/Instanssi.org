@@ -13,8 +13,30 @@
 {% block jquery %}
 {{ block.super }}
     $(".item-image a").fancybox();
-    $(".store-nav button").button();
-    $(".store-nav input").button();
+    
+    function clean_field(field) {
+        var min = field.attr('min');
+        var max = field.attr('max');
+        var val = parseInt(field.val(), 10);
+        if(val > max) { field.val(max); }
+        if(val < min) { field.val(min); }
+    }
+    
+    function count_total_price() {
+        var total = 0;
+        $('.item-amount-field').each(function(index){
+            var price = $(this).attr('data-price');
+            var amount = parseInt($(this).val(), 10);
+            total += price * amount;
+        });
+        $('#total-price-field').text(total);
+    }
+    
+    $('.item-amount-field').change(function(){
+        clean_field($(this));
+        count_total_price();
+    });
+    
 {% endblock %}
 
 {% block crumbs %}
@@ -87,7 +109,7 @@
                 {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
             <div class="item-amount">
-                <div class="item-price">{{ field.field.price }} €</div>
+                <div class="item-price">{{ field.field.price }} &euro;</div>
                 <div class="item-field">{{ field }}</div>
             </div>
         </div>
@@ -103,6 +125,9 @@
     {% endif %}
     {% endfor %}
     </div>
+    {% if wizard.steps.step0 == 0 %}
+    <div class="total-price">Yhteensä: <span id="total-price-field">0</span> &euro;</div>
+    {% endif %}
     <div class="store-nav">
         {% if wizard.steps.prev %}
         <a href="{% url 'store:order_step' wizard.steps.prev %}">&laquo; Takaisin</a>

@@ -35,6 +35,10 @@ td {
     border-left: 1px dotted #cccccc;
 }
 
+ul, ol { padding-left: 2em; margin-bottom: 1.5em; }
+ul { list-style: disc outside none; }
+ol { list-style: decimal outside none; }
+
 .ticket, .order {
      page-break-after: always;
 }
@@ -49,11 +53,14 @@ td {
 .item h2 { }
 /* This hack wraps the .item to any floats within it */
 .item:after { content: ' '; display: table; clear: both; }
-.item-key { font-family: monospace; }
+.item-key { font-family: monospace; word-break: break-word; }
 .item-code { float: right; }
 
 .item { position: relative; }
-.item-manage { position: absolute; bottom: 20px; left: 20px; }
+.item-manage {
+    margin-top: 1em;
+}
+.item-manage input { padding: .5em; }
 
 .delivered-stamp {
     z-index: 9001;
@@ -73,5 +80,12 @@ td {
 .delivered-stamp .stamp-title {
     text-transform: uppercase;
     font-size: 200%;
+}
+
+/* ---- mobile support ---- */
+
+@media screen and (max-width: 640px) {
+    .item-code { float: none; margin: auto; display: block; }
+    .item-manage { text-align: center; }
 }
 

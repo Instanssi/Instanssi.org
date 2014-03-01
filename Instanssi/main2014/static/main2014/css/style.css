@@ -14,8 +14,8 @@ img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
 h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; line-height: 90%; }
 h2, .item .title, .header, form legend { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
-h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
-h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
+h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
+h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
 b { font-weight: bold; }
 strong { font-weight: bold; }
 i { font-style: italic; }
@@ -100,8 +100,8 @@ sub { font-size: 75%; vertical-align: sub; }
 
 /* sidebar */
 #twitter-widget {  float: left; width: 300px; }
-#twitter-widget a { color: #0977BC; text-decoration: underline; }
-#twitter-widget a:hover { color: #1F86F4; }
+#twitter-widget a { color: #CC0000; text-decoration: underline; }
+#twitter-widget a:hover { color: #CC6935; }
 #twitter-widget .social-media { margin-bottom: 20px; }
 #twitter-widget .social-media a { margin-right: 3%; }
 #twitter-widget .social-media a:hover { opacity: 0.7; }
@@ -206,20 +206,12 @@ h2, .item .title, .header,
 table th,
 .btn,
 form legend {
-	background: #26A8D3;
+	background: #BB8945;
 	background-image: linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
 	background-image: -o-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
 	background-image: -moz-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
 	background-image: -webkit-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
 	background-image: -ms-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.07, rgb(38,168,211)),
-		color-stop(0.54, rgb(54,179,217))
-	);
 }
 
 .btn {

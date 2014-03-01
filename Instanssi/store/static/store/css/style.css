@@ -112,7 +112,9 @@ a.wizard-nav-button {
 }
 
 .store-item {
-    padding: 8px;
+    padding: 16px 8px 8px;
+    border-top: 1px solid #ccc;
+    margin-top: 8px;
     vertical-align: top;
     overflow: hidden;
 }
@@ -142,9 +144,9 @@ a.wizard-nav-button {
     float: right;
 }
 .store-form > .store-data { background: transparent;}
-.store-data > .store-item { margin: 8px 0; background: #eee;}
+.store-data > .store-item { margin: 8px 0; }
 
-.store-item:first-child { margin-top: 0; }
+.store-item:first-child { margin-top: 0; border: 0;}
 .store-item:last-child { margin-bottom: 0; }
 
 .store-item > * {

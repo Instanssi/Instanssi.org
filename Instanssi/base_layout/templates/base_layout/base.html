@@ -12,7 +12,7 @@
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href='//fonts.googleapis.com/css?family=Exo:400,900' />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cutive+Mono" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{% static "base_layout/css/style.css" %}" />
 {% block head %}{% endblock %}
     <script type="text/javascript">
@@ -24,22 +24,25 @@
 <body>
 <div id="header">
     <div class="container">
-        <div id="usertools">
-            {% if request.user.is_authenticated %}
-            <a href="{% url 'users:profile' %}">
+        {% if request.user.is_authenticated %}
+        <div id="usertools" class="authenticated">
+            <a class="user-image" href="{% url 'users:profile' %}">
                 <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
             </a>
             <div>
                 <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
                 <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>
             </div>
-            {% else %}
+        </div>
+        {% else %}
+        <div id="usertools" class="unauthenticated">
+            <div class="user-image">Tuntematon</div>
             <div>
                 <a href="{% url 'users:login' %}">&nbsp;</a>
                 <a href="{% url 'users:login' %}">Kirjaudu sisään</a>
             </div>
-            {% endif %}
         </div>
+        {% endif %}
         <h1><a href="/">Instanssi</a> <span class="section">{% block headername %}{% endblock %}</span></h1>
     </div>
     <div id="header_nav" class="container">

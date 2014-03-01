@@ -3,6 +3,9 @@ body {
     padding: 20px;
 }
 
+a { color: #c00; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
 h1, h2#items {
     font-size: 18pt;
     margin-bottom: 20px;

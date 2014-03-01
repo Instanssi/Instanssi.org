@@ -53,7 +53,7 @@ ol { list-style: decimal outside none; }
 .item h2 { }
 /* This hack wraps the .item to any floats within it */
 .item:after { content: ' '; display: table; clear: both; }
-.item-key { font-family: monospace; word-break: break-word; }
+.item-key { font-family: monospace; word-break: break-all; }
 .item-code { float: right; }
 
 .item { position: relative; }

@@ -26,36 +26,25 @@ sup { font-size: 75%; vertical-align: super; }
 sub { font-size: 75%; vertical-align: sub; }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
     font-weight: bold;
     font-variant: small-caps;
     padding-top: 18px;
     padding-left: 10px;
     font-size: 250%;
-    color: #eee;
-}
-h1 a, h1 a:visited {
-    color: #eee;
-    text-decoration: none;
-}
-h1 a:hover {
-    text-shadow: #eee 0 0 3px;
 }
 
+h2, h3 {
+    border-bottom: 1px dashed #c00;
+}
 h2 {
     width: 100%;
     font-size: 170%;
     margin-bottom: 1em;
 }
-
 h3 {
-    font-size: 120%;
+    font-size: 150%;
     margin-top: 1.5em;
     margin-bottom: 0.75em;
-}
-h2, h3 {
-    font-family: 'Cutive Mono', monospace;
-    border-bottom: 1px dashed #c00;
 }
 
 p,pre,blockquote,ul,ol {
@@ -112,6 +101,9 @@ hr {
 #header h1 span { text-transform: none;}
 #header h1 .section { margin-left: .25em; font-size: .5em;}
 #header h1 a, #usertools a { color: #a00; color: rgba(170, 0, 0, .9); }
+
+#header h1 a, h1 a:visited { text-decoration: none; }
+#header h1 a:hover { text-shadow: #eee 0 0 3px; }
 
 #header_nav {
     background-color: #111121;
@@ -217,11 +209,11 @@ ul#crumbpath li {
     list-style: none;
     display: inline-block;
     position: relative;
-    left: -4px;
 }
 ul#crumbpath li:before {
     content: '> ';
     color: #555;
+    padding: 4px;
 }
 ul#crumbpath li:first-child:before {
     content: '';
@@ -229,7 +221,14 @@ ul#crumbpath li:first-child:before {
 }
 ul#crumbpath li * {
     font-size: 12px;
-    padding: 4px;
+    padding: 4px 0;
+}
+ul#crumbpath a {
+    color: #c00;
+    text-decoration: none;
+}
+ul#crumbpath a:hover {
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 720px) {

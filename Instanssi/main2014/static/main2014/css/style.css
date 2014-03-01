@@ -99,15 +99,15 @@ sub { font-size: 75%; vertical-align: sub; }
 
 
 /* sidebar */
-#twitter-widget {  float: left; width: 300px; }
-#twitter-widget a { color: #CC0000; text-decoration: underline; }
-#twitter-widget a:hover { color: #CC6935; }
-#twitter-widget .social-media { margin-bottom: 20px; }
-#twitter-widget .social-media a { margin-right: 3%; }
-#twitter-widget .social-media a:hover { opacity: 0.7; }
-#twitter-widget .widget { margin-bottom: 20px; }
-#twitter-widget #tweets .link a, #tweets .time { font-size: 11px; }
-#twitter-widget #tweets li { margin-bottom: 20px; }
+#sidebar-widgets {  float: left; width: 300px; }
+#sidebar-widgets a { color: #CC0000; text-decoration: underline; }
+#sidebar-widgets a:hover { color: #CC6935; }
+#sidebar-widgets .social-media { margin-bottom: 20px; }
+#sidebar-widgets .social-media a { margin-right: 3%; }
+#sidebar-widgets .social-media a:hover { opacity: 0.7; }
+#sidebar-widgets .widget { margin-bottom: 20px; }
+#sidebar-widgets #tweets .link a, #tweets .time { font-size: 11px; }
+#sidebar-widgets #tweets li { margin-bottom: 20px; }
 
 
 /* google maps. Also, reset img so that tile borders don't show. */
@@ -150,7 +150,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 }
 #page-header a,
 .btn,
-#twitter-widget .social-media a,
+#sidebar-widgets .social-media a,
 #page-footer .menu-item a,
 #page-header nav ul .menu-item a {
 	-webkit-transition: all 0.2s ease-in-out;
@@ -245,7 +245,7 @@ background-image: -webkit-gradient(
 	.container { width: 1024px; margin: 0 auto; }
 	#content #primary{ width: 600px;  margin-right: 100px;  }
 	#content aside { width: 324px; }
-	#twitter-widget{ width: 300px; }
+	#sidebar-widgets{ width: 300px; }
 
 	#page-footer .sponsors { width: 800px; }
 
@@ -256,7 +256,7 @@ background-image: -webkit-gradient(
 @media (min-width: 768px) and (max-width: 979px) {
 	.container { width:750px; margin: 0 auto; }
 	#content #primary{ width: 530px;  margin-right: 20px;  }
-	#twitter-widget{ width: 200px; }
+	#sidebar-widgets{ width: 200px; }
 	
 	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
@@ -277,7 +277,7 @@ background-image: -webkit-gradient(
 @media (max-width: 767px) {
 	.container { width: 92%; padding: 0 4%; }
 	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
-	#twitter-widget{ width: 100%; }
+	#sidebar-widgets{ width: 100%; }
 	
 	#page-footer .menu-item { float: left; padding: 15px;  }	
 	#page-footer .menu-item a { padding: 15px; }	

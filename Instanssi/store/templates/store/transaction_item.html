@@ -26,6 +26,9 @@
     {% endif %}
 
     {% if has_infodesk_access %}
+    <div class="item-admin-tools">
+        <a href="{% url 'store:ta_view' ta_item.transaction.key %}">Siirry ostotapahtumaan</a>
+    </div>
     <form class="item-manage" method="post" action=".">
         {% csrf_token %}
         <input type="hidden" name="ta_item_key" value="{{ta_item.key}}" />

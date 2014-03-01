@@ -60,6 +60,9 @@ hr {
     border: 0; border-top: 1px dotted #0088c3;
 }
 
+a { color: #c00; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
 /* ---------- Base layout tuning ---------- */
 
 .container {
@@ -298,3 +301,24 @@ form.uniForm .buttonHolder { margin: 0; }
 form.uniForm .error { margin: 0.5em; }
 form.uniForm fieldset { border: 1px solid #999999; }
 form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
+
+/* ---- jQuery UI theming ---- */
+
+.ui-widget-content,
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    border: 1px solid #bbb;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    color: #c00;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    color: #c88;
+}

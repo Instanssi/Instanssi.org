@@ -31,6 +31,7 @@
     margin: 5px;
     padding: 2px;
 }
+
 .store-form > * { background-color: #eee; margin: 8px 0; }
 .store-header { text-align: center; }
 .store-header, .store-nav { padding: 8px 4px; }
@@ -85,7 +86,7 @@ a.wizard-nav-button {
     content: '*';
     padding-left: 1ex;
     font-weight: bold;
-    color: red;
+    color: #c00;
 }
 
 .field-label textarea {
@@ -121,7 +122,7 @@ a.wizard-nav-button {
 
 .item-title, .item-price {
     border: 0;
-    font-size: 120%;
+    font-size: 140%;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
@@ -167,9 +168,19 @@ a.wizard-nav-button {
 .items-summary h3 { margin: 4px 0 16px; }
 
 .items-summary table { background: #fff; width: 100%; }
-.items-summary th, .items-summary td { padding: 8px; text-align: left; }
+.items-summary th, .items-summary td {
+    padding: 8px;
+    text-align: left;
+    font-family: monospace;
+}
 .items-summary th { border-bottom: 1px solid #eee;}
 .items-summary tr > * { text-align: right; }
 .items-summary tr > *:first-child { text-align: left; width: 50%;}
 .items-summary .items-total { border-top: 1px solid #eee; }
 .items-summary .items-total td { text-align: right; }
+
+/* ---- jQuery UI compatibility ---- */
+
+.store-data .ui-widget input {
+    border: 0;
+}

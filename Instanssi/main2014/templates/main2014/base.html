@@ -88,6 +88,9 @@
                 {% block content %}{% endblock %}
             </section>
             <aside id="twitter-widget">
+                <section class="widget">
+                    <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
+                </section>
                 <section class="widget widget-twitter">
                     <h2>Twitter</h2>
                     <div id="tweets">
@@ -105,9 +108,6 @@
                         </ul>
                         {% endcache %}
                     </div>
-                </section>
-                <section class="widget">
-                    <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
                 </section>
                 <section class="widget widget-socialmedias">
                     <h2>Sosiaaliset mediat</h2>

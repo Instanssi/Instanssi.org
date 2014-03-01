@@ -34,7 +34,7 @@
         var total = 0;
         $('.item-amount-field').each(function(index){
             var price = parseInt($(this).attr('data-price'), 10);
-            var amount = parseInt($(this).val(), 10);
+            var amount = parseInt($(this).spinner('value'), 10);
             total += price * amount;
         });
         $('#total-price-field').text(total);
@@ -46,6 +46,7 @@
     });
 
     $(".item-amount-field").on("spin", function(event, ui) {
+        $(this).spinner('value', ui.value);
         count_total_price();
     });
     

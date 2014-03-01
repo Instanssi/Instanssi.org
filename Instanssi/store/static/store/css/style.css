@@ -129,8 +129,9 @@ a.wizard-nav-button {
     width: 65px;
     height: 65px;
     float: left;
-    margin-right: 1em;
+    margin: 0 1em 1em 0;
 }
+.item-description { margin-left: 80px; }
 
 .item-field {
     float: right;

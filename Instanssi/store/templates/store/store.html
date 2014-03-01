@@ -15,10 +15,16 @@
     $(".item-image a").fancybox();
     
     $('.wizard-nav-button').button();
+    $('.item-amount-field').each(function(){
+	$(this).spinner({
+	    max: parseInt($(this).attr('data-max'), 10),
+	    min: parseInt($(this).attr('data-min'), 10)
+        });
+    });
     
     function clean_field(field) {
-        var min = field.attr('min');
-        var max = field.attr('max');
+        var min = parseInt(field.attr('data-min'), 10);
+        var max = parseInt(field.attr('data-max'), 10);
         var val = parseInt(field.val(), 10);
         if(val > max) { field.val(max); }
         if(val < min) { field.val(min); }
@@ -27,15 +33,19 @@
     function count_total_price() {
         var total = 0;
         $('.item-amount-field').each(function(index){
-            var price = $(this).attr('data-price');
+            var price = parseInt($(this).attr('data-price'), 10);
             var amount = parseInt($(this).val(), 10);
             total += price * amount;
         });
         $('#total-price-field').text(total);
     }
     
-    $('.item-amount-field').change(function(){
+    $('.item-amount-field').keyup(function(){
         clean_field($(this));
+        count_total_price();
+    });
+
+    $(".item-amount-field").on("spin", function(event, ui) {
         count_total_price();
     });
     

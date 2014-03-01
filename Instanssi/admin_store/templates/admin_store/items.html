@@ -47,6 +47,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Järjestys</th>
                 <th>Nimi</th>
                 <th>Tapahtuma</th>
                 <th>Hinta</th>
@@ -62,6 +63,7 @@
 {% for item in items %}
             <tr>
                 <td>{{ item.id }}</td>
+                <td>{{ item.sort_index }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.event.name }}</td>
                 <td>{{ item.price }} &euro;</td>

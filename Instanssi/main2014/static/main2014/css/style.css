@@ -12,7 +12,7 @@ html , body { font-family: helvetica;   background: url('../images/snow.png'); }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
-h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; line-height: 90%; }
+h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; line-height: 90%; }
 h2, .item .title, .header, form legend { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; }
@@ -36,9 +36,9 @@ sub { font-size: 75%; vertical-align: sub; }
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
-#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat bottom center #0088C3;  margin-bottom: 40px; box-shadow: 0 10px 10px #fff; }
+#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat -50px center transparent;  margin-bottom: 40px; }
 #page-header .header-info { min-height: 230px; }
-#page-header .header-info .logo { margin: 8px 0px 0px 0px; }
+#page-header .header-info .logo { display: none; }
 #page-header a { text-decoration: none; }
 #page-header a:hover { opacity: 0.8; }
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
@@ -56,7 +56,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; /*ie-inline-block */ *display: inline; *zoom: 1; }
 #page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; top: 0px; }
 #page-header nav ul .menu-item a:hover { top: -3px; }
-#page-header nav ul .current-menu-item { background: #fff; }
+#page-header nav ul .current-menu-item { background: #fff; border: 1px solid #D2AE6E; }
 #page-header nav ul .current-menu-item a { color: #333; text-shadow: none; }
 
 
@@ -65,8 +65,8 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
 #primary li { margin-bottom: 5px; }
-#primary a { color: #0977BC; text-decoration: underline; }
-#primary a:hover {  color: #1F86F4; } 
+#primary a { color: #CC0000; text-decoration: underline; }
+#primary a:hover {  color: #CC6935; } 
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
 #primary p { margin-bottom: 10px; }
 #primary table { margin-bottom: 20px; width: 100%; }
@@ -207,11 +207,11 @@ table th,
 .btn,
 form legend {
 	background: #26A8D3;
-	background-image: linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
-	background-image: -o-linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
-	background-image: -moz-linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
-	background-image: -webkit-linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
-	background-image: -ms-linear-gradient(bottom, rgb(38,168,211) 7%, rgb(54,179,217) 54%);
+	background-image: linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
+	background-image: -o-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
+	background-image: -moz-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
+	background-image: -webkit-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
+	background-image: -ms-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
 
 	background-image: -webkit-gradient(
 		linear,

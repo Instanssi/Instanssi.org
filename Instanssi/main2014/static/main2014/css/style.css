@@ -36,7 +36,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
-#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat -50px center transparent;  margin-bottom: 40px; }
+#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat scroll center transparent;  margin-bottom: 40px; }
 #page-header .header-info { min-height: 230px; }
 #page-header .header-info .logo { display: none; }
 #page-header a { text-decoration: none; }

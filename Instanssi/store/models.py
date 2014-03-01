@@ -57,14 +57,14 @@ class StoreTransaction(models.Model):
     firstname = models.CharField(u'Etunimi', max_length=64)
     lastname = models.CharField(u'Sukunimi', max_length=64)
     company = models.CharField(u'Yritys', max_length=128, blank=True)
-    email = models.EmailField(u'Sähköposti', max_length=255)
+    email = models.EmailField(u'Sähköposti', max_length=255, help_text=u'Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.')
     telephone = models.CharField(u'Puhelinnumero', max_length=64, blank=True)
     mobile = models.CharField(u'Matkapuhelin', max_length=64, blank=True)
-    street = models.CharField(u'Katuosoite', max_length=128)
+    street = models.CharField(u'Katuosoite', max_length=128, help_text=u'Katusoite tarvitaan maksupalvelun vaatimuksesta.')
     postalcode = models.CharField(u'Postinumero', max_length=16)
     city = models.CharField(u'Postitoimipaikka', max_length=64)
     country = CountryField(u'Maa', default='FI')
-    information = models.TextField(u'Lisätiedot', blank=True)
+    information = models.TextField(u'Lisätiedot', help_text=u'Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.', blank=True)
 
     @property
     def is_paid(self):

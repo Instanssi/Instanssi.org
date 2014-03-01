@@ -99,7 +99,8 @@ class StoreInfoForm(forms.ModelForm):
     email_confirm = forms.EmailField(
         label=u'Vahvista sähköposti',
         max_length=255,
-        required=True
+        required=True,
+        help_text=u'Varmista sähköposti kirjoittamalla se vielä uudelleen.'
     )
 
     def __init__(self, *args, **kwargs):

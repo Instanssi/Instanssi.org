@@ -39,6 +39,8 @@ ul, ol { padding-left: 2em; margin-bottom: 1.5em; }
 ul { list-style: disc outside none; }
 ol { list-style: decimal outside none; }
 
+h2#items { clear: both; }
+
 .ticket, .order {
      page-break-after: always;
 }
@@ -50,7 +52,6 @@ ol { list-style: decimal outside none; }
 }
 
 .item { border: 1px dashed #bbb; padding: 20px; margin-bottom: 20px; }
-.item h2 { }
 /* This hack wraps the .item to any floats within it */
 .item:after { content: ' '; display: table; clear: both; }
 .item-key { font-family: monospace; word-break: break-all; }
@@ -81,6 +82,7 @@ ol { list-style: decimal outside none; }
     text-transform: uppercase;
     font-size: 200%;
 }
+
 
 /* ---- mobile support ---- */
 

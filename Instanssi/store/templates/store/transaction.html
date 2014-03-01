@@ -19,17 +19,14 @@
 </p>
 
 <div class="order">
+<img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ transaction.qr_code }}" width="160" height="160" alt="Tilauksen QR-koodi." />
 <h2>Tilaus</h2>
-<img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ transaction.qr_code }}" width="160" height="160" alt="Tilauksen QR-koodi." />
+<span class="item-key">{{ transaction.key }}</span>
 <table>
     <tbody>
         <tr>
             <th>Tilaaja:</th>
             <td>{{ transaction.firstname }} {{ transaction.lastname }}</td>
-        </tr>
-        <tr>
-            <th>Tunniste:</th>
-            <td>{{ transaction.key }}</td>
         </tr>
     </tbody>
 </table>

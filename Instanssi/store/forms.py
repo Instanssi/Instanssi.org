@@ -24,14 +24,15 @@ class StoreProductsForm(forms.Form):
         for item in StoreItem.items_available():
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
-                initial=0,
-                min_value=0,
-                max_value=item.num_available(),
+                initial='0',
                 label=u'%s' % (item.name),
                 help_text=item.description,
-                required=False
+                required=False,
+                widget=forms.TextInput()
             )
             self.fields[name].widget.attrs['data-price'] = item.price
+            self.fields[name].widget.attrs['data-min'] = 0
+            self.fields[name].widget.attrs['data-max'] = item.num_available()
             self.fields[name].widget.attrs['class'] = 'item-amount-field'
             self.fields[name].image_large = item.imagefile_original.url \
                 if item.imagefile_original else None

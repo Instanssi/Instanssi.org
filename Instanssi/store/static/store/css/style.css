@@ -133,6 +133,11 @@ a.wizard-nav-button {
 }
 .item-description { margin-left: 80px; }
 
+.item-amount-field {
+    height: 30px;
+    width: 60px;
+}
+
 .item-field {
     float: right;
 }

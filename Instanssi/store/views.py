@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from django.contrib.formtools.wizard.views import NamedUrlCookieWizardView
+from django.contrib.formtools.wizard.views import NamedUrlSessionWizardView
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render
@@ -34,7 +34,7 @@ def privacy(request):
     return render_to_response('store/privacy.html', {}, context_instance=RequestContext(request))
 
 
-class StoreWizard(NamedUrlCookieWizardView):
+class StoreWizard(NamedUrlSessionWizardView):
     """Displays the order form"""
 
     template_name = 'store/store.html'

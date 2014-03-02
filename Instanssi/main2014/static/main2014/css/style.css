@@ -16,9 +16,8 @@ h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; m
 h2, .item .title, .header, form legend { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
-b { font-weight: bold; }
-strong { font-weight: bold; }
-i { font-style: italic; }
+b, strong { font-weight: bold; }
+i, em { font-style: italic; }
 blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 10px; }
 sup { font-size: 75%; vertical-align: super; }
 sub { font-size: 75%; vertical-align: sub; }

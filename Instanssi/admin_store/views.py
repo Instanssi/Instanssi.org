@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import csv
-
 from common.http import Http403
 from common.auth import staff_access_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
+from django.template import loader, Context
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.store.models import *
 from Instanssi.admin_store.forms import StoreItemForm,TaItemExportForm
@@ -75,11 +74,11 @@ def tis_csv(request, event_id):
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="instanssi_store.csv"'
-    writer = csv.writer(response)
-    
-    for ta in TransactionItem.objects.filter(item__event=event_id):
-        writer.writerow([ta.id, ta.item.id, ta.item.name, ta.purchase_price, ta.transaction.firstname, ta.transaction.lastname])
-
+    t = loader.get_template('admin_store/tis_csv.txt')
+    c = Context({
+        'data': TransactionItem.objects.filter(item__event=event_id),
+    })
+    response.write(t.render(c))
     return response
     
 @staff_access_required

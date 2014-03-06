@@ -1,2 +1,2 @@
-{% for ti in data %}{{ ti.id }},{{ ti.item.id }},{{ ti.item.name|addslashes }},{{ ti.purchase_price }},{{ ti.transaction.firstname|addslashes }},{{ ti.transaction.lastname|addslashes }},{{ ti.transaction.email|addslashes }}
+{% for ti in data %}{{ ti.id }},{{ ti.item.id }},{{ ti.transaction.time_created|date:"c" }},{{ ti.item.name|addslashes }},{{ ti.purchase_price }},{{ ti.transaction.firstname|addslashes }},{{ ti.transaction.lastname|addslashes }},{{ ti.transaction.email|addslashes }}
 {% endfor %}

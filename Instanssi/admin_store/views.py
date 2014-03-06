@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import csv
+
 from common.http import Http403
 from common.auth import staff_access_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.store.models import *
-from Instanssi.admin_store.forms import StoreItemForm
+from Instanssi.admin_store.forms import StoreItemForm,TaItemExportForm
 
 # Logging related
 import logging
@@ -16,6 +18,17 @@ logger = logging.getLogger(__name__)
 @staff_access_required
 def index(request):
     return admin_render(request, "admin_store/index.html", {})
+
+@staff_access_required
+def export(request):
+    if request.method == 'POST':
+        form = TaItemExportForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('manage-store:transactions_csv', args=(form.cleaned_data['event'],)))
+    else:
+        form = TaItemExportForm()
+    
+    return admin_render(request, "admin_store/export.html", {'form': form})
 
 @staff_access_required
 def items(request):
@@ -54,6 +67,20 @@ def status(request):
     return admin_render(request, "admin_store/status.html", {
         'transactions': transactions,
     })
+    
+@staff_access_required
+def tis_csv(request, event_id):
+    if not request.user.has_perm('store.view_storetransaction'):
+        raise Http403
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="instanssi_store.csv"'
+    writer = csv.writer(response)
+    
+    for ta in TransactionItem.objects.filter(item__event=event_id):
+        writer.writerow([ta.id, ta.item.id, ta.item.name, ta.purchase_price, ta.transaction.firstname, ta.transaction.lastname])
+
+    return response
     
 @staff_access_required
 def tis(request):

@@ -59,7 +59,7 @@ def events_api(request, event_id):
         if k >= 5:
             break;
 
-    return JSONResponse({'events': events});
+    return JSONResponse({'events': events})
 
 def playing_api(request, event_id):
     playlist = []

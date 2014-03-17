@@ -9,8 +9,7 @@
             <tr>
                 <th class="time">Aika</th>
                 <th class="image">Kuva</th>
-                <th class="title">Otsikko</th>
-                <th class="description"></th>
+                <th class="description">Otsikko</th>
             </tr>
         </thead>
         <tbody>
@@ -18,9 +17,8 @@
             <tr>
                 <td class="time">{{ event.date|date:"H:i" }}</td>
                 <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
-                <td class="title">{{ event.title }}</td>
                 <td class="description">
-                    {{ event.desc }}
+                    <strong>{{ event.title }}</strong>{% if event.desc %}: {{ event.desc }}{% endif %}
                     {% if event.url %}<a href="{{ event.url }}" style="font-size: 80%;">Lisätietoa &raquo;</a>{% endif %}
                 </td>
             </tr>

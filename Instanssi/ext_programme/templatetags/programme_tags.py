@@ -33,6 +33,7 @@ def render_calendar(event_id):
             'title': compo.name + u': ilmoittautuminen päättyy',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
+            'place': '',
             'desc': '',
         })
         events.append({
@@ -40,6 +41,7 @@ def render_calendar(event_id):
             'title': compo.name + u': kompo alkaa',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
+            'place': '',
             'desc': '',
         })
         '''events.append({
@@ -47,6 +49,7 @@ def render_calendar(event_id):
             'title': compo.name + u': äänestys alkaa',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
+            'place': '',
             'desc': '',
         })
         '''
@@ -56,6 +59,7 @@ def render_calendar(event_id):
                 'title': compo.name + u': äänestys päättyy',
                 'url': reverse('km:compo', args=(event_id, compo.id,)),
                 'icon': '',
+                'place': '',
                 'desc': '',
             })
     
@@ -66,6 +70,7 @@ def render_calendar(event_id):
             'title': comp.name + u': ilmoittautuminen päättyy',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
+            'place': '',
             'desc': '',
         })
         events.append({
@@ -73,6 +78,7 @@ def render_calendar(event_id):
             'title': comp.name + u': kilpailu alkaa',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
+            'place': '',
             'desc': '',
         })
         
@@ -87,6 +93,7 @@ def render_calendar(event_id):
                 'title': prog.title,
                 'icon': icon,
                 'url': None,
+                'place': prog.place,
                 'desc': '',
             })
         else:
@@ -95,6 +102,7 @@ def render_calendar(event_id):
                 'title': prog.presenters,
                 'icon': icon,
                 'url': '../ohjelma/#%d' % (prog.id,),
+                'place': prog.place,
                 'desc': prog.title,
             })
 

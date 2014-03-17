@@ -19,7 +19,10 @@
                 <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
                 <td class="description">
                     <strong>{{ event.title }}</strong>{% if event.desc %}: {{ event.desc }}{% endif %}
-                    {% if event.url %}<br /><a href="{{ event.url }}" style="font-size: 80%;">Lisätietoa &raquo;</a>{% endif %}
+                    {% if event.place or event.url %}<br />{% endif %}
+                    {% if event.place %}<span style="font-size: 80%;">Paikka: {{ event.place }}</span>{% endif %}
+                    {% if event.place and event.url %} &middot; {% endif %}
+                    {% if event.url %}<a href="{{ event.url }}" style="font-size: 80%;">Lisätietoa &raquo;</a>{% endif %}
                 </td>
             </tr>
 {% endfor %}

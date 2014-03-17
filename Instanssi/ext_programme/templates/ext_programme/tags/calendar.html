@@ -21,7 +21,7 @@
                     <strong>{{ event.title }}</strong>{% if event.desc %}: {{ event.desc }}{% endif %}
                     {% if event.place or event.url %}<br />{% endif %}
                     {% if event.place %}<span style="font-size: 80%;">Paikka: {{ event.place }}</span>{% endif %}
-                    {% if event.place and event.url %} &middot; {% endif %}
+                    {% if event.place and event.url %} <span style="font-size: 80%;">&middot;</span> {% endif %}
                     {% if event.url %}<a href="{{ event.url }}" style="font-size: 80%;">Lisätietoa &raquo;</a>{% endif %}
                 </td>
             </tr>

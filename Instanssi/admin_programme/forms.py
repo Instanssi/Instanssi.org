@@ -17,6 +17,7 @@ class ProgrammeEventForm(forms.ModelForm):
                 'description',
                 'start',
                 'end',
+                'place',
                 'presenters',
                 'presenters_titles',
                 'icon_original',

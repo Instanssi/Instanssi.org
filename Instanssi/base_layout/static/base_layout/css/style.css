@@ -322,3 +322,7 @@ form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
 .ui-widget-header .ui-state-active {
     color: #c88;
 }
+
+.ui-state-highlight a {
+    text-decoration: underline;
+}

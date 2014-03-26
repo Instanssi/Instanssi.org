@@ -7,7 +7,8 @@ body,p {
 h1 {
     font-size: 4em;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 h2 {
@@ -41,7 +42,7 @@ img {
     margin: 10px;
 }
 
-/* ---------- uniForm tweaks ---------- */
+/* uniform tweaks */
 
 form.uniForm { margin-top: 1.0em; }
 form.uniForm .ctrlHolder, form.uniForm .error { border-bottom: 1px dotted #aaaaaa;  }
@@ -49,6 +50,13 @@ form.uniForm .buttonHolder { margin: 0; }
 form.uniForm .error { margin: 0.5em; }
 form.uniForm fieldset { border: 1px solid #999999; }
 form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
+
+/* Structure */
+
+#logo {
+    float: left;
+    height: 60px;
+}
 
 #content {
     margin-left: auto;

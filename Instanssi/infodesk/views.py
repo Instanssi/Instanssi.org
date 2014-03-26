@@ -7,7 +7,7 @@ from common.auth import infodesk_access_required
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import HttpResponseRedirect,Http404
+from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
 from common.responses import JSONResponse
@@ -23,43 +23,80 @@ logger = logging.getLogger(__name__)
 def index(request):
     return render_to_response('infodesk/index.html', {}, context_instance=RequestContext(request))
 
+
+def ta_fuzzy_query(term):
+    """Returns a fuzzy query filter for finding StoreTransactions."""
+    return (
+        Q(lastname__icontains=term) |
+        Q(firstname__icontains=term) |
+        Q(key__istartswith=term))
+
+
+def ti_fuzzy_query(term):
+    """Returns a fuzzy query filter for finding TransactionItems."""
+    return Q(key__istartswith=term)
+
+
 @infodesk_access_required
 def ta_lookup_autocomplete(request):
-    try:
-        lookup = request.GET['term']
-    except:
+    """This view provides autocomplete suggestions for the infodesk
+    transaction/customer search. Each suggestion's key should find
+    something on the proper search page"""
+
+    term = request.GET.get('term')
+    if not term:
         raise Http404
 
-    # lookup name in people who have bought something
-    txns = StoreTransaction.objects.filter(
-        Q(lastname__icontains=lookup) | Q(firstname__icontains=lookup))
-    return JSONResponse(['%s, %s' % (t.lastname, t.firstname) for t in txns])
+    # find transactions that contain the search term
+    txns = StoreTransaction.objects.filter(ta_fuzzy_query(term))
+    items = TransactionItem.objects.filter(ti_fuzzy_query(term))
+
+    fmt_t = lambda t: t.strftime('%d.%m.%Y %H:%M')
+
+    def format_transaction(t):
+        return '%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))
+
+    results = [{
+        'id': t.id,
+        'text': format_transaction(t)
+    } for t in txns]
+
+    results.extend([{
+        'id': item.key,
+        'text': 'Tuote -- ostaja %s' % format_transaction(item.transaction)
+    } for item in items])
+
+    return JSONResponse({
+        'more': False,
+        'results': results
+    })
 
 
 @infodesk_access_required
 def ta_lookup(request):
-    # The form autocompletes names like "lastname, firstname"
-    # If somebody wrote a comma in their name, they can buy a new ticket.
-    # We could also accept ids (with some potential UI problems).
-    firstname = None
-    lastname = None
+    """This view is used to search for transactions or customers."""
 
-    try:
-        names = request.GET['name']
-        name = names.split(',')
-        lastname = name[0]
-        firstname = name[1].lstrip()
-    except:
-        raise Http404
+    term = request.GET.get('term')
+    if not term:
+        return HttpResponseRedirect(reverse('infodesk:index'))
 
-    storetransactions = StoreTransaction.objects.filter(
-        lastname=lastname,
-        firstname=firstname
-    )
+    # If the user got here through the autocomplete JS, 'term' will
+    # be a full transaction id. If the JS doesn't work, this should
+    # perform the fuzzy search instead.
+
+    txn_filter = ta_fuzzy_query(term)
+    item_filter = ti_fuzzy_query(term)
+
+    if term.isdigit():
+        txn_filter = txn_filter | Q(id__exact=term)
+
+    txns = StoreTransaction.objects.filter(txn_filter)
+    items = TransactionItem.objects.filter(item_filter)
 
     return render_to_response('infodesk/ta_lookup.html', {
-        'transactions': storetransactions,
-        'name': names
+        'transactions': txns,
+        'items': items,
+        'term': term
     }, context_instance=RequestContext(request))
 
 

@@ -2,9 +2,9 @@
 $(function () {
     // Set up Select2 for infodesk forms
     $("#lookup").select2({
-        placeholder: "Kirjoita osa haettavasta nimestä",
+        placeholder: "Kirjoita osa haettavaa nimeä, tai tunnisteen alkuosa.",
         minimumInputLength: 2,
-        width: "17em",
+        width: "30em",
         ajax: {
             url: "ta_lookup_ac",
             datatype: "json",
@@ -14,18 +14,7 @@ $(function () {
                 };
             },
             results: function (data, page) {
-                var results = [];
-                $.each(data, function () {
-                    results.push({
-                        id: this,
-                        text: this
-                    });
-                });
-                return {
-                    results: results,
-                    context: null,
-                    more: false
-                };
+                return data;
             }
         }
     });

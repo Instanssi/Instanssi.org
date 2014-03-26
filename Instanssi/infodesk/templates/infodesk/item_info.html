@@ -51,9 +51,6 @@
 
 <h3>Toiminnot</h3>
 <p>
-    Voit palata alkuvalikkoon allaolevista napeista. Voit joko merkata lipun käytetyksi, tai jättää sen merkkaamatta.
-</p>
-<p>
     <a href="{% url 'infodesk:index' %}" class="button">Palaa alkuun</a> &nbsp; 
     {% if not item.is_delivered %}
     <a href="{% url 'infodesk:item_mark' item.id %}" class="button">Merkkaa toimitetuksi.</a>

@@ -1,6 +1,6 @@
 {% extends "infodesk/base.html" %}
 
-{% block title %}{{ block.super }} - Shobbarihaku{% endblock %}
+{% block title %}{{ block.super }} - Tilaushaku{% endblock %}
 
 {% block head %}
 {{ block.super }}
@@ -12,9 +12,12 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Ostokset - {{ name }}</h2>
+<h2>Tilaushaku: {{ term }}</h2>
+{% if transactions %}
+<h3>Tilaukset</h3>
 <table class="infotable lookup">
 <tr>
+  <th>Tilaaja</th>
   <th>Tilausnumero</th>
   <th>Luotu</th>
   <th>Tila</th>
@@ -22,6 +25,7 @@
 </tr>
 {% for transaction in transactions %}
 <tr>
+  <td>{{ transaction.lastname }}, {{ transaction.firstname }}</td>
   <td>{{ transaction.id }}</td>
   <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\. H:i" }}</td>
   <td>{{ transaction.get_status_text }}</td>
@@ -33,8 +37,33 @@
 </tr>
 {% endfor %}
 </table>
-{% if not transactions %}
-<p>Ei tuloksia!</p>
 {% endif %}
+
+{% if items %}
+<h3>Tuotteet</h3>
+<table class="infotable lookup">
+<tr>
+  <th>Tuote</th>
+  <th>Tyyppi</th>
+  <th>Ostettu</th>
+  <th>Toimitettu</th>
+</tr>
+{% for item in items %}
+<tr>
+  <td><a href="{% url 'infodesk:item_info' item.id %}">{{ item.key }}</a>
+  <td>{{ item.item.name }}</td>
+  <td>{{ item.transaction.time_paid }}</td>
+  <td>{% if item.time_delivered %} {{ item.item.time_delivered|date:"d.m.Y \k\l\o\. H:i" }} }}
+      {% else %} Ei {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if not items and not transactions %}
+<p>Hakusanalla ei löytynyt asiakkaita tai tuotteita.</p>
+{% endif %}
+
 <p>Palaa <a href="{% url 'infodesk:index' %}">infodeskin etusivulle</a></p>
 {% endblock %}

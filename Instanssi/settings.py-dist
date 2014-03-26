@@ -52,6 +52,9 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = False
 
+# Code for main2014 site (Toimisto password)
+MAIN2014_TOIMISTO_CODE = u''
+
 # Hackish, but will do for now
 SSL_ON = True
 DOMAIN = 'instanssi.org'

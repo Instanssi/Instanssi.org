@@ -1,0 +1,33 @@
+<!DOCTYPE html>{% load static %}
+<head>
+    <meta charset="utf-8" />
+    <title>Toimisto</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    
+    <!-- fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cutive+Mono" rel="stylesheet" />
+    
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main2014/css/toimisto/style.css' %}" />
+
+    <!-- forms -->
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/uni-form/uni-form.css' %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/uni-form/default.uni-form.css' %}" media="all" />
+    <script type="text/javascript" src="{% static 'libs/js/uni-form/uni-form-validation.jquery.min.js' %}"></script>
+
+{% block head %}{% endblock %}
+    <script type="text/javascript">
+    $(function() {
+{% block jquery %}{% endblock %}
+    });
+    </script>
+</head>
+<body>
+<div id="content">
+    <h1>Toimisto</h1>
+{% block content %}{% endblock %}
+</div>
+</body>
+</html>

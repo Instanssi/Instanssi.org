@@ -1,0 +1,26 @@
+{% extends "main2014/toimisto/base.html" %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Toimisto kiittää</h2>
+<p>
+    Toimisto kiittää agenttia <strong>{{ participant.nick }}</strong> osallistumisesta!
+</p>
+<p>
+    Kaikki osallistujat:
+</p>
+<ol>
+{% for user in users %}
+    <li><strong>{{ user.nick }}</strong> ({{ user.time|date:"d.m.Y H:i" }})</li>
+{% endfor %}
+</ol>
+
+{% endblock %}

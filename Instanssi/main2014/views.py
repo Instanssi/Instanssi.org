@@ -53,7 +53,7 @@ def reportointi(request):
 @user_access_required
 def kiitos(request):
     par = get_object_or_404(ToimistoSuoritus, user=request.user)
-    users = ToimistoSuoritus.objects.all().order_by('-time')
+    users = ToimistoSuoritus.objects.all().order_by('time')
     
     return render_to_response('main2014/toimisto/kiitos.html', {
         'event_id': 8,

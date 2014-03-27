@@ -14,7 +14,7 @@ urlpatterns = patterns(
     url(r'^kilpailusopimus/$', 'pageloader', {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
     
     url(r'^toimisto/$', 'pageloader', {'templatename': 'toimisto/index'}, name="toimisto-index"),
-    url(r'^toimisto/reportointi/$', 'reportointi', name="toimisto-reportointi"),
+    url(r'^toimisto/raportointi/$', 'reportointi', name="toimisto-reportointi"),
     url(r'^toimisto/qr/(?P<hint_id>\w+)/$', 'jahti', name="toimisto-jahti"),
     url(r'^toimisto/kiitos/$', 'kiitos', name="toimisto-kiitos"),
 )

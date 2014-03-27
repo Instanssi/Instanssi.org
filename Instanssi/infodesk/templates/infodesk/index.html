@@ -15,11 +15,7 @@
 {% block content %}
 {{ block.super }}
 <h2>Etusivu</h2>
-<h3>Tilaushaku</h3>
-<p>Hae tilauksia/tuotteita kirjoittamalla osa asiakkaan nimeä tai tuotteen/tilauksen tunnisteen alkuosa.</p>
-<form method="get" action="{% url 'infodesk:ta_lookup' %}">
-  <input id="lookup" type="text" name="term"></input>
-  <input type="submit" value="Etsi"></input>
-</form>
+<p>Tervetuloa Instanssin infodeskille! Jos kaikki menee tänä vuonna suunnitelman mukaan, allaolevaa työkalua ei ehkä tarvita.</p>
+<a class="button" href="{% url 'infodesk:order_search' %}">Tilaushaku</a>
 
 {% endblock %}

@@ -22,6 +22,10 @@
             <td>{{ item.item.name }}</td>
         </tr>
         <tr>
+            <th>Avain</th>
+            <td>{{ item.key }}</td>
+        </tr>
+        <tr>
             <th>Toimitettu</th>
             <td>
                 {% if item.is_delivered %}
@@ -35,6 +39,19 @@
             </td>
         </tr>
         <tr>
+            <th>Maksettu</th>
+            <td>
+                {% if item.transaction.time_paid %}{{ item.transaction.time_paid|date:"d.m.Y \k\l\o\ H:i" }}
+                {% else %}
+                <div class="ui-state-error ui-corner-all" style="padding: 5px;">
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin-right: .3em"></span>
+                Ei
+                </div>
+                {% endif %}
+            </td>
+    </td>
+
+        <tr>
             <th>Nimi</th>
             <td>{{ item.transaction.firstname }} {{ item.transaction.lastname }}</td>
         </tr>
@@ -42,18 +59,14 @@
             <th>Email</th>
             <td>{{ item.transaction.email }}</td>
         </tr>
-        <tr>
-            <th>Avain</th>
-            <td>{{ item.key }}</td>
-        </tr>
     </tbody>
 </table>
 
 <h3>Toiminnot</h3>
 <p>
-    <a href="{% url 'infodesk:index' %}" class="button">Palaa alkuun</a> &nbsp; 
+    <a href="{% url 'infodesk:order_search' %}" class="button">Palaa hakusivulle</a>
     {% if not item.is_delivered %}
-    <a href="{% url 'infodesk:item_mark' item.id %}" class="button">Merkkaa toimitetuksi.</a>
+    <a href="{% url 'infodesk:item_mark' item.id %}" class="button">Merkkaa toimitetuksi</a>
     {% endif %}
 </p>
 

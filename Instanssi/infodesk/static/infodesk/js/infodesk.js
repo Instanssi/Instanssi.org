@@ -1,12 +1,13 @@
 /*jslint indent: 4 */
 $(function () {
-    // Set up Select2 for infodesk forms
-    $("#lookup").select2({
+    var actionURL = $('#order-search-form').attr('action');
+    // Set up Select2 for infodesk order search.
+    $("#order-search").select2({
         placeholder: "Kirjoita osa haettavaa nimeä, tai tunnisteen alkuosa.",
         minimumInputLength: 2,
         width: "30em",
         ajax: {
-            url: "ta_lookup_ac",
+            url: "order_search_ac",
             datatype: "json",
             data: function (term, page) {
                 return {
@@ -17,5 +18,9 @@ $(function () {
                 return data;
             }
         }
+    }).on('change', function(e) {
+        // try to ajax-load the results page
+        $('#order-search-results').empty().load(
+            actionURL + '?term=' + encodeURIComponent(e.val) + ' #order-search-results');
     });
 });

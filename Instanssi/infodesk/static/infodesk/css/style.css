@@ -48,3 +48,22 @@ a.button {
         padding: .5em 1em;
     }
 }
+
+#order-search-form {
+    margin-bottom: 1.5em;
+}
+
+#order-search-form input[type='submit'] {
+    /* match select2 height */
+    height: 28px;
+}
+
+#order-search-form .select2-container {
+    max-width: 100%;
+}
+
+.infotable .product-key {
+    max-width: 6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -10,6 +10,6 @@ urlpatterns = patterns(
     url(r'^item/info/(?P<item_id>\d+)/', 'item_info', name="item_info"),
     url(r'^transaction/info/(?P<transaction_id>\d+)/', 'transaction_info', name="transaction_info"),
     url(r'^item/mark/(?P<item_id>\d+)/', 'item_mark', name="item_mark"),
-    url(r'^ta_lookup_ac', 'ta_lookup_autocomplete', name="ta_lookup_autocomplete"),
-    url(r'^ta_lookup', 'ta_lookup', name="ta_lookup"),
+    url(r'^order_search_ac', 'order_search_ac', name="order_search_ac"),
+    url(r'^order_search', 'order_search', name="order_search"),
 )

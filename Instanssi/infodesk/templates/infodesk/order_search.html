@@ -1,0 +1,87 @@
+{% extends "infodesk/base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Tilaushaku{% endblock %}
+
+{% block head %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'infodesk/js/infodesk.js' %}"></script>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h2>Tilaushaku</h2>
+<p>Hae tilauksia/tuotteita kirjoittamalla osa asiakkaan nimeä tai tuotteen/tilauksen tunnisteen alkuosa.</p>
+<form id="order-search-form" method="get" action="{% url 'infodesk:order_search' %}">
+  <input id="order-search" type="text" name="term"></input>
+  <input type="submit" value="Hae"></input>
+</form>
+
+<div id="order-search-results">
+{% if term %}
+<hr/>
+  <p>Hakutulokset termillä: {{ term }}</p>
+
+  {% if transactions %}
+  <h3>Tilaukset</h3>
+  <table class="infotable lookup">
+  <tr>
+    <th>#</th>
+    <th>Tilaaja</th>
+    <th>Luotu</th>
+    <th>Tila</th>
+    <th>Tuotteet</th>
+  </tr>
+  {% for transaction in transactions %}
+  <tr>
+    <td>{{ transaction.id }}</td>
+    <td>{{ transaction.lastname }}, {{ transaction.firstname }}</td>
+    <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\. H:i" }}</td>
+    <td>{{ transaction.get_status_text }}</td>
+    <td><ul>{% for item in transaction.get_items %}
+       <li><a href="{% url 'infodesk:item_info' item.id %}">
+        {{ item.item.name }}</a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
+       </li>
+    {% endfor %}</ul></td>
+  </tr>
+  {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if items %}
+  <h3>Tuotteet</h3>
+  <table class="infotable lookup">
+  <tr>
+    <th>Tuote</th>
+    <th>Avain</th>
+    <th>Tilaus#</th>
+    <th>Maksettu</th>
+    <th>Toimitettu</th>
+  </tr>
+  {% for item in items %}
+  <tr>
+    <td>{{ item.item.name }}</td>
+    <td class="product-key"><a href="{% url 'infodesk:item_info' item.id %}">{{ item.key }}</a>
+    <td><a href="{% url 'infodesk:order_search' %}?term={{ item.transaction.id }}">{{ item.transaction.id }}</a></td>
+    <td>{% if item.transaction.time_paid %}{{ item.transaction.time_paid|date:"d.m.Y \k\l\o\ H:i" }}
+        {% else %}Ei{% endif %}
+    </td>
+    <td>{% if item.time_delivered %} {{ item.time_delivered|date:"d.m.Y \k\l\o\ H:i" }}
+        {% else %}Ei{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if not items and not transactions %}
+  <p>Hakusanalla ei löytynyt asiakkaita tai tuotteita.</p>
+  {% endif %}
+{% endif %}
+</div><!-- order-search-results -->
+
+{% endblock %}

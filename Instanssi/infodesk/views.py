@@ -38,9 +38,9 @@ def ti_fuzzy_query(term):
 
 
 @infodesk_access_required
-def ta_lookup_autocomplete(request):
+def order_search_ac(request):
     """This view provides autocomplete suggestions for the infodesk
-    transaction/customer search. Each suggestion's key should find
+    general purpose search search. Each suggestion's key should find
     something on the proper search page"""
 
     term = request.GET.get('term')
@@ -63,7 +63,7 @@ def ta_lookup_autocomplete(request):
 
     results.extend([{
         'id': item.key,
-        'text': 'Tuote -- ostaja %s' % format_transaction(item.transaction)
+        'text': '%s -- ostaja %s' % (item.item, format_transaction(item.transaction))
     } for item in items])
 
     return JSONResponse({
@@ -73,27 +73,28 @@ def ta_lookup_autocomplete(request):
 
 
 @infodesk_access_required
-def ta_lookup(request):
+def order_search(request):
     """This view is used to search for transactions or customers."""
 
     term = request.GET.get('term')
-    if not term:
-        return HttpResponseRedirect(reverse('infodesk:index'))
+    txns = None
+    items = None
 
-    # If the user got here through the autocomplete JS, 'term' will
-    # be a full transaction id. If the JS doesn't work, this should
-    # perform the fuzzy search instead.
+    if term:
+        # If the user got here through the autocomplete JS, 'term' will
+        # be a full transaction id. If the JS doesn't work, this should
+        # perform the fuzzy search instead.
 
-    txn_filter = ta_fuzzy_query(term)
-    item_filter = ti_fuzzy_query(term)
+        txn_filter = ta_fuzzy_query(term)
+        item_filter = ti_fuzzy_query(term)
 
-    if term.isdigit():
-        txn_filter = txn_filter | Q(id__exact=term)
+        if term.isdigit():
+            txn_filter = txn_filter | Q(id__exact=term)
 
-    txns = StoreTransaction.objects.filter(txn_filter)
-    items = TransactionItem.objects.filter(item_filter)
+        txns = StoreTransaction.objects.filter(txn_filter)
+        items = TransactionItem.objects.filter(item_filter)
 
-    return render_to_response('infodesk/ta_lookup.html', {
+    return render_to_response('infodesk/order_search.html', {
         'transactions': txns,
         'items': items,
         'term': term
@@ -131,11 +132,17 @@ def transaction_check(request):
 @infodesk_access_required
 def item_mark(request, item_id):
     item = get_object_or_404(TransactionItem, pk=item_id)
+    item.time_delivered = datetime.now()
+    item.save()
     if item.transaction.is_paid:
-        item.time_delivered = datetime.now()
-        item.save()
         logger.info('Item %d marked as delivered.' % (item.id,), extra={'user': request.user})
-    return HttpResponseRedirect(reverse('infodesk:index'))
+    else:
+        logger.info(
+            'Item %d marked as delivered (no payment recorded!)'
+            % (item.id,), extra={'user': request.user})
+
+    return HttpResponseRedirect(
+        reverse('infodesk:item_info', args=(item.id,)))
 
 
 @infodesk_access_required

@@ -12,6 +12,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block crumbs %}
+{{ block.super }}
+    <li><a href="{% url 'infodesk:order_search' %}">Tilaushaku</a></li>
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
 <h2>Tilaushaku</h2>

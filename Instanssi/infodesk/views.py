@@ -54,7 +54,7 @@ def order_search_ac(request):
     fmt_t = lambda t: t.strftime('%d.%m.%Y %H:%M')
 
     def format_transaction(t):
-        return '%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))
+        return u'%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))
 
     results = [{
         'id': t.id,
@@ -63,7 +63,7 @@ def order_search_ac(request):
 
     results.extend([{
         'id': item.key,
-        'text': '%s -- ostaja %s' % (item.item, format_transaction(item.transaction))
+        'text': u'%s -- ostaja %s' % (item.item, format_transaction(item.transaction))
     } for item in items])
 
     return JSONResponse({

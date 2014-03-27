@@ -57,7 +57,7 @@ p {
 }
 
 hr {
-    border: 0; border-top: 1px dotted #0088c3;
+    border: 0; border-top: 1px dotted #aaa;
 }
 
 a { color: #c00; text-decoration: none; }

@@ -1,2 +1,3 @@
-{% for ti in data %}{{ ti.id }},{{ ti.item.id }},{{ ti.transaction.time_created|date:"c" }},{{ ti.item.name|addslashes }},{{ ti.purchase_price }},{{ ti.transaction.firstname|addslashes }},{{ ti.transaction.lastname|addslashes }},{{ ti.transaction.email|addslashes }}
+TransaktioID,TuoteID,Aikaleima,Tuotteen nimi,Hinta,Etunimi,Sukunimi,Sähköposti,Maksettu
+{% for ti in data %}{{ ti.transaction.id }},{{ ti.item.id }},{{ ti.transaction.time_created|date:"c" }},{{ ti.item.name|addslashes }},{{ ti.purchase_price }},{{ ti.transaction.firstname|addslashes }},{{ ti.transaction.lastname|addslashes }},{{ ti.transaction.email|addslashes }},{% if ti.transaction.is_paid %}Kyllä{% else %}Ei{% endif %}
 {% endfor %}

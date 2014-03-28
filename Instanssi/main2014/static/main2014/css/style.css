@@ -263,7 +263,7 @@ background-image: -webkit-gradient(
 	.container { width:750px; margin: 0 auto; }
 	#content #primary{ width: 530px;  margin-right: 20px;  }
 	#sidebar-widgets{ width: 200px; }
-	
+
 	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
 	#page-footer .contact { float: none; }
@@ -284,7 +284,7 @@ background-image: -webkit-gradient(
 	.container { width: 92%; padding: 0 4%; }
 	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
 	#sidebar-widgets{ width: 100%; }
-	
+
 	#page-footer .menu-item { float: left; padding: 15px;  }	
 	#page-footer .menu-item a { padding: 15px; }	
 	#page-footer .menu-item a:hover { padding-left: 15px; }
@@ -315,7 +315,7 @@ background-image: -webkit-gradient(
 	#page-header .header-info .time { font-size: 26px; }
 
 	#page-header { background: #111; background-image: none; }
-	#page-header .header-info { background: url('../images/header-bg.png') center top #0088C3; }
+	#page-header .header-info { background: url('../images/header-bg.png') center top #0088C3; background-size: cover; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
@@ -341,5 +341,27 @@ background-image: -webkit-gradient(
 	.store-items label { display: block; float: none; width: 100%; }
 }
 
+/* ---- toimisto link ---- */
+.header-info.container { position: relative; }
 
+.toimisto-link {
+    position: absolute;
+    right: 12px;
+    top: 104px;
+    opacity: 0.7;
+}
+.toimisto-link:hover { opacity: 0.9;}
+.toimisto-link img {
+    width: 80px;
+    height: auto;
+}
 
+@media (max-width: 979px) {
+    .toimisto-link {
+        right: 0px;
+        top: 10px;
+    }
+    .toimisto-link img {
+        width: 56px;
+    }
+}

@@ -63,7 +63,7 @@
                     <p class="tagline">Digitaalisen tekemisen festivaali</p>
                     <p class="time">28. - 30.3. Jyväskylä</p>
                 </a>
-                <a href="{% url 'main2014:toimisto-index' %}" class="toimisto-link"><img src="{% static 'main2014/images/toimisto/logo.png' %}" alt="Toimisto" id="toimisto-logo" /></a>
+                <!--<a href="{% url 'main2014:toimisto-index' %}" class="toimisto-link"><img src="{% static 'main2014/images/toimisto/logo.png' %}" alt="Toimisto" id="toimisto-logo" /></a>-->
             </div>
             <nav class="container">
                 <div class="nav-btn">
@@ -79,6 +79,7 @@
                     <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:ohjelma' %}">Ohjelma</a></li>
                     <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:aikataulu' %}">Aikataulu</a></li>
                     <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:english' %}">In English</a></li>
+                    <li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:stream' %}">Stream</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
@@ -139,6 +140,7 @@
                         <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:ohjelma' %}">Ohjelma</a></li>
                         <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:aikataulu' %}">Aikataulu</a></li>
                         <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:english' %}">In English</a></li>
+                        <li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:stream' %}">Stream</a></li>
                         <li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>
                         <li class="menu-item"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                         <li class="menu-item"><a href="{% url 'archive:index' %}">Arkisto</a></li>

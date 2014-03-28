@@ -138,6 +138,13 @@ html, body { margin: 0; padding: 0; height: 100%; }
 #content { padding-bottom: 390px; }
 #page-wrap { min-height: 100%; position: relative; }
 
+/* Stream */
+.stream-window {
+    width: 644px;
+    height: 276px;
+    margin: 0 auto;
+    text-align:center;
+}
 
 /* animations */
 #page-header nav ul {

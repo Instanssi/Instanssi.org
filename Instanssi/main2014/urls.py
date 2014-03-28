@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^aikataulu/$', 'pageloader', {'templatename': 'aikataulu'}, name="aikataulu"),
     url(r'^kompot/$', 'pageloader', {'templatename': 'kompot'}, name="kompot"),
     url(r'^kilpailusopimus/$', 'pageloader', {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
+    url(r'^stream/$', 'pageloader', {'templatename': 'stream'}, name="stream"),
     
     url(r'^toimisto/$', 'pageloader', {'templatename': 'toimisto/index'}, name="toimisto-index"),
     url(r'^toimisto/raportointi/$', 'reportointi', name="toimisto-reportointi"),

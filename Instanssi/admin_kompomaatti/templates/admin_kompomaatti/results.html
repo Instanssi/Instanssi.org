@@ -38,7 +38,7 @@
 {% for entry in entries %}
 			<tr>
 				<td>{{ forloop.counter }}</td>
-				<td>{{ entry.name }}</td>
+				<td><a href="{{ entry.entryfile.url }}">{{ entry.name }}</a></td>
 				<td>{{ entry.creator }}</td>
 				<td>{% if entry.disqualified %}-{% else %}{{ entry.get_score|floatformat:"2" }}{% endif %}</td>
 				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>

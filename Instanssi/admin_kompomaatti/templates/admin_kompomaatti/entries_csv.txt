@@ -1,0 +1,2 @@
+{% for entry in entries %}{{ entry.name }},{{ entry.creator }},{{ entry.placement }},{{ entry.compo.name }}
+{% endfor %}

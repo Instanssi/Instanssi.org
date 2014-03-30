@@ -1,2 +1,2 @@
-{% for entry in entries %}{{ entry.name|safe }},{{ entry.creator|safe }},{{ entry.placement }},{{ entry.compo.name|safe }}
+{% for entry in entries %}"{{ entry.name|safe|addslashes }}","{{ entry.creator|safe|addslashes }}","{{ entry.placement }}","{{ entry.compo.name|safe|addslashes }}"
 {% endfor %}

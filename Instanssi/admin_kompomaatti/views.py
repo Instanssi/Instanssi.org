@@ -5,6 +5,7 @@ from common.auth import staff_access_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import reverse
+from django.template import loader, Context
 from Instanssi.kompomaatti.models import *
 from Instanssi.admin_kompomaatti.forms import *
 from Instanssi.kompomaatti.misc import entrysort
@@ -30,6 +31,42 @@ def index(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/index.html", {
         'selected_event_id': int(sel_event_id),
     })
+
+@staff_access_required
+def entries_csv(request, sel_event_id):
+    entries = []
+
+    # Get event
+    event = get_object_or_404(Event, pk=sel_event_id)
+
+    # Find all compos and their top 3 entries
+    compos = Compo.objects.filter(event=event)
+
+    # Get the entries
+    for compo in compos:
+        compo_results = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+        if len(compo_results) > 3:
+            entries = entries + compo_results[:3]
+        else:
+            entries = entries + compo_results
+
+    # Placements, copypasta
+    output = []
+    for entry in entries:
+        m = entry.get_rank()
+        if m == 1: entry.placement = u'I'
+        if m == 2: entry.placement = u'II'
+        if m == 3: entry.placement = u'III'
+
+    # Respond with entries CSV (text/csv)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="instanssi_entries.csv"'
+    t = loader.get_template('admin_kompomaatti/entries_csv.txt')
+    c = Context({
+        'entries': entries,
+    })
+    response.write(t.render(c))
+    return response
 
 @staff_access_required
 def competition_score(request, sel_event_id, competition_id):

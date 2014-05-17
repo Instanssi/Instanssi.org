@@ -9,3 +9,6 @@ content/uploads/*
 !content/uploads/index.html
 Instanssi/settings.py
 testing/output/*
+*.html~
+*.py~
+*.txt~

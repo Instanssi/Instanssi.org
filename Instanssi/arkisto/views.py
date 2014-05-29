@@ -13,7 +13,6 @@ from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 # Event page
 # TODO: Optimize queries. For now, cache will do the trick.
 
-@cache_page(3600)
 def event(request, event_id):
     # Get event
     event = get_object_or_404(Event, pk=int(event_id), archived=True)
@@ -63,7 +62,6 @@ def index(request):
     return event(request, latest.id)
 
 # Entry page
-@cache_page(3600)
 def entry(request, entry_id):
     # Get the entry
     entry = get_object_or_404(Entry, pk=entry_id)
@@ -83,7 +81,6 @@ def entry(request, entry_id):
     }, context_instance=RequestContext(request))
     
 # Video page
-@cache_page(3600)
 def video(request, video_id):
     # Get the entry
     video = get_object_or_404(OtherVideo, pk=video_id)

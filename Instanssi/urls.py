@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', include('Instanssi.main2014.urls')),
+    url(r'^$', include('Instanssi.main2015.urls')),
 )
 
 # Add admin panel link if debug mode is on
@@ -44,14 +44,13 @@ if settings.DEBUG or settings.ADMIN:
 
 if settings.DEBUG:
     import debug_toolbar
-    
+
     # Serve media files through static.serve when running in debug mode
     # Also, show debug_toolbar if debugging is on
     urlpatterns += patterns('',
         url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
         url(r'^__debug__/', include(debug_toolbar.urls)),
     )
-    
+
     # Use admin panel, if debug mode is on
     admin.autodiscover()
-    

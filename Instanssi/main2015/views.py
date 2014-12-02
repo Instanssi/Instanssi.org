@@ -5,6 +5,6 @@ from django.template import RequestContext
 
 def pageloader(request, templatename):
     return render_to_response('main2015/'+templatename+'.html', {
-        'event_id': 8, 
+        'event_id': 12,
         'templatename': templatename,
     }, context_instance=RequestContext(request))

@@ -8,28 +8,28 @@
     <title>Instanssi 2014</title>
     <meta name="description" content="Digitaalisen tekemisen festivaali">
     <meta name="viewport" content="initial-scale=1.0" />
-    <link rel="shortcut icon" href="{% static 'main2014/images/icons/icon-favicon.png' %}" />
-    
+    <link rel="shortcut icon" href="{% static 'main2015/images/icons/icon-favicon.png' %}" />
+
     <!-- fonts -->
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
-    
+
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'main2014/css/style.css?v2' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main2015/css/style.css?v2' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
 
     <!-- scripts -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'main2014/js/modernizr-1.7.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2015/js/modernizr-1.7.min.js' %}"></script>
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
 
     <!-- Open Graph -->
     <meta property="og:locale" content="fi_FI" />
-    <meta property="og:url" content="http://instanssi.org/2014/" />
-    <meta property="og:image" content="http://instanssi.org/static/main2014/images/icons/instanssi2014-fb-profile.png" />
+    <meta property="og:url" content="http://instanssi.org/2015/" />
+    <meta property="og:image" content="http://instanssi.org/static/main2015/images/icons/instanssi2014-fb-profile.png" />
     <meta property="og:title" content="Instanssi - Digitaalisen tekemisen festivaali" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Instanssi" />
@@ -39,7 +39,7 @@
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_CODE }}']);
     _gaq.push(['_trackPageview']);
-    
+
     (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -58,12 +58,11 @@
     <div id="page-wrap">
         <header id="page-header">
             <div class="header-info container">
-                <a href="{% url 'main2014:index' %}" class="logo">
-                    <h1>Instanssi2014</h1>
+                <a href="{% url 'main2015:index' %}" class="logo">
+                    <h1>Instanssi2015</h1>
                     <p class="tagline">Digitaalisen tekemisen festivaali</p>
-                    <p class="time">28. - 30.3. Jyväskylä</p>
+                    <!--<p class="time">28. - 30.3. Jyväskylä</p>-->
                 </a>
-                <!--<a href="{% url 'main2014:toimisto-index' %}" class="toimisto-link"><img src="{% static 'main2014/images/toimisto/logo.png' %}" alt="Toimisto" id="toimisto-logo" /></a>-->
             </div>
             <nav class="container">
                 <div class="nav-btn">
@@ -73,13 +72,13 @@
                 </div>
                 <div class="clearer"></div>
                 <ul>
-                    <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:index' %}">Blogi</a></li>
-                    <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:info' %}">Info</a></li>
-                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:kompot' %}">Kompot</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:ohjelma' %}">Ohjelma</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:aikataulu' %}">Aikataulu</a></li>-->
-                    <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:english' %}">In English</a></li>
-                    <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:stream' %}">Stream</a></li>-->
+                    <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:index' %}">Blogi</a></li>
+                    <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:info' %}">Info</a></li>
+                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>-->
+                    <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>-->
+                    <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>-->
+                    <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:english' %}">In English</a></li>
+                    <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:stream' %}">Stream</a></li>-->
                     <!--<li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>-->
                     <li class="menu-item" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
@@ -116,11 +115,11 @@
                 <section class="widget widget-socialmedias">
                     <h2>Sosiaaliset mediat</h2>
                     <div class="social-media">
-                        <a href="http://www.facebook.com/instanssi"><img src="{% static 'main2014/images/icons/icon-facebook.png' %}" alt="" ></a>
-                        <a href="http://twitter.com/instanssi"><img src="{% static 'main2014/images/icons/icon-twitter.png' %}" alt="" ></a>
-                        <a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2014/images/icons/icon-youtube.png' %}" alt="" ></a>
-                        <a href="https://groups.google.com/forum/?fromgroups#!forum/instanssi"><img src="{% static 'main2014/images/icons/icon-googleplus.png' %}" alt="" ></a>
-                        <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2014/images/icons/icon-rss.png' %}" alt="" ></a>
+                        <a href="http://www.facebook.com/instanssi"><img src="{% static 'main2015/images/icons/icon-facebook.png' %}" alt="" ></a>
+                        <a href="http://twitter.com/instanssi"><img src="{% static 'main2015/images/icons/icon-twitter.png' %}" alt="" ></a>
+                        <a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2015/images/icons/icon-youtube.png' %}" alt="" ></a>
+                        <a href="https://groups.google.com/forum/?fromgroups#!forum/instanssi"><img src="{% static 'main2015/images/icons/icon-googleplus.png' %}" alt="" ></a>
+                        <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2015/images/icons/icon-rss.png' %}" alt="" ></a>
                         <div class="clearer"></div>
                         <br />
                         <p>#instanssi @ IRCNet</p>
@@ -134,13 +133,13 @@
                 <section class="sitemap">
                     <h1>Sivukartta</h1>
                     <ul>
-                        <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:index' %}">Blogi</a></li>
-                        <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:info' %}">Info</a></li>
-                        <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:kompot' %}">Kompot</a></li>-->
-                        <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:ohjelma' %}">Ohjelma</a></li>-->
-                        <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:aikataulu' %}">Aikataulu</a></li>-->
-                        <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:english' %}">In English</a></li>
-                        <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2014:stream' %}">Stream</a></li>-->
+                        <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:index' %}">Blogi</a></li>
+                        <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:info' %}">Info</a></li>
+                        <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>-->
+                        <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>-->
+                        <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>-->
+                        <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:english' %}">In English</a></li>
+                        <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:stream' %}">Stream</a></li>-->
                         <!--<li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>-->
                         <li class="menu-item"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                         <li class="menu-item"><a href="{% url 'archive:index' %}">Arkisto</a></li>
@@ -150,18 +149,18 @@
                 <section class="sponsors">
                     <h1>Yhteistyössä mukana</h1>
                     <div class="sponsors-container">
-                        <div class="sponsor"><a href="https://www.jyu.fi/it"><img src="{% static 'main2014/images/partners/jyuit.png' %}" alt="JYU IT logo" /></a></div>
-                        <div class="sponsor"><a href="https://www.jyu.fi/it/laitokset/mit"><img src="{% static 'main2014/images/partners/tietotekniikanlaitos.png' %}" alt="JYU IT logo" /></a></div>
-                        <div class="sponsor"><a href="http://linkkijkl.fi/"><img src="{% static 'main2014/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
-                        <div class="sponsor"><a href="http://peda.net/veraja/jkllukiokoulutus/voionmaanlukio"><img src="{% static 'main2014/images/partners/jao.png' %}" alt="JAO logo" /></a></div>
-                        <div class="sponsor"><a href="http://koodilehto.fi/"><img src="{% static 'main2014/images/partners/koodilehto.png' %}" alt="Koodilehto logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.accenture.com/us-en/pages/index.aspx"><img src="{% static 'main2014/images/partners/accenture.png' %}" alt="Accenture logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.livetek.fi/"><img src="{% static 'main2014/images/partners/livetek.png' %}" alt="Livetek logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.paytrail.com/"><img src="{% static 'main2014/images/partners/paytrail.png' %}" alt="Paytrail logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.qvantel.com/"><img src="{% static 'main2014/images/partners/qvantel.png' %}" alt="Qvantel logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2014/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.ramirent.fi/"><img src="{% static 'main2014/images/partners/ramirent.png' %}" alt="Ramirent logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.ketky.fi/"><img src="{% static 'main2014/images/partners/ketky.png' %}" alt="Ketky logo" /></a></div>     
+                        <div class="sponsor"><a href="https://www.jyu.fi/it"><img src="{% static 'main2015/images/partners/jyuit.png' %}" alt="JYU IT logo" /></a></div>
+                        <div class="sponsor"><a href="https://www.jyu.fi/it/laitokset/mit"><img src="{% static 'main2015/images/partners/tietotekniikanlaitos.png' %}" alt="JYU IT logo" /></a></div>
+                        <div class="sponsor"><a href="http://linkkijkl.fi/"><img src="{% static 'main2015/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
+                        <div class="sponsor"><a href="http://peda.net/veraja/jkllukiokoulutus/voionmaanlukio"><img src="{% static 'main2015/images/partners/jao.png' %}" alt="JAO logo" /></a></div>
+                        <div class="sponsor"><a href="http://koodilehto.fi/"><img src="{% static 'main2015/images/partners/koodilehto.png' %}" alt="Koodilehto logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.accenture.com/us-en/pages/index.aspx"><img src="{% static 'main2015/images/partners/accenture.png' %}" alt="Accenture logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.livetek.fi/"><img src="{% static 'main2015/images/partners/livetek.png' %}" alt="Livetek logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.paytrail.com/"><img src="{% static 'main2015/images/partners/paytrail.png' %}" alt="Paytrail logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.qvantel.com/"><img src="{% static 'main2015/images/partners/qvantel.png' %}" alt="Qvantel logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2015/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.ramirent.fi/"><img src="{% static 'main2015/images/partners/ramirent.png' %}" alt="Ramirent logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.ketky.fi/"><img src="{% static 'main2015/images/partners/ketky.png' %}" alt="Ketky logo" /></a></div>
                         <div class="clear"></div>
                     </div>
                 </section>
@@ -171,6 +170,6 @@
     </div>
     <!-- scripts -->
     <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main2014/js/functions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2015/js/functions.js' %}"></script>
 </body>
 </html>

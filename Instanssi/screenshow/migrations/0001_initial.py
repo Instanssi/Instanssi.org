@@ -1,65 +1,105 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Sponsor'
-        db.create_table('screenshow_sponsor', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('event', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kompomaatti.Event'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('logo', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-        ))
-        db.send_create_signal('screenshow', ['Sponsor'])
+    dependencies = [
+        ('kompomaatti', '0001_initial'),
+    ]
 
-        # Adding model 'Message'
-        db.create_table('screenshow_message', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('event', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kompomaatti.Event'])),
-            ('show_start', self.gf('django.db.models.fields.DateTimeField')()),
-            ('show_end', self.gf('django.db.models.fields.DateTimeField')()),
-            ('text', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal('screenshow', ['Message'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Sponsor'
-        db.delete_table('screenshow_sponsor')
-
-        # Deleting model 'Message'
-        db.delete_table('screenshow_message')
-
-
-    models = {
-        'kompomaatti.event': {
-            'Meta': {'object_name': 'Event'},
-            'archived': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'date': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mainurl': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '64'})
-        },
-        'screenshow.message': {
-            'Meta': {'object_name': 'Message'},
-            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kompomaatti.Event']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'show_end': ('django.db.models.fields.DateTimeField', [], {}),
-            'show_start': ('django.db.models.fields.DateTimeField', [], {}),
-            'text': ('django.db.models.fields.TextField', [], {})
-        },
-        'screenshow.sponsor': {
-            'Meta': {'object_name': 'Sponsor'},
-            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kompomaatti.Event']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'logo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        }
-    }
-
-    complete_apps = ['screenshow']
+    operations = [
+        migrations.CreateModel(
+            name='IRCMessage',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('date', models.DateTimeField(verbose_name='Aika')),
+                ('nick', models.CharField(max_length=64, verbose_name='Nimimerkki')),
+                ('message', models.TextField(verbose_name='Viesti')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'irc-viesti',
+                'verbose_name_plural': 'irc-viestit',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Message',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('show_start', models.DateTimeField(help_text='Viestin n\xe4ytt\xe4minen alkaa', verbose_name='Alkuaika')),
+                ('show_end', models.DateTimeField(help_text='Viestin n\xe4ytt\xe4minen p\xe4\xe4ttyy', verbose_name='Loppuaika')),
+                ('text', models.TextField(help_text='Viestin leip\xe4teksti. Katso ettei t\xe4st\xe4 tule liian pitk\xe4.', verbose_name='Viesti')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'viesti',
+                'verbose_name_plural': 'viestit',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='NPSong',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=255, verbose_name='Kappale', blank=True)),
+                ('artist', models.CharField(max_length=255, verbose_name='Artisti', blank=True)),
+                ('time', models.DateTimeField(verbose_name='Aikaleima')),
+                ('state', models.IntegerField(verbose_name='Tila', choices=[(0, 'Play'), (1, 'Stop')])),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'soitettava kappale',
+                'verbose_name_plural': 'soitettavat kappaleet',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='PlaylistVideo',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='Videon nimi tai otsikko.', max_length=b'64', verbose_name='Nimi')),
+                ('url', models.URLField(help_text='Linkki Youtube-videoon.', verbose_name=b'Osoite')),
+                ('index', models.IntegerField(help_text='Indeksi toistolistan j\xe4rjestelemiseen. Pienimm\xe4ll\xe4 numerolla varustetut toistetaan ensimm\xe4iseksi.', verbose_name=b'J\xc3\xa4rjestysindeksi')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'toistolistavideo',
+                'verbose_name_plural': 'toistolistavideot',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ScreenConfig',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('enable_videos', models.BooleanField(default=True, help_text='N\xe4ytet\xe4\xe4nk\xf6 esityksess\xe4 videoita playlistilt\xe4.', verbose_name='N\xe4yt\xe4 videoita')),
+                ('enable_twitter', models.BooleanField(default=True, help_text='N\xe4ytet\xe4\xe4nk\xf6 esityksess\xe4 twittersy\xf6tteen sis\xe4lt\xe4v\xe4 slaidi.', verbose_name='N\xe4yt\xe4 twitterfeed')),
+                ('enable_irc', models.BooleanField(default=True, help_text='N\xe4ytet\xe4\xe4nk\xf6 esityksess\xe4 irc-lokin sis\xe4lt\xe4v\xe4 slaidi.', verbose_name='N\xe4yt\xe4 IRC')),
+                ('video_interval', models.IntegerField(default=5, help_text='Kuinka usein videoita n\xe4ytet\xe4\xe4n? Arvo annetaan minuuteissa. 0 = Joka kierroksella.', verbose_name='Videoiden n\xe4ytt\xf6v\xe4li')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event', unique=True)),
+            ],
+            options={
+                'verbose_name': 'screenikonffi',
+                'verbose_name_plural': 'screenikonffit',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Sponsor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='Sponsorin nimi', max_length=64, verbose_name='Nimi')),
+                ('logo', models.ImageField(help_text='Sponsorin logo', upload_to=b'screen/sponsorlogos/', verbose_name='Kuva', blank=True)),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'sponsori',
+                'verbose_name_plural': 'sponsorit',
+            },
+            bases=(models.Model,),
+        ),
+    ]

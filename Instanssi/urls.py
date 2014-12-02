@@ -49,7 +49,7 @@ if settings.DEBUG:
     # Also, show debug_toolbar if debugging is on
     urlpatterns += patterns('',
         url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+#        url(r'^__debug__/', include(debug_toolbar.urls)),
     )
 
     # Use admin panel, if debug mode is on

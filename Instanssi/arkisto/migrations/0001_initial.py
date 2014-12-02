@@ -1,62 +1,47 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'OtherVideoCategory'
-        db.create_table('arkisto_othervideocategory', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('event', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kompomaatti.Event'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
-        ))
-        db.send_create_signal('arkisto', ['OtherVideoCategory'])
+    dependencies = [
+        ('kompomaatti', '0001_initial'),
+    ]
 
-        # Adding model 'OtherVideo'
-        db.create_table('arkisto_othervideo', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['arkisto.OtherVideoCategory'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
-            ('youtube_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-        ))
-        db.send_create_signal('arkisto', ['OtherVideo'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'OtherVideoCategory'
-        db.delete_table('arkisto_othervideocategory')
-
-        # Deleting model 'OtherVideo'
-        db.delete_table('arkisto_othervideo')
-
-
-    models = {
-        'arkisto.othervideo': {
-            'Meta': {'object_name': 'OtherVideo'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['arkisto.OtherVideoCategory']"}),
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'youtube_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
-        },
-        'arkisto.othervideocategory': {
-            'Meta': {'object_name': 'OtherVideoCategory'},
-            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kompomaatti.Event']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        },
-        'kompomaatti.event': {
-            'Meta': {'object_name': 'Event'},
-            'archived': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'date': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        }
-    }
-
-    complete_apps = ['arkisto']
+    operations = [
+        migrations.CreateModel(
+            name='OtherVideo',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='Videon nimi.', max_length=64, verbose_name='Nimi')),
+                ('description', models.TextField(help_text='Videon kuvaus.', verbose_name='Kuvaus')),
+                ('youtube_url', models.URLField(help_text='Linkki teoksen Youtube-versioon.', verbose_name='Youtube URL', blank=True)),
+            ],
+            options={
+                'verbose_name': 'muu video',
+                'verbose_name_plural': 'muut videot',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='OtherVideoCategory',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='Kategorian nimi', max_length=64, verbose_name='Nimi')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'videokategoria',
+                'verbose_name_plural': 'videokategoriat',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='othervideo',
+            name='category',
+            field=models.ForeignKey(verbose_name='Kategoria', to='arkisto.OtherVideoCategory'),
+            preserve_default=True,
+        ),
+    ]

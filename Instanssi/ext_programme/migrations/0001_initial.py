@@ -1,67 +1,45 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'ProgrammeEvent'
-        db.create_table('ext_programme_programmeevent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('event', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kompomaatti.Event'])),
-            ('start', self.gf('django.db.models.fields.DateTimeField')()),
-            ('end', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('presenters', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('presenters_titles', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('icon_original', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('home_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('twitter_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('github_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('facebook_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('linkedin_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('wiki_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-        ))
-        db.send_create_signal('ext_programme', ['ProgrammeEvent'])
+    dependencies = [
+        ('kompomaatti', '0001_initial'),
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'ProgrammeEvent'
-        db.delete_table('ext_programme_programmeevent')
-
-
-    models = {
-        'ext_programme.programmeevent': {
-            'Meta': {'object_name': 'ProgrammeEvent'},
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'end': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kompomaatti.Event']"}),
-            'facebook_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'github_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'home_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'icon_original': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'linkedin_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'presenters': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'presenters_titles': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'start': ('django.db.models.fields.DateTimeField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'twitter_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'wiki_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
-        },
-        'kompomaatti.event': {
-            'Meta': {'object_name': 'Event'},
-            'archived': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'date': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        }
-    }
-
-    complete_apps = ['ext_programme']
+    operations = [
+        migrations.CreateModel(
+            name='ProgrammeEvent',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('start', models.DateTimeField(help_text='Tapahtuman alkamisaika.', verbose_name='Alku')),
+                ('end', models.DateTimeField(help_text='Tapahtuman loppumisaika.', null=True, verbose_name='Loppu', blank=True)),
+                ('description', models.TextField(verbose_name='Kuvaus', blank=True)),
+                ('title', models.CharField(help_text='Lyhyt otsikko.', max_length=128, verbose_name='Otsikko')),
+                ('presenters', models.CharField(help_text='Esityksen pit\xe4j\xe4t tms.', max_length=256, verbose_name='Henkil\xf6t', blank=True)),
+                ('presenters_titles', models.CharField(help_text='Henkil\xf6n arvo-, ammatti- tai virkanimike.', max_length=256, verbose_name='Nimikkeet', blank=True)),
+                ('place', models.CharField(help_text='Tarkka paikka tapahtuma-areenalla', max_length=64, verbose_name='Paikka', blank=True)),
+                ('icon_original', models.ImageField(help_text='Kuva 1 tapahtumalle.', upload_to=b'programme/images/', verbose_name='Kuva 1', blank=True)),
+                ('icon2_original', models.ImageField(help_text='Kuva 2 tapahtumalle.', upload_to=b'programme/images/', verbose_name='Kuva 2', blank=True)),
+                ('email', models.EmailField(help_text='Tapahtumaan liittyv\xe4 s\xe4hk\xf6posti-osoite (esim. esiintyj\xe4n).', max_length=75, verbose_name='S\xe4hk\xf6posti', blank=True)),
+                ('home_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 URL.', verbose_name='Kotiurli', blank=True)),
+                ('twitter_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 Twitter-url.', verbose_name='Twitter', blank=True)),
+                ('github_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 Github-url', verbose_name='Github', blank=True)),
+                ('facebook_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 facebook-url.', verbose_name='Facebook', blank=True)),
+                ('linkedin_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 LinkedIn-url.', verbose_name='LinkedIn', blank=True)),
+                ('wiki_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 Wikipedia-url.', verbose_name='Wikipedia', blank=True)),
+                ('gplus_url', models.URLField(help_text='Tapahtumaan liittyv\xe4 Google Plus-url.', verbose_name='Google+', blank=True)),
+                ('event_type', models.IntegerField(default=0, help_text='M\xe4\xe4ritt\xe4\xe4 tapahtuman tyypin. Yksityiskohtaiset tapahtumat n\xe4kyv\xe4t etusivun tapahtumalistassa.', verbose_name='Tapahtuman tyyppi', choices=[(0, 'Yksinkertainen'), (1, 'Yksityiskohtainen')])),
+                ('active', models.BooleanField(default=True, help_text='Deaktivoidut piilotetaan.', verbose_name='Aktiivinen')),
+                ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
+            ],
+            options={
+                'verbose_name': 'ohjelmatapahtuma',
+                'verbose_name_plural': 'ohjelmatapahtumat',
+            },
+            bases=(models.Model,),
+        ),
+    ]

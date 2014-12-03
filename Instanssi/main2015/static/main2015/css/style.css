@@ -1,21 +1,31 @@
 /*
-	Theme: Instanssi 2012
-	Author: Janne Leppänen
+	Theme: Instanssi 2015
+	Author: Janne Leppänen (original Instanssi 2012 theme)
+		Jouni Potila (2015 theme)
 	
-	Fonts:
+	Fonts that fit together:
 	font-family: 'Open Sans', sans-serif;
-	font-family: 'Exo', sans-serif;
+	font-family: 'Maven Pro', sans-serif;
 */
 
 /* general */
-html , body { font-family: helvetica;   background: url('../images/snow.png'); }
+html , body { font-family: helvetica; }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
-body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
-h1{ font-family: 'Exo', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; line-height: 90%; }
-h2, .item .title, .header, form legend { font-family: 'Exo', sans-serif;  font-variant: small-caps; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  font-weight: bold; }
-h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
-h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #734C1A;  font-weight: bold; }
+body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Maven Pro', 
+sans-serif; }
+h1{ font-family: 'Maven Pro', sans-serif; font-variant: small-caps; font-size: 48px; 
+margin-bottom: 1em; 
+color: #48B9DC;  
+font-weight: bold; line-height: 90%; text-shadow: 2px 2px #555;}
+h2, .item .title, .header, form legend { font-family: 'Maven Pro', sans-serif;  
+/* font-variant: 
+small-caps; */ font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  
+font-weight: bold; }
+h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #48B9DC;  
+font-weight: bold; }
+h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #48B9DC;  
+font-weight: bold; }
 b, strong { font-weight: bold; }
 i, em { font-style: italic; }
 blockquote { font-size:125%; font-style:italic; margin-left: 4%; margin-bottom: 10px; }
@@ -23,7 +33,8 @@ sup { font-size: 75%; vertical-align: super; }
 sub { font-size: 75%; vertical-align: sub; }
 
 /* buttons */
-.btn { border: 1px solid #FC9402; color: #fff !important; text-decoration: none !important; display: inline-block; padding: 6px 20px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
+.btn { border: 1px solid #48B9DC; color: #fff !important; text-decoration: none !important; 
+display: inline-block; padding: 6px 20px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
 .btn:hover { color: #fff; opacity: 0.8; }
 
 
@@ -35,15 +46,31 @@ sub { font-size: 75%; vertical-align: sub; }
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
-#page-header { position: relative; width:100%; background: url('../images/header-bg.png') no-repeat scroll center transparent;  margin-bottom: 40px; }
-#page-header .header-info { min-height: 230px; }
-#page-header .header-info .logo { display: none; }
+#page-header { position: relative; /* width:100%;*/ background: 
+url('../images/ruututekstuuri.png') repeat;  
+margin-bottom: 40px; }
+#page-header .header-info { min-height: 230px; /* background: 
+url('../images/instanssi2015.png') 20px 49px no-repeat; */}
+#page-header .header-info .logo {  }
 #page-header a { text-decoration: none; }
 #page-header a:hover { opacity: 0.8; }
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
-#page-header .header-info h1 { font-size: 47px; color: #fff; font-weight: 800; font-variant: small-caps; padding: 80px 0px 0px 0px; line-height: 20%; }
-#page-header .header-info .tagline { font-size: 20px; font-family: 'Exo', sans-serif;  color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; margin-bottom: 5px; }
-#page-header .header-info .time { font-size: 30px; font-family: 'Exo', sans-serif; color: #fff; font-weight: 800; font-variant: small-caps; line-height: 80%; }
+#page-header .header-info h1 { height: 103px; font-size: 55px; color: #fff; font-family: 
+'Open Sans', sans-serif; 
+font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 
+0px 0px; */ padding: 0;
+/*line-height: 20%; */
+/* hide text and show image instead: */
+text-indent: 2000px; overflow: hidden; background: url('../images/instanssi2015d2.png') 0 
+47px no-repeat; }
+#page-header .header-info .tagline { font-size: 20px; font-family: 
+'Maven Pro', sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 300; 
+line-height: 100%; margin-bottom: 5px; }
+#page-header .header-info .time { font-size: 24px; font-family: 'Maven Pro', 
+sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 
+100%; 
+margin-bottom: 5px;
+}
 
 
 
@@ -55,7 +82,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; /*ie-inline-block */ *display: inline; *zoom: 1; }
 #page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; top: 0px; }
 #page-header nav ul .menu-item a:hover { top: -3px; }
-#page-header nav ul .current-menu-item { background: #fff; border: 1px solid #D2AE6E; }
+#page-header nav ul .current-menu-item { background: #fff; border-left: 1px solid #EEE; border-right: 1px solid #EEE; border-top: 1px solid #EEE; }
 #page-header nav ul .current-menu-item a { color: #333; text-shadow: none; }
 
 
@@ -199,7 +226,8 @@ form textarea { height: 100px; }
 .inc-dec-btn div:hover { cursor: pointer; background: #aaa; }
 
 .store-details label, .store-details input { vertical-align: middle; }
-.item-price { font-family: 'Exo',sans-serif; font-size: 16px; position: relative; top: 15px; }
+.item-price { font-family: 'Maven Pro',sans-serif; font-size: 16px; position: 
+relative; top: 15px; }
 .errorField, .item-price { float: right; }
 .errorField, #errorMsg li { color: #FF0094; }
 .store-items .errorField { margin-right: 5%; max-width: 140px; }
@@ -212,12 +240,12 @@ h2, .item .title, .header,
 table th,
 .btn,
 form legend {
-	background: #BB8945;
-	background-image: linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
-	background-image: -o-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
-	background-image: -moz-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
-	background-image: -webkit-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
-	background-image: -ms-linear-gradient(bottom, #BB8945 7%, #D2AE6E 84%);
+	background: #48B9DC;
+/*	background-image: linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
+	background-image: -o-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
+	background-image: -moz-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
+	background-image: -webkit-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
+	background-image: -ms-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%); */
 }
 
 .btn {
@@ -307,19 +335,26 @@ background-image: -webkit-gradient(
 
 /* Landscape phones */
 @media (max-width: 480px) { 
-	#page-header nav .nav-btn { display: block; }
+	#page-header nav .nav-btn { display: block; float: left; }
 	.no-js #page-header nav .nav-btn { display: none; }
 	
-	#page-header .header-info h1 {font-size: 36px; }
-	#page-header .header-info .tagline { font-size: 16px; }
+	#page-header .header-info h1 { padding: 0; padding-top:1em; margin:0; text-indent: 
+0; 
+background: 
+none; font-size: 
+36px; }
+	#page-header .header-info .tagline { margin: 0; font-size: 16px; }
 	#page-header .header-info .time { font-size: 26px; }
 
-	#page-header { background: #111; background-image: none; }
-	#page-header .header-info { background: url('../images/header-bg.png') center top #0088C3; background-size: cover; }
+/*	#page-header { position: relative; background: #48B9DC; background-image: 
+url('../images/ruututekstuuri.png') repeat; } */
+	#page-header .header-info { background-size: cover; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
-	#page-header nav ul { background: transparent; max-height: 0px; overflow: hidden; }
+	#page-header nav ul { background-color: #777; max-height: 0px; 
+overflow: 
+hidden; }
 	.no-js #page-header nav ul,
 	#page-header nav ul.active { max-height: 255px; }
 

@@ -34,7 +34,7 @@ h1 {
 }
 
 h2, h3 {
-    border-bottom: 1px dashed #c00;
+    border-bottom: 1px dashed #08d;
 }
 h2 {
     width: 100%;
@@ -60,7 +60,7 @@ hr {
     border: 0; border-top: 1px dotted #aaa;
 }
 
-a { color: #c00; text-decoration: none; }
+a { color: #08d; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ---------- Base layout tuning ---------- */
@@ -86,12 +86,13 @@ a:hover { text-decoration: underline; }
 /* ---------- Header ---------- */
 
 #header {
-    background: #e1bb80;
-    background-image: url('../img/background.jpg');
+    background: #01cdff;
+    background-image: url('../../main2015/images/ruututekstuuri.png');
 }
-
 #header h1, #header h1 span, #usertools a {
-    font-family: 'Cutive Mono' !important;
+    text-shadow: black 1px 1px 1px;
+    font-family: 'Maven Pro', sans-serif;
+    font-variant: normal;
 }
 #usertools a { font-size: 1.2em; }
 #header h1, #header h1 span {
@@ -103,10 +104,9 @@ a:hover { text-decoration: underline; }
 }
 #header h1 span { text-transform: none;}
 #header h1 .section { margin-left: .25em; font-size: .5em;}
-#header h1 a, #usertools a { color: #a00; color: rgba(170, 0, 0, .9); }
-
+#header h1 a, #usertools a { color: #fff; color: rgba(255, 255, 255, .9); }
 #header h1 a, h1 a:visited { text-decoration: none; }
-#header h1 a:hover { text-shadow: #eee 0 0 3px; }
+#header h1 a:hover { text-shadow: #048 1px 1px 1px }
 
 #header_nav {
     background-color: #111121;
@@ -227,7 +227,7 @@ ul#crumbpath li * {
     padding: 4px 0;
 }
 ul#crumbpath a {
-    color: #c00;
+    color: #08d;
     text-decoration: none;
 }
 ul#crumbpath a:hover {
@@ -249,8 +249,9 @@ ul#crumbpath a:hover {
     z-index: 1;
 }
 #usertools:before {
-    background: white;
-    background: repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(0,120,0,.1) 10px, transparent 11px), linear-gradient(#ddd, #fff);
+    background: rgba(0, 0, 0, .2);
+    border: 1px solid white;
+    /*background: repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(0,120,0,.1) 10px, transparent 11px), linear-gradient(#ddd, #fff);*/
     -webkit-transform: rotate(-2deg);
     -moz-transform: rotate(-2deg);
     transform: rotate(-2deg);
@@ -268,7 +269,7 @@ ul#crumbpath a:hover {
     font-size: 0;
 }
 #usertools.unauthenticated .user-image {
-    background: url('../img/top_secret_42.png') 1px 1px no-repeat;
+    /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
 }
 #usertools img {
     box-shadow: 0 0 2px #555;
@@ -285,12 +286,13 @@ ul#crumbpath a:hover {
     display: block;
 }
 #usertools a, #usertools a:visited {
-    color: black;
+    color: #fff;
     text-decoration: none;
 }
 #usertools a:hover {
-    color: black;
-    text-shadow: 0 0 2px #c33;
+    color: #fff;
+    /*text-shadow: 0 0 2px #c33;*/
+    text-shadow: #048 1px 1px 1px
 }
 
 /* ---------- uniForm tweaks ---------- */
@@ -314,7 +316,7 @@ form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    color: #c00;
+    color: #08d;
 }
 
 .ui-state-active,

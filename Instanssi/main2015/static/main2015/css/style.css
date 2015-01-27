@@ -91,8 +91,8 @@ margin-bottom: 5px;
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
 #primary li { margin-bottom: 5px; }
-#primary a { color: #CC0000; text-decoration: underline; }
-#primary a:hover {  color: #CC6935; } 
+#primary a { color: #08d; text-decoration: underline; }
+#primary a:hover {  color: #09f; }
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
 #primary p { margin-bottom: 10px; }
 #primary table { margin-bottom: 20px; width: 100%; }

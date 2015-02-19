@@ -48,22 +48,21 @@ Projektin asentaminen
 
 Kirjastot
 ---------
-* [Django 1.6 tai uudempi] (https://www.djangoproject.com/download/) `pip install django`
-* [python-social-auth] (https://github.com/omab/python-social-auth) `pip install python-social-auth`
-* [django-countries] (https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
-* [PIL] (http://www.pythonware.com/products/pil/) `pip install pil`
-* [django-imagekit] (https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
-* [South] (http://south.aeracode.org/) `pip install south`
-* [django-crispy-forms] (http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
-* [reportlab] (http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
-* [django-twitter-tag] (https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
-* [django-debug-toolbar] (http://django-debug-toolbar.readthedocs.org) `pip install django-debug-toolbar`
+* [Django 1.7](https://www.djangoproject.com/download/) `pip install django`
+* [python-social-auth](https://github.com/omab/python-social-auth) `pip install python-social-auth`
+* [django-countries](https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
+* [PIL](http://www.pythonware.com/products/pil/) `pip install pil`
+* [django-imagekit](https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
+* [django-crispy-forms](http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
+* [reportlab](http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
+* [django-twitter-tag](https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
+* [django-debug-toolbar](http://django-debug-toolbar.readthedocs.org) `pip install django-debug-toolbar`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django python-social-auth django-countries django-imagekit django-twitter-tag south django-crispy-forms reportlab pil
+    pip install django pillow python-social-auth django-countries django-imagekit django-twitter-tag django-crispy-forms reportlab django-debug-toolbar
 
 Testitapausten ajaminen
 -----------------------

@@ -75,12 +75,12 @@
                 <ul>
                     <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:index' %}">Blogi</a></li>
                     <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:info' %}">Info</a></li>
-                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>-->
+                    <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>
+                    <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>
+                    <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>
                     <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:english' %}">In English</a></li>
                     <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:stream' %}">Stream</a></li>-->
-                    <!--<li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>-->
+                    <li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                     <div class="clearer"></div>
@@ -92,9 +92,9 @@
                 {% block content %}{% endblock %}
             </section>
             <aside id="sidebar-widgets">
-                <!--<section class="widget widget-store">
+                <section class="widget widget-store">
                     <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
-                </section>-->
+                </section>
                 <section class="widget widget-twitter">
                     <h2>Twitter</h2>
                     <div id="tweets">

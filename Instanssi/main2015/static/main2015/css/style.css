@@ -123,6 +123,8 @@ margin-bottom: 5px;
 #primary .message .title a {  font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; text-decoration: none; display: block; }
 #primary .message .date { display: block; width: 100%; color: #666; margin-bottom: 15px; font-size: 14px; }
 
+#primary .message .leftfloat { float: left; margin: 0 10px 10px 0; }
+#primary .message .rightfloat { float: right; margin: 0 0 10px 10px; }
 
 /* sidebar */
 #sidebar-widgets {  float: left; width: 300px; }

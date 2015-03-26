@@ -117,7 +117,7 @@ margin-bottom: 5px;
 #programme .item { border: none; }
 
 /* blogi */
-#primary .message { padding-bottom: 20px; margin-bottom: 20px; }
+#primary .message { clear: both; padding-bottom: 20px; margin-bottom: 20px; }
 #primary .message header { margin-bottom: 20px; }
 #primary .compoinfo .name,
 #primary .message .title a {  font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; text-decoration: none; display: block; }

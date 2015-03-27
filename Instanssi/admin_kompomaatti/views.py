@@ -427,7 +427,7 @@ def votecodes_print(request, sel_event_id):
     codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
     
     # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(mimetype='application/pdf')
+    response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=votecodes.pdf'
 
     # Create the PDF object,

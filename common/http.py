@@ -16,7 +16,7 @@ def render_to_403(*args, **kwargs):
         args = []         
         args.append('403.html')              
 
-    httpresponse_kwargs = {'mimetype': kwargs.pop('mimetype', None)}          
+    httpresponse_kwargs = {'content_type': kwargs.pop('content_type', None)}          
     response = HttpResponseForbidden(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)              
 
     return response  

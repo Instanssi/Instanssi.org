@@ -152,6 +152,10 @@ class Entry(models.Model):
         verbose_name=u"tuotos"
         verbose_name_plural=u"tuotokset"
     
+    def get_format(self):
+        name, ext = os.path.splitext(self.entryfile.url)
+        return ext
+    
     def get_score(self):
         if self.disqualified: # If disqualified, score will be -1
             return -1.0

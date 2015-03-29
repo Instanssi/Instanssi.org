@@ -48,7 +48,7 @@ def removeoldvotes(request, sel_event_id):
     logger.info('Event old votes removed.', extra={'user': request.user, 'event': event})
     
     # All done, redirect
-    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id,)))
 
 @staff_access_required
 def transferrights(request, sel_event_id):
@@ -74,7 +74,7 @@ def transferrights(request, sel_event_id):
     logger.info('Event rights transferred.', extra={'user': request.user, 'event': event})
     
     # All done, redirect
-    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id,)))
     
 @staff_access_required
 def optimizescores(request, sel_event_id):
@@ -100,7 +100,7 @@ def optimizescores(request, sel_event_id):
     # Log it
     logger.info('Event scores optimized.', extra={'user': request.user, 'event': event})
 
-    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id,)))
 
 @staff_access_required
 def archiver(request, sel_event_id):
@@ -166,7 +166,7 @@ def show(request, sel_event_id):
     # Log it
     logger.info('Event set as visible in archive.', extra={'user': request.user, 'event': event})
     
-    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id,)))
 
 @staff_access_required
 def hide(request, sel_event_id):
@@ -182,7 +182,7 @@ def hide(request, sel_event_id):
     # Log it
     logger.info('Event set as hidden in archive.', extra={'user': request.user, 'event': event})
     
-    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:archiver', args=(sel_event_id,)))
 
 @staff_access_required
 def vids(request, sel_event_id):
@@ -200,7 +200,7 @@ def vids(request, sel_event_id):
         if vidform.is_valid():
             video = vidform.save()
             logger.info('Added archive video '+video.name, extra={'user': request.user, 'event': event})
-            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id,)))
     else:
         vidform = VideoForm(event=event)
     
@@ -237,7 +237,7 @@ def editvid(request, sel_event_id, video_id):
         if vidform.is_valid():
             r_video = vidform.save()
             logger.info('Edited archive video '+r_video.name, extra={'user': request.user, 'event': event})
-            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id,)))
     else:
         vidform = VideoForm(instance=video, event=event)
     
@@ -267,7 +267,7 @@ def deletevid(request, sel_event_id, video_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id,)))
     
 @staff_access_required
 def cats(request, sel_event_id):
@@ -287,7 +287,7 @@ def cats(request, sel_event_id):
             cat.event = event
             cat.save()
             logger.info('Added archive video category '+cat.name, extra={'user': request.user, 'event': event})
-            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id,)))
     else:
         catform = VideoCategoryForm()
     
@@ -319,7 +319,7 @@ def editcat(request, sel_event_id, category_id):
         if catform.is_valid():
             r_cat = catform.save()
             logger.info('Edited archive video category '+r_cat.name, extra={'user': request.user, 'event': event})
-            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
+            return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id,)))
     else:
         catform = VideoCategoryForm(instance=category)
     
@@ -336,7 +336,6 @@ def deletecat(request, sel_event_id, category_id):
     if not request.user.has_perm('arkisto.delete_othervideocategory'):
         raise Http403
     
-    # Get event
     event = get_object_or_404(Event, pk=sel_event_id)
     
     # Attempt to delete category
@@ -348,4 +347,4 @@ def deletecat(request, sel_event_id, category_id):
         pass
     
     # Redirect
-    return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id)))
+    return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id,)))

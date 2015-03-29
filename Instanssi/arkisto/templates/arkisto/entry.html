@@ -5,7 +5,12 @@
 
 {% block head %}{{ block.super }}{% endblock %}
 
-{% block jquery %}{{ block.super }}{% endblock %}
+{% block jquery %}
+{{ block.super }}
+	  audiojs.events.ready(function() {
+	    var as = audiojs.createAll();
+	  });
+{% endblock %}
 
 {% block crumbs %}
 {{ block.super }}
@@ -53,6 +58,11 @@
 {% endif %}
                     </ul>
 				<hr />
+{% if not entry.get_show_list.youtube %}
+	{% if entry.get_format == ".mp3" or entry.get_format == ".ogg" %}
+				<p><audio src="{{ entry.entryfile.url }}" preload="auto" /></p>
+	{% endif %}
+{% endif %}
 				<p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
 {% if entry.sourcefile %}
 				<p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>

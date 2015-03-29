@@ -6,6 +6,7 @@ from django.contrib import admin
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from datetime import datetime
+from urlparse import urlparse
 from Instanssi.kompomaatti.misc import entrysort
 import os.path
 
@@ -168,6 +169,10 @@ class Entry(models.Model):
                 if vote.rank > 0:
                     score += (1.0 / vote.rank)
             return score
+        
+    def get_youtube_embed_url(self):
+        spurl = urlparse(self.youtube_url)
+        return "http://www.youtube.com/embed/" + os.path.split(spurl.path)[1]+"/"
         
     def get_rank(self):
         # If rank has been predefines, then use that

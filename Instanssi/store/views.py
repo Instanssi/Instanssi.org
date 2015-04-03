@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from django.contrib.formtools.wizard.views import NamedUrlSessionWizardView
+from formtools.wizard.views import NamedUrlSessionWizardView
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render

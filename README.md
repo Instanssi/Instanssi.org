@@ -57,12 +57,13 @@ Kirjastot
 * [reportlab](http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
 * [django-twitter-tag](https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
 * [django-debug-toolbar](http://django-debug-toolbar.readthedocs.org) `pip install django-debug-toolbar`
+* [django-formtools](https://readthedocs.org/projects/django-formtools/) `pip install django-formtools`
 
 Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install django pillow python-social-auth django-countries django-imagekit django-twitter-tag django-crispy-forms reportlab django-debug-toolbar
+    pip install django pillow python-social-auth django-countries django-imagekit django-twitter-tag django-crispy-forms reportlab django-debug-toolbar django-formtools
 
 Testitapausten ajaminen
 -----------------------

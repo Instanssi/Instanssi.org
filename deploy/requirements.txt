@@ -1,0 +1,10 @@
+Django>=1.8,<1.9
+django-countries
+django-crispy-forms
+django-debug-toolbar
+django-formtools
+django-imagekit
+django-twitter-tag
+Pillow
+python-social-auth
+reportlab

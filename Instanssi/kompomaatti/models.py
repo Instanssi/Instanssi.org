@@ -32,7 +32,7 @@ class Event(models.Model):
 
 class VoteCodeRequest(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma, johon äänestysoikeutta pyydetään', null=True)
-    user = models.ForeignKey(User, unique=True, verbose_name=u'Käyttäjä', help_text=u'Pyynnön esittänyt käyttäjä')
+    user = models.OneToOneField(User, unique=True, verbose_name=u'Käyttäjä', help_text=u'Pyynnön esittänyt käyttäjä')
     text = models.TextField(u'Kuvaus', help_text=u'Lyhyt aneluteksti admineille :)')
     def __unicode__(self):
         return self.user.username

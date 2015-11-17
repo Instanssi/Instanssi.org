@@ -99,13 +99,13 @@ JSON_KEY = u'12341234'
 
 # Paytrail aka. Suomen Verkkomaksut
 # See http://docs.paytrail.com/fi/index-all.html for API specs
-VMAKSUT_ID = u'13466'; # Test ID 
-VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'; # Test secret
+VMAKSUT_ID = u'13466'  # Test ID
+VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'  # Test secret
 
 # Bitpay API key etc. See https://bitpay.com/downloads/bitpayApi.pdf
-BITPAY_KEY=u'ReplaceMe5uxe6ohseokaebiyae1Oox6chie3bunga';
-BITPAY_SPEED=u'medium'; # Require 1 confirmation
-BITPAY_EMAIL=u'jaska.jokunen@instanssi.org';
+BITPAY_KEY = u'ReplaceMe5uxe6ohseokaebiyae1Oox6chie3bunga'
+BITPAY_SPEED = u'medium'  # Require 1 confirmation
+BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
@@ -217,7 +217,6 @@ INSTALLED_APPS = (
     'imagekit',
     'twitter_tag',
     'crispy_forms',
-#    'debug_toolbar',
     'social.apps.django_app.default',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -262,21 +261,19 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_arkisto': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_users': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_blog': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_events': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_kompomaatti': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_programme': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_upload': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_utils': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_screenshow': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_timingtool': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.admin_store': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.main2013': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.store': { 'handlers': ['log_db'], 'level': 'INFO' },
-        'Instanssi.infodesk': { 'handlers': ['log_db'], 'level': 'INFO' },
+        'Instanssi.store': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_arkisto': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_users': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_blog': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_events': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_kompomaatti': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_programme': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_upload': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_utils': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_screenshow': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.admin_store': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.main2013': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.infodesk': {'handlers': ['log_db'], 'level': 'INFO'},
     }
 }
 

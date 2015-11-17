@@ -10,6 +10,7 @@ from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
 from common.misc import get_url_local_path
 
+
 class DjangoLoginForm(forms.Form):
     username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Django-käyttäjätunnus")
     password = forms.CharField(label=u"Salasana", widget=forms.PasswordInput)
@@ -51,6 +52,7 @@ class DjangoLoginForm(forms.Form):
 
     def login(self, request):
         auth.login(request, self.logged_user)
+
 
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(

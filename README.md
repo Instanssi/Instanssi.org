@@ -63,11 +63,11 @@ Onelineri kirjastojen asentamiseen
 ----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install -r deploy/requirements.txt
+    pip install -r requirements.txt
     
 Mikäli dependenssit joskus päivittyvät, auttaa seuraava:
 
-    pip install --upgrade -r deploy/requirements.txt
+    pip install --upgrade -r requirements.txt
 
 Testitapausten ajaminen
 -----------------------

@@ -87,12 +87,11 @@ class OpenIDLoginForm(forms.Form):
         # Initial values
         self.fields['next'].initial = self.next
         self.fields['sps'].choices = [
-            ('https://www.google.com/accounts/o8/id', 'Google'),
             ('https://korppi.jyu.fi/openid/', 'Korppi'),
             ('https://me.yahoo.com', 'Yahoo'),
         ]
         self.fields['sps'].initial = 0
-        self.fields['openid_identifier'].initial = 'https://www.google.com/accounts/o8/id'
+        self.fields['openid_identifier'].initial = 'https://korppi.jyu.fi/openid/'
         
 
 class ProfileForm(forms.ModelForm):

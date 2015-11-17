@@ -74,6 +74,16 @@ SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'locale': 'fi_FI'}
 
+# Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
+
+# Github
+SOCIAL_AUTH_GITHUB_KEY = ''
+SOCIAL_AUTH_GITHUB_SECRET = ''
+SOCIAL_AUTH_GITHUB_SCOPE = ['email']
+
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
@@ -232,6 +242,9 @@ INSTALLED_APPS = (
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
     'social.backends.facebook.FacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 

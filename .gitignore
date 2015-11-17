@@ -12,3 +12,4 @@ testing/output/*
 *.html~
 *.py~
 *.txt~
+.idea

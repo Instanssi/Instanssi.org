@@ -16,12 +16,12 @@ def login(request):
 
     # Test django login form
     if request.method == "POST":
-        djangoform = DjangoLoginForm(request.POST, next='/kompomaatti')
+        djangoform = DjangoLoginForm(request.POST)
         if djangoform.is_valid():
             djangoform.login(request)
             return HttpResponseRedirect(djangoform.cleaned_data['next'])
     else:
-        djangoform = DjangoLoginForm(next=next)
+        djangoform = DjangoLoginForm(next='/kompomaatti')
     
     # Openid login form
     # The form will be handled elsewhere; this is only for rendering the form.

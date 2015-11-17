@@ -9,10 +9,16 @@ from django.core.urlresolvers import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
 from common.misc import get_url_local_path
 
-
 def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('users:profile'))
+    
+    # Get referer for redirect
+    # Make sure that the referrer is a local path.
+    if 'next' in request.GET:
+        next = get_url_local_path(request.GET['next'])
+    else:
+        next = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
 
     # Test django login form
     if request.method == "POST":
@@ -25,7 +31,7 @@ def login(request):
     
     # Openid login form
     # The form will be handled elsewhere; this is only for rendering the form.
-    openidform = OpenIDLoginForm(next='/kompomaatti')
+    openidform = OpenIDLoginForm(next=next)
     
     # Render response
     return render_to_response("users/login.html", {
@@ -34,10 +40,8 @@ def login(request):
         'next': next,
     }, context_instance=RequestContext(request))
 
-
 def loggedout(request):
     return render_to_response("users/loggedout.html")
-
 
 @user_access_required
 def profile(request):
@@ -52,7 +56,6 @@ def profile(request):
     return render_to_response("users/profile.html", {
         'profileform': profileform,
     }, context_instance=RequestContext(request))
-
 
 def logout(request):
     auth.logout(request)

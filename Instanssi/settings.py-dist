@@ -215,6 +215,7 @@ INSTALLED_APPS = (
     'Instanssi.main2013',
     'Instanssi.main2014',
     'Instanssi.main2015',
+    'Instanssi.main2016',
     'Instanssi.admin_base',
     'Instanssi.admin_arkisto',
     'Instanssi.admin_blog',

@@ -1,0 +1,17 @@
+{% extends "main2016/base.html" %}
+{% load blog_tags %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Blogi</h1>
+
+{% render_blog event_id 15 %}
+{% endblock %}

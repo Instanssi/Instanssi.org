@@ -2,6 +2,7 @@
 
 from django.conf.urls import patterns, include, url
 from django.conf import settings
+from django.contrib import admin
 
 # URLS
 urlpatterns = patterns(
@@ -38,8 +39,9 @@ urlpatterns = patterns(
 
 # Add admin panel link if debug mode is on
 if settings.DEBUG or settings.ADMIN:
-    from django.contrib import admin
+    admin.autodiscover()
     urlpatterns += patterns(
+        '',
         url(r'^admin/', include(admin.site.urls)),
     )
 
@@ -47,8 +49,7 @@ if settings.DEBUG:
     # Serve media files through static.serve when running in debug mode
     # Also, show debug_toolbar if debugging is on
     urlpatterns += patterns(
+        '',
         url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )
 
-    # Use admin panel, if debug mode is on
-    admin.autodiscover()

@@ -38,6 +38,7 @@
     <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">Google</a>
     <!--<a class="login-button" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">Twitter</a>-->
     <a class="login-button" href="{% url 'social:begin' 'github' %}?next={{ next }}">Github</a>
+    <a class="login-button" href="{% url 'social:begin' 'battlenet-oauth2' %}?next={{ next }}">Battle.net</a>
     <br />
     {% crispy openidform openidform.helper %}<br />
     {% crispy djangoform djangoform.helper %}

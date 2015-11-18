@@ -34,9 +34,9 @@
     <h2>Kirjaudu sisään</h2>
     <p>Valitse kirjautumispalvelusi.</p>
 
-    <a class="login-button" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a>
+    <!--<a class="login-button" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a>-->
     <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">Google</a>
-    <a class="login-button" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">Twitter</a>
+    <!--<a class="login-button" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">Twitter</a>-->
     <a class="login-button" href="{% url 'social:begin' 'github' %}?next={{ next }}">Github</a>
     <br />
     {% crispy openidform openidform.helper %}<br />

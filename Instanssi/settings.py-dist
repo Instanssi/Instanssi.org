@@ -68,6 +68,9 @@ TWITTER_OAUTH_SECRET = ''
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
 
+# Steam API
+SOCIAL_AUTH_STEAM_API_KEY = ''
+
 # Twitter Auth
 SOCIAL_AUTH_TWITTER_KEY = TWITTER_CONSUMER_KEY
 SOCIAL_AUTH_TWITTER_SECRET = TWITTER_CONSUMER_SECRET
@@ -257,6 +260,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.twitter.TwitterOAuth',
     'social.backends.github.GithubOAuth2',
     'social.backends.battlenet.BattleNetOAuth2',
+    'social.backends.steam.SteamOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
 

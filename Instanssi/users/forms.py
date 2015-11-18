@@ -88,7 +88,6 @@ class OpenIDLoginForm(forms.Form):
         self.fields['next'].initial = self.next
         self.fields['sps'].choices = [
             ('https://korppi.jyu.fi/openid/', 'Korppi'),
-            ('http://steamcommunity.com/openid', 'Steam'),
             ('https://me.yahoo.com', 'Yahoo'),
         ]
         self.fields['sps'].initial = 0

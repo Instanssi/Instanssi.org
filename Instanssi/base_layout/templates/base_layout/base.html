@@ -33,7 +33,7 @@
                 <a href="{% url 'users:profile' %}">
                     {% if request.user.email %}
                         {{ request.user.email }}
-                    {% elseif request.user.get_full_name %}
+                    {% elif request.user.get_full_name %}
                         {{ request.user.get_full_name }}
                     {% else %}
                         {{ request.user.username }}

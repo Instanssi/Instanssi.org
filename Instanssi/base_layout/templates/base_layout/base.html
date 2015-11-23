@@ -30,7 +30,15 @@
                 <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
             </a>
             <div>
-                <a href="{% url 'users:profile' %}">{{ request.user.email }}</a>
+                <a href="{% url 'users:profile' %}">
+                    {% if request.user.email %}
+                        {{ request.user.email }}
+                    {% elseif request.user.get_full_name %}
+                        {{ request.user.get_full_name }}
+                    {% else %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </a>
                 <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>
             </div>
         </div>

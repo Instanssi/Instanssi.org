@@ -33,6 +33,10 @@
 {{ block.super }}
     <h2>Kirjaudu sisään</h2>
     <p>Valitse kirjautumispalvelusi.</p>
+    <p>
+        Huom! Valitse kirjautumispalvelu huolella, ja käytä sitten vain sitä. Yhdellä kirjautumispalvelulla luodun
+        Instanssi-tilin sisältöön ei pääse käsiksi toisen kirjautumispalvelun kautta kirjauduttaessa.
+    </p>
 
     <a class="login-button" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a>
     <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">Google</a>

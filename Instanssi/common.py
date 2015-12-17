@@ -13,6 +13,7 @@ STATIC_URL = '/static/'
 
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
+LOGIN_URL = '/users/login/'
 
 # Options for testing.customrunner.CustomRunner
 TEST_EXCLUDE = (

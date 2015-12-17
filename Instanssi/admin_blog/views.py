@@ -2,11 +2,10 @@
 
 from common.http import Http403
 from common.auth import staff_access_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from Instanssi.ext_blog.models import BlogEntry, BlogComment
-from Instanssi.kompomaatti.models import Event
+from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.admin_blog.forms import BlogEntryForm, BlogEntryEditForm
 from Instanssi.admin_base.misc.custom_render import admin_render
 from datetime import datetime
@@ -14,6 +13,7 @@ from datetime import datetime
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
+
 
 @staff_access_required
 def index(request, sel_event_id):
@@ -45,6 +45,7 @@ def index(request, sel_event_id):
         'selected_event_id': int(sel_event_id),
         'addform': form,
     })
+
 
 @staff_access_required
 def edit(request, sel_event_id, entry_id):

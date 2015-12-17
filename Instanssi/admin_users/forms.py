@@ -4,7 +4,8 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Permission,Group
+from django.contrib.auth.models import Group
+
 
 class UserCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -18,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
                 'last_name',
                 'password',
                 'email',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -32,7 +33,7 @@ class UserCreationForm(forms.ModelForm):
             raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
         return password
     
-    def save(self):
+    def save(self, commit=False):
         username = self.cleaned_data['username']
         email = self.cleaned_data['email']
         password = self.cleaned_data['password']
@@ -46,7 +47,7 @@ class UserCreationForm(forms.ModelForm):
         # Autocreate the staff_defaults group if it doesn't exist at this point
         try:
             grp = Group.objects.get(name='staff_defaults')
-        except:
+        except Group.DoesNotExist:
             grp = Group(name='staff_defaults')
             grp.save()
         
@@ -55,7 +56,8 @@ class UserCreationForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('username','first_name','last_name','password','email')
+        fields = ('username', 'first_name', 'last_name', 'password', 'email')
+
 
 class UserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -70,7 +72,7 @@ class UserEditForm(forms.ModelForm):
                 'is_active',
                 'is_staff',
                 'groups',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -78,4 +80,4 @@ class UserEditForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','groups','is_staff','is_active')
+        fields = ('first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_active')

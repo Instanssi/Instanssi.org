@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from Instanssi.admin_events_overview.views import index
 
-urlpatterns = patterns(
-    'Instanssi.admin_events_overview.views',
-    url(r'^$', 'index', name="index"),
-)
+urlpatterns = [
+    url(r'^$', index, name="index"),
+]

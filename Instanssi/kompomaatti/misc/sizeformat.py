@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
 def sizeformat(size):
     kb = 1024
-    mb = kb*1024
-    gb = mb*1024
+    mb = kb * 1024
+    gb = mb * 1024
     if size > gb:
-        return str(round(size/gb, 2)) + ' Gt'
+        return u'{} Gt'.format(round(size/gb, 2))
     if size > mb:
-        return str(round(size/mb, 2)) + ' Mt'
+        return u'{} Mt'.format(round(size/mb, 2))
     if size > kb:
-        return str(round(size/kb, 2)) + ' Kt'
-    return str(size) + ' t'
-    
+        return u'{} Kt'.format(round(size/kb, 2))
+    return u'{} t'.format(size)

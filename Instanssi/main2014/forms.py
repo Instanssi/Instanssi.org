@@ -2,11 +2,11 @@
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.conf import settings
 from Instanssi.main2014.models import ToimistoSuoritus
+
 
 class ToimistoCodeForm(forms.Form):
     code = forms.CharField(max_length=15, label=u"Koodi", help_text=u"Syötä saamasi koodi tähän.")

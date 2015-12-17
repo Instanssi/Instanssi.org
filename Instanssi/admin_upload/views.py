@@ -2,7 +2,7 @@
 
 from common.http import Http403
 from common.auth import staff_access_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_upload.models import UploadedFile
@@ -13,6 +13,7 @@ from datetime import datetime
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
+
 
 @staff_access_required
 def index(request, sel_event_id):
@@ -30,7 +31,8 @@ def index(request, sel_event_id):
             data.date = datetime.now()
             data.event_id = int(sel_event_id)
             data.save()
-            logger.info('File "'+data.file.name+'" uploaded.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info(u'File "{}" uploaded.'.format(data.file.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:
         uploadform = UploadForm()
@@ -44,7 +46,8 @@ def index(request, sel_event_id):
         'uploadform': uploadform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def deletefile(request, sel_event_id, file_id):
     # Check for permissions
@@ -54,14 +57,16 @@ def deletefile(request, sel_event_id, file_id):
     # Delete the file
     try:
         rec = UploadedFile.objects.get(id=file_id)
-        logger.info('File "'+rec.file.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
+        logger.info(u'File "{}" deleted.'.format(rec.file.name),
+                    extra={'user': request.user, 'event_id': sel_event_id})
         rec.file.delete()
         rec.delete()
     except UploadedFile.DoesNotExist:
         pass
     
     return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
-    
+
+
 @staff_access_required
 def editfile(request, sel_event_id, file_id):
     # Check for permissions
@@ -76,7 +81,8 @@ def editfile(request, sel_event_id, file_id):
         uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
         if uploadform.is_valid():
             data = uploadform.save()
-            logger.info('File "'+data.file.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info(u'File "{}" edited.'.format(data.file.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:
         uploadform = UploadForm(instance=uploadedfile)

@@ -4,7 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-from Instanssi.store.models import StoreTransaction,TransactionItem
+from Instanssi.store.models import StoreTransaction, TransactionItem
 
 
 class ItemKeyScanForm(forms.Form):
@@ -12,6 +12,7 @@ class ItemKeyScanForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(ItemKeyScanForm, self).__init__(*args, **kwargs)
+        self.item = None
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
@@ -37,6 +38,7 @@ class TransactionKeyScanForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(TransactionKeyScanForm, self).__init__(*args, **kwargs)
+        self.transaction = None
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(

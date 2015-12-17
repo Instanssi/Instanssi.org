@@ -9,22 +9,13 @@
 # LANGUAGE_CODE
 # SECRET_KEY
 
-# Get default context processors
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-
-# Get path
-import os
-CONTENTDIR = os.path.dirname(__file__)
-PROJECTDIR = os.path.dirname(CONTENTDIR)
+from common import *
 
 # Settings
 DEBUG = True
 ADMIN = True
-TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-#    ('Amy Admin', 'amy.admin@example.com'),
-)
+ADMINS = ()
 MANAGERS = ADMINS
 
 # Database
@@ -98,26 +89,6 @@ SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''
 SOCIAL_AUTH_GITHUB_SCOPE = ['email']
 
-# Files
-MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
-MEDIA_URL = '/uploads/'
-STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
-STATIC_URL = '/static/'
-
-# Admin panel settings
-ADMIN_LOGIN_URL = '/manage/auth/login/'
-
-# Options for testing.customrunner.CustomRunner
-TEST_EXCLUDE = (
-    'django_openid_auth',
-    'crispy_forms',
-    'django',
-    'south',
-    'imagekit',
-)
-TEST_RUN_ALL = False
-TEST_RUNNER = 'testing.customrunner.CustomRunner'
-
 # JSON api key
 JSON_KEY = u'12341234'
 
@@ -135,134 +106,15 @@ BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
-# Add a shared static file directory
-STATICFILES_DIRS = (
-    os.path.join(CONTENTDIR, 'static/'),
-)
+# Initialize email configuration
+EMAIL_BACKEND = make_email_conf(DEBUG)
 
-# Email backend
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# Cache
-if DEBUG:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': 'unique-snowflake'
-        }
-    }
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': '/tmp/instanssi_cache',
-        }
-    }
-
-# Default file storage
-DEFAULT_FILE_STORAGE = 'common.storage.ASCIIFileSystemStorage'
-
-# How to find static files
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
-)
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'common.http.Http403Middleware',
-)
-
-# Append to default list instead of redefining
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'common.context_processors.short_language_code',
-    'common.context_processors.google_settings',
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
-    'django.core.context_processors.request',
-)
+# Initialize cache configuration
+CACHES = make_cache_conf(DEBUG)
 
 # Internal ip addresses
 INTERNAL_IPS = (
     '127.0.0.1',
-)
-
-# Root urls.py file
-ROOT_URLCONF = 'Instanssi.urls'
-
-# This is a root templates dir for pages such as 404.html, 500.html, etc.
-TEMPLATE_DIRS = (
-    os.path.join(CONTENTDIR, 'templates/'),
-)
-
-INSTALLED_APPS = (
-    'Instanssi.base_layout',
-    'Instanssi.arkisto',
-    'Instanssi.main2012',
-    'Instanssi.main2013',
-    'Instanssi.main2014',
-    'Instanssi.main2015',
-    'Instanssi.main2016',
-    'Instanssi.admin_base',
-    'Instanssi.admin_arkisto',
-    'Instanssi.admin_blog',
-    'Instanssi.admin_upload',
-    'Instanssi.admin_slides',
-    'Instanssi.admin_events',
-    'Instanssi.admin_kompomaatti',
-    'Instanssi.admin_users',
-    'Instanssi.admin_profile',
-    'Instanssi.admin_programme',
-    'Instanssi.admin_events_overview',
-    'Instanssi.admin_utils',
-    'Instanssi.admin_screenshow',
-    'Instanssi.admin_store',
-    'Instanssi.users',
-    'Instanssi.kompomaatti',
-    'Instanssi.ext_blog',
-    'Instanssi.ext_programme',
-    'Instanssi.screenshow',
-    'Instanssi.dblog',
-    'Instanssi.json_api',
-    'Instanssi.store',
-    'Instanssi.infodesk',
-    'imagekit',
-    'twitter_tag',
-    'crispy_forms',
-    'social.apps.django_app.default',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'formtools',
-)
-
-# Authentication backends, notice the openid backend here.
-AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.github.GithubOAuth2',
-    'social.backends.battlenet.BattleNetOAuth2',
-    'social.backends.steam.SteamOpenId',
-    'django.contrib.auth.backends.ModelBackend',
 )
 
 # Log handlers, insert our own database log handler
@@ -302,7 +154,7 @@ LOGGING = {
         'Instanssi.admin_utils': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.admin_screenshow': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.admin_store': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.main2013': {'handlers': ['log_db'], 'level': 'INFO'},
+        'Instanssi.main2016': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.infodesk': {'handlers': ['log_db'], 'level': 'INFO'},
     }
 }

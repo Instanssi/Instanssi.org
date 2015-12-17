@@ -65,10 +65,10 @@ def start_process(ta):
         msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
     except paytrail.PaytrailException as ex:
         a, b = ex.args
-        logger.error('(%s) %s' % (b, a))
+        logger.error(u'(%s) %s', b, a)
         return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
     except Exception as ex:
-        logger.error('%s.' % (ex))
+        logger.error(u'%s.', ex)
         return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
 
     # Save token, redirect
@@ -127,12 +127,12 @@ def handle_notify(request):
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
 
-    # Validata & handle
+    # Validate & handle
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         if ta.is_paid:
-            logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
+            logger.warning(u'Somebody is trying to pay an already paid transaction (%s).', ta.id)
             return HttpResponse("")
 
         # Use common functions to handle the payment
@@ -141,7 +141,7 @@ def handle_notify(request):
         if not ta_common.handle_payment(ta):
             raise Http404
     else:
-        logger.warning("Error while attempting to validate paytrail notification!")
+        logger.warning(u"Error while attempting to validate paytrail notification!")
         raise Http404
 
     # Just respond with something

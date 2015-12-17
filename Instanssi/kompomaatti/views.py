@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from django.contrib.auth import logout
 
 from Instanssi.kompomaatti.forms import *
 from Instanssi.kompomaatti.models import *
@@ -16,6 +15,7 @@ from Instanssi.kompomaatti.misc import awesometime
 from Instanssi.kompomaatti.misc.events import get_upcoming
 
 from datetime import datetime
+
 
 def eventselect(request):
     # Check if user selected an event without Javascript
@@ -28,6 +28,7 @@ def eventselect(request):
     return render_to_response('kompomaatti/event_select.html', {
         'events': Event.objects.all().order_by('-date'),
     }, context_instance=RequestContext(request))
+
 
 def index(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
@@ -42,13 +43,13 @@ def index(request, event_id):
         elif event['type'] == 2:
             event['url'] = reverse('km:competition', args=(event_id, event['id'],))
         else:
-             event['url'] = None
+            event['url'] = None
     
         # Add to list
         events.append(event)
     
         # Only pick 10
-        k = k + 1
+        k += 1
         if k >= 10:
             break
     
@@ -69,7 +70,8 @@ def index(request, event_id):
         'events': events,
         'votecode_associated': votecode_associated,
     }, context_instance=RequestContext(request))
-    
+
+
 def compos(request, event_id):
     # Get compos, format times
     compos = []
@@ -81,7 +83,8 @@ def compos(request, event_id):
         'sel_event_id': int(event_id),
         'compos': compos,
     }, context_instance=RequestContext(request))
-    
+
+
 def compo_details(request, event_id, compo_id):
     # Get compo
     compo = compo_times_formatter(get_object_or_404(Compo, pk=int(compo_id), active=True, event_id=int(event_id)))
@@ -90,7 +93,7 @@ def compo_details(request, event_id, compo_id):
     can_vote = False
     if request.user.is_active and request.user.is_authenticated():
         try:
-            vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+            VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
             can_vote = True
         except VoteCode.DoesNotExist:
             pass
@@ -142,12 +145,13 @@ def compo_details(request, event_id, compo_id):
         'my_entries': my_entries,
         'has_voted': has_voted,
     }, context_instance=RequestContext(request))
-    
+
+
 @user_access_required
 def compo_vote(request, event_id, compo_id):
     # Make sure the user has an active votecode
     try:
-        vc = VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+        VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
     except VoteCode.DoesNotExist:
         raise Http403
     
@@ -238,7 +242,8 @@ def compo_vote(request, event_id, compo_id):
         'nvoted_entries': nvoted_entries,
         'has_voted': has_voted,
     }, context_instance=RequestContext(request))
-    
+
+
 @user_access_required
 def compoentry_edit(request, event_id, compo_id, entry_id):
     # Get compo
@@ -267,7 +272,8 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
         'entry': entry,
         'entryform': entryform,
     }, context_instance=RequestContext(request))
-    
+
+
 @user_access_required
 def compoentry_delete(request, event_id, compo_id, entry_id):
     # Get compo
@@ -285,7 +291,8 @@ def compoentry_delete(request, event_id, compo_id, entry_id):
     
     # Redirect
     return HttpResponseRedirect(reverse('km:compo', args=(event_id, compo_id,)))
-    
+
+
 def competitions(request, event_id):
     # Get competitions
     competitions = []
@@ -297,7 +304,8 @@ def competitions(request, event_id):
         'sel_event_id': int(event_id),
         'competitions': competitions,
     }, context_instance=RequestContext(request))
-    
+
+
 def competition_details(request, event_id, competition_id):
     # Get competition
     competition = competition_times_formatter(get_object_or_404(Competition, pk=int(competition_id), active=True, event_id=int(event_id)))
@@ -348,6 +356,7 @@ def competition_details(request, event_id, competition_id):
         'participants': participants,
     }, context_instance=RequestContext(request))
 
+
 @user_access_required
 def competition_signout(request, event_id, competition_id):
     # Get competition
@@ -365,6 +374,7 @@ def competition_signout(request, event_id, competition_id):
     
     # Redirect
     return HttpResponseRedirect(reverse('km:competition', args=(event_id, competition_id,)))
+
 
 def entry_details(request, event_id, compo_id, entry_id):
     # Get compo
@@ -384,6 +394,7 @@ def entry_details(request, event_id, compo_id, entry_id):
         'compo': compo,
     }, context_instance=RequestContext(request))
 
+
 @user_access_required
 def votecode(request, event_id):
     # Get event
@@ -402,7 +413,7 @@ def votecode(request, event_id):
     # Check if request for vote code has been made
     request_made = False
     try:
-        vcreq = VoteCodeRequest.objects.get(event=event, user=request.user)
+        VoteCodeRequest.objects.get(event=event, user=request.user)
         request_made = True
     except VoteCodeRequest.DoesNotExist:
         pass

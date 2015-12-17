@@ -15,12 +15,14 @@ logger = logging.getLogger(__name__)
 def handle_cancellation(ta):
     ta.time_cancelled = datetime.now()
     ta.save()
-    logger.info('Store transaction %d cancelled.' % (ta.id))
+    logger.info(u'Store transaction {} cancelled.'.format(ta.id))
+
 
 def handle_pending(ta):
     ta.time_pending = datetime.now()
     ta.save()
-    logger.info('Store transaction %d paid, pending confirmation.' % (ta.id))
+    logger.info(u'Store transaction {} paid, pending confirmation.'.format(ta.id))
+
 
 def handle_payment(ta):
     # Deliver email.
@@ -50,11 +52,11 @@ def handle_payment(ta):
     try:
         mailer.send()
     except Exception as ex:
-        logger.error('%s.' % (ex))
+        logger.error(u'{}.'.format(ex))
         return False
 
     # Mark as paid
     ta.time_paid = datetime.now()
     ta.save()
-    logger.info('Store transaction %d confirmed.' % (ta.id))
+    logger.info(u'Store transaction {} confirmed.'.format(ta.id))
     return True

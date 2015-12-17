@@ -5,6 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.contrib.auth.models import User
 
+
 class InformationChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InformationChangeForm, self).__init__(*args, **kwargs)
@@ -15,7 +16,7 @@ class InformationChangeForm(forms.ModelForm):
                 'first_name',
                 'last_name',
                 'email',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -25,12 +26,22 @@ class InformationChangeForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('first_name','last_name','email')
+        fields = ('first_name', 'last_name', 'email')
+
 
 class PasswordChangeForm(forms.Form):
-    old_pw = forms.CharField(widget=forms.PasswordInput, label=u'Vanha salasana', help_text=u'Kirjoita vanha salasanasi turvallisuussyistä.')
-    new_pw = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana', help_text=u'Kirjoita uusi salasanasi. Tulee olla vähintään 8 merkkiä pitkä.')
-    new_pw_again = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana uudelleen', help_text=u'Kirjoita uusi salasanasi toistamiseen varmistukseksi.')
+    old_pw = forms.CharField(
+        widget=forms.PasswordInput,
+        label=u'Vanha salasana',
+        help_text=u'Kirjoita vanha salasanasi turvallisuussyistä.')
+    new_pw = forms.CharField(
+        widget=forms.PasswordInput,
+        label=u'Uusi salasana',
+        help_text=u'Kirjoita uusi salasanasi. Tulee olla vähintään 8 merkkiä pitkä.')
+    new_pw_again = forms.CharField(
+        widget=forms.PasswordInput,
+        label=u'Uusi salasana uudelleen',
+        help_text=u'Kirjoita uusi salasanasi toistamiseen varmistukseksi.')
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -42,7 +53,7 @@ class PasswordChangeForm(forms.Form):
                 'old_pw',
                 'new_pw',
                 'new_pw_again',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -87,4 +98,3 @@ class PasswordChangeForm(forms.Form):
                 
         # Remember to return cleaned data
         return cleaned_data
-    

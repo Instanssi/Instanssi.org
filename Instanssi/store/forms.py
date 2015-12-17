@@ -25,7 +25,7 @@ class StoreProductsForm(forms.Form):
             name = 'item-%s' % item.id
             self.fields[name] = forms.IntegerField(
                 initial='0',
-                label=u'%s' % (item.name),
+                label=u'{}'.format(item.name),
                 help_text=item.description,
                 required=False,
                 widget=forms.TextInput()
@@ -92,7 +92,7 @@ class StoreProductsForm(forms.Form):
                             new_item.save()
                             break
                         except IntegrityError as ex:
-                            logger.warning("SHA-1 Collision in item (WTF!) Key: %s, exception: %s." % (new_item.key, ex))
+                            logger.warning("SHA-1 Collision in item. Key: %s, exception: %s." % (new_item.key, ex))
 
 
 class StoreInfoForm(forms.ModelForm):
@@ -152,18 +152,22 @@ class StoreInfoForm(forms.ModelForm):
 
         for i in range(10):
             try:
-                str = u'%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname, time.time(), random.random())
+                str = u'%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname,
+                                           time.time(), random.random())
                 new_transaction.key = gen_sha(str.encode('utf-8'))
                 new_transaction.save()
                 break
             except IntegrityError as ex:
-                logger.warning("SHA-1 Collision in transaction (WTF!) Key: %s, exception: %s." % (new_transaction.key, ex))
+                logger.warning("SHA-1 Collision in transaction. Key: %s, exception: %s." % (new_transaction.key, ex))
 
         return new_transaction
 
     class Meta:
         model = StoreTransaction
-        fields = ('firstname', 'lastname', 'email', 'telephone', 'mobile', 'company', 'street', 'postalcode', 'city', 'country', 'information')
+        fields = (
+            'firstname', 'lastname', 'email', 'telephone', 'mobile',
+            'company', 'street', 'postalcode', 'city', 'country', 'information'
+        )
 
 
 class StorePaymentMethodForm(forms.Form):

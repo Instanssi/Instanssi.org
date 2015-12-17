@@ -14,6 +14,7 @@ from Instanssi.store.utils import bitpay, ta_common
 import logging
 logger = logging.getLogger(__name__)
 
+
 def start_process(ta):
     """This should be used to start the bitpay payment process. Will redirect as necessary."""
     
@@ -37,10 +38,10 @@ def start_process(ta):
         msg = bitpay.request(settings.BITPAY_KEY, data)
     except bitpay.BitpayException as ex:
         a, b = ex.args
-        logger.error('(%s) %s' % (b, a))
+        logger.error(u'(%s) %s', b, a)
         return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
     except Exception as ex:
-        logger.error('%s.' % (ex))
+        logger.error(u'%s.', ex)
         return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
 
     # Save token, redirect
@@ -51,6 +52,7 @@ def start_process(ta):
     # All done, redirect user
     return HttpResponseRedirect(msg['url'])
 
+
 def handle_failure(request):
     """ Handles failure message caused by exceptions """
     
@@ -58,10 +60,12 @@ def handle_failure(request):
     # mysterious Exception redirects in previous function.
 
     return render_to_response('store/failure.html')
-        
+
+
 def handle_success(request):
     """ Handles the success user redirect from Paytrail """
     return render_to_response('store/success.html')
+
 
 @csrf_exempt
 def handle_notify(request):
@@ -74,7 +78,7 @@ def handle_notify(request):
         bitpay_id = data['id']
         status = data['status']
     except Exception as ex:
-        logger.error("%s" % (ex,))
+        logger.error(u"%s.", ex)
         raise Http404
     
     # Try to find correct transaction
@@ -90,7 +94,7 @@ def handle_notify(request):
         # Okay, transaction found and it's good.
         ta_is_valid = True
     except StoreTransaction.DoesNotExist:
-        logger.warning("Error while attempting to validate bitpay notification!")
+        logger.warning(u"Error while attempting to validate bitpay notification!")
         raise Http404
     
     # We have a valid transaction. Do something about it.
@@ -107,11 +111,11 @@ def handle_notify(request):
             return HttpResponse("")
                         
         if status == 'expired':
-            # Paument expired, assume cancelled
+            # Payment expired, assume cancelled
             ta_common.handle_cancellation(ta)
             return HttpResponse("")
 
-    logger.warning("Unhandled bitpay notification '%s' for id %d." % (status,ta.id,))
+    logger.warning(u"Unhandled bitpay notification '%s' for id %d.", status, ta.id)
 
     # Just respond with something
     return HttpResponse("")

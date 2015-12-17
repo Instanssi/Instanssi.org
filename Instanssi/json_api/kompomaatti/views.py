@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from common.rest import rest_api,RestResponse
-from Instanssi.kompomaatti.models import Event,Compo,Competition
+from common.rest import rest_api, RestResponse
+from Instanssi.kompomaatti.models import Event
+from common.responses import JSONResponse
+from Instanssi.kompomaatti.misc.events import get_upcoming
+
 
 @rest_api
 def events_get(request):
     return RestResponse()
 
+
 @rest_api
 def compos_get(request):
     return RestResponse()
 
+
 @rest_api
 def competitions_get(request):
     return RestResponse()
+
 
 def happenings_api(request):
     happenings = []
@@ -25,6 +30,7 @@ def happenings_api(request):
             'date': h.date.strftime("%d.%m.%Y %H:%M"),
         })
     return JSONResponse({'happenings': happenings})
+
 
 def events_api(request, hid):
     # Get event
@@ -40,4 +46,4 @@ def events_api(request, hid):
         event['date'] = event['date'].strftime("%d.%m.%Y %H:%M")
         events.append(event)
 
-    return JSONResponse({'events': events});
+    return JSONResponse({'events': events})

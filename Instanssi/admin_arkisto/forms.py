@@ -6,6 +6,7 @@ from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 import urlparse
 
+
 class VideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Initialize
@@ -50,14 +51,15 @@ class VideoForm(forms.ModelForm):
         
         # Check if the video id exists in query string
         if 'v' not in qs:
-            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            raise forms.ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
             
         # All done. Return valid url
         return 'http://www.youtube.com/v/'+qs['v'][0]+'/'
                 
     class Meta:
         model = OtherVideo
-        fields = ('category','name','description','youtube_url')
+        fields = ('category', 'name', 'description', 'youtube_url')
+
 
 class VideoCategoryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

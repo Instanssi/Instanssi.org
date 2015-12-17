@@ -2,11 +2,10 @@
 
 from common.http import Http403
 from common.auth import staff_access_required, su_access_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.kompomaatti.models import Profile
 from django.contrib.auth.models import User
 from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
 from Instanssi.dblog.models import DBLogEntry
@@ -15,9 +14,11 @@ from Instanssi.dblog.models import DBLogEntry
 import logging
 logger = logging.getLogger(__name__)
 
+
 @staff_access_required
 def index(request):
     return admin_render(request, "admin_users/index.html", {})
+
 
 @staff_access_required
 def log(request):
@@ -25,6 +26,7 @@ def log(request):
     return admin_render(request, "admin_users/log.html", {
         'entries': DBLogEntry.objects.all().order_by('-date'),
     })
+
 
 @staff_access_required
 def users(request):
@@ -34,7 +36,7 @@ def users(request):
             userform = UserCreationForm(request.POST)
             if userform.is_valid():
                 userform.save()
-                logger.info('User added.', extra={'user': request.user})
+                logger.info(u'User added.', extra={'user': request.user})
                 return HttpResponseRedirect(reverse('manage-users:index'))
         else:
             userform = UserCreationForm()
@@ -50,6 +52,7 @@ def users(request):
         'userform': userform,
     })
 
+
 @su_access_required
 def edit(request, su_id):
     # Get user info and make sure it's not SU we're trying to edit
@@ -62,7 +65,7 @@ def edit(request, su_id):
         userform = UserEditForm(request.POST, instance=user)
         if userform.is_valid():
             userform.save()
-            logger.info('User '+user.username+' edited.', extra={'user': request.user})
+            logger.info(u'User "{}" edited.'.format(user.username), extra={'user': request.user})
             return HttpResponseRedirect(reverse('manage-users:index'))
     else:
         userform = UserEditForm(instance=user)
@@ -72,6 +75,7 @@ def edit(request, su_id):
         'userform': userform,
     })
 
+
 @su_access_required
 def delete(request, su_id):
     # Try to delete
@@ -79,10 +83,9 @@ def delete(request, su_id):
     if user.is_superuser or user.username == "arkisto":
         raise Http403
     else:
-        logger.info('User '+user.username+' deactivated.', extra={'user': request.user})
+        logger.info(u'User "{}" deactivated.'.format(user.username), extra={'user': request.user})
         user.is_active = False
         user.save()
 
     # All done, redirect
     return HttpResponseRedirect(reverse('manage-users:index'))
-

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from Instanssi.admin_events.views import index, edit, delete
 
-urlpatterns = patterns(
-    'Instanssi.admin_events.views',
-    url(r'^$', 'index', name="index"),
-    url(r'^edit/(?P<event_id>\d+)/', 'edit', name="edit"),
-    url(r'^delete/(?P<event_id>\d+)/', 'delete', name="delete"),
-)
+urlpatterns = [
+    url(r'^$', index, name="index"),
+    url(r'^edit/(?P<event_id>\d+)/', edit, name="edit"),
+    url(r'^delete/(?P<event_id>\d+)/', delete, name="delete"),
+]

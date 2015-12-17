@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
 from common.auth import su_access_required
-from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
@@ -14,12 +12,13 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
+ENTRYDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entryfiles/')
+SOURCEDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entrysources/')
+IMAGEDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entryimages/')
+
+
 @su_access_required
 def diskcleaner(request):
-    ENTRYDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entryfiles/')
-    SOURCEDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entrysources/')
-    IMAGEDIR = os.path.join(settings.MEDIA_ROOT, 'kompomaatti/entryimages/')
-    
     # Get entries
     entries = Entry.objects.all()
     db_efs = []
@@ -88,7 +87,8 @@ def diskcleaner(request):
         'orphan_sourcefiles': orphan_sourcefiles,
         'orphan_imagefiles': orphan_imagefiles,
     })
-    
+
+
 @su_access_required
 def dbchecker(request):
     entries = []
@@ -110,7 +110,8 @@ def dbchecker(request):
     return admin_render(request, "admin_utils/dbchecker.html", {
         'broken_entries': entries,
     })
-    
+
+
 @su_access_required
 def index(request):
     return admin_render(request, "admin_utils/index.html", {})

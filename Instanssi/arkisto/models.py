@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.contrib import admin
 from Instanssi.kompomaatti.models import Event
+
 
 class OtherVideoCategory(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
@@ -12,8 +12,9 @@ class OtherVideoCategory(models.Model):
         return self.name
     
     class Meta:
-        verbose_name=u"videokategoria"
-        verbose_name_plural=u"videokategoriat"
+        verbose_name = u"videokategoria"
+        verbose_name_plural = u"videokategoriat"
+
 
 class OtherVideo(models.Model):
     category = models.ForeignKey(OtherVideoCategory, verbose_name=u'Kategoria')
@@ -25,11 +26,5 @@ class OtherVideo(models.Model):
         return self.name
     
     class Meta:
-        verbose_name=u"muu video"
-        verbose_name_plural=u"muut videot"
-
-try:
-    admin.site.register(OtherVideoCategory)
-    admin.site.register(OtherVideo)
-except:
-    pass
+        verbose_name = u"muu video"
+        verbose_name_plural = u"muut videot"

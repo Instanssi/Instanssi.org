@@ -2,8 +2,8 @@
 
 from common.http import Http403
 from common.auth import staff_access_required
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect,HttpResponse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
@@ -12,6 +12,7 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
+
 
 @staff_access_required
 def index(request):
@@ -41,6 +42,7 @@ def index(request):
         'eventform': eventform,
     })
 
+
 @staff_access_required
 def edit(request, event_id):
     # Check for permissions
@@ -66,6 +68,7 @@ def edit(request, event_id):
     return admin_render(request, "admin_events/edit.html", {
         'eventform': eventform,
     })
+
 
 @staff_access_required
 def delete(request, event_id):

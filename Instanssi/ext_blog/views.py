@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.syndication.views import Feed, FeedDoesNotExist
+from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import Event
+
 
 class blog_feed_all(Feed):
     title = "Instanssi.org Blogi"
@@ -33,6 +34,7 @@ class blog_feed_all(Feed):
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
 
+
 class blog_feed(Feed):
     title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
@@ -59,4 +61,3 @@ class blog_feed(Feed):
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
-    

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib import admin
+from django.views.static import serve
 
 # URLS
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^2012/', include('Instanssi.main2012.urls', namespace="main2012")),
     url(r'^2013/', include('Instanssi.main2013.urls', namespace="main2013")),
@@ -35,22 +35,20 @@ urlpatterns = patterns(
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', include('Instanssi.main2016.urls')),
-)
+    url(r'^', include('Instanssi.main2016.urls'))
+]
 
 # Add admin panel link if debug mode is on
 if settings.DEBUG or settings.ADMIN:
     admin.autodiscover()
-    urlpatterns += patterns(
-        '',
+    urlpatterns += [
         url(r'^admin/', include(admin.site.urls)),
-    )
+    ]
 
 if settings.DEBUG:
     # Serve media files through static.serve when running in debug mode
     # Also, show debug_toolbar if debugging is on
-    urlpatterns += patterns(
-        '',
-        url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    )
+    urlpatterns += [
+        url(r'^uploads/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 

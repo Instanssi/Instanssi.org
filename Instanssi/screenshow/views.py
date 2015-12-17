@@ -3,10 +3,10 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from common.responses import JSONResponse
-from Instanssi.kompomaatti.models import Event
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
 from datetime import datetime
+
 
 def index(request, event_id):
     # Get sponsors
@@ -28,6 +28,7 @@ def index(request, event_id):
         'sponsors': sponsors,
     }, context_instance=RequestContext(request))
 
+
 def settings_api(request, event_id):
     # Attempt to fetch custom settings from database
     try:
@@ -44,6 +45,7 @@ def settings_api(request, event_id):
     # Return settings
     return JSONResponse({})
 
+
 def events_api(request, event_id):
     e = get_object_or_404(Event, pk=event_id)
 
@@ -55,11 +57,12 @@ def events_api(request, event_id):
         events.append(event)
         
         # Only pick 5
-        k = k + 1
+        k += 1
         if k >= 5:
-            break;
+            break
 
     return JSONResponse({'events': events})
+
 
 def playing_api(request, event_id):
     playlist = []
@@ -71,12 +74,14 @@ def playing_api(request, event_id):
         })
     return JSONResponse({'playlist': playlist})
 
+
 def messages_api(request, event_id):
     messages = []
     for msg in Message.objects.filter(event_id=event_id):
-        if msg.show_start <= datetime.now() and msg.show_end >= datetime.now():
+        if msg.show_start <= datetime.now() <= msg.show_end:
             messages.append(msg.text)
     return JSONResponse({'messages': messages})
+
 
 def playlist_api(request, event_id):
     playlist = []
@@ -89,6 +94,7 @@ def playlist_api(request, event_id):
         })
     
     return JSONResponse({'playlist': playlist})
+
 
 def irc_api(request, event_id):
     # See if we got request data

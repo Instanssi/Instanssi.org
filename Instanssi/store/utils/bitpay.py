@@ -4,15 +4,16 @@ import httplib
 import json
 import string
 import base64
-import hashlib
+
 
 class BitpayException(Exception):
     pass
 
+
 def request(key, data):
     # Some basic data
     host = 'bitpay.com'
-    auth = 'Basic ' + string.strip(base64.encodestring(key + ':')) # Blank pw
+    auth = 'Basic ' + string.strip(base64.encodestring(key + ':'))  # Blank pw
     body = json.dumps(data)
     headers = {
         'Content-Type': 'application/json',

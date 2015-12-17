@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.screenshow.models import *
-import os
 import urlparse
+
 
 class ScreenConfigForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -19,7 +19,7 @@ class ScreenConfigForm(forms.ModelForm):
                 'enable_twitter',
                 'enable_irc',
                 'video_interval',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -27,7 +27,8 @@ class ScreenConfigForm(forms.ModelForm):
         
     class Meta:
         model = ScreenConfig
-        fields = ('enable_videos','enable_twitter','enable_irc','video_interval')
+        fields = ('enable_videos', 'enable_twitter', 'enable_irc', 'video_interval')
+
 
 class PlaylistVideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -39,7 +40,7 @@ class PlaylistVideoForm(forms.ModelForm):
                 'name',
                 'url',
                 'index',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -64,7 +65,8 @@ class PlaylistVideoForm(forms.ModelForm):
         
     class Meta:
         model = PlaylistVideo
-        fields = ('name','url','index')
+        fields = ('name', 'url', 'index')
+
 
 class IRCMessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -76,7 +78,7 @@ class IRCMessageForm(forms.ModelForm):
                 'nick',
                 'date',
                 'message',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -84,7 +86,8 @@ class IRCMessageForm(forms.ModelForm):
         
     class Meta:
         model = IRCMessage
-        fields = ('nick','message','date')
+        fields = ('nick', 'message', 'date')
+
 
 class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -96,7 +99,7 @@ class MessageForm(forms.ModelForm):
                 'show_start',
                 'show_end',
                 'text',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -104,7 +107,8 @@ class MessageForm(forms.ModelForm):
         
     class Meta:
         model = Message
-        fields = ('show_start','show_end','text')
+        fields = ('show_start', 'show_end', 'text')
+
 
 class SponsorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -115,7 +119,7 @@ class SponsorForm(forms.ModelForm):
                 u'Sponsori',
                 'name',
                 'logo',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -123,4 +127,4 @@ class SponsorForm(forms.ModelForm):
         
     class Meta:
         model = Sponsor
-        fields = ('name','logo')
+        fields = ('name', 'logo')

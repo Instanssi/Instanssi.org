@@ -10,12 +10,14 @@ from Instanssi.main2014.forms import ToimistoCodeForm
 from common.auth import user_access_required
 from datetime import datetime
 
+
 def pageloader(request, templatename):
     return render_to_response('main2014/'+templatename+'.html', {
         'event_id': 8, 
         'templatename': templatename,
     }, context_instance=RequestContext(request))
-    
+
+
 def jahti(request, hint_id):
     hint = get_object_or_404(ToimistoJahti, key=hint_id)
     
@@ -23,6 +25,7 @@ def jahti(request, hint_id):
         'event_id': 8,
         'hint': hint.help,
     }, context_instance=RequestContext(request))
+
 
 @user_access_required
 def reportointi(request):
@@ -49,6 +52,7 @@ def reportointi(request):
         'form': codeform,
         'is_done': is_done,
     }, context_instance=RequestContext(request))
+
 
 @user_access_required
 def kiitos(request):

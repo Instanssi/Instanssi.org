@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from Instanssi.kompomaatti.models import Event,Compo,Competition
+from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
 from django.core.urlresolvers import reverse
 import time
 
 register = template.Library()
+
 
 @register.inclusion_tag('ext_programme/tags/programme.html')
 def render_programme(event_id):
@@ -107,8 +108,8 @@ def render_calendar(event_id):
             })
 
     # Sort list 
-    def helper(object):
-        return time.mktime(object['date'].timetuple())
+    def helper(obj):
+        return time.mktime(obj['date'].timetuple())
     events = sorted(events, key=helper)
     
     # Group by day

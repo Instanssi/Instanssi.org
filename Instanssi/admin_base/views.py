@@ -5,6 +5,7 @@ from common.auth import staff_access_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest, Entry, Compo
 
+
 @staff_access_required
 def index(request):
     # Make sure the user is staff.

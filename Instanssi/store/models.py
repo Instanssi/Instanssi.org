@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db import models
 from django_countries.fields import CountryField
@@ -11,16 +10,45 @@ from common.misc import get_url
 
 
 class StoreItem(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma', help_text=u'Tapahtuma johon tuote liittyy.', blank=True, null=True)
-    name = models.CharField(u'Tuotteen nimi', help_text=u'Tuotteen lyhyt nimi.', max_length=255)
-    description = models.TextField(u'Tuotteen kuvaus', help_text=u'Tuotteen pitkä kuvaus.')
-    price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa.')
-    max = models.IntegerField(u'Kappaletta saatavilla', help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
-    available = models.BooleanField(u'Ostettavissa', default=False, help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
-    imagefile_original = models.ImageField(u'Tuotekuva', upload_to='store/images/', help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
-    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source='imagefile_original', format='PNG')
-    max_per_order = models.IntegerField(u'Maksimi per tilaus', default=10, help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
-    sort_index = models.IntegerField(u'Järjestysarvo', default=0, help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
+    event = models.ForeignKey(
+        Event,
+        verbose_name=u'Tapahtuma',
+        help_text=u'Tapahtuma johon tuote liittyy.',
+        blank=True,
+        null=True)
+    name = models.CharField(
+        u'Tuotteen nimi',
+        help_text=u'Tuotteen lyhyt nimi.',
+        max_length=255)
+    description = models.TextField(
+        u'Tuotteen kuvaus',
+        help_text=u'Tuotteen pitkä kuvaus.')
+    price = models.IntegerField(
+        u'Tuotteen hinta',
+        help_text=u'Tuotteen hinta euroissa.')
+    max = models.IntegerField(
+        u'Kappaletta saatavilla',
+        help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
+    available = models.BooleanField(
+        u'Ostettavissa',
+        default=False,
+        help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
+    imagefile_original = models.ImageField(
+        u'Tuotekuva',
+        upload_to='store/images/',
+        help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
+    imagefile_thumbnail = ImageSpecField(
+        [ResizeToFill(64, 64)],
+        source='imagefile_original',
+        format='PNG')
+    max_per_order = models.IntegerField(
+        u'Maksimi per tilaus',
+        default=10,
+        help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
+    sort_index = models.IntegerField(
+        u'Järjestysarvo',
+        default=0,
+        help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
 
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)
@@ -47,24 +75,77 @@ class StoreItem(models.Model):
 
 
 class StoreTransaction(models.Model):
-    token = models.CharField(u'Palvelutunniste', help_text=u'Maksupalvelun maksukohtainen tunniste', max_length=255)
-    time_created = models.DateTimeField(u'Luontiaika', null=True, blank=True)
-    time_paid = models.DateTimeField(u'Maksun varmistumisaika', null=True, blank=True)
-    time_pending = models.DateTimeField(u'Maksun maksuaika', null=True, blank=True)
-    time_cancelled = models.DateTimeField(u'Peruutusaika', null=True, blank=True)
-    payment_method_name = models.CharField(u'Maksutapa', help_text=u'Tapa jolla tilaus maksettiin', max_length=32, blank=True, default=u'')
-    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Paikallinen maksukohtainen tunniste')
-    firstname = models.CharField(u'Etunimi', max_length=64)
-    lastname = models.CharField(u'Sukunimi', max_length=64)
-    company = models.CharField(u'Yritys', max_length=128, blank=True)
-    email = models.EmailField(u'Sähköposti', max_length=255, help_text=u'Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.')
-    telephone = models.CharField(u'Puhelinnumero', max_length=64, blank=True)
-    mobile = models.CharField(u'Matkapuhelin', max_length=64, blank=True)
-    street = models.CharField(u'Katuosoite', max_length=128, help_text=u'Katusoite tarvitaan maksupalvelun vaatimuksesta.')
-    postalcode = models.CharField(u'Postinumero', max_length=16)
-    city = models.CharField(u'Postitoimipaikka', max_length=64)
-    country = CountryField(u'Maa', default='FI')
-    information = models.TextField(u'Lisätiedot', help_text=u'Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.', blank=True)
+    token = models.CharField(
+        u'Palvelutunniste',
+        help_text=u'Maksupalvelun maksukohtainen tunniste',
+        max_length=255)
+    time_created = models.DateTimeField(
+        u'Luontiaika',
+        null=True,
+        blank=True)
+    time_paid = models.DateTimeField(
+        u'Maksun varmistumisaika',
+        null=True,
+        blank=True)
+    time_pending = models.DateTimeField(
+        u'Maksun maksuaika',
+        null=True,
+        blank=True)
+    time_cancelled = models.DateTimeField(
+        u'Peruutusaika',
+        null=True,
+        blank=True)
+    payment_method_name = models.CharField(
+        u'Maksutapa',
+        help_text=u'Tapa jolla tilaus maksettiin',
+        max_length=32,
+        blank=True,
+        default=u'')
+    key = models.CharField(
+        u'Avain',
+        max_length=40,
+        unique=True,
+        help_text=u'Paikallinen maksukohtainen tunniste')
+    firstname = models.CharField(
+        u'Etunimi',
+        max_length=64)
+    lastname = models.CharField(
+        u'Sukunimi',
+        max_length=64)
+    company = models.CharField\
+        (u'Yritys',
+         max_length=128,
+         blank=True)
+    email = models.EmailField(
+        u'Sähköposti',
+        max_length=255,
+        help_text=u'Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen '
+                  u'tarvittavat koodit lähetetään sinne.')
+    telephone = models.CharField(
+        u'Puhelinnumero',
+        max_length=64,
+        blank=True)
+    mobile = models.CharField(
+        u'Matkapuhelin',
+        max_length=64,
+        blank=True)
+    street = models.CharField(
+        u'Katuosoite',
+        max_length=128,
+        help_text=u'Katusoite tarvitaan maksupalvelun vaatimuksesta.')
+    postalcode = models.CharField(
+        u'Postinumero',
+        max_length=16)
+    city = models.CharField(
+        u'Postitoimipaikka',
+        max_length=64)
+    country = CountryField(
+        u'Maa',
+        default='FI')
+    information = models.TextField(
+        u'Lisätiedot',
+        help_text=u'Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.',
+        blank=True)
 
     @property
     def is_paid(self):
@@ -150,10 +231,3 @@ class TransactionItem(models.Model):
     class Meta:
         verbose_name = u"transaktiotuote"
         verbose_name_plural = u"transaktiotuotteet"
-
-try:
-    admin.site.register(StoreItem)
-    admin.site.register(StoreTransaction)
-    admin.site.register(TransactionItem)
-except:
-    pass

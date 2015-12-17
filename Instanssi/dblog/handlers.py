@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from logging import Handler
-from datetime import datetime 
+
 
 class DBLogHandler(Handler, object):
     def __init__(self):

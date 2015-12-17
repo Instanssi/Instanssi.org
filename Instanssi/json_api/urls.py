@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^kompomaatti/', include('Instanssi.json_api.kompomaatti.urls', namespace="api_km")),
     url(r'^screen/', include('Instanssi.json_api.screen.urls', namespace="api_screen")),
-)
+]

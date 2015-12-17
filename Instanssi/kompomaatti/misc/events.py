@@ -2,8 +2,9 @@
 
 from datetime import datetime
 import time
-from Instanssi.kompomaatti.models import Compo,Competition
+from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
+
 
 def get_upcoming(event):
     compos = Compo.objects.filter(event=event, voting_end__gt=datetime.now(), active=True)
@@ -84,8 +85,8 @@ def get_upcoming(event):
         })
 
     # Sort list by datetime
-    def helper(object):
-        return time.mktime(object['date'].timetuple())
+    def helper(obj):
+        return time.mktime(obj['date'].timetuple())
     events = sorted(events, key=helper)
 
     return events

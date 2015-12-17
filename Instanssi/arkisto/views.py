@@ -2,16 +2,14 @@
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import Http404, HttpResponse
-from django.conf import settings
-from django.views.decorators.cache import cache_page
-
+from django.http import Http404
 from Instanssi.kompomaatti.models import Event, Compo, Entry, Competition, CompetitionParticipation
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 
 # Event page
 # TODO: Optimize queries. For now, cache will do the trick.
+
 
 def event(request, event_id):
     # Get event
@@ -52,6 +50,7 @@ def event(request, event_id):
         'competitionlist': competitionlist,
     }, context_instance=RequestContext(request))
 
+
 # Index page (loads event page)
 def index(request):
     try:
@@ -60,6 +59,7 @@ def index(request):
         return render_to_response('arkisto/empty.html', context_instance=RequestContext(request))
             
     return event(request, latest.id)
+
 
 # Entry page
 def entry(request, entry_id):
@@ -79,7 +79,8 @@ def entry(request, entry_id):
         'entry': entry,
         'event': entry.compo.event,
     }, context_instance=RequestContext(request))
-    
+
+
 # Video page
 def video(request, video_id):
     # Get the entry
@@ -94,4 +95,3 @@ def video(request, video_id):
         'video': video,
         'event': video.category.event,
     }, context_instance=RequestContext(request))
-    

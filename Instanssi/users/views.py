@@ -2,12 +2,13 @@
 
 from common.auth import user_access_required
 from django.shortcuts import render_to_response
-from django.http import Http404,HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
 from common.misc import get_url_local_path
+
 
 def login(request):
     if request.user.is_authenticated():
@@ -40,8 +41,10 @@ def login(request):
         'next': next,
     }, context_instance=RequestContext(request))
 
+
 def loggedout(request):
     return render_to_response("users/loggedout.html")
+
 
 @user_access_required
 def profile(request):
@@ -56,6 +59,7 @@ def profile(request):
     return render_to_response("users/profile.html", {
         'profileform': profileform,
     }, context_instance=RequestContext(request))
+
 
 def logout(request):
     auth.logout(request)

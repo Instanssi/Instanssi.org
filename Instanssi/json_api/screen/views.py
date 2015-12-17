@@ -12,6 +12,7 @@ from common.http import Http403
 from Instanssi.kompomaatti.models import Event
 from Instanssi.screenshow.models import NPSong
 
+
 @csrf_exempt
 def song_get(request):
     # Make sure the request is ok
@@ -19,7 +20,7 @@ def song_get(request):
         data = json.loads(request.body)
         event_id = data['event_id']
     except:
-        return JSONResponse({'error': 'Invalid JSON request'});
+        return JSONResponse({'error': 'Invalid JSON request'})
 
     # Get song
     try:
@@ -33,13 +34,14 @@ def song_get(request):
             'state': u'stop',
             'title': u'',
             'artist': u''
-        });                     
+        })
     else:
         return JSONResponse({
             'state': u'play',
             'title': song.title,
             'artist': song.artist    
-        });
+        })
+
 
 @csrf_exempt
 def song_set(request):
@@ -50,7 +52,7 @@ def song_set(request):
         event_id = data['event_id']
         type = data['type']
     except:
-        return JSONResponse({'error': 'Invalid JSON request'});
+        return JSONResponse({'error': 'Invalid JSON request'})
     
     # Get artist and title, if they exist
     try:
@@ -79,7 +81,7 @@ def song_set(request):
             song.state = 1
         song.save()
     except:
-        return JSONResponse({'error': 'Database error'});
+        return JSONResponse({'error': 'Database error'})
     
     # Delete earliest NPSong
     scount = NPSong.objects.count()
@@ -92,4 +94,4 @@ def song_set(request):
             song.delete()
     
     # All done. Just return nothing.
-    return JSONResponse({});
+    return JSONResponse({})

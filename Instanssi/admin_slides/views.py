@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
 from common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
+
 
 @staff_access_required
 def index(request, sel_event_id):
@@ -15,7 +14,8 @@ def index(request, sel_event_id):
         'compos': Compo.objects.filter(event_id=sel_event_id),
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def slide_results(request, sel_event_id, compo_id):
     # Get the compo
@@ -40,7 +40,7 @@ def slide_results(request, sel_event_id, compo_id):
             'info_z': i * 2000 + 2000,
             'rank': entry.get_rank(),
         })
-        i = i + 2
+        i += 2
 
     r_entries = []
     for entry in s_entries[3:]:
@@ -52,7 +52,7 @@ def slide_results(request, sel_event_id, compo_id):
             'rank': entry.get_rank(),
         })
 
-    i = i + 1
+    i += 1
 
     # Render
     return admin_render(request, 'admin_slides/slide_results.html', {
@@ -67,7 +67,8 @@ def slide_results(request, sel_event_id, compo_id):
         'last_z': (i+2) * 2000,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def slide_entries(request, sel_event_id, compo_id):
     # Get the compo
@@ -80,8 +81,10 @@ def slide_entries(request, sel_event_id, compo_id):
     flip = False
     f_entries = []
     for entry in s_entries:
-        if flip: g = 180
-        else: g = 0
+        if flip:
+            g = 180
+        else:
+            g = 0
         f_entries.append({
             'id': entry.id,
             'creator': entry.creator,
@@ -93,7 +96,7 @@ def slide_entries(request, sel_event_id, compo_id):
             'rot_x': g,
             'rot_z': 0,
         })
-        i = i + 1
+        i += 1
         flip = not flip
 
     # Render
@@ -104,4 +107,4 @@ def slide_entries(request, sel_event_id, compo_id):
         'last_rot_x': flip,
         'selected_event_id': int(sel_event_id),
     })
-    
+

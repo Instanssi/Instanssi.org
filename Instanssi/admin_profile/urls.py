@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from Instanssi.admin_profile.views import profile, password
 
-urlpatterns = patterns(
-    'Instanssi.admin_profile.views',
-    url(r'^$', 'profile', name="index"),
-    url(r'^password/', 'password', name="password"),
-)
+
+urlpatterns = [
+    url(r'^$', profile, name="index"),
+    url(r'^password/', password, name="password"),
+]

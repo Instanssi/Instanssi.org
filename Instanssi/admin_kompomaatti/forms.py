@@ -4,11 +4,10 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-from datetime import datetime
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-from Instanssi.kompomaatti.models import Compo, Entry, VoteCode, VoteCodeRequest, Event, Competition, CompetitionParticipation
+from Instanssi.kompomaatti.models import Compo, Entry, Competition, CompetitionParticipation
 import urlparse
+
 
 class AdminCompetitionScoreForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -28,12 +27,12 @@ class AdminCompetitionScoreForm(forms.Form):
             name = str(p.id)
             self.fields[name] = forms.FloatField()
             self.fields[name].label = p.participant_name
-            self.fields[name].help_text = u'Osallistujan '+p.participant_name+u' saavuttama tulos.'
+            self.fields[name].help_text = u'Osallistujan {} saavuttama tulos.'.format(p.participant_name)
             self.fields[name].initial = p.score
             fs.fields.append(name)
     
         # Add buttonholder
-        bh = ButtonHolder (
+        bh = ButtonHolder(
             Submit('submit', u'Tallenna')
         )
         fs.fields.append(bh)
@@ -42,10 +41,11 @@ class AdminCompetitionScoreForm(forms.Form):
         self.helper.layout.fields.append(fs)
         
     def save(self):
-        for k,v in self.cleaned_data.iteritems():
+        for k, v in self.cleaned_data.iteritems():
             p = get_object_or_404(CompetitionParticipation, pk=int(k))
             p.score = v
             p.save()
+
 
 class AdminParticipationEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -58,7 +58,7 @@ class AdminParticipationEditForm(forms.ModelForm):
                 'score',
                 'disqualified',
                 'disqualified_reason',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -66,7 +66,8 @@ class AdminParticipationEditForm(forms.ModelForm):
         
     class Meta:
         model = CompetitionParticipation
-        fields = ('participant_name','score','disqualified','disqualified_reason')
+        fields = ('participant_name', 'score', 'disqualified', 'disqualified_reason')
+
 
 class AdminCompetitionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -85,7 +86,7 @@ class AdminCompetitionForm(forms.ModelForm):
                 'show_results',
                 'hide_from_archive',
                 'active',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -94,6 +95,7 @@ class AdminCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         exclude = ('event',)
+
 
 class AdminCompoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -121,7 +123,7 @@ class AdminCompoForm(forms.ModelForm):
                 'hide_from_archive',
                 'hide_from_frontpage',
                 'is_votable',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -130,6 +132,7 @@ class AdminCompoForm(forms.ModelForm):
     class Meta:
         model = Compo
         exclude = ('event',)
+
 
 class AdminEntryAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -158,7 +161,7 @@ class AdminEntryAddForm(forms.ModelForm):
                 'sourcefile',
                 'imagefile_original',
                 'youtube_url',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Lisää')
                 )
             )
@@ -166,7 +169,9 @@ class AdminEntryAddForm(forms.ModelForm):
         
     class Meta:
         model = Entry
-        exclude = ('disqualified','disqualified_reason','imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
+        exclude = ('disqualified', 'disqualified_reason', 'imagefile_thumbnail', 'imagefile_medium',
+                   'archive_score', 'archive_rank')
+
 
 class AdminEntryEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -197,7 +202,7 @@ class AdminEntryEditForm(forms.ModelForm):
                 'youtube_url',
                 'disqualified',
                 'disqualified_reason',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Tallenna')
                 )
             )
@@ -226,7 +231,8 @@ class AdminEntryEditForm(forms.ModelForm):
 
     class Meta:
         model = Entry
-        exclude = ('imagefile_thumbnail','imagefile_medium','archive_score','archive_rank')
+        exclude = ('imagefile_thumbnail', 'imagefile_medium', 'archive_score', 'archive_rank')
+
 
 class CreateTokensForm(forms.Form):
     amount = forms.IntegerField(min_value=1, max_value=100, label=u"Määrä", help_text=u"Montako tokenia luodaan.")
@@ -238,9 +244,8 @@ class CreateTokensForm(forms.Form):
             Fieldset(
                 u'Generoi tokeneita',
                 'amount',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit', u'Generoi')
                 )
             )
         )
-

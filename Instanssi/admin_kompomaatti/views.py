@@ -500,33 +500,29 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_votecode'):
         raise Http403
-    
+
     # Get the request
     vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
-        
+
     # Add votecode for user. Bang your head to the wall until you succeed, etc.
-    # TODO: Do something about this shit!
-    done = False
-    for i in range(25):
-        try:
-            c = VoteCode()
-            c.event_id = int(sel_event_id)
-            c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
-            c.associated_to = vcr.user
-            c.time = datetime.now()
-            c.save()
-            logger.info(u'Votecode request from "{}" accepted.'.format(vcr.user.username),
-                        extra={'user': request.user, 'event_id': sel_event_id})
-            done = True
-            break
-        except IntegrityError:
-            pass
-    
+    try:
+        c = VoteCode()
+        c.event_id = int(sel_event_id)
+        c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
+        c.associated_to = vcr.user
+        c.time = datetime.now()
+        c.save()
+        logger.info(u'Votecode request from "{}" accepted.'.format(vcr.user.username),
+                    extra={'user': request.user, 'event_id': sel_event_id})
+        done = True
+    except IntegrityError:
+        done = False
+
+    # Didn't happen, user likely already has votecode
     if not done:
-        return HttpResponse("Virhe yritettäessä lisätä satunnaista avainta ... FIXME!")
-            
-    # Delete request
-    vcr.delete()
-    
+        logger.info(u'Votecode request from "{}" scrapped; user already has votecode.'.format(vcr.user.username),
+                    extra={'user': request.user, 'event_id': sel_event_id})
+        vcr.delete()
+
     # Return to admin page
     return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,))) 

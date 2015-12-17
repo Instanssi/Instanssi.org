@@ -32,13 +32,20 @@ def index(request):
     entries = Entry.objects.all()
     disk_usage = 0
     for entry in entries:
-        disk_usage += entry.entryfile.size
-        if entry.sourcefile:
-            disk_usage += entry.sourcefile.size
-        if entry.imagefile_original:
-            disk_usage += entry.imagefile_original.size
-        #    disk_usage += entry.imagefile_thumbnail.size
-        #    disk_usage += entry.imagefile_medium.size
+        try:
+            disk_usage += entry.entryfile.size
+            if entry.sourcefile:
+                disk_usage += entry.sourcefile.size
+            if entry.imagefile_original:
+                disk_usage += entry.imagefile_original.size
+            if entry.imagefile_thumbnail:
+                disk_usage += entry.imagefile_thumbnail.size
+            if entry.imagefile_medium:
+                disk_usage += entry.imagefile_medium.size
+        except WindowsError:
+            pass
+        except IOError:
+            pass
             
     # Get some statistics
     stats = {

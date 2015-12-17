@@ -59,10 +59,8 @@ url('../images/instanssi2015.png') 20px 49px no-repeat; */}
 'Open Sans', sans-serif; 
 font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 
 0px 0px; */ padding: 0;
-/*line-height: 20%; */
-/* hide text and show image instead: */
-text-indent: 2000px; overflow: hidden; background: url('../images/instanssi2015d2.png') 0 
-47px no-repeat; }
+line-height: 400%;
+}
 #page-header .header-info .tagline { font-size: 20px; font-family: 
 'Maven Pro', sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 300; 
 line-height: 100%; margin-bottom: 5px; }

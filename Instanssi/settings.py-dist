@@ -36,6 +36,10 @@ GOOGLE_ANALYTICS = False
 GOOGLE_ANALYTICS_CODE = ''
 
 # Generic stuff
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 TIME_ZONE = 'Europe/Helsinki'
 LANGUAGE_CODE = 'fi-FI'
 SHORT_LANGUAGE_CODE = 'fi'

@@ -38,10 +38,6 @@ def index(request):
                 disk_usage += entry.sourcefile.size
             if entry.imagefile_original:
                 disk_usage += entry.imagefile_original.size
-            if entry.imagefile_thumbnail:
-                disk_usage += entry.imagefile_thumbnail.size
-            if entry.imagefile_medium:
-                disk_usage += entry.imagefile_medium.size
         except OSError:
             pass
         except IOError:

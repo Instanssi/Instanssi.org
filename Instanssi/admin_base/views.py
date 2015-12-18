@@ -42,7 +42,7 @@ def index(request):
                 disk_usage += entry.imagefile_thumbnail.size
             if entry.imagefile_medium:
                 disk_usage += entry.imagefile_medium.size
-        except WindowsError:
+        except OSError:
             pass
         except IOError:
             pass

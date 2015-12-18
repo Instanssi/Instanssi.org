@@ -25,11 +25,26 @@ class NPSong(models.Model):
 
 
 class ScreenConfig(models.Model):
-    event = models.OneToOneField(Event, verbose_name=u'Tapahtuma', unique=True)
-    enable_videos = models.BooleanField(u'Näytä videoita', help_text=u'Näytetäänkö esityksessä videoita playlistiltä.', default=True)
-    enable_twitter = models.BooleanField(u'Näytä twitterfeed', help_text=u'Näytetäänkö esityksessä twittersyötteen sisältävä slaidi.', default=True)
-    enable_irc = models.BooleanField(u'Näytä IRC', help_text=u'Näytetäänkö esityksessä irc-lokin sisältävä slaidi.', default=True)
-    video_interval = models.IntegerField(u'Videoiden näyttöväli', help_text=u'Kuinka usein videoita näytetään? Arvo annetaan minuuteissa. 0 = Joka kierroksella.', default=5)
+    event = models.OneToOneField(
+        Event,
+        verbose_name=u'Tapahtuma',
+        unique=True)
+    enable_videos = models.BooleanField(
+        u'Näytä videoita',
+        help_text=u'Näytetäänkö esityksessä videoita playlistiltä.',
+        default=True)
+    enable_twitter = models.BooleanField(
+        u'Näytä twitterfeed',
+        help_text=u'Näytetäänkö esityksessä twittersyötteen sisältävä slaidi.',
+        default=True)
+    enable_irc = models.BooleanField(
+        u'Näytä IRC',
+        help_text=u'Näytetäänkö esityksessä irc-lokin sisältävä slaidi.',
+        default=True)
+    video_interval = models.IntegerField(
+        u'Videoiden näyttöväli',
+        help_text=u'Kuinka usein videoita näytetään? Arvo annetaan minuuteissa. 0 = Joka kierroksella.',
+        default=5)
     
     def __unicode__(self):
         return u'Asetukset tapahtumalle {}'.format(self.event.name)
@@ -43,8 +58,9 @@ class PlaylistVideo(models.Model):
     event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
     name = models.CharField(u'Nimi', max_length=64, help_text=u'Videon nimi tai otsikko.')
     url = models.URLField(u'Osoite', help_text=u'Linkki Youtube-videoon.')
-    index = models.IntegerField(u'Järjestysindeksi', help_text=u'Indeksi toistolistan järjestelemiseen. Pienimmällä '
-                                                              u'numerolla varustetut toistetaan ensimmäiseksi.')
+    index = models.IntegerField(
+        u'Järjestysindeksi',
+        help_text=u'Indeksi toistolistan järjestelemiseen. Pienimmällä numerolla varustetut toistetaan ensimmäiseksi.')
 
     def __unicode__(self):
         return self.name

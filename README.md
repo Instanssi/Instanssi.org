@@ -39,6 +39,8 @@ Mikäli dependenssit joskus päivittyvät, auttaa seuraava:
 
     pip install --upgrade -r requirements.txt
 
+Huom! Etenkin windowsilla saattaa tulla ongelmia joidenkin pakettien asennuksessa! Tällöin auttaa osoitteesta http://www.lfd.uci.edu/~gohlke/pythonlibs/ löytyvä pakettirepositorio, joka tarjoaa valmiiksi käännettyjä versioita eri kirjastoista.
+
 Testitapausten ajaminen
 -----------------------
 testing/ -hakemistossa on esimerkkejä Robot Framework - Selenium 2 -testeistä, joilla voidaan automatisoida nettisivujen klikkailua.

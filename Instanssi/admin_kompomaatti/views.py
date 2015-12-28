@@ -522,7 +522,9 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     if not done:
         logger.info(u'Votecode request from "{}" scrapped; user already has votecode.'.format(vcr.user.username),
                     extra={'user': request.user, 'event_id': sel_event_id})
-        vcr.delete()
+
+    # Request handled, delete it
+    vcr.delete()
 
     # Return to admin page
     return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,))) 

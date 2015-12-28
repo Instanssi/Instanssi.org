@@ -19,48 +19,18 @@ Mikä on tämä ?
 --------------
 En jaksa kirjoittaa suomeksi, lue ylläolevat :D
 
-Ympäristön asentaminen Windowsille
-----------------------------------
-1. Asenna Python, 2.6 tai 2.7 on ok (http://www.python.org). Varmista, että pythonin juurikansio (se josta löytyy python.exe)
-   ja scripts-kansiot ovat windowsin PATHissa. Kannattaa ladata 32bit versio, vaikka olisikin 64bit windows. Helpompi saada
-   kirjastot. Mikäli ehdottomasti haluat asentaa 64bit versiot, niin osa paketeista on ladattavissa osoitteesta 
-   http://www.lfd.uci.edu/~gohlke/pythonlibs/ .
-2. Asenna setuptools (http://pypi.python.org/pypi/setuptools). 
-3. Asenna PIP (http://pypi.python.org/pypi/pip) komennolla `easy_install pip`.
-4. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot PIP:llä.
-
-Ympäristön asentaminen Linuxeille
----------------------------------
-1. Asenna PIP distrosi paketinhallinnalla, esim. `apt-get install python-pip`.
-2. Asenna kappaleessa "Projektin asentaminen" mainitut kirjastot joko käyttäen PIP:iä tai distrosi pakettienhallintaa. 
-   PIL-kirjaston asennus käyttäen PIP:ä saattaa vaatia jotain lisäkirjastoja kääntämiseen. Lisäkirjastojen asentamisen
-   saattaa pystyä välttämään asentamalla PIL:n suoraan distron pakettienhallinnasta, esim. `apt-get install python-imaging` tjsp.
-   Mikäli asennat virtualenv:n, kannattaa käyttää PIL-kirjaston sijasta PILLOW-kirjastoa.
-
 Projektin asentaminen
 ---------------------
-1. Kloonaa tämä projekti gitillä (git clone ...).
-2. Kopioi `settings.py-dist` tiedostoksi `settings.py`.
-2. Suorita syncdb projektihakemistossa (`python manage.py syncdb`).
-3. Suorita migrate projektihakemistossa (`python manage.py migrate`).
-4. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
-   joskus olla tarpeen suorittaa migrate ja syncdb uudelleen.
+1. Kloonaa tämä projekti gitillä (git clone ...). Mikäli haluat tehdä muutoksia, forkkaa ja kloonaa omasta repositoriostasi.
+2. Kopioi `settings.py-dist` tiedostoksi `settings.py`. Muuta tarpeen mukaan.
+3. Asenna tarvittavat kirjastot. (kts. seuraava kappale)
+4. Suorita tietokantamigraatiot projektihakemistossa `python manage.py migrate`.
+5. Luo pääkäyttäjä `python manage.py createsuperuser`.
+6. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
+   joskus olla tarpeen suorittaa migrate uudelleen.
 
 Kirjastot
 ---------
-* [Django 1.8](https://www.djangoproject.com/download/) `pip install django`
-* [python-social-auth](https://github.com/omab/python-social-auth) `pip install python-social-auth`
-* [django-countries](https://bitbucket.org/smileychris/django-countries) `pip install django-countries`
-* [Pillow](https://pillow.readthedocs.org/) `pip install pillow`
-* [django-imagekit](https://github.com/jdriscoll/django-imagekit) `pip install django-imagekit`
-* [django-crispy-forms](http://django-crispy-forms.readthedocs.org/) `pip install django-crispy-forms`
-* [reportlab](http://www.reportlab.com/software/opensource/rl-toolkit/download/) `pip install reportlab`
-* [django-twitter-tag](https://github.com/coagulant/django-twitter-tag) `pip install django-twitter-tag`
-* [django-debug-toolbar](http://django-debug-toolbar.readthedocs.org) `pip install django-debug-toolbar`
-* [django-formtools](https://readthedocs.org/projects/django-formtools/) `pip install django-formtools`
-
-Onelineri kirjastojen asentamiseen
-----------------------------------
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
     pip install -r requirements.txt
@@ -69,9 +39,10 @@ Mikäli dependenssit joskus päivittyvät, auttaa seuraava:
 
     pip install --upgrade -r requirements.txt
 
+Huom! Etenkin windowsilla saattaa tulla ongelmia joidenkin pakettien asennuksessa! Tällöin auttaa osoitteesta http://www.lfd.uci.edu/~gohlke/pythonlibs/ löytyvä pakettirepositorio, joka tarjoaa valmiiksi käännettyjä versioita eri kirjastoista.
+
 Testitapausten ajaminen
 -----------------------
-
 testing/ -hakemistossa on esimerkkejä Robot Framework - Selenium 2 -testeistä, joilla voidaan automatisoida nettisivujen klikkailua.
 
 Testien ajamiseen tarvitset robotframework-selenium2library -palikan:

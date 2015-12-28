@@ -14,8 +14,8 @@ class DBLogEntry(models.Model):
     message = models.TextField()
 
     def __unicode__(self):
-        if len(self.message) > 48:
-            return u' ...'.format(self.message[:48])
+        if len(self.message) > 64:
+            return u'{} ...'.format(self.message[:64])
         else:
             return self.message
     

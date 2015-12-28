@@ -43,7 +43,7 @@ class Event(models.Model):
         u'Tapahtuman pääsivu', help_text=u'URL Tapahtuman pääsivustolle', blank=True)
 
     def __unicode__(self):
-        return u'[' + str(self.pk) + u'] ' + self.name
+        return u'[{}] {}'.format(self.pk, self.name)
 
     class Meta:
         verbose_name = u"tapahtuma"
@@ -99,9 +99,9 @@ class VoteCode(models.Model):
 
     def __unicode__(self):
         if self.associated_to:
-            return self.key + u': ' + self.associated_to.username
+            return u'{}: {}'.format(self.key, self.associated_to.username)
         else:
-            return self.key
+            return unicode(self.key)
 
     class Meta:
         verbose_name = u"äänestysavain"
@@ -112,8 +112,8 @@ class VoteCode(models.Model):
 class Compo(models.Model):
     ENTRY_VIEW_TYPES = (
         (0, u'Ei mitään'),
-        (1, u'Youtube ensin, sitten kuva'), # Videoentryille, koodauskompoille
-        (2, u'Vain kuva'), # Grafiikkakompoille
+        (1, u'Youtube ensin, sitten kuva'),  # Videoentryille, koodauskompoille
+        (2, u'Vain kuva'),  # Grafiikkakompoille
         (3, u'(deprecated)'),
     )
     THUMBNAIL_REQ = (
@@ -221,25 +221,25 @@ class Compo(models.Model):
         if datetime.now() < self.adding_end:
             return True
         return False
-    
+
     def is_editing_open(self):
         if datetime.now() < self.editing_end:
             return True
         return False
-    
+
     def has_voting_started(self):
         if not self.is_votable:
             return False
         if datetime.now() > self.voting_start:
             return True
         return False
-            
+
     def readable_entry_formats(self):
-        return ', '.join(self.formats.split('|'))
-    
+        return u', '.join(self.formats.split('|'))
+
     def readable_source_formats(self):
-        return ', '.join(self.source_formats.split('|'))
-    
+        return u', '.join(self.source_formats.split('|'))
+
     def readable_image_formats(self):
         return ', '.join(self.image_formats.split('|'))
 
@@ -315,7 +315,7 @@ class Entry(models.Model):
         blank=True)
 
     def __unicode__(self):
-        return self.name + u' by ' + self.creator
+        return u'{} by {}'.format(self.name, self.creator)
     
     class Meta:
         verbose_name = u"tuotos"
@@ -339,8 +339,8 @@ class Entry(models.Model):
             return score
         
     def get_youtube_embed_url(self):
-        spurl = urlparse(self.youtube_url)
-        return "http://www.youtube.com/embed/" + os.path.split(spurl.path)[1]+"/"
+        split_url = urlparse(self.youtube_url)
+        return u"http://www.youtube.com/embed/{}/".format(os.path.split(split_url.path)[1])
         
     def get_rank(self):
         # If rank has been predefined, then use that
@@ -407,7 +407,7 @@ class Vote(models.Model):
     rank = models.IntegerField(u'Sijoitus')
     
     def __unicode__(self):
-        return self.entry.name + ' by ' + self.user.username + ' as ' + str(self.rank)
+        return u'{} by {} as {}'.format(self.entry.name, self.user.username, self.rank)
     
     class Meta:
         verbose_name = u"ääni"
@@ -428,7 +428,8 @@ class Competition(models.Model):
         u'Nimi',
         max_length=32,
         help_text=u"Kilpailun nimi (max 32 merkkiä).")
-    description = models.TextField(u'Kuvaus')
+    description = models.TextField(
+        u'Kuvaus')
     participation_end = models.DateTimeField(
         u'Deadline osallistumiselle.',
         help_text=u"Tämän jälkeen kilpailuun ei voi enää osallistua.")
@@ -498,7 +499,7 @@ class CompetitionParticipation(models.Model):
         blank=True)
 
     def get_formatted_score(self):
-        return str(self.score) + u' ' + self.competition.score_type
+        return u'{} {}'.format(self.score, self.competition.score_type)
 
     def get_rank(self):
         # Get results
@@ -515,10 +516,10 @@ class CompetitionParticipation(models.Model):
             else:
                 rank += 1
         return rank
-        
+
     def __unicode__(self):
-        return self.competition.name + ', ' + self.participant_name + ': ' + str(self.score)
-    
+        return '{}, {}: {}'.format(self.competition.name, self.participant_name, self.score)
+
     class Meta:
         verbose_name = u"ilmoittautuminen"
         verbose_name_plural = u"ilmoittautumiset"

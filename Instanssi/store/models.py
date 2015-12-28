@@ -170,6 +170,10 @@ class StoreTransaction(models.Model):
     def qr_code(self):
         return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
 
+    @property
+    def full_name(self):
+        return u'{} {}'.format(self.firstname, self.lastname)
+
     def get_status_text(self):
         if self.is_cancelled:
             return u'Peruutettu'
@@ -191,7 +195,7 @@ class StoreTransaction(models.Model):
         return TransactionItem.objects.filter(transaction=self)
 
     def __unicode__(self):
-        return u'%s %s' % (self.firstname, self.lastname)
+        return self.full_name
 
     class Meta:
         verbose_name = u"transaktio"
@@ -226,7 +230,7 @@ class TransactionItem(models.Model):
         return TransactionItem.objects.filter(item=item, transaction=ta).count()
 
     def __unicode__(self):
-        return u'%s for %s %s' % (self.item.name, self.transaction.firstname, self.transaction.lastname)
+        return u'{} for {}'.format(self.item.name, self.transaction.full_name)
 
     class Meta:
         verbose_name = u"transaktiotuote"

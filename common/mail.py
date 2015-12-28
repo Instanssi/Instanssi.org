@@ -7,6 +7,7 @@ Mailer class sends emails with given parameters.
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
+
 class Mailer(object):
     def __init__(self, template, email_from, email_to, subject):
         self.subject = subject

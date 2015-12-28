@@ -8,11 +8,13 @@ from django.http import HttpResponseForbidden
 # A custom Http403 exception
 # from http://theglenbot.com/creating-a-custom-http403-exception-in-django/
 
+
 class Http403(Exception):    
-    pass  
+    pass
+
 
 def render_to_403(*args, **kwargs):     
-    if not isinstance(args,list):         
+    if not isinstance(args, list):
         args = []         
         args.append('403.html')              
 
@@ -21,9 +23,10 @@ def render_to_403(*args, **kwargs):
 
     return response  
 
+
 class Http403Middleware(object):     
-    def process_exception(self,request,exception):         
-        if isinstance(exception,Http403):             
-            if getattr(settings, 'DEBUG'):                 
+    def process_exception(self, request, exception):
+        if isinstance(exception, Http403):
+            if getattr(settings, 'DEBUG'):
                 raise PermissionDenied             
             return render_to_403(context_instance=RequestContext(request))      

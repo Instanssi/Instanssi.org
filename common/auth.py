@@ -4,12 +4,14 @@ from django.http import HttpResponseRedirect
 from common.http import Http403
 from django.core.urlresolvers import reverse
 
+
 def user_access_required(view_func):
     def _checklogin(request, *args, **kwargs):
         if request.user.is_authenticated() and request.user.is_active:
             return view_func(request, *args, **kwargs)
         return HttpResponseRedirect(reverse('users:login')+'?next='+request.get_full_path()) 
     return _checklogin
+
 
 def staff_access_required(view_func):
     def _checklogin(request, *args, **kwargs):
@@ -20,6 +22,7 @@ def staff_access_required(view_func):
         return HttpResponseRedirect(reverse('users:login')+'?next='+request.get_full_path()) 
     return _checklogin
 
+
 def su_access_required(view_func):
     def _checklogin(request, *args, **kwargs):
         if request.user.is_authenticated() and request.user.is_active:
@@ -28,6 +31,7 @@ def su_access_required(view_func):
             raise Http403
         return HttpResponseRedirect(reverse('users:login')+'?next='+request.get_full_path()) 
     return _checklogin
+
 
 def infodesk_access_required(view_func):
     def _checklogin(request, *args, **kwargs):

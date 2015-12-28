@@ -3,6 +3,7 @@
 from django.test.simple import DjangoTestSuiteRunner
 from django.conf import settings
 
+
 class CustomRunner(DjangoTestSuiteRunner):
     def build_suite(self, *args, **kwargs):
         suite = super(CustomRunner, self).build_suite(*args, **kwargs)

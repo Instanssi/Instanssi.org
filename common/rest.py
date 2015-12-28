@@ -3,6 +3,7 @@
 from django.http import HttpResponse
 import json
 
+
 def rest_api(view_func):
     def json_view(request, *args, **kwargs):
         request.json_data = None
@@ -15,10 +16,11 @@ def rest_api(view_func):
     json_view.csrf_exempt = True
     return json_view
 
-def RestResponse(data=None, code=200, errortext=''):
+
+def RestResponse(data=None, code=200, error_text=''):
     out = {
         'code': code,
-        'errortext': errortext,
+        'errortext': error_text,
         'content': data,
     }
     return HttpResponse(json.dumps(out), content_type='application/json')

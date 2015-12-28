@@ -518,7 +518,7 @@ class CompetitionParticipation(models.Model):
         return rank
 
     def __unicode__(self):
-        return '{}, {}: {}'.format(self.competition.name, self.participant_name, self.score)
+        return u'{}, {}: {}'.format(self.competition.name, self.participant_name, self.score)
 
     class Meta:
         verbose_name = u"ilmoittautuminen"

@@ -49,6 +49,17 @@ class StoreItem(models.Model):
         u'Järjestysarvo',
         default=0,
         help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
+    discount_amount = models.IntegerField(
+        u'Alennusmäärä',
+        default=-1,
+        help_text=u'Pienin määrä tuotteita joka oikeuttaa alennukseen')
+    discount_percentage = models.IntegerField(
+        u'Alennusprosentti',
+        default=0,
+        help_text=u'Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+
+    def is_discount_available(self):
+        return self.discount_amount >= 0
 
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)

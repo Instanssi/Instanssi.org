@@ -23,9 +23,11 @@ class StoreItem(models.Model):
     description = models.TextField(
         u'Tuotteen kuvaus',
         help_text=u'Tuotteen pitkä kuvaus.')
-    price = models.IntegerField(
+    price = models.DecimalField(
         u'Tuotteen hinta',
-        help_text=u'Tuotteen hinta sentteinä.')
+        help_text=u'Tuotteen hinta.',
+        max_digits=5,
+        decimal_places=2)
     max = models.IntegerField(
         u'Kappaletta saatavilla',
         help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
@@ -52,7 +54,7 @@ class StoreItem(models.Model):
     discount_amount = models.IntegerField(
         u'Alennusmäärä',
         default=-1,
-        help_text=u'Pienin määrä tuotteita joka oikeuttaa alennukseen')
+        help_text=u'Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)')
     discount_percentage = models.IntegerField(
         u'Alennusprosentti',
         default=0,
@@ -215,13 +217,31 @@ class StoreTransaction(models.Model):
 
 
 class TransactionItem(models.Model):
-    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
-    item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
-    transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
-    time_delivered = models.DateTimeField(u'Toimitusaika', null=True, blank=True)
-    purchase_price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta ostoshetkellä')
-    original_price = models.IntegerField(u'Tuotteen alkuperäinen hinta',
-                                         help_text=u'Tuotteen hinta ostoshetkellä ilman alennuksia')
+    key = models.CharField(
+        u'Avain',
+        max_length=40,
+        unique=True,
+        help_text=u'Lippuavain')
+    item = models.ForeignKey(
+        StoreItem,
+        verbose_name=u'Tuote')
+    transaction = models.ForeignKey(
+        StoreTransaction,
+        verbose_name=u'Ostotapahtuma')
+    time_delivered = models.DateTimeField(
+        u'Toimitusaika',
+        null=True,
+        blank=True)
+    purchase_price = models.DecimalField(
+        u'Tuotteen hinta',
+        help_text=u'Tuotteen hinta ostoshetkellä',
+        max_digits=5,
+        decimal_places=2)
+    original_price = models.DecimalField(
+        u'Tuotteen alkuperäinen hinta',
+        help_text=u'Tuotteen hinta ostoshetkellä ilman alennuksia',
+        max_digits=5,
+        decimal_places=2)
 
     @property
     def is_delivered(self):

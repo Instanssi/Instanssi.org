@@ -1,6 +1,6 @@
-Django==1.9
+Django==1.9.1
 django-countries==3.4.1
-django-crispy-forms==1.5.2
+django-crispy-forms==1.6.0
 django-debug-toolbar==1.4
 django-formtools==1.0
 django-imagekit==3.3

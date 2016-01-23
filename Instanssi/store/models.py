@@ -25,7 +25,7 @@ class StoreItem(models.Model):
         help_text=u'Tuotteen pitkä kuvaus.')
     price = models.IntegerField(
         u'Tuotteen hinta',
-        help_text=u'Tuotteen hinta euroissa.')
+        help_text=u'Tuotteen hinta sentteinä.')
     max = models.IntegerField(
         u'Kappaletta saatavilla',
         help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
@@ -219,7 +219,9 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
     transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
     time_delivered = models.DateTimeField(u'Toimitusaika', null=True, blank=True)
-    purchase_price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa ostoshetkellä.')
+    purchase_price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta ostoshetkellä')
+    original_price = models.IntegerField(u'Tuotteen alkuperäinen hinta',
+                                         help_text=u'Tuotteen hinta ostoshetkellä ilman alennuksia')
 
     @property
     def is_delivered(self):

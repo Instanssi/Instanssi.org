@@ -121,7 +121,7 @@ def transaction_status(request, transaction_id):
 def edit_item(request, item_id):
     if not request.user.has_perm('store.change_storeitem'):
         raise Http403
-        
+
     # Get Item
     item = get_object_or_404(StoreItem, pk=item_id)
         

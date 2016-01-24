@@ -7,6 +7,7 @@ from imagekit.processors import ResizeToFill
 from datetime import datetime
 from urlparse import urlparse
 from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.store.models import TransactionItem
 import os.path
 
 
@@ -71,6 +72,40 @@ class VoteCodeRequest(models.Model):
     class Meta:
         verbose_name = u"äänestyskoodipyyntö"
         verbose_name_plural = u"äänestyskoodipyynnöt"
+
+
+class TicketVoteCode(models.Model):
+    event = models.ForeignKey(
+        Event,
+        verbose_name=u'Tapahtuma',
+        help_text=u'Tapahtuma, johon äänestysavain on assosioitu',
+        blank=True,
+        null=True)
+    associated_to = models.ForeignKey(
+        User,
+        verbose_name=u'Käyttäjä',
+        help_text=u"Käyttäjä jolle avain on assosioitu",
+        blank=True,
+        null=True)
+    ticket = models.ForeignKey(
+        TransactionItem,
+        verbose_name=u'Lipputuote',
+        help_text=u'Lipputuote jonka avainta käytetään äänestysavaimena',
+        blank=True,
+        null=True)
+    time = models.DateTimeField(
+        u'Aikaleima',
+        help_text=u"Aika jolloin avain assosioitiin käyttäjälle.",
+        blank=True,
+        null=True)
+
+    def __unicode__(self):
+        return u'{}: {}'.format(self.ticket.key, self.associated_to.username)
+
+    class Meta:
+        verbose_name = u"lippuäänestusavain"
+        verbose_name_plural = u"lippuäänestysavaimet"
+        unique_together = (("event", "ticket"), ("event", "associated_to"))
 
 
 class VoteCode(models.Model):

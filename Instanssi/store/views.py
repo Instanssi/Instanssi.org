@@ -61,13 +61,15 @@ class StoreWizard(NamedUrlSessionWizardView):
             items_data = self.get_items_data()
             total = 0
             summary = []
-            for count, item in items_data:
-                if count <= 0:
+
+            for amount, item in items_data:
+                if amount <= 0:
                     continue
-                subtotal = item.price * count
+
+                subtotal = item.get_discounted_subtotal(amount)
                 total += subtotal
                 summary.append({
-                    'count': count,
+                    'count': amount,
                     'item': item,
                     'subtotal': subtotal
                 })

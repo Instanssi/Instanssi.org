@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
 from django_countries.fields import CountryField
@@ -62,6 +63,25 @@ class StoreItem(models.Model):
 
     def is_discount_available(self):
         return self.discount_amount >= 0
+
+    def get_discount_factor(self):
+        return (100.0 - self.discount_percentage) / 100.0
+
+    def get_discounted_unit_price(self, amount):
+        """Returns decimal price of item considering any quantity discount."""
+        if amount >= self.discount_amount and amount >= 0:
+            factor = (Decimal(100) - Decimal(self.discount_percentage)) / 100
+            price = self.price * factor
+        else:
+            price = self.price
+        # If we need to consider rounding direction, this might be the place.
+        # Pass "rounding=METHOD" as second argument.
+        return price.quantize(Decimal('0.01'))
+
+    def get_discounted_subtotal(self, amount):
+        """Returns decimal subtotal for a specific number of items, considering
+        any quantity discount."""
+        return self.get_discounted_unit_price(amount) * amount
 
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)

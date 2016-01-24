@@ -13,15 +13,15 @@
 {% block jquery %}
 {{ block.super }}
     $(".item-image a").fancybox();
-    
     $('.wizard-nav-button').button();
+
     $('.item-amount-field').each(function(){
-	$(this).spinner({
-	    max: parseInt($(this).attr('data-max'), 10),
-	    min: parseInt($(this).attr('data-min'), 10)
+        $(this).spinner({
+	         max: parseInt($(this).attr('data-max'), 10),
+	         min: parseInt($(this).attr('data-min'), 10)
         });
     });
-    
+
     function clean_field(field) {
         var min = parseInt(field.attr('data-min'), 10);
         var max = parseInt(field.attr('data-max'), 10);
@@ -29,17 +29,24 @@
         if(val > max) { field.val(max); }
         if(val < min) { field.val(min); }
     }
-    
+
     function count_total_price() {
         var total = 0;
         $('.item-amount-field').each(function(index){
-            var price = parseInt($(this).attr('data-price'), 10);
-            var amount = parseInt($(this).spinner('value'), 10);
-            total += price * amount;
+            var item = $(this);
+            var price = parseFloat(item.attr('data-price'));
+            var discountAmount = parseFloat(item.attr('data-discount-amount'));
+            var discountFactor = parseFloat(item.attr('data-discount-factor'));
+            var amount = parseInt(item.spinner('value'), 10);
+            var subtotal = price * amount;
+            if(amount >= discountAmount) {
+                subtotal *= discountFactor;
+            }
+            total += subtotal;
         });
-        $('#total-price-field').text(total);
+        $('#total-price-field').text(total.toFixed(2));
     }
-    
+
     $('.item-amount-field').keyup(function(){
         clean_field($(this));
         count_total_price();
@@ -49,8 +56,8 @@
         $(this).spinner('value', ui.value);
         count_total_price();
     });
+
     $(document).ready(count_total_price);
-    
 {% endblock %}
 
 {% block crumbs %}
@@ -120,6 +127,9 @@
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
                 <div class="item-description">{{ field.help_text|safe }}</div>
+                {% if field.field.has_discount %}
+                <div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat ainakin {{ field.field.discount_amount }} kappaletta!
+                </div>{% endif %}
                 {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
             <div class="item-amount">

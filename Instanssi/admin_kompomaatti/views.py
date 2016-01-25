@@ -447,6 +447,18 @@ def votecodes(request, sel_event_id):
 
 
 @staff_access_required
+def ticket_votecodes(request, sel_event_id):
+    # Get tokens
+    tokens = TicketVoteCode.objects.filter(event_id=sel_event_id)
+
+    # Render response
+    return admin_render(request, "admin_kompomaatti/ticketvotecodes.html", {
+        'tokens': tokens,
+        'selected_event_id': int(sel_event_id),
+    })
+
+
+@staff_access_required
 def votecodes_print(request, sel_event_id):
     # Get free votecodes
     codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)

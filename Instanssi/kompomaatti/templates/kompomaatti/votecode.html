@@ -22,10 +22,24 @@
 
 {% if can_vote %}
     <p>Sinulla on oikeus äänestää.</p>
-    <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>
+    {% if votecode_type == 'ticket' %}
+        <p>Käyttäjätiliisi on liitetty lippuavain <strong>{{ reserved_code|truncatechars:8 }}</strong></p>
+    {% elif votecode_type == 'votecode' %}
+        <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>
+    {% endif %}
 {% else %}
-    <p>Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.</p>
+    <p>
+        Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan lippukoodin,
+        erillisen koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.
+    </p>
+
+    <h3>Pyydä äänestysoikeutta lippukoodilla</h3>
+    {% crispy ticket_votecode_form ticket_votecode_form.helper %}
+
+    <h3>Pyydä äänestysoikeutta erillisellä äänestyskoodilla</h3>
     {% crispy votecodeassocform votecodeassocform.helper %}
+
+    <h3>Pyydä äänestysoikeutta suoraan</h3>
     {% if request_made %}
     <p>
     <div class="ui-state-highlight ui-corner-all" style="padding: .7em;">

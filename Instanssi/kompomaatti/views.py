@@ -8,10 +8,12 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
-from Instanssi.kompomaatti.forms import *
-from Instanssi.kompomaatti.models import *
-from Instanssi.kompomaatti.misc.time_formatting import *
-from Instanssi.kompomaatti.misc import awesometime
+from Instanssi.kompomaatti.forms import VoteCodeRequestForm, VoteCodeAssocForm, ParticipationForm,\
+    EntryForm, TicketVoteCodeAssocForm
+from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode, VoteCode, Compo, Entry,\
+    Vote, CompetitionParticipation
+from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, competition_times_formatter
+from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming
 
 from datetime import datetime
@@ -56,10 +58,18 @@ def index(request, event_id):
     # Check if user has an associated vote code
     votecode_associated = False
     if request.user.is_authenticated():
+        # See if user has a separate votecode
         try:
             VoteCode.objects.get(event=event_id, associated_to=request.user)
             votecode_associated = True
         except VoteCode.DoesNotExist:
+            pass
+
+        # See if ticket is used as votecode
+        try:
+            TicketVoteCode.objects.get(event=event_id, associated_to=request.user)
+            votecode_associated = True
+        except TicketVoteCode.DoesNotExist:
             pass
     else:
         votecode_associated = True
@@ -74,28 +84,35 @@ def index(request, event_id):
 
 def compos(request, event_id):
     # Get compos, format times
-    compos = []
+    compo_list = []
     for compo in Compo.objects.filter(active=True, event_id=int(event_id)):
-        compos.append(compo_times_formatter(compo))
+        compo_list.append(compo_times_formatter(compo))
     
     # Dump the template
     return render_to_response('kompomaatti/compos.html', {
         'sel_event_id': int(event_id),
-        'compos': compos,
+        'compos': compo_list,
     }, context_instance=RequestContext(request))
 
 
 def compo_details(request, event_id, compo_id):
     # Get compo
-    compo = compo_times_formatter(get_object_or_404(Compo, pk=int(compo_id), active=True, event_id=int(event_id)))
+    compo = compo_times_formatter(get_object_or_404(Compo, pk=compo_id, active=True, event=event_id))
     
     # Check if user may vote (voting open, user has code)
     can_vote = False
     if request.user.is_active and request.user.is_authenticated():
         try:
-            VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+            VoteCode.objects.get(associated_to=request.user, event=event_id)
             can_vote = True
         except VoteCode.DoesNotExist:
+            pass
+
+        # See if ticket is used as votecode
+        try:
+            TicketVoteCode.objects.get(associated_to=request.user, event=event_id)
+            can_vote = True
+        except TicketVoteCode.DoesNotExist:
             pass
         
     # Handle entry adding
@@ -149,12 +166,23 @@ def compo_details(request, event_id, compo_id):
 
 @user_access_required
 def compo_vote(request, event_id, compo_id):
-    # Make sure the user has an active votecode
+    # Make sure the user has an active votecode or ticket votecode
+    can_vote = False
     try:
-        VoteCode.objects.get(associated_to=request.user, event_id=int(event_id))
+        VoteCode.objects.get(associated_to=request.user, event=event_id)
+        can_vote = True
     except VoteCode.DoesNotExist:
+        pass
+
+    try:
+        TicketVoteCode.objects.get(associated_to=request.user, event=event_id)
+        can_vote = True
+    except TicketVoteCode.DoesNotExist:
+        pass
+
+    if not can_vote:
         raise Http403
-    
+
     # Get compo
     compo = get_object_or_404(Compo, pk=int(compo_id))
     
@@ -400,16 +428,27 @@ def votecode(request, event_id):
     # Get event
     event = get_object_or_404(Event, pk=int(event_id))
         
-    # Check if user has the right to vote
+    # Check if user has the right to vote via separate vote code
     reserved_code = None
     can_vote = False
+    votecode_type = None
     try:
-        votecode = VoteCode.objects.get(event=event, associated_to=request.user)
-        reserved_code = votecode.key
+        separate_votecode = VoteCode.objects.get(event=event, associated_to=request.user)
+        reserved_code = separate_votecode.key
         can_vote = True
+        votecode_type = 'votecode'
     except VoteCode.DoesNotExist:
         pass
-        
+
+    # Check if user has the right to vote via ticket
+    try:
+        ticket_votecode = TicketVoteCode.objects.get(event=event, associated_to=request.user)
+        reserved_code = ticket_votecode.ticket.key
+        can_vote = True
+        votecode_type = "ticket"
+    except TicketVoteCode.DoesNotExist:
+        pass
+
     # Check if request for vote code has been made
     request_made = False
     try:
@@ -417,6 +456,15 @@ def votecode(request, event_id):
         request_made = True
     except VoteCodeRequest.DoesNotExist:
         pass
+
+    # Ticket votecode association form
+    if request.method == 'POST' and 'submit-ticketvcassoc' in request.POST:
+        ticket_votecode_form = TicketVoteCodeAssocForm(request.POST, event=event, user=request.user)
+        if ticket_votecode_form.is_valid():
+            ticket_votecode_form.save()
+            return HttpResponseRedirect(reverse('km:votecode', args=(event_id,)))
+    else:
+        ticket_votecode_form = TicketVoteCodeAssocForm(event=event, user=request.user)
 
     # Votecode Association form
     if request.method == 'POST' and 'submit-vcassoc' in request.POST:
@@ -444,8 +492,10 @@ def votecode(request, event_id):
         'sel_event_id': int(event_id),
         'votecodeassocform': votecodeassocform,
         'votecoderequestform': votecoderequestform,
+        'ticket_votecode_form': ticket_votecode_form,
         'reserved_code': reserved_code,
         'can_vote': can_vote,
+        'votecode_type': votecode_type,
         'request_made': request_made,
     }, context_instance=RequestContext(request))
 

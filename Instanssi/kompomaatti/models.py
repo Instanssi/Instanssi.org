@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os.path
+
 from django.db import models
 from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
@@ -7,8 +9,6 @@ from imagekit.processors import ResizeToFill
 from datetime import datetime
 from urlparse import urlparse
 from Instanssi.kompomaatti.misc import entrysort
-from Instanssi.store.models import TransactionItem
-import os.path
 
 
 class Profile(models.Model):
@@ -88,9 +88,10 @@ class TicketVoteCode(models.Model):
         blank=True,
         null=True)
     ticket = models.ForeignKey(
-        TransactionItem,
+        'store.TransactionItem',  # String to avoid circular dependency
         verbose_name=u'Lipputuote',
         help_text=u'Lipputuote jonka avainta käytetään äänestysavaimena',
+        on_delete=models.SET_NULL,
         blank=True,
         null=True)
     time = models.DateTimeField(

@@ -15,7 +15,8 @@
 {{ block.super }}
 <h1 class="noPrint">Tilaustiedot</h1>
 <p class="noPrint">
-    Tältä sivulta näet tilauksesi tiedot ja QR-koodin, jolla voit lunastaa kaikki tilauksen tuotteet tapahtuman aikana. Voit esittää QR-koodin tapahtumassa lipputiskillä joko tulosteena tai suoraan oman laitteen näytöltä.
+    Tältä sivulta näet tilauksesi tiedot ja QR-koodin, jolla voit lunastaa kaikki tilauksen tuotteet tapahtuman
+    aikana. Voit esittää QR-koodin tapahtumassa lipputiskillä joko tulosteena tai suoraan oman laitteen näytöltä.
 </p>
 
 <div class="order">
@@ -36,7 +37,9 @@
 {% if ta_items %}
 <h2 id="items" class="noPrint">Tuotteet</h1>
 <p class="noPrint">
-    Allaolevilla koodeilla tai linkeillä voi lunastaa yksittäisiä tilaukseen kuuluvia tuotteita. Voit lahjoittaa tuotteita kavereille jakamalla heille QR-koodeja tai ostosten URL-osoitteita. Huomaa, että jokainen koodi voidaan lunastaa vain kerran.
+    Allaolevilla koodeilla tai linkeillä voi lunastaa yksittäisiä tilaukseen kuuluvia tuotteita.
+    Voit lahjoittaa tuotteita kavereille jakamalla heille QR-koodeja tai ostosten URL-osoitteita.
+    Huomaa, että jokainen koodi voidaan lunastaa vain kerran.
 </p>
 <div class="items">
 {% for ta_item in ta_items %}

@@ -15,17 +15,6 @@ STATIC_URL = '/static/'
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 LOGIN_URL = '/users/login/'
 
-# Options for testing.customrunner.CustomRunner
-TEST_EXCLUDE = (
-    'django_openid_auth',
-    'crispy_forms',
-    'django',
-    'south',
-    'imagekit',
-)
-TEST_RUN_ALL = False
-TEST_RUNNER = 'testing.customrunner.CustomRunner'
-
 STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),
 )

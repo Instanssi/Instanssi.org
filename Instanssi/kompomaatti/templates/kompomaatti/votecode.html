@@ -9,6 +9,41 @@
 
 {% block jquery %}
 {{ block.super }}
+    function handle_ticket_votecode_change() {
+        var f = $('#ticketvotecode');
+        var e = f.next();
+        $('#submit-id-submit-ticketvcassoc').attr("disabled", true);
+        if(f.val().length >= 8) {
+            var get_url = '/kompomaatti/{{ sel_event_id }}/validate_votecode_api/' + f.val() + '/';
+            $.get(get_url, function(data) {
+                if(data['code'] == 200) {
+                    e.html('<span class="ui-state-highlight ui-corner-all votecode-error">\
+                                <p>\
+                                    <span class="ui-icon ui-icon-check"></span>\
+                                    Lippuavain löydetty. Paina "Tallenna" jatkaaksesi.\
+                                </p>\
+                            </span>');
+                    $('#submit-id-submit-ticketvcassoc').attr("disabled", false);
+                } else {
+                    e.html('<span class="ui-state-error ui-corner-all votecode-error">\
+                                <p>\
+                                    <span class="ui-icon ui-icon-notice"></span>\
+                                    ' + data['errortext'] + '\
+                                </p>\
+                            </span>');
+                    $('#submit-id-submit-ticketvcassoc').attr("disabled", true);
+                }
+            });
+        } else if(f.val().length > 0) {
+            console.log("waiting for more text");
+            e.html("Syötä vielä " + (8 - f.val().length) + '  merkkiä.');
+        } else {
+            e.html("Syötä vähintään ensimmäiset kahdeksan (8) merkkiä lippukoodistasi tähän.");
+        }
+    }
+    $('#ticketvotecode').change(handle_ticket_votecode_change);
+    $('#ticketvotecode').keyup(handle_ticket_votecode_change);
+    handle_ticket_votecode_change();
 {% endblock %}
 
 {% block crumbs %}

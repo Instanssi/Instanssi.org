@@ -34,6 +34,7 @@ class TicketVoteCodeAssocForm(forms.Form):
     code = forms.CharField(
         min_length=8,
         label=u"Lippukoodi",
+        widget=forms.TextInput(attrs={'id': 'ticketvotecode'}),
         help_text=u"Syötä vähintään ensimmäiset kahdeksan (8) merkkiä lippukoodistasi tähän.")
 
     def __init__(self, *args, **kwargs):

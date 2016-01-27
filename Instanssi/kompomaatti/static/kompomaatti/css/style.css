@@ -37,3 +37,17 @@ table {  border-collapse: collapse; width: 100%; }
 table th, table td { padding: 5px; border: 1px solid #aaaaaa; }
 table th { background-color: #dddddd; text-align: left; }
 table td { background-color: #eeeeee; }
+
+.votecode-error {
+    float: left;
+    padding: 0 .2em;
+}
+
+.votecode-error p {
+    margin: 0.35em;
+}
+
+.votecode-error p span {
+    float: left;
+    margin-right: .3em;
+}

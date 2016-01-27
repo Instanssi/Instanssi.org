@@ -2,6 +2,7 @@
 
 from common.http import Http403
 from common.auth import user_access_required
+from common.rest import rest_api, RestResponse
 
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -15,6 +16,7 @@ from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode,
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, competition_times_formatter
 from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming
+from Instanssi.store.models import TransactionItem
 
 from datetime import datetime
 
@@ -421,6 +423,32 @@ def entry_details(request, event_id, compo_id, entry_id):
         'entry': entry,
         'compo': compo,
     }, context_instance=RequestContext(request))
+
+
+@user_access_required
+@rest_api
+def validate_votecode_api(request, event_id, vote_code):
+    event = get_object_or_404(Event, pk=event_id)
+
+    # Make sure the key length is at least 8 chars before doing anything
+    if len(vote_code) < 8:
+        return RestResponse(code=403, error_text=u'Lippuavain liian lyhyt!')
+
+    # Check if key is already used, return error if it is
+    try:
+        TicketVoteCode.objects.get(event=event, ticket__key__startswith=vote_code)
+        return RestResponse(code=403, error_text=u'Lippuavain on jo käytössä!')
+    except TicketVoteCode.DoesNotExist:
+        pass
+
+    # Check if key exists
+    try:
+        TransactionItem.objects.get(item__event=event, key__startswith=vote_code)
+    except TransactionItem.DoesNotExist:
+        return RestResponse(code=403, error_text=u'Lippuavainta ei ole olemassa!')
+
+    # Everything done. Return default response with code 200 and no error text.
+    return RestResponse({})
 
 
 @user_access_required

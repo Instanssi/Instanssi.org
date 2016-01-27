@@ -32,15 +32,21 @@
 
     function count_total_price() {
         var total = 0;
-        $('.item-amount-field').each(function(index){
-            var item = $(this);
-            var price = parseFloat(item.attr('data-price'));
-            var discountAmount = parseFloat(item.attr('data-discount-amount'));
-            var discountFactor = parseFloat(item.attr('data-discount-factor'));
-            var amount = parseInt(item.spinner('value'), 10);
+        $('.item-amount-field').each(function(index) {
+            // update subtotals, total price and discount class tags
+            var field = $(this);
+            var storeItem = field.closest('.store-item');
+            var price = parseFloat(field.attr('data-price'));
+            var discountAmount = parseFloat(field.attr('data-discount-amount'));
+            var discountFactor = parseFloat(field.attr('data-discount-factor'));
+            var amount = parseInt(field.spinner('value'), 10);
             var subtotal = price * amount;
+
             if(amount >= discountAmount) {
                 subtotal *= discountFactor;
+                storeItem.addClass('discount-enabled');
+            } else {
+                storeItem.removeClass('discount-enabled');
             }
             total += subtotal;
         });

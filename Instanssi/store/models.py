@@ -224,8 +224,24 @@ class StoreTransaction(models.Model):
             ret += item.purchase_price
         return ret
 
-    def get_items(self):
+    def get_transaction_items(self):
         return TransactionItem.objects.filter(transaction=self)
+
+    def get_distinct_storeitems_and_prices(self):
+        """Returns a list of unique (StoreItem, price) tuples related to
+        this transaction."""
+        # get (item-id, price) tuples
+        items = self.get_transaction_items().values_list(
+            'item', 'purchase_price').distinct()
+        itemlist = []
+        for key, price in items:
+            # this isn't a performance issue with our database
+            itemlist.append((StoreItem.objects.filter(pk=key).get(), price))
+        return itemlist
+
+    def get_storeitem_count(self, store_item):
+        return TransactionItem.objects.filter(
+            item=store_item, transaction=self).count()
 
     def __unicode__(self):
         return self.full_name
@@ -270,17 +286,6 @@ class TransactionItem(models.Model):
     @property
     def qr_code(self):
         return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
-
-    @staticmethod
-    def get_distinct_storeitems(ta):
-        qlist = []
-        for item in TransactionItem.objects.filter(transaction=ta).values('item').distinct():
-            qlist.append(item['item'])
-        return StoreItem.objects.filter(id__in=qlist)
-
-    @staticmethod
-    def get_transaction_item_amount(ta, item):
-        return TransactionItem.objects.filter(item=item, transaction=ta).count()
 
     def __unicode__(self):
         return u'{} for {}'.format(self.item.name, self.transaction.full_name)

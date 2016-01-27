@@ -40,9 +40,9 @@ def handle_payment(ta):
     mailer.country(ta.country)
 
     # Add items to email
-    for item in TransactionItem.get_distinct_storeitems(ta):
-        amount = TransactionItem.get_transaction_item_amount(ta, item)
-        mailer.add_item(item.id, item.name, item.price, amount)
+    for item, purchase_price in ta.get_distinct_storeitems_and_prices():
+        amount = ta.get_storeitem_count(item)
+        mailer.add_item(item.id, item.name, purchase_price, amount)
 
     # Form transaction url
     transaction_url = get_url(reverse('store:ta_view', args=(ta.key,)))

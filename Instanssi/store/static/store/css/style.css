@@ -184,3 +184,36 @@ a.wizard-nav-button {
 .store-data .ui-widget input {
     border: 0;
 }
+
+/* ---- discounts ---- */
+
+.item-discount {
+    position: relative;
+    display: inline-block;
+    padding: 10px 16px 10px;
+    transition: background-color 1s, transform 1s, font-size 1s;
+    -webkit-transition: background-color 1s, transform 1s, font-size 1s;
+    -moz-transition: background-color 1s, transform 1s, font-size 1s;
+}
+
+.discount-enabled .item-discount {
+    /*transform: rotate(1deg);*/
+}
+
+.item-discount::before {
+    position: absolute;
+    content: '\2713';
+    margin: -7px 0 0 -20px;
+    font-size: 0;
+    color: #fff;
+    transition: color 1s, font-size 1s;
+}
+
+.discount-enabled .item-discount::before {
+    font-size: 26px;
+    color: #2f2;
+}
+
+.discount-enabled .item-price {
+    background: #dfd;
+}

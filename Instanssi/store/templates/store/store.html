@@ -30,27 +30,34 @@
         if(val < min) { field.val(min); }
     }
 
+    function format_price(price) {
+        return "" + price.toFixed(2) + ' €';
+    }
+
     function count_total_price() {
         var total = 0;
         $('.item-amount-field').each(function(index) {
             // update subtotals, total price and discount class tags
-            var field = $(this);
-            var storeItem = field.closest('.store-item');
-            var price = parseFloat(field.attr('data-price'));
-            var discountAmount = parseFloat(field.attr('data-discount-amount'));
-            var discountFactor = parseFloat(field.attr('data-discount-factor'));
-            var amount = parseInt(field.spinner('value'), 10);
+            var $field = $(this);
+            var $storeItem = $field.closest('.store-item');
+            var $itemPrice = $storeItem.find('.item-price');
+            var price = parseFloat($field.attr('data-price'));
+            var discountAmount = parseFloat($field.attr('data-discount-amount'));
+            var discountFactor = parseFloat($field.attr('data-discount-factor'));
+            var amount = parseInt($field.spinner('value'), 10);
             var subtotal = price * amount;
 
-            if(amount >= discountAmount) {
+            if(amount >= discountAmount && discountAmount > 0) {
                 subtotal *= discountFactor;
-                storeItem.addClass('discount-enabled');
+                $storeItem.addClass('discount-enabled');
+                $itemPrice.text(format_price(price * discountFactor));
             } else {
-                storeItem.removeClass('discount-enabled');
+                $storeItem.removeClass('discount-enabled');
+                $itemPrice.text(format_price(price));
             }
             total += subtotal;
         });
-        $('#total-price-field').text(total.toFixed(2));
+        $('#total-price-field').text(format_price(total));
     }
 
     $('.item-amount-field').keyup(function(){

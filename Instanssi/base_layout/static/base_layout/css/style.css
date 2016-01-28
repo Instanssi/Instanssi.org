@@ -34,7 +34,7 @@ h1 {
 }
 
 h2, h3 {
-    border-bottom: 1px dashed #08d;
+    border-bottom: 1px dashed #1c3f94;
 }
 h2 {
     width: 100%;
@@ -60,7 +60,7 @@ hr {
     border: 0; border-top: 1px dotted #aaa;
 }
 
-a { color: #08d; text-decoration: none; }
+a { color: #1c3f94; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ---------- Base layout tuning ---------- */
@@ -86,12 +86,12 @@ a:hover { text-decoration: underline; }
 /* ---------- Header ---------- */
 
 #header {
-    background: #01cdff;
-    background-image: url('../../main2015/images/ruututekstuuri.png');
+    background: #1c3f94;
+    /*background-image: url('../../main2015/images/ruututekstuuri.png');*/
 }
 #header h1, #header h1 span, #usertools a {
     text-shadow: black 1px 1px 1px;
-    font-family: 'Maven Pro', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-variant: normal;
 }
 #usertools a { font-size: 1.2em; }
@@ -227,7 +227,7 @@ ul#crumbpath li * {
     padding: 4px 0;
 }
 ul#crumbpath a {
-    color: #08d;
+    color: #1c3f94;
     text-decoration: none;
 }
 ul#crumbpath a:hover {
@@ -316,7 +316,7 @@ form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    color: #08d;
+    color: #1c3f94;
 }
 
 .ui-state-active,

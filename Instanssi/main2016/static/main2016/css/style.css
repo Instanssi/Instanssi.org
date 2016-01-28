@@ -53,13 +53,11 @@ sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-heigh
 margin-bottom: 5px;
 }
 
-
-
 /* navigation */
 #page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #26A8D3; float: right; cursor: pointer; }
 #page-header nav .nav-btn .line { width: 16px; padding: 2px; background: #fff; margin: 3px 0px; }
 #page-header nav { bottom: 0px; position: relative; bottom: 0px; }
-#page-header nav ul { margin: 0px; background: rgba( 0,0,0,0.7); }
+#page-header nav ul { margin: 0px; }
 #page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; /*ie-inline-block */ *display: inline; *zoom: 1; }
 #page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; top: 0px; }
 #page-header nav ul .menu-item a:hover { top: -3px; }
@@ -72,7 +70,7 @@ margin-bottom: 5px;
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
 #primary li { margin-bottom: 5px; }
-#primary a { color: #08d; text-decoration: underline; }
+#primary a { color: #1c3f94; text-decoration: underline; }
 #primary a:hover {  color: #09f; }
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
 #primary p { margin-bottom: 10px; }
@@ -99,6 +97,8 @@ margin-bottom: 5px;
 
 /* blogi */
 #primary .message { clear: both; padding-bottom: 20px; margin-bottom: 20px; }
+/* clear floats */
+#primary .message::after { content: ''; display: block; clear: both; }
 #primary .message header { margin-bottom: 20px; }
 #primary .compoinfo .name,
 #primary .message .title a {  font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; text-decoration: none; display: block; }

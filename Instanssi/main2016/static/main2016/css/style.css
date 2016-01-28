@@ -1,27 +1,21 @@
 /*
-	Theme: Instanssi 2015
+	Theme: Instanssi 2016
 	Author: Janne Leppänen (original Instanssi 2012 theme)
 		Jouni Potila (2015 theme)
-	
-	Fonts that fit together:
-	font-family: 'Open Sans', sans-serif;
-	font-family: 'Maven Pro', sans-serif;
+
 */
 
 /* general */
 html , body { font-family: helvetica; }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
-body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Maven Pro', 
+body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', 
 sans-serif; }
-h1{ font-family: 'Maven Pro', sans-serif; font-variant: small-caps; font-size: 48px; 
+h1{ font-family: 'Open Sans', sans-serif; font-variant: small-caps; font-size: 48px; 
 margin-bottom: 1em; 
-color: #48B9DC;  
-font-weight: bold; line-height: 90%; text-shadow: 2px 2px #555;}
-h2, .item .title, .header, form legend { font-family: 'Maven Pro', sans-serif;  
-/* font-variant: 
-small-caps; */ font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff;  
-font-weight: bold; }
+color: #1c3f94;  
+font-weight: bold; line-height: 90%; }
+h2, .item .title, .header, form legend { font-family: 'Open Sans', sans-serif; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff; font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #48B9DC;  
 font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #48B9DC;  
@@ -47,8 +41,7 @@ display: inline-block; padding: 6px 20px; border-radius: 0px; /*ie-inline-block*
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
 #page-header { position: relative; /* width:100%;*/ background: 
-url('../images/ruututekstuuri.png') repeat;  
-margin-bottom: 40px; }
+url('../images/instanssibanneri.png') repeat; }
 #page-header .header-info { min-height: 230px; /* background: 
 url('../images/instanssi2015.png') 20px 49px no-repeat; */}
 #page-header .header-info .logo {  }
@@ -61,10 +54,9 @@ font-weight: 800; font-variant: small-caps; /*padding: 80px 0px
 0px 0px; */ padding: 0;
 line-height: 400%;
 }
-#page-header .header-info .tagline { font-size: 20px; font-family: 
-'Maven Pro', sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 300; 
+#page-header .header-info .tagline { font-size: 20px; font-family: 'Open Sans', sans-serif; color: #fff; font-weight: 300; 
 line-height: 100%; margin-bottom: 5px; }
-#page-header .header-info .time { font-size: 24px; font-family: 'Maven Pro', 
+#page-header .header-info .time { font-size: 24px; font-family: 'Open Sans', 
 sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 
 100%; 
 margin-bottom: 5px;
@@ -162,8 +154,8 @@ margin-bottom: 5px;
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
 #page-footer { height: 310px; position: absolute; bottom: 0px; padding-top: 20px; }
-#content { padding-bottom: 390px; }
-#page-wrap { min-height: 100%; position: relative; }
+#content { background: #fff; box-sizing: border-box; padding: 40px 1em 390px; }
+#page-wrap { min-height: 100%; position: relative; background: #999; }
 
 /* Stream */
 .stream-window {
@@ -226,7 +218,7 @@ form textarea { height: 100px; }
 .inc-dec-btn div:hover { cursor: pointer; background: #aaa; }
 
 .store-details label, .store-details input { vertical-align: middle; }
-.item-price { font-family: 'Maven Pro',sans-serif; font-size: 16px; position: 
+.item-price { font-family: 'Open Sans',sans-serif; font-size: 16px; position: 
 relative; top: 15px; }
 .errorField, .item-price { float: right; }
 .errorField, #errorMsg li { color: #FF0094; }
@@ -240,12 +232,7 @@ h2, .item .title, .header,
 table th,
 .btn,
 form legend {
-	background: #48B9DC;
-/*	background-image: linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
-	background-image: -o-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
-	background-image: -moz-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
-	background-image: -webkit-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%);
-	background-image: -ms-linear-gradient(bottom, #48B9DC 7%, #CCCCCC 100%); */
+	background: #1c3f94;
 }
 
 .btn {
@@ -278,8 +265,8 @@ background-image: -webkit-gradient(
 @media (min-width: 1200px) { 
 	.container { width: 1024px; margin: 0 auto; }
 	#content #primary{ width: 600px;  margin-right: 100px;  }
-	#content aside { width: 324px; }
-	#sidebar-widgets{ width: 300px; }
+	#content aside { width: 296px; }
+	#sidebar-widgets { width: 296px; }
 
 	#page-footer .sponsors { width: 800px; }
 
@@ -374,29 +361,4 @@ hidden; }
 	/* store */
 	.store-items img { float: none; margin-bottom: 20px; }
 	.store-items label { display: block; float: none; width: 100%; }
-}
-
-/* ---- toimisto link ---- */
-.header-info.container { position: relative; }
-
-.toimisto-link {
-    position: absolute;
-    right: 12px;
-    top: 104px;
-    opacity: 0.7;
-}
-.toimisto-link:hover { opacity: 0.9;}
-.toimisto-link img {
-    width: 80px;
-    height: auto;
-}
-
-@media (max-width: 979px) {
-    .toimisto-link {
-        right: 0px;
-        top: 10px;
-    }
-    .toimisto-link img {
-        width: 56px;
-    }
 }

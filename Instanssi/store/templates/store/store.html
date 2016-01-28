@@ -31,6 +31,7 @@
     }
 
     function format_price(price) {
+        /* could also use Intl.NumberFormat for currency */
         return "" + price.toFixed(2) + ' €';
     }
 
@@ -163,7 +164,7 @@
     {% endfor %}
     </div>
     {% if wizard.steps.step0 == 0 %}
-    <div class="total-price">Yhteensä: <span id="total-price-field">0</span> &euro;</div>
+    <div class="total-price">Yhteensä: <span id="total-price-field">0 &euro;</span></div>
     {% endif %}
     <div class="store-nav">
         {% if wizard.steps.prev %}

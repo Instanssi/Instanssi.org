@@ -12,6 +12,8 @@
 
 {% block jquery %}
 {{ block.super }}
+    toLocaleStringSupportsOptions = !!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function');
+
     $(".item-image a").fancybox();
     $('.wizard-nav-button').button();
 
@@ -30,9 +32,18 @@
         if(val < min) { field.val(min); }
     }
 
-    function format_price(price) {
-        /* could also use Intl.NumberFormat for currency */
-        return "" + price.toFixed(2) + ' €';
+    function format_price_localestring(price) {
+        return price.toLocaleString('fi', { style: 'currency', currency: 'EUR'});
+    }
+    function format_price_legacy(price) {
+        return price.toFixed(2) + " €";
+    }
+
+    var format_price;
+    if(toLocaleStringSupportsOptions) {
+        format_price = format_price_localestring;
+    } else {
+        format_price = format_price_legacy;
     }
 
     function count_total_price() {

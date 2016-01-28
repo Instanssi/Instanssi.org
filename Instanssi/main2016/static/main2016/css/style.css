@@ -2,7 +2,6 @@
 	Theme: Instanssi 2016
 	Author: Janne Leppänen (original Instanssi 2012 theme)
 		Jouni Potila (2015 theme)
-
 */
 
 /* general */
@@ -10,7 +9,7 @@ html , body { font-family: helvetica; }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
-h1 { font-family: 'Open Sans', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: 1em; color: #1c3f94; font-weight: bold; line-height: 90%; }
+h1 { font-family: 'Open Sans', sans-serif; font-variant: small-caps; font-size: 48px; margin-bottom: .75em; color: #1c3f94; font-weight: bold; line-height: 90%; }
 h2, .item .title, .header, form legend { font-family: 'Open Sans', sans-serif; font-size: 25px; margin-bottom: 20px; padding-left: 10px; color: #fff; font-weight: bold; }
 h3 { font-variant: small-caps; font-size: 16px; margin-bottom: 20px; color: #48B9DC; font-weight: bold; }
 h4 { font-variant: small-caps; font-size: 14px; margin-bottom: 20px; color: #48B9DC; font-weight: bold; }
@@ -24,10 +23,8 @@ sub { font-size: 75%; vertical-align: sub; }
 .btn { border: 1px solid #48B9DC; color: #fff !important; text-decoration: none !important; display: inline-block; padding: 6px 20px; border-radius: 0px; /*ie-inline-block*/ *display: inline; zoom: 1; font-size: 20px;}
 .btn:hover { color: #fff; opacity: 0.8; }
 
-
 /* structure */
 .container { width: 900px; margin: 0 auto; padding: 0px 0px;  }
-
 
 /* header */
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
@@ -39,19 +36,9 @@ sub { font-size: 75%; vertical-align: sub; }
 #page-header a { text-decoration: none; }
 #page-header a:hover { opacity: 0.8; }
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
-#page-header .header-info h1 { height: 103px; font-size: 55px; color: #fff; font-family: 
-'Open Sans', sans-serif; 
-font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 
-0px 0px; */ padding: 0;
-line-height: 400%;
-}
-#page-header .header-info .tagline { font-size: 20px; font-family: 'Open Sans', sans-serif; color: #fff; font-weight: 300; 
-line-height: 100%; margin-bottom: 5px; }
-#page-header .header-info .time { font-size: 24px; font-family: 'Open Sans', 
-sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 
-100%; 
-margin-bottom: 5px;
-}
+#page-header .header-info h1 { height: 103px; font-size: 55px; color: #fff; font-family: 'Open Sans', sans-serif; font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 0px 0px; */ padding: 0; line-height: 400%; }
+#page-header .header-info .tagline { font-size: 20px; font-family: 'Open Sans', sans-serif; color: #fff; font-weight: 300; line-height: 100%; margin-bottom: 5px; }
+#page-header .header-info .time { font-size: 24px; font-family: 'Open Sans', sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 100%; margin-bottom: 5px; }
 
 /* navigation */
 #page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #26A8D3; float: right; cursor: pointer; }
@@ -191,8 +178,7 @@ form textarea { height: 100px; }
 
 /* store */
 .item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; }
-.store-sum,
-.store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; width: auto; display: block; }
+.store-sum, .store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; width: auto; display: block; }
 .store-items > div { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 25px; }
 .store-items > div.store-sum { border: none; }
 .store-items .formHint { margin-top: 25px; }
@@ -228,33 +214,22 @@ form legend {
 }
 
 .btn {
+    text-shadow: 0px 1px 1px #FF6600;
+    border: 1px solid #FF9400;
+    cursor: pointer;
 
-text-shadow: 0px 1px 1px #FF6600;
-border: 1px solid #FF9400;
-cursor: pointer;
+    background: #FEBA32;
 
-background: #FEBA32;
-
-background-image: linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-background-image: -o-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-background-image: -moz-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-background-image: -webkit-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-background-image: -ms-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-
-background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.07, rgb(255,162,0)),
-	color-stop(0.54, rgb(255,170,0))
-);
-
-
+    background-image: linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
+    background-image: -o-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
+    background-image: -moz-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
+    background-image: -webkit-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
+    background-image: -ms-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.07, rgb(255,162,0)), color-stop(0.54, rgb(255,170,0)));
 }
 
-
 /* Large desktop */
-@media (min-width: 1200px) { 
+@media (min-width: 1200px) {
 	.container { width: 1024px; margin: 0 auto; }
 	#content #primary{ width: 600px;  margin-right: 100px;  }
 	#content aside { width: 300px; }
@@ -263,8 +238,7 @@ background-image: -webkit-gradient(
 	#page-footer .sponsors { width: 800px; }
 
 }
- 
- 
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
 	.container { width:750px; margin: 0 auto; }
@@ -284,27 +258,26 @@ background-image: -webkit-gradient(
 	#page-footer { height: 500px; position: absolute; bottom: 0px; padding-top: 20px; }
 	#content { padding-bottom: 550px; }
 }
- 
- 
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
 	.container { width: 92%; padding: 0 4%; }
 	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
 	#sidebar-widgets{ width: 100%; }
 
-	#page-footer .menu-item { float: left; padding: 15px;  }	
-	#page-footer .menu-item a { padding: 15px; }	
+	#page-footer .menu-item { float: left; padding: 15px;  }
+	#page-footer .menu-item a { padding: 15px; }
 	#page-footer .menu-item a:hover { padding-left: 15px; }
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 92%; margin-bottom: 20px;  }
 	#page-footer .sponsors .sponsor-placeholder { margin: 1%; }
 	#page-footer .sponsors h1 { margin: 0px 0px 20px 0px; }
-	
+
 	/* footer always bottom */
 	#page-footer { position: static; height: auto; }
 	#content { padding-bottom: 40px; }
 }
 
-@media (max-width: 700px) { 	
+@media (max-width: 700px) {
 	/* forms */
 	form label { min-width: 1px; display: block; }
 	form input[type="text"] { width: 96%; padding: 2%; }
@@ -313,39 +286,32 @@ background-image: -webkit-gradient(
 }
 
 /* Landscape phones */
-@media (max-width: 480px) { 
+@media (max-width: 480px) {
 	#page-header nav .nav-btn { display: block; float: left; }
 	.no-js #page-header nav .nav-btn { display: none; }
-	
-	#page-header .header-info h1 { padding: 0; padding-top:1em; margin:0; text-indent: 
-0; 
-background: 
-none; font-size: 
-36px; }
+
+	#page-header .header-info h1 { padding: 0; padding-top:1em; margin:0; text-indent: 0; background: none; font-size: 36px; }
 	#page-header .header-info .tagline { margin: 0; font-size: 16px; }
 	#page-header .header-info .time { font-size: 26px; }
 
-/*	#page-header { position: relative; background: #48B9DC; background-image: 
-url('../images/ruututekstuuri.png') repeat; } */
+/*	#page-header { position: relative; background: #48B9DC; background-image: url('../images/ruututekstuuri.png') repeat; } */
 	#page-header .header-info { background-size: cover; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
-	#page-header nav ul { background-color: #777; max-height: 0px; 
-overflow: 
-hidden; }
+	#page-header nav ul { background-color: #777; max-height: 0px; overflow: hidden; }
 	.no-js #page-header nav ul,
 	#page-header nav ul.active { max-height: 255px; }
 
 	#page-footer .sponsors, #page-footer  .sitemap, #page-footer  .contact { width: 100%; }
 	#page-footer .menu-item { float: left; width: 49%; padding: 0px; }
 	#page-footer .menu-item a {display: block; padding: 15px 15px; }
-	
-	#primary th{ display: none; visibility: hidden; }
+
+	#primary th { display: none; visibility: hidden; }
 	#primary tr,
 	#primary table, #primary tbody { display: block; width: 100%; }
 	#primary table td { display: block; width: 92%; padding: 1% 4%;}
-	
+
 	#page-footer .sponsors .sponsor  { width: 46%; padding: 2%; }
 	#page-footer .sponsors .sponsor  a { width: auto; padding: 4%;  }
 	#page-footer .sponsors .sponsor img { width: 100%;  }

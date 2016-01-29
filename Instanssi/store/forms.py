@@ -21,25 +21,33 @@ class StoreProductsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StoreProductsForm, self).__init__(*args, **kwargs)
 
+        # generate quantity field for each item and provide it with item data
         for item in StoreItem.items_available():
             name = 'item-%s' % item.id
-            self.fields[name] = forms.IntegerField(
+            field = forms.IntegerField(
                 initial='0',
                 label=u'{}'.format(item.name),
                 help_text=item.description,
                 required=False,
                 widget=forms.TextInput()
             )
-            self.fields[name].widget.attrs['data-price'] = item.price
-            self.fields[name].widget.attrs['data-min'] = 0
-            self.fields[name].widget.attrs['data-max'] = item.num_available()
-            self.fields[name].widget.attrs['class'] = 'item-amount-field'
-            self.fields[name].image_large = item.imagefile_original.url \
+            self.fields[name] = field
+            attribs = field.widget.attrs
+            attribs['data-price'] = item.price
+            attribs['data-min'] = 0
+            attribs['data-max'] = item.num_available()
+            attribs['data-discount-amount'] = item.discount_amount
+            attribs['data-discount-factor'] = item.get_discount_factor()
+            attribs['class'] = 'item-amount-field'
+            field.image_large = item.imagefile_original.url \
                 if item.imagefile_original else None
-            self.fields[name].image_small = item.imagefile_thumbnail.url \
+            field.image_small = item.imagefile_thumbnail.url \
                 if item.imagefile_thumbnail else None
-            self.fields[name].available = item.num_in_store()
-            self.fields[name].price = item.price
+            field.available = item.num_in_store()
+            field.price = item.price
+            field.has_discount = item.is_discount_available()
+            field.discount_amount = item.discount_amount
+            field.discount_percentage = item.discount_percentage
 
     def _dataitems(self):
         for key, value in self.data.iteritems():
@@ -78,21 +86,29 @@ class StoreProductsForm(forms.Form):
 
     def save(self, transaction):
         for (item_id, amount) in self._dataitems():
-            if amount > 0:
-                store_item = StoreItem.objects.get(id=item_id)
-                for i in range(amount):
-                    new_item = TransactionItem()
-                    new_item.item = store_item
-                    new_item.transaction = transaction
-                    for i in range(10):
-                        try:
-                            str = u'%s|%s|%s|%s' % (i, store_item.name, time.time(), random.random())
-                            new_item.key = gen_sha(str.encode('utf-8'))
-                            new_item.purchase_price = store_item.price
-                            new_item.save()
-                            break
-                        except IntegrityError as ex:
-                            logger.warning("SHA-1 Collision in item. Key: %s, exception: %s." % (new_item.key, ex))
+            if not amount > 0:
+                continue
+            store_item = StoreItem.objects.get(id=item_id)
+
+            discounted_price = store_item.get_discounted_unit_price(amount)
+
+            for i in range(amount):
+                new_item = TransactionItem()
+                new_item.item = store_item
+                new_item.transaction = transaction
+
+                for i in range(10):
+                    try:
+                        str = u'%s|%s|%s|%s' % (
+                            i, store_item.name, time.time(),
+                            random.random())
+                        new_item.key = gen_sha(str.encode('utf-8'))
+                        new_item.purchase_price = discounted_price
+                        new_item.original_price = store_item.price
+                        new_item.save()
+                        break
+                    except IntegrityError as ex:
+                        logger.warning("SHA-1 Collision in item. Key: %s, exception: %s." % (new_item.key, ex))
 
 
 class StoreInfoForm(forms.ModelForm):

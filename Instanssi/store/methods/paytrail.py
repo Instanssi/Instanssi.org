@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from Instanssi.store.models import StoreTransaction, TransactionItem
+from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import paytrail, ta_common
 
 # Logging related
@@ -14,17 +14,19 @@ logger = logging.getLogger(__name__)
 
 
 def start_process(ta):
-    """This should be used to start the paytrail payment process. Will redirect as necessary."""
+    """This should be used to start the paytrail payment process.
+    Will redirect as necessary."""
 
     product_list = []
 
-    for item in TransactionItem.get_distinct_storeitems(ta):
-        amount = TransactionItem.get_transaction_item_amount(ta, item)
+    for store_item, purchase_price in ta.get_distinct_storeitems_and_prices():
+        count = ta.get_storeitem_count(store_item)
+
         product_list.append({
-            'title': item.name,
-            'code': str(item.id),
-            'amount': str(amount),
-            'price': str(item.price),
+            'title': store_item.name,
+            'code': str(store_item.id),
+            'amount': str(count),
+            'price': str(purchase_price),
             'vat': '0',
             'type': 1,
         })

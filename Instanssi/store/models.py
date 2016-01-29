@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
 from django_countries.fields import CountryField
@@ -23,9 +24,11 @@ class StoreItem(models.Model):
     description = models.TextField(
         u'Tuotteen kuvaus',
         help_text=u'Tuotteen pitkä kuvaus.')
-    price = models.IntegerField(
+    price = models.DecimalField(
         u'Tuotteen hinta',
-        help_text=u'Tuotteen hinta euroissa.')
+        help_text=u'Tuotteen hinta.',
+        max_digits=5,
+        decimal_places=2)
     max = models.IntegerField(
         u'Kappaletta saatavilla',
         help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
@@ -49,6 +52,36 @@ class StoreItem(models.Model):
         u'Järjestysarvo',
         default=0,
         help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
+    discount_amount = models.IntegerField(
+        u'Alennusmäärä',
+        default=-1,
+        help_text=u'Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)')
+    discount_percentage = models.IntegerField(
+        u'Alennusprosentti',
+        default=0,
+        help_text=u'Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+
+    def is_discount_available(self):
+        return self.discount_amount >= 0
+
+    def get_discount_factor(self):
+        return (100.0 - self.discount_percentage) / 100.0
+
+    def get_discounted_unit_price(self, amount):
+        """Returns decimal price of item considering any quantity discount."""
+        if amount >= self.discount_amount and amount >= 0:
+            factor = (Decimal(100) - Decimal(self.discount_percentage)) / 100
+            price = self.price * factor
+        else:
+            price = self.price
+        # If we need to consider rounding direction, this might be the place.
+        # Pass "rounding=METHOD" as second argument.
+        return price.quantize(Decimal('0.01'))
+
+    def get_discounted_subtotal(self, amount):
+        """Returns decimal subtotal for a specific number of items, considering
+        any quantity discount."""
+        return self.get_discounted_unit_price(amount) * amount
 
     def num_available(self):
         return min(self.max - self.num_sold(), self.max_per_order)
@@ -191,8 +224,24 @@ class StoreTransaction(models.Model):
             ret += item.purchase_price
         return ret
 
-    def get_items(self):
+    def get_transaction_items(self):
         return TransactionItem.objects.filter(transaction=self)
+
+    def get_distinct_storeitems_and_prices(self):
+        """Returns a list of unique (StoreItem, price) tuples related to
+        this transaction."""
+        # get (item-id, price) tuples
+        items = self.get_transaction_items().values_list(
+            'item', 'purchase_price').distinct()
+        itemlist = []
+        for key, price in items:
+            # this isn't a performance issue with our database
+            itemlist.append((StoreItem.objects.filter(pk=key).get(), price))
+        return itemlist
+
+    def get_storeitem_count(self, store_item):
+        return TransactionItem.objects.filter(
+            item=store_item, transaction=self).count()
 
     def __unicode__(self):
         return self.full_name
@@ -204,11 +253,31 @@ class StoreTransaction(models.Model):
 
 
 class TransactionItem(models.Model):
-    key = models.CharField(u'Avain', max_length=40, unique=True, help_text=u'Lippuavain')
-    item = models.ForeignKey(StoreItem, verbose_name=u'Tuote')
-    transaction = models.ForeignKey(StoreTransaction, verbose_name=u'Ostotapahtuma')
-    time_delivered = models.DateTimeField(u'Toimitusaika', null=True, blank=True)
-    purchase_price = models.IntegerField(u'Tuotteen hinta', help_text=u'Tuotteen hinta euroissa ostoshetkellä.')
+    key = models.CharField(
+        u'Avain',
+        max_length=40,
+        unique=True,
+        help_text=u'Lippuavain')
+    item = models.ForeignKey(
+        StoreItem,
+        verbose_name=u'Tuote')
+    transaction = models.ForeignKey(
+        StoreTransaction,
+        verbose_name=u'Ostotapahtuma')
+    time_delivered = models.DateTimeField(
+        u'Toimitusaika',
+        null=True,
+        blank=True)
+    purchase_price = models.DecimalField(
+        u'Tuotteen hinta',
+        help_text=u'Tuotteen hinta ostoshetkellä',
+        max_digits=5,
+        decimal_places=2)
+    original_price = models.DecimalField(
+        u'Tuotteen alkuperäinen hinta',
+        help_text=u'Tuotteen hinta ostoshetkellä ilman alennuksia',
+        max_digits=5,
+        decimal_places=2)
 
     @property
     def is_delivered(self):
@@ -217,17 +286,6 @@ class TransactionItem(models.Model):
     @property
     def qr_code(self):
         return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
-
-    @staticmethod
-    def get_distinct_storeitems(ta):
-        qlist = []
-        for item in TransactionItem.objects.filter(transaction=ta).values('item').distinct():
-            qlist.append(item['item'])
-        return StoreItem.objects.filter(id__in=qlist)
-
-    @staticmethod
-    def get_transaction_item_amount(ta, item):
-        return TransactionItem.objects.filter(item=item, transaction=ta).count()
 
     def __unicode__(self):
         return u'{} for {}'.format(self.item.name, self.transaction.full_name)

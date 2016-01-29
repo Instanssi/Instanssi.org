@@ -12,16 +12,18 @@
 
 {% block jquery %}
 {{ block.super }}
+    toLocaleStringSupportsOptions = !!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function');
+
     $(".item-image a").fancybox();
-    
     $('.wizard-nav-button').button();
+
     $('.item-amount-field').each(function(){
-	$(this).spinner({
-	    max: parseInt($(this).attr('data-max'), 10),
-	    min: parseInt($(this).attr('data-min'), 10)
+        $(this).spinner({
+	         max: parseInt($(this).attr('data-max'), 10),
+	         min: parseInt($(this).attr('data-min'), 10)
         });
     });
-    
+
     function clean_field(field) {
         var min = parseInt(field.attr('data-min'), 10);
         var max = parseInt(field.attr('data-max'), 10);
@@ -29,17 +31,47 @@
         if(val > max) { field.val(max); }
         if(val < min) { field.val(min); }
     }
-    
+
+    function format_price_localestring(price) {
+        return price.toLocaleString('fi', { style: 'currency', currency: 'EUR'});
+    }
+    function format_price_legacy(price) {
+        return price.toFixed(2) + " €";
+    }
+
+    var format_price;
+    if(toLocaleStringSupportsOptions) {
+        format_price = format_price_localestring;
+    } else {
+        format_price = format_price_legacy;
+    }
+
     function count_total_price() {
         var total = 0;
-        $('.item-amount-field').each(function(index){
-            var price = parseInt($(this).attr('data-price'), 10);
-            var amount = parseInt($(this).spinner('value'), 10);
-            total += price * amount;
+        $('.item-amount-field').each(function(index) {
+            // update subtotals, total price and discount class tags
+            var $field = $(this);
+            var $storeItem = $field.closest('.store-item');
+            var $itemPrice = $storeItem.find('.item-price');
+            var price = parseFloat($field.attr('data-price'));
+            var discountAmount = parseFloat($field.attr('data-discount-amount'));
+            var discountFactor = parseFloat($field.attr('data-discount-factor'));
+            var amount = parseInt($field.spinner('value'), 10);
+            var subtotal = price * amount;
+
+            if(amount >= discountAmount && discountAmount > 0) {
+                subtotal *= discountFactor;
+                $storeItem.addClass('discount-enabled');
+                $itemPrice.text(format_price(price * discountFactor));
+            } else {
+                $storeItem.removeClass('discount-enabled');
+                $itemPrice.text(format_price(price));
+            }
+            total += subtotal;
         });
-        $('#total-price-field').text(total);
+        $('#total-price-field').text(format_price(total));
     }
-    
+
     $('.item-amount-field').keyup(function(){
         clean_field($(this));
         count_total_price();
@@ -49,7 +81,8 @@
         $(this).spinner('value', ui.value);
         count_total_price();
     });
-    
+
+    $(document).ready(count_total_price);
 {% endblock %}
 
 {% block crumbs %}
@@ -119,6 +152,9 @@
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
                 <div class="item-description">{{ field.help_text|safe }}</div>
+                {% if field.field.has_discount %}
+                <div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat ainakin {{ field.field.discount_amount }} kappaletta!
+                </div>{% endif %}
                 {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
             <div class="item-amount">
@@ -139,7 +175,7 @@
     {% endfor %}
     </div>
     {% if wizard.steps.step0 == 0 %}
-    <div class="total-price">Yhteensä: <span id="total-price-field">0</span> &euro;</div>
+    <div class="total-price">Yhteensä: <span id="total-price-field">0 &euro;</span></div>
     {% endif %}
     <div class="store-nav">
         {% if wizard.steps.prev %}

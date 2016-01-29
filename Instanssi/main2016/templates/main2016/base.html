@@ -95,6 +95,7 @@
                     <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
                 </section>
                 -->
+                {% block widgets %}
                 <section class="widget widget-twitter">
                     <h2>Twitter</h2>
                     <div id="tweets">
@@ -126,6 +127,7 @@
                         <p>#instanssi @ IRCNet</p>
                     </div>
                 </section>
+                {% endblock %}
             </aside>
             <div class="clearer"></div>
         </div>

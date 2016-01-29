@@ -19,7 +19,7 @@ class VoteCodeRequestForm(forms.ModelForm):
             Fieldset(
                 u'Pyydä äänestysoikeutta',
                 'text',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit-vcreq', u'Pyydä äänestysoikeutta')
                 )
             )
@@ -49,8 +49,8 @@ class TicketVoteCodeAssocForm(forms.Form):
             Fieldset(
                 u'Syötä lippukoodi',
                 'code',
-                ButtonHolder (
-                    Submit('submit-ticketvcassoc', 'Tallenna')
+                ButtonHolder(
+                    Submit('submit-ticketvcassoc', u'Hae äänestysoikeus')
                 )
             )
         )
@@ -89,7 +89,7 @@ class VoteCodeAssocForm(forms.Form):
             Fieldset(
                 u'Syötä äänestyskoodi',
                 'code',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit-vcassoc', 'Tallenna')
                 )
             )

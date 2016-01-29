@@ -1,12 +1,14 @@
 {% extends "base_layout/base.html" %}
-{% load static %}
+{% load static compress %}
 {% load render_arkisto_nav from arkisto_base_tags %}
 
 {% block title %}Arkisto{% endblock %}
 {% block headername %}<a href="{% url 'archive:index' %}">Arkisto</a>{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static "arkisto/css/style.css" %}?v=2" />
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "arkisto/css/style.scss" %}" />
+    {% endcompress %}
     <script type="text/javascript" src="{% static 'libs/audiojs/audio.min.js' %}"></script>
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="http://instanssi.org/arkisto/" />

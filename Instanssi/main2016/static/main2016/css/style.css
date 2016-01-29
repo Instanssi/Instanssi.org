@@ -60,7 +60,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary a { color: #1c3f94; text-decoration: underline; }
 #primary a:hover {  color: #09f; }
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}
-#primary p { margin-bottom: 10px; }
+#primary p { margin-bottom: 10px; margin-left: 8px; margin-right: 8px; }
 #primary table { margin-bottom: 20px; width: 100%; }
 #primary table tr {  }
 #primary table th { color: #fff; font-weight: 700; text-align: left; padding: 10px; }
@@ -89,7 +89,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary .message header { margin-bottom: 20px; }
 #primary .compoinfo .name,
 #primary .message .title a {  font-variant: small-caps; font-size: 24px; margin-bottom: 20px; color: #26A8D3;  font-weight: bold; text-decoration: none; display: block; }
-#primary .message .date { display: block; width: 100%; color: #666; margin-bottom: 15px; font-size: 14px; }
+#primary .message .date { display: block; width: 100%; color: #666; margin-bottom: 15px; font-size: 14px; margin-left: 8px; margin-right: 8px; }
 
 #primary .message .leftfloat { float: left; margin: 0 10px 10px 0; }
 #primary .message .rightfloat { float: right; margin: 0 0 10px 10px; }
@@ -105,8 +105,8 @@ sub { font-size: 75%; vertical-align: sub; }
 #sidebar-widgets #tweets .link a, #tweets .time { font-size: 11px; }
 #sidebar-widgets #tweets li { margin-bottom: 20px; }
 
-.widget-rekry ul { list-style: disc outside none; margin-left: 1.5em;}
-.widget-rekry div { margin: 1em 0; }
+.widget-rekry ul { list-style: disc outside none; margin-left: 1.7em;}
+.widget-rekry div { margin: 1em 5px 1em; }
 
 /* google maps. Also, reset img so that tile borders don't show. */
 #map_canvas { width: 100%; height: 300px; display: block;  box-shadow: 0px 0px 5px #bbb; margin: 20px 0 20px 0; }

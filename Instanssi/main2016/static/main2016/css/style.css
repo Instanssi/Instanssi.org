@@ -1,11 +1,5 @@
-/*
-	Theme: Instanssi 2016
-	Author: Janne Leppänen (original Instanssi 2012 theme)
-		Jouni Potila (2015 theme)
-*/
-
 /* general */
-html , body { font-family: helvetica; }
+html , body { font-family: sans-serif, helvetica; }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }
@@ -43,14 +37,13 @@ sub { font-size: 75%; vertical-align: sub; }
 /* navigation */
 #page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #26A8D3; float: right; cursor: pointer; }
 #page-header nav .nav-btn .line { width: 16px; padding: 2px; background: #fff; margin: 3px 0px; }
-#page-header nav { bottom: 0px; position: relative; bottom: 0px; }
+#page-header nav { bottom: 0px; position: relative; }
 #page-header nav ul { margin: 0px; }
 #page-header nav ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; /*ie-inline-block */ *display: inline; *zoom: 1; }
 #page-header nav ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; top: 0px; }
 #page-header nav ul .menu-item a:hover { top: -3px; }
 #page-header nav ul .current-menu-item { background: #fff; border-left: 1px solid #EEE; border-right: 1px solid #EEE; border-top: 1px solid #EEE; }
 #page-header nav ul .current-menu-item a { color: #333; text-shadow: none; }
-
 
 /* content */
 #primary { float: left; width: 580px; margin-right: 20px; }
@@ -67,7 +60,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary table td { padding: 10px; }
 #primary table .title { font-weight: bold; }
 #primary table tr:nth-child(even){ background: #eee; }
-#primary table td img { height: auto; border: none; box-shadow: none; width: 48px; height: auto; vertical-align: middle; }
+#primary table td img { height: auto; border: none; box-shadow: none; width: 48px; vertical-align: middle; }
 #primary table .time { font-size: 18px; font-weight: bold; width: 31px;}
 #primary table .image { width: 48px; }
 
@@ -108,10 +101,6 @@ sub { font-size: 75%; vertical-align: sub; }
 .widget-rekry ul { list-style: disc outside none; margin-left: 1.7em;}
 .widget-rekry div { margin: 1em 5px 1em; }
 
-/* google maps. Also, reset img so that tile borders don't show. */
-#map_canvas { width: 100%; height: 300px; display: block;  box-shadow: 0px 0px 5px #bbb; margin: 20px 0 20px 0; }
-#map_canvas img { border:0; box-shadow: none; }
-
 /* footer */
 #page-footer { width: 100%;  background: #333; }
 #page-footer .container { box-sizing: border-box; padding: 0 10px 0; }
@@ -149,9 +138,6 @@ html, body { margin: 0; padding: 0; height: 100%; }
 /* animations */
 #page-header nav ul {
 	-webkit-transition: all 0.6s ease-in-out;
-	-moz-transition: all 0.6s ease-in-out;
-	-o-transition: all 0.6s ease-in-out;
-	-ms-transition: all 0.6s ease-in-out;
 	transition: all 0.6s ease-in-out;
 }
 #page-header a,
@@ -160,52 +146,8 @@ html, body { margin: 0; padding: 0; height: 100%; }
 #page-footer .menu-item a,
 #page-header nav ul .menu-item a {
 	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
-
-/* forms */
-form fieldset { border: none !important; }
-form legend { padding: 0; }
-form label { width: 130px; display: inline-block; /* ie fix */ *display: inline; *zoom: 1; }
-form .ctrlHolder { margin-bottom: 10px; }
-form label .asteriskField { color: #FF0094; font-size: 20px; padding-left: 10px; }
-form input[type="text"], form textarea { padding: 5px;  border: 1px solid #ddd; box-shadow: 0px 0px 5px #ddd; width: 280px; }
-form select { width: 290px; padding: 5px; }
-form input[type="text"]:focus, form textarea:focus { border: 1px solid #bbb; box-shadow: 0px 0px 5px #ccc; }
-fieldset.store-items input[type="text"] { max-width: 60px;  padding: 10px; }
-form textarea { height: 100px; }
-
-/* store */
-.item-soldout {  color: #FF0094; font-size: 16px; font-weight: bold; }
-.store-sum, .store-items label { color: #26A8D3; font-size: 16px; font-weight: bold; width: auto; display: block; }
-.store-items > div { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 25px; }
-.store-items > div.store-sum { border: none; }
-.store-items .formHint { margin-top: 25px; }
-.store-items img { float: left; margin-right: 20px; position: relative; top: 8px; }
-
-.inc-dec-btn { display: inline-block; /* ie fix */ *display: inline; *zoom: 1; position: relative; top: 12px; }
-.ie .inc-dec-btn { top: 8px; }
-.inc-dec-btn div { font-size: 18px; color: #fff; width: 21px; height: 21px; line-height: 20px; text-align: center; background: #999;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: -moz-none;
-	-o-user-select: none;
-	user-select: none;
-}
-.inc-dec-btn div:hover { cursor: pointer; background: #aaa; }
-
-.store-details label, .store-details input { vertical-align: middle; }
-.item-price { font-family: 'Open Sans',sans-serif; font-size: 16px; position: 
-relative; top: 15px; }
-.errorField, .item-price { float: right; }
-.errorField, #errorMsg li { color: #FF0094; }
-.store-items .errorField { margin-right: 5%; max-width: 140px; }
-.store-details .errorField { margin-top: 8px; }
-.store-details .ctrlHolder { clear: both; }
-#div_id_read_terms label { width: auto; }
 
 /* gradients */
 h2, .item .title, .header,
@@ -219,15 +161,9 @@ form legend {
     text-shadow: 0px 1px 1px #FF6600;
     border: 1px solid #FF9400;
     cursor: pointer;
-
     background: #FEBA32;
-
     background-image: linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-    background-image: -o-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-    background-image: -moz-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
     background-image: -webkit-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-    background-image: -ms-linear-gradient(bottom, rgb(255,162,0) 7%, rgb(255,170,0) 54%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.07, rgb(255,162,0)), color-stop(0.54, rgb(255,170,0)));
 }
 
 /* Large desktop */
@@ -296,7 +232,6 @@ form legend {
 	#page-header .header-info .tagline { margin: 0; font-size: 16px; }
 	#page-header .header-info .time { font-size: 26px; }
 
-/*	#page-header { position: relative; background: #48B9DC; background-image: url('../images/ruututekstuuri.png') repeat; } */
 	#page-header .header-info { background-size: cover; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }

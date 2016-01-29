@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static blog_tags twitter_tag cache %}
+<!DOCTYPE html>{% load static blog_tags twitter_tag cache compress %}
 <head>
     <meta charset="utf-8" />
     <title>Instanssi 2016</title>
@@ -6,8 +6,11 @@
     <meta name="viewport" content="initial-scale=1.0" />
     <link rel="shortcut icon" href="{% static 'main2016/images/icons/icon-favicon.png' %}" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'main2016/css/style.css?v3' %}" />
+
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'main2016/css/style.scss' %}" />
+    {% endcompress %}
+
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
     <meta property="og:locale" content="fi_FI" />

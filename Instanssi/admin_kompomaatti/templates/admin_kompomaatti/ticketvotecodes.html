@@ -1,0 +1,53 @@
+{% extends "admin_kompomaatti/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Avaimet{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li><a href="{% url 'manage-kompomaatti:votecodes' selected_event_id %}">Lippuihin sidotut äänestysoikeudet</a></li>
+    <li>Selaa</li>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+	$(".jq-button").button();
+	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],[3,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Lippuihin sidotut äänestysoikeudet</h2>
+{% if tokens %}
+	<table id="tokens_table" class="tablesorter"> 
+	<thead>
+		<tr>
+			<th>Lippu</th>
+			<th>Assosiaatio (käyttäjä)</th>
+			<th>Assosiaatio (email)</th>
+			<th>Assosioitu</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for token in tokens %}
+		<tr>
+			<td><a href="{% url 'manage-store:transactionstatus' token.ticket.transaction.pk %}">{{ token.ticket.key }}</a></td>
+			<td>{{ token.associated_to.username }}</td>
+			<td>{{ token.associated_to.email }}</td>
+			<td>{{ token.time|date:"d.m.Y \k\l\o\. H:i" }}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+	</table>
+	<div id="tokens_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
+	<br />
+{% else %}
+    <p>Ei äänestyskoodeja.</p>
+{% endif %}
+{% endblock %}

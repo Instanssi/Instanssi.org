@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os.path
+
 from django.db import models
 from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
@@ -7,7 +9,6 @@ from imagekit.processors import ResizeToFill
 from datetime import datetime
 from urlparse import urlparse
 from Instanssi.kompomaatti.misc import entrysort
-import os.path
 
 
 class Profile(models.Model):
@@ -71,6 +72,41 @@ class VoteCodeRequest(models.Model):
     class Meta:
         verbose_name = u"äänestyskoodipyyntö"
         verbose_name_plural = u"äänestyskoodipyynnöt"
+
+
+class TicketVoteCode(models.Model):
+    event = models.ForeignKey(
+        Event,
+        verbose_name=u'Tapahtuma',
+        help_text=u'Tapahtuma, johon äänestysavain on assosioitu',
+        blank=True,
+        null=True)
+    associated_to = models.ForeignKey(
+        User,
+        verbose_name=u'Käyttäjä',
+        help_text=u"Käyttäjä jolle avain on assosioitu",
+        blank=True,
+        null=True)
+    ticket = models.ForeignKey(
+        'store.TransactionItem',  # String to avoid circular dependency
+        verbose_name=u'Lipputuote',
+        help_text=u'Lipputuote jonka avainta käytetään äänestysavaimena',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True)
+    time = models.DateTimeField(
+        u'Aikaleima',
+        help_text=u"Aika jolloin avain assosioitiin käyttäjälle.",
+        blank=True,
+        null=True)
+
+    def __unicode__(self):
+        return u'{}: {}'.format(self.ticket.key, self.associated_to.username)
+
+    class Meta:
+        verbose_name = u"lippuäänestusavain"
+        verbose_name_plural = u"lippuäänestysavaimet"
+        unique_together = (("event", "ticket"), ("event", "associated_to"))
 
 
 class VoteCode(models.Model):

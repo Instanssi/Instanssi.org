@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
-from Instanssi.kompomaatti.models import Entry, VoteCode, VoteCodeRequest, CompetitionParticipation
+from Instanssi.kompomaatti.models import Entry, VoteCode, TicketVoteCode, VoteCodeRequest, CompetitionParticipation
+from Instanssi.store.models import TransactionItem
 
 
 class VoteCodeRequestForm(forms.ModelForm):
@@ -18,7 +19,7 @@ class VoteCodeRequestForm(forms.ModelForm):
             Fieldset(
                 u'Pyydä äänestysoikeutta',
                 'text',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit-vcreq', u'Pyydä äänestysoikeutta')
                 )
             )
@@ -27,6 +28,50 @@ class VoteCodeRequestForm(forms.ModelForm):
     class Meta:
         model = VoteCodeRequest
         fields = ('text',)
+
+
+class TicketVoteCodeAssocForm(forms.Form):
+    code = forms.CharField(
+        min_length=8,
+        label=u"Lippukoodi",
+        widget=forms.TextInput(attrs={'id': 'ticketvotecode'}),
+        help_text=u"Syötä vähintään ensimmäiset kahdeksan (8) merkkiä lippukoodistasi tähän.")
+
+    def __init__(self, *args, **kwargs):
+        # Init
+        self.event = kwargs.pop('event', None)
+        self.user = kwargs.pop('user', None)
+        super(TicketVoteCodeAssocForm, self).__init__(*args, **kwargs)
+
+        # Build form
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Syötä lippukoodi',
+                'code',
+                ButtonHolder(
+                    Submit('submit-ticketvcassoc', u'Hae äänestysoikeus')
+                )
+            )
+        )
+
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        try:
+            TransactionItem.objects.get(key__startswith=code, item__event=self.event)
+        except TransactionItem.DoesNotExist:
+            raise ValidationError(u'Virheellinen koodi')
+        return code
+
+    def save(self):
+        transaction_item = TransactionItem.objects.get(
+                key__startswith=self.cleaned_data['code'], item__event=self.event)
+        obj = TicketVoteCode()
+        obj.event = self.event
+        obj.associated_to = self.user
+        obj.ticket = transaction_item
+        obj.time = datetime.now()
+        obj.save()
 
 
 class VoteCodeAssocForm(forms.Form):
@@ -44,7 +89,7 @@ class VoteCodeAssocForm(forms.Form):
             Fieldset(
                 u'Syötä äänestyskoodi',
                 'code',
-                ButtonHolder (
+                ButtonHolder(
                     Submit('submit-vcassoc', 'Tallenna')
                 )
             )

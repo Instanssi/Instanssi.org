@@ -8,3 +8,5 @@ django-twitter-tag==1.2.1
 Pillow==3.0.0
 python-social-auth==0.2.13
 reportlab==3.2.0
+django-libsass==0.6
+django-compressor==2.0

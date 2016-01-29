@@ -7,7 +7,7 @@ from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import Event
 
 
-class blog_feed_all(Feed):
+class BlogFeedAll(Feed):
     title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
@@ -15,7 +15,7 @@ class blog_feed_all(Feed):
     def get_object(self, request):
         return None
 
-    def items(self, obj):
+    def items(self):
         entries = []
         for entry in BlogEntry.objects.filter(public=True).order_by('-date'):
             entry.event_url = entry.event.mainurl
@@ -35,7 +35,7 @@ class blog_feed_all(Feed):
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
 
 
-class blog_feed(Feed):
+class BlogFeed(Feed):
     title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
@@ -43,7 +43,7 @@ class blog_feed(Feed):
     def get_object(self, request, event_id):
         return get_object_or_404(Event, pk=event_id)
 
-    def items(self, obj):
+    def items(self):
         entries = []
         for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('-date'):
             entry.event_url = obj.mainurl

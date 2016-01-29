@@ -1,5 +1,5 @@
 {% extends "base_layout/base.html" %}
-{% load static %}
+{% load static compress %}
 
 {% block title %}Kompomaatti{% endblock %}
 {% block headername %}<a href="{% url 'km:eventselect' %}">Kompomaatti</a>{% endblock %}
@@ -8,7 +8,9 @@
     <!-- Kompomaatti specific -->
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
-    <link rel="stylesheet" type="text/css" href="{% static "kompomaatti/css/style.css" %}" />
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "kompomaatti/css/style.scss" %}" />
+    {% endcompress %}
     <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
 {% endblock %}
 

@@ -178,10 +178,14 @@ form legend {
 
 }
 
+@media (min-width: 980px) and (max-width: 1199px) {
+    #content #primary { width: 560px; }
+}
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
 	.container { width:750px; margin: 0 auto; }
-	#content #primary{ width: 530px;  margin-right: 20px;  }
+	#content #primary{ width: 520px;  margin-right: 10px;  }
 	#sidebar-widgets{ width: 200px; }
 
 	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
@@ -200,9 +204,9 @@ form legend {
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
-	.container { width: 92%; padding: 0 4%; }
-	#content #primary{ width: 100%;  margin-right: 0px; margin-bottom: 40px;}
-	#sidebar-widgets{ width: 100%; }
+	.container { width: 100%; padding: 0; }
+	#content #primary { width: 100%;  margin-right: 0px; margin-bottom: 40px;}
+	#sidebar-widgets { width: 100%; }
 
 	#page-footer .menu-item { float: left; padding: 15px;  }
 	#page-footer .menu-item a { padding: 15px; }

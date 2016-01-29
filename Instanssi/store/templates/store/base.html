@@ -1,12 +1,14 @@
 {% extends "base_layout/base.html" %}
-{% load static %}
+{% load static compress %}
 
 {% block title %}Kauppa{% endblock %}
 {% block headername %}<a href="{% url 'store:index' %}">Kauppa</a>{% endblock %}
 
 {% block head %}
     <!-- Store -->
-    <link rel="stylesheet" type="text/css" href="{% static "store/css/style.css" %}" />
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "store/css/style.scss" %}" />
+    {% endcompress %}
 {% endblock %}
 
 {% block jquery %}

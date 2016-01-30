@@ -1,7 +1,8 @@
 @import 'reset.scss';
 
 /* general */
-html , body { font-family: sans-serif, helvetica; }
+html { overflow-y: scroll; }
+html , body { font-family: sans-serif; }
 .clearer, .clear { clear: both; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: 'Open Sans', sans-serif; }

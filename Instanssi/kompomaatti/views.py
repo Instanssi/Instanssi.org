@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.forms import VoteCodeRequestForm, VoteCodeAssocForm, ParticipationForm,\
     EntryForm, TicketVoteCodeAssocForm
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode, VoteCode, Compo, Entry,\
-    Vote, CompetitionParticipation
+    Vote, CompetitionParticipation, Competition
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, competition_times_formatter
 from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming

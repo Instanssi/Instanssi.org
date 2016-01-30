@@ -38,7 +38,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #page-header .header-info .time { font-size: 24px; font-family: 'Open Sans', sans-serif; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 100%; margin-bottom: 5px; }
 
 /* navigation */
-#page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #26A8D3; float: right; cursor: pointer; }
+#page-header nav .nav-btn { display: none; margin: 5px 1%; padding: 8px 8px; color: #fff; background: #1c3f94; float: right; cursor: pointer; }
 #page-header nav .nav-btn .line { width: 16px; padding: 2px; background: #fff; margin: 3px 0px; }
 #page-header nav { bottom: 0px; position: relative; }
 #page-header nav ul { margin: 0px; }
@@ -233,18 +233,21 @@ form legend {
 
 /* Landscape phones */
 @media (max-width: 480px) {
+	#page-header { background: #111122; padding: 0 1em; }
+
 	#page-header nav .nav-btn { display: block; float: left; }
 	.no-js #page-header nav .nav-btn { display: none; }
 
-	#page-header .header-info h1 { padding: 0; padding-top:1em; margin:0; text-indent: 0; background: none; font-size: 36px; }
-	#page-header .header-info .tagline { margin: 0; font-size: 16px; }
+	#page-header .header-info h1 { padding: 0; padding-top: 0; margin:0; text-indent: 0; background: none; font-size: 36px; height: auto; line-height: 1.25em }
+	#page-header .header-info .tagline { font-size: 16px; }
 	#page-header .header-info .time { font-size: 26px; }
+	#page-header .header-info { min-height: 0; }
 
-	#page-header .header-info { background-size: cover; }
+	#page-header nav { text-align: center; }
 	#page-header nav ul .menu-item { width: 49%; padding: 0px; }
 	#page-header nav ul .menu-item  a { display: block; padding: 15px 15px; }
 	#page-header nav ul .menu-item  a:hover { top: 0px; }
-	#page-header nav ul { background-color: #777; max-height: 0px; overflow: hidden; }
+	#page-header nav ul { background-color: #333; max-height: 0px; overflow: hidden; }
 	.no-js #page-header nav ul,
 	#page-header nav ul.active { max-height: 255px; }
 

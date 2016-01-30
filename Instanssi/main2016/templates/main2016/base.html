@@ -32,7 +32,19 @@
 {% endif %}
     <script type="text/javascript">
     $(function() {
-{% block jquery %}{% endblock %}
+{% block jquery %}
+    /* mobile nav button */
+    $('nav .nav-btn').click(function() {
+        var $nav = $('#page-header nav ul');
+        $nav.toggleClass( 'active' );
+        if($nav.hasClass('active') ){
+            $('html, body').animate({
+                scrollTop: $("#page-header nav").offset().top
+            }, 400);
+            console.log('ok');
+        }
+    });
+{% endblock %}
     });
     </script>
 </head>

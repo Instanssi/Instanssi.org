@@ -33,15 +33,13 @@ Projektin asentaminen
 
 Kirjastot
 ---------
+
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
-    pip install -r requirements.txt
-    
-Mikäli dependenssit joskus päivittyvät, auttaa seuraava:
-
     pip install --upgrade -r requirements.txt
-
-Huom! Etenkin windowsilla saattaa tulla ongelmia joidenkin pakettien asennuksessa! Tällöin auttaa osoitteesta http://www.lfd.uci.edu/~gohlke/pythonlibs/ löytyvä pakettirepositorio, joka tarjoaa valmiiksi käännettyjä versioita eri kirjastoista.
+    
+Huom! Windowsilla saattaa olla tarpeellista asentaa pip:n pakettien käännösvaihetta varten
+[Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/details.aspx?id=44266).
 
 Testitapausten ajaminen
 -----------------------

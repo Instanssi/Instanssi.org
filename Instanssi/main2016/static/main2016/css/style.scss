@@ -128,7 +128,7 @@ sub { font-size: 75%; vertical-align: sub; }
 html, body { margin: 0; padding: 0; height: 100%; }
 #page-footer { height: 310px; position: absolute; bottom: 0px; padding-top: 20px; }
 #content { background: #fff; box-sizing: border-box; padding: 40px 10px 390px; }
-#page-wrap { min-height: 100%; position: relative; background: #999; }
+#page-wrap { min-height: 100%; position: relative; background: #555; background: linear-gradient(#333 220px, #555 550px); }
 
 /* Stream */
 .stream-window {

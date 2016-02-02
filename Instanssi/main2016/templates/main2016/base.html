@@ -44,6 +44,12 @@
             console.log('ok');
         }
     });
+    /* motion */
+    var $h0 = $('.header-layer0');
+    var $body = $('body');
+    $body.mousemove(function(ev) {
+        $h0.css('left', ($body.width() - ev.pageX) / 100);
+    });
 {% endblock %}
     });
     </script>
@@ -51,6 +57,7 @@
 <body>
     <div id="page-wrap">
         <header id="page-header">
+            <span class="header-layer0"></span>
             <div class="header-info container">
                 <a href="{% url 'main2016:index' %}" class="logo">
                     <h1>Instanssi&nbsp;2016</h1>

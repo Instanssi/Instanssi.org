@@ -27,7 +27,8 @@ sub { font-size: 75%; vertical-align: sub; }
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
-#page-header { position: relative; background: url('../images/instanssibanneri.png') repeat; background-position: top center; }
+#page-header { position: relative; background: url('../images/banner-bg.png') repeat; background-position: top center; }
+#page-header .header-layer0 { position: absolute; z-index: 0; width: 100%; height: 100%; left: 0; top: 0; background: url('../images/banner-fg.png') no-repeat; background-position: top center;}
 #page-header .header-info { min-height: 225px; }
 #page-header .header-info .logo {  }
 #page-header a { text-decoration: none; }

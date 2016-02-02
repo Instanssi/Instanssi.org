@@ -252,10 +252,11 @@ class CreateTokensForm(forms.Form):
 
 
 class CloneCompoForm(forms.Form):
-    event = forms.ChoiceField(choices=[(event.pk, event.name) for event in Event.objects.all().iterator()])
+    event = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         super(CloneCompoForm, self).__init__(*args, **kwargs)
+        self.fields['event'].choices = [(event.pk, event.name) for event in Event.objects.all().iterator()]
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(

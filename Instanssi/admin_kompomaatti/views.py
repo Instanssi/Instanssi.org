@@ -2,11 +2,16 @@
 
 from common.http import Http403
 from common.auth import staff_access_required
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from django.template import loader, Context
-from Instanssi.kompomaatti.models import *
-from Instanssi.admin_kompomaatti.forms import *
+
+from Instanssi.kompomaatti.models import VoteCode, VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
+    CompetitionParticipation
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminCompetitionForm, AdminCompetitionScoreForm,\
+    AdminEntryAddForm, AdminEntryEditForm, AdminParticipationEditForm, CloneCompoForm, CreateTokensForm
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
 
@@ -52,12 +57,14 @@ def entries_csv(request, sel_event_id):
             entries = entries + compo_results
 
     # Placements, copypasta
-    output = []
     for entry in entries:
         m = entry.get_rank()
-        if m == 1: entry.placement = u'I'
-        if m == 2: entry.placement = u'II'
-        if m == 3: entry.placement = u'III'
+        if m == 1:
+            entry.placement = u'I'
+        if m == 2:
+            entry.placement = u'II'
+        if m == 3:
+            entry.placement = u'III'
 
     # Respond with entries CSV (text/csv)
     response = HttpResponse(content_type='text/csv')
@@ -127,7 +134,8 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
             pform.save()
             logger.info(u'Competition participation information edited.',
                         extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:participations', args=(sel_event_id, competition_id,)))
+            return HttpResponseRedirect(reverse('manage-kompomaatti:participations',
+                                                args=(sel_event_id, competition_id,)))
     else:
         pform = AdminParticipationEditForm(instance=participant)
     
@@ -210,7 +218,7 @@ def competition_delete(request, sel_event_id, competition_id):
         c.delete()
         logger.info(u'Competition "{}" deleted.'.format(c.name),
                     extra={'user': request.user, 'event_id': sel_event_id})
-    except:
+    except Competition.DoesNotExist:
         pass
     
     # Redirect
@@ -302,7 +310,7 @@ def compo_delete(request, sel_event_id, compo_id):
         c.delete()
         logger.info(u'Compo "{}" deleted.'.format(c.name),
                     extra={'user': request.user, 'event_id': sel_event_id})
-    except:
+    except Compo.DoesNotExist:
         pass
     
     # Redirect
@@ -413,7 +421,8 @@ def results(request, sel_event_id):
         rankby = '-score'
         if competition.score_sort == 1:
             rankby = 'score'
-        competition_results[competition.name] = CompetitionParticipation.objects.filter(competition=competition).order_by(rankby)
+        competition_results[competition.name] = \
+            CompetitionParticipation.objects.filter(competition=competition).order_by(rankby)
     
     # Render response
     return admin_render(request, "admin_kompomaatti/results.html", {

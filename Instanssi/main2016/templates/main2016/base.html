@@ -45,10 +45,15 @@
         }
     });
     /* motion */
-    var $h0 = $('.header-layer0');
-    var $body = $('body');
-    $body.mousemove(function(ev) {
-        $h0.css('left', ($body.width() - ev.pageX) / 100);
+    var $layers = $('.header-layer');
+    var $window = $(window);
+    $('body').mousemove(function(ev) {
+        $layers.each(function() {
+          var $layer = $(this);
+          var center = ($window.width() - $layer.width()) / 2;
+          var offset = $window.width() - ev.pageX;
+          $layer.css('left', center + offset / $layer.attr('z'));
+        });
     });
 {% endblock %}
     });
@@ -57,7 +62,7 @@
 <body>
     <div id="page-wrap">
         <header id="page-header">
-            <span class="header-layer0"></span>
+            <span class="header-layer header-layer-0" z="100"></span>
             <div class="header-info container">
                 <a href="{% url 'main2016:index' %}" class="logo">
                     <h1>Instanssi&nbsp;2016</h1>

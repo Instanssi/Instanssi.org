@@ -27,8 +27,17 @@ sub { font-size: 75%; vertical-align: sub; }
 #header-top { background: #222; color: #eee; padding: 4px 2%; text-align: right; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 #header-top a { color: #fff; text-decoration: none; padding: 0px 1%; }
 #header-top a:hover { color: #36B3D9; }
-#page-header { position: relative; background: url('../images/banner-bg.png') repeat; background-position: top center; }
-#page-header .header-layer0 { position: absolute; z-index: 0; width: 100%; height: 100%; left: 0; top: 0; background: url('../images/banner-fg.png') no-repeat; background-position: top center;}
+#page-header { background: url('../images/banner-bg.png') repeat; background-position: top center; overflow: hidden; position: relative; }
+#page-header .header-layer {
+    position: absolute;
+    z-index: 0;
+    width: 1920px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url('../images/banner-fg.png') no-repeat;
+    background-position: top center;
+}
 #page-header .header-info { min-height: 225px; }
 #page-header .header-info .logo {  }
 #page-header a { text-decoration: none; }
@@ -192,6 +201,8 @@ form legend {
 	#content #primary{ width: 520px;  margin-right: 10px;  }
 	#sidebar-widgets{ width: 200px; }
 
+	.header-layer { display: none; }
+
 	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
 	#page-footer .contact { float: none; }
@@ -211,6 +222,8 @@ form legend {
 	.container { width: 100%; padding: 0; }
 	#content #primary { width: 100%;  margin-right: 0px; margin-bottom: 40px;}
 	#sidebar-widgets { width: 100%; }
+
+	.header-layer { display: none; }
 
 	#page-footer .menu-item { float: left; padding: 15px;  }
 	#page-footer .menu-item a { padding: 15px; }
@@ -235,6 +248,8 @@ form legend {
 /* Landscape phones */
 @media (max-width: 480px) {
 	#page-header { background: #111122; padding: 0 1em; }
+
+	.header-layer { display: none; }
 
 	#page-header nav .nav-btn { display: block; float: left; }
 	.no-js #page-header nav .nav-btn { display: none; }

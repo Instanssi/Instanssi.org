@@ -221,9 +221,22 @@ def competition_delete(request, sel_event_id, competition_id):
 def compo_browse(request, sel_event_id):
     # Get compos
     compos = Compo.objects.filter(event_id=int(sel_event_id))
-    
+
+    if request.method == "POST" and 'submit-clone' in request.POST:
+        if not request.user.has_perm('kompomaatti.add_compo'):
+            raise Http403
+
+        clonecompoform = CloneCompoForm(request.POST)
+        if clonecompoform.is_valid():
+            clonecompoform.save(event_id=sel_event_id)
+            logger.info(u'Compos from other event cloned.',
+                        extra={'user': request.user, 'event_id': sel_event_id})
+            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,)))
+    else:
+        clonecompoform = CloneCompoForm()
+
     # Form handling
-    if request.method == "POST":
+    if request.method == "POST" and 'submit-compo' in request.POST:
         # CHeck for permissions
         if not request.user.has_perm('kompomaatti.add_compo'):
             raise Http403
@@ -244,6 +257,7 @@ def compo_browse(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/compo_browse.html", {
         'compos': compos,
         'compoform': compoform,
+        'clonecompoform': clonecompoform,
         'selected_event_id': int(sel_event_id),
     })
 

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.core.exceptions import ValidationError
-from Instanssi.kompomaatti.models import Compo, Entry, Competition, CompetitionParticipation
+from Instanssi.kompomaatti.models import Compo, Entry, Competition, CompetitionParticipation, Event
 import urlparse
 
 
@@ -124,7 +124,7 @@ class AdminCompoForm(forms.ModelForm):
                 'hide_from_frontpage',
                 'is_votable',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit-compo', u'Tallenna')
                 )
             )
         )
@@ -249,3 +249,30 @@ class CreateTokensForm(forms.Form):
                 )
             )
         )
+
+
+class CloneCompoForm(forms.Form):
+    event = forms.ChoiceField(choices=[(event.pk, event.name) for event in Event.objects.all().iterator()])
+
+    def __init__(self, *args, **kwargs):
+        super(CloneCompoForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Kloonaa toisen tapahtuman kompot',
+                'event',
+                ButtonHolder(
+                    Submit('submit-clone', u'Kloonaa')
+                )
+            )
+        )
+
+    def save(self, event_id, commit=False):
+        for compo in Compo.objects.filter(event=self.cleaned_data['event']).iterator():
+            compo.pk = None
+            compo.event = Event.objects.get(pk=event_id)
+            compo.active = False
+            compo.hide_from_archive = True
+            compo.hide_from_frontpage = True
+            compo.is_votable = False
+            compo.save()

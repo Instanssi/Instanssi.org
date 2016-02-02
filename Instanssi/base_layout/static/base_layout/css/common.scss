@@ -1,0 +1,12 @@
+/* common.scss
+   Sitewide SCSS (theme colors, etc.) goes here.
+*/
+
+$theme-color: #1c3f94;
+$theme-nav-hover: $theme-color * 0.66;
+
+$body-font-family: 'Open Sans', sans-serif;
+$title-font-family: $body-font-family;
+
+$transition-small: 0.2s;
+$transition-large: 0.4s;

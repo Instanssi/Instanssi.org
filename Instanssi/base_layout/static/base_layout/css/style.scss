@@ -1,16 +1,15 @@
-body, html {
-	height: 100%;
-}
+@import 'common.scss';
 
 body {
     margin: 0px;
     padding: 0px;
-    background-color: #e7e7e7;
+    background: #555;
+	background: linear-gradient(#333 220px, #555 550px, #555 100%);
     font-size: 14px;
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
-    font-family: 'Open Sans', sans-serif;
+    font-family: $body-font-family;
     font-size: 100%;
 }
 
@@ -34,7 +33,7 @@ h1 {
 }
 
 h2, h3 {
-    border-bottom: 1px dashed #1c3f94;
+    border-bottom: 1px dotted $theme-color;
 }
 h2 {
     width: 100%;
@@ -60,7 +59,7 @@ hr {
     border: 0; border-top: 1px dotted #aaa;
 }
 
-a { color: #1c3f94; text-decoration: none; }
+a { color: $theme-color; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ---------- Base layout tuning ---------- */
@@ -74,9 +73,7 @@ a:hover { text-decoration: underline; }
 }
 
 #base {
-	height: auto !important;
-	height: 100%;
-	min-height: 100%;
+	min-height: 100vh;
 	background-color: #f9f9f9;
 	box-shadow: 0px 0px 5px #888;
 	-moz-box-shadow: 0px 0px 5px #888;
@@ -86,12 +83,14 @@ a:hover { text-decoration: underline; }
 /* ---------- Header ---------- */
 
 #header {
-    background: #1c3f94;
-    /*background-image: url('../../main2015/images/ruututekstuuri.png');*/
+    background: $theme-color;
+    background: url('../../main2016/images/banner-bg.png') repeat;
+    background-size: contain;
+    background-position: top center;
 }
 #header h1, #header h1 span, #usertools a {
     text-shadow: black 1px 1px 1px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $title-font-family;
     font-variant: normal;
 }
 #usertools a { font-size: 1.2em; }
@@ -100,20 +99,16 @@ a:hover { text-decoration: underline; }
 }
 #header h1 {
     padding-bottom: 7px;
-    text-transform: uppercase;
+    font-variant: small-caps;
+    font-weight: 800;
 }
 #header h1 span { text-transform: none;}
 #header h1 .section { margin-left: .25em; font-size: .5em;}
-#header h1 a, #usertools a { color: #fff; color: rgba(255, 255, 255, .9); }
+#header h1 a, #usertools a { color: #fff; }
 #header h1 a, h1 a:visited { text-decoration: none; }
 #header h1 a:hover { text-shadow: #048 1px 1px 1px }
 
 #header_nav {
-    background-color: #111121;
-    background: rgba(0,0,0,.7);
-    box-shadow: 0px 3px 3px #888;
-    -moz-box-shadow: 0px 3px 3px #888;
-    -webkit-box-shadow: 0px 3px 3px #888;
     min-height: 32px;
 }
 #header_nav:after {
@@ -163,12 +158,13 @@ li.menu-down-arrow {
 
 .menuitem a,
 .menuitem span {
-    color: #eeeeee;
+    color: #fff;
     text-decoration: none;
     display: block;
+    transition: background-color $transition-small;
 }
 
-.menuitem a:hover { text-shadow: #cccccc 0px 0px 5px; }
+.menuitem a:hover { background-color: $theme-nav-hover; }
 .menuitem:hover { position: relative; }
 ul.sub-level { z-index: 99; }
 
@@ -227,7 +223,7 @@ ul#crumbpath li * {
     padding: 4px 0;
 }
 ul#crumbpath a {
-    color: #1c3f94;
+    color: $theme-color;
     text-decoration: none;
 }
 ul#crumbpath a:hover {
@@ -316,7 +312,7 @@ form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    color: #1c3f94;
+    color: $theme-color;
 }
 
 .ui-state-active,

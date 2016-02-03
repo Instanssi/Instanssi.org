@@ -43,7 +43,7 @@ class BlogFeed(Feed):
     def get_object(self, request, event_id):
         return get_object_or_404(Event, pk=event_id)
 
-    def items(self):
+    def items(self, obj):
         entries = []
         for entry in BlogEntry.objects.filter(event=obj, public=True).order_by('-date'):
             entry.event_url = obj.mainurl

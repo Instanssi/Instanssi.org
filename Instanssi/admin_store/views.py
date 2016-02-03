@@ -107,7 +107,7 @@ def transaction_status(request, transaction_id):
     transaction = get_object_or_404(StoreTransaction, pk=transaction_id)
     
     # Get items
-    items = transaction.get_items()
+    items = transaction.get_transaction_items()
     
     # Render response
     return admin_render(request, "admin_store/transactionstatus.html", {

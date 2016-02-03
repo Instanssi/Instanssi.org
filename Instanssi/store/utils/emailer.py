@@ -5,6 +5,7 @@ Mailer class sends emails with given parameters.
 """
 
 from common.mail import Mailer
+from decimal import Decimal
 
 
 class ReceiptMailer(Mailer):
@@ -24,7 +25,7 @@ class ReceiptMailer(Mailer):
             'country': '',
             'items': [],
             'transactionurl': '',
-            'total': 0.0,
+            'total': Decimal('0.00'),
         }
 
     def ordernumber(self, var):

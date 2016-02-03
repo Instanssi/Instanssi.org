@@ -194,7 +194,7 @@ class StoreTransaction(models.Model):
 
     @property
     def is_delivered(self):
-        for item in self.get_items():
+        for item in self.get_transaction_items():
             if not item.is_delivered:
                 return False
         return True

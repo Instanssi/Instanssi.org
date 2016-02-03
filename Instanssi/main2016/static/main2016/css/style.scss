@@ -169,6 +169,7 @@ sub { font-size: 75%; vertical-align: sub; }
 
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
+
 #page-footer {
 	height: 310px;
 	position: absolute;
@@ -181,7 +182,12 @@ html, body { margin: 0; padding: 0; height: 100%; }
 	padding: 40px 10px 390px;
 	min-height: 100vh;
 }
-#page-wrap { min-height: 100%; position: relative; background: #555; background: linear-gradient(#333 220px, #555 550px); }
+#page-wrap {
+	min-height: 100%;
+	position: relative;
+	background: #555;
+	background: linear-gradient(#1b1b1b 275px, #555 675px);
+}
 
 /* Stream */
 .stream-window {

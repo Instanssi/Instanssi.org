@@ -45,16 +45,42 @@
         }
     });
     /* motion */
-    var $layers = $('.header-layer');
     var $window = $(window);
-    $('body').mousemove(function(ev) {
-        $layers.each(function() {
-          var $layer = $(this);
-          var center = ($window.width() - $layer.width()) / 2;
-          var offset = $window.width() - ev.pageX;
-          $layer.css('left', center + offset / $layer.attr('z'));
+    $('.header-layer').remove();
+    var cubes = [
+        { src: '{% static 'main2016/images/banner-cube-0.png' %}',
+          x: 870, y: 0, z: 30 },
+        { src: '{% static 'main2016/images/banner-cube-1.png' %}',
+          x: 1230, y: 0, z: 50 },
+        { src: '{% static 'main2016/images/banner-cube-2.png' %}',
+          x: 410, y: 95, z: 80 },
+        { src: '{% static 'main2016/images/banner-cube-3.png' %}',
+          x: -250, y: 0, z: 120 },
+    ];
+    var $cubes = [];
+    $.each(cubes, function(i, cube) {
+        var $cube = $('<img/>', {
+            class: 'header-cube header-effect',
+            src: cube.src
         });
+        $cubes.push($cube);
+        $cube.x = cube.x;
+        $cube.y = cube.y;
+        $cube.z = cube.z;
+        $('.header-layers').append($cube);
     });
+    function moveLayers(offset) {
+        $.each($cubes, function(i, $cube) {
+          var center = -$cube.width() / 2;
+          $cube.css('left',
+                    center + offset / $cube.z + $cube.x);
+          $cube.css('top', $cube.y);
+        });
+    }
+    $('body').mousemove(function(ev) {
+        moveLayers($window.width() / 2 - ev.pageX);
+    });
+    moveLayers(0);
 {% endblock %}
     });
     </script>
@@ -62,7 +88,9 @@
 <body>
     <div id="page-wrap">
         <header id="page-header">
-            <span class="header-layer header-layer-0" z="100"></span>
+            <span class="header-layer header-effect" z="100"></span>
+            <div class="header-layers">
+            </div>
             <div class="header-info container">
                 <a href="{% url 'main2016:index' %}" class="logo">
                     <h1>Instanssi&nbsp;2016</h1>

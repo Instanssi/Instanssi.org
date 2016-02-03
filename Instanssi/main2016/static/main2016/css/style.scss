@@ -45,9 +45,23 @@ sub { font-size: 75%; vertical-align: sub; }
     background: url('../images/banner-fg.png') no-repeat;
     background-position: top center;
 }
-#page-header .header-info { min-height: 225px; }
+#page-header .header-layers {
+	position: relative; /* force cube "absolute" relative to this */
+	width: 1024px;
+	margin: 0 auto;
+}
+#page-header .header-cube {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+#page-header .header-info { min-height: 225px; padding: 0 10px; }
 #page-header .header-info .logo {  }
-#page-header a { text-decoration: none; }
+#page-header a {
+	text-decoration: none;
+	text-shadow: #000 0 0 16px;
+}
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
 #page-header .header-info h1 { height: 103px; font-size: 55px; color: #fff; font-family: $title-font-family; font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 0px 0px; */ padding: 0; line-height: 400%; }
 #page-header .header-info .tagline { font-size: 20px; font-family: $body-font-family; color: #fff; font-weight: 300; line-height: 100%; margin-bottom: 5px; }
@@ -155,8 +169,18 @@ sub { font-size: 75%; vertical-align: sub; }
 
 /* footer always bottom */
 html, body { margin: 0; padding: 0; height: 100%; }
-#page-footer { height: 310px; position: absolute; bottom: 0px; padding-top: 20px; }
-#content { background: #fff; box-sizing: border-box; padding: 40px 10px 390px; }
+#page-footer {
+	height: 310px;
+	position: absolute;
+	bottom: 0px;
+	padding-top: 20px;
+}
+#content {
+	background: #fff;
+	box-sizing: border-box;
+	padding: 40px 10px 390px;
+	min-height: 100vh;
+}
 #page-wrap { min-height: 100%; position: relative; background: #555; background: linear-gradient(#333 220px, #555 550px); }
 
 /* Stream */
@@ -219,7 +243,7 @@ form legend {
 	#content #primary{ width: 520px;  margin-right: 10px;  }
 	#sidebar-widgets{ width: 200px; }
 
-	.header-layer { display: none; }
+	.header-effect { display: none; }
 
 	#page-footer .sitemap { width: 20%; margin: 0px 0px 20px 0px; }
 	#page-footer .sponsors { width: 100%; margin: 0;}
@@ -241,7 +265,7 @@ form legend {
 	#content #primary { width: 100%;  margin-right: 0px; margin-bottom: 40px;}
 	#sidebar-widgets { width: 100%; }
 
-	.header-layer { display: none; }
+	.header-effect { display: none; }
 
 	#page-footer .menu-item { float: left; padding: 15px;  }
 	#page-footer .menu-item a { padding: 15px; }
@@ -267,7 +291,7 @@ form legend {
 @media (max-width: 480px) {
 	#page-header { background: #111122; padding: 0 1em; }
 
-	.header-layer { display: none; }
+	.header-effect { display: none; }
 
 	#page-header nav .nav-btn { display: block; float: left; }
 	.no-js #page-header nav .nav-btn { display: none; }

@@ -106,7 +106,9 @@ a:hover { text-decoration: underline; }
 #header h1 .section { margin-left: .25em; font-size: .5em;}
 #header h1 a, #usertools a { color: #fff; }
 #header h1 a, h1 a:visited { text-decoration: none; }
-#header h1 a:hover { text-shadow: #048 1px 1px 1px }
+#header h1 a {
+    text-shadow: #16a 4px 0 3px, #16a -4px 0 3px;
+}
 
 #header_nav {
     min-height: 32px;

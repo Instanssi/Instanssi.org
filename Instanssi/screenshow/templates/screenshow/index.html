@@ -4,12 +4,10 @@
     <meta charset="utf-8" />
     <title>Screenshow</title>
     <meta name="viewport" content="width=1280, height=720, initial-scale=1" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
 
-    <!--<script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>-->
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
-    <script type="text/javascript" src="{% static 'screenshow/js/jquery.tubeplayer.min.js' %}"></script>
     
     <script type="text/javascript" src="{% static 'screenshow/js/settings.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/clock.js' %}"></script>
@@ -17,8 +15,6 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/front.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/irc.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/messages.js' %}"></script>
-    <!--<script type="text/javascript" src="{% static 'screenshow/js/mods/twitter.js' %}"></script>-->
-    <script type="text/javascript" src="{% static 'screenshow/js/mods/youtube.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/playing.js' %}"></script>
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
@@ -33,7 +29,6 @@
         var events_api_url = '{% url 'screen:events-api' event_id %}';
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';
         var messages_api_url = '{% url 'screen:messages-api' event_id %}';
-        var youtube_api_url = '{% url 'screen:playlist-api' event_id %}';
         var settings_api_url = '{% url 'screen:settings-api' event_id %}';
         var playing_api_url = '{% url 'screen:playing-api' event_id %}';
         
@@ -51,8 +46,6 @@
         modules.push(new ScreenMessages(settings, jm, $('#messages'), messages_api_url));
         modules.push(new ScreenClock(settings, jm, $('#clock')));
         modules.push(new ScreenFrontpage(settings, jm, $('#nametext')));
-        //modules.push(new ScreenTwitter(settings, jm, $('#twitter')));
-        modules.push(new ScreenYoutube(settings, jm, $('#youtube'), youtube_api_url));
         modules.push(new ScreenNowPlaying(settings, jm, $('#playing'), playing_api_url));
         
         // Init all modules
@@ -83,7 +76,6 @@
 <body>
 <div id="jmpress">
     <div id="nametext" class="step nohide text" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
-    <!--<div id="twitter" class="step dohide text" data-x="0" data-y="540" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>-->
     <div id="clock" class="step dohide text" data-x="0" data-y="-500" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
 {% for sponsor in sponsors %}
     <div id="sponsor_{{ sponsor.id }}" 
@@ -104,10 +96,9 @@
     </div>
 {% endfor %}
     <div id="events" class="step dohide text" data-x="700" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="7000"></div>
-    <div id="playing" class="step dohide text" data-x="100" data-y="400" data-z="-500" data-rotate-x="330" data-rotate-z="270" data-rotate-y="160" date-scale="0.2" data-duration="7000"></div>
-    <div id="youtube" class="step dohide fullscreen" data-x="100" data-y="600" data-z="-700" data-rotate-x="330" data-rotate-z="270" data-rotate-y="270" date-scale="0.2"></div>
-    <div id="messages" class="step dohide text" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" date-scale="0.2" data-duration="8000"></div>
-    <div id="irc" class="step dohide text" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" date-scale="0.2" data-duration="20000"></div>
+    <div id="playing" class="step dohide text" data-x="100" data-y="400" data-z="-500" data-rotate-x="330" data-rotate-z="270" data-rotate-y="160" data-scale="0.2" data-duration="7000"></div>
+    <div id="messages" class="step dohide text" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" data-scale="0.2" data-duration="8000"></div>
+    <div id="irc" class="step dohide text" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" data-scale="0.2" data-duration="20000"></div>
 </div>
 </body>
 </html>

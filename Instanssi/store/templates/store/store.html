@@ -154,10 +154,9 @@
                 <h3 class="item-title">{{ field.label}}
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
-                <div class="item-description">{{ field.help_text|safe }}</div>
-                {% if field.field.has_discount %}
-                <div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat vähintään {{ field.field.discount_amount }} kappaletta!
-                </div>{% endif %}
+                <div class="item-description">{{ field.help_text|safe }}
+                {% if field.field.has_discount %}<div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat vähintään {{ field.field.discount_amount }} kappaletta!</div>{% endif %}
+                </div>
                 {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
             <div class="item-amount">

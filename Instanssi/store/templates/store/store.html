@@ -59,10 +59,13 @@
             var amount = parseInt($field.spinner('value'), 10);
             var subtotal = price * amount;
 
+            $storeItem.find('.discount-indicator').remove();
+
             if(amount >= discountAmount && discountAmount > 0) {
                 subtotal *= discountFactor;
                 $storeItem.addClass('discount-enabled');
                 $itemPrice.text(format_price(price * discountFactor));
+                $storeItem.find('.item-discount').append($("<span class='discount-indicator'>Alennus voimassa.</span>"))
             } else {
                 $storeItem.removeClass('discount-enabled');
                 $itemPrice.text(format_price(price));

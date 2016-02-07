@@ -13,15 +13,23 @@ logger = logging.getLogger(__name__)
 
 
 def handle_cancellation(ta):
-    ta.time_cancelled = datetime.now()
-    ta.save()
-    logger.info(u'Store transaction {} cancelled.'.format(ta.id))
+    if not ta.time_cancelled:
+        ta.time_cancelled = datetime.now()
+        ta.save()
+        logger.info(u'Store transaction {} cancelled.'.format(ta.id))
+    else:
+        logger.warn(u'Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
 
 
 def handle_pending(ta):
-    ta.time_pending = datetime.now()
-    ta.save()
-    logger.info(u'Store transaction {} paid, pending confirmation.'.format(ta.id))
+    if ta.time_cancelled:
+        logger.warn(u'Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
+    elif not ta.time_pending:
+        ta.time_pending = datetime.now()
+        ta.save()
+        logger.info(u'Store transaction {} paid, pending confirmation.'.format(ta.id))
+    else:
+        logger.warn(u'Attempted to mark store transaction {} as pending twice'.format(ta.id))
 
 
 def handle_payment(ta):

@@ -117,11 +117,11 @@
                 <th>Yhteensä</th>
             </tr>
             {% for item in items_summary %}
-            <tr>
-                <td>{{ item.item.name }}</td>
-                <td>{{ item.item.price }} €</td>
-                <td>{{ item.count }}</td>
-                <td>{{ item.subtotal }} €</td>
+            <tr {% if item.discount == True %}class="item-summary-discounted"{% endif %}>
+                <td class="item-summary-name">{{ item.item.name }}</td>
+                <td class="item-summary-price">{{ item.unit_price }} €</td>
+                <td class="item-summary-count">{{ item.count }}</td>
+                <td class="item-summary-subtotal">{{ item.subtotal }} €</td>
             </tr>
             {% endfor %}
             <tr class="items-total">
@@ -154,10 +154,9 @@
                 <h3 class="item-title">{{ field.label}}
                     {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
                 </h3>
-                <div class="item-description">{{ field.help_text|safe }}</div>
-                {% if field.field.has_discount %}
-                <div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat ainakin {{ field.field.discount_amount }} kappaletta!
-                </div>{% endif %}
+                <div class="item-description">{{ field.help_text|safe }}
+                {% if field.field.has_discount %}<div class="item-discount">{{ field.field.discount_percentage }} % alennus, jos ostat vähintään {{ field.field.discount_amount }} kappaletta!</div>{% endif %}
+                </div>
                 {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
             </div>
             <div class="item-amount">

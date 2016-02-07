@@ -62,14 +62,22 @@ class StoreItem(models.Model):
         help_text=u'Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
 
     def is_discount_available(self):
+        """Returns True if a discount exists for this item."""
         return self.discount_amount >= 0
 
     def get_discount_factor(self):
+        """Gets the potential discount factor, for views/templates/JS.
+
+        Decimal arithmetic is used for actual price calculations."""
         return (100.0 - self.discount_percentage) / 100.0
+
+    def is_discount_enabled(self, amount):
+        """Returns True if discount applies to a specific quantity of this."""
+        return self.is_discount_available() and amount >= self.discount_amount
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""
-        if amount >= self.discount_amount and amount >= 0:
+        if self.is_discount_enabled(amount):
             factor = (Decimal(100) - Decimal(self.discount_percentage)) / 100
             price = self.price * factor
         else:

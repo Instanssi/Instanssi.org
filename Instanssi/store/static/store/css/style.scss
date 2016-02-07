@@ -216,8 +216,7 @@ a.wizard-nav-button {
 }
 
 .discount-indicator {
-	color: #020;
-	font-weight: bold;
+	display: none;
 }
 
 .discount-enabled .item-price {
@@ -228,4 +227,19 @@ a.wizard-nav-button {
 	@include awesome-glyph('\f0d7');
 	color: #090;
 	padding-right: 8px;
+}
+
+.item-summary-discounted .item-summary-price::before {
+	@include awesome-glyph('\f0d7');
+	color: #090;
+	padding-right: 8px;
+}
+
+.item-summary-discounted {
+	.item-summary-price::before,
+	.item-summary-subtotal::before {
+		@include awesome-glyph('\f0d7');
+		color: #090;
+		padding-right: 8px;
+	}
 }

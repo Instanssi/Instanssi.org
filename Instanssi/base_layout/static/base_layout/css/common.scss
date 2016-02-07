@@ -10,3 +10,8 @@ $title-font-family: $body-font-family;
 
 $transition-small: 0.2s;
 $transition-large: 0.4s;
+
+@mixin awesome-glyph($code) {
+	font: normal normal normal 1em/1 FontAwesome;
+	content: $code;
+}

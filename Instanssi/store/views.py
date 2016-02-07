@@ -71,7 +71,9 @@ class StoreWizard(NamedUrlSessionWizardView):
                 summary.append({
                     'count': amount,
                     'item': item,
-                    'subtotal': subtotal
+                    'subtotal': subtotal,
+                    'unit_price': item.get_discounted_unit_price(amount),
+                    'discount': item.is_discount_enabled(amount)
                 })
             context['items_total'] = total
             context['items_summary'] = summary

@@ -229,3 +229,18 @@ a.wizard-nav-button {
 	color: #090;
 	padding-right: 8px;
 }
+
+.item-summary-discounted .item-summary-price::before {
+	@include awesome-glyph('\f0d7');
+	color: #090;
+	padding-right: 8px;
+}
+
+.item-summary-discounted {
+	.item-summary-price::before,
+	.item-summary-subtotal::before {
+		@include awesome-glyph('\f0d7');
+		color: #090;
+		padding-right: 8px;
+	}
+}

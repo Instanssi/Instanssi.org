@@ -63,7 +63,17 @@ sub { font-size: 75%; vertical-align: sub; }
 	text-shadow: #000 0 0 16px;
 }
 /* 3.4em - 1.43em - 7.2em - 4.25em  || 47px - 20px - 99px - 59px */
-#page-header .header-info h1 { height: 103px; font-size: 55px; color: #fff; font-family: $title-font-family; font-weight: 800; font-variant: small-caps; /*padding: 80px 0px 0px 0px; */ padding: 0; line-height: 400%; }
+#page-header .header-info h1 {
+	height: 103px;
+	font-size: 55px;
+	color: #fff;
+	font-family: $title-font-family;
+	font-weight: 800;
+	font-variant: small-caps;
+	padding: 0;
+	line-height: 400%;
+	text-shadow: #16a 4px 0 3px, #16a -4px 0 3px;
+}
 #page-header .header-info .tagline { font-size: 20px; font-family: $body-font-family; color: #fff; font-weight: 300; line-height: 100%; margin-bottom: 5px; }
 #page-header .header-info .time { font-size: 24px; font-family: $body-font-family; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 100%; margin-bottom: 5px; }
 

@@ -1,3 +1,5 @@
+@import 'base_layout/css/common.scss';
+
 /* ---------- Icons ---------- */
 
 .custom_icon_style {
@@ -193,26 +195,37 @@ a.wizard-nav-button {
     padding: 10px 16px 10px;
 }
 
-.discount-enabled .item-discount {
-    /*transform: rotate(1deg);*/
-}
-
 .item-discount::before {
     position: absolute;
-    content: '\2713';
-    margin: -7px 0 0 -20px;
-    font-size: 0;
-    color: #fff;
-    transition: color 1s, font-size 1s, transform 0.5s;
-    transform: rotate(-360deg);
+	@include awesome-glyph('\f096');
+    margin: 0 0 0 -15px;
+    color: #999;
 }
 
 .discount-enabled .item-discount::before {
-    font-size: 26px;
-    color: #2f2;
-    transform: rotate(0deg);
+	@include awesome-glyph('\f046');
+	opacity: 1;
+    color: #090;
+}
+
+.item-discount::after {
+	font-weight: bold;
+	transition: opacity 1s, color 2s;
+	color: #ff0;
+	opacity: 0;
+}
+
+.discount-indicator {
+	color: #020;
+	font-weight: bold;
 }
 
 .discount-enabled .item-price {
-    background: #dfd;
+	color: #020;
+}
+
+.discount-enabled .item-price::before {
+	@include awesome-glyph('\f0d7');
+	color: #090;
+	padding-right: 8px;
 }

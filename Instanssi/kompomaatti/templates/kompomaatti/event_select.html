@@ -9,10 +9,6 @@
 
 {% block jquery %}
 {{ block.super }}
-        $('#submit_button').css('display', 'none');
-        $('#event_select').change(function() {
-            $('#mform').submit();
-        });
 {% endblock %}
 
 {% block headernav %}
@@ -30,16 +26,8 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Tapahtuman valinta</h2>
-    <p>Valitse tapahtuma.</p>
-    <form id="mform" method="post" action="">
-        <select id="event_select" name="eventsel">
-            <option value="-1">---</option>
-    {% for event in events %}
-            <option value="{{ event.id }}">{{ event.name }}</option>
-    {% endfor %}
-        </select>
-        {% csrf_token %}
-        <input type="submit" id="submit_button" value="Valitse" />
-    </form>
+<h2>Tapahtumat</h2>
+<p>
+    Kompomaatissa ei ole tapahtumia!
+</p>
 {% endblock %}

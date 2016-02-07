@@ -22,16 +22,12 @@ from datetime import datetime
 
 
 def eventselect(request):
-    # Check if user selected an event without Javascript
-    if request.method == 'POST':
-        event_id = int(request.POST['eventsel'])
-        if event_id > -1:
-            return HttpResponseRedirect(reverse('km:index', args=(event_id,)))
-    
-    # Render page
-    return render_to_response('kompomaatti/event_select.html', {
-        'events': Event.objects.all().order_by('-date'),
-    }, context_instance=RequestContext(request))
+    try:
+        latest_event = Event.objects.latest('id')
+    except Event.DoesNotExist:
+        return render_to_response('kompomaatti/event_select.html', {}, context_instance=RequestContext(request))
+
+    return HttpResponseRedirect(reverse('km:index', args=(latest_event.pk,)))
 
 
 def index(request, event_id):
@@ -51,11 +47,6 @@ def index(request, event_id):
     
         # Add to list
         events.append(event)
-    
-        # Only pick 10
-        k += 1
-        if k >= 10:
-            break
     
     # Check if user has an associated vote code
     votecode_associated = False

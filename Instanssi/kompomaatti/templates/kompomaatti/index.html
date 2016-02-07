@@ -21,6 +21,14 @@
 <p>
     Tervetuloa Kompomaattiin, Instanssien viralliseen entryjenhallinta- ja äänestyspalveluun!
 </p>
+{% if not request.user.is_authenticated %}
+<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;">
+    <p>
+        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        Et ole kirjautunut sisään. Kirjaudu sisään <a href="{% url 'users:login' %}">tästä</a>.
+    </p>
+</div>
+{% endif %}
 
 {% if not votecode_associated %}
 <h3>Äänestäminen</h3>

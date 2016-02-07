@@ -28,7 +28,7 @@ ID     Määrä Tuoteseloste                               Hinta  Yhteensä
 =======================================================================
 {% for item in items %}{{ item.id|ljust:"6" }} {{ item.amount|ljust:"5" }} {{ item.name|ljust:"42" }} {{ item.price|ljust:"6" }} {{ item.total|ljust:"8" }}
 {% endfor %}
-Yhteensä: {{ total }} eur
+Yhteensä: {{ total }} EUR
 
 
 Tuotteiden nouto & liput:
@@ -40,9 +40,13 @@ Tositteen voi joko tulostaa tai esittää mm. kännykän tai tabletin näytölt�
 
 {{ transactionurl }}
 
+Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen oikeuttavina avaimina
+äänestysjärjestelmässämme kompomaatissa. Voit rekisteröidä avaimesi jo ennakkoon kirjautumalla Kompomaattiin
+osoitteessa https://instanssi.org/kompomaatti/
+
 Muista tyhjentää selaimesi sivuhistoria ja välimuisti käytyäsi lippusivulla, 
 mikäli tietokonettasi käyttää useampi henkilö!
 
 -- 
 Instanssi 2016
-http://instanssi.org
+https://instanssi.org

@@ -38,12 +38,12 @@
         Instanssi-tilin sisältöön ei pääse käsiksi toisen kirjautumispalvelun kautta kirjauduttaessa.
     </p>
 
-    <a class="login-button" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a>
-    <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">Google</a>
-    <a class="login-button" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">Twitter</a>
-    <a class="login-button" href="{% url 'social:begin' 'github' %}?next={{ next }}">Github</a>
-    <a class="login-button" href="{% url 'social:begin' 'battlenet-oauth2' %}?next={{ next }}">Battle.net</a>
-    <a class="login-button" href="{% url 'social:begin' 'steam' %}?next={{ next }}">Steam</a>
+    <a class="login-button login-facebook" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a>
+    <a class="login-button login-google" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">Google</a>
+    <a class="login-button login-twitter" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">Twitter</a>
+    <a class="login-button login-github" href="{% url 'social:begin' 'github' %}?next={{ next }}">Github</a>
+    <a class="login-button login-battlenet" href="{% url 'social:begin' 'battlenet-oauth2' %}?next={{ next }}">Battle.net</a>
+    <a class="login-button login-steam" href="{% url 'social:begin' 'steam' %}?next={{ next }}">Steam</a>
     <br />
     {% crispy openidform openidform.helper %}<br />
     {% crispy djangoform djangoform.helper %}

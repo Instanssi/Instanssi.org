@@ -298,6 +298,29 @@ ul#crumbpath a:hover {
     text-shadow: #048 1px 1px 1px
 }
 
+.login-button span::before {
+    display: inline;
+    padding-right: 8px;
+}
+// we might want to hint at login method in the usertools box, so
+// the logins are listed here instead of the users app
+.login-facebook span::before {
+    @include awesome-glyph('\f09a');
+}
+.login-steam span::before {
+    @include awesome-glyph('\f1b7');
+}
+.login-google span::before {
+    @include awesome-glyph('\f1a0');
+}
+.login-github span::before {
+    @include awesome-glyph('\f09b');
+}
+.login-twitter span::before {
+    @include awesome-glyph('\f099');
+}
+
+
 /* ---------- uniForm tweaks ---------- */
 
 form.uniForm { margin-top: 1.0em; }

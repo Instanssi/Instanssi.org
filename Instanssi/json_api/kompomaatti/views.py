@@ -38,7 +38,7 @@ def events_api(request, hid):
     try:
         e = Event.objects.get(pk=hid)
     except Event.DoesNotExist:
-        return JSONResponse({'error': 1});
+        return JSONResponse({'error': 1})
 
     # Get upcoming stuff
     events = []

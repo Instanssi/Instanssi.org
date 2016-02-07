@@ -6,7 +6,7 @@ import json
 
 def rest_api(view_func):
     def json_view(request, *args, **kwargs):
-        request.json_data = None
+        request.json_data = {}
         if request.method == 'POST':
             try:
                 request.json_data = json.loads(request.body)

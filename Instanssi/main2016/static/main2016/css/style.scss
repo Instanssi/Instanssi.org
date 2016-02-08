@@ -96,7 +96,7 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary { float: left; width: 580px; margin-right: 20px; }
 #primary ul { list-style: disc; margin: 0px 0px 10px 30px;}
 #primary ol { list-style-type: decimal; margin: 0px 0px 10px 30px;}
-#primary li { margin-bottom: 5px; }
+#primary li { margin: 5px 0; }
 #primary a { color: $theme-color; text-decoration: underline; }
 #primary a:hover {  color: #09f; }
 #primary img { border: 3px solid #fff; box-shadow: 0px 0px 20px #ccc;}

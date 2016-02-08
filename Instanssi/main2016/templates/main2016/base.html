@@ -108,7 +108,7 @@
                 <ul>
                     <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:index' %}">Blogi</a></li>
                     <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:info' %}">Info</a></li>
-                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:kompot' %}">Kompot</a></li>-->
+                    <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:kompot' %}">Kompot</a></li>
                     <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:ohjelma' %}">Ohjelma</a></li>-->
                     <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:aikataulu' %}">Aikataulu</a></li>-->
                     <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:english' %}">In English</a></li>
@@ -125,11 +125,9 @@
                 {% block content %}{% endblock %}
             </section>
             <aside id="sidebar-widgets">
-            	<!--
                 <section class="widget widget-store">
                     <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
                 </section>
-                -->
                 {% block widgets %}
                 <section class="widget widget-twitter">
                     <h2>Twitter</h2>
@@ -173,7 +171,7 @@
                     <ul>
                         <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:index' %}">Blogi</a></li>
                         <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:info' %}">Info</a></li>
-                        <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:kompot' %}">Kompot</a></li>-->
+                        <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:kompot' %}">Kompot</a></li>
                         <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:ohjelma' %}">Ohjelma</a></li>-->
                         <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:aikataulu' %}">Aikataulu</a></li>-->
                         <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:english' %}">In English</a></li>

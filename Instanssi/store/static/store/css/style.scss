@@ -127,6 +127,7 @@ a.wizard-nav-button {
     font-size: 140%;
     margin-top: 0;
     margin-bottom: 0.5em;
+    min-height: 1.1em; // prevent content bouncing from discount marker
 }
 
 .item-image {
@@ -191,14 +192,15 @@ a.wizard-nav-button {
 
 .item-discount {
     position: relative;
-    display: inline-block;
-    padding: 10px 16px 10px;
+    padding: 0 0 0 16px;
+    margin: .75em 0;
 }
 
 .item-discount::before {
     position: absolute;
 	@include awesome-glyph('\f096');
     margin: 0 0 0 -15px;
+    top: 1px;
     color: #999;
 }
 

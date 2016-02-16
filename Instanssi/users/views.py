@@ -10,6 +10,17 @@ from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
 from common.misc import get_url_local_path
 
 
+AUTH_METHODS = [
+    # Short name, social-auth, friendly name
+    ('facebook', 'facebook', 'Facebook'),
+    ('google', 'google-oauth2', 'Google'),
+    ('twitter', 'twitter', 'Twitter'),
+    ('github', 'github', 'Github'),
+    ('battlenet', 'battlenet-oauth2', 'Battle.net'),
+    ('steam', 'steam', 'Steam'),
+]
+
+
 def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('users:profile'))
@@ -39,6 +50,7 @@ def login(request):
         'djangoform': djangoform,
         'openidform': openidform,
         'next': next,
+        'AUTH_METHODS': AUTH_METHODS
     }, context_instance=RequestContext(request))
 
 
@@ -48,6 +60,8 @@ def loggedout(request):
 
 @user_access_required
 def profile(request):
+    from social.apps.django_app.default.models import DjangoStorage
+
     if request.method == "POST":
         profileform = ProfileForm(request.POST, instance=request.user, user=request.user)
         if profileform.is_valid():
@@ -55,9 +69,21 @@ def profile(request):
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         profileform = ProfileForm(instance=request.user, user=request.user)
-    
+
+    # Get all active providers for this user
+    active_providers = []
+    for social_auth in DjangoStorage.user.get_social_auth_for_user(request.user):
+        active_providers.append(social_auth.provider)
+
+    # Providers list
+    methods = []
+    for method in AUTH_METHODS:
+        methods.append(method + (method[1] in active_providers, ))
+
     return render_to_response("users/profile.html", {
         'profileform': profileform,
+        'active_providers': active_providers,
+        'AUTH_METHODS': methods
     }, context_instance=RequestContext(request))
 
 

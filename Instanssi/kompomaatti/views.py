@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.forms import VoteCodeRequestForm, VoteCodeAssocForm, ParticipationForm,\
     EntryForm, TicketVoteCodeAssocForm
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode, VoteCode, Compo, Entry,\
-    Vote, CompetitionParticipation, Competition
+    Vote, CompetitionParticipation, Competition, Profile
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, competition_times_formatter
 from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming
@@ -33,9 +33,8 @@ def eventselect(request):
 def index(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     
-    # Add urls and formatted timestamps to eventslist
+    # Add urls and formatted timestamps to event list
     events = []
-    k = 0
     for event in get_upcoming(event):
         event['formatted_time'] = awesometime.format_single(event['date'])
         if event['type'] == 1:
@@ -66,12 +65,18 @@ def index(request, event_id):
             pass
     else:
         votecode_associated = True
-    
+
+    # Has profile already been checked and saved
+    profile_checked = False
+    if request.user.is_authenticated() and Profile.objects.filter(user=request.user).exists():
+        profile_checked = True
+
     # All done, dump template
     return render_to_response('kompomaatti/index.html', {
         'sel_event_id': int(event_id),
         'events': events,
         'votecode_associated': votecode_associated,
+        'profile_checked': profile_checked
     }, context_instance=RequestContext(request))
 
 

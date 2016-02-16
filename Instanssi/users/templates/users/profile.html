@@ -10,6 +10,7 @@
 {% block jquery %}
 {{ block.super }}
     $('.emailinput').addClass('textInput');
+    $('.login-button').button();
 {% endblock %}
 
 {% block crumbs %}
@@ -19,9 +20,23 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Profiili</h2>
-<p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
+    <h2>Kirjautumistilit</h2>
+    <p>
+        Halutessasi voit sitoa tiliisi muita kirjautumispalveluita. Tällöin voit kirjautua Instanssi.org palvelun
+        tiliisi käyttäen mitä tahansa tunnukseesi sidottua kirjautumispalvelua. Mikäli painike on harmaa, tarkoittaa
+        se palvelun olevan jo sidottu Instanssi.org-tiliin.
+    </p>
+    <p>
+    {% for method in AUTH_METHODS %}
+        {% if method.3 %}
+            <button class="login-button login-{{ method.0 }}" disabled="disabled">{{ method.2 }}</button>
+        {% else %}
+            <a class="login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">Sido {{ method.2 }}</a>
+        {% endif %}
+    {% endfor %}
+    </p>
 
-{% crispy profileform profileform.helper %}
-
+    <h2>Profiili</h2>
+    <p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
+    {% crispy profileform profileform.helper %}
 {% endblock %}

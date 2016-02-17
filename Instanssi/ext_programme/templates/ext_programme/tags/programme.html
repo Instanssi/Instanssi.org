@@ -6,6 +6,7 @@
         <div class="title">
             {{ prog.title }}
         </div>
+        <a class="schedule-link" href="{% url 'main2016:aikataulu' %}#sp-{{ prog.id }}">{{ prog.short_start_time }}</a>
         <div class="person">
             <div class="icon">
 {% if prog.icon_original %}

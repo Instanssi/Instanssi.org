@@ -12,6 +12,7 @@ register = template.Library()
 @register.inclusion_tag('ext_programme/tags/programme.html')
 def render_programme(event_id):
     progs = ProgrammeEvent.objects.filter(event_id=event_id, event_type=1, active=True).order_by('start')
+
     return {
         'event_id': event_id,
         'progs': progs,
@@ -96,6 +97,7 @@ def render_calendar(event_id):
                 'url': None,
                 'place': prog.place,
                 'desc': '',
+                'id': 'sp-%d' % (prog.id,)
             })
         else:
             events.append({
@@ -105,6 +107,7 @@ def render_calendar(event_id):
                 'url': '../ohjelma/#%d' % (prog.id,),
                 'place': prog.place,
                 'desc': prog.title,
+                'id': 'sp-%d' % (prog.id,)
             })
 
     # Sort list 

@@ -128,6 +128,15 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary .item { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
 
 #programme .item { border: none; }
+#programme .schedule-link {
+	float: right;
+	text-decoration: none;
+
+	&::before {
+		@include awesome-glyph('\f017');
+		margin-right: 4px;
+	}
+}
 
 /* blogi */
 #primary .message { clear: both; padding-bottom: 20px; margin-bottom: 20px; }

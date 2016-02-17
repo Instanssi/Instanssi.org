@@ -5,6 +5,16 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
 
+short_days = [
+    u'Ma',
+    u'Ti',
+    u'Ke',
+    u'To',
+    u'Pe',
+    u'La',
+    u'Su',
+]
+
 
 class ProgrammeEvent(models.Model):
     EVENT_TYPES = (
@@ -62,6 +72,14 @@ class ProgrammeEvent(models.Model):
         help_text=u"Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.")
     active = models.BooleanField(
         u'Aktiivinen', help_text=u'Deaktivoidut piilotetaan.', default=True)
+
+    @property
+    def short_start_time(self):
+        start = self.start
+        if start:
+            return "%s %s" % (short_days[start.weekday()],
+                              start.strftime("%H:%M"))
+        return ""
 
     def save(self, *args, **kwargs):
         # Delete old icon file when editing

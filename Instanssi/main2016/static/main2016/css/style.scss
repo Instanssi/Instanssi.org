@@ -109,8 +109,8 @@ sub { font-size: 75%; vertical-align: sub; }
 #primary p { margin-bottom: 10px; margin-left: 8px; margin-right: 8px; }
 #primary table { margin-bottom: 20px; width: 100%; }
 #primary table tr {  }
-#primary table th { color: #fff; font-weight: 700; text-align: left; padding: 10px; }
-#primary table td { padding: 10px; }
+#primary table th { color: #fff; font-weight: 700; text-align: left; padding: 8px; }
+#primary table td { padding: 8px; }
 #primary table .title { font-weight: bold; }
 #primary table tr:nth-child(even){ background: #eee; }
 #primary table td img { height: auto; border: none; box-shadow: none; width: 48px; vertical-align: middle; }

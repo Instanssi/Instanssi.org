@@ -8,7 +8,7 @@ html , body { font-family: sans-serif; }
 img { max-width: 99% !important; height: auto !important; }
 body * { color: #333; font-size: 14px; line-height: 150%; font-family: $body-font-family; }
 h1 { font-family: $title-font-family; font-variant: small-caps; font-size: 48px; margin-bottom: .75em; color: $theme-color; font-weight: bold; line-height: 90%; }
-h2, .item .title, .header, form legend { font-family: $title-font-family; font-size: 25px; margin: 20px 0; padding-left: 8px; color: #fff; font-weight: bold; }
+h2, .item .title, .header, form legend { font-family: $title-font-family; font-size: 25px; margin: 20px 0; padding-left: 8px; padding-right: 8px; color: #fff; font-weight: bold; }
 h3 {
 	font-size: 16px; margin: 20px 8px;
 	color: #000; font-weight: bold;

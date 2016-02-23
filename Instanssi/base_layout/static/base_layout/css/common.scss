@@ -15,3 +15,13 @@ $transition-large: 0.4s;
 	font: normal normal normal 1em/1 FontAwesome;
 	content: $code;
 }
+
+// This hides content visually but should not block screen readers, scraping
+// and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
+.visuallyhidden {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}

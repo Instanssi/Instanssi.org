@@ -117,12 +117,12 @@ sub { font-size: 75%; vertical-align: sub; }
 	table { margin-bottom: 20px; width: 100%; }
 	table tr {  }
 	table th { color: #fff; font-weight: 700; text-align: left; padding: 8px; }
-	table td { padding: 8px; }
+	table td { padding: 8px; vertical-align: middle; }
 	table .title { font-weight: bold; }
 	table tr:nth-child(even){ background: #eee; }
 	table td img { height: auto; border: none; box-shadow: none; width: 48px; vertical-align: middle; }
 	table td.time { font-size: 18px; font-weight: bold; width: 31px;}
-	table td.image { width: 48px; vertical-align: middle; }
+	table td.image { width: 48px; }
 
 }
 
@@ -137,13 +137,14 @@ sub { font-size: 75%; vertical-align: sub; }
 	.schedule-link {
 		float: right;
 		text-decoration: none;
+		margin-right: 8px;
 
 		&::before {
 			@include awesome-glyph('\f017');
 			margin-right: 4px;
 		}
 	}
-	.serviceicons { text-align: right; }
+	.serviceicons { text-align: right; margin-right: 8px; }
 	.serviceicons img { display: none; }
 	.serviceicons a { text-decoration: none; }
 	.serviceicons a::after { padding: 4px; }

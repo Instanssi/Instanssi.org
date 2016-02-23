@@ -33,14 +33,14 @@
             {{ prog.description|safe }}
         </div>
         <div class="serviceicons">
-{% if prog.home_url %}<a class="link-web" href="{{ prog.home_url }}"><img src="{% static 'ext_programme/images/link.png' %}" width="16" height="16" alt="Kotisivu" /></a>{% endif %}
-{% if prog.email %}<a class="link-email" href="mailto:{{ prog.email }}"><img src="{% static 'ext_programme/images/email.png' %}" width="16" height="16" alt="Sähköpostiosoite" /></a>{% endif %}
-{% if prog.twitter_url %}<a class="link-twitter" href="{{ prog.twitter_url }}"><img src="{% static 'ext_programme/images/twitter.png' %}" width="16" height="16" alt="Twitter" /></a>{% endif %}
-{% if prog.github_url %}<a class="link-github" href="{{ prog.github_url }}"><img src="{% static 'ext_programme/images/git.png' %}" width="16" height="16" alt="Github" /></a>{% endif %}
-{% if prog.facebook_url %}<a class="link-facebook" href="{{ prog.facebook_url }}"><img src="{% static 'ext_programme/images/facebook.png' %}" width="16" height="16" alt="Facebook" /></a>{% endif %}
-{% if prog.linkedin_url %}<a class="link-linkedin" href="{{ prog.linkedin_url }}"><img src="{% static 'ext_programme/images/linkedin.png' %}" width="16" height="16" alt="Linkedin" /></a>{% endif %}
-{% if prog.wiki_url %}<a class="link-wiki"  href="{{ prog.wiki_url }}"><img src="{% static 'ext_programme/images/wiki.png' %}" width="16" height="16" alt="Wikipedia" /></a>{% endif %}
-{% if prog.gplus_url %}<a class="link-gplus" href="{{ prog.gplus_url }}"><img src="{% static 'ext_programme/images/gplus.png' %}" width="16" height="16" alt="Google+" /></a>{% endif %}
+{% if prog.home_url %}<a class="link-web" href="{{ prog.home_url }}"><span class="visuallyhidden">Kotisivu</span></a>{% endif %}
+{% if prog.email %}<a class="link-email" href="mailto:{{ prog.email }}"><span class="visuallyhidden">Sähköpostiosoite</span></a>{% endif %}
+{% if prog.twitter_url %}<a class="link-twitter" href="{{ prog.twitter_url }}"><span class="visuallyhidden">Twitter</span></a>{% endif %}
+{% if prog.github_url %}<a class="link-github" href="{{ prog.github_url }}"><span class="visuallyhidden">Github</span></a>{% endif %}
+{% if prog.facebook_url %}<a class="link-facebook" href="{{ prog.facebook_url }}"><span class="visuallyhidden">Facebook</span></a>{% endif %}
+{% if prog.linkedin_url %}<a class="link-linkedin" href="{{ prog.linkedin_url }}"><span class="visuallyhidden">Linkedin</span></a>{% endif %}
+{% if prog.wiki_url %}<a class="link-wiki"  href="{{ prog.wiki_url }}"><span class="visuallyhidden">Wikipedia</span></a>{% endif %}
+{% if prog.gplus_url %}<a class="link-gplus" href="{{ prog.gplus_url }}"><span class="visuallyhidden">Google+</span></a>{% endif %}
         </div>
     </div>
 {% endfor %}

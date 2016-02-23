@@ -34,7 +34,7 @@
     $(function() {
 {% block jquery %}
     /* mobile nav button */
-    $('nav .nav-btn').click(function() {
+    $('#page-header .nav-btn').click(function() {
         var $nav = $('#page-header nav ul');
         $nav.toggleClass( 'active' );
         if($nav.hasClass('active') ){
@@ -91,6 +91,11 @@
             <span class="header-layer header-effect" z="100"></span>
             <div class="header-layers">
             </div>
+            <div class="nav-btn">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
             <div class="header-info container">
                 <a href="{% url 'main2016:index' %}" class="logo">
                     <h1>Instanssi&nbsp;2016</h1>
@@ -99,11 +104,6 @@
                 </a>
             </div>
             <nav class="container">
-                <div class="nav-btn">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
-                </div>
                 <div class="clearer"></div>
                 <ul>
                     <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2016:index' %}">Blogi</a></li>

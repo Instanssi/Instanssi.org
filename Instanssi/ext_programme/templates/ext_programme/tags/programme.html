@@ -8,20 +8,22 @@
         </div>
         <a class="schedule-link" href="{% url 'main2016:aikataulu' %}#sp-{{ prog.id }}">{{ prog.short_start_time }}</a>
         <div class="person">
+{% if prog.icon_original or prog.icon2_original %}
             <div class="icon">
 {% if prog.icon_original %}
-                <img src="{{ prog.icon_small.url }}" 
-                     width="{{ prog.icon_small.width }}" 
-                     height="{{ prog.icon_small.height }}" 
+                <img src="{{ prog.icon_small.url }}"
+                     width="{{ prog.icon_small.width }}"
+                     height="{{ prog.icon_small.height }}"
                      alt="Icon 1" />
 {% endif %}
 {% if prog.icon2_original %}
-                <img src="{{ prog.icon2_small.url }}" 
-                     width="{{ prog.icon2_small.width }}" 
-                     height="{{ prog.icon2_small.height }}" 
+                <img src="{{ prog.icon2_small.url }}"
+                     width="{{ prog.icon2_small.width }}"
+                     height="{{ prog.icon2_small.height }}"
                      alt="Icon 2" />
 {% endif %}
             </div>
+{% endif %}
             <div class="personalinfo">
                 <span class="names">{{ prog.presenters }}</span>
                 <span class="titles">{{ prog.presenters_titles }}</span>
@@ -31,14 +33,14 @@
             {{ prog.description|safe }}
         </div>
         <div class="serviceicons">
-{% if prog.home_url %}<a href="{{ prog.home_url }}"><img src="{% static 'ext_programme/images/link.png' %}" width="16" height="16" alt="Kotisivu" /></a>{% endif %}
-{% if prog.email %}<a href="mailto:{{ prog.email }}"><img src="{% static 'ext_programme/images/email.png' %}" width="16" height="16" alt="Sähköpostiosoite" /></a>{% endif %}
-{% if prog.twitter_url %}<a href="{{ prog.twitter_url }}"><img src="{% static 'ext_programme/images/twitter.png' %}" width="16" height="16" alt="Twitter" /></a>{% endif %}
-{% if prog.github_url %}<a href="{{ prog.github_url }}"><img src="{% static 'ext_programme/images/git.png' %}" width="16" height="16" alt="Github" /></a>{% endif %}
-{% if prog.facebook_url %}<a href="{{ prog.facebook_url }}"><img src="{% static 'ext_programme/images/facebook.png' %}" width="16" height="16" alt="Facebook" /></a>{% endif %}
-{% if prog.linkedin_url %}<a href="{{ prog.linkedin_url }}"><img src="{% static 'ext_programme/images/linkedin.png' %}" width="16" height="16" alt="Linkedin" /></a>{% endif %}
-{% if prog.wiki_url %}<a href="{{ prog.wiki_url }}"><img src="{% static 'ext_programme/images/wiki.png' %}" width="16" height="16" alt="Wikipedia" /></a>{% endif %}
-{% if prog.gplus_url %}<a href="{{ prog.gplus_url }}"><img src="{% static 'ext_programme/images/gplus.png' %}" width="16" height="16" alt="Google+" /></a>{% endif %}
+{% if prog.home_url %}<a class="link-web" href="{{ prog.home_url }}"><img src="{% static 'ext_programme/images/link.png' %}" width="16" height="16" alt="Kotisivu" /></a>{% endif %}
+{% if prog.email %}<a class="link-email" href="mailto:{{ prog.email }}"><img src="{% static 'ext_programme/images/email.png' %}" width="16" height="16" alt="Sähköpostiosoite" /></a>{% endif %}
+{% if prog.twitter_url %}<a class="link-twitter" href="{{ prog.twitter_url }}"><img src="{% static 'ext_programme/images/twitter.png' %}" width="16" height="16" alt="Twitter" /></a>{% endif %}
+{% if prog.github_url %}<a class="link-github" href="{{ prog.github_url }}"><img src="{% static 'ext_programme/images/git.png' %}" width="16" height="16" alt="Github" /></a>{% endif %}
+{% if prog.facebook_url %}<a class="link-facebook" href="{{ prog.facebook_url }}"><img src="{% static 'ext_programme/images/facebook.png' %}" width="16" height="16" alt="Facebook" /></a>{% endif %}
+{% if prog.linkedin_url %}<a class="link-linkedin" href="{{ prog.linkedin_url }}"><img src="{% static 'ext_programme/images/linkedin.png' %}" width="16" height="16" alt="Linkedin" /></a>{% endif %}
+{% if prog.wiki_url %}<a class="link-wiki"  href="{{ prog.wiki_url }}"><img src="{% static 'ext_programme/images/wiki.png' %}" width="16" height="16" alt="Wikipedia" /></a>{% endif %}
+{% if prog.gplus_url %}<a class="link-gplus" href="{{ prog.gplus_url }}"><img src="{% static 'ext_programme/images/gplus.png' %}" width="16" height="16" alt="Google+" /></a>{% endif %}
         </div>
     </div>
 {% endfor %}

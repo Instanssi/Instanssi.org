@@ -145,7 +145,6 @@ sub { font-size: 75%; vertical-align: sub; }
 		}
 	}
 	.serviceicons { text-align: right; margin-right: 8px; }
-	.serviceicons img { display: none; }
 	.serviceicons a { text-decoration: none; }
 	.serviceicons a::after { padding: 4px; }
 	a.link-web::after { @include awesome-glyph('\f08e'); }

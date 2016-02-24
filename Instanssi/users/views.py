@@ -28,9 +28,9 @@ def login(request):
     # Get referer for redirect
     # Make sure that the referrer is a local path.
     if 'next' in request.GET:
-        next = get_url_local_path(request.GET['next'])
+        next_page = get_url_local_path(request.GET['next'])
     else:
-        next = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
+        next_page = get_url_local_path(request.META.get('HTTP_REFERER', reverse('users:profile')))
 
     # Test django login form
     if request.method == "POST":
@@ -39,17 +39,17 @@ def login(request):
             djangoform.login(request)
             return HttpResponseRedirect(djangoform.cleaned_data['next'])
     else:
-        djangoform = DjangoLoginForm(next='/kompomaatti')
+        djangoform = DjangoLoginForm(next=next_page)
     
     # Openid login form
     # The form will be handled elsewhere; this is only for rendering the form.
-    openidform = OpenIDLoginForm(next=next)
+    openidform = OpenIDLoginForm(next=next_page)
     
     # Render response
     return render_to_response("users/login.html", {
         'djangoform': djangoform,
         'openidform': openidform,
-        'next': next,
+        'next': next_page,
         'AUTH_METHODS': AUTH_METHODS
     }, context_instance=RequestContext(request))
 

@@ -17,9 +17,10 @@ class DjangoLoginForm(forms.Form):
     next = forms.CharField(widget=forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):
-        self.next = kwargs.pop('next', '')
+        self.next_page = kwargs.pop('next', '')
+        self.logged_user = None
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
-        self.fields['next'].initial = self.next
+        self.fields['next'].initial = self.next_page
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
@@ -34,8 +35,7 @@ class DjangoLoginForm(forms.Form):
         )
 
     def clean_next(self):
-        next = get_url_local_path(self.cleaned_data['next'])
-        return next
+        return get_url_local_path(self.cleaned_data['next'])
 
     def clean(self):
         # Make sure the user is valid
@@ -45,7 +45,7 @@ class DjangoLoginForm(forms.Form):
             self.logged_user = auth.authenticate(
                 username=self.cleaned_data['username'],
                 password=self.cleaned_data['password'])
-            if self.logged_user == None or self.logged_user.is_active == False:
+            if not self.logged_user or self.logged_user.is_active is False:
                 self.logged_user = None
                 raise ValidationError(u'Väärä käyttäjätunnus tai salasana!')
         return cleaned_data

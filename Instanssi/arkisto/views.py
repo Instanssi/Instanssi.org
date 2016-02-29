@@ -7,8 +7,24 @@ from Instanssi.kompomaatti.models import Event, Compo, Entry, Competition, Compe
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
 
-# Event page
-# TODO: Optimize queries. For now, cache will do the trick.
+
+def text_event(request, event_id):
+    _event = get_object_or_404(Event, pk=int(event_id), archived=True)
+
+    # Get all compos that are active but not hidden from archive
+    compos = []
+    for compo in Compo.objects.filter(event=_event, active=True, hide_from_archive=False):
+        if compo.show_voting_results:
+            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+        else:
+            compo.entries = Entry.objects.filter(compo=compo).order_by('name')
+        compos.append(compo)
+
+    # Render Event frontpage
+    return render_to_response('arkisto/results.txt', {
+        'event': _event,
+        'compos': compos,
+    }, context_instance=RequestContext(request), content_type='text/plain; charset=utf-8')
 
 
 def event(request, event_id):
@@ -55,7 +71,7 @@ def event(request, event_id):
 def index(request):
     try:
         latest = Event.objects.filter(archived=True).latest('date')
-    except:
+    except Event.DoesNotExist:
         return render_to_response('arkisto/empty.html', context_instance=RequestContext(request))
             
     return event(request, latest.id)
@@ -64,34 +80,34 @@ def index(request):
 # Entry page
 def entry(request, entry_id):
     # Get the entry
-    entry = get_object_or_404(Entry, pk=entry_id)
+    _entry = get_object_or_404(Entry, pk=entry_id)
 
     # Make sure the entry belongs to an archived event
-    if not entry.compo.event.archived:
+    if not _entry.compo.event.archived:
         raise Http404
     
     # Make sure the compo is active and can be shown
-    if entry.compo.hide_from_archive or not entry.compo.active:
+    if _entry.compo.hide_from_archive or not _entry.compo.active:
         raise Http404
     
     # Dump the page
     return render_to_response('arkisto/entry.html', {
-        'entry': entry,
-        'event': entry.compo.event,
+        'entry': _entry,
+        'event': _entry.compo.event,
     }, context_instance=RequestContext(request))
 
 
 # Video page
 def video(request, video_id):
     # Get the entry
-    video = get_object_or_404(OtherVideo, pk=video_id)
+    _video = get_object_or_404(OtherVideo, pk=video_id)
 
     # Make sure the entry belongs to an archived event
-    if not video.category.event.archived:
+    if not _video.category.event.archived:
         raise Http404
     
     # Dump the page
     return render_to_response('arkisto/video.html', {
-        'video': video,
-        'event': video.category.event,
+        'video': _video,
+        'event': _video.category.event,
     }, context_instance=RequestContext(request))

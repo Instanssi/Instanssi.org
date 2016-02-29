@@ -376,7 +376,7 @@ class Entry(models.Model):
         
     def get_youtube_embed_url(self):
         split_url = urlparse(self.youtube_url)
-        return u"http://www.youtube.com/embed/{}/".format(os.path.split(split_url.path)[1])
+        return u"//www.youtube.com/embed/{}/".format(os.path.split(split_url.path)[1])
         
     def get_rank(self):
         # If rank has been predefined, then use that

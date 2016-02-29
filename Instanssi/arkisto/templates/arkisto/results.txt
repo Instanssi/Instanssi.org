@@ -5,7 +5,9 @@
   |___|___|  /____  > |__| (____  /___|  /____  >____  >__|
            \/     \/            \/     \/     \/     \/
 
-    {{ event.name }} / Jyväskylä, Finland / instanssi.org
+    {{ event.name }}
+    {{event.date|date:"c"}} @ Jyväskylä, Finland
+    https://instanssi.org
 
 {% for compo in compos %}
   {{ compo.name|upper|safe }}

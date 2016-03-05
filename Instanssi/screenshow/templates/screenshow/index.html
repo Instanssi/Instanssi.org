@@ -18,7 +18,6 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/playing.js' %}"></script>
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Exo:400,900" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
     <script type="text/javascript">
@@ -68,7 +67,13 @@
                     });
                 }
             },
-            mouse: { clickSelects: false }
+            mouse: { clickSelects: false },
+            viewPort : {
+                width: 1920,
+                height: 1080,
+                maxScale: 10,
+                minScale: 0.1
+            },
         });
     });
     </script>

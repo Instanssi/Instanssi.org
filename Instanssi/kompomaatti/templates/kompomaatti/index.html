@@ -54,6 +54,16 @@
 
     {% endif %}
 
+    {% if not_voted_on and votecode_associated %}
+        <h3>Äänestämättömät kompot</h3>
+        <p>Et ole vielä äänestänyt seuraavia kompoja:</p>
+        <ul>
+        {% for compo in not_voted_on %}
+            <li><a href="{% url 'km:compo-vote' sel_event_id compo.id %}">{{ compo.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     <h3>Tulevat tapahtumat</h3>
     {% if events %}
     <table>

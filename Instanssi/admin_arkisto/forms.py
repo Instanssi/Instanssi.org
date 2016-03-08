@@ -43,7 +43,9 @@ class VideoForm(forms.ModelForm):
         # Check if we already have a valid embed url
         url = self.cleaned_data['youtube_url']
         if url.find('http://www.youtube.com/v/') == 0:
-            return url
+            return url[5:]
+        if url.find('https://www.youtube.com/v/') == 0:
+            return url[6:]
 
         # Parse querystring to find video ID
         parsed = urlparse.urlparse(url)
@@ -54,8 +56,8 @@ class VideoForm(forms.ModelForm):
             raise forms.ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
             
         # All done. Return valid url
-        return 'http://www.youtube.com/v/'+qs['v'][0]+'/'
-                
+        return '//www.youtube.com/v/'+qs['v'][0]+'/'
+
     class Meta:
         model = OtherVideo
         fields = ('category', 'name', 'description', 'youtube_url')

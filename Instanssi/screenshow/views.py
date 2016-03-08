@@ -6,6 +6,7 @@ from common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
 from datetime import datetime
+from django.utils.safestring import mark_safe
 
 
 def index(request, event_id):
@@ -79,7 +80,7 @@ def messages_api(request, event_id):
     messages = []
     for msg in Message.objects.filter(event_id=event_id):
         if msg.show_start <= datetime.now() <= msg.show_end:
-            messages.append(msg.text)
+            messages.append(mark_safe(msg.text))
     return JSONResponse({'messages': messages})
 
 

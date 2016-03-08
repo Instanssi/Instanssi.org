@@ -18,7 +18,6 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/playing.js' %}"></script>
     
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Exo:400,900" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
     <script type="text/javascript">
@@ -52,7 +51,7 @@
         $.each(modules, function(key, module){
             module.init(); 
         });
-        
+
         // Init jmpress
         jm.jmpress({
             afterInit: function(element, eventData) {
@@ -68,12 +67,19 @@
                     });
                 }
             },
-            mouse: { clickSelects: false }
+            mouse: { clickSelects: false },
+            viewPort : {
+                width: 1600,
+                height: 900,
+                maxScale: 10,
+                minScale: 0.1
+            },
         });
     });
     </script>
 </head>
 <body>
+<div id="screenshow-container">
 <div id="jmpress">
     <div id="nametext" class="step nohide text" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
     <div id="clock" class="step dohide text" data-x="0" data-y="-500" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
@@ -98,7 +104,8 @@
     <div id="events" class="step dohide text" data-x="700" data-y="0" data-z="300" data-rotate-z="310" data-rotate-y="50" data-scale="0.2" data-duration="7000"></div>
     <div id="playing" class="step dohide text" data-x="100" data-y="400" data-z="-500" data-rotate-x="330" data-rotate-z="270" data-rotate-y="160" data-scale="0.2" data-duration="7000"></div>
     <div id="messages" class="step dohide text" data-x="-200" data-y="200" data-z="-150" data-rotate-x="90" data-rotate-z="0" data-rotate-y="270" data-scale="0.2" data-duration="8000"></div>
-    <div id="irc" class="step dohide text" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" data-scale="0.2" data-duration="20000"></div>
+    <div id="irc" class="step dohide text" data-x="-400" data-y="0" data-z="-350" data-rotate-z="30" data-rotate-y="200" data-scale="0.2" data-duration="32000"></div>
+</div>
 </div>
 </body>
 </html>

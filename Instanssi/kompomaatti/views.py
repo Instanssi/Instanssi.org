@@ -66,6 +66,14 @@ def index(request, event_id):
     else:
         votecode_associated = True
 
+    # Get compos the user has not yet voted on
+    not_voted_on = []
+    if request.user.is_active and request.user.is_authenticated() and votecode_associated:
+        for compo in Compo.objects.filter(event=event_id, active=True):
+            if compo.is_voting_open():
+                if Vote.objects.filter(user=request.user, compo=compo).count() == 0:
+                    not_voted_on.append(compo)
+
     # Has profile already been checked and saved
     profile_checked = False
     if request.user.is_authenticated() and Profile.objects.filter(user=request.user).exists():
@@ -75,6 +83,7 @@ def index(request, event_id):
     return render_to_response('kompomaatti/index.html', {
         'sel_event_id': int(event_id),
         'events': events,
+        'not_voted_on': not_voted_on,
         'votecode_associated': votecode_associated,
         'profile_checked': profile_checked
     }, context_instance=RequestContext(request))

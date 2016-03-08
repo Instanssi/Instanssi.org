@@ -1,9 +1,65 @@
-/* ---------- Voting crap ---------- */
+@import 'base_layout/css/common.scss';
 
-div.vote-widget {
-    width: 500px;
+// layout
+
+.vote-widget {
+    width: 100%;
+    box-sizing: border-box;
     border: 1px solid #999999;
 }
+
+.vote-wrapper {
+    clear: both;
+    float: left;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    position: relative;
+}
+
+.vote-wrapper.vote-buttons {
+    text-align: right;
+}
+
+// time to bust out the old margin hack
+#compo-vote ul {
+    float: left;
+    left: 100% !important;
+    width: 50%;
+    width: calc(50% - 12px);
+    position: relative;
+    margin: 0 0 8px !important;
+}
+
+#compo-vote ul#from_list {
+    margin-left: -100% !important;
+    margin-left: calc(-100% + 8px) !important;
+}
+
+#compo-vote ul#to_list {
+    margin-left: -50% !important;
+    margin-left: calc(-50% + 4px) !important;
+}
+
+.vote-entry {
+    max-width: 100%;
+    margin: 4px 32px 4px 4px;
+    display: block;
+}
+.vote-entry > * {
+    max-width: 100%;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    width: inherit;
+    text-overflow: ellipsis;
+}
+.vote-entry .vote-entry-desc {
+    margin-top: 4px;
+}
+
+// details
+
 
 ul.vote-list {
     float: left;
@@ -14,6 +70,14 @@ ul.vote-list {
 .vote-list-item {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
+    position: relative;
+}
+
+.vote-right {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    margin: 0;
 }
 
 div.vote-notice {
@@ -32,14 +96,13 @@ div.vote-notice > span {
     margin: 3px;
 }
 
-div.vote-widget ul {
+#compo-vote.vote-widget ul {
     border: 1px dotted black;
-    display: inline-block;
-    width: 220px;
+    box-sizing: border-box;
     padding: 6px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #efefef;
+    background-color: #eee;
     min-height: 50px;
 }
 
@@ -49,20 +112,24 @@ div.vote-widget li {
     border: 1px solid #999999;
     display: block;
     border-radius: 2px;
-    height: 40px;
+    min-height: 40px;
     background: #efefef;
-    background: -moz-linear-gradient(top, rgba(239,239,239,1) 0%, rgba(229,229,229,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(239,239,239,1)), color-stop(100%,rgba(229,229,229,1)));
-    background: -webkit-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
-    background: -o-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
-    background: -ms-linear-gradient(top, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%); 
-    background: linear-gradient(to bottom, rgba(239,239,239,1) 0%,rgba(229,229,229,1) 100%);
+    cursor: grab;
 }
 
-.vote-entry {
-    margin: 5px;
-    display: inline-block;
-    width: 160px;
+#compo-vote #to_list {
+    li:nth-child(1) {
+        background: #fff;
+        color: black;
+    }
+    li:nth-child(2) {
+        background: #fafafa;
+        color: black;
+    }
+    li:nth-child(3) {
+        background: #f0f0f0;
+        color: black;
+    }
 }
 
 .vote-right {
@@ -70,7 +137,6 @@ div.vote-widget li {
     width: 29px;
     text-align: center;
     border: 0;
-    margin: 5px;
 }
 
 .vote-rank {
@@ -87,15 +153,6 @@ div.vote-widget li {
     position: relative;
 }
 
-span.vote-entry-name,
-span.vote-entry-desc {
-    white-space: nowrap;
-    display: inline-block;
-    overflow: hidden;
-    width: inherit;
-    text-overflow: ellipsis;
-}
-
 span.vote-entry-desc {
     font-size: 10px;
 }
@@ -104,9 +161,4 @@ span.vote-button {
     margin-right: 10px;
 }
 
-div.vote-button-wrapper {
-    clear: both; 
-    text-align: right;
-    margin-top: 10px;
-}
 

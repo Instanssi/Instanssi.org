@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from datetime import datetime
-from urlparse import urlparse
+from urlparse import urlparse, parse_qs
 from Instanssi.kompomaatti.misc import entrysort
 
 
@@ -377,8 +377,17 @@ class Entry(models.Model):
     @staticmethod
     def youtube_url_to_id(url):
         """Convert any valid YouTube URL to its video id."""
-        split_url = urlparse(url)
-        return os.path.split(split_url.path)[1]
+        # There's probably a regex that does this in one line...
+        parsed = urlparse(url)
+        querydict = parse_qs(parsed.query)
+        if "v" in querydict:
+            return querydict["v"][0]
+        split_path = parsed.path.split("/")  # => ["", "v", "asdf"]
+        if len(split_path) >= 2 and parsed.hostname == "youtu.be":
+            return split_path[1]
+        if len(split_path) >= 3 and split_path[1] == "v":
+            return split_path[2]
+        return None
 
     def get_youtube_embed_url(self):
         """Get embed URL for this entry's YouTube link."""

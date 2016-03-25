@@ -373,10 +373,17 @@ class Entry(models.Model):
                 if vote.rank > 0:
                     score += (1.0 / vote.rank)
             return score
-        
+
+    @staticmethod
+    def youtube_url_to_id(url):
+        """Convert any valid YouTube URL to its video id."""
+        split_url = urlparse(url)
+        return os.path.split(split_url.path)[1]
+
     def get_youtube_embed_url(self):
-        split_url = urlparse(self.youtube_url)
-        return u"//www.youtube.com/embed/{}/".format(os.path.split(split_url.path)[1])
+        """Get embed URL for this entry's YouTube link."""
+        video_id = self.youtube_url_to_id(self.youtube_url)
+        return u"//www.youtube.com/embed/{}/".format(video_id)
         
     def get_rank(self):
         # If rank has been predefined, then use that

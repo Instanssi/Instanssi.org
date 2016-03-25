@@ -3,15 +3,16 @@ from Instanssi.kompomaatti.models import Entry
 
 
 VALID_YOUTUBE_URLS = [
-    # must handle various protocols in the video URL
+    # must handle various protocols and hostnames in the video URL
     "http://www.youtube.com/v/asdf123456",
     "https://www.youtube.com/v/asdf123456/",
     "//www.youtube.com/v/asdf123456",
     "www.youtube.com/v/asdf123456",
+    "youtube.com/v/asdf123456/",
     # must handle various other ways to define the video
     "www.youtube.com/watch?v=asdf123456",
     "http://youtu.be/asdf123456",
-    "http://youtu.be/asdf123456/"
+    "https://youtu.be/asdf123456/"
 ]
 
 
@@ -20,7 +21,7 @@ class KompomaattiTests(TestCase):
         pass
 
     def test_youtube_urls(self):
-        """Test that various YouTube URLs are parsed properly."""
+        """Test YouTube video id extraction from URLs."""
         for url in VALID_YOUTUBE_URLS:
-            print("Test URL: %s" % url)
-            self.assertEqual(Entry.youtube_url_to_id(url), "asdf123456")
+            self.assertEqual(Entry.youtube_url_to_id(url), "asdf123456",
+                             msg="failing URL: %s" % url)

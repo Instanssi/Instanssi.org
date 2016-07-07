@@ -2,10 +2,12 @@
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.http.response import JsonResponse
 from django.http import Http404
 from Instanssi.kompomaatti.models import Event, Compo, Entry, Competition, CompetitionParticipation
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
+from common.misc import get_url
 
 
 def text_event(request, event_id):
@@ -25,6 +27,34 @@ def text_event(request, event_id):
         'event': _event,
         'compos': compos,
     }, context_instance=RequestContext(request), content_type='text/plain; charset=utf-8')
+
+
+def json_event(request, event_id):
+    _event = get_object_or_404(Event, pk=int(event_id), archived=True)
+
+    # Get all compos that are active but not hidden from archive
+    out = []
+    for c in Compo.objects.filter(event=_event, active=True, hide_from_archive=False):
+        if c.show_voting_results:
+            entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+        else:
+            entries = Entry.objects.filter(compo=c).order_by('name')
+
+        for e in entries:
+            out.append({
+                'compo_name': c.name,
+                'entry_name': e.name,
+                'entry_score': round(e.get_score(), 2),
+                'entry_rank': e.get_rank(),
+                'entry_result_url': get_url(e.entryfile.url),
+                'entry_source_url': get_url(e.sourcefile.url) if e.sourcefile else None,
+                'entry_youtube_url': get_url(e.youtube_url) if e.youtube_url else None,
+                'entry_image_thumbnail': get_url(e.imagefile_thumbnail.url) if e.imagefile_thumbnail else None,
+                'entry_image_medium': get_url(e.imagefile_medium.url) if e.imagefile_medium else None,
+                'entry_image_original': get_url(e.imagefile_original.url) if e.imagefile_original else None
+            })
+
+    return JsonResponse(data=out, safe=False)
 
 
 def event(request, event_id):

@@ -44,6 +44,7 @@ def json_event(request, event_id):
             out.append({
                 'compo_name': c.name,
                 'entry_name': e.name,
+                'entry_author': e.creator,
                 'entry_score': round(e.get_score(), 2),
                 'entry_rank': e.get_rank(),
                 'entry_result_url': get_url(e.entryfile.url),

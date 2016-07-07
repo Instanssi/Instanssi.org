@@ -5,7 +5,7 @@ django-debug-toolbar==1.4
 django-formtools==1.0
 django-imagekit==3.3
 django-twitter-tag==1.2.1
-Pillow==3.1.0
+Pillow==3.2.0
 python-social-auth==0.2.14
 reportlab==3.2.0
 django-libsass==0.6

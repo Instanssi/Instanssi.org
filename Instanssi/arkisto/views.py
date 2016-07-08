@@ -58,7 +58,7 @@ def json_event(request, event_id):
                 'entry_rank': e.get_rank(),
                 'entry_result_url': get_url(e.entryfile.url),
                 'entry_source_url': get_url(e.sourcefile.url) if e.sourcefile else None,
-                'entry_youtube_url': get_url(e.youtube_url) if e.youtube_url else None,
+                'entry_youtube_url': e.youtube_url if e.youtube_url else None,
                 'entry_image_thumbnail': get_url(e.imagefile_thumbnail.url) if e.imagefile_thumbnail else None,
                 'entry_image_medium': get_url(e.imagefile_medium.url) if e.imagefile_medium else None,
                 'entry_image_original': get_url(e.imagefile_original.url) if e.imagefile_original else None

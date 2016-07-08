@@ -33,16 +33,25 @@ def json_event(request, event_id):
     _event = get_object_or_404(Event, pk=int(event_id), archived=True)
 
     # Get all compos that are active but not hidden from archive
-    out = []
+    entries_out = []
+    compos_out = []
     for c in Compo.objects.filter(event=_event, active=True, hide_from_archive=False):
         if c.show_voting_results:
             entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
         else:
             entries = Entry.objects.filter(compo=c).order_by('name')
 
+        compos_out.append({
+            'id': c.pk,
+            'name': c.name,
+            'entry_count': len(entries)
+        })
+
         for e in entries:
-            out.append({
+            entries_out.append({
+                'id': e.id,
                 'compo_name': c.name,
+                'compo_id': c.pk,
                 'entry_name': e.name,
                 'entry_author': e.creator,
                 'entry_score': round(e.get_score(), 2),
@@ -55,7 +64,10 @@ def json_event(request, event_id):
                 'entry_image_original': get_url(e.imagefile_original.url) if e.imagefile_original else None
             })
 
-    return JsonResponse(data=out, safe=False)
+    return JsonResponse({
+        'entries': entries_out,
+        'compos': compos_out
+    })
 
 
 def event(request, event_id):

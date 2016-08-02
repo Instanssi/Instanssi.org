@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 
 
 def pageloader(request, templatename):
-    return render_to_response('main2015/'+templatename+'.html', {
+    return render(request, 'main2015/'+templatename+'.html', {
         'event_id': 12,
         'templatename': templatename,
-    }, context_instance=RequestContext(request))
+    })

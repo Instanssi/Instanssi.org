@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from common.auth import user_access_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
@@ -46,16 +45,16 @@ def login(request):
     openidform = OpenIDLoginForm(next=next_page)
     
     # Render response
-    return render_to_response("users/login.html", {
+    return render(request, "users/login.html", {
         'djangoform': djangoform,
         'openidform': openidform,
         'next': next_page,
         'AUTH_METHODS': AUTH_METHODS
-    }, context_instance=RequestContext(request))
+    })
 
 
 def loggedout(request):
-    return render_to_response("users/loggedout.html")
+    return render(request, "users/loggedout.html")
 
 
 @user_access_required
@@ -80,11 +79,11 @@ def profile(request):
     for method in AUTH_METHODS:
         methods.append(method + (method[1] in active_providers, ))
 
-    return render_to_response("users/profile.html", {
+    return render(request, "users/profile.html", {
         'profileform': profileform,
         'active_providers': active_providers,
         'AUTH_METHODS': methods
-    }, context_instance=RequestContext(request))
+    })
 
 
 def logout(request):

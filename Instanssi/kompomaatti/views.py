@@ -4,8 +4,7 @@ from common.http import Http403
 from common.auth import user_access_required
 from common.rest import rest_api, RestResponse
 
-from django.shortcuts import get_object_or_404, render_to_response
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
@@ -25,7 +24,7 @@ def eventselect(request):
     try:
         latest_event = Event.objects.latest('id')
     except Event.DoesNotExist:
-        return render_to_response('kompomaatti/event_select.html', {}, context_instance=RequestContext(request))
+        return render(request, 'kompomaatti/event_select.html', {})
 
     return HttpResponseRedirect(reverse('km:index', args=(latest_event.pk,)))
 
@@ -80,13 +79,13 @@ def index(request, event_id):
         profile_checked = True
 
     # All done, dump template
-    return render_to_response('kompomaatti/index.html', {
+    return render(request, 'kompomaatti/index.html', {
         'sel_event_id': int(event_id),
         'events': events,
         'not_voted_on': not_voted_on,
         'votecode_associated': votecode_associated,
         'profile_checked': profile_checked
-    }, context_instance=RequestContext(request))
+    })
 
 
 def compos(request, event_id):
@@ -96,10 +95,10 @@ def compos(request, event_id):
         compo_list.append(compo_times_formatter(compo))
     
     # Dump the template
-    return render_to_response('kompomaatti/compos.html', {
+    return render(request, 'kompomaatti/compos.html', {
         'sel_event_id': int(event_id),
         'compos': compo_list,
-    }, context_instance=RequestContext(request))
+    })
 
 
 def compo_details(request, event_id, compo_id):
@@ -160,7 +159,7 @@ def compo_details(request, event_id, compo_id):
             has_voted = True
     
     # Dump template
-    return render_to_response('kompomaatti/compo_details.html', {
+    return render(request, 'kompomaatti/compo_details.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'entryform': entryform,
@@ -168,7 +167,7 @@ def compo_details(request, event_id, compo_id):
         'all_entries': all_entries,
         'my_entries': my_entries,
         'has_voted': has_voted,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @user_access_required
@@ -270,13 +269,13 @@ def compo_vote(request, event_id, compo_id):
         nvoted_entries = Entry.objects.filter(compo=compo, disqualified=False).order_by('?')
     
     # Dump template
-    return render_to_response('kompomaatti/compo_vote.html', {
+    return render(request, 'kompomaatti/compo_vote.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'voted_entries': voted_entries,
         'nvoted_entries': nvoted_entries,
         'has_voted': has_voted,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @user_access_required
@@ -301,12 +300,12 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
         entryform = EntryForm(instance=entry, compo=compo)
     
     # Dump template
-    return render_to_response('kompomaatti/entry_edit.html', {
+    return render(request, 'kompomaatti/entry_edit.html', {
         'sel_event_id': int(event_id),
         'compo': compo,
         'entry': entry,
         'entryform': entryform,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @user_access_required
@@ -335,10 +334,10 @@ def competitions(request, event_id):
         competitions.append(competition_times_formatter(competition))
     
     # Dump the template
-    return render_to_response('kompomaatti/competitions.html', {
+    return render(request, 'kompomaatti/competitions.html', {
         'sel_event_id': int(event_id),
         'competitions': competitions,
-    }, context_instance=RequestContext(request))
+    })
 
 
 def competition_details(request, event_id, competition_id):
@@ -381,7 +380,7 @@ def competition_details(request, event_id, competition_id):
             pass
     
     # All done, dump template
-    return render_to_response('kompomaatti/competition_details.html', {
+    return render(request, 'kompomaatti/competition_details.html', {
         'sel_event_id': int(event_id),
         'competition': competition,
         'participation': participation,
@@ -389,7 +388,7 @@ def competition_details(request, event_id, competition_id):
         'can_participate': can_participate,
         'participationform': participationform,
         'participants': participants,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @user_access_required
@@ -423,11 +422,11 @@ def entry_details(request, event_id, compo_id, entry_id):
     entry = get_object_or_404(Entry, pk=int(entry_id), compo=compo)
     
     # Render
-    return render_to_response('kompomaatti/entry_details.html', {
+    return render(request, 'kompomaatti/entry_details.html', {
         'sel_event_id': int(event_id),
         'entry': entry,
         'compo': compo,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @user_access_required
@@ -521,7 +520,7 @@ def votecode(request, event_id):
         votecoderequestform = VoteCodeRequestForm()
     
     # Render
-    return render_to_response('kompomaatti/votecode.html', {
+    return render(request, 'kompomaatti/votecode.html', {
         'sel_event_id': int(event_id),
         'votecodeassocform': votecodeassocform,
         'votecoderequestform': votecoderequestform,
@@ -530,5 +529,5 @@ def votecode(request, event_id):
         'can_vote': can_vote,
         'votecode_type': votecode_type,
         'request_made': request_made,
-    }, context_instance=RequestContext(request))
+    })
 

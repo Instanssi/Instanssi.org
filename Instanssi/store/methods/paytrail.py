@@ -4,7 +4,7 @@ from common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import paytrail, ta_common
 
@@ -97,7 +97,7 @@ def handle_failure(request):
         ta_common.handle_cancellation(ta)
         return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
 
-    return render_to_response('store/failure.html')
+    return render(request, 'store/failure.html')
 
 
 def handle_success(request):
@@ -117,7 +117,7 @@ def handle_success(request):
         ta_common.handle_pending(ta)
         return HttpResponseRedirect(reverse('store:pm:paytrail-success'))
 
-    return render_to_response('store/success.html')
+    return render(request, 'store/success.html')
 
 
 def handle_notify(request):

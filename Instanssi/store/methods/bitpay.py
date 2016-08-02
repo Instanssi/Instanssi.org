@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from Instanssi.store.models import StoreTransaction, TransactionItem
 from Instanssi.store.utils import bitpay, ta_common
 
@@ -59,12 +59,12 @@ def handle_failure(request):
     # FIXME this never comes from bitpay but is here because of
     # mysterious Exception redirects in previous function.
 
-    return render_to_response('store/failure.html')
+    return render(request, 'store/failure.html')
 
 
 def handle_success(request):
     """ Handles the success user redirect from Paytrail """
-    return render_to_response('store/success.html')
+    return render(request, 'store/success.html')
 
 
 @csrf_exempt

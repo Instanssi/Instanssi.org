@@ -5,8 +5,7 @@ from datetime import datetime
 from common.auth import infodesk_access_required
 
 from django.db.models import Q
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
@@ -25,9 +24,7 @@ TXN_ITEM_PREFIX = "item:"
 @infodesk_access_required
 def index(request):
     """Main infodesk view."""
-    return render_to_response(
-        'infodesk/index.html', {},
-        context_instance=RequestContext(request))
+    return render(request, 'infodesk/index.html', {})
 
 
 def ta_fuzzy_query(term):
@@ -112,11 +109,11 @@ def order_search(request):
         txns = StoreTransaction.objects.filter(txn_filter)
         items = TransactionItem.objects.filter(item_filter)
 
-    return render_to_response('infodesk/order_search.html', {
+    return render(request, 'infodesk/order_search.html', {
         'transactions': txns,
         'items': items,
         'term': term
-    }, context_instance=RequestContext(request))
+    })
 
 
 @infodesk_access_required
@@ -129,9 +126,9 @@ def item_check(request):
     else:
         form = ItemKeyScanForm()
 
-    return render_to_response('infodesk/item_check.html', {
+    return render(request, 'infodesk/item_check.html', {
         'form': form
-    }, context_instance=RequestContext(request))
+    })
 
 
 @infodesk_access_required
@@ -144,9 +141,9 @@ def transaction_check(request):
     else:
         form = TransactionKeyScanForm()
 
-    return render_to_response('infodesk/ta_check.html', {
+    return render(request, 'infodesk/ta_check.html', {
         'form': form
-    }, context_instance=RequestContext(request))
+    })
 
 
 @infodesk_access_required
@@ -170,14 +167,14 @@ def item_mark(request, item_id):
 @infodesk_access_required
 def item_info(request, item_id):
     item = get_object_or_404(TransactionItem, pk=item_id)
-    return render_to_response('infodesk/item_info.html', {
+    return render(request, 'infodesk/item_info.html', {
         'item': item
-    }, context_instance=RequestContext(request))
+    })
 
 
 @infodesk_access_required
 def transaction_info(request, transaction_id):
     transaction = get_object_or_404(StoreTransaction, pk=transaction_id)
-    return render_to_response('infodesk/ta_info.html', {
+    return render(request, 'infodesk/ta_info.html', {
         'transaction': transaction
-    }, context_instance=RequestContext(request))
+    })

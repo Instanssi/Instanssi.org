@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
 from common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
@@ -24,10 +23,10 @@ def index(request, event_id):
         x += 75
         
     # Render the show
-    return render_to_response('screenshow/index.html', {
+    return render(request, 'screenshow/index.html', {
         'event_id': event_id,
         'sponsors': sponsors,
-    }, context_instance=RequestContext(request))
+    })
 
 
 def settings_api(request, event_id):

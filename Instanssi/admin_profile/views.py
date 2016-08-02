@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
 from common.auth import staff_access_required
-from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_profile.forms import PasswordChangeForm,InformationChangeForm
+from Instanssi.admin_profile.forms import PasswordChangeForm, InformationChangeForm
+
 
 @staff_access_required
 def password(request):
@@ -22,6 +21,7 @@ def password(request):
     return admin_render(request, "admin_profile/password.html", {
         'pwform': pwform,
     })
+
 
 @staff_access_required
 def profile(request):

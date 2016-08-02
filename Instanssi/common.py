@@ -62,6 +62,20 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+'''
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'common.http.Http403Middleware',
+]
+
+'''
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,6 +85,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'common.http.Http403Middleware',
 )
+
 
 ROOT_URLCONF = 'Instanssi.urls'
 
@@ -82,6 +97,7 @@ INSTALLED_APPS = (
     'Instanssi.main2014',
     'Instanssi.main2015',
     'Instanssi.main2016',
+    'Instanssi.main2017',
     'Instanssi.admin_base',
     'Instanssi.admin_arkisto',
     'Instanssi.admin_blog',

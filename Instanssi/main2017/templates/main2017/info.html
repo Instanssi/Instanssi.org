@@ -1,0 +1,123 @@
+{% extends "main2017/base.html" %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Info</h1>
+
+<h2>Mikä on Instanssi?</h2>
+<p>
+  Instanssi on ainejärjestö Linkki Jyväskylä ry:n vuotuisesti, jo vuodesta 2010 lähtien järjestämä digitaalisen tekemisen festivaali Jyväskylässä.
+</p>
+<p>
+  Instanssi on aloittelijaystävällinen viikonlopun mittainen tapahtuma, jonka ohjelma koostuu kompoista (eli kilpailuista), pelaamisesta, ohjelmoimisesta, esitelmistä ja työpajoista.
+</p>
+<p>
+  Tapahtuman erikoisuuksina ovat ohjelmoitava salivalaistus ja kompoista erityisesti Summamutikka, jossa tavoitteena on mahdollisimman suuri hämmennys vapaavalintaisella esittämistavalla.
+</p>
+
+
+<h2>Aika ja paikka</h2>
+<p>
+  Instanssi 2016 järjestetään 4.-6.3.2016 <a href="http://www.valorinne.fi">Valorinteellä</a> osoitteessa Kyllöläntie 16, Jyväskylä.
+</p>
+<iframe id="instanssi-location-map" width="600" height="450" frameborder="0" style="border:0; max-width:100%" src="https://www.google.com/maps/embed/v1/place?q=valorinne&key={{ GOOGLE_API_KEY }}&zoom=13" allowfullscreen></iframe>
+
+<h2>Mitä mukaan?</h2>
+<p>
+    Instanssiin tullessaan on hyvä varautua samaan malliin kuin laneille tai muille demopartyille tullessa.
+    Tässäpä lista, huomaa kahvikuppi:
+</p>
+<ul>
+  <li>
+      Tietokone tarvikkeineen, 10 metrin verkkojohto on hyvä idea, samoin jatkojohto jossa riittää reikiä kaikille
+      tuomillesi laitteille. Merkitse etenkin johtosi, mutta mielellään muutkin tuomasi tavarat, jotta löydät omasi
+      helposti lähtiessäsi.
+  </li>
+  <li>Makuupussi ja -alusta tai vastaavat yöpymisvälineet</li>
+  <li>Vaihtovaatteita viikonlopun tarpeiksi</li>
+  <li>Henkilökohtaiset hygieniavälineet: pyyhe, hammasharja ja sitä rataa. Paikalla on suihku.</li>
+  <li>Käteistä rahaa mm. ovelta ostettavia lippuja tai t-paitoja varten.</li>
+  <li>Oma kahvikuppi ilmaista kahvia ja teetä varten</li>
+  <li>Pientä purtavaa ja juotavaa kannattaa olla omastakin takaa. Tapahtumapaikalla tänä vuonna on ainakin yksi yleisön käytössä oleva jääkaappi, sekä mikroaaltouuni.
+    <ul><li>Konepaikkojen sähköverkko ei kestä kävijöiden omia kodinkoneita, kuten kahvinkeittimiä, jääkaappeja tai mikroaaltouuneja. Saat tuoda oman peltier-elementillä varustetun matkakylmälaukun.</li></ul>
+  </li>
+  <li>Hilpeää partyfiilistä!</li>
+</ul>
+
+<h2>Yhteystiedot</h2>
+<p>
+    IRC: #instanssi @ IRCNet<br />
+    Email: Koko työryhmän tavoitat osoitteesta info@instanssi.org.<br />
+    Muut sosiaalisen median yhteystiedot löytyvät sivustomme sivupalkista.
+</p>
+<p>
+    Voit halutessasi liittyä Instanssi-postilistalle osoitteessa
+    <a href="http://groups.google.com/group/instanssi">http://groups.google.com/group/instanssi</a>.
+    Listalle lähetetään oleellisimmat Instanssia koskevat tiedotteet.
+</p>
+
+
+<h2>Teemat</h2>
+<p>
+  Instanssi 2016 -tapahtuman teemana on <em>liike</em>. Yhdistämällä teeman kompoteokseesi saat arvosteluissa lisäpisteitä! Voit lukea lisää <a href="https://instanssi.org/2016/#48">blogimerkinnästämme</a>.
+</p>
+
+
+
+{% comment %}
+<h2>Yhteystiedot</h2>
+<h3>Yhteyshenkilöt</h3>
+<p>
+    Samuel Uusi-Mäkelä<br />
+    email: uusimake@gmail.com<br />
+    puhelin: 040&nbsp;778&nbsp;8260<br />
+    IRCnet: Kaiutin
+</p>
+<p>
+    Jouni Potila<br />
+    email: jouni.potila@gmail.com<br />
+    puhelin: 040&nbsp;744&nbsp;8043<br />
+    IRCnet: Cornix
+</p>
+<h3>Muut</h3>
+<p>
+    IRC: #instanssi @ IRCNet<br />
+    Email: Koko työryhmän tavoitat osoitteesta info@instanssi.org.<br />
+    Muut sosiaalisen median yhteystiedot löytyvät sivustomme sivupalkista.
+</p>
+<p>
+    Voit halutessasi liittyä Instanssi-postilistalle osoitteessa 
+    <a href="http://groups.google.com/group/instanssi">http://groups.google.com/group/instanssi</a>. 
+    Listalle lähetetään oleellisimmat Instanssia koskevat tiedotteet.
+</p>
+{% endcomment %}
+
+{% endblock %}
+{% block widgets %}
+{% comment %}
+<section class="widget widget-rekry">
+  <h2>Rekrytointi</h2>
+  <div>Haluatko osallistua Instanssin järjestämiseen? Vuoden 2016 tiimissämme on vielä tilaa:</div>
+  <ul>
+    <li>Järjestyksenvalvojille</li>
+    <li>Infotiskin päivystäjille</li>
+    <li>Tapahtuman rakentajille / purkajille</li>
+  </ul>
+  <div>Noin 12 tuntia töitä viikonlopun aikana tekeville Instanssi tarjoaa ilmaisen konepaikan. Lyhyemmän eli kuuden (6) tunnin vuoron tekeville sisäänpääsy on ilmainen. Työt voi koostaa itselleen mielekkäimmistä tehtävistä. Huomaathan, että build-vuoro koostuu kahdesta kolmen (3) tunnin vuorosta, jolloin ilmainen konepaikka edellyttää osallistumista molempiin sekä kahta kolmen (3) tunnin vuoroa muissa tehtävissä.</div>
+  <div>Jos kiinnostaa, ota yhteyttä joko:</div>
+  <ul>
+    <li>Sähköpostilla: <a href="mailto:info@instanssi.org">info@instanssi.org</a></li>
+    <li>Irkissä: #instanssi (IRCnet)</li>
+  </ul>
+</section>
+{% endcomment %}
+{{ block.super }}
+{% endblock %}

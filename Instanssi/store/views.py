@@ -4,9 +4,7 @@ from datetime import datetime
 from formtools.wizard.views import NamedUrlSessionWizardView
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
-from django.shortcuts import render
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
 from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
 from Instanssi.store.methods import paytrail, bitpay
 from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
@@ -25,13 +23,13 @@ store_forms = (
 # Terms page
 def terms(request):
     """Displays the terms page."""
-    return render_to_response('store/terms.html', {}, context_instance=RequestContext(request))
+    return render(request, 'store/terms.html', {})
 
 
 # Privacy info page
 def privacy(request):
     """Displays the privacy page"""
-    return render_to_response('store/privacy.html', {}, context_instance=RequestContext(request))
+    return render(request, 'store/privacy.html', {})
 
 
 class StoreWizard(NamedUrlSessionWizardView):
@@ -100,8 +98,7 @@ class StoreWizard(NamedUrlSessionWizardView):
 
 # Index page for store
 def index(request):
-    return render_to_response('store/index.html', {
-    }, context_instance=RequestContext(request))
+    return render(request, 'store/index.html', {})
 
 
 def has_infodesk_access(request):

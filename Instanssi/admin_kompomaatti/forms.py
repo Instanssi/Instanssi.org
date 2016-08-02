@@ -185,7 +185,10 @@ class AdminEntryEditForm(forms.ModelForm):
             for compo in Compo.objects.filter(event=self.event):
                 compos.append((compo.id, compo.name))
             self.fields['compo'].choices = compos
-        
+
+        # Make entryfile not required for editform
+        self.fields['entryfile'].required = False
+
         # Set form
         self.helper = FormHelper()
         self.helper.layout = Layout(

@@ -4,7 +4,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
-import urlparse
+from common.misc import parse_youtube_video_id
 
 
 class VideoForm(forms.ModelForm):
@@ -39,24 +39,16 @@ class VideoForm(forms.ModelForm):
         # Make sure field has content
         if not self.cleaned_data['youtube_url']:
             return self.cleaned_data['youtube_url']
-        
-        # Check if we already have a valid embed url
-        url = self.cleaned_data['youtube_url']
-        if url.find('http://www.youtube.com/v/') == 0:
-            return url
-        if url.find('https://www.youtube.com/v/') == 0:
-            return url
 
-        # Parse querystring to find video ID
-        parsed = urlparse.urlparse(url)
-        qs = urlparse.parse_qs(parsed.query)
-        
-        # Check if the video id exists in query string
-        if 'v' not in qs:
+        # Parse video id
+        video_id = parse_youtube_video_id(self.cleaned_data['youtube_url'])
+
+        # Warn if something is wrong
+        if not video_id:
             raise forms.ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
-            
-        # All done. Return valid url
-        return 'https://www.youtube.com/v/'+qs['v'][0]+'/'
+
+        # Return a new video url
+        return u'https://www.youtube.com/v/{}'.format(video_id)
 
     class Meta:
         model = OtherVideo

@@ -2,8 +2,10 @@
 
 from django.conf.urls import include, url
 from django.conf import settings
+from django.core.urlresolvers import reverse_lazy
 from django.contrib import admin
 from django.views.static import serve
+from django.views.generic import RedirectView
 
 # URLS
 urlpatterns = [
@@ -36,7 +38,7 @@ urlpatterns = [
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^', include('Instanssi.main2017.urls'))
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2017:index')), name='root-index')
 ]
 
 # Add admin panel link if debug mode is on

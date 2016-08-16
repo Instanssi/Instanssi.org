@@ -1,0 +1,89 @@
+#header-top {
+    background: #222;
+    color: #eee;
+    padding: 4px 2%;
+    text-align: right;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+
+    a {
+        color: #fff;
+        text-decoration: none;
+        padding: 0px 1%;
+        &:hover {
+            color: #36B3D9;
+        }
+    }
+}
+
+#page-header {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    background: url('../images/banneri-layers-256.png') repeat;
+    background-position: top center;
+
+    .header-layer {
+        position: absolute;
+        width: 1920px;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        //background: url('../images/banner-fg.png') no-repeat;
+        background-position: top center;
+    }
+    .header-layers {
+        position: relative; /* force cube "absolute" relative to this */
+        width: 1024px;
+        margin: 0 auto;
+    }
+    .header-cube {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+    }
+    .header-info {
+        min-height: 225px;
+        padding: 0 8px;
+        .logo > * {
+            margin-left: 8px;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        text-shadow: #000 0 0 16px;
+    }
+
+    .header-info h1 {
+        height: 103px;
+        font-size: 55px;
+        color: #fff;
+        font-family: $title-font-family;
+        font-weight: 800;
+        font-variant: small-caps;
+        padding: 0;
+        line-height: 400%;
+        text-shadow: #16a 4px 0 3px, #16a -4px 0 3px;
+    }
+    .header-info .tagline { font-size: 20px; font-family: $body-font-family; color: #fff; font-weight: 300; line-height: 100%; margin-bottom: 5px; }
+    .header-info .time { font-size: 24px; font-family: $body-font-family; color: #fff; text-shadow: 1px 1px #555; font-weight: 600; line-height: 100%; margin-bottom: 5px; }
+
+    /* navigation */
+
+    .nav-btn { display: none; margin: 8px 0 0; padding: 8px 8px; color: #fff; background: $theme-color; float: right; cursor: pointer; }
+    .nav-btn .line { width: 16px; padding: 2px; background: #fff; margin: 3px 0px; }
+
+    nav {
+        bottom: 0px;
+        position: relative;
+        ul { margin: 0px; }
+        ul .menu-item { display: inline-block; padding: 10px 0px; width: auto; /*ie-inline-block */ *display: inline; *zoom: 1; }
+        ul .menu-item a { text-decoration: none; padding: 10px; position: relative; color: #fff; top: 0px; }
+        ul .menu-item a:hover { top: -3px }
+        ul .current-menu-item { background: $theme-color; }
+        ul .current-menu-item a { color: #fff; }
+        ul .current-menu-item a:hover { color: #fff; }
+    }
+}

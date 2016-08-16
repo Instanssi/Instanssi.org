@@ -2,18 +2,20 @@
    Sitewide SCSS (theme colors, etc.) goes here.
 */
 
-$theme-color: #1c3f94;
+$theme-color: #0f56a7;
 $theme-nav-hover: $theme-color * 0.66;
+
+$background-color: #bbf4ff;
 
 $body-font-family: 'Open Sans', sans-serif;
 $title-font-family: $body-font-family;
 
-$transition-small: 0.2s;
-$transition-large: 0.4s;
+$transition-small: .2s;
+$transition-large: .4s;
 
 @mixin awesome-glyph($code) {
-	font: normal normal normal 1em/1 FontAwesome;
-	content: $code;
+    font: normal normal normal 1em/1 FontAwesome;
+    content: $code;
 }
 
 // This hides content visually but should not block screen readers, scraping

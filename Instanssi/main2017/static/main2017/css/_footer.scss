@@ -1,0 +1,27 @@
+/* footer */
+#page-footer {
+    min-height: 320px;
+    width: 100%;
+    background: #333;
+    bottom: 0px;
+    padding: 16px 0;
+
+    .container { box-sizing: border-box; padding: 0 10px 0; }
+    section { float: left; }
+    section h1 { font-size: 18px; color: #fff; font-weight: bold; }
+    .sitemap { width: 150px; margin-bottom: 20px; }
+
+    .sponsors {
+        width: 740px;
+        .sponsor { width: 128px; float: left; padding: 0% 1% 1% 0%; }
+        .sponsors-container { }
+        .sponsor.white { background: #fff; }
+        .sponsor a { display: block; line-height: 0px; padding: 4%; background: #fff; }
+        .sponsor a:hover { opacity: 0.9; }
+        .sponsor img { background: #fff;  }
+    }
+    .contact { width: 150px;  }
+    .menu-item { margin: 8px 0 8px; }
+    .menu-item a { padding: 8px; color: #ccc; text-decoration: none; }
+    .current-menu-item a { color: #fff; background: $theme-color; text-decoration: none; }
+}

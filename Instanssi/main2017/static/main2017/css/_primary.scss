@@ -1,0 +1,91 @@
+// primary page content
+#primary {
+    float: left; width: 580px; margin-right: 20px;
+
+    // general text styles
+    ul {list-style: disc; margin: 0px 0px 8px 30px;}
+    ol { list-style-type: decimal; margin: 0px 0px 8px 30px;}
+    li { margin: 5px 0; }
+    a { color: $theme-color; text-decoration: underline; }
+    a:hover {  color: #09f; }
+    img { margin-right: 8px; box-shadow: 0 0 8px #888;}
+    img:last-child { margin-right: 0; }
+    p { margin-bottom: 10px; margin-left: 8px; margin-right: 8px; }
+
+    table {
+        margin-bottom: 20px;
+        width: 100%;
+        th {
+            color: #fff;
+            font-weight: 700;
+            text-align: left;
+            padding: 8px;
+        }
+        td {
+            padding: 8px;
+            vertical-align: middle;
+        }
+        .title {
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background: #eee;
+        }
+        td img {
+            height: auto;
+            border: none;
+            box-shadow: none;
+            width: 48px;
+            vertical-align: middle;
+        }
+        td.time {
+            font-size: 18px;
+            font-weight: bold;
+            width: 31px;
+        }
+        td.image {
+            width: 48px;
+        }
+    }
+    // blog messages
+    .message {
+        clear: both;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        // clear floats
+        &::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        .title a {
+            font-variant: small-caps;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #26A8D3;
+            font-weight: bold;
+            text-decoration: none;
+            display: block;
+        }
+        .date {
+            display: block;
+            width: 100%;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+        .leftfloat {
+            float: left;
+            margin: 0 10px 10px 0;
+        }
+        .rightfloat {
+            float: right;
+            margin: 0 0 10px 10px;
+        }
+    }
+}

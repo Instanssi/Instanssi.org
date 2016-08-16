@@ -1,0 +1,30 @@
+#programme {
+    /* ohjelma */
+    .personalinfo .names { display: block; font-weight: bold; }
+    .personalinfo .titles { display: block; color: #aaa; font-style: italic; }
+    .description { clear: both; }
+    .personalinfo, .icon { margin: 0 8px 8px 8px; }
+    .icon { float: left; }
+    .item { border: none; padding-bottom: 8px; margin-bottom: 8px; }
+    .schedule-link {
+        float: right;
+        text-decoration: none;
+        margin-right: 8px;
+
+        &::before {
+            @include awesome-glyph('\f017');
+            margin-right: 4px;
+        }
+    }
+    .serviceicons { text-align: right; margin-right: 8px; }
+    .serviceicons a { text-decoration: none; }
+    .serviceicons a::after { padding: 4px; }
+    a.link-web::after { @include awesome-glyph('\f08e'); }
+    a.link-email::after { @include awesome-glyph('\f0e0'); }
+    a.link-twitter::after { @include awesome-glyph('\f099'); }
+    a.link-github::after { @include awesome-glyph('\f09b'); }
+    a.link-facebook::after { @include awesome-glyph('\f082'); }
+    a.link-linkedin::after { @include awesome-glyph('\f0e1'); }
+    a.link-wiki::after { @include awesome-glyph('\f266'); }
+    a.link-gplus::after { @include awesome-glyph('\f0d5'); }
+}

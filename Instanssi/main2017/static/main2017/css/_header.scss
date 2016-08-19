@@ -2,7 +2,7 @@
     position: relative; // grab any absolute-positioned stuff
     overflow: hidden;
     z-index: 0;
-    background: url('../images/banneri-layers-256.png') repeat-x;
+    background: url('../images/banner-snek.png') no-repeat, url('../images/banner-bg.png') repeat-x;
     background-position: top center;
 
     a {
@@ -15,37 +15,36 @@
         min-height: 225px;
         padding: 0 8px;
 
+        color: #fff;
+
         .logo > * {
             margin-left: 8px;
+        }
+
+        h1, .tagline, .time {
+            font-family: 'Exo 2', $title-font-family;
+            color: #fff;
+        }
+        .tagline, .time {
+            margin-bottom: 5px;
+            text-shadow: #bef 0 0 2px;
+            font-variant: small-caps;
+        }
+        .tagline {
+            font-size: 20px;
+        }
+        .time {
+            font-size: 24px;
         }
 
         h1 {
             height: 103px;
             font-size: 55px;
-            color: $theme-color;
-            font-family: $title-font-family;
             font-weight: 800;
-            font-variant: small-caps;
+            text-transform: uppercase;
             padding: 0;
             line-height: 400%;
-            text-shadow: #bef 4px 0 3px, #bef -4px 0 3px;
-        }
-        .tagline {
-            font-size: 20px;
-            font-family: $body-font-family;
-            color: #fff;
-            font-weight: 300;
-            line-height: 100%;
-            margin-bottom: 5px;
-        }
-        .time {
-            font-size: 24px;
-            font-family: $body-font-family;
-            color: #fff;
-            text-shadow: 1px 1px #555;
-            font-weight: 600;
-            line-height: 100%;
-            margin-bottom: 5px;
+            text-shadow: #13285e 4px 0 3px, #13285e -4px 0 3px;
         }
     }
 

@@ -1,5 +1,11 @@
 // primary page content
+
+body > * {
+    line-height: 150%;
+}
+
 #primary {
+
     float: left; width: 580px; margin-right: 20px;
 
     // general text styles

@@ -16,7 +16,6 @@
     text-align: center;
 }
 
-/* animations */
 #page-header nav ul {
     -webkit-transition: all $transition-large ease-in-out;
     transition: all $transition-large ease-in-out;
@@ -29,13 +28,6 @@
     transition: all $transition-small ease-in-out;
 }
 
-/* gradients */
-h2, .item .title, .header,
-table th,
-.btn,
-form legend {
-    background: $theme-color;
-}
 
 // TODO: Try to separate large-scale layour media queries from the rest.
 

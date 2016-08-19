@@ -23,8 +23,7 @@ body * {
 }
 h1 {
     font-family: $title-font-family;
-    font-variant: small-caps;
-    font-size: 48px;
+    font-size: 40px;
     margin-bottom: .75em;
     color: $theme-color;
     font-weight: bold;
@@ -84,17 +83,24 @@ sub {
     display: inline-block;
     padding: 6px 20px;
     border-radius: 0px;
+
+    &:hover {
+        color: #fff;
+        opacity: 0.8;
+    }
 }
 
-.btn:hover {
-    color: #fff;
-    opacity: 0.8;
+h2, .item .title, .header,
+table th,
+.btn,
+form legend {
+    background: $theme-color;
 }
 
 #content {
     background: #fff;
     box-sizing: border-box;
-    padding: 40px 10px 40px;
+    padding: 24px 10px 24px;
     min-height: 100vh;
 }
 #page-wrap {

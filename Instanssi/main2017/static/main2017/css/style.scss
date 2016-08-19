@@ -1,12 +1,6 @@
 @import 'reset.scss';
 @import 'base_layout/css/common.scss';
 
-.container {
-    width: 900px;
-    margin: 0 auto;
-    padding: 0px 0px;
-}
-
 @import '_general.scss';
 @import '_header.scss';
 @import '_programme.scss';
@@ -42,6 +36,8 @@ table th,
 form legend {
     background: $theme-color;
 }
+
+// TODO: Try to separate large-scale layour media queries from the rest.
 
 /* Large desktop */
 @media (min-width: 1200px) {

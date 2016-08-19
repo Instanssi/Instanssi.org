@@ -19,7 +19,7 @@
     position: relative;
     overflow: hidden;
     z-index: 0;
-    background: url('../images/banneri-layers-256.png') repeat;
+    background: url('../images/banneri-layers-256.png') repeat-x;
     background-position: top center;
 
     .header-layer {
@@ -29,7 +29,6 @@
         left: 0;
         top: 0;
         z-index: -1;
-        //background: url('../images/banner-fg.png') no-repeat;
         background-position: top center;
     }
     .header-layers {

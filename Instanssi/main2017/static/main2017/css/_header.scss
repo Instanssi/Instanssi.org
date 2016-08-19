@@ -5,6 +5,7 @@
     background: url('../images/banner-snek.png') no-repeat, url('../images/banner-bg.png') repeat-x;
     background-position: top center;
 
+
     a {
         text-decoration: none; // no underline pls
     }
@@ -17,6 +18,17 @@
 
         color: #fff;
 
+        &:after {
+            // Add dank logo
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50px;
+            width: 548px;
+            height: 160px;
+            background: url('../images/logo.png') 50% no-repeat;
+            background-size: 100%;
+        }
         .logo > * {
             margin-left: 8px;
         }
@@ -38,6 +50,7 @@
         }
 
         h1 {
+            display: none;
             height: 103px;
             font-size: 55px;
             font-weight: 800;

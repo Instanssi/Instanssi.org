@@ -103,14 +103,16 @@
 @media (max-width: 480px) {
     #page-header { }
 
-    .header-effect { display: none; }
-
     #page-header .nav-btn { display: block; }
     .no-js #page-header .nav-btn { display: none; }
 
     #page-header {
         background: #111122;
         padding: 0 8px 8px;
+
+        .snek {
+            display: none;
+        }
 
         .header-info p.time { font-size: 20px; }
 
@@ -122,7 +124,9 @@
         .header-info .time { font-size: 26px; }
         .header-info { min-height: 0; }
 
-        nav { margin-top: 8px; }
+        nav {
+            margin-top: 8px;
+        }
         nav ul {
             .menu-item { width: 49%; padding: 0px; }
             .menu-item-right { float: left; }
@@ -135,7 +139,6 @@
                 text-align: center;
             }
         }
-
         nav ul { background-color: #333; max-height: 0px; overflow: hidden; }
     }
     .no-js #page-header nav ul,

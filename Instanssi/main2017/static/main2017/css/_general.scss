@@ -21,6 +21,7 @@ body * {
     line-height: 150%;
     font-family: $body-font-family;
 }
+
 h1 {
     font-family: $title-font-family;
     font-variant: small-caps;
@@ -30,11 +31,12 @@ h1 {
     font-weight: bold;
     line-height: 90%;
 }
+
 h2,
 form legend
 .item .title,
 .header {
-    font-family: $title-font-family;
+    //font-family: $title-font-family;
     font-variant: small-caps;
     font-size: 25px;
     margin: 20px 0;
@@ -42,6 +44,15 @@ form legend
     padding-right: 8px;
     color: #fff;
     font-weight: bold;
+}
+
+h2,
+table th,
+form legend
+.item .title,
+.header,
+.btn {
+    background: $theme-color;
 }
 h3 {
     font-size: 16px;
@@ -90,13 +101,6 @@ sub {
         color: #fff;
         opacity: 0.8;
     }
-}
-
-h2, .item .title, .header,
-table th,
-.btn,
-form legend {
-    background: $theme-color;
 }
 
 #page-wrap {

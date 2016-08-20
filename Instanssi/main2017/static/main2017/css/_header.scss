@@ -107,12 +107,12 @@
                     top: 0px;
                     background: rgba(255,255,255,0);
                     &:hover {
-                        background: #4f8bc8;
+                        background: $theme-color-bright;
                     }
                 }
             }
             .current-menu-item {
-                background: #4f8bc8;
+                background: $theme-color-bright;
                 a {
                     color: #fff;
                     &:hover {

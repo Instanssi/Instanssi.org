@@ -25,7 +25,8 @@
 }
 
 
-// TODO: Try to separate large-scale layour media queries from the rest.
+// TODO: Try to separate large-scale layout media queries from the rest.
+// - move them to _general.scss?
 
 /* Large desktop */
 @media (min-width: 1200px) {

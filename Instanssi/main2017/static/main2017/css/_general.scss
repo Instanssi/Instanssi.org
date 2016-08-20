@@ -99,17 +99,18 @@ form legend {
     background: $theme-color;
 }
 
-#content {
-    background: #fff;
-    box-sizing: border-box;
-    padding: 24px 10px 24px;
-    min-height: 100vh;
-}
 #page-wrap {
     min-height: 100%;
     position: relative;
     background: $background-color;
     background: linear-gradient($background-color 275px, lighten($background-color, 5) 675px);
+}
+
+#content {
+    background: #fff;
+    box-sizing: border-box;
+    padding: 24px 10px 24px;
+    min-height: 100vh;
 }
 
 .container {

@@ -19,7 +19,8 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background: $theme-color-bright;
+            background: #fff;
+            box-shadow: $theme-color-bright 0 0 4px;
         }
     }
 

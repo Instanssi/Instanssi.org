@@ -48,18 +48,21 @@
     /* snek */
     (function(){
         var container = $('.container');
-        for(var x=0; x<20; x++) {
+        var PARTS = 20;
+        for(var x=0; x<PARTS; x++) {
             container.prepend($('<div class="snek-tail"></div>'));
         }
         var parts = $('.snek-tail');
         parts.each(function(index, part) {
-            var t = 0;
+            var x = index / (PARTS - 1);
             var jqPart = $(part);
+            var t = 0;
             jqPart.css('left', index * 20 + 350);
+            jqPart.css('opacity', 1.0 - x);
             setInterval(function() {
-                var pos = 100 + Math.sin(-index / parts.length * 35 * (1.0 - index / parts.length)) * 50;
+                var pos = 110 + Math.sin(-x * 6) * 70;
+                var offset = Math.sin(t + index * 0.5) * 10 * (0.1 + x);
                 //var offset = 0;
-                var offset = Math.sin(t + index * 0.5) * 50 * (0.1 + index / parts.length);
                 jqPart.css('top', pos + offset);
                 t += 0.05;
             }, 50);

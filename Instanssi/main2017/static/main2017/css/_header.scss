@@ -51,11 +51,8 @@
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
         }
-        .logo > * {
-            margin-left: 8px;
-        }
-
         h1, .tagline, .time {
+            margin-left: 8px;
             font-family: $title-font-family;
             color: #fff;
         }

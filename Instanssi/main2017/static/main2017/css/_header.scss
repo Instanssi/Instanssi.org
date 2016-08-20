@@ -8,6 +8,7 @@
     .snek {
         position: relative;
         left: 100px;
+        opacity: .8;
         .snek-head {
             position: absolute;
             width: 480px;
@@ -17,10 +18,12 @@
         }
         .snek-tail {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 30px;
+            height: 30px;
             background: #fff;
-            box-shadow: $theme-color-bright 0 0 4px;
+            //box-shadow: $theme-color-bright 0 0 4px;
+            background: url('../images/banner-cube-1.png') no-repeat;
+            background-size: 100%;
         }
     }
 

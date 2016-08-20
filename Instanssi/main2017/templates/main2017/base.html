@@ -60,8 +60,8 @@
             jqPart.css('left', index * 20 + 350);
             jqPart.css('opacity', 1.0 - x);
             setInterval(function() {
-                var pos = 110 + Math.sin(-x * 6) * 70;
-                var offset = Math.sin(t + index * 0.5) * 10 * (0.1 + x);
+                var pos = 100 + Math.sin(-x * 6) * 90 * (1.0 - x);
+                var offset = Math.sin(t + index * 0.5) * 20 * (0.1 + x);
                 //var offset = 0;
                 jqPart.css('top', pos + offset);
                 t += 0.05;

@@ -70,16 +70,16 @@
             <nav class="container">
                 <div class="clearer"></div>
                 <ul>
-                    <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:index' %}">Blogi</a></li>
-                    <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:info' %}">Info</a></li>
-                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:kompot' %}">Kompot</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:ohjelma' %}">Ohjelma</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:aikataulu' %}">Aikataulu</a></li>-->
-                    <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:english' %}">In English</a></li>
-                    <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:stream' %}">Stream</a></li>-->
-                    <li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
-                    <li class="menu-item" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
-                    <li class="menu-item" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
+                    <li class="menu-item item-blog {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:index' %}">Blogi</a></li>
+                    <li class="menu-item item-info {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:info' %}">Info</a></li>
+                    <!--<li class="menu-item item-kompos {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:kompot' %}">Kompot</a></li>-->
+                    <!--<li class="menu-item item-programme {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:ohjelma' %}">Ohjelma</a></li>-->
+                    <!--<li class="menu-item item-schedule {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:aikataulu' %}">Aikataulu</a></li>-->
+                    <li class="menu-item item-english {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:english' %}">In English</a></li>
+                    <!--<li class="menu-item item-stream {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:stream' %}">Stream</a></li>-->
+                    <li class="menu-item item-store" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
+                    <li class="menu-item item-kompomaatti" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
+                    <li class="menu-item item-archive" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                     <div class="clearer"></div>
                 </ul>
             </nav>

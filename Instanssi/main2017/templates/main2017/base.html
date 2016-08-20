@@ -47,7 +47,7 @@
     });
     /* snek */
     (function(){
-        var container = $('.container');
+        var container = $('.snek-container');
         var PARTS = 20;
         for(var x=0; x<PARTS; x++) {
             container.prepend($('<div class="snek-tail"></div>'));
@@ -75,16 +75,13 @@
 <body>
     <div id="page-wrap">
         <header id="page-header">
-            <span class="header-layer header-effect" z="100"></span>
-            <div class="header-layers">
+            <div class="snek container">
+                <div class="snek-head"></div>
             </div>
             <div class="nav-btn">
                 <div class="line"></div>
                 <div class="line"></div>
                 <div class="line"></div>
-            </div>
-            <div class="snek container">
-                <div class="snek-head"></div>
             </div>
             <div class="header-info container">
                 <a href="{% url 'main2017:index' %}" class="logo">
@@ -103,9 +100,9 @@
                     <!--<li class="menu-item item-schedule {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:aikataulu' %}">Aikataulu</a></li>-->
                     <li class="menu-item item-english {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:english' %}">In English</a></li>
                     <!--<li class="menu-item item-stream {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2017:stream' %}">Stream</a></li>-->
-                    <li class="menu-item item-store" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
-                    <li class="menu-item item-kompomaatti" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
-                    <li class="menu-item item-archive" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
+                    <li class="menu-item menu-item-right item-store"><a href="{% url 'store:index' %}">Kauppa</a></li>
+                    <li class="menu-item menu-item-right item-kompomaatti"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
+                    <li class="menu-item menu-item-right item-archive"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                     <div class="clearer"></div>
                 </ul>
             </nav>

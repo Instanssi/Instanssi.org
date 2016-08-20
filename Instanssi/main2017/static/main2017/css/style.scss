@@ -122,10 +122,20 @@
         .header-info .time { font-size: 26px; }
         .header-info { min-height: 0; }
 
-        nav { margin-top: 8px; text-align: center; }
-        nav ul .menu-item { width: 49%; padding: 0px; }
-        nav ul .menu-item  a { display: block; padding: 15px 15px; }
-        nav ul .menu-item  a:hover { top: 0px; }
+        nav { margin-top: 8px; }
+        nav ul {
+            .menu-item { width: 49%; padding: 0px; }
+            .menu-item-right { float: left; }
+            .menu-item a { display: block; padding: 15px 15px; }
+            .menu-item a:hover { top: 0px; }
+            .menu-item a::before {
+                // realign menu icons (font-awesome icons are not square)
+                margin-right: 0;
+                width: 2em;
+                text-align: center;
+            }
+        }
+
         nav ul { background-color: #333; max-height: 0px; overflow: hidden; }
     }
     .no-js #page-header nav ul,

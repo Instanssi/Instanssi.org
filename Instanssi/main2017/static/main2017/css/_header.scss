@@ -10,6 +10,7 @@
         left: 100px;
         opacity: .8;
         .snek-head {
+            pointer-events: none;
             position: absolute;
             width: 480px;
             height: 200px;
@@ -130,6 +131,9 @@
                     }
                 }
             }
+            .menu-item-right {
+                float: right;
+            }
             .current-menu-item {
                 background: $theme-color-bright;
                 a {
@@ -139,10 +143,18 @@
                     }
                 }
             }
-            .menu-item a::before { margin-right: 0.5em; }
+            .menu-item a {
+                padding-left: 16px;
+                position: relative
+            }
+            .menu-item a::before {
+                margin-right: 8px;
+                display: inline-block;
+            }
             .item-store a::before { @include awesome-glyph('\f07a'); }
             .item-archive a::before { @include awesome-glyph('\f187'); }
             .item-kompomaatti a::before { @include awesome-glyph('\f1b2'); }
+            .item-english a::before{ @include awesome-glyph('\f0ac'); }
             .item-info a::before { @include awesome-glyph('\f129'); }
             .item-blog a::before { @include awesome-glyph('\f015'); }
         }

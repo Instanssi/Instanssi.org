@@ -45,6 +45,26 @@
             console.log('ok');
         }
     });
+    /* snek */
+    (function(){
+        var container = $('.container');
+        for(var x=0; x<20; x++) {
+            container.prepend($('<div class="snek-tail"></div>'));
+        }
+        var parts = $('.snek-tail');
+        parts.each(function(index, part) {
+            var t = 0;
+            var jqPart = $(part);
+            jqPart.css('left', index * 20 + 350);
+            setInterval(function() {
+                var pos = 100 + Math.sin(-index / parts.length * 35 * (1.0 - index / parts.length)) * 50;
+                //var offset = 0;
+                var offset = Math.sin(t + index * 0.5) * 50 * (0.1 + index / parts.length);
+                jqPart.css('top', pos + offset);
+                t += 0.05;
+            }, 50);
+        });
+    })();
 {% endblock %}
     });
     </script>
@@ -59,6 +79,9 @@
                 <div class="line"></div>
                 <div class="line"></div>
                 <div class="line"></div>
+            </div>
+            <div class="snek container">
+                <div class="snek-head"></div>
             </div>
             <div class="header-info container">
                 <a href="{% url 'main2017:index' %}" class="logo">

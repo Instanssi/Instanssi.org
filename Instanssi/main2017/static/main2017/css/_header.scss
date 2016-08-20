@@ -2,9 +2,26 @@
     position: relative; // grab any absolute-positioned stuff
     overflow: hidden;
     z-index: 0;
-    background: url('../images/banner-snek.png') no-repeat, url('../images/banner-bg.png') repeat-x;
+    background: url('../images/banner-bg.png') repeat-x;
     background-position: top center;
-
+    
+    .snek {
+        position: relative;
+        left: 100px;
+        .snek-head {
+            position: absolute;
+            width: 480px;
+            height: 200px;
+            background: url('../images/banner-snek.png') no-repeat;
+            background-size: 100%;
+        }
+        .snek-tail {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: $theme-color-bright;
+        }
+    }
 
     a {
         text-decoration: none; // no underline pls

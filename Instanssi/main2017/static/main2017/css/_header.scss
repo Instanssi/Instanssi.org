@@ -24,8 +24,8 @@
             display: block;
             position: absolute;
             top: 50px;
-            width: 548px;
-            height: 160px;
+            width: 480px;
+            height: 140px;
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
         }
@@ -34,7 +34,7 @@
         }
 
         h1, .tagline, .time {
-            font-family: 'Exo 2', $title-font-family;
+            font-family: $title-font-family;
             color: #fff;
         }
         .tagline, .time {
@@ -47,6 +47,7 @@
         }
         .time {
             font-size: 24px;
+            padding-top:200px;
         }
 
         h1 {
@@ -63,6 +64,7 @@
 
     // navigation
 
+    // Mobile menu button
     .nav-btn {
         display: none;
         margin: 8px 0 0;
@@ -80,29 +82,37 @@
         }
     }
 
+    // Navigation menu
     nav {
         bottom: 0px;
         position: relative;
+        background: $theme-color;
         ul {
+            -webkit-transition: all $transition-large ease-in-out;
+            transition: all $transition-large ease-in-out;
             margin: 0px;
             .menu-item {
                 display: inline-block;
-                padding: 10px 0px;
                 width: auto;
                 a {
-                    text-shadow: #fff 4px 0 3px, #fff -4px 0 3px;
+                    font-family: $title-font-family;
+                    text-transform: uppercase;
+                    padding: 12px 16px;
+                    display: inline-block;
+                    -webkit-transition: background-color $transition-large ease-in-out;
+                    transition: background-color $transition-large ease-in-out;
                     text-decoration: none;
-                    padding: 10px;
                     position: relative;
-                    color: $theme-color;
+                    color: #fff;
                     top: 0px;
+                    background: rgba(255,255,255,0);
                     &:hover {
-                        top: -3px;
+                        background: rgba(255,255,255,0.2);
                     }
                 }
             }
             .current-menu-item {
-                background: $theme-color;
+                background: rgba(255,255,255,0.2);
                 a {
                     color: #fff;
                     &:hover {

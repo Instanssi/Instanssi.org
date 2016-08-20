@@ -8,7 +8,7 @@ $theme-nav-hover: $theme-color * 0.66;
 $background-color: #1b1b1b;
 
 $body-font-family: 'Open Sans', sans-serif;
-$title-font-family: $body-font-family;
+$title-font-family: 'Exo 2', $body-font-family;
 
 $transition-small: .2s;
 $transition-large: .4s;
@@ -20,7 +20,7 @@ $transition-large: .4s;
 
 // This hides content visually but should not block screen readers, scraping
 // and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
-.visuallyhidden {
+.sr-only {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
     height: 1px;

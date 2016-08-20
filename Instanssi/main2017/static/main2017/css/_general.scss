@@ -23,6 +23,7 @@ body * {
 }
 h1 {
     font-family: $title-font-family;
+    font-variant: small-caps;
     font-size: 40px;
     margin-bottom: .75em;
     color: $theme-color;
@@ -34,6 +35,7 @@ form legend
 .item .title,
 .header {
     font-family: $title-font-family;
+    font-variant: small-caps;
     font-size: 25px;
     margin: 20px 0;
     padding-left: 8px;

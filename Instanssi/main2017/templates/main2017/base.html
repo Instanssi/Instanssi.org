@@ -59,12 +59,14 @@
             var t = 0;
             jqPart.css('left', index * 20 + 350);
             jqPart.css('opacity', 1.0 - x);
-            setInterval(function() {
+            function update() {
                 var pos = 100 + Math.sin(-x * 6) * 90 * (1.0 - x);
                 var offset = Math.sin(t + index * 0.5) * 20 * (0.1 + x);
                 jqPart.css('top', pos + offset);
                 t += 0.05;
-            }, 50);
+            }
+            update();
+            setInterval(update, 50);
         });
     })();
 {% endblock %}

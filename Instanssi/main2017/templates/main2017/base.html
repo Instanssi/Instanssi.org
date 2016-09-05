@@ -62,7 +62,6 @@
             setInterval(function() {
                 var pos = 100 + Math.sin(-x * 6) * 90 * (1.0 - x);
                 var offset = Math.sin(t + index * 0.5) * 20 * (0.1 + x);
-                //var offset = 0;
                 jqPart.css('top', pos + offset);
                 t += 0.05;
             }, 50);

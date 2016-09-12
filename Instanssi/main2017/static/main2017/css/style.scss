@@ -118,7 +118,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
     #page-header .nav-btn {
         display: block;
-        margin: $padding-medium;
+        position: absolute;
+        top: 0;
+        right: 8px;
+        z-index: 985;
     }
     .no-js #page-header .nav-btn { display: none; }
 

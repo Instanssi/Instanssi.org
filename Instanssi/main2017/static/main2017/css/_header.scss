@@ -4,7 +4,7 @@
     z-index: 0;
     background: url('../images/banner-bg.png') repeat-x;
     background-position: top center;
-    
+
     .snek {
         position: relative;
         left: 100px;
@@ -35,19 +35,21 @@
     // logo and info
 
     .header-info {
-        min-height: 225px;
+        min-height: $main-header-height;
         padding: 0 8px;
 
         color: #fff;
 
         &:after {
-            // Add dank logo
+            // The big logo
             content: '';
             display: block;
             position: absolute;
             top: 50px;
             width: 480px;
             height: 140px;
+            max-width: 100%;
+            max-width: calc(100% - #{$padding-large});
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
         }

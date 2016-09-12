@@ -14,6 +14,10 @@ $title-font-family: 'Exo 2', $body-font-family;
 $transition-small: .2s;
 $transition-large: .4s;
 
+$padding-large: 16px;
+$padding-medium: 8px;
+$padding-small: 4px;
+
 @mixin awesome-glyph($code) {
     font: normal normal normal 1em/1 FontAwesome;
     content: $code;
@@ -27,4 +31,9 @@ $transition-large: .4s;
     height: 1px;
     width: 1px;
     overflow: hidden;
+}
+
+@mixin body-background-mixin() {
+    background: $background-color;
+    background: linear-gradient($background-color 275px, lighten($background-color, 5) 675px);
 }

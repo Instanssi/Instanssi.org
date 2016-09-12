@@ -38,12 +38,6 @@
     $('#page-header .nav-btn').click(function() {
         var $nav = $('#page-header nav ul');
         $nav.toggleClass( 'active' );
-        if($nav.hasClass('active') ){
-            $('html, body').animate({
-                scrollTop: $("#page-header nav").offset().top
-            }, 400);
-            console.log('ok');
-        }
     });
     /* snek */
     (function(){
@@ -53,6 +47,7 @@
             container.prepend($('<div class="snek-tail"></div>'));
         }
         var parts = $('.snek-tail');
+        // It has a tail of cubes and it undulates rhythmically. Beware its CSS!
         parts.each(function(index, part) {
             var x = index / (PARTS - 1);
             var jqPart = $(part);

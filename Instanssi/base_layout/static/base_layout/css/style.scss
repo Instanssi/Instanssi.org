@@ -111,6 +111,8 @@ a:hover { text-decoration: underline; }
 
 #header_nav {
     min-height: 32px;
+    background: $theme-color;
+    color: #fff;
 }
 #header_nav:after {
     display: table;

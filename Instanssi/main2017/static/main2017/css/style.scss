@@ -4,12 +4,10 @@
 // note that these are minimum heights
 $main-header-height: 225px;
 $main-footer-height: 320px;
-
 $main-header-actual: 275px;
 $main-footer-actual: $main-footer-height + $padding-large * 2;
 // ugly interpolation syntax because SCSS variables only work inside calc this way
 $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actual});
-
 @import '_general.scss';
 @import '_header.scss';
 @import '_programme.scss';
@@ -42,43 +40,94 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
 /* Large desktop */
 @media (min-width: 1200px) {
-    .container { width: 1024px; margin: 0 auto; }
-    #content #primary{ width: 600px;  margin-right: 100px;  }
-    #content aside { width: 300px; }
-    #sidebar-widgets { width: 300px; }
+    .container {
+        width: 1024px;
+        margin: 0 auto;
+    }
+
+    #content #primary {
+        width: 600px;
+        margin-right: 100px;
+    }
+
+    #content aside {
+        width: 300px;
+    }
+
+    #sidebar-widgets {
+        width: 300px;
+    }
 }
 
 @media (max-width: 1199px) {
-    #page-footer .sponsors { width: 700px; }
+    #page-footer .sponsors {
+        width: 700px;
+    }
 }
 
 @media (min-width: 980px) and (max-width: 1199px) {
-    #content #primary { width: 560px; }
+    #content #primary {
+        width: 560px;
+    }
 }
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
-    .container { width:750px; margin: 0 auto; }
-    #content #primary { width: 520px;  margin-right: 10px;  }
-    #sidebar-widgets { width: 200px; }
+    .container {
+        width: 750px;
+        margin: 0 auto;
+    }
 
-    .header-effect { display: none; }
+    #content #primary {
+        width: 520px;
+        margin-right: 10px;
+    }
 
-    #page-footer .sponsors { width: 550px; }
+    #sidebar-widgets {
+        width: 200px;
+    }
+
+    .header-effect {
+        display: none;
+    }
+
+    #page-footer .sponsors {
+        width: 550px;
+    }
 
     /* forms */
-    form label {  }
-    form input[type="text"] { width: 96%; padding: 2%; }
-    form .errorField {   }
+    form label {
+    }
+
+    form input[type="text"] {
+        width: 96%;
+        padding: 2%;
+    }
+
+    form .errorField {
+    }
 }
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
-    .container { width: 100%; padding: 0; }
-    #content #primary { width: 100%;  margin-right: 0px; margin-bottom: 40px;}
-    #sidebar-widgets { width: 100%; }
+    .container {
+        width: 100%;
+        padding: 0;
+    }
 
-    .header-effect { display: none; }
+    #content #primary {
+        width: 100%;
+        margin-right: 0px;
+        margin-bottom: 40px;
+    }
+
+    #sidebar-widgets {
+        width: 100%;
+    }
+
+    .header-effect {
+        display: none;
+    }
 
     #page-footer {
         bottom: 0px;
@@ -87,34 +136,59 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         .sitemap {
             width: 100%;
             margin: 0px 0px 20px 0px;
+
             li.menu-item {
                 display: inline-block;
-                a { padding: 8px; }
+
+                a {
+                    padding: 8px;
+                }
             }
         }
+
         .sponsors {
             width: 100%;
             margin: 0;
         }
+
         .sponsors-container {
             padding-left: 8px; // match sitemap items
         }
-        .contact { float: none; }
-    }
-    #content { padding-bottom: 40px; }
-}
 
-@media (max-width: 700px) {
-    /* forms */
-    form label { min-width: 1px; display: block; }
-    form input[type="text"] { width: 96%; padding: 2%; }
-    form select { width: 100%; }
-    form .errorField { padding: 0px; }
+        .contact {
+            float: none;
+        }
+    }
+
+    #content {
+        padding-bottom: 40px;
+    }
+
+    form {
+        label {
+            min-width: 1px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 96%;
+            padding: 2%;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .errorField {
+            padding: 0px;
+        }
+    }
 }
 
 /* Landscape phones */
 @media (max-width: 480px) {
-    #page-header { }
+    #page-header {
+    }
 
     #page-header .nav-btn {
         display: block;
@@ -123,7 +197,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         right: 8px;
         z-index: 985;
     }
-    .no-js #page-header .nav-btn { display: none; }
+
+    .no-js #page-header .nav-btn {
+        display: none;
+    }
 
     #page-header {
         background: #111122;
@@ -132,20 +209,38 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
             display: none;
         }
 
-        .header-info p.time { font-size: 20px; }
+        .header-info p.time {
+            font-size: 20px;
+        }
 
         .header-info .logo > * {
             margin: 0;
         }
-        .header-info h1 { padding: 0; padding-top: 0; text-indent: 0; background: none; font-size: 36px; height: auto; line-height: 1.25em }
-        .header-info .tagline { font-size: 16px; }
+
+        .header-info h1 {
+            padding: 0;
+            padding-top: 0;
+            text-indent: 0;
+            background: none;
+            font-size: 36px;
+            height: auto;
+            line-height: 1.25em;
+        }
+
+        .header-info .tagline {
+            font-size: 16px;
+        }
+
         .header-info .time {
             font-size: 26px;
             padding-top: 140px;
         }
-        .header-info { min-height: 0; }
 
-        // the big logo
+        .header-info {
+            min-height: 0;
+        }
+
+        // move the big logo closer to the top
         .header-info:after {
             top: 20px;
         }
@@ -153,11 +248,26 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         nav {
             margin-top: 8px;
         }
+
         nav ul {
-            .menu-item { width: 49%; padding: 0px; }
-            .menu-item-right { float: left; }
-            .menu-item a { display: block; padding: 15px 15px; }
-            .menu-item a:hover { top: 0px; }
+            .menu-item {
+                width: 49%;
+                padding: 0px;
+            }
+
+            .menu-item-right {
+                float: left;
+            }
+
+            .menu-item a {
+                display: block;
+                padding: 15px 15px;
+            }
+
+            .menu-item a:hover {
+                top: 0px;
+            }
+
             .menu-item a::before {
                 // realign menu icons (font-awesome icons are not square)
                 margin-right: 0;
@@ -165,13 +275,34 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
                 text-align: center;
             }
         }
-        nav ul { background-color: #333; max-height: 0px; overflow: hidden; }
-    }
-    .no-js #page-header nav ul,
-    #page-header nav ul.active { max-height: 255px; }
 
-    #primary th { display: none; visibility: hidden; }
+        nav ul {
+            background-color: #333;
+            max-height: 0px;
+            overflow: hidden;
+        }
+    }
+
+    .no-js #page-header nav ul,
+    #page-header nav ul.active {
+        max-height: 255px;
+    }
+
+    #primary th {
+        display: none;
+        visibility: hidden;
+    }
+
     #primary tr,
-    #primary table, #primary tbody { display: block; width: 100%; }
-    #primary table td { display: block; width: 92%; padding: 1% 4%;}
+    #primary table,
+    #primary tbody {
+        display: block;
+        width: 100%;
+    }
+
+    #primary table td {
+        display: block;
+        width: 92%;
+        padding: 1% 4%;
+    }
 }

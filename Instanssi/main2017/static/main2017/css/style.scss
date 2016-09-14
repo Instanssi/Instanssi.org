@@ -8,6 +8,7 @@ $main-header-actual: 275px;
 $main-footer-actual: $main-footer-height + $padding-large * 2;
 // ugly interpolation syntax because SCSS variables only work inside calc this way
 $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actual});
+
 @import '_general.scss';
 @import '_header.scss';
 @import '_programme.scss';
@@ -206,10 +207,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         padding: $padding-large 0;
     }
     #page-footer .container { padding: 0; }
-    // fix sidebars
-    .container aside > section > div {
-        padding: $padding-medium;
-    }
 
     #page-header {
         background: #111122;
@@ -222,13 +219,15 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
             min-height: 0;
             margin: 0; // match content
 
+            padding: 0;
+
             &:after {
                 top: 20px;
             }
 
             p.time {
                 font-size: 20px;
-                padding-left: 0;
+                padding-left: 2px;
             }
 
             .logo > * {

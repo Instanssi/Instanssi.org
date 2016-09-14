@@ -34,39 +34,10 @@
     <script type="text/javascript">
     $(function() {
 {% block jquery %}
-    /* mobile nav button */
-    $('#page-header .nav-btn').click(function() {
-        var $nav = $('#page-header nav ul');
-        $nav.toggleClass( 'active' );
-    });
-    /* snek */
-    (function(){
-        var container = $('.snek.container');
-        var PARTS = 20;
-        for(var x=0; x<PARTS; x++) {
-            container.prepend($('<div class="snek-tail"></div>'));
-        }
-        var parts = $('.snek-tail');
-        // It has a tail of cubes and it undulates rhythmically. Beware its CSS!
-        parts.each(function(index, part) {
-            var x = index / (PARTS - 1);
-            var jqPart = $(part);
-            var t = 0;
-            jqPart.css('left', index * 20 + 350);
-            jqPart.css('opacity', 1.0 - x);
-            function update() {
-                var pos = 100 + Math.sin(-x * 6) * 90 * (1.0 - x);
-                var offset = Math.sin(t + index * 0.5) * 20 * (0.1 + x);
-                jqPart.css('top', pos + offset);
-                t += 0.05;
-            }
-            update();
-            setInterval(update, 50);
-        });
-    })();
 {% endblock %}
     });
     </script>
+    <script type="text/javascript" src="{% static 'main2017/js/base.js' %}" defer></script>
 </head>
 <body>
     <div id="page-wrap">

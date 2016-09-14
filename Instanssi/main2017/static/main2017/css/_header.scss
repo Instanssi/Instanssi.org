@@ -12,12 +12,16 @@ $banner-image: '../images/banner-bg.png';
     .snek {
         position: relative;
         left: 100px;
-        opacity: .8;
+
+        z-index: -1;
+
         .snek-head {
+            left: 50%;
+            margin-left: -50%;
             pointer-events: none;
             position: absolute;
-            width: 480px;
-            height: 200px;
+            width: 640px;
+            height: 300px;
             background: url('../images/banner-snek.png') no-repeat;
             background-size: 100%;
         }
@@ -65,7 +69,8 @@ $banner-image: '../images/banner-bg.png';
         }
         .tagline, .time {
             margin-bottom: 5px;
-            text-shadow: #bef 0 0 2px;
+            text-shadow: #148 0 0 2px;
+            text-shadow: #148 0 0 2px, #148 0 0 4px;
             font-variant: small-caps;
         }
         .tagline {

@@ -128,7 +128,7 @@ a:hover { text-decoration: underline; }
 #header_nav ul.sub-level { display: none; }
 
 #header_nav li:hover .sub-level {
-    background-color: #18242b;
+    background-color: $theme-color;
     display: block;
     position: absolute;
     left: 0px;
@@ -146,17 +146,14 @@ a:hover { text-decoration: underline; }
 
 /* ----------- Some common stuff for menuitems ---------- */
 
-li.menu-down-arrow { background-image: url('../img/arrow_down.png'); }
-li.menu-right-arrow { background-image: url('../img/arrow_right.png'); }
-li.menu-right-arrow,
-li.menu-down-arrow {
-    background-position: 95% center;
-    background-repeat: no-repeat;
-    padding-right: 15px;
-}
+.menuitem.menu-down-arrow > a:after {
+    padding-left: $padding-medium;
+    @include awesome-glyph('\f0d7');
 
-.menuitem:hover {
-    background-color: #18242b;
+}
+.menuitem.menu-right-arrow > a:after {
+    padding-left: $padding-medium;
+    @include awesome-glyph('\f0da');
 }
 
 .menuitem a,

@@ -5,7 +5,7 @@
 $main-header-height: 225px;
 $main-footer-height: 320px;
 $main-header-actual: 275px;
-$main-footer-actual: $main-footer-height + $padding-large * 2;
+$main-footer-actual: $main-footer-height + $spacing-large * 2;
 // ugly interpolation syntax because SCSS variables only work inside calc this way
 $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actual});
 
@@ -204,7 +204,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
     // flatten content
     #content {
-        padding: $padding-large 0;
+        padding: $spacing-large 0;
     }
     #page-footer .container { padding: 0; }
 

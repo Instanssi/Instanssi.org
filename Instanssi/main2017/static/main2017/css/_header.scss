@@ -1,9 +1,13 @@
+$banner-image: '../images/banner-bg.png';
+
 #page-header {
     position: relative; // grab any absolute-positioned stuff
     overflow: hidden;
     z-index: 0;
-    background: url('../images/banner-bg.png') repeat-x;
+
+    background: url($banner-image) repeat-x;
     background-position: top center;
+    background: linear-gradient(rgba($theme-color-bright, 1) 0px, rgba($theme-color-bright, 0) $main-header-height), url($banner-image) repeat-x;
 
     .snek {
         position: relative;
@@ -50,7 +54,7 @@
             width: 480px;
             height: 140px;
             max-width: 100%;
-            max-width: calc(100% - #{$padding-large});
+            max-width: calc(100% - #{$spacing-large});
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
         }

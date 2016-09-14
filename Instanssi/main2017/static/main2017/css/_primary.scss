@@ -15,7 +15,7 @@ body > * {
     a:hover { color: $theme-color-bright; }
     img { margin-right: 8px; box-shadow: 0 0 8px #888;}
     img:last-child { margin-right: 0; }
-    p { margin: 0 $padding-medium 10px; }
+    p { margin: 0 $spacing-medium 10px; }
 
     table {
         margin-bottom: 20px;

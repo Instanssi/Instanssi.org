@@ -14,9 +14,9 @@ $title-font-family: 'Exo 2', $body-font-family;
 $transition-small: .2s;
 $transition-large: .4s;
 
-$padding-large: 16px;
-$padding-medium: 8px;
-$padding-small: 4px;
+$spacing-large: 16px;
+$spacing-medium: 8px;
+$spacing-small: 4px;
 
 @mixin awesome-glyph($code) {
     font: normal normal normal 1em/1 FontAwesome;

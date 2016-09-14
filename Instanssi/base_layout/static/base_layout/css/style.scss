@@ -147,12 +147,12 @@ a:hover { text-decoration: underline; }
 /* ----------- Some common stuff for menuitems ---------- */
 
 .menuitem.menu-down-arrow > a:after {
-    padding-left: $padding-medium;
+    padding-left: $spacing-medium;
     @include awesome-glyph('\f0d7');
 
 }
 .menuitem.menu-right-arrow > a:after {
-    padding-left: $padding-medium;
+    padding-left: $spacing-medium;
     @include awesome-glyph('\f0da');
 }
 
@@ -212,7 +212,7 @@ ul#crumbpath li {
 ul#crumbpath li:before {
     content: '> ';
     color: #555;
-    padding: 4px;
+    padding: $spacing-small;
 }
 ul#crumbpath li:first-child:before {
     content: '';
@@ -220,7 +220,7 @@ ul#crumbpath li:first-child:before {
 }
 ul#crumbpath li * {
     font-size: 12px;
-    padding: 4px 0;
+    padding: $spacing-small 0;
 }
 ul#crumbpath a {
     color: $theme-color;

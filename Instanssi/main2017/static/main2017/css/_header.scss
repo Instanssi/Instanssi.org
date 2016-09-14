@@ -42,6 +42,7 @@
 
         &:after {
             // The big logo
+            margin-left: 4px; // fix alignment with content
             content: '';
             display: block;
             position: absolute;
@@ -68,7 +69,7 @@
         }
         .time {
             font-size: 24px;
-            padding: 180px 0 0 5px;
+            padding: 180px 0 0 8px;
         }
 
         h1 {

@@ -95,16 +95,9 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         width: 550px;
     }
 
-    /* forms */
-    form label {
-    }
-
     form input[type="text"] {
         width: 96%;
         padding: 2%;
-    }
-
-    form .errorField {
     }
 }
 
@@ -113,6 +106,15 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     .container {
         width: 100%;
         padding: 0;
+    }
+
+    #page-header .header-info {
+        .time {
+            padding-left: 0;
+        }
+        &:after {
+            margin: 0;
+        }
     }
 
     #content #primary {
@@ -187,19 +189,24 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
 /* Landscape phones */
 @media (max-width: 480px) {
-    #page-header {
-    }
-
     #page-header .nav-btn {
         display: block;
         position: absolute;
         top: 0;
-        right: 8px;
+        right: 16px; // align with logo's right edge
         z-index: 985;
     }
 
     .no-js #page-header .nav-btn {
         display: none;
+    }
+
+    // flatten content
+    #content {
+        padding: $padding-large 0;
+    }
+    .container aside > section > div {
+        padding: $padding-medium;
     }
 
     #page-header {
@@ -209,40 +216,40 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
             display: none;
         }
 
-        .header-info p.time {
-            font-size: 20px;
-        }
-
-        .header-info .logo > * {
-            margin: 0;
-        }
-
-        .header-info h1 {
-            padding: 0;
-            padding-top: 0;
-            text-indent: 0;
-            background: none;
-            font-size: 36px;
-            height: auto;
-            line-height: 1.25em;
-        }
-
-        .header-info .tagline {
-            font-size: 16px;
-        }
-
-        .header-info .time {
-            font-size: 26px;
-            padding-top: 140px;
-        }
-
         .header-info {
             min-height: 0;
-        }
+            margin: 0; // match content
 
-        // move the big logo closer to the top
-        .header-info:after {
-            top: 20px;
+            &:after {
+                top: 20px;
+            }
+
+            p.time {
+                font-size: 20px;
+            }
+
+            .logo > * {
+                margin: 0;
+            }
+
+            h1 {
+                padding: 0;
+                padding-top: 0;
+                text-indent: 0;
+                background: none;
+                font-size: 36px;
+                height: auto;
+                line-height: 1.25em;
+            }
+
+            .tagline {
+                font-size: 16px;
+            }
+
+            .time {
+                font-size: 26px;
+                padding-top: 140px;
+            }
         }
 
         nav {

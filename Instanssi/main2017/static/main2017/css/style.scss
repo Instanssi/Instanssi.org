@@ -70,6 +70,9 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     #content #primary {
         width: 560px;
     }
+    #page-header {
+        background-position: center top, calc(50% - 20px) 5px;
+    }
 }
 
 /* Portrait tablet to landscape and desktop */
@@ -99,6 +102,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     form input[type="text"] {
         width: 96%;
         padding: 2%;
+    }
+
+    #page-header {
+        background-position: center top, calc(50% + 55px) 5px;
     }
 }
 

@@ -6,12 +6,13 @@ $banner-image: '../images/banner-bg-1.png';
     z-index: 0;
 
     background: url($banner-image) repeat-x;
-    background-position: top center;
     background:
         linear-gradient(rgba($theme-color-bright, 1) 0px,
         rgba($theme-color-bright, 0) $main-header-height),
         url($banner-image) repeat-x calc(50% - 110px);
-
+    // try to align looping background snake with the one in the header
+    background-position: center top;
+    background-position: center top, calc(50% - 85px) 5px;
     .snek {
         position: relative;
         left: 100px;

@@ -13,6 +13,7 @@ $banner-image: '../images/banner-bg-1.png';
     // try to align looping background snake with the one in the header
     background-position: center top;
     background-position: center top, calc(50% - 85px) 5px;
+
     .snek {
         position: relative;
         left: 100px;

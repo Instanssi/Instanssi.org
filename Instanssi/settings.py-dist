@@ -9,7 +9,7 @@
 # LANGUAGE_CODE
 # SECRET_KEY
 
-from common import *
+from .common_config import *
 
 # Settings
 DEBUG = True

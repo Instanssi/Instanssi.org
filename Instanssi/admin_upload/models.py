@@ -14,7 +14,7 @@ class UploadedFile(models.Model):
     file = models.FileField('Tiedosto', upload_to='files/')
     date = models.DateTimeField('Aika')
     
-    def __unicode__(self):
+    def __str__(self):
         return '{} by {}'.format(self.file.name, self.user.username)
     
     class Meta:

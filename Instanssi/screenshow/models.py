@@ -13,7 +13,7 @@ class NPSong(models.Model):
     time = models.DateTimeField('Aikaleima')
     state = models.IntegerField('Tila', choices=((0, 'Play'), (1, 'Stop')))
     
-    def __unicode__(self):
+    def __str__(self):
         if self.state == 0:
             return '[Play] {} - {}'.format(self.title, self.artist)
         else:
@@ -46,7 +46,7 @@ class ScreenConfig(models.Model):
         help_text='Kuinka usein videoita näytetään? Arvo annetaan minuuteissa. 0 = Joka kierroksella.',
         default=5)
     
-    def __unicode__(self):
+    def __str__(self):
         return 'Asetukset tapahtumalle {}'.format(self.event.name)
     
     class Meta:
@@ -62,7 +62,7 @@ class PlaylistVideo(models.Model):
         'Järjestysindeksi',
         help_text='Indeksi toistolistan järjestelemiseen. Pienimmällä numerolla varustetut toistetaan ensimmäiseksi.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -76,7 +76,7 @@ class Sponsor(models.Model):
     logo = models.ImageField('Kuva', upload_to='screen/sponsorlogos/', help_text="Sponsorin logo", blank=True)
     logo_scaled = ImageSpecField([ResizeToFit(800, 375, True)], source='logo', format='PNG')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
@@ -101,7 +101,7 @@ class Message(models.Model):
     show_end = models.DateTimeField('Loppuaika', help_text='Viestin näyttäminen päättyy')
     text = models.TextField('Viesti', help_text='Viestin leipäteksti. Katso ettei tästä tule liian pitkä.')
     
-    def __unicode__(self):
+    def __str__(self):
         if len(self.text) > 32:
             return '{} ...'.format(self.text[:32])
         else:
@@ -118,7 +118,7 @@ class IRCMessage(models.Model):
     nick = models.CharField('Nimimerkki', max_length=64)
     message = models.TextField('Viesti')
     
-    def __unicode__(self):
+    def __str__(self):
         if len(self.message) > 32:
             return '{} ...'.format(self.message[:32])
         else:

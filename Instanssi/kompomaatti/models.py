@@ -19,7 +19,7 @@ class Profile(models.Model):
         'Muut yhteystiedot',
         help_text='Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
     class Meta:
@@ -43,7 +43,7 @@ class Event(models.Model):
     mainurl = models.URLField(
         'Tapahtuman pääsivu', help_text='URL Tapahtuman pääsivustolle', blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '[{}] {}'.format(self.pk, self.name)
 
     class Meta:
@@ -66,7 +66,7 @@ class VoteCodeRequest(models.Model):
         'Kuvaus',
         help_text='Lyhyt aneluteksti admineille :)')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
     class Meta:
@@ -100,7 +100,7 @@ class TicketVoteCode(models.Model):
         blank=True,
         null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}: {}'.format(self.ticket.key, self.associated_to.username)
 
     class Meta:
@@ -133,7 +133,7 @@ class VoteCode(models.Model):
         blank=True,
         null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.associated_to:
             return '{}: {}'.format(self.key, self.associated_to.username)
         else:
@@ -239,7 +239,7 @@ class Compo(models.Model):
         default=2,
         help_text='Pikkukuvan luonti ja asettaminen.')
     
-    def __unicode__(self):
+    def __str__(self):
         return self.event.name + ': ' + self.name
     
     class Meta:
@@ -350,7 +350,7 @@ class Entry(models.Model):
         null=True,
         blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} by {}'.format(self.name, self.creator)
     
     class Meta:
@@ -458,7 +458,7 @@ class Vote(models.Model):
     entry = models.ForeignKey(Entry, verbose_name="tuotos")
     rank = models.IntegerField('Sijoitus')
     
-    def __unicode__(self):
+    def __str__(self):
         return '{} by {} as {}'.format(self.entry.name, self.user.username, self.rank)
     
     class Meta:
@@ -515,7 +515,7 @@ class Competition(models.Model):
         help_text='Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.',
         default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
@@ -569,7 +569,7 @@ class CompetitionParticipation(models.Model):
                 rank += 1
         return rank
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}, {}: {}'.format(self.competition.name, self.participant_name, self.score)
 
     class Meta:

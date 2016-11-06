@@ -93,7 +93,7 @@ class ProgrammeEvent(models.Model):
         # Continue with normal save
         super(ProgrammeEvent, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
     
     class Meta:

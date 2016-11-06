@@ -10,7 +10,7 @@ class ToimistoJahti(models.Model):
     help = models.TextField(
         'Ohje', help_text='Ohjeteksti')
     
-    def __unicode__(self):
+    def __str__(self):
         if len(self.help) > 15:
             return self.key + ': ' + self.help[:15] + ' ...'
         else:
@@ -29,7 +29,7 @@ class ToimistoSuoritus(models.Model):
     time = models.DateTimeField(
         'Suoritusaika', help_text="Aika, jolloin agentti merkkasi tehtävän suoritetuksi")
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nick
     
     class Meta:

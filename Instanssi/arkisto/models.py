@@ -8,7 +8,7 @@ class OtherVideoCategory(models.Model):
     event = models.ForeignKey(Event, verbose_name='Tapahtuma')
     name = models.CharField('Nimi', max_length=64, help_text='Kategorian nimi')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
@@ -22,7 +22,7 @@ class OtherVideo(models.Model):
     description = models.TextField('Kuvaus', help_text='Videon kuvaus.')
     youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:

@@ -16,7 +16,7 @@ class BlogEntry(models.Model):
         help_text='Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.',
         default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} by {}'.format(self.title, self.user.username)
 
     class Meta:
@@ -31,7 +31,7 @@ class BlogComment(models.Model):
     text = models.TextField('Kommentti', help_text='Kommenttiteksti.')
     date = models.DateTimeField('Aika')
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} by {}'.format(self.entry.title, self.user.username)
 
     class Meta:

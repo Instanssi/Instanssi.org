@@ -111,7 +111,7 @@ class StoreItem(models.Model):
     def items_available():
         return StoreItem.objects.filter(max__gt=0, available=True).order_by('sort_index')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -255,7 +255,7 @@ class StoreTransaction(models.Model):
         return TransactionItem.objects.filter(
             item=store_item, transaction=self).count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.full_name
 
     class Meta:
@@ -299,7 +299,7 @@ class TransactionItem(models.Model):
     def qr_code(self):
         return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} for {}'.format(self.item.name, self.transaction.full_name)
 
     class Meta:

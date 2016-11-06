@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from urlparse import urlsplit, urlunsplit, urlparse, parse_qs
+from urllib.parse import urlsplit, urlunsplit, urlparse, parse_qs
 
 
 def get_url(path):

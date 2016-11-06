@@ -33,7 +33,6 @@ def start_process(ta):
     }
 
     # Make a request
-    msg = None
     try:
         msg = bitpay.request(settings.BITPAY_KEY, data)
     except bitpay.BitpayException as ex:

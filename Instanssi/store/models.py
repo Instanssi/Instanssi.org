@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -74,6 +75,9 @@ class StoreItem(models.Model):
     def is_discount_enabled(self, amount):
         """Returns True if discount applies to a specific quantity of this."""
         return self.is_discount_available() and amount >= self.discount_amount
+
+    def images_available(self):
+        return os.path.exists(self.imagefile_original.name) and os.path.exists(self.imagefile_thumbnail.name)
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""

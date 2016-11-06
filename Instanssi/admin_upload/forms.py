@@ -14,11 +14,11 @@ class UploadForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Lataa',
+                'Lataa',
                 'description',
                 'file',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -31,7 +31,7 @@ class UploadForm(forms.ModelForm):
         allowed = ['png', 'jpg', 'gif', 'zip', 'rar', '7z', 'gz', 'tar', 'bz2', 'odt', 'odp', 'doc', 'docx', 'pdf',
                    'txt', 'ppt', 'pptx', 'xls', 'xlsx']
         if not self.field_format_ok("file", allowed):
-            raise ValidationError(u'Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}.'.format(', '.join(allowed)))
+            raise ValidationError('Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}.'.format(', '.join(allowed)))
         
         # Return
         return self.cleaned_data['file']

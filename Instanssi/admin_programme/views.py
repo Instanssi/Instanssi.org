@@ -29,7 +29,7 @@ def index(request, sel_event_id):
             data = form.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            logger.info(u'Programme event "{}" added.'.format(data.title),
+            logger.info('Programme event "{}" added.'.format(data.title),
                         extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-programme:index', args=(sel_event_id, )))
     else:
@@ -60,7 +60,7 @@ def edit(request, sel_event_id, pev_id):
         form = ProgrammeEventForm(request.POST, request.FILES, instance=pev)
         if form.is_valid():
             data = form.save()
-            logger.info(u'Programme event "{}" edited.'.format(data.title),
+            logger.info('Programme event "{}" edited.'.format(data.title),
                         extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-programme:index', args=(sel_event_id, )))
     else:
@@ -84,7 +84,7 @@ def delete(request, sel_event_id, pev_id):
     try:
         p = ProgrammeEvent.objects.get(id=pev_id)
         p.delete()
-        logger.info(u'Programme event "{}" deleted.'.format(p.title),
+        logger.info('Programme event "{}" deleted.'.format(p.title),
                     extra={'user': request.user, 'event_id': sel_event_id})
     except:
         raise Http404

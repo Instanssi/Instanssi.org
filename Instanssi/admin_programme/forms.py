@@ -12,7 +12,7 @@ class ProgrammeEventForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tapahtuma',
+                'Tapahtuma',
                 'event_type',
                 'title',
                 'description',
@@ -33,7 +33,7 @@ class ProgrammeEventForm(forms.ModelForm):
                 'gplus_url',
                 'active',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

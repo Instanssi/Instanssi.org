@@ -36,7 +36,7 @@ def users(request):
             userform = UserCreationForm(request.POST)
             if userform.is_valid():
                 userform.save()
-                logger.info(u'User added.', extra={'user': request.user})
+                logger.info('User added.', extra={'user': request.user})
                 return HttpResponseRedirect(reverse('manage-users:index'))
         else:
             userform = UserCreationForm()
@@ -65,7 +65,7 @@ def edit(request, su_id):
         userform = UserEditForm(request.POST, instance=user)
         if userform.is_valid():
             userform.save()
-            logger.info(u'User "{}" edited.'.format(user.username), extra={'user': request.user})
+            logger.info('User "{}" edited.'.format(user.username), extra={'user': request.user})
             return HttpResponseRedirect(reverse('manage-users:index'))
     else:
         userform = UserEditForm(instance=user)
@@ -83,7 +83,7 @@ def delete(request, su_id):
     if user.is_superuser or user.username == "arkisto":
         raise Http403
     else:
-        logger.info(u'User "{}" deactivated.'.format(user.username), extra={'user': request.user})
+        logger.info('User "{}" deactivated.'.format(user.username), extra={'user': request.user})
         user.is_active = False
         user.save()
 

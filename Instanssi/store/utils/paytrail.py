@@ -46,7 +46,7 @@ def request(rid, secret, data):
 
     # No response from paytrail (other error)
     if res.status != 201:
-        raise PaytrailException(u'HTTP request failure.', res.status)
+        raise PaytrailException('HTTP request failure.', res.status)
 
     # Return parsed JSON
     return message

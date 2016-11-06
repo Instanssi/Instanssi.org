@@ -9,15 +9,15 @@ from Instanssi.main2014.models import ToimistoSuoritus
 
 
 class ToimistoCodeForm(forms.Form):
-    code = forms.CharField(max_length=15, label=u"Koodi", help_text=u"Syötä saamasi koodi tähän.")
-    nick = forms.CharField(max_length=32, label=u"Agenttinimi", help_text=u"Syötä tähän oma agenttinimesi.")
+    code = forms.CharField(max_length=15, label="Koodi", help_text="Syötä saamasi koodi tähän.")
+    nick = forms.CharField(max_length=32, label="Agenttinimi", help_text="Syötä tähän oma agenttinimesi.")
     
     def __init__(self, *args, **kwargs):
         super(ToimistoCodeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Syötä koodi',
+                'Syötä koodi',
                 'code',
                 'nick',
                 ButtonHolder (
@@ -30,12 +30,12 @@ class ToimistoCodeForm(forms.Form):
         nick = self.cleaned_data['nick']
         try:
             ToimistoSuoritus.objects.get(nick=nick)
-            raise ValidationError(u'Agenttinimi on jo käytössä. Valitse toinen nimi!')
+            raise ValidationError('Agenttinimi on jo käytössä. Valitse toinen nimi!')
         except ToimistoSuoritus.DoesNotExist:
             return nick
 
     def clean_code(self):
         code = self.cleaned_data['code']
         if code != settings.MAIN2014_TOIMISTO_CODE:
-            raise ValidationError(u'Virheellinen koodi!')
+            raise ValidationError('Virheellinen koodi!')
         return code

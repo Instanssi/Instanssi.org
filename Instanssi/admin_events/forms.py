@@ -11,12 +11,12 @@ class EventForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tapahtuma',
+                'Tapahtuma',
                 'name',
                 'date',
                 'mainurl',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

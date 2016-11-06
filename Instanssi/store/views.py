@@ -49,9 +49,9 @@ class StoreWizard(NamedUrlSessionWizardView):
         """Provides additional data for store forms."""
         context = super(StoreWizard, self).get_context_data(form=form, **kwargs)
         context['friendly_steps'] = [
-            (1, u'Tuotteet', 0),
-            (2, u'Asiakastiedot', 1),
-            (3, u'Maksu', 2)
+            (1, 'Tuotteet', 0),
+            (2, 'Asiakastiedot', 1),
+            (3, 'Maksu', 2)
         ]
 
         # Build a summary of items for the last step.

@@ -45,8 +45,8 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-                'common.context_processors.short_language_code',
-                'common.context_processors.google_settings',
+                'Instanssi.common.context_processors.short_language_code',
+                'Instanssi.common.context_processors.google_settings',
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
             ],
@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-DEFAULT_FILE_STORAGE = 'common.storage.ASCIIFileSystemStorage'
+DEFAULT_FILE_STORAGE = 'Instanssi.common.storage.ASCIIFileSystemStorage'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'common.http.Http403Middleware',
+    'Instanssi.common.http.Http403Middleware',
 ]
 
 ROOT_URLCONF = 'Instanssi.urls'

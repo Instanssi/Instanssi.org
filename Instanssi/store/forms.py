@@ -26,7 +26,7 @@ class StoreProductsForm(forms.Form):
             name = 'item-%s' % item.id
             field = forms.IntegerField(
                 initial='0',
-                label=u'{}'.format(item.name),
+                label='{}'.format(item.name),
                 help_text=item.description,
                 required=False,
                 widget=forms.TextInput()
@@ -50,7 +50,7 @@ class StoreProductsForm(forms.Form):
             field.discount_percentage = item.discount_percentage
 
     def _dataitems(self):
-        for key, value in self.data.iteritems():
+        for key, value in self.data.items():
             try:
                 pos = key.rfind('item-')
                 if pos > -1 and int(value):
@@ -69,13 +69,13 @@ class StoreProductsForm(forms.Form):
             total_items += amount
             if store_item.num_available() < amount:
                 fails.append(
-                    u'Tuotetta "%s" ei ole saatavilla riittävästi!'
+                    'Tuotetta "%s" ei ole saatavilla riittävästi!'
                     % store_item.name
                 )
 
         # Make sure we have at least SOME items in the order
         if not total_items:
-            fails.append(u'Tilauksessa on oltava ainakin yksi tuote!')
+            fails.append('Tilauksessa on oltava ainakin yksi tuote!')
 
         # Dump errors
         if fails:
@@ -99,7 +99,7 @@ class StoreProductsForm(forms.Form):
 
                 for i in range(10):
                     try:
-                        str = u'%s|%s|%s|%s' % (
+                        str = '%s|%s|%s|%s' % (
                             i, store_item.name, time.time(),
                             random.random())
                         new_item.key = gen_sha(str.encode('utf-8'))
@@ -113,10 +113,10 @@ class StoreProductsForm(forms.Form):
 
 class StoreInfoForm(forms.ModelForm):
     email_confirm = forms.EmailField(
-        label=u'Vahvista sähköposti',
+        label='Vahvista sähköposti',
         max_length=255,
         required=True,
-        help_text=u'Varmista sähköposti kirjoittamalla se vielä uudelleen.'
+        help_text='Varmista sähköposti kirjoittamalla se vielä uudelleen.'
     )
 
     def __init__(self, *args, **kwargs):
@@ -146,11 +146,11 @@ class StoreInfoForm(forms.ModelForm):
                 if not 'email_confirm' in self._errors:
                     self._errors['email_confirm'] = self.error_class()
                 self._errors['email_confirm'].append(
-                    u'Osoitteet eivät täsmää!'
+                    'Osoitteet eivät täsmää!'
                 )
                 fails.append(
-                    u'Vahvista sähköpostiosoitteesi kirjoittamalla sama '
-                    u'osoite molempiin kenttiin!'
+                    'Vahvista sähköpostiosoitteesi kirjoittamalla sama '
+                    'osoite molempiin kenttiin!'
                 )
 
         # Dump errors
@@ -168,7 +168,7 @@ class StoreInfoForm(forms.ModelForm):
 
         for i in range(10):
             try:
-                str = u'%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname,
+                str = '%s|%s|%s|%s|%s' % (i, new_transaction.firstname, new_transaction.lastname,
                                            time.time(), random.random())
                 new_transaction.key = gen_sha(str.encode('utf-8'))
                 new_transaction.save()
@@ -188,13 +188,13 @@ class StoreInfoForm(forms.ModelForm):
 
 class StorePaymentMethodForm(forms.Form):
     payment_method = forms.ChoiceField(
-        label=u'Maksutapa',
+        label='Maksutapa',
         required=True,
-        choices=[(0, u'Bitcoin'), (1, u'Verkkomaksu')],
+        choices=[(0, 'Bitcoin'), (1, 'Verkkomaksu')],
         widget=forms.RadioSelect(),
     )
     read_terms = forms.BooleanField(
-        label=u'Hyväksyn toimitusehdot',
+        label='Hyväksyn toimitusehdot',
         required=True,
     )
 
@@ -202,8 +202,8 @@ class StorePaymentMethodForm(forms.Form):
         super(StorePaymentMethodForm, self).__init__(*args, **kwargs)
 
         self.fields['payment_method'].help_text = \
-            u'Valitse mieleisesi maksutapa. Verkkomaksu-valinta kattaa sekä verkkopankki- että luottokorttimaksut.'
+            'Valitse mieleisesi maksutapa. Verkkomaksu-valinta kattaa sekä verkkopankki- että luottokorttimaksut.'
         self.fields['read_terms'].help_text = \
-            u'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ja hyväksyn ne. ' \
-            u'(Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' \
+            'Olen lukenut <a href="%s" target="_blank">toimitusehdot</a> ja hyväksyn ne. ' \
+            '(Luethan myös <a href="%s" target="_blank">rekisteriselosteen</a>)' \
             % (reverse('store:terms'), reverse('store:privacy'))

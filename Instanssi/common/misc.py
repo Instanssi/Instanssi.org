@@ -7,7 +7,7 @@ from urllib.parse import urlsplit, urlunsplit, urlparse, parse_qs
 def get_url(path):
     proto = 'https://' if settings.SSL_ON else 'http://'
     host = settings.DOMAIN
-    return u'{}{}{}'.format(proto, host, path or '')
+    return '{}{}{}'.format(proto, host, path or '')
 
 
 def get_url_local_path(url):

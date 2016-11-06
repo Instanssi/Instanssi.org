@@ -32,7 +32,7 @@ def request(key, data):
 
     # No response from bitpay (other error)
     if message['status'] != 'new':
-        raise BitpayException(u'Invoice generation failure.', message.status)
+        raise BitpayException('Invoice generation failure.', message.status)
 
     # Return parsed JSON
     return message

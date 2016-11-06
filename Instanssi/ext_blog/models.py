@@ -6,34 +6,34 @@ from Instanssi.kompomaatti.models import Event
 
 
 class BlogEntry(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
-    user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
-    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko entrylle.', max_length=128)
-    text = models.TextField(u'Teksti')
-    date = models.DateTimeField(u'Aika')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    user = models.ForeignKey(User, verbose_name='Käyttäjä')
+    title = models.CharField('Otsikko', help_text='Lyhyt otsikko entrylle.', max_length=128)
+    text = models.TextField('Teksti')
+    date = models.DateTimeField('Aika')
     public = models.BooleanField(
-        u'Julkinen',
-        help_text=u'Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.',
+        'Julkinen',
+        help_text='Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.',
         default=False)
 
     def __unicode__(self):
-        return u'{} by {}'.format(self.title, self.user.username)
+        return '{} by {}'.format(self.title, self.user.username)
 
     class Meta:
-        verbose_name = u"entry"
-        verbose_name_plural = u"entryt"
+        verbose_name = "entry"
+        verbose_name_plural = "entryt"
 
 
 class BlogComment(models.Model):
-    user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
-    entry = models.ForeignKey(BlogEntry, verbose_name=u'Entry')
-    title = models.CharField(u'Otsikko', help_text=u'Lyhyt otsikko kommentille.', max_length=128, blank=True)
-    text = models.TextField(u'Kommentti', help_text=u'Kommenttiteksti.')
-    date = models.DateTimeField(u'Aika')
+    user = models.ForeignKey(User, verbose_name='Käyttäjä')
+    entry = models.ForeignKey(BlogEntry, verbose_name='Entry')
+    title = models.CharField('Otsikko', help_text='Lyhyt otsikko kommentille.', max_length=128, blank=True)
+    text = models.TextField('Kommentti', help_text='Kommenttiteksti.')
+    date = models.DateTimeField('Aika')
 
     def __unicode__(self):
-        return u'{} by {}'.format(self.entry.title, self.user.username)
+        return '{} by {}'.format(self.entry.title, self.user.username)
 
     class Meta:
-        verbose_name = u"kommentti"
-        verbose_name_plural = u"kommentit"
+        verbose_name = "kommentti"
+        verbose_name_plural = "kommentit"

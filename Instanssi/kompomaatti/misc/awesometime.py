@@ -15,13 +15,13 @@ def format_single_helper(t):
     the_day_after_tomorrow = today + timedelta(days=2)  # Must honor the movie!
     
     if t < now:
-        return u"päättynyt"
+        return "päättynyt"
     elif now < t < tomorrow:
-        return u"tänään klo. " + t.strftime("%H:%M")
+        return "tänään klo. " + t.strftime("%H:%M")
     elif tomorrow < t < the_day_after_tomorrow:
-        return u"huomenna klo. " + t.strftime("%H:%M")
+        return "huomenna klo. " + t.strftime("%H:%M")
     elif the_day_after_tomorrow < t < today + timedelta(days=3):
-        return u"ylihuomenna klo. " + t.strftime("%H:%M")
+        return "ylihuomenna klo. " + t.strftime("%H:%M")
     else:
         return t.strftime("%d.%m.%Y klo. %H:%M")
 
@@ -40,17 +40,17 @@ def format_between(t1, t2):
     today = todayhelper()
 
     if t2 < now:
-        return u"Päättynyt"
+        return "Päättynyt"
     elif t1 < now < t2:
         left = t2-now
         l_hours = int(delta_total_seconds(left) / delta_total_seconds(timedelta(hours=1)))
         l_minutes = int((delta_total_seconds(left) - delta_total_seconds(timedelta(hours=l_hours))) / 60)
         if l_hours == 0:
-            return u"Menossa, aikaa jäljellä {} minuuttia".format(l_minutes)
+            return "Menossa, aikaa jäljellä {} minuuttia".format(l_minutes)
         else:
-            return u"Menossa, aikaa jäljellä {} tuntia ja {} minuuttia".format(l_hours, l_minutes)
+            return "Menossa, aikaa jäljellä {} tuntia ja {} minuuttia".format(l_hours, l_minutes)
 
     elif now < t1 < today + timedelta(days=3):
-        return u"Alkaa {} ja päättyy {}.".format(format_single_helper(t1), format_single_helper(t2))
+        return "Alkaa {} ja päättyy {}.".format(format_single_helper(t1), format_single_helper(t2))
     else:
-        return u"Alkaa {} ja päättyy {}.".format(t1.strftime("%d.%m.%Y %H:%M"), t2.strftime("%d.%m.%Y %H:%M"))
+        return "Alkaa {} ja päättyy {}.".format(t1.strftime("%d.%m.%Y %H:%M"), t2.strftime("%d.%m.%Y %H:%M"))

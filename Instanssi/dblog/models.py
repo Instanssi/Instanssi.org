@@ -15,10 +15,10 @@ class DBLogEntry(models.Model):
 
     def __unicode__(self):
         if len(self.message) > 64:
-            return u'{} ...'.format(self.message[:64])
+            return '{} ...'.format(self.message[:64])
         else:
             return self.message
     
     class Meta:
-        verbose_name = u"lokimerkintä"
-        verbose_name_plural = u"lokimerkinnät"
+        verbose_name = "lokimerkintä"
+        verbose_name_plural = "lokimerkinnät"

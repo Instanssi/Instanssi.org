@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -104,7 +104,7 @@ def handle_notify(request):
             if not ta_common.handle_payment(ta):
                 raise Http404
             return HttpResponse("")
-            
+
         if status == 'paid':
             # Paid but not confirmed
             ta_common.handle_pending(ta)

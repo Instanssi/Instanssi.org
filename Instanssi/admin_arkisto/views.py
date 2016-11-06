@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.kompomaatti.models import *
-from Instanssi.arkisto.models import OtherVideo,OtherVideoCategory
+from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm
 from Instanssi.admin_arkisto.misc import utils
 from Instanssi.admin_base.misc.custom_render import admin_render
@@ -245,7 +245,7 @@ def editvid(request, sel_event_id, video_id):
         vidform = VideoForm(request.POST, instance=video, event=event)
         if vidform.is_valid():
             r_video = vidform.save()
-            logger.info(u'Edited archive video {}'.format(r_video.name),
+            logger.info('Edited archive video {}'.format(r_video.name),
                         extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vids', args=(sel_event_id,)))
     else:
@@ -272,7 +272,7 @@ def deletevid(request, sel_event_id, video_id):
     try:
         video = OtherVideo.objects.get(id=video_id)
         video.delete()
-        logger.info(u'Deleted archive video {}'.format(video.name),
+        logger.info('Deleted archive video {}'.format(video.name),
                     extra={'user': request.user, 'event': event})
     except OtherVideo.DoesNotExist:
         pass
@@ -298,7 +298,7 @@ def cats(request, sel_event_id):
             cat = catform.save(commit=False)
             cat.event = event
             cat.save()
-            logger.info(u'Added archive video category '.format(cat.name),
+            logger.info('Added archive video category '.format(cat.name),
                         extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id,)))
     else:
@@ -332,7 +332,7 @@ def editcat(request, sel_event_id, category_id):
         catform = VideoCategoryForm(request.POST, instance=category)
         if catform.is_valid():
             r_cat = catform.save()
-            logger.info(u'Edited archive video category {}'.format(r_cat.name),
+            logger.info('Edited archive video category {}'.format(r_cat.name),
                         extra={'user': request.user, 'event': event})
             return HttpResponseRedirect(reverse('manage-arkisto:vidcats', args=(sel_event_id,)))
     else:
@@ -358,7 +358,7 @@ def deletecat(request, sel_event_id, category_id):
     try:
         cat = OtherVideoCategory.objects.get(id=category_id, event=event)
         cat.delete()
-        logger.info(u'Deleted archive video category {}'.format(cat.name),
+        logger.info('Deleted archive video category {}'.format(cat.name),
                     extra={'user': request.user, 'event': event})
     except OtherVideoCategory.DoesNotExist:
         pass

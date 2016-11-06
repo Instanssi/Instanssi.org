@@ -6,7 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.core.exceptions import ValidationError
 from Instanssi.kompomaatti.models import Compo, Entry, Competition, CompetitionParticipation, Event
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 class AdminCompetitionScoreForm(forms.Form):
@@ -19,7 +19,7 @@ class AdminCompetitionScoreForm(forms.Form):
         self.helper.layout = Layout()
         
         # Create a fieldset for everything
-        fs = Fieldset(u'Pisteytys')
+        fs = Fieldset('Pisteytys')
     
         # Set fields
         participants = CompetitionParticipation.objects.filter(competition=self.competition)
@@ -27,13 +27,13 @@ class AdminCompetitionScoreForm(forms.Form):
             name = str(p.id)
             self.fields[name] = forms.FloatField()
             self.fields[name].label = p.participant_name
-            self.fields[name].help_text = u'Osallistujan {} saavuttama tulos.'.format(p.participant_name)
+            self.fields[name].help_text = 'Osallistujan {} saavuttama tulos.'.format(p.participant_name)
             self.fields[name].initial = p.score
             fs.fields.append(name)
     
         # Add buttonholder
         bh = ButtonHolder(
-            Submit('submit', u'Tallenna')
+            Submit('submit', 'Tallenna')
         )
         fs.fields.append(bh)
         
@@ -41,7 +41,7 @@ class AdminCompetitionScoreForm(forms.Form):
         self.helper.layout.fields.append(fs)
         
     def save(self):
-        for k, v in self.cleaned_data.iteritems():
+        for k, v in self.cleaned_data.items():
             p = get_object_or_404(CompetitionParticipation, pk=int(k))
             p.score = v
             p.save()
@@ -53,13 +53,13 @@ class AdminParticipationEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Osallistuja',
+                'Osallistuja',
                 'participant_name',
                 'score',
                 'disqualified',
                 'disqualified_reason',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -75,7 +75,7 @@ class AdminCompetitionForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Kilpailu',
+                'Kilpailu',
                 'name',
                 'description',
                 'participation_end',
@@ -87,7 +87,7 @@ class AdminCompetitionForm(forms.ModelForm):
                 'hide_from_archive',
                 'active',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -103,7 +103,7 @@ class AdminCompoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Kompo',
+                'Kompo',
                 'name',
                 'description',
                 'adding_end',
@@ -124,7 +124,7 @@ class AdminCompoForm(forms.ModelForm):
                 'hide_from_frontpage',
                 'is_votable',
                 ButtonHolder(
-                    Submit('submit-compo', u'Tallenna')
+                    Submit('submit-compo', 'Tallenna')
                 )
             )
         )
@@ -151,7 +151,7 @@ class AdminEntryAddForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tuotos',
+                'Tuotos',
                 'user',
                 'compo',
                 'name',
@@ -162,7 +162,7 @@ class AdminEntryAddForm(forms.ModelForm):
                 'imagefile_original',
                 'youtube_url',
                 ButtonHolder(
-                    Submit('submit', u'Lisää')
+                    Submit('submit', 'Lisää')
                 )
             )
         )
@@ -177,10 +177,10 @@ class AdminEntryAddForm(forms.ModelForm):
 
         # Warn if something is wrong
         if not video_id:
-            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            raise ValidationError('Osoitteesta ei löytynyt videotunnusta.')
 
         # Return a new video url
-        return u'https://www.youtube.com/v/{}'.format(video_id)
+        return 'https://www.youtube.com/v/{}'.format(video_id)
 
     class Meta:
         model = Entry
@@ -208,7 +208,7 @@ class AdminEntryEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tuotos',
+                'Tuotos',
                 'compo',
                 'user',
                 'name',
@@ -221,7 +221,7 @@ class AdminEntryEditForm(forms.ModelForm):
                 'disqualified',
                 'disqualified_reason',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -236,10 +236,10 @@ class AdminEntryEditForm(forms.ModelForm):
 
         # Warn if something is wrong
         if not video_id:
-            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            raise ValidationError('Osoitteesta ei löytynyt videotunnusta.')
 
         # Return a new video url
-        return u'https://www.youtube.com/v/{}'.format(video_id)
+        return 'https://www.youtube.com/v/{}'.format(video_id)
 
     class Meta:
         model = Entry
@@ -247,17 +247,17 @@ class AdminEntryEditForm(forms.ModelForm):
 
 
 class CreateTokensForm(forms.Form):
-    amount = forms.IntegerField(min_value=1, max_value=100, label=u"Määrä", help_text=u"Montako tokenia luodaan.")
+    amount = forms.IntegerField(min_value=1, max_value=100, label="Määrä", help_text="Montako tokenia luodaan.")
     
     def __init__(self, *args, **kwargs):
         super(CreateTokensForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Generoi tokeneita',
+                'Generoi tokeneita',
                 'amount',
                 ButtonHolder(
-                    Submit('submit', u'Generoi')
+                    Submit('submit', 'Generoi')
                 )
             )
         )
@@ -272,10 +272,10 @@ class CloneCompoForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Kloonaa toisen tapahtuman kompot',
+                'Kloonaa toisen tapahtuman kompot',
                 'event',
                 ButtonHolder(
-                    Submit('submit-clone', u'Kloonaa')
+                    Submit('submit-clone', 'Kloonaa')
                 )
             )
         )

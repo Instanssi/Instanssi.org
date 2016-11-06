@@ -1,5 +1,5 @@
 from django.test import TestCase
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 class YoutubeUrlTestCase(TestCase):

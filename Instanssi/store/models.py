@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -7,59 +8,59 @@ from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 
 
 class StoreItem(models.Model):
     event = models.ForeignKey(
         Event,
-        verbose_name=u'Tapahtuma',
-        help_text=u'Tapahtuma johon tuote liittyy.',
+        verbose_name='Tapahtuma',
+        help_text='Tapahtuma johon tuote liittyy.',
         blank=True,
         null=True)
     name = models.CharField(
-        u'Tuotteen nimi',
-        help_text=u'Tuotteen lyhyt nimi.',
+        'Tuotteen nimi',
+        help_text='Tuotteen lyhyt nimi.',
         max_length=255)
     description = models.TextField(
-        u'Tuotteen kuvaus',
-        help_text=u'Tuotteen pitkä kuvaus.')
+        'Tuotteen kuvaus',
+        help_text='Tuotteen pitkä kuvaus.')
     price = models.DecimalField(
-        u'Tuotteen hinta',
-        help_text=u'Tuotteen hinta.',
+        'Tuotteen hinta',
+        help_text='Tuotteen hinta.',
         max_digits=5,
         decimal_places=2)
     max = models.IntegerField(
-        u'Kappaletta saatavilla',
-        help_text=u'Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
+        'Kappaletta saatavilla',
+        help_text='Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
     available = models.BooleanField(
-        u'Ostettavissa',
+        'Ostettavissa',
         default=False,
-        help_text=u'Ilmoittaa, näkyykö tuote kaupassa.')
+        help_text='Ilmoittaa, näkyykö tuote kaupassa.')
     imagefile_original = models.ImageField(
-        u'Tuotekuva',
+        'Tuotekuva',
         upload_to='store/images/',
-        help_text=u"Edustava kuva tuotteelle.", blank=True, null=True)
+        help_text="Edustava kuva tuotteelle.", blank=True, null=True)
     imagefile_thumbnail = ImageSpecField(
         [ResizeToFill(64, 64)],
         source='imagefile_original',
         format='PNG')
     max_per_order = models.IntegerField(
-        u'Maksimi per tilaus',
+        'Maksimi per tilaus',
         default=10,
-        help_text=u'Kuinka monta kappaletta voidaan ostaa kerralla.')
+        help_text='Kuinka monta kappaletta voidaan ostaa kerralla.')
     sort_index = models.IntegerField(
-        u'Järjestysarvo',
+        'Järjestysarvo',
         default=0,
-        help_text=u'Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
+        help_text='Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
     discount_amount = models.IntegerField(
-        u'Alennusmäärä',
+        'Alennusmäärä',
         default=-1,
-        help_text=u'Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)')
+        help_text='Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)')
     discount_percentage = models.IntegerField(
-        u'Alennusprosentti',
+        'Alennusprosentti',
         default=0,
-        help_text=u'Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+        help_text='Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
 
     def is_discount_available(self):
         """Returns True if a discount exists for this item."""
@@ -74,6 +75,9 @@ class StoreItem(models.Model):
     def is_discount_enabled(self, amount):
         """Returns True if discount applies to a specific quantity of this."""
         return self.is_discount_available() and amount >= self.discount_amount
+
+    def image_available(self):
+        return os.path.exists(self.imagefile_original.name)
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""
@@ -107,85 +111,85 @@ class StoreItem(models.Model):
     def items_available():
         return StoreItem.objects.filter(max__gt=0, available=True).order_by('sort_index')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = u"tuote"
-        verbose_name_plural = u"tuotteet"
+        verbose_name = "tuote"
+        verbose_name_plural = "tuotteet"
 
 
 class StoreTransaction(models.Model):
     token = models.CharField(
-        u'Palvelutunniste',
-        help_text=u'Maksupalvelun maksukohtainen tunniste',
+        'Palvelutunniste',
+        help_text='Maksupalvelun maksukohtainen tunniste',
         max_length=255)
     time_created = models.DateTimeField(
-        u'Luontiaika',
+        'Luontiaika',
         null=True,
         blank=True)
     time_paid = models.DateTimeField(
-        u'Maksun varmistumisaika',
+        'Maksun varmistumisaika',
         null=True,
         blank=True)
     time_pending = models.DateTimeField(
-        u'Maksun maksuaika',
+        'Maksun maksuaika',
         null=True,
         blank=True)
     time_cancelled = models.DateTimeField(
-        u'Peruutusaika',
+        'Peruutusaika',
         null=True,
         blank=True)
     payment_method_name = models.CharField(
-        u'Maksutapa',
-        help_text=u'Tapa jolla tilaus maksettiin',
+        'Maksutapa',
+        help_text='Tapa jolla tilaus maksettiin',
         max_length=32,
         blank=True,
-        default=u'')
+        default='')
     key = models.CharField(
-        u'Avain',
+        'Avain',
         max_length=40,
         unique=True,
-        help_text=u'Paikallinen maksukohtainen tunniste')
+        help_text='Paikallinen maksukohtainen tunniste')
     firstname = models.CharField(
-        u'Etunimi',
+        'Etunimi',
         max_length=64)
     lastname = models.CharField(
-        u'Sukunimi',
+        'Sukunimi',
         max_length=64)
     company = models.CharField\
-        (u'Yritys',
+        ('Yritys',
          max_length=128,
          blank=True)
     email = models.EmailField(
-        u'Sähköposti',
+        'Sähköposti',
         max_length=255,
-        help_text=u'Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen '
-                  u'tarvittavat koodit lähetetään sinne.')
+        help_text='Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen '
+                  'tarvittavat koodit lähetetään sinne.')
     telephone = models.CharField(
-        u'Puhelinnumero',
+        'Puhelinnumero',
         max_length=64,
         blank=True)
     mobile = models.CharField(
-        u'Matkapuhelin',
+        'Matkapuhelin',
         max_length=64,
         blank=True)
     street = models.CharField(
-        u'Katuosoite',
+        'Katuosoite',
         max_length=128,
-        help_text=u'Katusoite tarvitaan maksupalvelun vaatimuksesta.')
+        help_text='Katusoite tarvitaan maksupalvelun vaatimuksesta.')
     postalcode = models.CharField(
-        u'Postinumero',
+        'Postinumero',
         max_length=16)
     city = models.CharField(
-        u'Postitoimipaikka',
+        'Postitoimipaikka',
         max_length=64)
     country = CountryField(
-        u'Maa',
+        'Maa',
         default='FI')
     information = models.TextField(
-        u'Lisätiedot',
-        help_text=u'Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.',
+        'Lisätiedot',
+        help_text='Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.',
         blank=True)
 
     @property
@@ -213,18 +217,18 @@ class StoreTransaction(models.Model):
 
     @property
     def full_name(self):
-        return u'{} {}'.format(self.firstname, self.lastname)
+        return '{} {}'.format(self.firstname, self.lastname)
 
     def get_status_text(self):
         if self.is_cancelled:
-            return u'Peruutettu'
+            return 'Peruutettu'
         if self.is_delivered:
-            return u'Toimitettu'
+            return 'Toimitettu'
         if self.is_paid:
-            return u'Maksettu'
+            return 'Maksettu'
         if self.is_pending:
-            return u'Vireillä'
-        return u'Tuotteet valittu'
+            return 'Vireillä'
+        return 'Tuotteet valittu'
 
     def get_total_price(self):
         ret = 0
@@ -251,39 +255,39 @@ class StoreTransaction(models.Model):
         return TransactionItem.objects.filter(
             item=store_item, transaction=self).count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.full_name
 
     class Meta:
-        verbose_name = u"transaktio"
-        verbose_name_plural = u"transaktiot"
+        verbose_name = "transaktio"
+        verbose_name_plural = "transaktiot"
         permissions = (("view_storetransaction", "Can view store transactions"),)
 
 
 class TransactionItem(models.Model):
     key = models.CharField(
-        u'Avain',
+        'Avain',
         max_length=40,
         unique=True,
-        help_text=u'Lippuavain')
+        help_text='Lippuavain')
     item = models.ForeignKey(
         StoreItem,
-        verbose_name=u'Tuote')
+        verbose_name='Tuote')
     transaction = models.ForeignKey(
         StoreTransaction,
-        verbose_name=u'Ostotapahtuma')
+        verbose_name='Ostotapahtuma')
     time_delivered = models.DateTimeField(
-        u'Toimitusaika',
+        'Toimitusaika',
         null=True,
         blank=True)
     purchase_price = models.DecimalField(
-        u'Tuotteen hinta',
-        help_text=u'Tuotteen hinta ostoshetkellä',
+        'Tuotteen hinta',
+        help_text='Tuotteen hinta ostoshetkellä',
         max_digits=5,
         decimal_places=2)
     original_price = models.DecimalField(
-        u'Tuotteen alkuperäinen hinta',
-        help_text=u'Tuotteen hinta ostoshetkellä ilman alennuksia',
+        'Tuotteen alkuperäinen hinta',
+        help_text='Tuotteen hinta ostoshetkellä ilman alennuksia',
         max_digits=5,
         decimal_places=2)
 
@@ -295,9 +299,9 @@ class TransactionItem(models.Model):
     def qr_code(self):
         return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
 
-    def __unicode__(self):
-        return u'{} for {}'.format(self.item.name, self.transaction.full_name)
+    def __str__(self):
+        return '{} for {}'.format(self.item.name, self.transaction.full_name)
 
     class Meta:
-        verbose_name = u"transaktiotuote"
-        verbose_name_plural = u"transaktiotuotteet"
+        verbose_name = "transaktiotuote"
+        verbose_name_plural = "transaktiotuotteet"

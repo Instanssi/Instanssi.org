@@ -6,32 +6,32 @@ from django.contrib.auth.models import User
 
 class ToimistoJahti(models.Model):
     key = models.CharField(
-        u'Avain', max_length=10, help_text=u"Avain", unique=True)
+        'Avain', max_length=10, help_text="Avain", unique=True)
     help = models.TextField(
-        u'Ohje', help_text=u'Ohjeteksti')
+        'Ohje', help_text='Ohjeteksti')
     
-    def __unicode__(self):
+    def __str__(self):
         if len(self.help) > 15:
-            return self.key + u': ' + self.help[:15] + u' ...'
+            return self.key + ': ' + self.help[:15] + ' ...'
         else:
-            return self.key + u': ' + self.help
+            return self.key + ': ' + self.help
         
     class Meta:
-        verbose_name = u"jahtitehtava"
-        verbose_name_plural = u"jahtitehtavat"
+        verbose_name = "jahtitehtava"
+        verbose_name_plural = "jahtitehtavat"
 
 
 class ToimistoSuoritus(models.Model):
     user = models.ForeignKey(
-        User, verbose_name=u'Käyttäjä')
+        User, verbose_name='Käyttäjä')
     nick = models.CharField(
-        u'Tunnusnimi', max_length=32, help_text=u"Agentin tunnusnimi", unique=True)
+        'Tunnusnimi', max_length=32, help_text="Agentin tunnusnimi", unique=True)
     time = models.DateTimeField(
-        u'Suoritusaika', help_text=u"Aika, jolloin agentti merkkasi tehtävän suoritetuksi")
+        'Suoritusaika', help_text="Aika, jolloin agentti merkkasi tehtävän suoritetuksi")
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nick
     
     class Meta:
-        verbose_name = u"toimistosuoritus"
-        verbose_name_plural = u"toimistosuoritukset"
+        verbose_name = "toimistosuoritus"
+        verbose_name_plural = "toimistosuoritukset"

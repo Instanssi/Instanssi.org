@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import user_access_required
-from common.rest import rest_api, RestResponse
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import user_access_required
+from Instanssi.common.rest import rest_api, RestResponse
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -436,12 +436,12 @@ def validate_votecode_api(request, event_id, vote_code):
 
     # Make sure the key length is at least 8 chars before doing anything
     if len(vote_code) < 8:
-        return RestResponse(code=403, error_text=u'Lippuavain liian lyhyt!')
+        return RestResponse(code=403, error_text='Lippuavain liian lyhyt!')
 
     # Check if key is already used, return error if it is
     try:
         TicketVoteCode.objects.get(event=event, ticket__key__startswith=vote_code)
-        return RestResponse(code=403, error_text=u'Lippuavain on jo käytössä!')
+        return RestResponse(code=403, error_text='Lippuavain on jo käytössä!')
     except TicketVoteCode.DoesNotExist:
         pass
 
@@ -449,7 +449,7 @@ def validate_votecode_api(request, event_id, vote_code):
     try:
         TransactionItem.objects.get(item__event=event, key__startswith=vote_code)
     except TransactionItem.DoesNotExist:
-        return RestResponse(code=403, error_text=u'Lippuavainta ei ole olemassa!')
+        return RestResponse(code=403, error_text='Lippuavainta ei ole olemassa!')
 
     # Everything done. Return default response with code 200 and no error text.
     return RestResponse({})

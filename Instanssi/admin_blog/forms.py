@@ -11,13 +11,13 @@ class BlogEntryEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Muokkaa blogientryä',
+                'Muokkaa blogientryä',
                 'title',
                 'text',
                 'date',
                 'public',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -32,12 +32,12 @@ class BlogEntryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Lisää uusi blogientry',
+                'Lisää uusi blogientry',
                 'title',
                 'text',
                 'public',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

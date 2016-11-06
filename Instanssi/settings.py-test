@@ -2,7 +2,7 @@
 
 # NOTE! THIS FILE IS FOR AUTOMATED TRAVIS TESTING ENVIRONMENT!
 
-from common import *
+from .common_config import *
 
 # Settings
 DEBUG = True

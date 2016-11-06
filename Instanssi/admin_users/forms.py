@@ -13,24 +13,24 @@ class UserCreationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Lisää pääkäyttäjä',
+                'Lisää pääkäyttäjä',
                 'username',
                 'first_name',
                 'last_name',
                 'password',
                 'email',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
-        self.fields['password'].help_text = u"Salasanan tulee olla vähintään 8 merkkiä pitkä."
+        self.fields['password'].help_text = "Salasanan tulee olla vähintään 8 merkkiä pitkä."
     
     def clean_password(self):
         # Make sure password is okay
         password = self.cleaned_data['password']
         if len(password) < 8:
-            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+            raise forms.ValidationError('Salasanan tulee olla vähintään 8 merkkiä pitkä!')
         return password
     
     def save(self, commit=False):
@@ -65,7 +65,7 @@ class UserEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Muokkaa käyttäjää',
+                'Muokkaa käyttäjää',
                 'first_name',
                 'last_name',
                 'email',
@@ -73,7 +73,7 @@ class UserEditForm(forms.ModelForm):
                 'is_staff',
                 'groups',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

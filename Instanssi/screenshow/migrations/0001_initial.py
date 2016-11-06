@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import models, migrations
 
@@ -61,9 +61,9 @@ class Migration(migrations.Migration):
             name='PlaylistVideo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(help_text='Videon nimi tai otsikko.', max_length=b'64', verbose_name='Nimi')),
-                ('url', models.URLField(help_text='Linkki Youtube-videoon.', verbose_name=b'Osoite')),
-                ('index', models.IntegerField(help_text='Indeksi toistolistan j\xe4rjestelemiseen. Pienimm\xe4ll\xe4 numerolla varustetut toistetaan ensimm\xe4iseksi.', verbose_name=b'J\xc3\xa4rjestysindeksi')),
+                ('name', models.CharField(help_text='Videon nimi tai otsikko.', max_length=64, verbose_name='Nimi')),
+                ('url', models.URLField(help_text='Linkki Youtube-videoon.', verbose_name='Osoite')),
+                ('index', models.IntegerField(help_text='Indeksi toistolistan j\xe4rjestelemiseen. Pienimm\xe4ll\xe4 numerolla varustetut toistetaan ensimm\xe4iseksi.', verbose_name='J\xc3\xa4rjestysindeksi')),
                 ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
             ],
             options={
@@ -93,7 +93,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(help_text='Sponsorin nimi', max_length=64, verbose_name='Nimi')),
-                ('logo', models.ImageField(help_text='Sponsorin logo', upload_to=b'screen/sponsorlogos/', verbose_name='Kuva', blank=True)),
+                ('logo', models.ImageField(help_text='Sponsorin logo', upload_to='screen/sponsorlogos/', verbose_name='Kuva', blank=True)),
                 ('event', models.ForeignKey(verbose_name='Tapahtuma', to='kompomaatti.Event')),
             ],
             options={

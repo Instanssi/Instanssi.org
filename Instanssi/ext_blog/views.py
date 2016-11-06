@@ -29,7 +29,6 @@ class BlogFeedAll(Feed):
         return item.text
     
     def item_link(self, item):
-        print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
@@ -57,7 +56,6 @@ class BlogFeed(Feed):
         return item.text
     
     def item_link(self, item):
-        print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)

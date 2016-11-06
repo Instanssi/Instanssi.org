@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from Instanssi.main2014.models import ToimistoJahti, ToimistoSuoritus
 from Instanssi.main2014.forms import ToimistoCodeForm
-from common.auth import user_access_required
+from Instanssi.common.auth import user_access_required
 from datetime import datetime
 
 

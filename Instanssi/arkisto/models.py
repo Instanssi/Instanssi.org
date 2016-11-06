@@ -5,26 +5,26 @@ from Instanssi.kompomaatti.models import Event
 
 
 class OtherVideoCategory(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
-    name = models.CharField(u'Nimi', max_length=64, help_text=u'Kategorian nimi')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    name = models.CharField('Nimi', max_length=64, help_text='Kategorian nimi')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
-        verbose_name = u"videokategoria"
-        verbose_name_plural = u"videokategoriat"
+        verbose_name = "videokategoria"
+        verbose_name_plural = "videokategoriat"
 
 
 class OtherVideo(models.Model):
-    category = models.ForeignKey(OtherVideoCategory, verbose_name=u'Kategoria')
-    name = models.CharField(u'Nimi', max_length=64, help_text=u'Videon nimi.')
-    description = models.TextField(u'Kuvaus', help_text=u'Videon kuvaus.')
-    youtube_url = models.URLField(u'Youtube URL', help_text=u"Linkki teoksen Youtube-versioon.", blank=True)
+    category = models.ForeignKey(OtherVideoCategory, verbose_name='Kategoria')
+    name = models.CharField('Nimi', max_length=64, help_text='Videon nimi.')
+    description = models.TextField('Kuvaus', help_text='Videon kuvaus.')
+    youtube_url = models.URLField('Youtube URL', help_text="Linkki teoksen Youtube-versioon.", blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
-        verbose_name = u"muu video"
-        verbose_name_plural = u"muut videot"
+        verbose_name = "muu video"
+        verbose_name_plural = "muut videot"

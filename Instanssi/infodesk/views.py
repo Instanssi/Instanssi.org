@@ -2,14 +2,14 @@
 
 from datetime import datetime
 
-from common.auth import infodesk_access_required
+from Instanssi.common.auth import infodesk_access_required
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
-from common.responses import JSONResponse
+from Instanssi.common.responses import JSONResponse
 from Instanssi.infodesk.forms import TransactionKeyScanForm, ItemKeyScanForm
 from Instanssi.store.models import StoreTransaction, TransactionItem
 
@@ -58,7 +58,7 @@ def order_search_ac(request):
         return t.strftime('%d.%m.%Y %H:%M')
 
     def format_transaction(t):
-        return u'%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))
+        return '%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))
 
     results = [{
         'id': ("%s%s") % (TXN_PREFIX, t.id),  # exact query link
@@ -67,7 +67,7 @@ def order_search_ac(request):
 
     results.extend([{
         'id': ("%s%s") % (TXN_ITEM_PREFIX, item.key),
-        'text': u'%s -- ostaja %s' % (item.item, format_transaction(item.transaction))
+        'text': '%s -- ostaja %s' % (item.item, format_transaction(item.transaction))
     } for item in items])
 
     return JSONResponse({

@@ -18,8 +18,8 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 # For votecode stuff
 from django.db import IntegrityError
 from datetime import datetime
-import random
 import hashlib
+import os
     
 # For generating a paper version of votecodes
 from reportlab.pdfgen import canvas
@@ -448,7 +448,7 @@ def votecodes(request, sel_event_id):
                 try:
                     c = VoteCode()
                     c.event_id = int(sel_event_id)
-                    c.key = str(hashlib.md5(str(random.random())).hexdigest()[:8])
+                    c.key = str(hashlib.md5(bytes(os.urandom(8))).hexdigest()[:8])
                     c.save()
                 except IntegrityError:
                     n -= 1
@@ -543,7 +543,7 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     try:
         c = VoteCode()
         c.event_id = int(sel_event_id)
-        c.key = str(hashlib.md5(str(random.random())).hexdigest()[:8])
+        c.key = str(hashlib.md5(bytes(os.urandom(8))).hexdigest()[:8])
         c.associated_to = vcr.user
         c.time = datetime.now()
         c.save()

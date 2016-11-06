@@ -6,5 +6,5 @@ import hashlib
 # for creating ticket key hash
 def gen_sha(text):
     h = hashlib.sha1()
-    h.update(text)
+    h.update(text.encode())
     return h.hexdigest()

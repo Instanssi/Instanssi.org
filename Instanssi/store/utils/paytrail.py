@@ -12,13 +12,13 @@ class PaytrailException(Exception):
 
 def validate_failure(order_no, timestamp, authcode, secret):
     m = hashlib.md5()
-    m.update('%s|%s|%s' % (order_no, timestamp, secret))
+    m.update('{}|{}|{}'.format(order_no, timestamp, secret).encode('UTF-8'))
     return authcode == m.hexdigest().upper()
 
 
 def validate_success(order_no, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
-    m.update('%s|%s|%s|%s|%s' % (order_no, timestamp, paid, method, secret))
+    m.update('{}|{}|{}|{}|{}'.format(order_no, timestamp, paid, method, secret).encode('UTF-8'))
     return authcode == m.hexdigest().upper()
 
 

@@ -79,9 +79,7 @@ class StoreWizard(NamedUrlSessionWizardView):
         return context
 
     def done(self, form_list, **kwargs):
-        items_form = form_list[0]
-        info_form = form_list[1]
-        method_form = form_list[2]
+        items_form, info_form, method_form = form_list
 
         # Save transaction and items
         transaction = info_form.save()

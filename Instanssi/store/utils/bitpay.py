@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from http.client import HTTPSConnection
-import json
-import base64
+import requests
 
 
 class BitpayException(Exception):
@@ -10,25 +8,21 @@ class BitpayException(Exception):
 
 
 def request(key, data):
-    # Some basic data
-    host = 'bitpay.com'
-    auth = 'Basic ' + base64.b64encode('{}:'.format(key).encode('UTF-8')).strip()  # Blank pw
-    body = json.dumps(data)
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': auth
-    }
-
-    # Send request, receive response
-    c = HTTPSConnection(host, timeout=15)
-    c.request('POST', '/api/invoice', body=body, headers=headers)
-    res = c.getresponse()
-    message = json.loads(res.read())
+    req = requests.post(
+        'https://bitpay.com/api/invoice',
+        auth=(key, ''),
+        json=data,
+        headers={
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        })
 
     # Bitpay responded with error
-    if res.status < 200 or res.status >= 400:
-        raise BitpayException("Http request error", res.status)
+    if req.status_code < 200 or req.status_code >= 400:
+        raise BitpayException("Http request error", req.status_code)
+
+    # Send request, receive response
+    message = req.json()
 
     # No response from bitpay (other error)
     if message['status'] != 'new':

@@ -76,8 +76,8 @@ class StoreItem(models.Model):
         """Returns True if discount applies to a specific quantity of this."""
         return self.is_discount_available() and amount >= self.discount_amount
 
-    def images_available(self):
-        return os.path.exists(self.imagefile_original.name) and os.path.exists(self.imagefile_thumbnail.name)
+    def image_available(self):
+        return os.path.exists(self.imagefile_original.name)
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""

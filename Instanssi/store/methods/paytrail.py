@@ -62,7 +62,6 @@ def start_process(ta):
     }
 
     # Make a request
-    msg = None
     try:
         msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
     except paytrail.PaytrailException as ex:

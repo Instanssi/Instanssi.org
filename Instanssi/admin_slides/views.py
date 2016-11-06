@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from common.auth import staff_access_required
+from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.kompomaatti.misc import entrysort

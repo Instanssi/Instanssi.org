@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 
 
 class StoreItem(models.Model):

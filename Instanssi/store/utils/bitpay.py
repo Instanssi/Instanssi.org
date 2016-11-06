@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import httplib
+from http.client import HTTPSConnection
 import json
-import string
 import base64
 
 
@@ -13,7 +12,7 @@ class BitpayException(Exception):
 def request(key, data):
     # Some basic data
     host = 'bitpay.com'
-    auth = 'Basic ' + string.strip(base64.encodestring(key + ':'))  # Blank pw
+    auth = 'Basic ' + base64.b64encode('{}:'.format(key).encode('UTF-8')).strip()  # Blank pw
     body = json.dumps(data)
     headers = {
         'Content-Type': 'application/json',
@@ -22,7 +21,7 @@ def request(key, data):
     }
 
     # Send request, receive response
-    c = httplib.HTTPSConnection(host, timeout=15)
+    c = HTTPSConnection(host, timeout=15)
     c.request('POST', '/api/invoice', body=body, headers=headers)
     res = c.getresponse()
     message = json.loads(res.read())

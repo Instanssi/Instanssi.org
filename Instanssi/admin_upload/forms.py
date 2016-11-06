@@ -3,7 +3,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-from models import UploadedFile
+from .models import UploadedFile
 import os
 from django.core.exceptions import ValidationError
 

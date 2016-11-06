@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import user_access_required
-from common.rest import rest_api, RestResponse
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import user_access_required
+from Instanssi.common.rest import rest_api, RestResponse
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from common.auth import su_access_required
+from Instanssi.common.auth import su_access_required
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render

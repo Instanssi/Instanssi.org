@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import get_object_or_404

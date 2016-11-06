@@ -4,7 +4,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 class VideoForm(forms.ModelForm):

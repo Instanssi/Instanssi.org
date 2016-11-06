@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
-from common.misc import get_url_local_path
+from Instanssi.common.misc import get_url_local_path
 
 
 class DjangoLoginForm(forms.Form):

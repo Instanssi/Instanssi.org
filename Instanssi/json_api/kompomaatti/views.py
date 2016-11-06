@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from common.rest import rest_api, RestResponse
+from Instanssi.common.rest import rest_api, RestResponse
 from Instanssi.kompomaatti.models import Event
-from common.responses import JSONResponse
+from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 
 

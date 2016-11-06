@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 def forwards(apps, schema_editor):

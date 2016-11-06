@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import awesometime
+from . import awesometime
 
 
 def compo_times_formatter(compo):

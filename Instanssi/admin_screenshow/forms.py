@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.screenshow.models import *
-import urlparse
+from urllib.parse import urlparse
 
 
 class ScreenConfigForm(forms.ModelForm):

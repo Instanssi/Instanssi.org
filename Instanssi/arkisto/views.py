@@ -7,7 +7,7 @@ from django.http import Http404
 from Instanssi.kompomaatti.models import Event, Compo, Entry, Competition, CompetitionParticipation
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.arkisto.models import OtherVideoCategory, OtherVideo
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 
 
 def text_event(request, event_id):

@@ -2,31 +2,30 @@
 
 import base64
 import hashlib
-import httplib
+from http.client import HTTPSConnection
 import json
-import string
 
 
 class PaytrailException(Exception):
     pass
 
 
-def validate_failure(orderno, timestamp, authcode, secret):
+def validate_failure(order_no, timestamp, authcode, secret):
     m = hashlib.md5()
-    m.update('%s|%s|%s' % (orderno, timestamp, secret))
+    m.update('%s|%s|%s' % (order_no, timestamp, secret))
     return authcode == m.hexdigest().upper()
 
 
-def validate_success(orderno, timestamp, paid, method, authcode, secret):
+def validate_success(order_no, timestamp, paid, method, authcode, secret):
     m = hashlib.md5()
-    m.update('%s|%s|%s|%s|%s' % (orderno, timestamp, paid, method, secret))
+    m.update('%s|%s|%s|%s|%s' % (order_no, timestamp, paid, method, secret))
     return authcode == m.hexdigest().upper()
 
 
-def request(id, secret, data):
+def request(rid, secret, data):
     # Some basic data
     host = 'payment.paytrail.com'
-    auth = 'Basic ' + string.strip(base64.encodestring(id + ':' + secret))
+    auth = 'Basic ' + base64.b64encode('{}:{}'.format(rid, secret).encode('UTF-8')).strip()
     body = json.dumps(data)
     headers = {
         'Content-Type': 'application/json',
@@ -36,7 +35,7 @@ def request(id, secret, data):
     }
 
     # Send request, receive response
-    c = httplib.HTTPSConnection(host, timeout=15)
+    c = HTTPSConnection(host, timeout=15)
     c.request('GET', '/api-payment/create', body=body, headers=headers)
     res = c.getresponse()
     message = json.loads(res.read())

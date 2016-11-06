@@ -5,8 +5,8 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from common.rest import RestResponse, rest_api
-from common.http import Http403
+from Instanssi.common.rest import RestResponse, rest_api
+from Instanssi.common.http import Http403
 from Instanssi.kompomaatti.models import Event
 from Instanssi.screenshow.models import NPSong
 

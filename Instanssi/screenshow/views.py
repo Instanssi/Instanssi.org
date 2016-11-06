@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, get_object_or_404
-from common.responses import JSONResponse
+from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
 from datetime import datetime

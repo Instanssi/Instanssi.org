@@ -6,7 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.core.exceptions import ValidationError
 from Instanssi.kompomaatti.models import Compo, Entry, Competition, CompetitionParticipation, Event
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 class AdminCompetitionScoreForm(forms.Form):

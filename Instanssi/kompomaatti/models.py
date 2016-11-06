@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from datetime import datetime
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 from Instanssi.kompomaatti.misc import entrysort
 
 

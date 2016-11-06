@@ -5,5 +5,5 @@ notifications:
 python:
   - "3.4"
   - "3.5"
-install: "pip instal --upgrade pip && pip install -r requirements.txt"
+install: "pip install --upgrade pip && pip install -r requirements.txt"
 script: cp Instanssi/settings.py-test Instanssi/settings.py && python manage.py migrate && python manage.py test

@@ -28,6 +28,12 @@ COMPRESS_CSS_FILTERS = (
     'compressor.filters.cssmin.rCSSMinFilter',
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -108,6 +114,8 @@ INSTALLED_APPS = (
     'Instanssi.store',
     'Instanssi.infodesk',
     'imagekit',
+    'rest_framework',
+    'rest_framework.authtoken',
     'twitter_tag',
     'crispy_forms',
     'social.apps.django_app.default',

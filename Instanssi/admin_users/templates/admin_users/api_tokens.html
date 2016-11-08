@@ -1,0 +1,58 @@
+{% extends "admin_users/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - API Avaimet{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li>Selaa</li>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+	$("#token_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#tokens_pager")});
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Oma avain</h2>
+
+{% if my_key %}
+    <p>{{ my_key }}</p>
+    <p><a href="{% url 'manage-users:invalidate_token' %}">Invalidoi avain!</a></p>
+{% else %}
+    <p><a href="{% url 'manage-users:add_token' %}">Luo uusi avain!</a></p>
+{% endif %}
+    <br />
+
+{% if request.user.is_superuser %}
+    <h2>Kaikki avaimet</h2>
+{% if tokens %}
+ 	<table id="token_table" class="tablesorter">
+ 		<thead>
+ 			<tr>
+ 				<th>Avain</th>
+ 				<th>Omistaja</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+{% for token in tokens %}
+			<tr>
+				<td>{{ token.key }}</td>
+				<td>{{ token.user.first_name }} {{ token.user.last_name }}</td>
+			</tr>
+{% endfor %}
+ 		</tbody>
+ 	</table>
+	<div id="tokens_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
+{% else %}
+    <p>Ei avaimia!</p>
+{% endif %}
+{% endif %}
+{% endblock %}

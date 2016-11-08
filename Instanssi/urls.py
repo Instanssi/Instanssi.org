@@ -10,6 +10,7 @@ from django.views.generic import RedirectView
 # URLS
 urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^api/', include('Instanssi.api.urls', namespace="api")),
     url(r'^2012/', include('Instanssi.main2012.urls', namespace="main2012")),
     url(r'^2013/', include('Instanssi.main2013.urls', namespace="main2013")),
     url(r'^2014/', include('Instanssi.main2014.urls', namespace="main2014")),

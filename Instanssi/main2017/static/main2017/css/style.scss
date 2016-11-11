@@ -70,7 +70,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     #content #primary {
         width: 560px;
     }
-    #page-header {
+    #page-header .header-bg {
         background-position: center top, calc(50% - 20px) 5px;
     }
 }
@@ -104,7 +104,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         padding: 2%;
     }
 
-    #page-header {
+    #page-header .header-bg {
         background-position: center top, calc(50% + 55px) 5px;
     }
 }

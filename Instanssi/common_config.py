@@ -28,6 +28,23 @@ COMPRESS_CSS_FILTERS = (
     'compressor.filters.cssmin.rCSSMinFilter',
 )
 
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'groups': 'Access to your groups'
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'oauth2_provider.ext.rest_framework.TokenHasReadWriteScope',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    ]
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -108,6 +125,8 @@ INSTALLED_APPS = (
     'Instanssi.store',
     'Instanssi.infodesk',
     'imagekit',
+    'rest_framework',
+    'oauth2_provider',
     'twitter_tag',
     'crispy_forms',
     'social.apps.django_app.default',
@@ -133,6 +152,19 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.steam.SteamOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+
+def enable_api_session_access():
+    """
+    This is for enabling debug mode, easier access for rest API testing
+    :return:
+    """
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append(
+        'rest_framework.authentication.SessionAuthentication',
+    )
+    REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
+        'rest_framework.permissions.AllowAny',
+    ]
 
 
 def make_cache_conf(debug_mode):

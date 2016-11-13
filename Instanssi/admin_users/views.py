@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from Instanssi.common.http import Http403
-from Instanssi.common.auth import staff_access_required, su_access_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from Instanssi.admin_base.misc.custom_render import admin_render
 from django.contrib.auth.models import User
-from Instanssi.admin_users.forms import UserCreationForm, UserEditForm
+from oauth2_provider.models import Application
+
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required, su_access_required
+from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.admin_users.forms import UserCreationForm, UserEditForm, ApiApplicationForm
 from Instanssi.dblog.models import DBLogEntry
+
 
 # Logging related
 import logging
@@ -44,13 +47,54 @@ def users(request):
         userform = None
     
     # Get users
-    users = User.objects.exclude(username="arkisto")
+    user_list = User.objects.exclude(username="arkisto")
     
     # Render response
     return admin_render(request, "admin_users/users.html", {
-        'superusers': users,
+        'superusers': user_list,
         'userform': userform,
     })
+
+
+@staff_access_required
+def apps(request):
+    # Handle adding new apps
+    if request.method == 'POST':
+        add_form = ApiApplicationForm(request.POST, user=request.user)
+        if add_form.is_valid():
+            app = add_form.save()
+            logger.info('Application %s created.', app.name, extra={'user': request.user})
+            return HttpResponseRedirect(reverse('manage-users:apps'))
+    else:
+        add_form = ApiApplicationForm()
+
+    # Apps owned by the current user
+    m_apps = Application.objects.filter(user=request.user)
+
+    # Get all applications for superusers only
+    all_apps = None
+    if request.user.is_superuser:
+        all_apps = Application.objects.all()
+
+    return admin_render(request, "admin_users/api_tokens.html", {
+        'apps': m_apps,
+        'add_form': add_form,
+        'all_apps': all_apps
+    })
+
+
+@staff_access_required
+def delete_app(request, app_id):
+    try:
+        q = Application.objects.get_queryset()
+        if not request.user.is_superuser:
+            q = q.filter(user=request.user)
+        app = q.get(id=app_id)
+        logger.info('Application %s deleted.', app.name, extra={'user': request.user})
+        app.delete()
+    except Application.DoesNotExist:
+        pass
+    return HttpResponseRedirect(reverse('manage-users:apps'))
 
 
 @su_access_required

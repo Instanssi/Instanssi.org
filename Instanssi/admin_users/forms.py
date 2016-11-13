@@ -3,8 +3,44 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
-from django.contrib.auth.models import User
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
+from oauth2_provider.models import Application
+
+
+class ApiApplicationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(ApiApplicationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                'Lisää applikaatio',
+                'name',
+                'client_id',
+                'client_secret',
+                ButtonHolder(
+                    Submit('submit', 'Lisää')
+                )
+            )
+        )
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if len(name) < 4:
+            raise forms.ValidationError('Nimen tulee olla vähintään 4 merkkiä pitkä!')
+        return name
+
+    def save(self, commit=True):
+        app = Application(**self.cleaned_data)
+        app.authorization_grant_type = Application.GRANT_CLIENT_CREDENTIALS
+        app.user = self.user
+        app.client_type = Application.CLIENT_CONFIDENTIAL
+        app.save(commit)
+        return app
+
+    class Meta:
+        model = Application
+        fields = ('name', 'client_id', 'client_secret')
 
 
 class UserCreationForm(forms.ModelForm):

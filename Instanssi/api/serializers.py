@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField
 
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
@@ -70,13 +70,24 @@ class ProgrammeEventSerializer(HyperlinkedModelSerializer):
             'event': {'view_name': 'api:events-detail'}
         }
 
+
 class SponsorSerializer(HyperlinkedModelSerializer):
+    logo_url = SerializerMethodField()
+    logo_scaled_url = SerializerMethodField()
+
+    def get_logo_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.logo.url)
+
+    def get_logo_scaled_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.logo_scaled.url)
+
     class Meta:
         model = Sponsor
-        fields = ('id', 'event', 'name', 'logo', 'logo_scaled')
+        fields = ('id', 'event', 'name', 'logo_url', 'logo_scaled_url')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
         }
+
 
 class MessageSerializer(HyperlinkedModelSerializer):
     class Meta:

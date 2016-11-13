@@ -10,8 +10,8 @@ import json
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 # Test client ID and secret. Insert your own here.
-CLIENT_ID = 'SM8GKdbouUAFOQ1TSAePpdmsTQ6j9un3l8VZ3uEu'
-CLIENT_SECRET = 'MQGAOkpDl65qjLF1T4rZzTdRPNu32mi7V1uJKJUOEXt7ygoWELtaOz5w3sSQydvnLMGsC0ZByXeFHENheYUnNWfg8c9tVA4Svdj27Wj647tVuTkBJTLGP3v0cW3Hq5LM'
+CLIENT_ID = 'bj6oxteE47zxS1I1QAwPb77FAqd9m2nWk8tiKfIx'
+CLIENT_SECRET = 'buV0Amz3HmjHri74UkH5OhVgT07iIpZC5onTey9S2w3obUQ2kLAoys0Tz3TAGppfgVBY4ozwZGRPvA7ua9Lf5jgLtQUy5BMgIkcPsvyHVoiX9gSiEOGsAzZ9zKO4ssvk'
 
 
 # Connects to an oauth2 token endpoint and fetches a token for using the api

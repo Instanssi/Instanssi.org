@@ -19,31 +19,40 @@
 
 {% block content %}
 {{ block.super }}
-    <h2>Oma avain</h2>
+    <h2>Omat applikaatiot</h2>
 
-{% if my_key %}
-    <p>{{ my_key }}</p>
-    <p><a href="{% url 'manage-users:invalidate_token' %}">Invalidoi avain!</a></p>
-{% else %}
-    <p><a href="{% url 'manage-users:add_token' %}">Luo uusi avain!</a></p>
-{% endif %}
-    <br />
+{% for app in apps %}
+    <h3>{{ app.name }}</h3>
+    <p>
+    <strong>Client ID:</strong><br />
+    {{ app.client_id }}<br/>
+    <strong>Client Secret:</strong><br />
+    {{ app.client_secret }}
+    </p>
+    <p>
+    <a href="{% url 'manage-users:delete_app' app.id %}">Poista</a>
+    </p>
+{% endfor %}
+
+{% crispy add_form add_form.helper %}
 
 {% if request.user.is_superuser %}
-    <h2>Kaikki avaimet</h2>
-{% if tokens %}
+    <br /><h2>Kaikki applikaatiot</h2>
+{% if all_apps %}
  	<table id="token_table" class="tablesorter">
  		<thead>
  			<tr>
- 				<th>Avain</th>
- 				<th>Omistaja</th>
+                <th>Omistaja</th>
+                <th>Applikaatio</th>
+ 				<th>Client ID</th>
  			</tr>
  		</thead>
  		<tbody>
-{% for token in tokens %}
+{% for app in all_apps %}
 			<tr>
-				<td>{{ token.key }}</td>
-				<td>{{ token.user.first_name }} {{ token.user.last_name }}</td>
+                <td>{{ app.user }}</td>
+                <td>{{ app.name }}</td>
+				<td>{{ app.client_id }}</td>
 			</tr>
 {% endfor %}
  		</tbody>
@@ -52,7 +61,7 @@
 		{% include "common/pagination.html" %}
 	</div>
 {% else %}
-    <p>Ei avaimia!</p>
+    <p>Ei applikaatioita!</p>
 {% endif %}
 {% endif %}
 {% endblock %}

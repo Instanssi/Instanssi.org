@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.mixins import CreateModelMixin
 
-from .serializers import EventSerializer, SongSerializer, CompetitionSerializer
+from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
+    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
@@ -11,9 +12,9 @@ from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 
 class FilterMixin(object):
     @staticmethod
-    def filter_by_event_id(queryset, request):
-        event_id = request.query_params.get('event_id', None)
-        return queryset.filter(event_id=event_id) if event_id else queryset
+    def filter_by_event(queryset, request):
+        event = request.query_params.get('event', None)
+        return queryset.filter(event=event) if event else queryset
 
     @staticmethod
     def filter_by_lim_off(queryset, request):
@@ -24,15 +25,17 @@ class FilterMixin(object):
 
 class EventViewSet(ReadOnlyModelViewSet):
     """
-    Exposes all Instanssi events
+    Exposes all Instanssi events. Note that ID's assigned to events are guaranteed to stay the same; they will not
+    change, ever. So if you want, you can hardcode the event id's in your own code and don't need to bother fetching
+    this data.
     """
     queryset = Event.objects.filter(name__startswith='Instanssi')
     serializer_class = EventSerializer
 
 
-class SongViewSet(ReadOnlyModelViewSet, FilterMixin):
+class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
     """
-    Exposes all Instanssi songs on playlist.
+    Exposes all Instanssi songs on playlist. Note that order is order is descending by default.
 
     State:
     0: Playing
@@ -41,18 +44,15 @@ class SongViewSet(ReadOnlyModelViewSet, FilterMixin):
     Allows GET filters:
     * limit: Limit amount of returned objects. Default is 100.
     * offset: Starting offset. Default is 0.
-    * event_id: Filter by event id
+    * event: Filter by event id
     """
     serializer_class = SongSerializer
 
     def get_queryset(self):
-        q = NPSong.objects.all()
-        q = self.filter_by_event_id(q, self.request)
+        q = NPSong.objects.order_by('-id')
+        q = self.filter_by_event(q, self.request)
         q = self.filter_by_lim_off(q, self.request)
         return q
-
-    def create(self, request):
-        pass
 
 
 class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
@@ -66,13 +66,102 @@ class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
     Allows GET filters:
     * limit: Limit amount of returned objects. Default is 100.
     * offset: Starting offset. Default is 0.
-    * event_id: Filter by event id
+    * event: Filter by event id
     """
     serializer_class = CompetitionSerializer
 
     def get_queryset(self):
         q = Competition.objects.filter(active=True)
-        q = self.filter_by_event_id(q, self.request)
+        q = self.filter_by_event(q, self.request)
         q = self.filter_by_lim_off(q, self.request)
         return q
 
+
+class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all compos.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects. Default is 100.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    """
+    serializer_class = CompoSerializer
+
+    def get_queryset(self):
+        q = Compo.objects.filter(active=True)
+        q = self.filter_by_event(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
+class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all programme events.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects. Default is 100.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    """
+    serializer_class = ProgrammeEventSerializer
+
+    def get_queryset(self):
+        q = ProgrammeEvent.objects.filter(active=True)
+        q = self.filter_by_event(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
+class SponsorViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all sponsors.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects. Default is 100.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    """
+    serializer_class = SponsorSerializer
+
+    def get_queryset(self):
+        q = Sponsor.objects.get_queryset()
+        q = self.filter_by_event(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
+class MessageViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all sponsor messages.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects. Default is 100.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    """
+    serializer_class = MessageSerializer
+
+    def get_queryset(self):
+        q = Message.objects.get_queryset()
+        q = self.filter_by_event(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
+class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all saved IRC messages. Note that order is order is descending by default.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects. Default is 100.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    """
+    serializer_class = IRCMessageSerializer
+
+    def get_queryset(self):
+        q = IRCMessage.objects.order_by('-id')
+        q = self.filter_by_event(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q

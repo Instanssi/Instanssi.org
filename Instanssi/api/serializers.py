@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 from Instanssi.kompomaatti.models import Event, Competition, Compo
@@ -16,42 +18,80 @@ class EventSerializer(HyperlinkedModelSerializer):
 class CompetitionSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Competition
-        fields = ('id', 'event_id', 'name', 'description', 'participation_end', 'start', 'end', 'score_type',
+        fields = ('id', 'event', 'name', 'description', 'participation_end', 'start', 'end', 'score_type',
                   'score_sort')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 
 
 class CompoSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Compo
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
+        fields = ('id', 'event', 'name', 'description', 'adding_end', 'editing_end', 'compo_start', 'voting_start',
+                  'voting_end')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 
 
 class SongSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = NPSong
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
+        fields = ('id', 'event', 'title', 'artist', 'time', 'state')
+        extra_kwargs = {
+            'state': {
+                'read_only': True
+            },
+            'time': {
+                'read_only': True
+            },
+            'id': {
+                'read_only': True
+            },
+            'event': {'view_name': 'api:events-detail'}
+        }
+
+    def create(self, validated_data):
+        NPSong.objects.filter(event=validated_data['event']).update(state=1)
+        song = NPSong(**validated_data)
+        song.state = 0
+        song.time = datetime.now()
+        song.save()
+        return song
 
 
 class ProgrammeEventSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = ProgrammeEvent
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
-
+        fields = ('id', 'event', 'start', 'end', 'description', 'title', 'presenters', 'presenters_titles',
+                  'place')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 
 class SponsorSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Sponsor
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
-
+        fields = ('id', 'event', 'name', 'logo', 'logo_scaled')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 
 class MessageSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
+        fields = ('id', 'event', 'show_start', 'show_end', 'text')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 
 
 class IRCMessageSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = IRCMessage
-        fields = ('id', 'event_id', 'title', 'artist', 'time', 'state')
+        fields = ('id', 'event', 'date', 'nick', 'message')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }
 

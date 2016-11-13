@@ -103,6 +103,10 @@ BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
+# Enable easier access to rest API if DEBUG is enabled
+if DEBUG:
+    enable_api_session_access()
+
 # Initialize email configuration
 EMAIL_BACKEND = make_email_conf(DEBUG)
 

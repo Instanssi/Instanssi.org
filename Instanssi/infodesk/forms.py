@@ -8,7 +8,7 @@ from Instanssi.store.models import StoreTransaction, TransactionItem
 
 
 class ItemKeyScanForm(forms.Form):
-    key = forms.CharField(label=u'Tunniste')
+    key = forms.CharField(label='Tunniste')
 
     def __init__(self, *args, **kwargs):
         super(ItemKeyScanForm, self).__init__(*args, **kwargs)
@@ -16,10 +16,10 @@ class ItemKeyScanForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                '',
                 'key',
                 ButtonHolder(
-                    Submit('submit', u'OK')
+                    Submit('submit', 'OK')
                 )
             )
         )
@@ -29,12 +29,12 @@ class ItemKeyScanForm(forms.Form):
         try:
             self.item = TransactionItem.objects.get(key=key)
         except TransactionItem.DoesNotExist:
-            raise ValidationError(u'Virheellinen tuoteavain!')
+            raise ValidationError('Virheellinen tuoteavain!')
         return key
 
 
 class TransactionKeyScanForm(forms.Form):
-    key = forms.CharField(label=u'Tunniste')
+    key = forms.CharField(label='Tunniste')
 
     def __init__(self, *args, **kwargs):
         super(TransactionKeyScanForm, self).__init__(*args, **kwargs)
@@ -42,10 +42,10 @@ class TransactionKeyScanForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                '',
                 'key',
                 ButtonHolder(
-                    Submit('submit', u'OK')
+                    Submit('submit', 'OK')
                 )
             )
         )
@@ -55,5 +55,5 @@ class TransactionKeyScanForm(forms.Form):
         try:
             self.transaction = StoreTransaction.objects.get(key=key)
         except StoreTransaction.DoesNotExist:
-            raise ValidationError(u'Virheellinen transaktioavain!')
+            raise ValidationError('Virheellinen transaktioavain!')
         return key

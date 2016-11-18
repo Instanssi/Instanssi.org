@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template import loader, Context
@@ -41,7 +41,7 @@ def items(request):
         form = StoreItemForm(request.POST, request.FILES)
         if form.is_valid():
             item = form.save(commit=False)
-            logger.info(u'Store Item "{}" added.'.format(item.name), extra={'user': request.user})
+            logger.info('Store Item "{}" added.'.format(item.name), extra={'user': request.user})
             item.save()
             return HttpResponseRedirect(reverse('manage-store:items'))
     else:
@@ -130,7 +130,7 @@ def edit_item(request, item_id):
         form = StoreItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
-            logger.info(u'Store Item "{}" edited.'.format(item.name), extra={'user': request.user})
+            logger.info('Store Item "{}" edited.'.format(item.name), extra={'user': request.user})
             return HttpResponseRedirect(reverse('manage-store:items'))
     else:
         form = StoreItemForm(instance=item)
@@ -152,7 +152,7 @@ def delete_item(request, item_id):
         item = StoreItem.objects.get(id=item_id)
         if item.num_sold() == 0:
             item.delete()
-            logger.info(u'Store Item "{}" deleted.'.format(item.name), extra={'user': request.user})
+            logger.info('Store Item "{}" deleted.'.format(item.name), extra={'user': request.user})
     except StoreItem.DoesNotExist:
         pass
     

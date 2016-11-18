@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -31,7 +31,7 @@ def index(request, sel_event_id):
             data.date = datetime.now()
             data.event_id = int(sel_event_id)
             data.save()
-            logger.info(u'File "{}" uploaded.'.format(data.file.name),
+            logger.info('File "{}" uploaded.'.format(data.file.name),
                         extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:
@@ -57,7 +57,7 @@ def deletefile(request, sel_event_id, file_id):
     # Delete the file
     try:
         rec = UploadedFile.objects.get(id=file_id)
-        logger.info(u'File "{}" deleted.'.format(rec.file.name),
+        logger.info('File "{}" deleted.'.format(rec.file.name),
                     extra={'user': request.user, 'event_id': sel_event_id})
         rec.file.delete()
         rec.delete()
@@ -81,7 +81,7 @@ def editfile(request, sel_event_id, file_id):
         uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
         if uploadform.is_valid():
             data = uploadform.save()
-            logger.info(u'File "{}" edited.'.format(data.file.name),
+            logger.info('File "{}" edited.'.format(data.file.name),
                         extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-uploads:index', args=(sel_event_id,)))
     else:

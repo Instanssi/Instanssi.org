@@ -8,7 +8,7 @@ class DBLogHandler(Handler, object):
         super(DBLogHandler, self).__init__()
     
     def emit(self, record):
-        from models import DBLogEntry as _LogEntry
+        from .models import DBLogEntry as _LogEntry
         
         entry = _LogEntry()
         entry.level = record.levelname

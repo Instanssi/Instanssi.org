@@ -4,7 +4,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
-from common.misc import parse_youtube_video_id
+from Instanssi.common.misc import parse_youtube_video_id
 
 
 class VideoForm(forms.ModelForm):
@@ -24,13 +24,13 @@ class VideoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Muu Video',
+                'Muu Video',
                 'name',
                 'category',
                 'description',
                 'youtube_url',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -45,10 +45,10 @@ class VideoForm(forms.ModelForm):
 
         # Warn if something is wrong
         if not video_id:
-            raise forms.ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            raise forms.ValidationError('Osoitteesta ei löytynyt videotunnusta.')
 
         # Return a new video url
-        return u'https://www.youtube.com/v/{}'.format(video_id)
+        return 'https://www.youtube.com/v/{}'.format(video_id)
 
     class Meta:
         model = OtherVideo
@@ -61,10 +61,10 @@ class VideoCategoryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Kategoria',
+                'Kategoria',
                 'name',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

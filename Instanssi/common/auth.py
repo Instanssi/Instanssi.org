@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.http import HttpResponseRedirect
-from common.http import Http403
+from Instanssi.common.http import Http403
 from django.core.urlresolvers import reverse
 
 

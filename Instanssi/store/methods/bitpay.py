@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -33,20 +33,19 @@ def start_process(ta):
     }
 
     # Make a request
-    msg = None
     try:
         msg = bitpay.request(settings.BITPAY_KEY, data)
     except bitpay.BitpayException as ex:
         a, b = ex.args
-        logger.error(u'(%s) %s', b, a)
+        logger.error('(%s) %s', b, a)
         return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
     except Exception as ex:
-        logger.error(u'%s.', ex)
+        logger.error('%s.', ex)
         return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
 
     # Save token, redirect
     ta.token = msg['id']
-    ta.payment_method_name = u'Bitpay'
+    ta.payment_method_name = 'Bitpay'
     ta.save()
 
     # All done, redirect user
@@ -78,7 +77,7 @@ def handle_notify(request):
         bitpay_id = data['id']
         status = data['status']
     except Exception as ex:
-        logger.error(u"%s.", ex)
+        logger.error("%s.", ex)
         raise Http404
     
     # Try to find correct transaction
@@ -94,7 +93,7 @@ def handle_notify(request):
         # Okay, transaction found and it's good.
         ta_is_valid = True
     except StoreTransaction.DoesNotExist:
-        logger.warning(u"Error while attempting to validate bitpay notification!")
+        logger.warning("Error while attempting to validate bitpay notification!")
         raise Http404
     
     # We have a valid transaction. Do something about it.
@@ -104,7 +103,7 @@ def handle_notify(request):
             if not ta_common.handle_payment(ta):
                 raise Http404
             return HttpResponse("")
-            
+
         if status == 'paid':
             # Paid but not confirmed
             ta_common.handle_pending(ta)
@@ -115,7 +114,7 @@ def handle_notify(request):
             ta_common.handle_cancellation(ta)
             return HttpResponse("")
 
-    logger.warning(u"Unhandled bitpay notification '%s' for id %d.", status, ta.id)
+    logger.warning("Unhandled bitpay notification '%s' for id %d.", status, ta.id)
 
     # Just respond with something
     return HttpResponse("")

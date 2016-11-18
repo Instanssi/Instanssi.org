@@ -11,7 +11,7 @@ of the comments and language used is in Finnish, because the programmers weren't
 internationalization :D
 
 This project has been originally developed for Instanssi 2012. Project is still alive and current development
-focus is to provide web site for Instanssi 2016.
+focus is to provide web site for Instanssi 2017.
 
 License
 -------
@@ -31,15 +31,14 @@ Projektin asentaminen
 6. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
    joskus olla tarpeen suorittaa migrate uudelleen.
 
-Kirjastot
----------
+Vaatimukset
+-----------
+
+Python-tulkista vaaditaan versio 3.4.x. PIP tulee olla asennettuna.
 
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 
     pip install --upgrade -r requirements.txt
-    
-Huom! Windowsilla saattaa olla tarpeellista asentaa pip:n pakettien käännösvaihetta varten
-[Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/details.aspx?id=44266).
 
 Testitapausten ajaminen
 -----------------------

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from common.auth import staff_access_required
+from Instanssi.common.auth import staff_access_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 
 

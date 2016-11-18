@@ -1,0 +1,67 @@
+{% extends "admin_users/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - API Avaimet{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li>Selaa</li>
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+	$("#token_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#tokens_pager")});
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Omat applikaatiot</h2>
+
+{% for app in apps %}
+    <h3>{{ app.name }}</h3>
+    <p>
+    <strong>Client ID:</strong><br />
+    {{ app.client_id }}<br/>
+    <strong>Client Secret:</strong><br />
+    {{ app.client_secret }}
+    </p>
+    <p>
+    <a href="{% url 'manage-users:delete_app' app.id %}">Poista</a>
+    </p>
+{% endfor %}
+
+{% crispy add_form add_form.helper %}
+
+{% if request.user.is_superuser %}
+    <br /><h2>Kaikki applikaatiot</h2>
+{% if all_apps %}
+ 	<table id="token_table" class="tablesorter">
+ 		<thead>
+ 			<tr>
+                <th>Omistaja</th>
+                <th>Applikaatio</th>
+ 				<th>Client ID</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+{% for app in all_apps %}
+			<tr>
+                <td>{{ app.user }}</td>
+                <td>{{ app.name }}</td>
+				<td>{{ app.client_id }}</td>
+			</tr>
+{% endfor %}
+ 		</tbody>
+ 	</table>
+	<div id="tokens_pager" class="pager">
+		{% include "common/pagination.html" %}
+	</div>
+{% else %}
+    <p>Ei applikaatioita!</p>
+{% endif %}
+{% endif %}
+{% endblock %}

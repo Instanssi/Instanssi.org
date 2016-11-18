@@ -72,7 +72,7 @@
                 <td>{{ item.max_per_order }}</td>
                 <td>{% if item.available %}Kyllä{% else %}Ei{% endif %}</td>
                 <td style="width: 34px; background-color: white;">
-                    {% if item.imagefile_original %}
+                    {% if item.image_available %}
                     <a class="fancybox" href="{{ item.imagefile_original.url }}">
                         <img src="{{ item.imagefile_thumbnail.url }}" width="32" height="32" alt="Tuotekuva" />
                     </a>

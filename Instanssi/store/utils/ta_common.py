@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -16,20 +16,20 @@ def handle_cancellation(ta):
     if not ta.time_cancelled:
         ta.time_cancelled = datetime.now()
         ta.save()
-        logger.info(u'Store transaction {} cancelled.'.format(ta.id))
+        logger.info('Store transaction {} cancelled.'.format(ta.id))
     else:
-        logger.warn(u'Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
+        logger.warn('Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
 
 
 def handle_pending(ta):
     if ta.time_cancelled:
-        logger.warn(u'Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
+        logger.warn('Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
     elif not ta.time_pending:
         ta.time_pending = datetime.now()
         ta.save()
-        logger.info(u'Store transaction {} paid, pending confirmation.'.format(ta.id))
+        logger.info('Store transaction {} paid, pending confirmation.'.format(ta.id))
     else:
-        logger.warn(u'Attempted to mark store transaction {} as pending twice'.format(ta.id))
+        logger.warn('Attempted to mark store transaction {} as pending twice'.format(ta.id))
 
 
 def handle_payment(ta):
@@ -60,11 +60,11 @@ def handle_payment(ta):
     try:
         mailer.send()
     except Exception as ex:
-        logger.error(u'{}.'.format(ex))
+        logger.error('{}.'.format(ex))
         return False
 
     # Mark as paid
     ta.time_paid = datetime.now()
     ta.save()
-    logger.info(u'Store transaction {} confirmed.'.format(ta.id))
+    logger.info('Store transaction {} confirmed.'.format(ta.id))
     return True

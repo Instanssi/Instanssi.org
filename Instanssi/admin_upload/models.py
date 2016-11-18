@@ -7,19 +7,19 @@ import os.path
 
 
 class UploadedFile(models.Model):
-    event = models.ForeignKey(Event, verbose_name=u'Tapahtuma')
-    user = models.ForeignKey(User, verbose_name=u'Käyttäjä')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    user = models.ForeignKey(User, verbose_name='Käyttäjä')
     description = models.TextField(
-        u'Kuvaus', help_text=u'Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', blank=True)
-    file = models.FileField(u'Tiedosto', upload_to='files/')
-    date = models.DateTimeField(u'Aika')
+        'Kuvaus', help_text='Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', blank=True)
+    file = models.FileField('Tiedosto', upload_to='files/')
+    date = models.DateTimeField('Aika')
     
-    def __unicode__(self):
-        return u'{} by {}'.format(self.file.name, self.user.username)
+    def __str__(self):
+        return '{} by {}'.format(self.file.name, self.user.username)
     
     class Meta:
-        verbose_name = u"tiedosto"
-        verbose_name_plural = u"tiedostot"
+        verbose_name = "tiedosto"
+        verbose_name_plural = "tiedostot"
         
     def name(self):
         return os.path.basename(self.file.name)

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from common.auth import user_access_required
+from Instanssi.common.auth import user_access_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
-from common.misc import get_url_local_path
+from Instanssi.common.misc import get_url_local_path
 
 
 AUTH_METHODS = [

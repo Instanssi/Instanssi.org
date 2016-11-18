@@ -2,7 +2,7 @@
 
 # NOTE! THIS FILE IS FOR AUTOMATED TRAVIS TESTING ENVIRONMENT!
 
-from common import *
+from .common_config import *
 
 # Settings
 DEBUG = True
@@ -102,6 +102,10 @@ BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = 'uni_form'
+
+# Enable easier access to rest API if DEBUG is enabled
+if DEBUG:
+    enable_api_session_access()
 
 # Initialize email configuration
 EMAIL_BACKEND = make_email_conf(DEBUG)

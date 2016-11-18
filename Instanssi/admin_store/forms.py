@@ -14,7 +14,7 @@ class StoreItemForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tuote',
+                'Tuote',
                 'event',
                 'name',
                 'description',
@@ -27,7 +27,7 @@ class StoreItemForm(forms.ModelForm):
                 'discount_amount',
                 'discount_percentage',
                 ButtonHolder(
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -51,10 +51,10 @@ class TaItemExportForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Vie',
+                'Vie',
                 'event',
                 ButtonHolder(
-                    Submit('submit', u'Vie')
+                    Submit('submit', 'Vie')
                 )
             )
         )

@@ -4,7 +4,7 @@
 Mailer class sends emails with given parameters.
 """
 
-from common.mail import Mailer
+from Instanssi.common.mail import Mailer
 from decimal import Decimal
 
 

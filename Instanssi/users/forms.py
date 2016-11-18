@@ -8,12 +8,12 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
-from common.misc import get_url_local_path
+from Instanssi.common.misc import get_url_local_path
 
 
 class DjangoLoginForm(forms.Form):
-    username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Django-käyttäjätunnus")
-    password = forms.CharField(label=u"Salasana", widget=forms.PasswordInput)
+    username = forms.CharField(label="Käyttäjätunnus", help_text="Django-käyttäjätunnus")
+    password = forms.CharField(label="Salasana", widget=forms.PasswordInput)
     next = forms.CharField(widget=forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):
@@ -24,12 +24,12 @@ class DjangoLoginForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Django kirjautuminen',
+                'Django kirjautuminen',
                 'username',
                 'password',
                 'next',
                 ButtonHolder (
-                    Submit('submit', u'Kirjaudu')
+                    Submit('submit', 'Kirjaudu')
                 )
             )
         )
@@ -47,7 +47,7 @@ class DjangoLoginForm(forms.Form):
                 password=self.cleaned_data['password'])
             if not self.logged_user or self.logged_user.is_active is False:
                 self.logged_user = None
-                raise ValidationError(u'Väärä käyttäjätunnus tai salasana!')
+                raise ValidationError('Väärä käyttäjätunnus tai salasana!')
         return cleaned_data
 
     def login(self, request):
@@ -56,14 +56,14 @@ class DjangoLoginForm(forms.Form):
 
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(
-        label=u'Kirjautumispalvelu', 
-        help_text=u'Muutamia yleisimpiä kirjautumispalvelimia.')
+        label='Kirjautumispalvelu', 
+        help_text='Muutamia yleisimpiä kirjautumispalvelimia.')
     openid_identifier = forms.URLField(
         widget=forms.TextInput(), 
         max_length=255, 
         required=True, 
-        label=u'Osoite', 
-        help_text=u'Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.')
+        label='Osoite', 
+        help_text='Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.')
     next = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
@@ -76,12 +76,12 @@ class OpenIDLoginForm(forms.Form):
         self.helper.form_action = reverse('social:begin', args=('openid',))
         self.helper.layout = Layout(
             Fieldset(
-                u'OpenID kirjautuminen',
+                'OpenID kirjautuminen',
                 'sps',
                 'openid_identifier',
                 'next',
                 ButtonHolder(
-                    Submit('submit-login', u'Kirjaudu')
+                    Submit('submit-login', 'Kirjaudu')
                 )
             )
         )
@@ -99,8 +99,8 @@ class OpenIDLoginForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     otherinfo = forms.CharField(
         widget=forms.Textarea(), 
-        label=u"Muut yhteystiedot", 
-        help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", 
+        label="Muut yhteystiedot", 
+        help_text="Muut yhteystiedot, mm. IRC-nick & verkko, jne.", 
         required=False)
     
     def __init__(self, *args, **kwargs):
@@ -112,14 +112,14 @@ class ProfileForm(forms.ModelForm):
         try:
             self.profile = Profile.objects.get(user=self.user)
         except Profile.DoesNotExist:
-            self.profile = Profile(user=self.user, otherinfo=u'')
+            self.profile = Profile(user=self.user, otherinfo='')
             self.profile.save()
         
         # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Käyttäjäprofiili',
+                'Käyttäjäprofiili',
                 'first_name',
                 'last_name',
                 'email',
@@ -131,9 +131,9 @@ class ProfileForm(forms.ModelForm):
         )
         
         # Finnish labels
-        self.fields['first_name'].label = u"Etunimi"
-        self.fields['last_name'].label = u"Sukunimi"
-        self.fields['email'].label = u"Sähköposti"
+        self.fields['first_name'].label = "Etunimi"
+        self.fields['last_name'].label = "Sukunimi"
+        self.fields['email'].label = "Sähköposti"
         self.fields['email'].required = True
         self.fields['otherinfo'].initial = self.profile.otherinfo
                 

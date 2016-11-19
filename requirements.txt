@@ -11,6 +11,6 @@ reportlab==3.3.0
 django-libsass==0.7
 django-compressor==2.1
 requests==2.11.1
-djangorestframework==3.5.2
+djangorestframework==3.5.3
 django-oauth-toolkit==0.10.0
 requests-oauthlib==0.7.0

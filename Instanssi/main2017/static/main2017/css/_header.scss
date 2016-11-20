@@ -1,4 +1,5 @@
-$banner-image: '../images/banner-bg-1.png';
+$banner-image-0: '../images/banner-bg-1.png';
+$banner-image-1: '../images/banner-bg-2.png';
 
 #page-header {
     position: relative; // grab any absolute-positioned stuff
@@ -14,25 +15,21 @@ $banner-image: '../images/banner-bg-1.png';
     }
 
     .header-bg-0 {
-        background: url($banner-image) repeat-x;
+        background: url($banner-image-0) repeat-x;
         background:
             linear-gradient(rgba($theme-color-bright, 1) 0px,
             rgba($theme-color-bright, 0) $main-header-height),
-            url($banner-image) repeat-x calc(50% - 110px);
+            url($banner-image-0) repeat-x calc(50% - 110px);
         // try to align looping background snake with the one in the header
         background-position: center top;
         background-position: center top, calc(50% - 85px) 5px;
     }
 
     .header-bg-1 {
-        background: url($banner-image) repeat-x;
-        background:
-            linear-gradient(rgba($theme-color-bright, 1) 0px,
-            rgba($theme-color-bright, 0) $main-header-height),
-            url($banner-image) repeat-x calc(50% - 110px);
+        background: url($banner-image-1) repeat-x;
+        background: url($banner-image-1) repeat-x calc(50% - 110px);
         // try to align looping background snake with the one in the header
-        background-position: center top;
-        background-position: center top, calc(50% - 85px) 5px;
+        background-position: calc(50% - 85px) 5px;
     }
 
     .snek {

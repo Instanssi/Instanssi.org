@@ -4,7 +4,7 @@ $banner-image-1: '../images/banner-bg-2.png';
 #page-header {
     position: relative; // grab any absolute-positioned stuff
     overflow: hidden;
-    z-index: 0;
+    // z-index: 0;
 
     .header-bg {
         position: absolute;
@@ -12,6 +12,7 @@ $banner-image-1: '../images/banner-bg-2.png';
         left: 0;
         width: 100%;
         height: 100%;
+        pointer-events: none;
     }
 
     .header-bg-0 {
@@ -68,6 +69,9 @@ $banner-image-1: '../images/banner-bg-2.png';
     .header-info {
         min-height: $main-header-height;
         padding: 0 8px;
+
+        // position to prevent the (positioned) art from covering this
+        position: relative;
 
         color: #fff;
 

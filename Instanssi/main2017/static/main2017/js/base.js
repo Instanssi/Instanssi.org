@@ -6,7 +6,12 @@ $(function() {
 
     function moveLayers(offset) {
         var ww = $window.width();
-        var base = ww / 2; // center pattern by default
+
+        // center pattern by default
+        var base = ww / 2;
+
+        // mimic media query behavior in our procedural inline CSS
+        // (offsets mostly found through trial and error)
         if(ww >= 1200) {
             base += 230;
         } else if (ww >= 980) {

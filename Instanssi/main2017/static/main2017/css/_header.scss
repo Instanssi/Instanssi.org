@@ -17,13 +17,12 @@ $banner-image-1: '../images/banner-bg-2.png';
 
     .header-bg-0 {
         background: url($banner-image-0) repeat-x;
-        background:
-            linear-gradient(rgba($theme-color, 1) 0px,
-            rgba($theme-color, 0) $main-header-height),
-            url($banner-image-0) repeat-x calc(50% - 110px);
+        background: url($banner-image-0) repeat-x calc(50% - 110px);
         // try to align looping background snake with the one in the header
-        background-position: center top;
-        background-position: center top, calc(50% - 85px) 5px;
+        // position separate from background declaration because of IE/Edge issues
+        background-position-x: center;
+        background-position-y: 5px;
+        background-position-x: calc(50% - 85px);
     }
 
     .header-bg-1 {

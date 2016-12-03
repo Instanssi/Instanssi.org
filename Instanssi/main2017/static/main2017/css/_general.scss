@@ -111,7 +111,7 @@ sub {
 #page-wrap {
     position: relative;
     background: $background-color;
-    background: linear-gradient($background-color 275px, lighten($background-color, 5) 675px);
+    background: linear-gradient($theme-color 0, lighten($background-color, 5) 675px);
 }
 
 #content {

@@ -1,6 +1,31 @@
 @import 'reset.scss';
 @import 'base_layout/css/common.scss';
 
+// desktop screens
+$screen-lg-min: 1200px;
+// landscape tablets
+$screen-md-max: 1199px;
+$screen-md-min: 980px;
+// tablets
+$screen-sm-max: 979px;
+$screen-sm-min: 768px;
+// landscape phones / small tablets
+$screen-xs-max: 480px;
+$screen-xs-min: 480px;
+
+@media screen and (min-width: $screen-lg-min) {
+    .hidden-lg-up { display: none; }
+}
+@media screen and (min-width: $screen-md-min) {
+    .hidden-md-up { display: none; }
+}
+@media screen and (min-width: $screen-sm-min) {
+    .hidden-sm-up { display: none; }
+}
+@media screen and (min-width: $screen-xs-min) {
+    .hidden-xs-up { display: none; }
+}
+
 // note that these are minimum heights
 $main-header-height: 225px;
 $main-footer-height: 320px;
@@ -116,6 +141,14 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         padding: 0;
     }
 
+    .snek {
+        display: none;
+    }
+
+    .header-bg-1 {
+        display: none;
+    }
+
     #page-header .header-info {
         .time {
             padding-left: 0;
@@ -200,9 +233,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     #page-header .nav-btn {
         display: block;
         position: absolute;
-        top: 0;
+        top: 16px;
         right: 16px; // align with logo's right edge
         z-index: 985;
+        font-size: 30px;
     }
 
     .no-js #page-header .nav-btn {
@@ -228,13 +262,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
             padding: 0;
 
-            &:after {
-                top: 20px;
-            }
-
             p.time {
                 font-size: 20px;
                 padding-left: 2px;
+                padding-top: 80px;
             }
 
             .logo > * {
@@ -293,7 +324,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         }
 
         nav ul {
-            background-color: #333;
+            // background-color: #333;
             max-height: 0px;
             overflow: hidden;
         }

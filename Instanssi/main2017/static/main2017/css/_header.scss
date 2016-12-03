@@ -18,8 +18,8 @@ $banner-image-1: '../images/banner-bg-2.png';
     .header-bg-0 {
         background: url($banner-image-0) repeat-x;
         background:
-            linear-gradient(rgba($theme-color-bright, 1) 0px,
-            rgba($theme-color-bright, 0) $main-header-height),
+            linear-gradient(rgba($theme-color, 1) 0px,
+            rgba($theme-color, 0) $main-header-height),
             url($banner-image-0) repeat-x calc(50% - 110px);
         // try to align looping background snake with the one in the header
         background-position: center top;
@@ -36,8 +36,6 @@ $banner-image-1: '../images/banner-bg-2.png';
     .snek {
         position: relative;
         left: 100px;
-
-        //z-index: ;
 
         .snek-head {
             left: 50%;
@@ -85,9 +83,14 @@ $banner-image-1: '../images/banner-bg-2.png';
             width: 480px;
             height: 140px;
             max-width: 100%;
-            max-width: calc(100% - #{$spacing-large});
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
+
+            @media screen and (max-width: $screen-xs-min - 1px) {
+                top: 0px;
+                max-width: 75%;
+                height: 100px;
+            }
         }
         h1, .tagline, .time {
             margin-left: 8px;
@@ -109,8 +112,6 @@ $banner-image-1: '../images/banner-bg-2.png';
         }
 
         h1 {
-            display: none;
-            height: 103px;
             font-size: 55px;
             font-weight: 800;
             text-transform: uppercase;
@@ -118,25 +119,27 @@ $banner-image-1: '../images/banner-bg-2.png';
             line-height: 400%;
             text-shadow: #13285e 4px 0 3px, #13285e -4px 0 3px;
         }
-    }
 
-    // navigation
+    }
 
     // Mobile menu button
     .nav-btn {
         display: none;
-        margin: 8px 0 0;
+        // margin: 8px 0 0;
         padding: 8px 8px;
         color: #fff;
-        background: $theme-color;
-        float: right;
+        background: rgba($theme-color-bright, 0.5);
+        box-shadow: rgba(#000, .25) 1px 1px 4px;
         cursor: pointer;
 
-        .line {
-            width: 16px;
-            padding: 2px;
-            background: #fff;
-            margin: 3px 0px;
+        .fa {
+            // mimic logo's styling with text color and shadow
+            color: #fff;
+            text-shadow: rgba($theme-color, .5) 0 0 8px;
+        }
+
+        &:active {
+            background: $theme-color-bright;
         }
     }
 

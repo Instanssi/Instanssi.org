@@ -135,6 +135,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 }
 
 /* Landscape phone to portrait tablet */
+/* (this is the size where we drop the main layout columns ) */
 @media (max-width: 767px) {
     .container {
         width: 100%;
@@ -176,6 +177,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         bottom: 0px;
         padding-top: 16px;
 
+        .sitemap, .sponsors {
+            text-align: center;
+        }
+
         .sitemap {
             width: 100%;
             margin: 0px 0px 20px 0px;
@@ -196,6 +201,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
         .sponsors-container {
             padding-left: 8px; // match sitemap items
+            .sponsor {
+                display: inline-block;
+                float: none;
+            }
         }
 
         .contact {

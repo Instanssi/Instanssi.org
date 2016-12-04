@@ -83,10 +83,10 @@ a:hover { text-decoration: underline; }
 
 $banner-image-sm: '../../main2016/images/banner-bg.png';
 #header {
-    background: url($banner-image-sm) repeat-x;
+    /*background: url($banner-image-sm) repeat-x;
     background: linear-gradient(rgba($theme-color-bright, 1) 0px, rgba($theme-color-bright, 0) 100%), url($banner-image-sm) repeat-x;
     background-position: top center;
-    background-size: contain;
+    background-size: contain;*/
 
 }
 #header h1, #header h1 span, #usertools a {

@@ -98,9 +98,8 @@ $banner-image-1: '../images/banner-bg-2.png';
         }
         .tagline, .time {
             margin-bottom: 5px;
-            text-shadow: #148 0 0 2px;
-            text-shadow: #148 0 0 2px, #148 0 0 4px;
-            font-variant: small-caps;
+            text-shadow: #24a 0 0 3px;
+            text-shadow: #24a 0 0 3px, #24a 0 0 6px;
         }
         .tagline {
             font-size: 20px;
@@ -146,7 +145,7 @@ $banner-image-1: '../images/banner-bg-2.png';
     nav {
         bottom: 0px;
         position: relative;
-        background: $theme-color;
+        background: rgba($theme-color, 0.9);
         ul {
             margin: 0px;
             .menu-item {

@@ -261,6 +261,8 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     #page-wrap {
         // hidden anyway, don't even try to render gradient on mobile
         background: none;
+        // some blog content is causing overflow issues, let's fix for mobile at least
+        overflow: hidden;
     }
     #page-header {
         // provide some background for style

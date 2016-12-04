@@ -24,8 +24,9 @@ body * {
 
 h1 {
     font-family: $title-font-family;
-    font-variant: small-caps;
-    font-size: 40px;
+    //font-variant: small-caps;
+    text-transform: uppercase;
+    font-size: 28px;
     margin-bottom: .75em;
     color: $theme-color;
     font-weight: bold;
@@ -40,8 +41,8 @@ h2,
 form legend
 .item .title,
 .header {
-    //font-family: $title-font-family;
-    font-variant: small-caps;
+    font-family: $title-font-family;
+    //font-variant: small-caps;
     font-size: 25px;
     margin: 20px 0;
     padding-left: 8px;
@@ -110,8 +111,8 @@ sub {
 
 #page-wrap {
     position: relative;
-    background: $background-color;
-    background: linear-gradient($theme-color 0, lighten($background-color, 5) 675px);
+    background: $bg-gradient-bottom;
+    background: linear-gradient($bg-gradient-top 0, $bg-gradient-bottom $bg-gradient-height);
 }
 
 #content {

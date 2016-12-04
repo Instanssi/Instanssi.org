@@ -38,6 +38,9 @@ $(function () {
             // (use requestframe if available?)
             moveLayers($window.width() / 2 - ev.pageX);
         });
+        $window.resize(function(ev) {
+            moveLayers(0);
+        });
         moveLayers(0);
     }
 

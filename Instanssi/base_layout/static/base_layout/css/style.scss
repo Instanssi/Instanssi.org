@@ -114,6 +114,7 @@ $banner-image-sm: '../../main2016/images/banner-bg.png';
 #header_nav {
     min-height: 32px;
     background: $theme-color;
+    background: rgba($theme-color, 0.9);
     color: #fff;
 }
 #header_nav:after {
@@ -237,11 +238,6 @@ ul#crumbpath a:hover {
         width: 100%;
         min-width: 0;
     }
-}
-
-/* Landscape phones */
-@media (max-width: 480px) {
-    #header { background: #111122; }
 }
 
 /* ---- usertools ---- */

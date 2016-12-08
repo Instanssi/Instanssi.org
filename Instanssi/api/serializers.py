@@ -2,7 +2,8 @@
 
 from datetime import datetime
 
-from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField
+from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
+    CharField, IntegerField, ChoiceField, BooleanField
 
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
@@ -130,3 +131,39 @@ class StoreItemSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
         }
+
+
+class StoreTransactionItemSerializer(Serializer):
+    item_id = IntegerField()
+    variant_id = IntegerField(allow_null=True)
+    amount = IntegerField(min_value=1)
+
+    def create(self, validated_data):
+        print(validated_data)
+
+    def update(self, instance, validated_data):
+        pass
+
+
+class StoreTransactionSerializer(Serializer):
+    first_name = CharField()
+    last_name = CharField()
+    company = CharField(allow_blank=True)
+    email = EmailField()
+    telephone = CharField(allow_blank=True)
+    mobile = CharField(allow_blank=True)
+    street = CharField()
+    postal_code = CharField()
+    city = CharField()
+    country = CharField()
+    information = CharField(allow_blank=True)
+    payment_method = ChoiceField(choices=[0, 1])  # 1 = paytrail, 0 = bitpay
+    read_terms = BooleanField()
+    discount_key = CharField(allow_blank=True)
+    items = StoreTransactionItemSerializer(many=True)
+
+    def create(self, validated_data):
+        print(validated_data)
+
+    def update(self, instance, validated_data):
+        pass

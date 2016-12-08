@@ -37,16 +37,7 @@ Vue.component('store-product', {
         }
     },
     template: `
-    <li class="product">
-        <div class="pull-left">
-            <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
-            {{ product.name }} ({{ product.price.toFixed(0) }} €)
-            <p class="small" v-if="product.description" v-html="product.description"></p>
-            <p v-if="product.qtyDiscountThresh">
-                <span class="fa fa-check"/>
-                Buy at least {{ product.qtyDiscountThresh }} and earn a discount!
-            </p>
-        </div>
+    <div class="product">
         <span class="pull-right">
             <select v-if="product.variants" v-model="variant">
                 <option v-for="variant in product.variants" v-bind:value="variant">
@@ -55,8 +46,17 @@ Vue.component('store-product', {
             </select>
             <button v-on:click="addItem()">Lisää <span class="fa fa-shopping-cart"/></button>
         </span>
+        <div>
+            <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
+            {{ product.name }} ({{ product.price.toFixed(0) }} €)
+            <p class="small" v-if="product.description" v-html="product.description"></p>
+            <p v-if="product.qtyDiscountThresh">
+                <span class="fa fa-check"/>
+                Buy at least {{ product.qtyDiscountThresh }} and earn a discount!
+            </p>
+        </div>
         <span class="clearfix"></span>
-    </li>
+    </div>
     `,
 });
 
@@ -117,14 +117,15 @@ var app = new Vue({
     template: `
 <div>
 <h3>Tuotteet</h3>
-<ul class="list-unstyled store-items">
+<div class="list-unstyled store-items">
     <store-product v-for="product in products" :product="product"
         v-on:addItem="addItem" />
-</ul>
+</div>
 <h3>Ostoskori</h3>
-<ul class="list-unstyled store-items">
-    <li v-for="item in items">
-        <div class="pull-left">{{ item.product.name }}
+<div class="list-unstyled store-items">
+    <div v-for="item in items">
+        <div class="pull-left">
+            <span>{{ item.product.name }}</span>
             <span v-if="item.variant">({{ item.variant.name }})</span>
         </div>
         <span class="pull-right">
@@ -136,9 +137,9 @@ var app = new Vue({
             </button>
         </span>
         <span class="clearfix"></span>
-    </li>
-    <li>Yhteensä: {{ totalPrice.toFixed(2) }} €</li>
-</ul>
+    </div>
+    <div>Yhteensä: {{ totalPrice.toFixed(2) }} €</div>
+</div>
 <h3>Tiedot</h3>
 <form class="form-horizontal">
     <p>Huomaathan, että lippukoodit lähetetään annettuun sähköpostiosoitteeseen.</p>
@@ -194,6 +195,8 @@ var app = new Vue({
         }).catch((e) => {
             console.error('error fetching store items:', e);
         });
+
+        // FIXME: Fetch cart from window.localstorage if it exists
     },
     methods: {
         getSubtotal: function(item) {
@@ -205,13 +208,14 @@ var app = new Vue({
             }
             return item.product.price * item.count * multiplier;
         },
-        updateTotal: function () {
+        updateCart: function () {
             var totalPrice = 0;
             var component = this;
             this.items.forEach(function (item) {
                 totalPrice += component.getSubtotal(item);
             });
             this.totalPrice = totalPrice;
+            // FIXME: Store cart in window.localStorage
         },
         addItem: function (product, variant) {
             // check if product/variant is already in items
@@ -231,12 +235,12 @@ var app = new Vue({
                     variant: variant
                 });
             }
-            this.updateTotal();
+            this.updateCart();
         },
         removeItem: function (item) {
             var pos = this.items.indexOf(item);
             this.items.splice(pos, 1);
-            this.updateTotal();
+            this.updateCart();
         },
         changeItemCount: function (item, change) {
             var pos = this.items.indexOf(item);
@@ -246,7 +250,11 @@ var app = new Vue({
             }
             item.count += change;
             this.items.splice(pos, 1, item);
-            this.updateTotal();
+            this.updateCart();
+        },
+        submit: function() {
+            // send request to API, get payment methods, whatever.
+            // clear localStorage afterwards
         }
     }
 });

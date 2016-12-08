@@ -13,3 +13,4 @@ testing/output/*
 *.py~
 *.txt~
 .idea
+.env

@@ -66,6 +66,10 @@ class StoreItem(models.Model):
         """Returns True if a discount exists for this item."""
         return self.discount_amount >= 0
 
+    def get_variants(self):
+        """ Returns a queryset with the available item variants """
+        return StoreItemVariant.objects.filter(item=self)
+
     def get_discount_factor(self):
         """Gets the potential discount factor, for views/templates/JS.
 
@@ -117,6 +121,18 @@ class StoreItem(models.Model):
     class Meta:
         verbose_name = "tuote"
         verbose_name_plural = "tuotteet"
+
+
+class StoreItemVariant(models.Model):
+    item = models.ForeignKey(StoreItem)
+    name = models.CharField('Tuotevariantin nimi', max_length=32, blank=False, null=False)
+
+    def __str__(self):
+        return "{}: {}".format(self.item.name, self.name)
+
+    class Meta:
+        verbose_name = "tuotevariantti"
+        verbose_name_plural = "tuotevariantit"
 
 
 class StoreTransaction(models.Model):
@@ -273,6 +289,10 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(
         StoreItem,
         verbose_name='Tuote')
+    variant = models.ForeignKey(
+        StoreItemVariant,
+        verbose_name='Tuotevariantti',
+        null=True)
     transaction = models.ForeignKey(
         StoreTransaction,
         verbose_name='Ostotapahtuma')

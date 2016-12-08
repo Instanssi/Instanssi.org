@@ -50,9 +50,9 @@ Vue.component('store-product', {
             <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
             {{ product.name }} ({{ product.price.toFixed(0) }} €)
             <p class="small" v-if="product.description" v-html="product.description"></p>
-            <p v-if="product.qtyDiscountThresh">
-                <span class="fa fa-check"/>
-                Buy at least {{ product.qtyDiscountThresh }} and earn a discount!
+            <p v-if="product.discount_amount > 0">
+                <span class="fa fa-info"/>
+                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!
             </p>
         </div>
         <span class="clearfix"></span>
@@ -80,37 +80,7 @@ function storeXHR(method, path, data) {
 var app = new Vue({
     el: '#store',
     data: {
-        products: [{
-            id: 1,
-            title: 'Awesome T-shirt',
-            description: 'Instanssi, represent',
-            price: 20.00,
-            variants: [{
-                id: 1,
-                title: 'Size S'
-            }, {
-                id: 2,
-                title: 'Size M'
-            }, {
-                id: 3,
-                title: 'Size L'
-            }, {
-                id: 4,
-                title: 'Size XL'
-            }]
-        }, {
-            id: 2,
-            title: 'Basic ticket',
-            description: 'Gets you through the doors',
-            price: 15.00,
-            qtyDiscountThresh: 5,
-            qtyDiscountFactor: .9
-        }, {
-            id: 3,
-            title: 'Elite ticket',
-            description: 'Gets you some more stuff (or not)',
-            price: 50.00,
-        }],//*/
+        products: [],
         items: [],
         totalPrice: 0
     },
@@ -201,8 +171,8 @@ var app = new Vue({
     methods: {
         getSubtotal: function(item) {
             var multiplier = 1;
-            var qtyThresh = item.product.qtyDiscountThresh;
-            var discountFactor = item.product.qtyDiscountFactor;
+            var qtyThresh = item.product.discount_amount;
+            var discountFactor = (100 - item.product.discount_percentage) / 100;
             if(qtyThresh && item.count >= qtyThresh) {
                 multiplier *= discountFactor;
             }
@@ -243,6 +213,7 @@ var app = new Vue({
             this.updateCart();
         },
         changeItemCount: function (item, change) {
+            // FIXME: Check item product max per order
             var pos = this.items.indexOf(item);
             var item = this.items[pos];
             if (item.count + change <= 0) {

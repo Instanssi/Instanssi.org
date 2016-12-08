@@ -7,6 +7,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMet
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
+from Instanssi.store.models import StoreItem
 
 
 class EventSerializer(HyperlinkedModelSerializer):
@@ -106,3 +107,26 @@ class IRCMessageSerializer(HyperlinkedModelSerializer):
             'event': {'view_name': 'api:events-detail'}
         }
 
+
+class StoreItemSerializer(HyperlinkedModelSerializer):
+    imagefile_original_url = SerializerMethodField()
+    imagefile_thumbnail_url = SerializerMethodField()
+    discount_factor = SerializerMethodField()
+
+    def get_imagefile_original_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
+
+    def get_imagefile_thumbnail_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
+
+    def get_discount_factor(self, obj):
+        return obj.get_discount_factor()
+
+    class Meta:
+        model = StoreItem
+        fields = ('id', 'event', 'name', 'description', 'price', 'max', 'available', 'imagefile_original_url',
+                  'imagefile_thumbnail_url', 'max_per_order', 'sort_index', 'discount_amount', 'discount_percentage',
+                  'is_discount_available', 'discount_factor', 'num_available')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail'}
+        }

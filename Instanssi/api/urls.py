@@ -4,7 +4,7 @@ from django.conf.urls import url, include
 from rest_framework import routers
 import oauth2_provider.views as oauth2_views
 from .viewsets import EventViewSet, SongViewSet, CompetitionViewSet, CompoViewSet, ProgrammeEventViewSet,\
-    SponsorViewSet, MessageViewSet, IRCMessageViewSet
+    SponsorViewSet, MessageViewSet, IRCMessageViewSet, StoreItemViewSet
 
 # API Endpoints
 router = routers.DefaultRouter()
@@ -16,6 +16,7 @@ router.register(r'programme_events', ProgrammeEventViewSet, base_name='programme
 router.register(r'sponsors', SponsorViewSet, base_name='sponsors')
 router.register(r'messages', MessageViewSet, base_name='messages')
 router.register(r'irc_messages', IRCMessageViewSet, base_name='irc_messages')
+router.register(r'store_items', StoreItemViewSet, base_name='store_items')
 
 
 # Base endpoints for OAuth2 authorization

@@ -15,6 +15,7 @@ if(toLocaleStringSupportsOptions) {
     formatPrice = formatPriceLegacy;
 }
 
+Vue.filter('formatPrice', formatPrice);
 
 Vue.component('store-product', {
     props: {
@@ -48,7 +49,7 @@ Vue.component('store-product', {
         </span>
         <div>
             <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
-            {{ product.name }} ({{ product.price.toFixed(0) }} €)
+            {{ product.name }} ({{ product.price | formatPrice }})
             <p class="small" v-if="product.description" v-html="product.description"></p>
             <p v-if="product.discount_amount > 0">
                 <span class="fa fa-info"/>
@@ -99,7 +100,7 @@ var app = new Vue({
             <span v-if="item.variant">({{ item.variant.name }})</span>
         </div>
         <span class="pull-right">
-            x {{ item.count }} = {{ getSubtotal(item) }} €
+            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
             <button v-on:click="changeItemCount(item, 1)">+</button>
             <button v-on:click="changeItemCount(item, -1)">-</button>
             <button v-on:click="removeItem(item)">
@@ -108,7 +109,7 @@ var app = new Vue({
         </span>
         <span class="clearfix"></span>
     </div>
-    <div>Yhteensä: {{ totalPrice.toFixed(2) }} €</div>
+    <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
 </div>
 <h3>Tiedot</h3>
 <form class="form-horizontal">

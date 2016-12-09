@@ -174,6 +174,7 @@ class StoreTransactionSerializer(Serializer):
     read_terms = BooleanField()
     discount_key = CharField(allow_blank=True, required=False, max_length=32)
     items = StoreTransactionItemSerializer(many=True, required=True)
+    save = BooleanField(default=False)
 
     def validate_read_terms(self, value):
         if not value:

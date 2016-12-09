@@ -13,6 +13,26 @@ if (toLocaleStringSupportsOptions) {
 else {
     formatPrice = formatPriceLegacy;
 }
+function storeXHR(method, path, data) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.status === 200 || xhr.status === 204) {
+                resolve(JSON.parse(xhr.responseText));
+            }
+            else {
+                xhr.onerror();
+            }
+        };
+        xhr.onerror = function () {
+            reject(xhr.responseText ? JSON.parse(xhr.responseText) : null);
+        };
+        xhr.open(method, path);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.send(data ? JSON.stringify(data) : null);
+    });
+}
 /**
  * Returns true if a cart item is a specific product (and optional variant).
  */
@@ -20,23 +40,71 @@ function cartItemEquals(item, product, variant) {
     return item.product.id === product.id && (!variant || (item.variant && (variant.id === item.variant.id)));
 }
 Vue.filter('formatPrice', formatPrice);
+Vue.component('store-messages', {
+    props: {
+        field: String,
+        messages: Object
+    },
+    computed: {
+        localMessages: function () {
+            // console.info('get local messages for field', this.field, this.messages);
+            var _a = this, messages = _a.messages, field = _a.field;
+            if (messages && messages[field] && messages[field].length > 0) {
+                // console.info(messages[field]);
+                return messages[field];
+            }
+            return null;
+        }
+    },
+    template: "<div><p v-if=\"localMessages\">\n        <div class=\"alert alert-danger\" role=\"alert\" v-for=\"message in localMessages\">\n            <span class=\"fa fa-times\"></span> {{ message }}\n        </div>\n    </p></div>"
+});
+Vue.component('store-form-group', {
+    props: {
+        title: String,
+        field: String,
+        // type: String,
+        messages: Object,
+        update: Function,
+        data: Object
+    },
+    methods: {
+        onInput: function ($event) {
+            this.$emit('update', this.field, $event);
+        }
+    },
+    computed: {
+        clazz: function () {
+            var _a = this, messages = _a.messages, field = _a.field;
+            if (messages && messages[field] && messages[field].length > 0) {
+                return 'form-group has-error';
+            }
+            return 'form-group';
+        }
+    },
+    template: "<div v-bind:class=\"clazz\">\n        <label class=\"col-sm-4 control-label\">{{ title }}</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\" @input=\"onInput\" v-bind:value=\"data[field]\" />\n            <store-messages :field=\"field\" :messages=\"messages\" />\n        </div>\n    </div>"
+});
 Vue.component('store-information-form', {
+    props: {
+        /** Field error messages, maps field name -> array */
+        messages: Object,
+        data: Object
+    },
     created: function () {
         this.userInfo = {};
     },
     methods: {
         update: function (fieldName, $event) {
             // console.info('updated!', fieldName, $event.target.value);
-            this.userInfo[fieldName] = $event.target.value;
-            this.$emit('infoUpdate', this.userInfo);
+            this.data[fieldName] = $event.target.value;
         }
     },
-    template: "\n<form class=\"form-horizontal\" @submit.prevent>\n    <p>Huomaathan, ett\u00E4 lippukoodit l\u00E4hetet\u00E4\u00E4n annettuun s\u00E4hk\u00F6postiosoitteeseen.</p>\n    <div class=\"row\"><div class=\"col-lg-6\">\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Etunimi</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('firstName', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Sukunimi</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('lastName', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">S\u00E4hk\u00F6posti</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('email', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Vahvista s\u00E4hk\u00F6posti</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('email2', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Matkapuhelin</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('mobile', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Muu puhelinnumero</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('telephone', $event)\"></input>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-lg-6\">\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Katuosoite</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('streetAddress', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Postinumero</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('postalCode', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Kaupunki</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('city', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Maa</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('country', $event)\"></input>\n            </div>\n        </div>\n    </div></div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-12 control-label\">Lis\u00E4tietoja</label>\n        <div class=\"col-sm-12\">\n            <textarea class=\"form-control\" @input=\"update('info', $event)\"></textarea>\n        </div>\n    </div>\n    <span class=\"pull-right\">\n        <button class=\"btn btn-primary\">Jatka &gt;</button>\n    </span>\n    <div class=\"clearfix\"></div>\n</form>\n"
+    template: "\n<form class=\"form-horizontal\" @submit.prevent>\n    <p>Huomaathan, ett\u00E4 lippukoodit l\u00E4hetet\u00E4\u00E4n annettuun s\u00E4hk\u00F6postiosoitteeseen.</p>\n    <div class=\"row\"><div class=\"col-lg-6\">\n        <store-form-group title=\"Etunimi\" field=\"first_name\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Sukunimi\" field=\"last_name\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"S\u00E4hk\u00F6posti\" field=\"email\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Vahvista s\u00E4hk\u00F6posti\" field=\"email2\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Matkapuhelin\" field=\"mobile\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Muu puhelinnumero\" field=\"telephone\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n    </div>\n    <div class=\"col-lg-6\">\n        <store-form-group title=\"Katuosoite\" field=\"street\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Postinumero\" field=\"postal_code\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Kaupunki\" field=\"city\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Maa\" field=\"country\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n        <store-form-group title=\"Yritys\" field=\"company\" @update=\"update\" :messages=\"messages\" :data=\"data\" />\n    </div></div>\n    <div class=\"form-group\">\n        <label class=\"col-lg-2 control-label\">Lis\u00E4tietoja</label>\n        <div class=\"col-lg-10\">\n            <textarea class=\"form-control\" @input=\"update('information', $event)\" v-bind:value=\"data.information\"></textarea>\n            <store-messages field=\"information\" :messages=\"messages\" />\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <div class=\"col-sm-12\">\n            <label class=\"control-label\">\n                <input type=\"checkbox\" v-model=\"data.read_terms\" />\n                <span>\n                    Olen lukenut <a target=\"_blank\" href=\"/store/terms\">toimitusehdot</a> ja hyv\u00E4ksyn ne.\n                </span>\n            </label>\n            <store-messages field=\"read_terms\" :messages=\"messages\" />\n        </div>\n    </div>\n    <div class=\"clearfix\"></div>\n</form>\n"
 });
 Vue.component('store-product', {
     props: {
         product: Object,
         cart: Array,
+        messages: Object,
     },
     data: function () {
         return {
@@ -71,30 +139,29 @@ Vue.component('store-product', {
     },
     template: "\n    <div class=\"product\">\n        <span class=\"pull-right\">\n            <span class=\"product-cart-count\" v-if=\"cartCount > 0\">\n                <span class=\"fa fa-shopping-cart\"></span> {{ cartCount }}\n            </span>\n            <select class=\"product-variants\" v-if=\"product.variants && product.variants.length > 0\" v-model=\"variant\">\n                <option v-for=\"variant in product.variants\" v-bind:value=\"variant\">\n                    {{ variant.title }}\n                </option>\n            </select>\n            <button class=\"btn btn-success\" v-on:click=\"addItem()\">\n                <span class=\"fa fa-plus\" /> Lis\u00E4\u00E4\n            </button>\n        </span>\n        <div>\n            <img :src=\"product.imagefile_thumbnail_url\" width=\"48\" height=\"48\" />\n            {{ product.name }} ({{ product.price | formatPrice }})\n            <p class=\"small\" v-if=\"product.description\" v-html=\"product.description\"></p>\n            <p v-if=\"product.discount_amount > 0\">\n                <span class=\"fa fa-info\"/>\n                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!\n            </p>\n        </div>\n        <span class=\"clearfix\"></span>\n    </div>\n    ",
 });
-function storeXHR(method, path, data) {
-    return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            resolve(JSON.parse(xhr.responseText));
-        };
-        xhr.onerror = function () {
-            reject(xhr.responseText ? JSON.parse(xhr.responseText) : null);
-        };
-        xhr.open(method, path);
-        if (data) {
-            xhr.data = JSON.stringify(data);
-        }
-        xhr.send();
-    });
-}
 var app = new Vue({
     el: '#store',
     data: {
         products: [],
         items: [],
+        messages: {},
+        info: {
+            first_name: '',
+            last_name: '',
+            email: '',
+            street: '',
+            postal_code: '',
+            city: '',
+            country: '',
+            mobile: '',
+            telephone: '',
+            company: '',
+            information: '',
+            read_terms: false
+        },
         totalPrice: 0
     },
-    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\"\n        :product=\"product\" :cart=\"items\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in items\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button class=\"btn btn-danger\" v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n    <store-information-form v-on:infoUpdate=\"updateInfo\"/>\n</div>\n  ",
+    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\"\n        :product=\"product\" :cart=\"items\" :messages=\"messages\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<store-messages field=\"items\" :messages=\"messages\" />\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in items\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button class=\"btn btn-danger\" v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n<store-information-form v-on:infoUpdate=\"updateInfo\" :data=\"info\" :messages=\"messages\" />\n<span class=\"pull-right\">\n    <button class=\"btn btn-primary\" @click=\"submit\">Jatka &gt;</button>\n</span>\n</div>\n  ",
     created: function () {
         var _this = this;
         storeXHR('GET', '/api/store_items/?format=json').then(function (items) {
@@ -168,8 +235,26 @@ var app = new Vue({
             this.updateCart();
         },
         submit: function () {
-            // send request to API, get payment methods, whatever.
-            // clear localStorage afterwards
+            var _this = this;
+            var info = this.info;
+            // format store request
+            var transaction = Object.assign({}, info);
+            transaction.items = this.items.map(function (item) { return ({
+                item_id: item.product.id,
+                variant_id: item.variant ? item.variant.id : null,
+                amount: item.count,
+            }); });
+            storeXHR('POST', '/api/store_transaction/?format=json', transaction).then(function (res) {
+                console.info(res);
+            }, function (err) {
+                _this.messages = err;
+                // Hack error message so both email fields show them.
+                if (err) {
+                    err.email2 = err.email;
+                }
+            }).catch(function (err) {
+                console.error(err);
+            });
         }
     }
 });

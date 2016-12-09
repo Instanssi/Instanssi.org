@@ -5,9 +5,9 @@ from Instanssi.common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
-from Instanssi.store.models import StoreTransaction, TransactionItem
+from django.http import HttpResponse, Http404
+from django.shortcuts import render
+from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import bitpay, ta_common
 
 # Logging related
@@ -38,10 +38,10 @@ def start_process(ta):
     except bitpay.BitpayException as ex:
         a, b = ex.args
         logger.error('(%s) %s', b, a)
-        return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
+        return reverse('store:pm:bitpay-failure')
     except Exception as ex:
         logger.error('%s.', ex)
-        return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
+        return reverse('store:pm:bitpay-failure')
 
     # Save token, redirect
     ta.token = msg['id']
@@ -49,7 +49,7 @@ def start_process(ta):
     ta.save()
 
     # All done, redirect user
-    return HttpResponseRedirect(msg['url'])
+    return msg['url']
 
 
 def handle_failure(request):

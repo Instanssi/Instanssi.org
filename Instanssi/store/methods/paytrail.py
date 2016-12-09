@@ -67,10 +67,10 @@ def start_process(ta):
     except paytrail.PaytrailException as ex:
         a, b = ex.args
         logger.error('(%s) %s', b, a)
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        return reverse('store:pm:paytrail-failure')
     except Exception as ex:
         logger.error('%s.', ex)
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        return reverse('store:pm:paytrail-failure')
 
     # Save token, redirect
     ta.token = msg['token']
@@ -78,7 +78,7 @@ def start_process(ta):
     ta.save()
 
     # All done, redirect user
-    return HttpResponseRedirect(msg['url'])
+    return msg['url']
 
 
 def handle_failure(request):

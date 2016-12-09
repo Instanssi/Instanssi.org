@@ -1,15 +1,29 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission
+from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
-    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer
+    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
+    StoreTransactionSerializer
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
+from Instanssi.store.handlers import begin_payment_process
+
+
+class IsWriteOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method == 'POST'
+
+
+class WriteOnlyModelViewSet(CreateModelMixin,
+                            GenericViewSet):
+    pass
 
 
 class FilterMixin(object):
@@ -208,10 +222,28 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
         return q
 
 
-class StoreItemViewSet(ReadOnlyModelViewSet, FilterMixin):
+class StoreItemViewSet(ReadOnlyModelViewSet):
     """
     Exposes all available store items.
     """
     serializer_class = StoreItemSerializer
     queryset = StoreItem.items_available()
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class StoreTransactionViewSet(WriteOnlyModelViewSet):
+    """
+    Handles saving store transactions
+    """
+    serializer_class = StoreTransactionSerializer
+    permission_classes = [IsWriteOnly]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            ta = serializer.save()
+            payment_method = serializer.validated_data['payment_method']
+            response_url = begin_payment_process(payment_method, ta)
+            return Response({"url": response_url}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

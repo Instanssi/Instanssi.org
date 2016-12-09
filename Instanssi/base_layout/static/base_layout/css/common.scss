@@ -11,9 +11,20 @@ $title-font-family: $body-font-family;
 $transition-small: 0.2s;
 $transition-large: 0.4s;
 
+// overrides for certain Bootstrap SASS defaults
+$brand-primary: $theme-color;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+$navbar-default-color: #ddd;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-link-hover-bg: $theme-nav-hover;
+
+@import './bootstrap.scss';
+
 @mixin awesome-glyph($code) {
-	font: normal normal normal 1em/1 FontAwesome;
-	content: $code;
+    font: normal normal normal 1em/1 FontAwesome;
+    content: $code;
 }
 
 // This hides content visually but should not block screen readers, scraping

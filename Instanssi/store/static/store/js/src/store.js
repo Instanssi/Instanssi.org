@@ -1,4 +1,4 @@
-/* global Vue2 */
+/* global Vue */
 
 toLocaleStringSupportsOptions = !!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function');
 

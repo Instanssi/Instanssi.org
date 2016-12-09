@@ -15,11 +15,111 @@ if(toLocaleStringSupportsOptions) {
     formatPrice = formatPriceLegacy;
 }
 
+/**
+ * Returns true if a cart item is a specific product (and optional variant).
+ */
+function cartItemEquals(item, product, variant) {
+    return item.product.id === product.id && (!variant || (item.variant && (variant.id === item.variant.id)));
+}
+
 Vue.filter('formatPrice', formatPrice);
+
+Vue.component('store-information-form', {
+    created: function() {
+        this.userInfo = {};
+    },
+    methods: {
+        update: function(fieldName, $event) {
+            // console.info('updated!', fieldName, $event.target.value);
+            this.userInfo[fieldName] = $event.target.value;
+            this.$emit('infoUpdate', this.userInfo);
+        }
+    },
+    template: `
+<form class="form-horizontal" @submit.prevent>
+    <p>Huomaathan, että lippukoodit lähetetään annettuun sähköpostiosoitteeseen.</p>
+    <div class="row"><div class="col-lg-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Etunimi</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('firstName', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Sukunimi</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('lastName', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Sähköposti</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('email', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Vahvista sähköposti</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('email2', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Matkapuhelin</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('mobile', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Muu puhelinnumero</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('telephone', $event)"></input>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Katuosoite</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('streetAddress', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Postinumero</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('postalCode', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Kaupunki</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('city', $event)"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Maa</label>
+            <div class="col-sm-8">
+                <input class="form-control" @input="update('country', $event)"></input>
+            </div>
+        </div>
+    </div></div>
+    <div class="form-group">
+        <label class="col-sm-12 control-label">Lisätietoja</label>
+        <div class="col-sm-12">
+            <textarea class="form-control" @input="update('info', $event)"></textarea>
+        </div>
+    </div>
+    <span class="pull-right">
+        <button class="btn btn-primary">Jatka &gt;</button>
+    </span>
+    <div class="clearfix"></div>
+</form>
+`
+});
 
 Vue.component('store-product', {
     props: {
-        product: Object
+        product: Object,
+        cart: Array,
     },
     data: function () {
         return {
@@ -37,15 +137,36 @@ Vue.component('store-product', {
             this.variant = product.variants[0];
         }
     },
+    computed: {
+        cartCount: function() {
+            var product = this.product;
+            if(!this.cart) {
+                return 0;
+            }
+            var cartIndex = this.cart.findIndex((item) => {
+                return cartItemEquals(item, product, null);
+            });
+
+            if(cartIndex < 0) {
+                return 0;
+            }
+            return this.cart[cartIndex].count;
+        }
+    },
     template: `
     <div class="product">
         <span class="pull-right">
-            <select v-if="product.variants" v-model="variant">
+            <span class="product-cart-count" v-if="cartCount > 0">
+                <span class="fa fa-shopping-cart"></span> {{ cartCount }}
+            </span>
+            <select class="product-variants" v-if="product.variants" v-model="variant">
                 <option v-for="variant in product.variants" v-bind:value="variant">
                     {{ variant.title }}
                 </option>
             </select>
-            <button v-on:click="addItem()">Lisää <span class="fa fa-shopping-cart"/></button>
+            <button class="btn btn-success" v-on:click="addItem()">
+                <span class="fa fa-plus" /> Lisää
+            </button>
         </span>
         <div>
             <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
@@ -89,7 +210,8 @@ var app = new Vue({
 <div>
 <h3>Tuotteet</h3>
 <div class="list-unstyled store-items">
-    <store-product v-for="product in products" :product="product"
+    <store-product v-for="product in products"
+        :product="product" :cart="items"
         v-on:addItem="addItem" />
 </div>
 <h3>Ostoskori</h3>
@@ -101,9 +223,9 @@ var app = new Vue({
         </div>
         <span class="pull-right">
             x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
-            <button v-on:click="changeItemCount(item, 1)">+</button>
-            <button v-on:click="changeItemCount(item, -1)">-</button>
-            <button v-on:click="removeItem(item)">
+            <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
+            <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
+            <button class="btn btn-danger" v-on:click="removeItem(item)">
                 <span class="fa fa-fw fa-trash"></span>
             </button>
         </span>
@@ -112,49 +234,7 @@ var app = new Vue({
     <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
 </div>
 <h3>Tiedot</h3>
-<form class="form-horizontal">
-    <p>Huomaathan, että lippukoodit lähetetään annettuun sähköpostiosoitteeseen.</p>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Nimi</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Sähköposti</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Katuosoite</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Postinumero</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Kaupunki</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label">Puhelin</label>
-        <div class="col-sm-8">
-            <input class="form-control"></input>
-        </div>
-    </div>
-    <span class="pull-right">
-        <button class="btn btn-primary">Jatka &gt;</button>
-    </span>
-    <div class="clearfix"></div>
-</form>
+    <store-information-form v-on:infoUpdate="updateInfo"/>
 </div>
   `,
     created: function() {
@@ -191,7 +271,7 @@ var app = new Vue({
         addItem: function (product, variant) {
             // check if product/variant is already in items
             var found = this.items.findIndex(function (item) {
-                return item.product.id === product.id && (!variant || (item.variant && (variant.id === item.variant.id)));
+                return cartItemEquals(item, product, variant);
             });
             if (found >= 0) {
                 // if it is, splice a new item with a higher count
@@ -207,6 +287,10 @@ var app = new Vue({
                 });
             }
             this.updateCart();
+        },
+        updateInfo: function (info) {
+            // Note that this is a shallow copy. Doesn't really harm anything.
+            this.userInfo = info;
         },
         removeItem: function (item) {
             var pos = this.items.indexOf(item);

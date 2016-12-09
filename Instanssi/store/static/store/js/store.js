@@ -1,4 +1,4 @@
-/* global Vue2 */
+/* global Vue */
 toLocaleStringSupportsOptions = !!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function');
 function formatPriceLocaleString(price) {
     return price.toLocaleString('fi', { style: 'currency', currency: 'EUR' });
@@ -13,10 +13,30 @@ if (toLocaleStringSupportsOptions) {
 else {
     formatPrice = formatPriceLegacy;
 }
+/**
+ * Returns true if a cart item is a specific product (and optional variant).
+ */
+function cartItemEquals(item, product, variant) {
+    return item.product.id === product.id && (!variant || (item.variant && (variant.id === item.variant.id)));
+}
 Vue.filter('formatPrice', formatPrice);
+Vue.component('store-information-form', {
+    created: function () {
+        this.userInfo = {};
+    },
+    methods: {
+        update: function (fieldName, $event) {
+            // console.info('updated!', fieldName, $event.target.value);
+            this.userInfo[fieldName] = $event.target.value;
+            this.$emit('infoUpdate', this.userInfo);
+        }
+    },
+    template: "\n<form class=\"form-horizontal\" @submit.prevent>\n    <p>Huomaathan, ett\u00E4 lippukoodit l\u00E4hetet\u00E4\u00E4n annettuun s\u00E4hk\u00F6postiosoitteeseen.</p>\n    <div class=\"row\"><div class=\"col-lg-6\">\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Etunimi</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('firstName', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Sukunimi</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('lastName', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">S\u00E4hk\u00F6posti</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('email', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Vahvista s\u00E4hk\u00F6posti</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('email2', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Matkapuhelin</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('mobile', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Muu puhelinnumero</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('telephone', $event)\"></input>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-lg-6\">\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Katuosoite</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('streetAddress', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Postinumero</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('postalCode', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Kaupunki</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('city', $event)\"></input>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label class=\"col-sm-4 control-label\">Maa</label>\n            <div class=\"col-sm-8\">\n                <input class=\"form-control\" @input=\"update('country', $event)\"></input>\n            </div>\n        </div>\n    </div></div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-12 control-label\">Lis\u00E4tietoja</label>\n        <div class=\"col-sm-12\">\n            <textarea class=\"form-control\" @input=\"update('info', $event)\"></textarea>\n        </div>\n    </div>\n    <span class=\"pull-right\">\n        <button class=\"btn btn-primary\">Jatka &gt;</button>\n    </span>\n    <div class=\"clearfix\"></div>\n</form>\n"
+});
 Vue.component('store-product', {
     props: {
-        product: Object
+        product: Object,
+        cart: Array,
     },
     data: function () {
         return {
@@ -34,7 +54,22 @@ Vue.component('store-product', {
             this.variant = product.variants[0];
         }
     },
-    template: "\n    <div class=\"product\">\n        <span class=\"pull-right\">\n            <select v-if=\"product.variants\" v-model=\"variant\">\n                <option v-for=\"variant in product.variants\" v-bind:value=\"variant\">\n                    {{ variant.title }}\n                </option>\n            </select>\n            <button v-on:click=\"addItem()\">Lis\u00E4\u00E4 <span class=\"fa fa-shopping-cart\"/></button>\n        </span>\n        <div>\n            <img :src=\"product.imagefile_thumbnail_url\" width=\"48\" height=\"48\" />\n            {{ product.name }} ({{ product.price | formatPrice }})\n            <p class=\"small\" v-if=\"product.description\" v-html=\"product.description\"></p>\n            <p v-if=\"product.discount_amount > 0\">\n                <span class=\"fa fa-info\"/>\n                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!\n            </p>\n        </div>\n        <span class=\"clearfix\"></span>\n    </div>\n    ",
+    computed: {
+        cartCount: function () {
+            var product = this.product;
+            if (!this.cart) {
+                return 0;
+            }
+            var cartIndex = this.cart.findIndex(function (item) {
+                return cartItemEquals(item, product, null);
+            });
+            if (cartIndex < 0) {
+                return 0;
+            }
+            return this.cart[cartIndex].count;
+        }
+    },
+    template: "\n    <div class=\"product\">\n        <span class=\"pull-right\">\n            <span class=\"product-cart-count\" v-if=\"cartCount > 0\">\n                <span class=\"fa fa-shopping-cart\"></span> {{ cartCount }}\n            </span>\n            <select class=\"product-variants\" v-if=\"product.variants\" v-model=\"variant\">\n                <option v-for=\"variant in product.variants\" v-bind:value=\"variant\">\n                    {{ variant.title }}\n                </option>\n            </select>\n            <button class=\"btn btn-success\" v-on:click=\"addItem()\">\n                <span class=\"fa fa-plus\" /> Lis\u00E4\u00E4\n            </button>\n        </span>\n        <div>\n            <img :src=\"product.imagefile_thumbnail_url\" width=\"48\" height=\"48\" />\n            {{ product.name }} ({{ product.price | formatPrice }})\n            <p class=\"small\" v-if=\"product.description\" v-html=\"product.description\"></p>\n            <p v-if=\"product.discount_amount > 0\">\n                <span class=\"fa fa-info\"/>\n                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!\n            </p>\n        </div>\n        <span class=\"clearfix\"></span>\n    </div>\n    ",
 });
 function storeXHR(method, path, data) {
     return new Promise(function (resolve, reject) {
@@ -59,7 +94,7 @@ var app = new Vue({
         items: [],
         totalPrice: 0
     },
-    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\" :product=\"product\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in items\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n<form class=\"form-horizontal\">\n    <p>Huomaathan, ett\u00E4 lippukoodit l\u00E4hetet\u00E4\u00E4n annettuun s\u00E4hk\u00F6postiosoitteeseen.</p>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">Nimi</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">S\u00E4hk\u00F6posti</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">Katuosoite</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">Postinumero</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">Kaupunki</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <label class=\"col-sm-4 control-label\">Puhelin</label>\n        <div class=\"col-sm-8\">\n            <input class=\"form-control\"></input>\n        </div>\n    </div>\n    <span class=\"pull-right\">\n        <button class=\"btn btn-primary\">Jatka &gt;</button>\n    </span>\n    <div class=\"clearfix\"></div>\n</form>\n</div>\n  ",
+    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\"\n        :product=\"product\" :cart=\"items\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in items\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button class=\"btn btn-danger\" v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n    <store-information-form v-on:infoUpdate=\"updateInfo\"/>\n</div>\n  ",
     created: function () {
         var _this = this;
         storeXHR('GET', '/api/store_items/?format=json').then(function (items) {
@@ -94,7 +129,7 @@ var app = new Vue({
         addItem: function (product, variant) {
             // check if product/variant is already in items
             var found = this.items.findIndex(function (item) {
-                return item.product.id === product.id && (!variant || (item.variant && (variant.id === item.variant.id)));
+                return cartItemEquals(item, product, variant);
             });
             if (found >= 0) {
                 // if it is, splice a new item with a higher count
@@ -111,6 +146,11 @@ var app = new Vue({
                 });
             }
             this.updateCart();
+        },
+        updateInfo: function (info) {
+            // Note that this is a shallow copy. Doesn't really matter.
+            this.userInfo = info;
+            console.info(info);
         },
         removeItem: function (item) {
             var pos = this.items.indexOf(item);

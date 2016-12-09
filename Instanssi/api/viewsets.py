@@ -5,6 +5,7 @@ from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.compat import is_authenticated
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
@@ -16,9 +17,12 @@ from Instanssi.store.models import StoreItem
 from Instanssi.store.handlers import begin_payment_process
 
 
-class IsWriteOnly(BasePermission):
+class IsAuthenticatedOrWriteOnly(BasePermission):
     def has_permission(self, request, view):
-        return request.method == 'POST'
+        return (
+            request.method == 'POST' or
+            request.user and is_authenticated(request.user)
+        )
 
 
 class WriteOnlyModelViewSet(CreateModelMixin,
@@ -236,14 +240,17 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
     Handles saving store transactions
     """
     serializer_class = StoreTransactionSerializer
-    permission_classes = [IsWriteOnly]
+    permission_classes = [IsAuthenticatedOrWriteOnly]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            ta = serializer.save()
-            payment_method = serializer.validated_data['payment_method']
-            response_url = begin_payment_process(payment_method, ta)
-            return Response({"url": response_url}, status=status.HTTP_201_CREATED)
+            if serializer.validated_data['save']:
+                ta = serializer.save()
+                payment_method = serializer.validated_data['payment_method']
+                response_url = begin_payment_process(payment_method, ta)
+                return Response({"url": response_url}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -69,7 +69,7 @@ Vue.component('store-product', {
             return this.cart[cartIndex].count;
         }
     },
-    template: "\n    <div class=\"product\">\n        <span class=\"pull-right\">\n            <span class=\"product-cart-count\" v-if=\"cartCount > 0\">\n                <span class=\"fa fa-shopping-cart\"></span> {{ cartCount }}\n            </span>\n            <select class=\"product-variants\" v-if=\"product.variants\" v-model=\"variant\">\n                <option v-for=\"variant in product.variants\" v-bind:value=\"variant\">\n                    {{ variant.title }}\n                </option>\n            </select>\n            <button class=\"btn btn-success\" v-on:click=\"addItem()\">\n                <span class=\"fa fa-plus\" /> Lis\u00E4\u00E4\n            </button>\n        </span>\n        <div>\n            <img :src=\"product.imagefile_thumbnail_url\" width=\"48\" height=\"48\" />\n            {{ product.name }} ({{ product.price | formatPrice }})\n            <p class=\"small\" v-if=\"product.description\" v-html=\"product.description\"></p>\n            <p v-if=\"product.discount_amount > 0\">\n                <span class=\"fa fa-info\"/>\n                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!\n            </p>\n        </div>\n        <span class=\"clearfix\"></span>\n    </div>\n    ",
+    template: "\n    <div class=\"product\">\n        <span class=\"pull-right\">\n            <span class=\"product-cart-count\" v-if=\"cartCount > 0\">\n                <span class=\"fa fa-shopping-cart\"></span> {{ cartCount }}\n            </span>\n            <select class=\"product-variants\" v-if=\"product.variants && product.variants.length > 0\" v-model=\"variant\">\n                <option v-for=\"variant in product.variants\" v-bind:value=\"variant\">\n                    {{ variant.title }}\n                </option>\n            </select>\n            <button class=\"btn btn-success\" v-on:click=\"addItem()\">\n                <span class=\"fa fa-plus\" /> Lis\u00E4\u00E4\n            </button>\n        </span>\n        <div>\n            <img :src=\"product.imagefile_thumbnail_url\" width=\"48\" height=\"48\" />\n            {{ product.name }} ({{ product.price | formatPrice }})\n            <p class=\"small\" v-if=\"product.description\" v-html=\"product.description\"></p>\n            <p v-if=\"product.discount_amount > 0\">\n                <span class=\"fa fa-info\"/>\n                {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!\n            </p>\n        </div>\n        <span class=\"clearfix\"></span>\n    </div>\n    ",
 });
 function storeXHR(method, path, data) {
     return new Promise(function (resolve, reject) {
@@ -148,9 +148,8 @@ var app = new Vue({
             this.updateCart();
         },
         updateInfo: function (info) {
-            // Note that this is a shallow copy. Doesn't really matter.
+            // Note that this is a shallow copy. Doesn't really harm anything.
             this.userInfo = info;
-            console.info(info);
         },
         removeItem: function (item) {
             var pos = this.items.indexOf(item);

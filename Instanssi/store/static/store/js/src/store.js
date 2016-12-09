@@ -159,7 +159,7 @@ Vue.component('store-product', {
             <span class="product-cart-count" v-if="cartCount > 0">
                 <span class="fa fa-shopping-cart"></span> {{ cartCount }}
             </span>
-            <select class="product-variants" v-if="product.variants" v-model="variant">
+            <select class="product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
                 <option v-for="variant in product.variants" v-bind:value="variant">
                     {{ variant.title }}
                 </option>

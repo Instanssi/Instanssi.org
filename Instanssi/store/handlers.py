@@ -23,7 +23,7 @@ def validate_item(item):
     # Make sure the variant exists and belongs to the requested item
     if item['variant_id']:
         try:
-            store_item.get_variants().get(id=item['variant_id'])
+            store_item.variants.get(id=item['variant_id'])
         except StoreItemVariant.DoesNotExist:
             raise TransactionException("Tuotetyyppiä ei ole saatavilla")
 
@@ -55,7 +55,7 @@ def create_store_transaction(data):
         for item in data['items']:
             # First, make sure that the ordered item exists and is available
             store_item = StoreItem.items_available().get(pk=item['item_id'])
-            store_variant = store_item.get_variants().get(pk=item['variant_id']) if item['variant_id'] else None
+            store_variant = store_item.variants.get(pk=item['variant_id']) if item['variant_id'] else None
 
             # Find the price with discounts (if any)
             amount = item['amount']

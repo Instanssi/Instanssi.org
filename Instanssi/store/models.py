@@ -66,7 +66,8 @@ class StoreItem(models.Model):
         """Returns True if a discount exists for this item."""
         return self.discount_amount >= 0
 
-    def get_variants(self):
+    @property
+    def variants(self):
         """ Returns a queryset with the available item variants """
         return StoreItemVariant.objects.filter(item=self)
 

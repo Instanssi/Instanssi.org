@@ -4,13 +4,13 @@ from datetime import datetime
 import logging
 
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
 
 from Instanssi.store.handlers import validate_item, create_store_transaction, TransactionException
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
-from Instanssi.store.models import StoreItem
+from Instanssi.store.models import StoreItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
 
@@ -113,10 +113,17 @@ class IRCMessageSerializer(HyperlinkedModelSerializer):
         }
 
 
+class StoreItemVariantSerializer(ModelSerializer):
+    class Meta:
+        model = StoreItemVariant
+        fields = ('id', 'name')
+
+
 class StoreItemSerializer(HyperlinkedModelSerializer):
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     discount_factor = SerializerMethodField()
+    variants = StoreItemVariantSerializer(many=True)
 
     def get_imagefile_original_url(self, obj):
         return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
@@ -131,7 +138,7 @@ class StoreItemSerializer(HyperlinkedModelSerializer):
         model = StoreItem
         fields = ('id', 'event', 'name', 'description', 'price', 'max', 'available', 'imagefile_original_url',
                   'imagefile_thumbnail_url', 'max_per_order', 'sort_index', 'discount_amount', 'discount_percentage',
-                  'is_discount_available', 'discount_factor', 'num_available')
+                  'is_discount_available', 'discount_factor', 'num_available', 'variants')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
         }

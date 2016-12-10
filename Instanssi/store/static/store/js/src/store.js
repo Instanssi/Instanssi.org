@@ -19,7 +19,7 @@ function storeXHR(method, path, data) {
     return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
-            if(xhr.status === 200 || xhr.status === 204) {
+            if(xhr.status >= 200 && xhr.status < 300) {
                 resolve(JSON.parse(xhr.responseText));
             } else {
                 xhr.onerror();

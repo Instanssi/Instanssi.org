@@ -98,7 +98,7 @@
 {% endif %}
 
 {% if perms.store.add_storeitem %}
-    <form method="post" action="" class="uniForm">
+    <form method="post" action="" class="uniForm" enctype="multipart/form-data">
         <fieldset>
             <legend>Lisää tuote</legend>
             {% crispy item_form item_form.helper %}

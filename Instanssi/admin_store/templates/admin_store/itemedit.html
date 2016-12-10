@@ -33,7 +33,7 @@
 {% block content %}
 {{ block.super }}
 <h2>Muokkaa tuotetta</h2>
-<form method="post" action="" class="uniForm">
+<form method="post" action="" class="uniForm" enctype="multipart/form-data">
     <fieldset>
         <legend>Lisää tuote</legend>
         {% crispy item_form item_form.helper %}

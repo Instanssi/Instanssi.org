@@ -13,3 +13,5 @@ requests==2.12.3
 djangorestframework==3.5.3
 django-oauth-toolkit==0.11.0
 requests-oauthlib==0.7.0
+loremipsum==1.0.5
+mock==2.0.0

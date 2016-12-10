@@ -233,6 +233,7 @@ class StoreItemViewSet(ReadOnlyModelViewSet):
     serializer_class = StoreItemSerializer
     queryset = StoreItem.items_available()
     permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = []
 
 
 class StoreTransactionViewSet(WriteOnlyModelViewSet):
@@ -241,6 +242,7 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
     """
     serializer_class = StoreTransactionSerializer
     permission_classes = [IsAuthenticatedOrWriteOnly]
+    authentication_classes = []
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

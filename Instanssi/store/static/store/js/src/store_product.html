@@ -1,0 +1,25 @@
+<div class="product">
+    <span class="pull-right">
+        <span class="product-cart-count" v-if="cartCount > 0">
+            <span class="fa fa-shopping-cart"></span> {{ cartCount }}
+        </span>
+        <select class="product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
+            <option v-for="variant in product.variants" v-bind:value="variant">
+                {{ variant.name }}
+            </option>
+        </select>
+        <button class="btn btn-success" v-on:click="addItem()">
+            <span class="fa fa-plus" /> Lisää
+        </button>
+    </span>
+    <div>
+        <img :src="product.imagefile_thumbnail_url" width="48" height="48" />
+        {{ product.name }} ({{ product.price | formatPrice }})
+        <p class="small" v-if="product.description" v-html="product.description"></p>
+        <p v-if="product.discount_amount > 0">
+            <span class="fa fa-info"/>
+            {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!
+        </p>
+    </div>
+    <span class="clearfix"></span>
+</div>

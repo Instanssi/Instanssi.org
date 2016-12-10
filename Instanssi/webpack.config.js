@@ -1,3 +1,5 @@
+'use strict';
+
 var webpack = require('webpack');
 
 // modules that need a JS bundle
@@ -9,7 +11,9 @@ var entryPoints = {};
 modules.forEach(function(name) {
     // generate entry point mappings like
     // 'store/static/store/js/index.js': './store/static/store/js/src/index.js'
-    entryPoints[name + '/static/' + name + '/js/index.js'] = './' + name + '/static/' + name + '/js/src/index.js';
+    let entryName = name + '/static/' + name + '/js/index.js';
+    let entryFile = './' + name + '/static/' + name + '/js/src/index.js'; 
+    entryPoints[entryName] = entryFile;
 })
 
 // webpack configuration
@@ -18,7 +22,8 @@ module.exports = {
   entry: entryPoints,
   // what to output
   output: {
-    // [name] is the name of the entry point, so this names output bundles like './store/static/store/js/index.js'
+    // [name] is the name of the entry point, so this names output bundles
+    // like './store/static/store/js/index.js'
     filename: '[name]'
   },
   // how to import things
@@ -29,10 +34,7 @@ module.exports = {
       // webpack can then bundle the results 
       test: /\.js$/,
       // babel should find our .babelrc and get dialect settings from there 
-      loader: 'babel-loader',
-      options: {
-        presets: [ 'babel-preset-es2015' ]
-      }
+      loader: 'babel-loader'
     }]
   },
   // map import names to globals in browser environment

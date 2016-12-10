@@ -9,6 +9,7 @@
   "author": "Tommi Teistelä <totateis@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "raw-loader": "^0.5.1"
   },
   "devDependencies": {
     "babel": "~6.5.2",

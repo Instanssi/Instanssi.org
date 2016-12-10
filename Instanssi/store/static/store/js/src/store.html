@@ -1,0 +1,31 @@
+<div>
+    <h3>Tuotteet</h3>
+    <div class="list-unstyled store-items">
+        <store-product v-for="product in products" :product="product" :cart="cart" :messages="messages" v-on:addItem="addItem" />
+    </div>
+    <h3>Ostoskori</h3>
+    <store-messages field="items" :messages="messages" />
+    <div class="list-unstyled store-items">
+        <div v-for="item in cart">
+            <div class="pull-left">
+                <span>{{ item.product.name }}</span>
+                <span v-if="item.variant">({{ item.variant.name }})</span>
+            </div>
+            <span class="pull-right">
+            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
+            <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
+            <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
+            <button class="btn btn-danger" v-on:click="removeItemFromCart(item)">
+                <span class="fa fa-fw fa-trash"></span>
+            </button>
+            </span>
+            <span class="clearfix"></span>
+        </div>
+        <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
+    </div>
+    <h3>Tiedot</h3>
+    <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
+    <span class="pull-right">
+    <button class="btn btn-primary" @click="submit">Jatka &gt;</button>
+</span>
+</div>

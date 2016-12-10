@@ -1,0 +1,19 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "rules": {
+        "no-undef": 2,
+        "eqeqeq": 1,
+        "max-len": [1, 100],
+        "valid-jsdoc": [1, {
+            "requireReturn": false
+        }],
+        "no-trailing-spaces": 1
+    }
+}

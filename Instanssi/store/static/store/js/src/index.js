@@ -2,6 +2,11 @@ import Vue from 'vue';
 import { formatPrice, storeXHR } from './store_common.js';
 import './store_information.js';
 
+const PAYMENT_METHODS = [
+    { id: 1, name: 'Paytrail verkkomaksu' },
+    { id: 0, name: 'BitPay (maksa BitCoinilla)' }
+];
+
 /**
  * Returns true if a cart item is a specific product (and optional variant).
  * @param {Object} cartItem - Cart item to compare
@@ -94,8 +99,9 @@ let app = new Vue({
             telephone: '',
             company: '',
             information: '',
-            read_terms: false
+            read_terms: false,
         },
+        paymentMethod: 1,
         totalPrice: 0
     },
     template: require('!raw-loader!./store.html'),
@@ -110,6 +116,12 @@ let app = new Vue({
         });
 
         // FIXME: Fetch cart from window.localstorage if it exists
+    },
+    computed: {
+        paymentMethods() {
+            console.info('returning payment methods...');
+            return PAYMENT_METHODS;
+        }
     },
     methods: {
         /**
@@ -207,6 +219,7 @@ let app = new Vue({
                 variant_id: item.variant ? item.variant.id : null,
                 amount: item.count,
             }));
+            transaction.payment_method = this.paymentMethod;
             return transaction;
         },
         /**
@@ -226,6 +239,9 @@ let app = new Vue({
             }
 
             let transaction = this.getTransactionObject();
+            // TODO: If we split this page into phases (items, info, confirm and choose method?),
+            // this could be done at each step before proceeding
+            transaction.save = true;
 
             return storeXHR('POST', '/api/store_transaction/?format=json', transaction).then((res) => {
                 console.info(res);

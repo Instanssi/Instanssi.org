@@ -25,6 +25,17 @@
     </div>
     <h3>Tiedot</h3>
     <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
+    <h3>Maksutapa</h3>
+    <div class="form-group">
+        <label class="col-sm-4">Maksutapa</label>
+        <div class="col-sm-8">
+            <select v-model="paymentMethod">
+                <option v-for="method in paymentMethods" v-bind:value="method.id">
+                    {{ method.name }}
+                </option>
+            </select>
+        </div>
+    </div>
     <span class="pull-right">
     <button class="btn btn-primary" @click="submit">Jatka &gt;</button>
 </span>

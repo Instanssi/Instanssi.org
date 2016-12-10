@@ -15,3 +15,4 @@ testing/output/*
 .idea
 .env
 .vscode
+**/node_modules

@@ -1,39 +1,6 @@
-/* global Vue */
+import Vue from 'vue';
+import { formatPrice, storeXHR } from './store_common.js'; 
 
-toLocaleStringSupportsOptions = !!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function');
-
-function formatPriceLocaleString(price) {
-    return price.toLocaleString('fi', { style: 'currency', currency: 'EUR'});
-}
-function formatPriceLegacy(price) {
-    return price.toFixed(2) + ' €';
-}
-let formatPrice;
-if(toLocaleStringSupportsOptions) {
-    formatPrice = formatPriceLocaleString;
-} else {
-    formatPrice = formatPriceLegacy;
-}
-
-function storeXHR(method, path, data) {
-    return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            if(xhr.status >= 200 && xhr.status < 300) {
-                resolve(JSON.parse(xhr.responseText));
-            } else {
-                xhr.onerror();
-            }
-        };
-        xhr.onerror = function () {
-            reject(xhr.responseText ? JSON.parse(xhr.responseText) : null);
-        };
-        xhr.open(method, path);
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(data ? JSON.stringify(data) : null);
-    });
-}
 
 /**
  * Returns true if a cart item is a specific product (and optional variant).
@@ -353,15 +320,28 @@ var app = new Vue({
             this.cart.splice(pos, 1, item);
             this.updateCart();
         },
-        submit: function() {
-            let { info } = this;
-            // format store request
+        getTransactionObject() {
             let transaction = Object.assign({}, info);
             transaction.items = this.cart.map((item) => ({
                 item_id: item.product.id,
                 variant_id: item.variant ? item.variant.id : null,
                 amount: item.count,
             }));
+        },
+        submit: function() {
+            let { info } = this;
+            let { email, email2 } = info;
+
+            // validate email before doing anything
+            if(email !== email2) {
+                this.messages = {
+                    email: ['Kirjoita sama sähköpostiosoite kahdesti.'],
+                    email2: ['Kirjoita sama sähköpostiosoite kahdesti.']
+                }
+                return;
+            }
+
+            let transaction = this.getTransactionObject();
 
             storeXHR('POST', '/api/store_transaction/?format=json', transaction).then((res) => {
                 console.info(res);

@@ -162,6 +162,8 @@ Vue.component('store-product', {
         messages: Object,
     },
     data: function () {
+        // because there can be many components of the same type, a component's'
+        // "data" is a factory function that should return unique objects
         return {
             variant: null,
         };
@@ -179,12 +181,12 @@ Vue.component('store-product', {
     },
     computed: {
         cartCount: function() {
-            var product = this.product;
+            let { product, variant } = this;
             if(!this.cart) {
                 return 0;
             }
             var cartIndex = this.cart.findIndex((item) => {
-                return cartItemEquals(item, product, null);
+                return cartItemEquals(item, product, variant);
             });
 
             if(cartIndex < 0) {
@@ -227,7 +229,7 @@ var app = new Vue({
     el: '#store',
     data: {
         products: [],
-        items: [],
+        cart: [],
         messages: {},
         info: {
             first_name: '',
@@ -250,13 +252,13 @@ var app = new Vue({
 <h3>Tuotteet</h3>
 <div class="list-unstyled store-items">
     <store-product v-for="product in products"
-        :product="product" :cart="items" :messages="messages"
+        :product="product" :cart="cart" :messages="messages"
         v-on:addItem="addItem" />
 </div>
 <h3>Ostoskori</h3>
 <store-messages field="items" :messages="messages" />
 <div class="list-unstyled store-items">
-    <div v-for="item in items">
+    <div v-for="item in cart">
         <div class="pull-left">
             <span>{{ item.product.name }}</span>
             <span v-if="item.variant">({{ item.variant.name }})</span>
@@ -305,7 +307,7 @@ var app = new Vue({
         updateCart: function () {
             var totalPrice = 0;
             var component = this;
-            this.items.forEach(function (item) {
+            this.cart.forEach(function (item) {
                 totalPrice += component.getSubtotal(item);
             });
             this.totalPrice = totalPrice;
@@ -313,17 +315,17 @@ var app = new Vue({
         },
         addItem: function (product, variant) {
             // check if product/variant is already in items
-            var found = this.items.findIndex(function (item) {
+            var found = this.cart.findIndex(function (item) {
                 return cartItemEquals(item, product, variant);
             });
             if (found >= 0) {
                 // if it is, splice a new item with a higher count
-                var newItem = Object.assign({}, this.items[found]);
+                var newItem = Object.assign({}, this.cart[found]);
                 newItem.count++;
-                this.items.splice(found, 1, newItem);
+                this.cart.splice(found, 1, newItem);
             } else {
                 // if it isn't, push a new item
-                this.items.push({
+                this.cart.push({
                     count: 1,
                     product: product,
                     variant: variant
@@ -336,26 +338,26 @@ var app = new Vue({
             this.userInfo = info;
         },
         removeItem: function (item) {
-            var pos = this.items.indexOf(item);
-            this.items.splice(pos, 1);
+            var pos = this.cart.indexOf(item);
+            this.cart.splice(pos, 1);
             this.updateCart();
         },
         changeItemCount: function (item, change) {
             // FIXME: Check item product max per order
-            var pos = this.items.indexOf(item);
-            var item = this.items[pos];
+            var pos = this.cart.indexOf(item);
+            var item = this.cart[pos];
             if (item.count + change <= 0) {
                 return this.removeItem(item);
             }
             item.count += change;
-            this.items.splice(pos, 1, item);
+            this.cart.splice(pos, 1, item);
             this.updateCart();
         },
         submit: function() {
             let { info } = this;
             // format store request
             let transaction = Object.assign({}, info);
-            transaction.items = this.items.map((item) => ({
+            transaction.items = this.cart.map((item) => ({
                 item_id: item.product.id,
                 variant_id: item.variant ? item.variant.id : null,
                 amount: item.count,

@@ -107,6 +107,8 @@ Vue.component('store-product', {
         messages: Object,
     },
     data: function () {
+        // because there can be many components of the same type, a component's'
+        // "data" is a factory function that should return unique objects
         return {
             variant: null,
         };
@@ -124,12 +126,12 @@ Vue.component('store-product', {
     },
     computed: {
         cartCount: function () {
-            var product = this.product;
+            var _a = this, product = _a.product, variant = _a.variant;
             if (!this.cart) {
                 return 0;
             }
             var cartIndex = this.cart.findIndex(function (item) {
-                return cartItemEquals(item, product, null);
+                return cartItemEquals(item, product, variant);
             });
             if (cartIndex < 0) {
                 return 0;
@@ -143,7 +145,7 @@ var app = new Vue({
     el: '#store',
     data: {
         products: [],
-        items: [],
+        cart: [],
         messages: {},
         info: {
             first_name: '',
@@ -161,7 +163,7 @@ var app = new Vue({
         },
         totalPrice: 0
     },
-    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\"\n        :product=\"product\" :cart=\"items\" :messages=\"messages\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<store-messages field=\"items\" :messages=\"messages\" />\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in items\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button class=\"btn btn-danger\" v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n<store-information-form v-on:infoUpdate=\"updateInfo\" :data=\"info\" :messages=\"messages\" />\n<span class=\"pull-right\">\n    <button class=\"btn btn-primary\" @click=\"submit\">Jatka &gt;</button>\n</span>\n</div>\n  ",
+    template: "\n<div>\n<h3>Tuotteet</h3>\n<div class=\"list-unstyled store-items\">\n    <store-product v-for=\"product in products\"\n        :product=\"product\" :cart=\"cart\" :messages=\"messages\"\n        v-on:addItem=\"addItem\" />\n</div>\n<h3>Ostoskori</h3>\n<store-messages field=\"items\" :messages=\"messages\" />\n<div class=\"list-unstyled store-items\">\n    <div v-for=\"item in cart\">\n        <div class=\"pull-left\">\n            <span>{{ item.product.name }}</span>\n            <span v-if=\"item.variant\">({{ item.variant.name }})</span>\n        </div>\n        <span class=\"pull-right\">\n            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, 1)\">+</button>\n            <button class=\"btn btn-secondary\" v-on:click=\"changeItemCount(item, -1)\">-</button>\n            <button class=\"btn btn-danger\" v-on:click=\"removeItem(item)\">\n                <span class=\"fa fa-fw fa-trash\"></span>\n            </button>\n        </span>\n        <span class=\"clearfix\"></span>\n    </div>\n    <div>Yhteens\u00E4: {{ totalPrice | formatPrice }}</div>\n</div>\n<h3>Tiedot</h3>\n<store-information-form v-on:infoUpdate=\"updateInfo\" :data=\"info\" :messages=\"messages\" />\n<span class=\"pull-right\">\n    <button class=\"btn btn-primary\" @click=\"submit\">Jatka &gt;</button>\n</span>\n</div>\n  ",
     created: function () {
         var _this = this;
         storeXHR('GET', '/api/store_items/?format=json').then(function (items) {
@@ -187,7 +189,7 @@ var app = new Vue({
         updateCart: function () {
             var totalPrice = 0;
             var component = this;
-            this.items.forEach(function (item) {
+            this.cart.forEach(function (item) {
                 totalPrice += component.getSubtotal(item);
             });
             this.totalPrice = totalPrice;
@@ -195,18 +197,18 @@ var app = new Vue({
         },
         addItem: function (product, variant) {
             // check if product/variant is already in items
-            var found = this.items.findIndex(function (item) {
+            var found = this.cart.findIndex(function (item) {
                 return cartItemEquals(item, product, variant);
             });
             if (found >= 0) {
                 // if it is, splice a new item with a higher count
-                var newItem = Object.assign({}, this.items[found]);
+                var newItem = Object.assign({}, this.cart[found]);
                 newItem.count++;
-                this.items.splice(found, 1, newItem);
+                this.cart.splice(found, 1, newItem);
             }
             else {
                 // if it isn't, push a new item
-                this.items.push({
+                this.cart.push({
                     count: 1,
                     product: product,
                     variant: variant
@@ -219,19 +221,19 @@ var app = new Vue({
             this.userInfo = info;
         },
         removeItem: function (item) {
-            var pos = this.items.indexOf(item);
-            this.items.splice(pos, 1);
+            var pos = this.cart.indexOf(item);
+            this.cart.splice(pos, 1);
             this.updateCart();
         },
         changeItemCount: function (item, change) {
             // FIXME: Check item product max per order
-            var pos = this.items.indexOf(item);
-            var item = this.items[pos];
+            var pos = this.cart.indexOf(item);
+            var item = this.cart[pos];
             if (item.count + change <= 0) {
                 return this.removeItem(item);
             }
             item.count += change;
-            this.items.splice(pos, 1, item);
+            this.cart.splice(pos, 1, item);
             this.updateCart();
         },
         submit: function () {
@@ -239,7 +241,7 @@ var app = new Vue({
             var info = this.info;
             // format store request
             var transaction = Object.assign({}, info);
-            transaction.items = this.items.map(function (item) { return ({
+            transaction.items = this.cart.map(function (item) { return ({
                 item_id: item.product.id,
                 variant_id: item.variant ? item.variant.id : null,
                 amount: item.count,

@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from formtools.wizard.views import NamedUrlSessionWizardView
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from Instanssi.store.forms import StoreProductsForm, StoreInfoForm, StorePaymentMethodForm
-from Instanssi.store.methods import paytrail, bitpay
-from Instanssi.store.models import StoreTransaction, TransactionItem, StoreItem
+from Instanssi.store.models import StoreTransaction, TransactionItem
 
 # Logging related
 import logging
 logger = logging.getLogger(__name__)
-
-store_forms = (
-    ('1', StoreProductsForm),
-    ('2', StoreInfoForm),
-    ('3', StorePaymentMethodForm),
-)
 
 
 # Terms page
@@ -30,68 +21,6 @@ def terms(request):
 def privacy(request):
     """Displays the privacy page"""
     return render(request, 'store/privacy.html', {})
-
-
-class StoreWizard(NamedUrlSessionWizardView):
-    """Displays the order form"""
-
-    template_name = 'store/store.html'
-
-    def get_items_data(self):
-        """Returns (count, item) tuples for items currently in the order."""
-        data = self.get_cleaned_data_for_step('1')
-        return [] if not data else [
-            (data[key], StoreItem.objects.get(id=key[5:]))
-            for key in data
-        ]
-
-    def get_context_data(self, form, **kwargs):
-        """Provides additional data for store forms."""
-        context = super(StoreWizard, self).get_context_data(form=form, **kwargs)
-        context['friendly_steps'] = [
-            (1, 'Tuotteet', 0),
-            (2, 'Asiakastiedot', 1),
-            (3, 'Maksu', 2)
-        ]
-
-        # Build a summary of items for the last step.
-        if self.steps.step0 == 2:
-            items_data = self.get_items_data()
-            total = 0
-            summary = []
-
-            for amount, item in items_data:
-                if amount <= 0:
-                    continue
-
-                subtotal = item.get_discounted_subtotal(amount)
-                total += subtotal
-                summary.append({
-                    'count': amount,
-                    'item': item,
-                    'subtotal': subtotal,
-                    'unit_price': item.get_discounted_unit_price(amount),
-                    'discount': item.is_discount_enabled(amount)
-                })
-            context['items_total'] = total
-            context['items_summary'] = summary
-
-        return context
-
-    def done(self, form_list, **kwargs):
-        items_form, info_form, method_form = form_list
-
-        # Save transaction and items
-        transaction = info_form.save()
-        items_form.save(transaction)
-
-        # Handle payment
-        if int(method_form.cleaned_data['payment_method']) == 0:
-            # Handle bitpay payment
-            return bitpay.start_process(transaction)
-        else:
-            # Handle paytrail payment
-            return paytrail.start_process(transaction)
 
 
 # Index page for store

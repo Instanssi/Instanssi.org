@@ -201,7 +201,7 @@ Vue.component('store-product', {
             </span>
             <select class="product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
                 <option v-for="variant in product.variants" v-bind:value="variant">
-                    {{ variant.title }}
+                    {{ variant.name }}
                 </option>
             </select>
             <button class="btn btn-success" v-on:click="addItem()">

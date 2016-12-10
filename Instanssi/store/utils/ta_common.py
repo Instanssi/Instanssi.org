@@ -4,7 +4,6 @@ from Instanssi.common.misc import get_url
 from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from Instanssi.store.models import TransactionItem
 from Instanssi.store.utils.emailer import ReceiptMailer
 
 # Logging related
@@ -18,18 +17,18 @@ def handle_cancellation(ta):
         ta.save()
         logger.info('Store transaction {} cancelled.'.format(ta.id))
     else:
-        logger.warn('Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
+        logger.warning('Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
 
 
 def handle_pending(ta):
     if ta.time_cancelled:
-        logger.warn('Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
+        logger.warning('Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
     elif not ta.time_pending:
         ta.time_pending = datetime.now()
         ta.save()
         logger.info('Store transaction {} paid, pending confirmation.'.format(ta.id))
     else:
-        logger.warn('Attempted to mark store transaction {} as pending twice'.format(ta.id))
+        logger.warning('Attempted to mark store transaction {} as pending twice'.format(ta.id))
 
 
 def handle_payment(ta):

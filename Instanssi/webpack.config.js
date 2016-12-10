@@ -9,12 +9,12 @@ var modules = [
 
 var entryPoints = {};
 modules.forEach(function(name) {
-    // generate entry point mappings like
-    // 'store/static/store/js/index.js': './store/static/store/js/src/index.js'
-    let entryName = name + '/static/' + name + '/js/index.js';
-    let entryFile = './' + name + '/static/' + name + '/js/src/index.js'; 
-    entryPoints[entryName] = entryFile;
-})
+  // generate entry point mappings like
+  // 'store/static/store/js/index.js': './store/static/store/js/src/index.js'
+  let entryName = name + '/static/' + name + '/js/index.js';
+  let entryFile = './' + name + '/static/' + name + '/js/src/index.js';
+  entryPoints[entryName] = entryFile;
+});
 
 // webpack configuration
 module.exports = {
@@ -31,9 +31,9 @@ module.exports = {
     // import handling rules
     rules: [{
       // import js files by running them through babel (to handle ES2015 syntax)
-      // webpack can then bundle the results 
+      // webpack can then bundle the results
       test: /\.js$/,
-      // babel should find our .babelrc and get dialect settings from there 
+      // babel should find our .babelrc and get dialect settings from there
       loader: 'babel-loader'
     }]
   },
@@ -47,4 +47,4 @@ module.exports = {
   plugins: [
     new webpack.optimize.UglifyJsPlugin()
   ]
-}
+};

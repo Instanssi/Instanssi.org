@@ -5,9 +5,10 @@ from Instanssi.common.auth import staff_access_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template import loader, Context
+from django.forms import inlineformset_factory
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.store.models import *
-from Instanssi.admin_store.forms import StoreItemForm, TaItemExportForm
+from Instanssi.admin_store.forms import StoreItemForm, TaItemExportForm, StoreItemVariantForm
 
 # Logging related
 import logging
@@ -33,27 +34,33 @@ def export(request):
 
 @staff_access_required
 def items(request):
+    StoreItemFormSet = inlineformset_factory(
+        parent_model=StoreItem, model=StoreItemVariant, form=StoreItemVariantForm, extra=5)
+
     # Handle form data
     if request.method == 'POST':
         if not request.user.has_perm('store.add_storeitem'):
             raise Http403
-        
-        form = StoreItemForm(request.POST, request.FILES)
-        if form.is_valid():
-            item = form.save(commit=False)
+
+        item_form = StoreItemForm(request.POST, request.FILES)
+        variant_formset = StoreItemFormSet(request.POST, prefix="nested", instance=item_form.instance)
+        if item_form.is_valid() and variant_formset.is_valid():
+            item = item_form.save()
+            variant_formset.save()
             logger.info('Store Item "{}" added.'.format(item.name), extra={'user': request.user})
-            item.save()
             return HttpResponseRedirect(reverse('manage-store:items'))
     else:
-        form = StoreItemForm()
+        item_form = StoreItemForm()
+        variant_formset = StoreItemFormSet(prefix="nested", instance=item_form.instance)
 
     # Get items
-    items = StoreItem.objects.all()
+    m_items = StoreItem.objects.all()
 
     # Render response
     return admin_render(request, "admin_store/items.html", {
-        'items': items,
-        'addform': form,
+        'items': m_items,
+        'item_form': item_form,
+        'variant_formset': variant_formset
     })
 
 
@@ -122,22 +129,29 @@ def edit_item(request, item_id):
     if not request.user.has_perm('store.change_storeitem'):
         raise Http403
 
+    StoreItemFormSet = inlineformset_factory(
+        parent_model=StoreItem, model=StoreItemVariant, form=StoreItemVariantForm, extra=3)
+
     # Get Item
     item = get_object_or_404(StoreItem, pk=item_id)
         
     # Handle form data
     if request.method == 'POST':
-        form = StoreItemForm(request.POST, request.FILES, instance=item)
-        if form.is_valid():
-            form.save()
+        variant_formset = StoreItemFormSet(request.POST, instance=item)
+        item_form = StoreItemForm(request.POST, request.FILES, instance=item)
+        if item_form.is_valid() and variant_formset.is_valid():
+            item_form.save()
+            variant_formset.save()
             logger.info('Store Item "{}" edited.'.format(item.name), extra={'user': request.user})
-            return HttpResponseRedirect(reverse('manage-store:items'))
+            return HttpResponseRedirect(reverse('manage-store:edit_item', args=(item.id,)))
     else:
-        form = StoreItemForm(instance=item)
+        item_form = StoreItemForm(instance=item)
+        variant_formset = StoreItemFormSet(instance=item)
 
     # Render response
     return admin_render(request, "admin_store/itemedit.html", {
-        'editform': form,
+        'item_form': item_form,
+        'variant_formset': variant_formset
     })
     
 

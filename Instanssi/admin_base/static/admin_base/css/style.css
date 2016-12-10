@@ -1,6 +1,14 @@
 
 /* ---------- Pro H4x ---------- */
 
+/* For nested forms */
+div.inner_form {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
 /* Don't show delete functionality without Javascript support! */
 .delete_link {
 	display: none;

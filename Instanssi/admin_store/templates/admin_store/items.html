@@ -98,6 +98,15 @@
 {% endif %}
 
 {% if perms.store.add_storeitem %}
-{% crispy addform addform.helper %}
+    <form method="post" action="" class="uniForm">
+        <fieldset>
+            <legend>Lisää tuote</legend>
+            {% crispy item_form item_form.helper %}
+            {% crispy variant_formset variant_formset.form.helper %}
+            <div class="buttonHolder">
+                <input type="submit" name="submit" value="Tallenna" class="submit submitButton" id="submit-id-submit">
+            </div>
+        </fieldset>
+    </form>
 {% endif %}
 {% endblock %}

@@ -4,7 +4,8 @@
   "description": "Instanssi.org frontend components.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "author": "Tommi Teistelä <totateis@gmail.com>",
   "license": "MIT",

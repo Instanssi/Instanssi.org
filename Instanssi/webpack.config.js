@@ -10,8 +10,8 @@ var modules = [
 var entryPoints = {};
 modules.forEach(function(name) {
   // generate entry point mappings like
-  // 'store/static/store/js/index.js': './store/static/store/js/src/index.js'
-  let entryName = name + '/static/' + name + '/js/index.js';
+  // 'store/static/store/js/bundle.js': './store/static/store/js/src/index.js'
+  let entryName = name + '/static/' + name + '/js/bundle.js';
   let entryFile = './' + name + '/static/' + name + '/js/src/index.js';
   entryPoints[entryName] = entryFile;
 });
@@ -23,7 +23,7 @@ module.exports = {
   // what to output
   output: {
     // [name] is the name of the entry point, so this names output bundles
-    // like './store/static/store/js/index.js'
+    // like './store/static/store/js/bundle.js'
     filename: '[name]'
   },
   // how to import things

@@ -36,3 +36,28 @@ $navbar-default-link-hover-bg: $theme-nav-hover;
     width: 1px;
     overflow: hidden;
 }
+
+.loading-container {
+    position: relative;
+    min-height: 42px;
+}
+.loading-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(#fff, .5);
+}
+.loading-overlay > .fa {
+    color: $brand-primary;
+    position: absolute;
+    left: 50%; top: 50%;
+    // fa-3x is about 42px wide, so this centers it nicely in both directions
+    margin-left: -21px;
+    margin-top: -21px;
+}
+.loading-overlay.loading-overlay-active {
+    display: block;
+}

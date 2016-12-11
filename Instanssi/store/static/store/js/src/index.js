@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { formatPrice, storeXHR } from './store_common.js';
+import { formatPrice, storeXHR, loadingOverlay } from './store_common.js';
 import './store_information.js';
 
 const PAYMENT_METHODS = [
@@ -25,13 +25,14 @@ Vue.filter('formatPrice', formatPrice);
  * Displays a single store product with cart counts and "add" button.
  */
 Vue.component('store-product', {
+    template: require('!raw-loader!./store_product.html'),
     props: {
         product: Object,
         cart: Array,
         messages: Object,
     },
     data() {
-        // because there can be many components of the same type, a component's'
+        // because there can be many components of the same type, a component's
         // "data" is a factory function that should return unique objects
         return {
             /** Currently selected item variant */
@@ -74,8 +75,7 @@ Vue.component('store-product', {
             }
             return this.cart[cartIndex].count;
         }
-    },
-    template: require('!raw-loader!./store_product.html'),
+    }
 });
 
 /**
@@ -84,9 +84,15 @@ Vue.component('store-product', {
 let app = new Vue({
     el: '#store',
     data: {
+        /** Products list. */
         products: [],
+        /** Current shopping cart contents. */
         cart: [],
+        /** Form messages, as Object of field names to Array.<String>. */
         messages: {},
+        /** Set to 'done' or 'error' based on XHR result. */
+        loadingStatus: 'loading',
+        /** Customer information for payment and delivery purposes. */
         info: {
             first_name: '',
             last_name: '',
@@ -101,7 +107,9 @@ let app = new Vue({
             information: '',
             read_terms: false,
         },
+        /** Payment method, see PAYMENT_METHODS; default is Paytrail. */
         paymentMethod: 1,
+        /** Current sum of cart item prices. */
         totalPrice: 0
     },
     template: require('!raw-loader!./store.html'),
@@ -111,15 +119,16 @@ let app = new Vue({
                 item.price = parseFloat(item.price);
             });
             this.products = items;
+            this.loadingStatus = 'done';
         }).catch((e) => {
             console.error('error fetching store items:', e);
+            this.loadingStatus = 'error';
         });
 
         // FIXME: Fetch cart from window.localstorage if it exists
     },
     computed: {
         paymentMethods() {
-            console.info('returning payment methods...');
             return PAYMENT_METHODS;
         }
     },

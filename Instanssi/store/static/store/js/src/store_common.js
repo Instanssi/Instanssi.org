@@ -112,4 +112,20 @@ let storeMessages = Vue.component('store-messages', {
     </p></div>`
 });
 
-export { formatPrice, storeXHR, storeFormGroup, storeMessages };
+let loadingOverlay = Vue.component('loading-overlay', {
+    props: {
+        loading: Boolean,
+        text: String,
+    },
+    computed: {
+        clazz() {
+            return this.loading ? 'loading-overlay loading-overlay-active' : 'loading-overlay';
+        }
+    },
+    template: `<div v-bind:class="clazz">
+        <div class="fa fa-spinner fa-pulse fa-3x fa-fw"></div>
+        <div v-if="text">{{ text }}</div>
+    </div>`
+});
+
+export { formatPrice, storeXHR, storeFormGroup, storeMessages, loadingOverlay };

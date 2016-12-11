@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
 Vue.component('store-information-form', {
+    template: require('!raw-loader!./store_information.html'),
     props: {
         /** Field error messages, maps field name -> array */
         messages: Object,
@@ -17,6 +18,5 @@ Vue.component('store-information-form', {
             // could probably just use two-way binding and forget about this
             this.data[fieldName] = $event.target.value;
         }
-    },
-    template: require('!raw-loader!./store_information.html')
+    }
 });

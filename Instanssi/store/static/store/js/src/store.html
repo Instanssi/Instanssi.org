@@ -23,7 +23,10 @@
                     <span v-if="item.variant">({{ item.variant.name }})</span>
                 </div>
                 <span class="pull-right">
-                x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
+                    <span>
+                        x <strong>{{ item.count }}</strong>
+                        = <strong>{{ getSubtotal(item) | formatPrice }}</strong>
+                    </span>
                 <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
                 <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
                 <button class="btn btn-danger" v-on:click="removeItemFromCart(item)">
@@ -32,8 +35,10 @@
                 </span>
                 <span class="clearfix"></span>
             </div>
-            <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
+            <div class="pull-right">Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong></div>
         </div>
+
+        <div class="clearfix" />
 
         <h3>Asiakastiedot</h3>
         <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />

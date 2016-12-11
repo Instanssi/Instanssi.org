@@ -178,7 +178,7 @@ class StoreTransactionSerializer(Serializer):
 
     def validate_read_terms(self, value):
         if not value:
-            raise ValidationError("Käyttöehdot tulee hyväksyä ennenkuin tilausta voidaan jatkaa")
+            raise ValidationError("Käyttöehdot tulee hyväksyä ennen kuin tilausta voidaan jatkaa")
         return value
 
     def validate_items(self, value):

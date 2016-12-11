@@ -8,7 +8,7 @@
             <div class="item-description">
                 <div v-if="product.description" v-html="product.description"></div>
                 <div v-if="product.discount_amount > 0" class="item-discount">
-                    {{ product.discount_percentage }} % alennus, jos ostat ainakin {{ product.discount_amount }} kappaletta!
+                    <strong>{{ product.discount_percentage }} %</strong> alennus, jos ostat ainakin <strong>{{ product.discount_amount }}</strong> kappaletta!
                 </div>
             </div>
         </div>

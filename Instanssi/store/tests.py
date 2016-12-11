@@ -146,6 +146,7 @@ class StoreTests(TestCase):
         self.transaction = StoreTestData.create_test_transaction(self.items, self.variants)
 
     def test_validate_item(self):
+        """ Make sure that item validation function works """
         item_tpl = {
             "item_id": self.items[0].id,
             "variant_id": None,
@@ -172,6 +173,7 @@ class StoreTests(TestCase):
             validate_item({**item_tpl, **{"item_id": self.items[1].id, "variant_id": self.variants[2][0].id}})
 
     def test_create_transaction(self):
+        """ Make sure transaction creation works as it should, and make sure that values look as they should """
         ta = self.transaction
 
         # Make sure the data fields have been filled
@@ -236,6 +238,7 @@ class StoreTests(TestCase):
     @mock.patch('Instanssi.store.utils.paytrail.requests.post',
                 return_value=FakeResponse(401, FakeResponse.paytrail_failure()))
     def test_paytrail_begin_payment_process_bad_request(self, mock_post):
+        """ Make sure paytrail fails properly (we should get a failure redirect url) """
         result = begin_payment_process(1, self.transaction)
         self.assertEqual(result, reverse('store:pm:paytrail-failure'))
         self.assertEqual(self.transaction.token, '')
@@ -244,7 +247,7 @@ class StoreTests(TestCase):
                 return_value=FakeResponse(201, FakeResponse.paytrail_success(order_no="234246654",
                                                                              token=uuid.uuid4().hex)))
     def test_paytrail_begin_payment_process_good_request(self, mock_post):
-        """"""
+        """ Make sure paytrail works with a good request (we should get a redirect URL) """
         result = begin_payment_process(1, self.transaction)
         self.transaction.refresh_from_db()
         self.assertNotEqual(self.transaction.token, None)
@@ -254,12 +257,14 @@ class StoreTests(TestCase):
     @mock.patch('Instanssi.store.utils.bitpay.requests.post',
                 return_value=FakeResponse(401, FakeResponse.bitpay_failure()))
     def test_bitpay_begin_payment_process_bad_request(self, mock_post):
+        """ Make sure bitpay fails properly (we should get a failure redirect url) """
         result = begin_payment_process(0, self.transaction)
         self.assertEqual(result, reverse('store:pm:bitpay-failure'))
 
     @mock.patch('Instanssi.store.utils.bitpay.requests.post',
                 return_value=FakeResponse(201, FakeResponse.bitpay_success(order_no="3456454560")))
     def test_bitpay_begin_payment_process_good_request(self, mock_post):
+        """ Make sure bitpay works with a good request (we should get a redirect URL) """
         result = begin_payment_process(0, self.transaction)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.token, '3456454560')

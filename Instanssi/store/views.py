@@ -11,23 +11,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# Terms page
-def terms(request):
-    """Displays the terms page."""
-    return render(request, 'store/terms.html', {})
-
-
-# Privacy info page
-def privacy(request):
-    """Displays the privacy page"""
-    return render(request, 'store/privacy.html', {})
-
-
-# Index page for store
-def index(request):
-    return render(request, 'store/index.html', {})
-
-
 def has_infodesk_access(request):
     return request.user.is_authenticated() \
         and request.user.is_active \

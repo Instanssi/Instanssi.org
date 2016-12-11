@@ -1,7 +1,10 @@
 <div>
     <h3>Tuotteet</h3>
     <div class="list-unstyled store-items loading-container">
-        <store-product v-for="product in products" :product="product" :cart="cart" :messages="messages" v-on:addItem="addItem" />
+        <store-product v-for="product in products"
+            :product="product" :cart="cart" :messages="messages"
+            v-on:addItem="addItem"
+            v-on:removeItem="removeItem" />
         <loading-overlay :loading="loadingStatus === 'loading'" />
         <div v-if="loadingStatus === 'error'" class="alert alert-danger">
             Virhe tuotelistaa hakiessa.

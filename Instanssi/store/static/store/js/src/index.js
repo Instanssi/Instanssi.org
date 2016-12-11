@@ -54,6 +54,9 @@ Vue.component('store-product', {
          */
         addItem() {
             this.$emit('addItem', this.product, this.variant);
+        },
+        removeItem() {
+            this.$emit('removeItem', this.product, this.variant);
         }
     },
     computed: {
@@ -177,10 +180,8 @@ let app = new Vue({
                 return cartItemEquals(item, product, variant);
             });
             if (found >= 0) {
-                // if it is, splice a new item with a higher count
-                let newItem = Object.assign({}, this.cart[found]);
-                newItem.count++;
-                this.cart.splice(found, 1, newItem);
+                let cartItem = this.cart[found];
+                this.changeItemCount(cartItem, 1);
             } else {
                 // if it isn't, push a new item
                 this.cart.push({
@@ -190,6 +191,19 @@ let app = new Vue({
                 });
             }
             this.updateCart();
+        },
+        /**
+         * Removes one item from the cart.
+         * @param {Object} product - Product / StoreItem to remove
+         * @param {Object} [variant] - Variant to remove, if any
+         */
+        removeItem(product, variant) {
+            let found = this.cart.findIndex((item) => {
+                return cartItemEquals(item, product, variant);
+            });
+            if(found >= 0) {
+                this.changeItemCount(this.cart[found], -1);
+            }
         },
         /**
          * Removes an existing cart item from the cart.

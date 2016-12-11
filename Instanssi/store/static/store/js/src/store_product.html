@@ -1,16 +1,23 @@
 <div class="product form">
     <span class="pull-right form-inline">
-        <span class="product-cart-count" v-if="cartCount > 0">
-            <span class="fa fa-shopping-cart"></span> {{ cartCount }}
-        </span>
-        <select class="form-control product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
-            <option v-for="variant in product.variants" v-bind:value="variant">
-                {{ variant.name }}
-            </option>
-        </select>
-        <button class="btn btn-success" v-on:click="addItem()">
-            <span class="fa fa-plus" /> Lisää
-        </button>
+        <div class="text-right">
+            <select class="form-control product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
+                <option v-for="variant in product.variants" v-bind:value="variant">
+                    {{ variant.name }}
+                </option>
+            </select>
+            <button class="btn btn-success" v-on:click="addItem()">
+                <span class="fa fa-plus" /> Lisää
+            </button>
+        </div>
+        <div v-if="cartCount > 0" class="text-right">
+            <span class="product-cart-count">
+                <span class="fa fa-shopping-cart"></span> {{ cartCount }}
+            </span>
+            <button v-if="cartCount > 0" class="btn btn-link btn-danger" v-on:click="removeItem()">
+                <span class="fa fa-minus" /> Poista
+            </button>
+        </div>
     </span>
     <div>
         <img :src="product.imagefile_thumbnail_url" width="48" height="48" />

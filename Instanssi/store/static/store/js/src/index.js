@@ -130,6 +130,8 @@ Vue.component('store-product', {
 let app = new Vue({
     el: '#store',
     data: {
+        /** Current step. 0 = products, 1 = info, 2 = summary & payment */
+        step: 0,
         /** Products list. */
         products: [],
         /** Current shopping cart contents. */
@@ -143,6 +145,7 @@ let app = new Vue({
             first_name: '',
             last_name: '',
             email: '',
+            email2: '',
             street: '',
             postal_code: '',
             city: '',

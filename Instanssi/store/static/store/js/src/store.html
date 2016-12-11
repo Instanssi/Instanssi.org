@@ -1,49 +1,61 @@
 <div>
-    <h3>Tuotteet</h3>
-    <div class="list-unstyled store-items loading-container">
-        <store-product v-for="product in products"
-            :product="product" :cart="cart" :messages="messages"
-            v-on:addItem="addItem"
-            v-on:removeItem="removeItem" />
-        <loading-overlay :loading="loadingStatus === 'loading'" />
-        <div v-if="loadingStatus === 'error'" class="alert alert-danger">
-            Virhe tuotelistaa hakiessa.
-        </div>
-    </div>
-    <h3>Ostoskori</h3>
-    <store-messages field="items" :messages="messages" />
-    <div class="list-unstyled store-items">
-        <div v-for="item in cart">
-            <div class="pull-left">
-                <span>{{ item.product.name }}</span>
-                <span v-if="item.variant">({{ item.variant.name }})</span>
+    <div class="store-products">
+        <h3>Tuotteet</h3>
+        <div class="list-unstyled store-items loading-container">
+            <store-product v-for="product in products"
+                :product="product" :cart="cart" :messages="messages"
+                v-on:addItem="addItem"
+                v-on:removeItem="removeItem" />
+            <loading-overlay :loading="loadingStatus === 'loading'" />
+            <div v-if="loadingStatus === 'error'" class="alert alert-danger">
+                Virhe tuotelistaa hakiessa.
             </div>
-            <span class="pull-right">
-            x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
-            <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
-            <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
-            <button class="btn btn-danger" v-on:click="removeItemFromCart(item)">
-                <span class="fa fa-fw fa-trash"></span>
-            </button>
-            </span>
-            <span class="clearfix"></span>
-        </div>
-        <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
-    </div>
-    <h3>Tiedot</h3>
-    <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
-    <h3>Maksutapa</h3>
-    <div class="form-group">
-        <label class="col-sm-4">Maksutapa</label>
-        <div class="col-sm-8">
-            <select v-model="paymentMethod">
-                <option v-for="method in paymentMethods" v-bind:value="method.id">
-                    {{ method.name }}
-                </option>
-            </select>
         </div>
     </div>
-    <span class="pull-right">
-    <button class="btn btn-primary" @click="submit">Jatka &gt;</button>
+
+    <div class="store-info">
+        <h3>Ostoskori</h3>
+        <store-messages field="items" :messages="messages" />
+        <div class="list-unstyled store-items">
+            <div v-for="item in cart">
+                <div class="pull-left">
+                    <span>{{ item.product.name }}</span>
+                    <span v-if="item.variant">({{ item.variant.name }})</span>
+                </div>
+                <span class="pull-right">
+                x {{ item.count }} = {{ getSubtotal(item) | formatPrice }}
+                <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
+                <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
+                <button class="btn btn-danger" v-on:click="removeItemFromCart(item)">
+                    <span class="fa fa-fw fa-trash"></span>
+                </button>
+                </span>
+                <span class="clearfix"></span>
+            </div>
+            <div>Yhteensä: {{ totalPrice | formatPrice }}</div>
+        </div>
+
+        <h3>Asiakastiedot</h3>
+        <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
+    </div>
+
+    <div class="store-summary form-horizontal">
+        <h3>Yhteenveto ja maksutapa</h3>
+        <h4>Tilauksen tiedot</h4>
+            <store-order-summary :data="info" :messages="messages" />
+        <h4>Maksutavan valinta</h4>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Maksutapa</label>
+            <div class="col-sm-8">
+                <select class="form-control" v-model="paymentMethod">
+                    <option v-for="method in paymentMethods" v-bind:value="method.id">
+                        {{ method.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <span class="pull-right">
+        <button class="btn btn-primary" @click="submit">Lähetä tilaus ja siirry maksupalveluun &gt;</button>
+    </div>
 </span>
 </div>

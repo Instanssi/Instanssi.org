@@ -3,11 +3,16 @@
 /* ---------- Store items ---------- */
 
 .store-item {
+    width: auto;
+    display: block;
     padding: 16px 8px 8px;
     border-top: 1px solid #ccc;
     margin-top: 8px;
-    vertical-align: top;
     overflow: hidden;
+
+    &:first-child {
+        border-top: none;
+    }
 }
 
 .item-title, .item-price {
@@ -37,23 +42,6 @@
 }
 .store-form > .store-data { background: transparent;}
 .store-data > .store-item { margin: 8px 0; }
-
-.store-item:first-child { margin-top: 0; border: 0;}
-.store-item:last-child { margin-bottom: 0; }
-
-.store-item > * {
-    float: left; position: relative; left: 100%; margin-left: -100%;
-}
-.store-item > .item-details {
-    margin-left: -100%; width: 85%;
-}
-.store-item > .item-amount {
-    margin-left: -15%; width: 15%;
-    text-align: right;
-}
-.store-item .item-amount input {
-    margin: 0;
-}
 
 .items-summary { padding: 8px; }
 .items-summary h3 { margin: 4px 0 16px; }

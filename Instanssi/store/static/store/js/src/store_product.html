@@ -1,9 +1,9 @@
-<div v-bind:class="isDiscountActive() ? 'product form discount-enabled' : 'product form'">
+<div v-bind:class="isDiscountActive() ? 'store-item form discount-enabled' : 'store-item form'">
     <div class="row">
         <div class="col-sm-9">
             <div class="product-title">
                 <img class="item-image" :src="product.imagefile_thumbnail_url" width="48" height="48" />
-                <span class="item-title">{{ product.name }}</span>
+                <div class="item-title">{{ product.name }}</div>
             </div>
             <div class="item-description">
                 <div v-if="product.description" v-html="product.description"></div>
@@ -28,7 +28,7 @@
                 <span class="product-cart-count">
                     <span class="fa fa-shopping-cart"></span> {{ cartCount }}
                 </span>
-                <button class="btn btn-link btn-danger" v-on:click="removeItem()">
+                <button class="btn btn-secondary" v-on:click="removeItem()">
                     <span class="fa fa-minus" /> Poista
                 </button>
             </div>

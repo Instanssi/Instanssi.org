@@ -1,9 +1,9 @@
-<div class="product">
-    <span class="pull-right">
+<div class="product form">
+    <span class="pull-right form-inline">
         <span class="product-cart-count" v-if="cartCount > 0">
             <span class="fa fa-shopping-cart"></span> {{ cartCount }}
         </span>
-        <select class="product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
+        <select class="form-control product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
             <option v-for="variant in product.variants" v-bind:value="variant">
                 {{ variant.name }}
             </option>

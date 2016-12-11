@@ -61,6 +61,10 @@ class StoreItem(models.Model):
         'Alennusprosentti',
         default=0,
         help_text='Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+    is_ticket = models.BooleanField(
+        'Tuote on lipputuote',
+        default=False,
+        help_text='Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen')
 
     def is_discount_available(self):
         """Returns True if a discount exists for this item."""

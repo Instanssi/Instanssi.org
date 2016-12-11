@@ -447,7 +447,7 @@ def validate_votecode_api(request, event_id, vote_code):
 
     # Check if key exists
     try:
-        TransactionItem.objects.get(item__event=event, key__startswith=vote_code)
+        TransactionItem.objects.get(item__event=event, item__is_ticket=True, key__startswith=vote_code)
     except TransactionItem.DoesNotExist:
         return RestResponse(code=403, error_text='Lippuavainta ei ole olemassa!')
 

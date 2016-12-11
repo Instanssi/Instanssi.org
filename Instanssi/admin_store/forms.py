@@ -25,6 +25,7 @@ class StoreItemForm(forms.ModelForm):
             'sort_index',
             'discount_amount',
             'discount_percentage',
+            'is_ticket',
             Div(HTML('Tuotteen alityypit alla. Täytä kentät jotka tarvitset. Mikäli kentät loppuvat kesken, '
                      'tallenna välillä ja muokkaa.'), css_class="ctrlHolder")
         )

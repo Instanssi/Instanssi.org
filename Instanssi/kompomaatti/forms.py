@@ -65,7 +65,9 @@ class TicketVoteCodeAssocForm(forms.Form):
 
     def save(self):
         transaction_item = TransactionItem.objects.get(
-                key__startswith=self.cleaned_data['code'], item__event=self.event)
+            key__startswith=self.cleaned_data['code'],
+            item__is_ticket=True,
+            item__event=self.event)
         obj = TicketVoteCode()
         obj.event = self.event
         obj.associated_to = self.user

@@ -7,6 +7,9 @@
         "browser": true,
         "node": true
     },
+    "globals": {
+        "Promise": false
+    },
     "rules": {
         "no-undef": 2,
         "eqeqeq": 1,

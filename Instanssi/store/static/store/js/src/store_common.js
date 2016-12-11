@@ -4,7 +4,6 @@
  */
 
 import Vue from 'vue';
-import Promise from 'promise-polyfill';
 
 // Support for this was still a bit patchy last I checked.
 let toLocaleStringSupportsOptions = !!(typeof Intl === 'object'

@@ -1,3 +1,8 @@
+// IE11 support
+import 'core-js/es6/array';
+import 'core-js/es6/object';
+import 'core-js/es6/promise';
+
 import Vue from 'vue';
 import { formatPrice, storeXHR, loadingOverlay } from './store_common.js';
 import './store_information.js';
@@ -6,6 +11,22 @@ const PAYMENT_METHODS = [
     { id: 1, name: 'Paytrail verkkomaksu' },
     { id: 0, name: 'BitPay (maksa BitCoinilla)' }
 ];
+
+/**
+ * Gets the price of a certain quantity of a product, considering discounts, etc.
+ * @param {Object} product - Product / StoreItem
+ * @param {number} count - Number of items in cart
+ * @returns {number} - Effective price
+ */
+function getDiscountedPrice(product, count) {
+    let qtyThresh = product.discount_amount;
+    let discountFactor = (100 - product.discount_percentage) / 100;
+    let multiplier = 1;
+    if(qtyThresh && count >= qtyThresh) {
+        multiplier *= discountFactor;
+    }
+    return product.price * multiplier;
+}
 
 /**
  * Returns true if a cart item is a specific product (and optional variant).
@@ -57,15 +78,13 @@ Vue.component('store-product', {
         },
         removeItem() {
             this.$emit('removeItem', this.product, this.variant);
-        }
-    },
-    computed: {
+        },
         /**
-         * Get number of items (of the current variant type) already in the cart.
-         * @returns {number} - Cart amount
+         * Gets current item + variant's count in the cart.
+         * @returns {number} - Number of items in the cart
          */
-        cartCount() {
-            let { product, variant } = this;
+        getCartCount() {
+            const { product, variant } = this;
             if(!this.cart) {
                 return 0;
             }
@@ -77,6 +96,30 @@ Vue.component('store-product', {
                 return 0;
             }
             return this.cart[cartIndex].count;
+        },
+        /**
+         * Checks if the quantity discount applies to this product.
+         * @returns {Boolean} - True if quantity discount is active
+         */
+        isDiscountActive() {
+            const { product } = this;
+            let discountAmount = product.discount_amount;
+            return discountAmount > 0 && this.getCartCount() >= discountAmount;
+        },
+        /**
+         * Returns the effective unit price of this product, considering discounts.
+         * @returns {number} - Unit price
+         */
+        getEffectivePrice() {
+            return getDiscountedPrice(this.product, this.getCartCount());
+        }
+    },
+    computed: {
+        cartCount() {
+            return this.getCartCount();
+        },
+        effectivePrice() {
+            return this.getEffectivePrice();
         }
     }
 });

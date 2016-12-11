@@ -10,7 +10,7 @@
   "author": "Tommi Teistelä <totateis@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "promise-polyfill": "^6.0.2"
+    "core-js": "~2.4.1"
   },
   "devDependencies": {
     "babel": "~6.5.2",

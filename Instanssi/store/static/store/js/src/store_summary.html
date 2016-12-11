@@ -13,7 +13,7 @@
         <store-summary-field title="Maa" field="country" :messages="messages" :data="data" />
         <store-summary-field title="Yritys" field="company" :messages="messages" :data="data" />
     </div></div>
-    <div class="form-group">
+    <div class="form-group" v-show="data.information && data.information.length">
         <label class="col-lg-2 control-label">Lisätietoja</label>
         <div class="col-lg-10">
             <p class="form-control-static">{{ data.information }}</p>

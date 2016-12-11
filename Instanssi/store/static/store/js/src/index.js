@@ -1,3 +1,5 @@
+/* global $ */
+
 // IE11 support
 import 'core-js/es6/array';
 import 'core-js/es6/object';
@@ -38,6 +40,28 @@ function getDiscountedPrice(product, count) {
 function cartItemEquals(cartItem, product, variant) {
     return cartItem.product.id === product.id &&
         (!variant || (cartItem.variant && (variant.id === cartItem.variant.id)));
+}
+
+/**
+ * Fetch items from the store API.
+ * @returns {Promise.<Object>} - API response
+ */
+function fetchItems() {
+    return storeXHR('GET', '/api/store_items/?format=json');
+}
+/**
+ * Submits a transaction to the store API.
+ * @param {Object} transaction - Transaction data
+ * @returns {Promise.<Object>} - API response
+ */
+function submitTransaction(transaction) {
+    return storeXHR('POST', '/api/store_transaction/?format=json', transaction);
+}
+
+function scrollToTop() {
+    $('html,body').animate({
+        scrollTop: $(".store").offset().top
+    }, 500);
 }
 
 Vue.filter('formatPrice', formatPrice);
@@ -163,7 +187,8 @@ let app = new Vue({
     },
     template: require('!raw-loader!./store.html'),
     created() {
-        storeXHR('GET', '/api/store_items/?format=json').then((items) => {
+        // fetch products list
+        fetchItems().then((items) => {
             items.forEach((item) => {
                 item.price = parseFloat(item.price);
             });
@@ -182,6 +207,52 @@ let app = new Vue({
         }
     },
     methods: {
+        /**
+         * Move between stages in the shopping process.
+         */
+        toStep(next) {
+            // Check form status between steps so the user doesn't have to come back later.
+            if(this.step === 0) {
+                // 0 -> _: check that cart contains one item
+                if(this.cart.length < 1) {
+                    this.messages = {
+                        items: [ 'Valitse ainakin yksi tuote.' ]
+                    }
+                    return;
+                }
+                this.messages.items = [];
+                this.step = next;
+                scrollToTop();
+            } else if (this.step === 1 && next === 2) {
+                const { info } = this;
+                // TODO: 1 -> 2: send a "save=false" transaction request
+                // validate email before doing anything
+                if(info.email !== info.email2) {
+                    this.messages = {
+                        email: ['Kirjoita sama sähköpostiosoite kahdesti.'],
+                        email2: ['Kirjoita sama sähköpostiosoite kahdesti.']
+                    };
+                    return;
+                }
+
+                // validate what the user has input so far
+                let transaction = this.getTransactionObject();
+                // dry run only, don't actually try to complete the transaction
+                transaction.save = false;
+
+                submitTransaction(transaction).then((res) => {
+                    this.messages = {};
+                    this.step = next;
+                    scrollToTop();
+                }).catch((err) => {
+                    this.messages = err;
+                });
+            } else {
+                // sure, whatever
+                this.step = next;
+                scrollToTop();
+            }
+        },
         /**
          * Pick up changes to the customer information.
          * @param {Object} info - Customer info
@@ -312,7 +383,7 @@ let app = new Vue({
             // this could be done at each step before proceeding
             transaction.save = true;
 
-            return storeXHR('POST', '/api/store_transaction/?format=json', transaction).then((res) => {
+            return submitTransaction(transaction).then((res) => {
                 console.info(res);
             }, (err) => {
                 this.messages = err;
@@ -323,7 +394,6 @@ let app = new Vue({
             }).catch(err => {
                 console.error(err);
             });
-
         }
     }
 });

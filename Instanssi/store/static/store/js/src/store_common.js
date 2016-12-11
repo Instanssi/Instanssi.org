@@ -35,7 +35,9 @@ function storeXHR(method, path, data) {
         let xhr = new XMLHttpRequest();
         xhr.onload = function () {
             if(xhr.status >= 200 && xhr.status < 300) {
-                resolve(JSON.parse(xhr.responseText));
+                // tolerate empty response (technically, 204 no content should be used...)
+                let response = xhr.responseText;
+                resolve((response && response.length) ? JSON.parse(xhr.responseText) : null);
             } else {
                 xhr.onerror();
             }
@@ -79,7 +81,10 @@ let storeFormGroup = Vue.component('store-form-group', {
     template: `<div v-bind:class="clazz">
         <label class="col-sm-4 control-label">{{ title }}</label>
         <div class="col-sm-8">
-            <input class="form-control" @input="onInput" v-bind:value="data[field]" />
+            <input class="form-control"
+                @input="onInput"
+                v-bind:id="'store-' + field"
+                v-bind:value="data[field]"/>
             <store-messages :field="field" :messages="messages" />
         </div>
     </div>`
@@ -104,7 +109,7 @@ let storeMessages = Vue.component('store-messages', {
             return null;
         }
     },
-    template: `<div><p v-if="localMessages">
+    template: `<div v-show="localMessages"><p>
         <div class="alert alert-danger" role="alert" v-for="message in localMessages">
             <span class="fa fa-times"></span> {{ message }}
         </div>

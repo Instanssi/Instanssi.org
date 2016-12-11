@@ -42,9 +42,13 @@ Vue.component('store-summary-field', {
                 return 'form-group has-error';
             }
             return 'form-group';
+        },
+        hasData() {
+            let { data, field } = this;
+            return data[field] && data[field].length > 0;
         }
     },
-    template: `<div v-bind:class="clazz">
+    template: `<div v-show="hasData" v-bind:class="clazz">
         <label class="col-sm-4 control-label">{{ title }}</label>
         <div class="col-sm-8">
             <p class="form-control-static">{{ data[field] }}</p>

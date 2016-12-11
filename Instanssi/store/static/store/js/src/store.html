@@ -1,5 +1,5 @@
-<div>
-    <div class="store-products">
+<div class="store">
+    <div v-if="step === 0" class="store-products">
         <h3>Tuotteet</h3>
         <div class="list-unstyled store-items loading-container">
             <store-product v-for="product in products"
@@ -11,9 +11,15 @@
                 Virhe tuotelistaa hakiessa.
             </div>
         </div>
+
+        <store-messages field="items" :messages="messages" />
+
+        <span class="pull-right">
+            <button class="btn btn-primary" @click="toStep(1)">Asiakastiedot &gt;</button>
+        </span>
     </div>
 
-    <div class="store-info">
+    <div v-if="step === 1" class="store-info">
         <h3>Ostoskori</h3>
         <store-messages field="items" :messages="messages" />
         <div class="list-unstyled store-items">
@@ -42,9 +48,16 @@
 
         <h3>Asiakastiedot</h3>
         <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
+
+        <span class="pull-left">
+            <button class="btn btn-primary" @click="toStep(0)">&lt; Tuotteet</button>
+        </span>
+        <span class="pull-right">
+            <button class="btn btn-primary" @click="toStep(2)">Yhteenveto ja maksutapa &gt;</button>
+        </span>
     </div>
 
-    <div class="store-summary form-horizontal">
+    <div v-if="step === 2" class="store-summary form-horizontal">
         <h3>Yhteenveto ja maksutapa</h3>
         <h4>Tilauksen tiedot</h4>
             <store-order-summary :data="info" :messages="messages" />
@@ -59,8 +72,13 @@
                 </select>
             </div>
         </div>
+
+        <span class="pull-left">
+            <button class="btn btn-primary" @click="toStep(1)">&lt; Asiakastiedot</button>
+        </span>
         <span class="pull-right">
-        <button class="btn btn-primary" @click="submit">Lähetä tilaus ja siirry maksupalveluun &gt;</button>
+            <button class="btn btn-primary" @click="submit">Lähetä tilaus ja siirry maksupalveluun &gt;</button>
+        </span>
     </div>
-</span>
+    <div class="clearfix" />
 </div>

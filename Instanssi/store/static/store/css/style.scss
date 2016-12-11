@@ -30,7 +30,13 @@
     float: left;
     margin: 0 1em 1em 0;
 }
-.item-description { margin-left: 80px; }
+@media screen and (min-width: $screen-sm-min) {
+    .item-description { margin-left: 80px; }
+}
+@media screen and (max-width: $screen-xs-max) {
+    // push description below title and image
+    .item-description { clear: left; }
+}
 
 .item-amount-field {
     height: 30px;

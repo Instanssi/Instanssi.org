@@ -57,7 +57,6 @@ def handle_failure(request):
     
     # FIXME this never comes from bitpay but is here because of
     # mysterious Exception redirects in previous function.
-
     return render(request, 'store/failure.html')
 
 
@@ -82,37 +81,32 @@ def handle_notify(request):
     
     # Try to find correct transaction
     # If transactions is not found, this will throw 404.
-    ta_is_valid = False
     try:
         ta = StoreTransaction.objects.get(pk=transaction_id, token=bitpay_id)
-        
-        # If transaction is paid and confirmed, stop here.
-        if ta.is_paid:
-            return HttpResponse("")
-        
-        # Okay, transaction found and it's good.
-        ta_is_valid = True
     except StoreTransaction.DoesNotExist:
         logger.warning("Error while attempting to validate bitpay notification!")
         raise Http404
-    
-    # We have a valid transaction. Do something about it.
-    if ta_is_valid:
-        if status == 'confirmed' or status == 'complete':
-            # Paid and confirmed.
-            if not ta_common.handle_payment(ta):
-                raise Http404
-            return HttpResponse("")
 
-        if status == 'paid':
-            # Paid but not confirmed
-            ta_common.handle_pending(ta)
-            return HttpResponse("")
-                        
-        if status == 'expired':
-            # Payment expired, assume cancelled
-            ta_common.handle_cancellation(ta)
-            return HttpResponse("")
+    # If transaction is paid and confirmed, stop here.
+    if ta.is_paid:
+        return HttpResponse("")
+
+    # We have a valid transaction. Do something about it.
+    if status == 'confirmed' or status == 'complete':
+        # Paid and confirmed.
+        if not ta_common.handle_payment(ta):
+            raise Http404
+        return HttpResponse("")
+
+    if status == 'paid':
+        # Paid but not confirmed
+        ta_common.handle_pending(ta)
+        return HttpResponse("")
+
+    if status == 'expired':
+        # Payment expired, assume cancelled
+        ta_common.handle_cancellation(ta)
+        return HttpResponse("")
 
     logger.warning("Unhandled bitpay notification '%s' for id %d.", status, ta.id)
 

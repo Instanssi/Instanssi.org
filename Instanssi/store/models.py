@@ -259,18 +259,29 @@ class StoreTransaction(models.Model):
     def get_distinct_storeitems_and_prices(self):
         """Returns a list of unique (StoreItem, price) tuples related to
         this transaction."""
-        # get (item-id, price) tuples
-        items = self.get_transaction_items().values_list(
-            'item', 'purchase_price').distinct()
-        itemlist = []
-        for key, price in items:
-            # this isn't a performance issue with our database
-            itemlist.append((StoreItem.objects.filter(pk=key).get(), price))
-        return itemlist
 
-    def get_storeitem_count(self, store_item):
-        return TransactionItem.objects.filter(
-            item=store_item, transaction=self).count()
+        items = {}
+        transaction_items = self.get_transaction_items().values_list('item', 'variant', 'purchase_price')
+        for item, variant, price in transaction_items:
+            if item not in items:
+                items[item] = {}
+            items[item][variant] = price
+
+        item_list = []
+        for item_key, variants in items.items():
+            for variant_key, price in variants.items():
+                item_list.append((
+                    StoreItem.objects.get(pk=item_key),
+                    StoreItemVariant.objects.get(pk=variant_key) if variant_key else None,
+                    price
+                ))
+        return item_list
+
+    def get_storeitem_count(self, store_item, variant=None):
+        q = TransactionItem.objects.filter(item=store_item, transaction=self)
+        if variant:
+            q = q.filter(variant=variant)
+        return q.count()
 
     def __str__(self):
         return self.full_name

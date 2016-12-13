@@ -4,13 +4,7 @@ body {
     font-size: 14px;
     margin: 0px;
     padding: 0px;
-<<<<<<< HEAD
-    background: #555;
-    background: linear-gradient(#1b1b1b 100px, #555 550px, #555 100%);
-    font-size: 14px;
-=======
     @include body-background-mixin();
->>>>>>> theme-2017
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
@@ -90,7 +84,7 @@ $banner-image-sm: '../../main2016/images/banner-bg.png';
 }
 #usertools a { font-size: 1.2em; }
 #header h1, #header h1 span {
-    font-size: 3em;
+    font-size: 3.5em;
 }
 #header h1 {
     padding-bottom: 7px;
@@ -234,14 +228,6 @@ ul#crumbpath a:hover {
     }
 }
 
-<<<<<<< HEAD
-/* Landscape phones */
-@media (max-width: 480px) {
-    #header { background: #111122; }
-}
-
-=======
->>>>>>> theme-2017
 /* ---- usertools ---- */
 #usertools {
     float: right;

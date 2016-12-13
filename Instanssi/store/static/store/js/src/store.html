@@ -1,21 +1,24 @@
 <div class="store">
-    <ul class="nav nav-pills">
-        <li role="presentation" :class="{ 'active': step === 0, 'disabled': !canMoveToStep(0) }">
-            <a href="#" @click.prevent="toStep(0, false)">
-                1. Tuotteet
-            </a>
-        </li>
-        <li role="presentation" :class="{ 'active': step === 1, 'disabled': !canMoveToStep(1) }">
-            <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, false)">
-                2. Kori ja asiakastiedot
-            </a>
-        </li>
-        <li role="presentation" :class="{ 'active': step === 2, 'disabled': !canMoveToStep(2) }">
-            <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, false)">
-                3. Yhteenveto ja maksutapa
-            </a>
-        </li>
-    </ul>
+    <div class="store-nav">
+        <ul class="nav nav-pills">
+            <li role="presentation" :class="{ 'active': step === 0, 'disabled': !canMoveToStep(0) }">
+                <a href="#" @click.prevent="toStep(0, false)">
+                    1. Tuotteet
+                </a>
+            </li>
+            <li role="presentation" :class="{ 'active': step === 1, 'disabled': !canMoveToStep(1) }">
+                <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, false)">
+                    2. Kori ja asiakastiedot
+                </a>
+            </li>
+            <li role="presentation" :class="{ 'active': step === 2, 'disabled': !canMoveToStep(2) }">
+                <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, false)">
+                    3. Yhteenveto ja maksutapa
+                </a>
+            </li>
+        </ul>
+    </div>
+
     <div v-if="step === 0" class="store-products">
         <h3>Tuotteet</h3>
         <div class="list-unstyled store-items loading-container">

@@ -6,6 +6,14 @@
     padding-bottom: 32px;
 }
 
+.store-nav {
+    text-align: center;
+    .nav {
+        // make nav possible to center
+        display: inline-block
+    }
+}
+
 .store-item {
     width: auto;
     display: block;

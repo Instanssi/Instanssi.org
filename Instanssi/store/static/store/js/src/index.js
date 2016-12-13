@@ -173,7 +173,7 @@ let app = new Vue({
             street: '',
             postal_code: '',
             city: '',
-            country: '',
+            country: 'fi',
             mobile: '',
             telephone: '',
             company: '',

@@ -1,4 +1,21 @@
 <div class="store">
+    <ul class="nav nav-pills">
+        <li role="presentation" :class="{ 'active': step === 0, 'disabled': !canMoveToStep(0) }">
+            <a href="#" @click.prevent="toStep(0, false)">
+                1. Tuotteet
+            </a>
+        </li>
+        <li role="presentation" :class="{ 'active': step === 1, 'disabled': !canMoveToStep(1) }">
+            <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, false)">
+                2. Kori ja asiakastiedot
+            </a>
+        </li>
+        <li role="presentation" :class="{ 'active': step === 2, 'disabled': !canMoveToStep(2) }">
+            <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, false)">
+                3. Yhteenveto ja maksutapa
+            </a>
+        </li>
+    </ul>
     <div v-if="step === 0" class="store-products">
         <h3>Tuotteet</h3>
         <div class="list-unstyled store-items loading-container">
@@ -15,7 +32,7 @@
         <store-messages field="items" :messages="messages" />
 
         <span class="pull-right">
-            <button class="btn btn-primary" @click="toStep(1)">Asiakastiedot &gt;</button>
+            <button class="btn btn-primary" @click="toStep(1, true)">Asiakastiedot &gt;</button>
         </span>
     </div>
 
@@ -47,13 +64,13 @@
         <div class="clearfix" />
 
         <h3>Asiakastiedot</h3>
-        <store-information-form @infoUpdate="updateInfo" :data="info" :messages="messages" />
+        <store-information-form @update="updateInfo" :data="info" :messages="messages" />
 
         <span class="pull-left">
-            <button class="btn btn-primary" @click="toStep(0)">&lt; Tuotteet</button>
+            <button class="btn btn-primary" @click="toStep(0, true)">&lt; Tuotteet</button>
         </span>
         <span class="pull-right">
-            <button class="btn btn-primary" @click="toStep(2)">Yhteenveto ja maksutapa &gt;</button>
+            <button class="btn btn-primary" @click="toStep(2, true)">Yhteenveto ja maksutapa &gt;</button>
         </span>
     </div>
 
@@ -74,7 +91,7 @@
         </div>
 
         <span class="pull-left">
-            <button class="btn btn-primary" @click="toStep(1)">&lt; Asiakastiedot</button>
+            <button class="btn btn-primary" @click="toStep(1, true)">&lt; Asiakastiedot</button>
         </span>
         <span class="pull-right">
             <button class="btn btn-primary" @click="submit">Lähetä tilaus ja siirry maksupalveluun &gt;</button>

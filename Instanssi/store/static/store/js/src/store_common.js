@@ -62,7 +62,8 @@ let storeFormGroup = Vue.component('store-form-group', {
         // type: String,
         messages: Object,
         update: Function,
-        data: Object
+        data: Object,
+        required: Boolean
     },
     methods: {
         onInput($event) {
@@ -72,10 +73,11 @@ let storeFormGroup = Vue.component('store-form-group', {
     computed: {
         clazz() {
             let { messages, field } = this;
+            let className = this.required ? 'form-group form-group-required' : 'form-group';
             if(messages && messages[field] && messages[field].length > 0) {
-                return 'form-group has-error';
+                return className + ' has-error';
             }
-            return 'form-group';
+            return className;
         }
     },
     template: `<div v-bind:class="clazz">

@@ -183,7 +183,9 @@ let app = new Vue({
         /** Payment method, see PAYMENT_METHODS; default is Paytrail. */
         paymentMethod: 1,
         /** Current sum of cart item prices. */
-        totalPrice: 0
+        totalPrice: 0,
+        /** True if the customer info has been validated and has not changed since then. */
+        customerInfoIsValid: false
     },
     template: require('!raw-loader!./store.html'),
     created() {
@@ -207,10 +209,25 @@ let app = new Vue({
         }
     },
     methods: {
+        canMoveToStep(step) {
+            let ok = true;
+            if(step > 0) {
+                ok = ok && this.cart.length > 0;
+            }
+            if(step > 1) {
+                // Should we require that the user clicks the button at the bottom?
+                // After that the customer info should be valid.
+                // (disable the button again if the user changes their personal information)
+                ok = ok && this.customerInfoIsValid;
+            }
+            return ok;
+        },
         /**
-         * Move between stages in the shopping process.
+         * Move between stages in the shopping process. May perform some validation.
+         * @param {number} next - Next step to move to
+         * @param {boolean} scrollUp - Should the page scroll up on successful transition?
          */
-        toStep(next) {
+        toStep(next, scrollUp) {
             // Check form status between steps so the user doesn't have to come back later.
             if(this.step === 0) {
                 // 0 -> _: check that cart contains one item
@@ -220,12 +237,16 @@ let app = new Vue({
                     }
                     return;
                 }
-                this.messages.items = [];
+                this.messages = {};
                 this.step = next;
-                scrollToTop();
+
+                if(scrollUp) {
+                    scrollToTop();
+                }
             } else if (this.step === 1 && next === 2) {
                 const { info } = this;
-                // TODO: 1 -> 2: send a "save=false" transaction request
+                // 1 -> 2: send a "save=false" transaction request
+
                 // validate email before doing anything
                 if(info.email !== info.email2) {
                     this.messages = {
@@ -243,23 +264,30 @@ let app = new Vue({
                 submitTransaction(transaction).then((res) => {
                     this.messages = {};
                     this.step = next;
-                    scrollToTop();
+                    this.customerInfoIsValid = true;
+
+                    if(scrollUp) {
+                        scrollToTop();
+                    }
                 }).catch((err) => {
                     this.messages = err;
                 });
             } else {
                 // sure, whatever
+                this.messages = {};
                 this.step = next;
-                scrollToTop();
+
+                if(scrollUp) {
+                    scrollToTop();
+                }
             }
         },
         /**
          * Pick up changes to the customer information.
-         * @param {Object} info - Customer info
          */
-        updateInfo(info) {
-            // Note that this is a shallow copy. Doesn't really harm anything.
-            this.info = info;
+        updateInfo() {
+            // require user to click the "next step" button again
+            this.customerInfoIsValid = false;
         },
         /**
          * Calculates subtotal for a specific cart item, considering discounts, etc.
@@ -369,14 +397,6 @@ let app = new Vue({
         submit() {
             let { info } = this;
 
-            // validate email before doing anything
-            if(info.email !== info.email2) {
-                this.messages = {
-                    email: ['Kirjoita sama sähköpostiosoite kahdesti.'],
-                    email2: ['Kirjoita sama sähköpostiosoite kahdesti.']
-                }
-                return;
-            }
 
             let transaction = this.getTransactionObject();
             // TODO: If we split this page into phases (items, info, confirm and choose method?),

@@ -9,7 +9,7 @@ Vue.component('store-information-form', {
         /** Field error messages, maps field name -> array */
         messages: Object,
         /** Store customer information */
-        data: Object
+        data: Object,
     },
     methods: {
         /**
@@ -20,6 +20,7 @@ Vue.component('store-information-form', {
         update(fieldName, $event) {
             // could probably just use two-way binding and forget about this
             this.data[fieldName] = $event.target.value;
+            this.$emit('update');
         }
     }
 });

@@ -1,0 +1,131 @@
+html {
+    overflow-y: scroll;
+}
+html , body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.clearer, .clear {
+    clear: both;
+}
+img {
+    // prevent images from blowing up page
+    max-width: 99% !important;
+    height: auto !important;
+}
+body * {
+    color: #333;
+    font-size: 14px;
+    line-height: 150%;
+    font-family: $body-font-family;
+}
+
+h1 {
+    font-family: $title-font-family;
+    //font-variant: small-caps;
+    text-transform: uppercase;
+    font-size: 28px;
+    margin-bottom: .75em;
+    color: $theme-color;
+    font-weight: bold;
+    line-height: 90%;
+}
+
+#content h1 {
+    padding: 0 8px;
+}
+
+h2,
+form legend
+.item .title,
+.header {
+    font-family: $title-font-family;
+    //font-variant: small-caps;
+    font-size: 25px;
+    margin: 20px 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#content h2,
+table th,
+form legend
+.item .title,
+.header,
+.btn {
+    background: $theme-color;
+    text-shadow: rgba($theme-color-bright, .25) 0 1px 4px;
+}
+h3 {
+    font-size: 16px;
+    margin: 20px 8px;
+    color: #000;
+    font-weight: bold;
+}
+h4 {
+    font-size: 14px;
+    margin: 20px 8px;
+    color: #000;
+    font-weight: bold;
+}
+b, strong {
+    font-weight: bold;
+}
+i, em {
+    font-style: italic;
+}
+blockquote {
+    font-size:125%;
+    font-style: italic;
+    margin-left: 4%;
+    margin-bottom: 8px;
+}
+sup, sub {
+    font-size: 75%;
+}
+sup {
+    vertical-align: super;
+}
+sub {
+    vertical-align: sub;
+}
+
+/* buttons */
+.btn {
+    border: 1px solid #48B9DC;
+    color: #fff !important;
+    text-decoration: none !important;
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 0px;
+
+    &:hover {
+        color: #fff;
+        opacity: 0.8;
+    }
+}
+
+#page-wrap {
+    position: relative;
+    background: $bg-gradient-bottom;
+    background: linear-gradient($bg-gradient-top 0, $bg-gradient-bottom $bg-gradient-height);
+}
+
+#content {
+    background: #fff;
+    box-sizing: border-box;
+    padding: 24px 10px 24px;
+
+    min-height: 100vh;
+    min-height: $main-content-height;
+}
+
+.container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 0px 0px;
+}

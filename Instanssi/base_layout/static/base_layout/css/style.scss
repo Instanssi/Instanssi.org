@@ -1,11 +1,16 @@
 @import 'common.scss';
 
 body {
+    font-size: 14px;
     margin: 0px;
     padding: 0px;
+<<<<<<< HEAD
     background: #555;
     background: linear-gradient(#1b1b1b 100px, #555 550px, #555 100%);
     font-size: 14px;
+=======
+    @include body-background-mixin();
+>>>>>>> theme-2017
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
@@ -70,11 +75,13 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Header ---------- */
 
+$banner-image-sm: '../../main2016/images/banner-bg.png';
 #header {
-    background: $theme-color;
-    background: url('../../main2016/images/banner-bg.png') repeat-x;
-    background-size: contain;
+    /*background: url($banner-image-sm) repeat-x;
+    background: linear-gradient(rgba($theme-color-bright, 1) 0px, rgba($theme-color-bright, 0) 100%), url($banner-image-sm) repeat-x;
     background-position: top center;
+    background-size: contain;*/
+
 }
 #header h1, #header h1 span, #usertools a {
     text-shadow: black 1px 1px 1px;
@@ -100,6 +107,9 @@ a:hover { text-decoration: underline; }
 
 #header_nav {
     min-height: 32px;
+    background: $theme-color;
+    background: rgba($theme-color, 0.9);
+    color: #fff;
 }
 #header_nav:after {
     display: table;
@@ -115,7 +125,7 @@ a:hover { text-decoration: underline; }
 #header_nav ul.sub-level { display: none; }
 
 #header_nav li:hover .sub-level {
-    background-color: #18242b;
+    background-color: $theme-color;
     display: block;
     position: absolute;
     left: 0px;
@@ -133,17 +143,14 @@ a:hover { text-decoration: underline; }
 
 /* ----------- Some common stuff for menuitems ---------- */
 
-li.menu-down-arrow { background-image: url('../img/arrow_down.png'); }
-li.menu-right-arrow { background-image: url('../img/arrow_right.png'); }
-li.menu-right-arrow,
-li.menu-down-arrow {
-    background-position: 95% center;
-    background-repeat: no-repeat;
-    padding-right: 15px;
-}
+.menuitem.menu-down-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0d7');
 
-.menuitem:hover {
-    background-color: #18242b;
+}
+.menuitem.menu-right-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0da');
 }
 
 .menuitem a,
@@ -202,7 +209,7 @@ ul#crumbpath li {
 ul#crumbpath li:before {
     content: '> ';
     color: #555;
-    padding: 4px;
+    padding: $spacing-small;
 }
 ul#crumbpath li:first-child:before {
     content: '';
@@ -210,7 +217,7 @@ ul#crumbpath li:first-child:before {
 }
 ul#crumbpath li * {
     font-size: 12px;
-    padding: 4px 0;
+    padding: $spacing-small 0;
 }
 ul#crumbpath a {
     color: $theme-color;
@@ -227,11 +234,14 @@ ul#crumbpath a:hover {
     }
 }
 
+<<<<<<< HEAD
 /* Landscape phones */
 @media (max-width: 480px) {
     #header { background: #111122; }
 }
 
+=======
+>>>>>>> theme-2017
 /* ---- usertools ---- */
 #usertools {
     float: right;
@@ -243,13 +253,14 @@ ul#crumbpath a:hover {
     background: rgba(0, 0, 0, .2);
     border: 1px solid white;
     /*background: repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(0,120,0,.1) 10px, transparent 11px), linear-gradient(#ddd, #fff);*/
-    -webkit-transform: rotate(-2deg);
-    -moz-transform: rotate(-2deg);
-    transform: rotate(-2deg);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    transform: rotate(-45deg);
 
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    top: 5px;
+    right: 7px;
+    width: 45px;
+    height: 45px;
     content: ' ';
     position: absolute;
     z-index: -1;

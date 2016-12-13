@@ -14,5 +14,5 @@ testing/output/*
 *.txt~
 .idea
 .env
-.vscode
 **/node_modules
+**/.vscode

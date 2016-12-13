@@ -2,14 +2,27 @@
    Sitewide SCSS (theme colors, etc.) goes here.
 */
 
-$theme-color: #1c3f94;
-$theme-nav-hover: $theme-color * 0.66;
+$theme-color: #13285e;
+//$theme-color: (#0728c5 + #13285e) / 2;
+$theme-color-bright: #4f8bc8;
+//$theme-color-bright: #bbf4ff;
+$theme-nav-hover: $theme-color-bright;
+
+$background-color: #1b1b1b;
+
+$bg-gradient-top: #248;
+$bg-gradient-bottom: lighten($background-color, 5);
+$bg-gradient-height: 640px;
 
 $body-font-family: 'Open Sans', sans-serif;
-$title-font-family: $body-font-family;
+$title-font-family: 'Exo 2', $body-font-family;
 
-$transition-small: 0.2s;
-$transition-large: 0.4s;
+$transition-small: .2s;
+$transition-large: .4s;
+
+$spacing-large: 16px;
+$spacing-medium: 8px;
+$spacing-small: 4px;
 
 // overrides for certain Bootstrap SASS defaults
 $brand-primary: $theme-color;
@@ -29,7 +42,7 @@ $navbar-default-link-hover-bg: $theme-nav-hover;
 
 // This hides content visually but should not block screen readers, scraping
 // and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
-.visuallyhidden {
+.sr-only {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
     height: 1px;
@@ -60,4 +73,10 @@ $navbar-default-link-hover-bg: $theme-nav-hover;
 }
 .loading-overlay.loading-overlay-active {
     display: block;
+}
+
+@mixin body-background-mixin() {
+    position: relative;
+    background: $bg-gradient-bottom;
+    background: linear-gradient($bg-gradient-top 0, $bg-gradient-bottom $bg-gradient-height);
 }

@@ -63,7 +63,9 @@ let storeFormGroup = Vue.component('store-form-group', {
         messages: Object,
         update: Function,
         data: Object,
-        required: Boolean
+        required: Boolean,
+        /** Chrome-friendly autocomplete hint */
+        autocomplete: String
     },
     methods: {
         onInput($event) {
@@ -85,8 +87,9 @@ let storeFormGroup = Vue.component('store-form-group', {
         <div class="col-sm-8">
             <input class="form-control"
                 @input="onInput"
-                v-bind:id="'store-' + field"
-                v-bind:value="data[field]"/>
+                :autocomplete="autocomplete"
+                :id="'store-' + field"
+                :value="data[field]"/>
             <store-messages :field="field" :messages="messages" />
         </div>
     </div>`

@@ -1,20 +1,20 @@
 <form class="form-horizontal" @submit.prevent>
     <p>Huomaathan, että lippukoodit lähetetään annettuun sähköpostiosoitteeseen.</p>
     <div class="row"><div class="col-lg-6">
-        <store-form-group title="Etunimi" field="first_name" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Sukunimi" field="last_name" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Sähköposti" field="email" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Vahvista sähköposti" field="email2" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Matkapuhelin" field="mobile" @update="update" :messages="messages" :data="data" />
-        <store-form-group title="Muu puhelinnumero" field="telephone" @update="update" :messages="messages" :data="data" />
+        <store-form-group title="Etunimi" field="first_name" autocomplete="given-name" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Sukunimi" field="last_name" autocomplete="family-name" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Sähköposti" field="email" autocomplete="email" @update="update" :messages="messages" :data="data" :required="true" type="email" />
+        <store-form-group title="Vahvista sähköposti" autocomplete="email" field="email2" @update="update" :messages="messages" :data="data" :required="true" type="email" />
+        <store-form-group title="Matkapuhelin" field="mobile" autocomplete="tel" @update="update" :messages="messages" :data="data" type="tel" />
+        <store-form-group title="Muu puhelinnumero" field="telephone" @update="update" :messages="messages" :data="data" type="tel" />
     </div>
     <div class="col-lg-6">
-        <store-form-group title="Katuosoite" field="street" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Postinumero" field="postal_code" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Kaupunki" field="city" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Katuosoite" field="street" autocomplete="billing street-address" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Postinumero" field="postal_code" autocomplete="billing postal-code" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Kaupunki" field="city" autocomplete="billing locality" @update="update" :messages="messages" :data="data" :required="true" />
         <div class="form-group form-group-required">
-            <label class="col-lg-4 control-label">Maa</label>
-            <div class="col-lg-8">
+            <label class="col-sm-4 control-label">Maa</label>
+            <div class="col-sm-8">
                 <select class="form-control" v-model="data.country">
                     <option value="fi">Suomi</option>
                 </select>

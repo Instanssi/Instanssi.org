@@ -35,7 +35,9 @@
         <store-messages field="items" :messages="messages" />
 
         <span class="pull-right">
-            <button class="btn btn-primary" @click="toStep(1, true)">Asiakastiedot &gt;</button>
+            <button class="btn btn-primary" @click="toStep(1, true)">
+                Asiakastiedot <span class="fa fa-chevron-right"/>
+            </button>
         </span>
     </div>
 
@@ -70,10 +72,14 @@
         <store-information-form @update="updateInfo" :data="info" :messages="messages" />
 
         <span class="pull-left">
-            <button class="btn btn-primary" @click="toStep(0, true)">&lt; Tuotteet</button>
+            <button class="btn btn-primary" @click="toStep(0, true)">
+                <span class="fa fa-chevron-left"/> Tuotteet
+            </button>
         </span>
         <span class="pull-right">
-            <button class="btn btn-primary" @click="toStep(2, true)">Yhteenveto ja maksutapa &gt;</button>
+            <button class="btn btn-primary" @click="toStep(2, true)">
+                Yhteenveto ja maksutapa <span class="fa fa-chevron-right"/>
+            </button>
         </span>
     </div>
 
@@ -94,10 +100,14 @@
         </div>
 
         <span class="pull-left">
-            <button class="btn btn-primary" @click="toStep(1, true)">&lt; Asiakastiedot</button>
+            <button class="btn btn-primary" @click="toStep(1, true)">
+                <span class="fa fa-chevron-left"/> Asiakastiedot
+            </button>
         </span>
         <span class="pull-right">
-            <button class="btn btn-primary" @click="submit">Lähetä tilaus ja siirry maksupalveluun &gt;</button>
+            <button class="btn btn-primary" @click="submit">
+                <span class="fa fa-check" /> Lähetä tilaus ja siirry maksupalveluun
+            </button>
         </span>
     </div>
     <div class="clearfix" />

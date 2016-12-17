@@ -3,14 +3,18 @@
 */
 
 $theme-color: #13285e;
-//$theme-color: (#0728c5 + #13285e) / 2;
-$theme-color-bright: #4f8bc8;
-//$theme-color-bright: #bbf4ff;
-$theme-nav-hover: $theme-color-bright;
+
+// meant to be the same color as in the flyers and shirt design
+$theme-color-bright: #01a8ff;
+
+// brighter theme color for link text and stuff
+$theme-color-mid: ($theme-color + $theme-color-bright) / 2;
+
+$theme-nav-hover: $theme-color-mid;
 
 $background-color: #1b1b1b;
 
-$bg-gradient-top: #248;
+$bg-gradient-top: #0a3270;
 $bg-gradient-bottom: lighten($background-color, 5);
 $bg-gradient-height: 640px;
 
@@ -32,6 +36,12 @@ $border-radius-small: 0;
 $navbar-default-color: #ddd;
 $navbar-default-link-hover-color: #fff;
 $navbar-default-link-hover-bg: $theme-nav-hover;
+
+// default is the brand color, but we want to vary this a bit
+$component-active-bg: $theme-color-bright;
+
+// actually, let's just try this...
+$brand-primary: $theme-color-bright;
 
 @import './bootstrap.scss';
 

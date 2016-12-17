@@ -11,7 +11,7 @@
     <div class="col-lg-6">
         <store-form-group title="Katuosoite" field="street" autocomplete="billing street-address" @update="update" :messages="messages" :data="data" :required="true" />
         <store-form-group title="Postinumero" field="postal_code" autocomplete="billing postal-code" @update="update" :messages="messages" :data="data" :required="true" />
-        <store-form-group title="Kaupunki" field="city" autocomplete="billing locality" @update="update" :messages="messages" :data="data" :required="true" />
+        <store-form-group title="Kaupunki" field="city" autocomplete="billing address-level2" @update="update" :messages="messages" :data="data" :required="true" />
         <div class="form-group form-group-required">
             <label class="col-sm-4 control-label">Maa</label>
             <div class="col-sm-8">

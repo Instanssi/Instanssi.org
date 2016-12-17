@@ -99,6 +99,17 @@
             </div>
         </div>
 
+        <div class="row" v-if="paymentURL">
+            <div class="col-sm-12">
+                <div class="alert alert-success">
+                    <span class="fa fa-check" />
+                    Tilaus vastaanotettu!
+                    Uudelleenohjataan maksupalveluun. Jos mitään ei tapahdu, käytä tätä linkkiä:
+                    <a :href="paymentURL">(linkki maksupalveluun)</a>
+                </div>
+            </div>
+        </div>
+
         <span class="pull-left">
             <button class="btn btn-primary" @click="toStep(1, true)">
                 <span class="fa fa-chevron-left"/> Asiakastiedot

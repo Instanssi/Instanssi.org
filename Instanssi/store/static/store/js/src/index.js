@@ -185,7 +185,9 @@ let app = new Vue({
         /** Current sum of cart item prices. */
         totalPrice: 0,
         /** True if the customer info has been validated and has not changed since then. */
-        customerInfoIsValid: false
+        customerInfoIsValid: false,
+        /** Set when purchase is ready to be paid. */
+        paymentURL: null,
     },
     template: require('!raw-loader!./store.html'),
     created() {
@@ -405,6 +407,7 @@ let app = new Vue({
 
             return submitTransaction(transaction).then((res) => {
                 console.info(res);
+                this.paymentURL = res.url;
             }, (err) => {
                 this.messages = err;
                 // Manipulate error message so both email fields show errors

@@ -54,29 +54,23 @@ hr {
     border: 0; border-top: 1px dotted #aaa;
 }
 
-a { color: $theme-color; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+    color: $theme-color-mid;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
 
 /* ---------- Base layout tuning ---------- */
 
 #base {
     min-height: 100vh;
-    background-color: #f9f9f9;
-    box-shadow: 0px 0px 5px #888;
-    -moz-box-shadow: 0px 0px 5px #888;
-    -webkit-box-shadow: 0px 0px 5px #888;
+    background-color: #fff;
 }
 
 /* ---------- Header ---------- */
 
-$banner-image-sm: '../../main2016/images/banner-bg.png';
-#header {
-    /*background: url($banner-image-sm) repeat-x;
-    background: linear-gradient(rgba($theme-color-bright, 1) 0px, rgba($theme-color-bright, 0) 100%), url($banner-image-sm) repeat-x;
-    background-position: top center;
-    background-size: contain;*/
-
-}
 #header h1, #header h1 span, #usertools a {
     text-shadow: black 1px 1px 1px;
     font-family: $title-font-family;
@@ -101,8 +95,7 @@ $banner-image-sm: '../../main2016/images/banner-bg.png';
 
 #header_nav {
     min-height: 32px;
-    background: $theme-color;
-    background: rgba($theme-color, 0.9);
+    background: rgba(darken($theme-color, 10%), 0.9);
     color: #fff;
 }
 #header_nav:after {
@@ -214,18 +207,11 @@ ul#crumbpath li * {
     padding: $spacing-small 0;
 }
 ul#crumbpath a {
-    color: $theme-color;
+    color: $theme-color-mid;
     text-decoration: none;
 }
 ul#crumbpath a:hover {
     text-decoration: underline;
-}
-
-@media screen and (max-width: 720px) {
-    .container {
-        width: 100%;
-        min-width: 0;
-    }
 }
 
 /* ---- usertools ---- */
@@ -234,53 +220,38 @@ ul#crumbpath a:hover {
     padding: 8px;
     position: relative;
     z-index: 1;
-}
-#usertools:before {
-    background: rgba(0, 0, 0, .2);
-    border: 1px solid white;
-    /*background: repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(0,120,0,.1) 10px, transparent 11px), linear-gradient(#ddd, #fff);*/
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+    background: rgba(0,0,0,.25);
 
-    top: 5px;
-    right: 7px;
-    width: 45px;
-    height: 45px;
-    content: ' ';
-    position: absolute;
-    z-index: -1;
-}
-#usertools .user-image {
-    float: right;
-    width: 44px; height: 44px;
-    font-size: 0;
-}
-#usertools.unauthenticated .user-image {
-    /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
-}
-#usertools img {
-    box-shadow: 0 0 2px #555;
-}
-#usertools div {
-    float: right;
-    vertical-align: middle;
-    text-align: right;
-    padding-top: 0.1em;
-}
-#usertools div a {
-    padding: 0.25em;
-    padding-right: 0.6em;
-    display: block;
-}
-#usertools a, #usertools a:visited {
-    color: #fff;
-    text-decoration: none;
-}
-#usertools a:hover {
-    color: #fff;
-    /*text-shadow: 0 0 2px #c33;*/
-    text-shadow: #048 1px 1px 1px
+    .user-image {
+        float: right;
+        width: 44px; height: 44px;
+        font-size: 0;
+    }
+    &.unauthenticated .user-image {
+        /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
+    }
+    img {
+        box-shadow: 0 0 2px #555;
+    }
+    div {
+        float: right;
+        vertical-align: middle;
+        text-align: right;
+        padding-top: 0.1em;
+    }
+    div a {
+        padding: 0.25em;
+        padding-right: 0.6em;
+        display: block;
+    }
+    a, a:visited {
+        color: #fff;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #fff;
+        text-shadow: #048 1px 1px 1px
+    }
 }
 
 .login-button span::before {

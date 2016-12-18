@@ -221,6 +221,10 @@ let app = new Vue({
     },
     methods: {
         canMoveToStep(step) {
+            // not going anywhere if the payment URL is already set
+            if(this.paymentURL !== null) {
+                return step === 2;
+            }
             let ok = true;
             if(step > 0) {
                 ok = ok && this.cart.length > 0;
@@ -239,6 +243,10 @@ let app = new Vue({
          * @param {boolean} scrollUp - Should the page scroll up on successful transition?
          */
         toStep(next, scrollUp) {
+            // you're not going anywhere if the payment URL is already set
+            if(this.paymentURL !== null) {
+                return;
+            }
             // Check form status between steps so the user doesn't have to come back later.
             if(this.step === 0) {
                 // 0 -> _: check that cart contains one item
@@ -331,6 +339,9 @@ let app = new Vue({
          * @param {Object} [variant] - Variant to add, if any
          */
         addItem(product, variant) {
+            if(this.paymentURL !== null) {
+                return;
+            }
             // check if product/variant is already in items
             let found = this.cart.findIndex((item) => {
                 return cartItemEquals(item, product, variant);
@@ -354,6 +365,9 @@ let app = new Vue({
          * @param {Object} [variant] - Variant to remove, if any
          */
         removeItem(product, variant) {
+            if(this.paymentURL !== null) {
+                return;
+            }
             let found = this.cart.findIndex((item) => {
                 return cartItemEquals(item, product, variant);
             });
@@ -366,6 +380,9 @@ let app = new Vue({
          * @param {Object} cartItem - Cart entry to remove
          */
         removeItemFromCart(cartItem) {
+            if(this.paymentURL !== null) {
+                return;
+            }
             let pos = this.cart.indexOf(cartItem);
             this.cart.splice(pos, 1);
             this.updateCart();
@@ -376,6 +393,9 @@ let app = new Vue({
          * @param {number} change - Items to add (or remove)
          */
         changeItemCount(item, change) {
+            if(this.paymentURL !== null) {
+                return;
+            }
             // FIXME: Check item product max per order
             let pos = this.cart.indexOf(item);
             let cartItem = this.cart[pos];
@@ -406,17 +426,18 @@ let app = new Vue({
          * @returns {Promise} - Request results
          */
         submit() {
+            if(this.paymentURL !== null) {
+                return;
+            }
             let { info } = this;
 
-
             let transaction = this.getTransactionObject();
-            // TODO: If we split this page into phases (items, info, confirm and choose method?),
-            // this could be done at each step before proceeding
             transaction.save = true;
 
             return submitTransaction(transaction).then((res) => {
                 console.info(res);
                 this.paymentURL = res.url;
+                window.location.replace(this.paymentURL);
             }, (err) => {
                 this.messages = err;
                 // Manipulate error message so both email fields show errors

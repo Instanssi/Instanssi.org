@@ -72,19 +72,21 @@
     </div>
 
     <div v-if="step === 2" class="store-summary form-horizontal">
-        <h3>Yhteenveto ja maksutapa</h3>
-
-        <h4>Ostoskori</h4>
+        <h3>Ostoskori</h3>
         <store-cart-item v-for="item in cart"
             :read-only="true"
             :item="item"
             :changeItemCount="changeItemCount"
             :removeItemFromCart="removeItemFromCart" />
 
-        <h4>Tilaajan tiedot</h4>
+        <div class="pull-right">Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong></div>
+
+        <div class="clearfix" />
+
+        <h3>Tilaajan tiedot</h3>
         <store-order-summary :data="info" :messages="messages" />
 
-        <h4>Maksutavan valinta</h4>
+        <h3>Maksutavan valinta</h3>
         <div class="form-group">
             <label class="col-sm-4 control-label">Maksutapa</label>
             <div class="col-sm-8">

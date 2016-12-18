@@ -1,127 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import uuid
 
-from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
-from Instanssi.store.handlers import begin_payment_process, create_store_transaction, validate_item,\
-    TransactionException
-from Instanssi.kompomaatti.models import Event
+from Instanssi.store.models import TransactionItem
+from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException
+from Instanssi.common.testing.store import StoreTestData, BitpayFakeResponse, PaytrailFakeResponse
+from Instanssi.common.testing.kompomaatti import KompomaattiTestData
+from Instanssi.common.testing.utils import q_reverse
 
-from loremipsum import get_sentences
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 import mock
 
 
-class StoreTestData(object):
-    @staticmethod
-    def create_test_event(name):
-        event = Event()
-        event.name = name
-        event.date = datetime.now()
-        event.save()
-        return event
-
-    @staticmethod
-    def create_test_item(name, event, **kwargs):
-        item = StoreItem()
-        item.name = name
-        item.event = event
-        item.description = kwargs.get('description', get_sentences(3))
-        item.price = kwargs.get('price', 20)
-        item.max = kwargs.get('max', 50)
-        item.available = kwargs.get('available', True)
-        item.max_per_order = kwargs.get('max_per_order', 5)
-        item.sort_index = kwargs.get('sort_index', 0)
-        item.discount_amount = kwargs.get('discount_amount', -1)
-        item.discount_percentage = kwargs.get('discount_percentage', 0)
-        item.save()
-        return item
-
-    @staticmethod
-    def create_test_variants(item, amount):
-        variants = []
-        for i in range(amount):
-            variant = StoreItemVariant()
-            variant.item = item
-            variant.name = "Variant {}".format(i)
-            variant.save()
-            variants.append(variant)
-        return variants
-
-    @staticmethod
-    def create_test_transaction(items, variants):
-        item = {
-            "first_name": "Donald",
-            "last_name": "Duck",
-            "company": "None",
-            "email": "donald.duck@duckburg.inv",
-            "telephone": "991234567",
-            "mobile": "+358991234567",
-            "street": "1313 Webfoot Walk",
-            "postal_code": "00000",
-            "city": "Duckburg",
-            "country": "US",
-            "information": "Quack, damn you!",
-            "items": [
-                {
-                    "item_id": items[0].id,
-                    "variant_id": variants[0][4].id,
-                    "amount": 1
-                },
-                {
-                    "item_id": items[2].id,
-                    "variant_id": variants[2][3].id,
-                    "amount": 5
-                }
-            ]
-        }
-        return create_store_transaction(item)
-
-
-class FakeResponse(object):
-    """
-    Fake response for requests lib testing
-    """
-    def __init__(self, status_code, message):
-        self.status_code = status_code
-        self.message = message
-
-    def json(self):
-        return self.message
-
-    @staticmethod
-    def paytrail_success(order_no, token):
-        return {
-            "orderNumber": order_no,
-            "token": token,
-            "url": "https://payment.paytrail.com/payment/load/token/{}".format(token)
-        }
-
-    @staticmethod
-    def paytrail_failure():
-        return {
-            "errorMessage": "Testing failure",
-            "errorCode": "401"
-        }
-
-    @staticmethod
-    def bitpay_success(order_no):
-        return {
-            'url': 'https://test.bitpay.com/invoice?id={}'.format(order_no),
-            'status': 'new',
-            'id': order_no
-        }
-
-    @staticmethod
-    def bitpay_failure():
-        return {}
-
-
 class StoreTests(TestCase):
     def setUp(self):
-        self.event = StoreTestData.create_test_event('TestEvent')
+        self.event = KompomaattiTestData.create_test_event('TestEvent')
         self.items = []
         self.variants = {}
         for i in range(5):
@@ -236,7 +130,7 @@ class StoreTests(TestCase):
         self.assertEqual(non_discount_item.purchase_price, 20)
 
     @mock.patch('Instanssi.store.utils.paytrail.requests.post',
-                return_value=FakeResponse(401, FakeResponse.paytrail_failure()))
+                return_value=PaytrailFakeResponse(401, PaytrailFakeResponse.create_failure()))
     def test_paytrail_begin_payment_process_bad_request(self, mock_post):
         """ Make sure paytrail fails properly (we should get a failure redirect url) """
         result = begin_payment_process(1, self.transaction)
@@ -244,7 +138,7 @@ class StoreTests(TestCase):
         self.assertEqual(self.transaction.token, '')
 
     @mock.patch('Instanssi.store.utils.paytrail.requests.post',
-                return_value=FakeResponse(201, FakeResponse.paytrail_success(order_no="234246654",
+                return_value=PaytrailFakeResponse(201, PaytrailFakeResponse.create_success(order_no="234246654",
                                                                              token=uuid.uuid4().hex)))
     def test_paytrail_begin_payment_process_good_request(self, mock_post):
         """ Make sure paytrail works with a good request (we should get a redirect URL) """
@@ -255,14 +149,14 @@ class StoreTests(TestCase):
         self.assertEqual(result, "https://payment.paytrail.com/payment/load/token/{}".format(self.transaction.token))
 
     @mock.patch('Instanssi.store.utils.bitpay.requests.post',
-                return_value=FakeResponse(401, FakeResponse.bitpay_failure()))
+                return_value=BitpayFakeResponse(401, BitpayFakeResponse.create_failure()))
     def test_bitpay_begin_payment_process_bad_request(self, mock_post):
         """ Make sure bitpay fails properly (we should get a failure redirect url) """
         result = begin_payment_process(0, self.transaction)
         self.assertEqual(result, reverse('store:pm:bitpay-failure'))
 
     @mock.patch('Instanssi.store.utils.bitpay.requests.post',
-                return_value=FakeResponse(201, FakeResponse.bitpay_success(order_no="3456454560")))
+                return_value=BitpayFakeResponse(201, BitpayFakeResponse.create_success(order_no="3456454560")))
     def test_bitpay_begin_payment_process_good_request(self, mock_post):
         """ Make sure bitpay works with a good request (we should get a redirect URL) """
         result = begin_payment_process(0, self.transaction)
@@ -270,3 +164,54 @@ class StoreTests(TestCase):
         self.assertEqual(self.transaction.token, '3456454560')
         self.assertEqual(self.transaction.payment_method_name, "Bitpay")
         self.assertEqual(result, "https://test.bitpay.com/invoice?id={}".format(self.transaction.token))
+
+    def test_paytrail_success_endpoint(self):
+        # TODO: Implement this
+        ta = StoreTestData.create_full_started_transaction()
+        url = q_reverse('store:pm:paytrail-success', query={
+            'ORDER_NUMBER': ta.id,
+            'TIMESTAMP': 0,
+            'PAID': 'asd',
+            'METHOD': 2,
+            'RETURN_AUTHCODE': ''
+        })
+        result = self.client.get(url)
+        self.assertTemplateUsed(result, 'store/success.html')
+        self.assertEqual(result.status_code, 200)
+
+    def test_paytrail_notify_endpoint(self):
+        # TODO: Implement this
+        #result = self.client.get(reverse('store:pm:paytrail-notify'))
+        #self.assertEqual(result.status_code, 200)
+        pass
+
+    def test_paytrail_failure_endpoint(self):
+        """
+        Test paytrail failure endpoint. Note that this should be only a static page, no other functionality.
+        """
+        result = self.client.get(reverse('store:pm:paytrail-failure'))
+        self.assertTemplateUsed(result, 'store/failure.html')
+        self.assertEqual(result.status_code, 200)
+
+    def test_bitpay_success_endpoint(self):
+        """
+        Test bitpay success endpoint. Note that this should be only a static page, no other functionality.
+        """
+        result = self.client.get(reverse('store:pm:bitpay-success'))
+        self.assertTemplateUsed(result, 'store/success.html')
+        self.assertEqual(result.status_code, 200)
+
+    def test_bitpay_notify_endpoint(self):
+        # TODO: Implement this
+        #result = self.client.get(reverse('store:pm:bitpay-notify'))
+        #self.assertEqual(result.status_code, 200)
+        pass
+
+    def test_bitpay_failure_endpoint(self):
+        """
+        Test bitpay failure endpoint. Note that this should be only a static page, no other functionality.
+        """
+        result = self.client.get(reverse('store:pm:bitpay-failure'))
+        self.assertTemplateUsed(result, 'store/failure.html')
+        self.assertEqual(result.status_code, 200)
+

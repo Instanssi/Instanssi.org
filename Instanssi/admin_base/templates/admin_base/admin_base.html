@@ -7,51 +7,55 @@
 
 {% block head %}
     <!-- Management CSS (lib) -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/datetimepicker/jquery.ui.datetime.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/summernote/summernote.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css' %}" />
     
     <!-- Management JS (lib) -->
     <script type="text/javascript" src="{% static "libs/bootstrap/assets/javascripts/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/datetimepicker/jquery-ui-timepicker-addon.js" %}"></script>
     <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
     <script type="text/javascript" src="{% static "libs/summernote/summernote.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/summernote/lang/summernote-fi-FI.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/momentjs/moment.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/momentjs/moment-fi-locale.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
 
     <!-- Management custom fluff -->
     <link rel="stylesheet" type="text/css" href="{% static "admin_base/css/style.css" %}" />
 {% endblock %}
 
 {% block jquery %}
+        $('.timeinput').datetimepicker({
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            format: "HH:mm:ss"
+        });
         $('.datetimeinput').datetimepicker({
-            dateFormat: 'yy-mm-dd',
-            timeFormat: 'hh:mm:ss',
-            stepMinute: 5,
-            timeOnlyTitle: 'Valitse aika',
-            timeText: 'Aika',
-            hourText: 'Tunti',
-            minuteText: 'Minuutti',
-            secondText: 'Sekunti',
-            millisecText: 'Millisekunti',
-            currentText: 'Nyt',
-            closeText: 'Sulje',
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            sideBySide: true,
+            format: "YYYY-MM-DD HH:mm:ss"
         });
-        $('.timeinput').timepicker({
-            showButtonPanel: false,
-            timeFormat: 'hh:mm:ss',
-            stepMinute: 5,
-            timeOnlyTitle: 'Valitse aika',
-            timeText: 'Aika',
-            hourText: 'Tunti',
-            minuteText: 'Minuutti',
-            secondText: 'Sekunti',
-            millisecText: 'Millisekunti',
-            currentText: 'Nyt',
-            closeText: 'Sulje',
+        $('.dateinput').datetimepicker({
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            format: "YYYY-MM-DD"
         });
-        $('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
-        $('.ui-widget').css('font-size','14px');
-
         $(".delete_link").click(function(){ return confirm("Varmista poisto"); });
 {% endblock %}
 

@@ -144,7 +144,11 @@ a:hover {
     transition: background-color $transition-small;
 }
 
-.menuitem a:hover { background-color: $theme-nav-hover; }
+.menuitem a:hover {
+    background-color: $theme-nav-hover;
+    color: #fff;
+    text-decoration: none;
+}
 .menuitem:hover { position: relative; }
 ul.sub-level { z-index: 99; }
 
@@ -250,25 +254,25 @@ ul#crumbpath a:hover {
     }
 }
 
-.login-button span::before {
+.login-button::before {
     display: inline;
     padding-right: 8px;
 }
 // we might want to hint at login method in the usertools box, so
 // the logins are listed here instead of the users app
-.login-facebook span::before {
+.login-facebook::before {
     @include awesome-glyph('\f09a');
 }
-.login-steam span::before {
+.login-steam::before {
     @include awesome-glyph('\f1b7');
 }
-.login-google span::before {
+.login-google::before {
     @include awesome-glyph('\f1a0');
 }
-.login-github span::before {
+.login-github::before {
     @include awesome-glyph('\f09b');
 }
-.login-twitter span::before {
+.login-twitter::before {
     @include awesome-glyph('\f099');
 }
 

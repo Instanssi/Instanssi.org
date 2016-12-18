@@ -1,4 +1,8 @@
+/* global $ */
+
 $(function () {
+    'use strict';
+
     // layout-specific JS can go here.
     function layoutButton() {
         /* mobile nav button */
@@ -44,6 +48,28 @@ $(function () {
         moveLayers(0);
     }
 
+    function cubes() {
+        var $container = $('.header-bg-cubes');
+        // var IMAGE_BASE_PATH = '/static/main2017/images/';
+
+        var cubeData = [
+            { class: 'cube-2017 cube-2017-0', x: '200px', y: '15px', s: '192px' },
+            // omnomnom
+            { class: 'cube-2017 cube-2017-1', x: '570px', y: '220px', s: '96px' },
+        ];
+
+        cubeData.forEach(function(cd) {
+            // var src = IMAGE_BASE_PATH + cd.src;
+            var $cube = $('<div class="' + cd.class + '"/>');
+            $cube.css('left', cd.x);
+            $cube.css('top', cd.y);
+            $cube.css('width', cd.s);
+            $cube.css('height', cd.s);
+            $container.append($cube);
+        });
+    }
+
     layoutButton();
     snek();
+    cubes();
 });

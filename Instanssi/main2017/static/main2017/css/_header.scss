@@ -23,6 +23,10 @@ $banner-image-1: '../images/banner-bg-2.png';
         background-position-x: center;
         background-position-y: 5px;
         background-position-x: calc(50% - 85px);
+
+        // TODO: Does filter: blur still kill perf on mobiles?
+        -webkit-filter: blur(2px);
+        filter: blur(2px);
     }
 
     .header-bg-1 {
@@ -30,6 +34,31 @@ $banner-image-1: '../images/banner-bg-2.png';
         background: url($banner-image-1) repeat-x calc(50% - 110px);
         // try to align looping background snake with the one in the header
         background-position: calc(50% - 85px) 5px;
+    }
+
+    .header-bg-cubes {
+        // this is also a 'container' for consistent positioning
+        position: relative;
+    }
+
+    .cube-2017-0 {
+        left: -128px;
+        top: 64px;
+        height: 128px;
+        width: 128px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        // background-position: scale;
+    }
+    .cube-2017-1 {
+        height: 96px;
+        width: 96px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        transform: rotate(140deg);
+    }
+    // TODO: Mobile positioning
+    .cube-2017 {
+        position: absolute;
+        background-size: contain;
     }
 
     .snek {
@@ -47,6 +76,7 @@ $banner-image-1: '../images/banner-bg-2.png';
             background: url('../images/banner-snek.png') no-repeat;
             background-size: 100%;
         }
+        /*
         .snek-tail {
             position: absolute;
             width: 30px;
@@ -55,7 +85,7 @@ $banner-image-1: '../images/banner-bg-2.png';
             //box-shadow: $theme-color-bright 0 0 4px;
             background: url('../images/banner-cube-1.png') no-repeat;
             background-size: 100%;
-        }
+        }*/
     }
 
     a {

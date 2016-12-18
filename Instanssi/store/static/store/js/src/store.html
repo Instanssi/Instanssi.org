@@ -74,31 +74,39 @@
     </div>
 
     <div v-if="step === 2" class="store-summary form-horizontal">
-        <h3>Ostoskori</h3>
-        <store-cart-item v-for="item in cart"
-            :read-only="true"
-            :item="item"
-            :changeItemCount="changeItemCount"
-            :removeItemFromCart="removeItemFromCart" />
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Ostoskori</h3>
+                <store-cart-item v-for="item in cart"
+                    :read-only="true"
+                    :item="item"
+                    :changeItemCount="changeItemCount"
+                    :removeItemFromCart="removeItemFromCart" />
 
-        <div class="pull-right cart-total">
-            Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong>
+                <div class="pull-right cart-total">
+                    Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong>
+                </div>
+                <div class="clearfix" />
+            </div>
+            <div class="col-lg-6">
+                <h3>Tilaajan tiedot</h3>
+                <store-order-summary :data="info" :messages="messages" />
+            </div>
         </div>
 
-        <div class="clearfix" />
-
-        <h3>Tilaajan tiedot</h3>
-        <store-order-summary :data="info" :messages="messages" />
-
-        <h3>Maksutavan valinta</h3>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">Maksutapa</label>
-            <div class="col-sm-8">
-                <select class="form-control" v-model="paymentMethod">
-                    <option v-for="method in paymentMethods" v-bind:value="method.id">
-                        {{ method.name }}
-                    </option>
-                </select>
+        <div class="row" v-if="!paymentURL">
+            <div class="col-sm-12">
+                <h3>Maksutavan valinta</h3>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Maksutapa</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" v-model="paymentMethod">
+                            <option v-for="method in paymentMethods" v-bind:value="method.id">
+                                {{ method.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 

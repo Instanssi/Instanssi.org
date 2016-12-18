@@ -74,6 +74,10 @@
     }
 }
 
+.store-summary .form-group {
+    // default 15px, too much
+    margin-bottom: 5px;
+}
 
 .form-group.form-group-required {
     position: relative;

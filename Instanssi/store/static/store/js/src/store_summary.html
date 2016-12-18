@@ -1,12 +1,12 @@
-<form class="form-horizontal" @submit.prevent>
-    <div class="row"><div class="col-lg-6">
+<form class="form-horizontal store-summary" @submit.prevent>
+    <div class="row"><div class="col-sm-12">
         <store-summary-field title="Etunimi" field="first_name" :messages="messages" :data="data" />
         <store-summary-field title="Sukunimi" field="last_name" :messages="messages" :data="data" />
         <store-summary-field title="Sähköposti" field="email" :messages="messages" :data="data" />
         <store-summary-field title="Matkapuhelin" field="mobile" :messages="messages" :data="data" />
         <store-summary-field title="Muu puhelinnumero" field="telephone" :messages="messages" :data="data" />
     </div>
-    <div class="col-lg-6">
+    <div class="col-sm-12">
         <store-summary-field title="Katuosoite" field="street" :messages="messages" :data="data" />
         <store-summary-field title="Postinumero" field="postal_code" :messages="messages" :data="data" />
         <store-summary-field title="Kaupunki" field="city" :messages="messages" :data="data" />
@@ -14,8 +14,8 @@
         <store-summary-field title="Yritys" field="company" :messages="messages" :data="data" />
     </div></div>
     <div class="form-group" v-show="data.information && data.information.length">
-        <label class="col-lg-2 control-label">Lisätietoja</label>
-        <div class="col-lg-10">
+        <label class="col-sm-4 control-label">Lisätietoja</label>
+        <div class="col-sm-8">
             <p class="form-control-static">{{ data.information }}</p>
             <store-messages field="information" :messages="messages" />
         </div>

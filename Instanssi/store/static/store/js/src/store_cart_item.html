@@ -8,11 +8,11 @@
         </div>
     </div>
     <span class="pull-right">
-        <span class="form-control-static">
+        <div class="pull-left form-control-static">
             x <strong>{{ item.count }}</strong>
             = <strong>{{ getSubtotal(item) | formatPrice }}</strong>
-        </span>
-        <span v-if="!readOnly">
+        </div>
+        <span class="pull-right" v-if="!readOnly">
             <button class="btn btn-link" v-on:click="changeItemCount(item, 1)">
                 <span class="fa fa-plus fa-fw" />
             </button>

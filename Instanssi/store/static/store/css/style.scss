@@ -50,6 +50,23 @@
     .item-description { clear: left; }
 }
 
+.cart-item {
+    padding: 4px;
+    background: #fff;
+    box-shadow: rgba(#000, .2) 0 2px 8px;
+    margin-top: 1px;
+
+    .cart-item-image {
+        margin-right: 8px;
+        width: 32px;
+        height: 32px;
+    }
+    .cart-item-name {
+        white-space: nowrap;
+    }
+}
+
+
 .form-group.form-group-required {
     position: relative;
     label:after {

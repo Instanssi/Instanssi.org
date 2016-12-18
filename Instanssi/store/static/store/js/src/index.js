@@ -8,6 +8,7 @@ import 'core-js/es6/promise';
 import Vue from 'vue';
 import { formatPrice, storeXHR, loadingOverlay } from './store_common.js';
 import './store_information.js';
+import './store_cart.js';
 
 const PAYMENT_METHODS = [
     { id: 1, name: 'Paytrail verkkomaksu' },
@@ -75,6 +76,8 @@ Vue.component('store-product', {
         product: Object,
         cart: Array,
         messages: Object,
+        changeItemCount: Function,
+        removeItemFromCart: Function,
     },
     data() {
         // because there can be many components of the same type, a component's
@@ -139,11 +142,17 @@ Vue.component('store-product', {
         }
     },
     computed: {
-        cartCount() {
-            return this.getCartCount();
-        },
         effectivePrice() {
             return this.getEffectivePrice();
+        },
+        cartItems() {
+            let items = [];
+            this.cart.forEach((item) => {
+                if(cartItemEquals(item, this.product)) {
+                    items.push(item);
+                }
+            });
+            return items;
         }
     }
 });

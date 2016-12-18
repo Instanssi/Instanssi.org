@@ -24,8 +24,10 @@
         <div class="list-unstyled store-items loading-container">
             <store-product v-for="product in products"
                 :product="product" :cart="cart" :messages="messages"
-                v-on:addItem="addItem"
-                v-on:removeItem="removeItem" />
+                :changeItemCount="changeItemCount"
+                :removeItemFromCart="removeItemFromCart"
+                @addItem="addItem"
+                @removeItem="removeItem" />
             <loading-overlay :loading="loadingStatus === 'loading'" />
             <div v-if="loadingStatus === 'error'" class="alert alert-danger">
                 Virhe tuotelistaa hakiessa.
@@ -45,24 +47,10 @@
         <h3>Ostoskori</h3>
         <store-messages field="items" :messages="messages" />
         <div class="list-unstyled store-items">
-            <div v-for="item in cart">
-                <div class="pull-left">
-                    <span>{{ item.product.name }}</span>
-                    <span v-if="item.variant">({{ item.variant.name }})</span>
-                </div>
-                <span class="pull-right">
-                    <span>
-                        x <strong>{{ item.count }}</strong>
-                        = <strong>{{ getSubtotal(item) | formatPrice }}</strong>
-                    </span>
-                <button class="btn btn-secondary" v-on:click="changeItemCount(item, 1)">+</button>
-                <button class="btn btn-secondary" v-on:click="changeItemCount(item, -1)">-</button>
-                <button class="btn btn-danger" v-on:click="removeItemFromCart(item)">
-                    <span class="fa fa-fw fa-trash"></span>
-                </button>
-                </span>
-                <span class="clearfix"></span>
-            </div>
+            <store-cart-item v-for="item in cart"
+                :item="item"
+                :changeItemCount="changeItemCount"
+                :removeItemFromCart="removeItemFromCart" />
             <div class="pull-right">Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong></div>
         </div>
 
@@ -85,8 +73,17 @@
 
     <div v-if="step === 2" class="store-summary form-horizontal">
         <h3>Yhteenveto ja maksutapa</h3>
-        <h4>Tilauksen tiedot</h4>
-            <store-order-summary :data="info" :messages="messages" />
+
+        <h4>Ostoskori</h4>
+        <store-cart-item v-for="item in cart"
+            :read-only="true"
+            :item="item"
+            :changeItemCount="changeItemCount"
+            :removeItemFromCart="removeItemFromCart" />
+
+        <h4>Tilaajan tiedot</h4>
+        <store-order-summary :data="info" :messages="messages" />
+
         <h4>Maksutavan valinta</h4>
         <div class="form-group">
             <label class="col-sm-4 control-label">Maksutapa</label>

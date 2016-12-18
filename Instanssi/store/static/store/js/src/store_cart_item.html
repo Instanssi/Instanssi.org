@@ -1,0 +1,28 @@
+<div class="cart-item form-inline">
+    <div class="pull-left">
+        <img class="cart-item-image pull-left"
+            :src="item.product.imagefile_thumbnail_url" />
+        <div class="cart-item-name form-control-static">
+            <span>{{ item.product.name }}</span>
+            <span v-if="item.variant">({{ item.variant.name }})</span>
+        </div>
+    </div>
+    <span class="pull-right">
+        <span class="form-control-static">
+            x <strong>{{ item.count }}</strong>
+            = <strong>{{ getSubtotal(item) | formatPrice }}</strong>
+        </span>
+        <span v-if="!readOnly">
+            <button class="btn btn-link" v-on:click="changeItemCount(item, 1)">
+                <span class="fa fa-plus fa-fw" />
+            </button>
+            <button class="btn btn-link" v-on:click="changeItemCount(item, -1)">
+                <span class="fa fa-minus fa-fw" />
+            </button>
+            <button class="btn btn-link" v-on:click="removeItemFromCart(item)">
+                <span class="fa fa-fw fa-trash"></span>
+            </button>
+        </span>
+    </span>
+    <span class="clearfix"></span>
+</div>

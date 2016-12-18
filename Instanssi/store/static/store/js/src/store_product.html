@@ -24,14 +24,14 @@
                     <span class="fa fa-plus" /> Lisää
                 </button>
             </div>
-            <div v-if="getCartCount() > 0" class="text-right">
-                <span class="product-cart-count">
-                    <span class="fa fa-shopping-cart"></span> {{ cartCount }}
-                </span>
-                <button class="btn btn-secondary" v-on:click="removeItem()">
-                    <span class="fa fa-minus" /> Poista
-                </button>
-            </div>
+        </div>
+    </div>
+    <div class="row" v-if="cartItems">
+        <div class="col-sm-12">
+            <store-cart-item v-for="item in cartItems"
+                :item="item"
+                :changeItemCount="changeItemCount"
+                :removeItemFromCart="removeItemFromCart" />
         </div>
     </div>
 </div>

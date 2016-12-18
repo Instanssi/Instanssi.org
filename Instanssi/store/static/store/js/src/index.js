@@ -197,6 +197,8 @@ let app = new Vue({
         customerInfoIsValid: false,
         /** Set when purchase is ready to be paid. */
         paymentURL: null,
+        /** Set when transaction is being submitted (prevent accidental spam) */
+        submitting: false,
     },
     template: require('!raw-loader!./store.html'),
     created() {
@@ -221,8 +223,9 @@ let app = new Vue({
     },
     methods: {
         canMoveToStep(step) {
-            // not going anywhere if the payment URL is already set
-            if(this.paymentURL !== null) {
+            // Not going anywhere if the payment URL is already set
+            // or the UI is waiting for it.
+            if(this.paymentURL !== null || this.submitting) {
                 return step === 2;
             }
             let ok = true;
@@ -426,7 +429,8 @@ let app = new Vue({
          * @returns {Promise} - Request results
          */
         submit() {
-            if(this.paymentURL !== null) {
+            // Don't allow multiple transactions to be sent
+            if(this.paymentURL !== null || this.submitting) {
                 return;
             }
             let { info } = this;
@@ -434,12 +438,17 @@ let app = new Vue({
             let transaction = this.getTransactionObject();
             transaction.save = true;
 
+            // prevent multiple submits
+            this.submitting = true;
+
             return submitTransaction(transaction).then((res) => {
                 console.info(res);
+                this.submitting = false;
                 this.paymentURL = res.url;
                 window.location.replace(this.paymentURL);
             }, (err) => {
                 this.messages = err;
+                this.submitting = false;
                 // Manipulate error message so both email fields show errors
                 if(err) {
                     err.email2 = err.email;

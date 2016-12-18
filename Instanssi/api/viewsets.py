@@ -2,7 +2,7 @@
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.compat import is_authenticated
@@ -21,6 +21,7 @@ class IsAuthenticatedOrWriteOnly(BasePermission):
     def has_permission(self, request, view):
         return (
             request.method == 'POST' or
+            request.method in SAFE_METHODS or
             request.user and is_authenticated(request.user)
         )
 
@@ -228,7 +229,7 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
 
 class StoreItemViewSet(ReadOnlyModelViewSet):
     """
-    Exposes all available store items.
+    Exposes all available store items.  This entrypoint does not require authentication/authorization.
     """
     serializer_class = StoreItemSerializer
     queryset = StoreItem.items_available()
@@ -238,7 +239,7 @@ class StoreItemViewSet(ReadOnlyModelViewSet):
 
 class StoreTransactionViewSet(WriteOnlyModelViewSet):
     """
-    Handles saving store transactions
+    Handles saving store transactions. This entrypoint does not require authentication/authorization.
     """
     serializer_class = StoreTransactionSerializer
     permission_classes = [IsAuthenticatedOrWriteOnly]

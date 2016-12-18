@@ -38,17 +38,17 @@
                 <td>{{ file.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
 {% if perms.admin_upload.change_uploadedfile %}
                 <td>
-					<a href="{% url 'manage-uploads:edit' selected_event_id file.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                    <a href="{% url 'manage-uploads:edit' selected_event_id file.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
                         <span class="edit_link fa fa-pencil"></span>
                     </a>
                 </td>
 {% endif %}
 {% if perms.admin_upload.delete_uploadedfile %}
                 <td>
-					<a href="{% url 'manage-uploads:delete' selected_event_id file.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                    <a href="{% url 'manage-uploads:delete' selected_event_id file.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
                         <span class="edit_link fa fa-trash"></span>
                     </a>
-				</td>
+                </td>
 {% endif %}
             </tr>
 {% endfor %}

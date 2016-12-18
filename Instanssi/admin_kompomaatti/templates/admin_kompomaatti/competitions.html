@@ -22,54 +22,54 @@
 {{ block.super }}
     <h2>Kilpailut</h2>
 {% if competitions %}
-	<table class="table table-striped table-condensed">
-		<thead>
-			<tr>
-				<th>Nimi</th>
-				<th>Ilmoittautuminen päättyy</th>
-				<th>Alkaa</th>
-				<th>Päättyy</th>
-				<th>Näytä tulokset</th>
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Ilmoittautuminen päättyy</th>
+                <th>Alkaa</th>
+                <th>Päättyy</th>
+                <th>Näytä tulokset</th>
 {% if perms.kompomaatti.change_competitionparticipation %}
-				<th class="sorter-false">Pisteytys</th>
+                <th class="sorter-false">Pisteytys</th>
 {% endif %}
-				<th class="sorter-false">Osallistujat</th>
-				{% if perms.kompomaatti.change_competition %}<th></th>{% endif %}
+                <th class="sorter-false">Osallistujat</th>
+                {% if perms.kompomaatti.change_competition %}<th></th>{% endif %}
                 {% if perms.kompomaatti.delete_competition %}<th></th>{% endif %}
-			</tr>
-		</thead>
-		<tbody>
+            </tr>
+        </thead>
+        <tbody>
 {% for comp in competitions %}
-			<tr>
-				<td>{{ comp.name }}</td>
-				<td>{{ comp.participation_end|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
+            <tr>
+                <td>{{ comp.name }}</td>
+                <td>{{ comp.participation_end|date:"d.m.Y \k\l\o\. H:i" }}</td>
+                <td>{{ comp.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
+                <td>{{ comp.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
+                <td>{% if comp.show_results %}Kyllä{% else %}Ei{% endif %}</td>
 {% if perms.kompomaatti.change_competitionparticipation %}
-				<td><a href="{% url 'manage-kompomaatti:score' selected_event_id comp.id %}">Pisteytys</a></td>
+                <td><a href="{% url 'manage-kompomaatti:score' selected_event_id comp.id %}">Pisteytys</a></td>
 {% endif %}
-				<td><a href="{% url 'manage-kompomaatti:participations' selected_event_id comp.id %}">Osallistujat</a></td>
+                <td><a href="{% url 'manage-kompomaatti:participations' selected_event_id comp.id %}">Osallistujat</a></td>
 {% if perms.kompomaatti.change_competition %}
                 <td>
-					<a href="{% url 'manage-kompomaatti:competition-edit' selected_event_id comp.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                    <a href="{% url 'manage-kompomaatti:competition-edit' selected_event_id comp.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
                         <span class="edit_link fa fa-pencil"></span>
                     </a>
                 </td>
 {% endif %}
 {% if perms.kompomaatti.delete_competition %}
                 <td>
-					<a href="{% url 'manage-kompomaatti:competition-delete' selected_event_id comp.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                    <a href="{% url 'manage-kompomaatti:competition-delete' selected_event_id comp.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
                         <span class="edit_link fa fa-trash"></span>
                     </a>
                 </td>
 {% endif %}
-			</tr>
+            </tr>
 {% endfor %}
-		</tbody>
-	</table>
+        </tbody>
+    </table>
 {% else %}
-	<p>Ei kilpailuja.</p>
+    <p>Ei kilpailuja.</p>
 {% endif %}
 
 {% if perms.kompomaatti.add_competition %}

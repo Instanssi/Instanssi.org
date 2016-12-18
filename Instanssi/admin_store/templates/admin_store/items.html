@@ -62,7 +62,7 @@
                 </td>
 {% if perms.store.change_storeitem %}
                 <td>
-					<a href="{% url 'manage-store:edit_item' item.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                    <a href="{% url 'manage-store:edit_item' item.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
                         <span class="edit_link fa fa-pencil"></span>
                     </a>
                 </td>
@@ -70,11 +70,11 @@
 {% if perms.store.delete_storeitem %}
                 <td>
                     {% if item.sold == 0 %}
-					<a href="{% url 'manage-store:delete_item' item.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                    <a href="{% url 'manage-store:delete_item' item.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
                         <span class="edit_link fa fa-trash"></span>
                     </a>
                     {% endif %}
-				</td>
+                </td>
 {% endif %}
             </tr>
 {% endfor %}

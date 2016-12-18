@@ -19,7 +19,7 @@
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa kompon ?"); 
     });
-	$("#compo_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#compo_pager")}); 
+    $("#compo_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#compo_pager")});
 {% endblock %}
 
 {% block content %}
@@ -27,42 +27,42 @@
     <h2>Kompot</h2>
 
 {% if compos %}
-	<table id="compo_table" class="tablesorter">
-		<thead>
-			<tr>
-				<th>Nimi</th>
-				<th>Aktiivinen</th>
-				<th>Arkistossa</th>
-				<th>Etusivulla</th>
-				<th>Aika</th>
-				<th class="sorter-false management_field"></th>
-			</tr>
-		</thead>
-		<tbody>
+    <table id="compo_table" class="tablesorter">
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Aktiivinen</th>
+                <th>Arkistossa</th>
+                <th>Etusivulla</th>
+                <th>Aika</th>
+                <th class="sorter-false management_field"></th>
+            </tr>
+        </thead>
+        <tbody>
 {% for compo in compos %}
-			<tr>
-				<td>{{ compo.name }}</td>
-				<td>{% if compo.active %}Kyllä{% else %}Ei{% endif %}</td>
-				<td>{% if compo.hide_from_archive %}Ei{% else %}Kyllä{% endif %}</td>
-				<td>{% if compo.hide_from_frontpage %}Ei{% else %}Kyllä{% endif %}</td>
-				<td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>
+            <tr>
+                <td>{{ compo.name }}</td>
+                <td>{% if compo.active %}Kyllä{% else %}Ei{% endif %}</td>
+                <td>{% if compo.hide_from_archive %}Ei{% else %}Kyllä{% endif %}</td>
+                <td>{% if compo.hide_from_frontpage %}Ei{% else %}Kyllä{% endif %}</td>
+                <td>{{ compo.compo_start|date:"d.m.Y \k\l\o\. H:i" }}</td>
+                <td>
 {% if perms.kompomaatti.change_compo %}
-					<a href="{% url 'manage-kompomaatti:compo-edit' selected_event_id compo.id %}" class="edit_link">Muokkaa</a>
+                    <a href="{% url 'manage-kompomaatti:compo-edit' selected_event_id compo.id %}" class="edit_link">Muokkaa</a>
 {% endif %}
 {% if perms.kompomaatti.delete_compo %}
-					<a href="{% url 'manage-kompomaatti:compo-delete' selected_event_id compo.id %}" class="delete_link">Poista</a>
+                    <a href="{% url 'manage-kompomaatti:compo-delete' selected_event_id compo.id %}" class="delete_link">Poista</a>
 {% endif %}
-				</td>
-			</tr>
+                </td>
+            </tr>
 {% endfor %}
-		</tbody>
-	</table>
-	<div id="compo_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
+        </tbody>
+    </table>
+    <div id="compo_pager" class="pager">
+        {% include "common/pagination.html" %}
+    </div>
 {% else %}
-	<p>Ei kompoja.</p>
+    <p>Ei kompoja.</p>
 {% endif %}
 
 {% if perms.kompomaatti.add_compo %}

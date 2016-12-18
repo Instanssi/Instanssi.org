@@ -39,17 +39,17 @@
             <td>{{ message.message }}</td>
 {% if perms.screenshow.change_ircmessage %}
                 <td>
-					<a href="{% url 'manage-screenshow:edit-ircmessage' selected_event_id message.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                    <a href="{% url 'manage-screenshow:edit-ircmessage' selected_event_id message.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
                         <span class="edit_link fa fa-pencil"></span>
                     </a>
                 </td>
 {% endif %}
 {% if perms.screenshow.delete_ircmessage %}
                 <td>
-					<a href="{% url 'manage-screenshow:delete-ircmessage' selected_event_id message.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                    <a href="{% url 'manage-screenshow:delete-ircmessage' selected_event_id message.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
                         <span class="edit_link fa fa-trash"></span>
                     </a>
-				</td>
+                </td>
 {% endif %}
         </tr>
 {% endfor %}

@@ -21,41 +21,41 @@
     <h2>Tapahtumat</h2>
 {% if events %}
     <table class="table table-striped table-condensed">
-    	<thead>
-    		<tr>
-    			<th>Nimi</th>
-    			<th>Päivämäärä</th>
-    			<th>Arkistoitu</th>
-    			{% if perms.kompomaatti.change_event %}<th></th>{% endif %}
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Päivämäärä</th>
+                <th>Arkistoitu</th>
+                {% if perms.kompomaatti.change_event %}<th></th>{% endif %}
                 {% if perms.kompomaatti.delete_event %}<th></th>{% endif %}
-    		</tr>
-    	</thead>
-    	<tbody>
+            </tr>
+        </thead>
+        <tbody>
 {% for event in events %}
-			<tr>
-				<td><a href="{% url 'manage-overview:index' event.id %}">{{ event.name }}</a></td>
-				<td>{{ event.date|date:"d.m.Y" }}</td>
-				<td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
+            <tr>
+                <td><a href="{% url 'manage-overview:index' event.id %}">{{ event.name }}</a></td>
+                <td>{{ event.date|date:"d.m.Y" }}</td>
+                <td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
 {% if perms.kompomaatti.change_event %}
-				<td>
-					<a href="{% url 'manage-events:edit' event.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                <td>
+                    <a href="{% url 'manage-events:edit' event.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
                         <span class="edit_link fa fa-pencil"></span>
                     </a>
                 </td>
 {% endif %}
 {% if perms.kompomaatti.delete_event %}
                 <td>
-					<a href="{% url 'manage-events:delete' event.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                    <a href="{% url 'manage-events:delete' event.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
                         <span class="edit_link fa fa-trash"></span>
                     </a>
-				</td>
+                </td>
 {% endif %}
-			</tr>
+            </tr>
 {% endfor %}
-		</tbody>
+        </tbody>
     </table>
 {% else %}
-	<p>Ei tapahtumia.</p>
+    <p>Ei tapahtumia.</p>
 {% endif %}
 
 {% if perms.kompomaatti.add_event %}

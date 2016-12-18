@@ -14,7 +14,6 @@
 {% block jquery %}
 {{ block.super }}
     $('.vote-notice').hide();
-    $("#submit_button").button();
     $("#submit_button").click(function() {
         var results = new Array();
         $("#to_list").children('li').each(function(index) {
@@ -88,7 +87,7 @@
 <div id="compo-vote" class="vote-widget">
     <div class="vote-notice vote-success ui-state-highlight"><div class="ui-icon ui-icon-info icon-messagebox"></div><span>Äänestys suoritettu!</span></div>
     <div class="vote-notice vote-error ui-state-error"><div class="ui-icon ui-icon-alert icon-messagebox"></div><span id="vote-error-text"></span></div>
-    <div class="vote-wrapper vote-buttons"><span class="vote-button" id="submit_button">Tallenna</span></div>
+    <div class="vote-wrapper vote-buttons"><span class="vote-button" id="submit_button" class="btn btn-primary"">Tallenna</span></div>
     <div class="vote-wrapper">
     <ul id="from_list" class="vote-list connected">
 {% for entry in nvoted_entries %}

@@ -15,8 +15,7 @@
 {% endblock %}
 
 {% block jquery %}
-{{ block.super }} 
-	$("#participation_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}); 
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +23,7 @@
     <h2>Osallistujat</h2>
 
 {% if participants %}
-	<table id="participation_table" class="tablesorter">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<th>Nimi</th>
@@ -32,7 +31,7 @@
 				<th>Tulos</th>
 				<th>Sijoitus</th>
 {% if perms.kompomaatti.change_competitionparticipation %}
-				<th class="sorter-false management_field"></th>
+				<th></th>
 {% endif %}
 			</tr>
 		</thead>
@@ -44,9 +43,11 @@
 				<td>{{ part.get_formatted_score }}</td>
 				<td>{{ part.get_rank }}</td>
 {% if perms.kompomaatti.change_competitionparticipation %}
-				<td>
-					<a href="{% url 'manage-kompomaatti:participation-edit' selected_event_id part.competition.id part.id %}" class="edit_link">Muokkaa</a>
-				</td>
+                <td>
+					<a href="{% url 'manage-kompomaatti:participation-edit' selected_event_id part.competition.id part.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
+                </td>
 {% endif %}
 			</tr>
 {% endfor %}

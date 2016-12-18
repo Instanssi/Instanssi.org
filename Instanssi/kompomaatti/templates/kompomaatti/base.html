@@ -6,16 +6,12 @@
 
 {% block head %}
     <!-- Kompomaatti specific -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static "kompomaatti/css/style.scss" %}" />
     {% endcompress %}
-    <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
 {% endblock %}
 
 {% block jquery %}
-    $('form.uniForm').uniform();
     $('.ui-widget').css('font-size','14px');
 {% endblock %}
 

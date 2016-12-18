@@ -6,7 +6,6 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block crumbs %}
@@ -16,36 +15,22 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_text').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
-    });
-    $('#submit-id-submit').addClass('wymupdate');
-
-    $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti poistaa blogientryn ?"); 
-    });
-    $("#blogentry_table").tablesorter({widgets: ['zebra'], sortList: [[1,1],]}).tablesorterPager({container: $("#blog_pager")}); 
+    $('#id_text').summernote({height: 250, lang: 'fi-FI'});
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Blogi</h2>
 {% if entries %}
-	<table id="blogentry_table" class="tablesorter">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<th>Otsikko</th>
 				<th>Päivämäärä</th>
 				<th>Käyttäjä</th>
 				<th>Julkinen</th>
-				<th class="sorter-false management_field"></th>
+				{% if perms.ext_blog.change_blogentry %}<th></th>{% endif %}
+                {% if perms.ext_blog.delete_blogentry %}<th></th>{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -55,21 +40,24 @@
 				<td>{{ entry.date|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ entry.user.username }}</td>
 				<td>{% if entry.public %}Kyllä{% else %}Ei{% endif %}</td>
-				<td>
 {% if perms.ext_blog.change_blogentry %}
-					<a href="{% url 'manage-blog:edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>
+                <td>
+					<a href="{% url 'manage-blog:edit' selected_event_id entry.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
+                </td>
 {% endif %}
 {% if perms.ext_blog.delete_blogentry %}
-					<a href="{% url 'manage-blog:delete' selected_event_id entry.id%}" class="delete_link">Poista</a>
-{% endif %}
+                <td>
+					<a href="{% url 'manage-blog:delete' selected_event_id entry.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                        <span class="edit_link fa fa-trash"></span>
+                    </a>
 				</td>
+{% endif %}
 			</tr>
 {% endfor %}
 		</tbody>
 	</table>
-	<div id="blog_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
 {% else %}
     <p>Ei entryjä!</p>
 {% endif %}

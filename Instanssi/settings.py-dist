@@ -108,7 +108,7 @@ BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
-CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Enable easier access to rest API if DEBUG is enabled
 if DEBUG:

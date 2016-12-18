@@ -17,11 +17,9 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('form.uniForm').uniform();
     $('#id_sps').change(function() {
         $('#id_openid_identifier').val($('#id_sps').val());
     });
-    $('.login-button').button();
 {% endblock %}
 
 {% block crumbs %}
@@ -39,7 +37,7 @@
     </p>
 
     {% for method in AUTH_METHODS %}
-        <a class="login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={{ next }}">{{ method.2 }}</a>
+        <a class="btn btn-primary login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={{ next }}">{{ method.2 }}</a>
     {% endfor %}
     <br />
     {% crispy openidform openidform.helper %}<br />

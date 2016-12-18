@@ -132,4 +132,4 @@ def delete(request, su_id):
         user.save()
 
     # All done, redirect
-    return HttpResponseRedirect(reverse('manage-users:index'))
+    return HttpResponseRedirect(reverse('manage-users:users'))

@@ -6,7 +6,6 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block crumbs %}
@@ -16,44 +15,30 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_description').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
-    });
-    $('#submit-id-submit').addClass('wymupdate');
-    $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti poistaa tapahtuman ?"); 
-    });
-    $("#event_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],]}).tablesorterPager({container: $("#event_pager")});
+    $('#id_description').summernote({height: 250, lang: 'fi-FI'});
     
     function change_event_form() {
         var ac_list = Array(
-            '#id_description',
-            '#id_presenters',
-            '#id_presenters_titles',
-            '#id_icon_original',
-            '#id_icon2_original',
-            '#id_email',
-            '#id_home_url',
-            '#id_twitter_url',
-            '#id_github_url',
-            '#id_facebook_url',
-            '#id_linkedin_url',
-            '#id_wiki_url',
-            '#id_gplus_url'
+            '#div_id_description',
+            '#div_id_presenters',
+            '#div_id_presenters_titles',
+            '#div_id_icon_original',
+            '#div_id_icon2_original',
+            '#div_id_email',
+            '#div_id_home_url',
+            '#div_id_twitter_url',
+            '#div_id_github_url',
+            '#div_id_facebook_url',
+            '#div_id_linkedin_url',
+            '#div_id_wiki_url',
+            '#div_id_gplus_url'
         );
         var c = $('#id_event_type').val();
         $.each(ac_list, function(index, value) {
            if(c == 0) {
-               $(value).parent().hide(); 
+               $(value).hide();
            } else {
-               $(value).parent().show(); 
+               $(value).show();
            }
         });
     }
@@ -70,7 +55,7 @@
     <h2>Ohjelma</h2>
     
 {% if pevs %}
-	<table id="event_table" class="tablesorter">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<th>Otsikko</th>
@@ -78,7 +63,8 @@
 				<th>Aktiivinen</th>
 				<th>Alkaa</th>
 				<th>Päättyy</th>
-				<th class="sorter-false management_field"></th>
+				{% if perms.ext_programme.change_programmeevent %}<th></th>{% endif %}
+                {% if perms.ext_programme.delete_programmeevent %}<th></th>{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -89,21 +75,24 @@
 				<td>{% if event.active %}Kyllä{% else %}Ei{% endif %}</td>
 				<td>{{ event.start|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ event.end|date:"d.m.Y \k\l\o\. H:i" }}</td>
-				<td>
 {% if perms.ext_programme.change_programmeevent %}
-					<a href="{% url 'manage-programme:edit' selected_event_id event.id %}" class="edit_link">Muokkaa</a>
+                <td>
+					<a href="{% url 'manage-programme:edit' selected_event_id event.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
+                </td>
 {% endif %}
 {% if perms.ext_programme.delete_programmeevent %}
-					<a href="{% url 'manage-programme:delete' selected_event_id event.id %}" class="delete_link">Poista</a>
-{% endif %}
+                <td>
+					<a href="{% url 'manage-programme:delete' selected_event_id event.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                        <span class="edit_link fa fa-trash"></span>
+                    </a>
 				</td>
+{% endif %}
 			</tr>
 {% endfor %}
 		</tbody>
 	</table>
-	<div id="event_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
 {% else %}
 	<p>Ei määriteltyä ohjelmaa.</p>
 {% endif %}

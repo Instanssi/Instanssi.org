@@ -15,16 +15,14 @@
 
 {% block jquery %}
 {{ block.super }}
-	$(".jq-button").button();
-	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],[3,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Avaimet</h2>
 {% if tokens %}
-    <a href="{% url 'manage-kompomaatti:votecodes-print' selected_event_id %}" class="jq-button">Vapaat tokenit .PDF muodossa</a>
-	<table id="tokens_table" class="tablesorter"> 
+    <a href="{% url 'manage-kompomaatti:votecodes-print' selected_event_id %}" class="btn btn-primary">Vapaat tokenit .PDF muodossa</a>
+	<table class="table table-striped table-condensed">
 	<thead>
 		<tr>
 			<th>Token</th>
@@ -44,9 +42,6 @@
 {% endfor %}
 	</tbody>
 	</table>
-	<div id="tokens_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
 	<br />
 {% else %}
     <p>Ei äänestyskoodeja.</p>

@@ -5,8 +5,6 @@
 
 {% block head %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
-    <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
 {% endblock %}
 
 {% block crumbs %}
@@ -17,23 +15,20 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti poistaa entryn ?"); 
-    });
     $(".fancybox").fancybox();
-	$("#entry_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#entry_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>DiplomaGenerator</h2>
     <p>
-         <a href="{% url 'manage-kompomaatti:entries_csv' selected_event_id %}">Entryt CSV-muodossa DiplomaGeneratoria varten.</a> Huom! Tämän tuottama tiedosto pitää vielä käydä käsin läpi.
-     </p>
+         <a href="{% url 'manage-kompomaatti:entries_csv' selected_event_id %}">Entryt CSV-muodossa DiplomaGeneratoria varten.</a>
+        Huom! Tämän tuottama tiedosto pitää vielä käydä käsin läpi.
+    </p>
 
     <h2>Entryt</h2>
 {% if entries %}
-	<table id="entry_table" class="tablesorter">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 			    <th class="sorter-false"></th>
@@ -42,7 +37,8 @@
 				<th>Käyttäjä</th>
 				<th>Kompo</th>
 				<th>Diskattu</th>
-				<th class="sorter-false management_field"></th>
+				{% if perms.kompomaatti.change_entry %}<th></th>{% endif %}
+                {% if perms.kompomaatti.delete_entry %}<th></th>{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -62,10 +58,18 @@
 				<td>{% if entry.disqualified %}Kyllä{% else %}Ei{% endif %}</td>
 	            <td>
 {% if perms.kompomaatti.change_entry %}
-	            	<a href="{% url 'manage-kompomaatti:entry-edit' selected_event_id entry.id %}" class="edit_link">Muokkaa</a>
+                <td>
+					<a href="{% url 'manage-kompomaatti:entry-edit' selected_event_id entry.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
+                </td>
 {% endif %}
 {% if perms.kompomaatti.delete_entry %}
-	            	<a href="{% url 'manage-kompomaatti:entry-delete' selected_event_id entry.id %}" class="delete_link">Poista</a>
+                <td>
+					<a href="{% url 'manage-kompomaatti:entry-delete' selected_event_id entry.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                        <span class="edit_link fa fa-trash"></span>
+                    </a>
+				</td>
 {% endif %}
 	            </td>
 			</tr>

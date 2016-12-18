@@ -6,45 +6,34 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_description').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
-    });
-    $('#submit-id-submit').addClass('wymupdate');
+    $('#id_description').summernote({height: 250, lang: 'fi-FI'});
     
     function change_event_form() {
         var ac_list = Array(
-            '#id_description',
-            '#id_presenters',
-            '#id_presenters_titles',
-            '#id_icon_original',
-            '#id_icon2_original',
-            '#id_email',
-            '#id_home_url',
-            '#id_twitter_url',
-            '#id_github_url',
-            '#id_facebook_url',
-            '#id_linkedin_url',
-            '#id_wiki_url',
-            '#id_gplus_url'
+            '#div_id_description',
+            '#div_id_presenters',
+            '#div_id_presenters_titles',
+            '#div_id_icon_original',
+            '#div_id_icon2_original',
+            '#div_id_email',
+            '#div_id_home_url',
+            '#div_id_twitter_url',
+            '#div_id_github_url',
+            '#div_id_facebook_url',
+            '#div_id_linkedin_url',
+            '#div_id_wiki_url',
+            '#div_id_gplus_url'
         );
         var c = $('#id_event_type').val();
         $.each(ac_list, function(index, value) {
            if(c == 0) {
-               $(value).parent().hide(); 
+               $(value).hide();
            } else {
-               $(value).parent().show(); 
+               $(value).show();
            }
         });
     }

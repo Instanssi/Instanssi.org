@@ -14,22 +14,19 @@
 
 {% block jquery %}
 {{ block.super }}
-	$("#req_table").tablesorter({widgets: ['zebra'], sortList: [[0,0],]}).tablesorterPager({container: $("#req_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Avainpyynnöt</h2>
 {% if requests %}
-	<table id="req_table" class="tablesorter">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 	            <th>Nimi</th>
 	            <th>Sähköposti</th>
 	            <th>Pyyntöteksti</th>
-{% if perms.kompomaatti.change_votecode %}
-	            <th class="sorter-false">Salli</th>
-{% endif %}
+                {% if perms.kompomaatti.change_votecode %}<th></th>{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -45,9 +42,6 @@
 {% endfor %}
 		</tbody>
 	</table>
-	<div id="req_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
 {% else %}
 	<p>Ei pyyntöjä.</p>
 {% endif %}

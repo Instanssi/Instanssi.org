@@ -14,16 +14,12 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti deaktivoida käyttäjän ?"); 
-    });
-	$("#user_table").tablesorter({widgets: ['zebra'], sortList: [[3,0],[0,0]]}).tablesorterPager({container: $("#users_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Käyttäjät</h2>
- 	<table id="user_table" class="tablesorter">
+ 	<table class="table table-striped table-condensed">
  		<thead>
  			<tr>
  				<th>Tunnus</th>
@@ -33,8 +29,9 @@
  				<th>Rekisteröity</th>
  				<th>Viimeisin kirjautuminen</th>
  				<th>Aktivoitu</th>
-{% if user.is_superuser %}
- 				<th class="sorter-false management_field"></th>
+{% if user.is_superuser and not m_user.is_superuser %}
+ 				<th></th>
+                <th></th>
 {% endif %}
  			</tr>
  		</thead>
@@ -48,23 +45,29 @@
 				<td>{{ m_user.date_joined|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{{ m_user.last_login|date:"d.m.Y \k\l\o\. H:i" }}</td>
 				<td>{% if m_user.is_active %}Kyllä{% else %}Ei{% endif %}</td>
-{% if user.is_superuser %}
-{% if m_user.is_superuser%}
-				<td>&nbsp;</td>
-{% else %}
-				<td>
-					<a href="{% url 'manage-users:edit' m_user.id %}" class="edit_link">Muokkaa</a>
-					<a href="{% url 'manage-users:delete' m_user.id %}" class="delete_link">Poista</a>
+    {% if user.is_superuser%}
+        {% if m_user.is_superuser  %}
+                <td></td>
+                <td></td>
+        {% else %}
+                <td>
+					<a href="{% url 'manage-users:edit' m_user.id %}" class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
+                </td>
+                <td>
+					<a href="{% url 'manage-users:delete' m_user.id %}"
+                       class="delete_link btn btn-danger btn-xs {% if not m_user.is_active %}disabled{% endif %}"
+                       role="button">
+                        <span class="edit_link fa fa-trash"></span>
+                    </a>
 				</td>
-{% endif %}
-{% endif %}
+        {% endif %}
+    {% endif %}
 			</tr>
 {% endfor %}
  		</tbody>
  	</table>
-	<div id="users_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
 {% if user.is_superuser %}
 {% crispy userform userform.helper %}
 {% endif %}

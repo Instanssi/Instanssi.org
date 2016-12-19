@@ -15,7 +15,6 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".fancybox").fancybox();
 {% endblock %}
 
 {% block content %}
@@ -46,8 +45,8 @@
             <tr>
                 <td style="width: 18px;">
                     {% if entry.imagefile_original %}
-                    <a class="fancybox" href="{{ entry.imagefile_original.url }}">
-                        <img src="{{ entry.imagefile_thumbnail.url }}" width="16" height="16" alt="Teokseen liitetty kuva" />
+                    <a data-toggle="lightbox" data-title="{{ entry.name }}" data-type="image" href="{{ entry.imagefile_original.url }}">
+                        <img src="{{ entry.imagefile_thumbnail.url }}" width="16" height="16" alt="Teokseen liitetty kuva" class="img-fluid" />
                     </a>
                     {% endif %}
                 </td>
@@ -76,9 +75,6 @@
 {% endfor %}
         </tbody>
     </table>
-    <div id="entry_pager" class="pager">
-        {% include "common/pagination.html" %}
-    </div>
 {% else %}
     <p>Ei entryjä.</p>
 {% endif %}

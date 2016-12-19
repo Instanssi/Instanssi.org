@@ -4,6 +4,7 @@ import os
 from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.conf import settings
 from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
@@ -86,7 +87,8 @@ class StoreItem(models.Model):
         return self.is_discount_available() and amount >= self.discount_amount
 
     def image_available(self):
-        return os.path.exists(self.imagefile_original.name)
+        full_path = os.path.join(settings.MEDIA_ROOT, self.imagefile_original.name)
+        return os.path.isfile(full_path)
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""

@@ -5,7 +5,8 @@
 
 {% block head %}
 {{ block.super }}
-{% endblock %}
+    <link rel="stylesheet" href="{% static 'libs/lightbox/ekko-lightbox.min.css' %}" />
+    {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
@@ -23,6 +24,8 @@
 <div id="store">
 </div>
 
+<script src="{% static 'libs/bootstrap/assets/javascripts/bootstrap.min.js' %}"></script>
+<script src="{% static 'libs/lightbox/ekko-lightbox.min.js' %}"></script>
 <script src="{% static 'libs/vue/vue.js' %}"></script>
 <script src="{% static 'store/js/bundle.js' %}"></script>
 <noscript>

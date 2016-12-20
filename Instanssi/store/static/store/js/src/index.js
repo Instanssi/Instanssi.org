@@ -139,6 +139,13 @@ Vue.component('store-product', {
          */
         getEffectivePrice() {
             return getDiscountedPrice(this.product, this.getCartCount());
+        },
+        /**
+         * Show full size image of the product.
+         */
+        showFullSize() {
+            let thumbnail = $(this.$el).find('.product-thumbnail');
+            $(thumbnail).ekkoLightbox();
         }
     },
     computed: {

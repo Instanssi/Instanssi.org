@@ -2,7 +2,15 @@
     <div class="row">
         <div class="col-sm-9">
             <div class="product-title">
-                <img class="item-image" :src="product.imagefile_thumbnail_url" width="48" height="48" />
+                <a class="product-thumbnail"
+                    @click.prevent="showFullSize"
+                    :href="product.imagefile_original_url"
+                    :data-title="product.name"
+                    data-toggle="lightbox"
+                    data-type="image"
+                >
+                    <img class="item-image img-fluid" :src="product.imagefile_thumbnail_url" width="48" height="48" />
+                </a>
                 <div class="item-title">{{ product.name }}</div>
             </div>
             <div class="item-description">

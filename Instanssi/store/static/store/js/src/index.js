@@ -402,7 +402,7 @@ let app = new Vue({
         },
         /**
          * Updates an item's count in the shopping cart.
-         * @param {Object} item - Item to update
+         * @param {Object} item - Product to update, must already exist in cart
          * @param {number} change - Items to add (or remove)
          */
         changeItemCount(item, change) {
@@ -413,13 +413,17 @@ let app = new Vue({
             let cartItem = this.cart[pos];
             let newCount = cartItem.count + change;
             if(newCount > cartItem.product.num_available) {
-                return;
+                newCount = cartItem.product.num_available;
+            }
+            // backend may set num_available = min(max_per_order, available - sold), let's make sure
+            if(newCount > cartItem.product.max_per_order) {
+                newCount = cartItem.product.max_per_order;
             }
             if (newCount <= 0) {
                 this.removeItemFromCart(cartItem);
                 return;
             }
-            cartItem.count += change;
+            cartItem.count = newCount;
             this.cart.splice(pos, 1, cartItem);
             this.updateCart();
         },

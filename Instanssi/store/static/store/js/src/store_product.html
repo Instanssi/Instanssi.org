@@ -28,7 +28,7 @@
                         {{ variant.name }}
                     </option>
                 </select>
-                <button class="btn btn-success" v-on:click="addItem()">
+                <button class="btn btn-success" :class="{ 'disabled': isOutOfStock }" v-on:click="addItem()">
                     <span class="fa fa-plus" /> Lisää
                 </button>
             </div>

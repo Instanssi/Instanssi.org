@@ -109,7 +109,24 @@ let storeMessages = Vue.component('store-messages', {
         localMessages() {
             let { messages, field } = this;
             if(messages && messages[field] && messages[field].length > 0) {
-                return messages[field];
+                let fieldMessages = [];
+
+                // certain exceptions may produce more interesting field messages than others
+                messages[field].forEach((msg) => {
+                    if (typeof msg === 'string') {
+                        fieldMessages.push(msg);
+                    } else if(typeof msg === 'object') {
+                        // the transaction items serializer produces an embedded errors array
+                        // let's just flatten it for now
+                        let nonFieldErrors = msg.non_field_errors;
+                        if(typeof nonFieldErrors === 'object' && nonFieldErrors.length) {
+                            nonFieldErrors.forEach((nfe) => {
+                                fieldMessages.push(nfe);
+                            })
+                        }
+                    }
+                });
+                return fieldMessages;
             }
             return null;
         }

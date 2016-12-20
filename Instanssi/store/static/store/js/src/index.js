@@ -149,6 +149,9 @@ Vue.component('store-product', {
         }
     },
     computed: {
+        isOutOfStock() {
+            return this.getCartCount() >= this.product.num_available;
+        },
         effectivePrice() {
             return this.getEffectivePrice();
         },
@@ -406,10 +409,13 @@ let app = new Vue({
             if(this.paymentURL !== null) {
                 return;
             }
-            // FIXME: Check item product max per order
             let pos = this.cart.indexOf(item);
             let cartItem = this.cart[pos];
-            if (cartItem.count + change <= 0) {
+            let newCount = cartItem.count + change;
+            if(newCount > cartItem.product.num_available) {
+                return;
+            }
+            if (newCount <= 0) {
                 this.removeItemFromCart(cartItem);
                 return;
             }

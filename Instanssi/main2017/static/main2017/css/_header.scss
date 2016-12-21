@@ -191,7 +191,7 @@ $banner-image-1: '../images/banner-bg-2.png';
                 a {
                     font-family: $title-font-family;
                     text-transform: uppercase;
-                    padding: 12px 16px;
+                    padding: 12px 15px;
                     display: inline-block;
                     -webkit-transition: background-color $transition-large ease-in-out;
                     transition: background-color $transition-large ease;
@@ -218,7 +218,7 @@ $banner-image-1: '../images/banner-bg-2.png';
                 }
             }
             .menu-item a {
-                padding-left: 16px;
+                padding-left: 15px;
                 position: relative
             }
             .menu-item a::before {
@@ -231,6 +231,7 @@ $banner-image-1: '../images/banner-bg-2.png';
             .item-english a::before{ @include awesome-glyph('\f0ac'); }
             .item-info a::before { @include awesome-glyph('\f129'); }
             .item-blog a::before { @include awesome-glyph('\f015'); }
+            .item-kompos a::before { @include awesome-glyph('\f091'); }
         }
     }
 }

@@ -193,7 +193,10 @@ a:hover {
     text-decoration: none;
 }
 .menuitem:hover { position: relative; }
-ul.sub-level { z-index: 99; }
+ul.sub-level {
+    z-index: 99;
+    margin-top: 14px;
+}
 
 /* ---------- Contents ---------- */
 
@@ -260,7 +263,7 @@ ul#crumbpath a:hover {
 /* ---- usertools ---- */
 #usertools {
     float: right;
-    padding: 8px;
+    padding: 2px 8px;
     position: relative;
     z-index: 1;
     background: rgba(0,0,0,.25);
@@ -271,6 +274,7 @@ ul#crumbpath a:hover {
         font-size: 0;
     }
     &.unauthenticated .user-image {
+        display: none;
         /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
     }
     img {

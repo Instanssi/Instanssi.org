@@ -1,12 +1,15 @@
 {% extends "admin_blog/base.html" %}
-{% load crispy_forms_tags %}
-{% load static %}
+{% load crispy_forms_tags compress static %}
 
 {% block title %}{{ block.super }} - Entryt{% endblock %}
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/trumbowyg/trumbowyg.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/trumbowyg/langs/fi.min.js" %}"></script>
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "libs/trumbowyg-instanssi/trumbowyg.scss" %}" />
+    {% endcompress %}
 {% endblock %}
 
 {% block crumbs %}
@@ -16,17 +19,11 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_text').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
+    $('#id_text').trumbowyg({
+        lang: 'fi',
+        semantic: true,
+        removeformatPasted: true
     });
-    $('#submit-id-submit').addClass('wymupdate');
 
     $(".delete_link").click(function(){
         return confirm("Haluatko varmasti poistaa blogientryn ?"); 

@@ -16,3 +16,4 @@ testing/output/*
 .env
 **/node_modules
 **/.vscode
+**/npm-debug.log

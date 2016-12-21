@@ -27,9 +27,9 @@
     <p>
     {% for method in AUTH_METHODS %}
         {% if method.3 %}
-            <button class="btn btn-primary login-{{ method.0 }}" disabled="disabled">{{ method.2 }}</button>
+            <button class="btn btn-primary login-button login-{{ method.0 }}" disabled="disabled">{{ method.2 }}</button>
         {% else %}
-            <a class="btn btn-primary login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">Sido {{ method.2 }}</a>
+            <a class="btn btn-primary login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">Sido {{ method.2 }}</a>
         {% endif %}
     {% endfor %}
     </p>

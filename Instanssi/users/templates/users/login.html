@@ -37,7 +37,7 @@
     </p>
 
     {% for method in AUTH_METHODS %}
-        <a class="btn btn-primary login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={{ next }}">{{ method.2 }}</a>
+        <a class="btn btn-primary login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={{ next }}">{{ method.2 }}</a>
     {% endfor %}
     <br />
     {% crispy openidform openidform.helper %}<br />

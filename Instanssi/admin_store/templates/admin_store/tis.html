@@ -22,17 +22,18 @@
 {{ block.super }}
 <h2>Transaktiotuotteet</h2>
 {% if items %}
-    <table class="table table-striped table-condensed">
+    <table class="table table-striped table-condensed"
+           data-toggle="table" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-page-size="25">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nimi</th>
-                <th>Etunimi</th>
-                <th>Sukunimi</th>
-                <th>Omistaja</th>
-                <th>Lunastettu</th>
-                <th>Maksettu</th>
-                <th>Avain</th>
+                <th data-field="id" data-sortable="true">ID</th>
+                <th data-field="name" data-sortable="true">Nimi</th>
+                <th data-field="first_name" data-sortable="true">Etunimi</th>
+                <th data-field="last_name" data-sortable="true">Sukunimi</th>
+                <th data-field="owner" data-sortable="true">Omistaja</th>
+                <th data-field="is_delivered" data-sortable="true">Lunastettu</th>
+                <th data-field="is_paid" data-sortable="true">Maksettu</th>
+                <th data-field="key" data-sortable="true">Avain</th>
             </tr>
         </thead>
         <tbody>

@@ -20,21 +20,24 @@
 <h2>Loki</h2>
 
 {% if entries %}
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed"
+       data-toggle="table" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-page-size="10">
     <thead>
         <tr>
-            <th>Aika</th>
-            <th>Käyttäjä</th>
-            <th>Tapahtuma</th>
-            <th>Taso</th>
-            <th>Moduuli</th>
-            <th>Teksti</th>
+            <th data-field="id" data-sortable="true">ID</th>
+            <th data-field="date" data-sortable="true">Aika</th>
+            <th data-field="user" data-sortable="true">Käyttäjä</th>
+            <th data-field="event" data-sortable="true">Tapahtuma</th>
+            <th data-field="level" data-sortable="true">Taso</th>
+            <th data-field="module" data-sortable="true">Moduuli</th>
+            <th data-field="text" data-sortable="true">Teksti</th>
         </tr>
     </thead>
     <tbody>
 {% for entry in entries %}
         <tr>
-            <td>{{ entry.date|date:"d.m.Y k\l\o\. H:i:s" }}</td>
+            <td>{{ entry.id }}</td>
+            <td>{{ entry.date|date:"d.m.Y H:i:s" }}</td>
             <td>{% if entry.user.email %}{{ entry.user.email }}{% else %}{{ entry.user.username }}{% endif %}</td>
             <td>{{ entry.event }}</td>
             <td>{{ entry.level }}</td>

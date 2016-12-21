@@ -126,9 +126,13 @@ class StoreItemSerializer(HyperlinkedModelSerializer):
     variants = StoreItemVariantSerializer(many=True)
 
     def get_imagefile_original_url(self, obj):
+        if not obj.imagefile_original:
+            return None
         return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
 
     def get_imagefile_thumbnail_url(self, obj):
+        if not obj.imagefile_thumbnail:
+            return None
         return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
 
     def get_discount_factor(self, obj):

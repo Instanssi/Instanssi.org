@@ -22,11 +22,11 @@
 {% block content %}
 {{ block.super }}
 <h2>Tila</h2>
-<table style="width: auto;">
+<table class="table table-striped table-condensed">
     <thead>
         <tr>
-            <th style="min-width: 150px;">Kenttä</th>
-            <th style="min-width: 200px;">Arvo</th>
+            <th style="width: 15%;">Kenttä</th>
+            <th>Arvo</th>
         </tr>
     </thead>
     <tbody>
@@ -77,11 +77,11 @@
 </table>
 
 <h3>Maksajan tiedot</h3>
-<table style="width: auto;">
+<table class="table table-striped table-condensed">
     <thead>
         <tr>
-            <th style="min-width: 150px;">Kenttä</th>
-            <th style="min-width: 200px;">Tieto</th>
+            <th style="width: 15%;">Kenttä</th>
+            <th>Tieto</th>
         </tr>
     </thead>
     <tbody>
@@ -130,7 +130,7 @@
 
 <h3>Tilauksen tiedot</h3>
 {% if items %}
-    <table id="items_table" class="tablesorter">
+    <table class="table table-striped table-condensed">
         <thead>
             <tr>
                 <th>ID</th>

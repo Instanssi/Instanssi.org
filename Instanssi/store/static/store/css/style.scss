@@ -1,125 +1,30 @@
 @import 'base_layout/css/common.scss';
 
-/* ---------- Icons ---------- */
-
-.custom_icon_style {
-    float: left;
-    display: inline-block;
-    width: 17px;
-    height: 17px;
-    border: 1px solid #bbbbbb;
-    background-color: #eeeeee;
-    margin-left: 2px;
-    margin-right: 2px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-}
-
-.custom_icon_style:hover {
-    background-color: #cccccc;
-}
-
-/* Store form */
-
-.store-data {
-    display: table;
-    width: 100%;
-}
-
-.store-data input,
-.store-data textarea,
-.store-data select {
-    border: 1px solid #555;
-    margin: 5px;
-    padding: 2px;
-}
-
-.store-form > * { background-color: #eee; margin: 8px 0; }
-.store-header { text-align: center; }
-.store-header, .store-nav { padding: 8px 4px; }
-
-.store-header .step { padding: 0 .5em; }
-.store-header .step.current { font-weight: bold; }
-
-/* Make the step buttons resemble links */
-.store-header .step button {
-    border: 0;
-    background: transparent;
-    color: #2040C0;
-    font-size: 1em;
-    cursor: pointer;
-    padding: 0;
-}
-.store-header .step button:hover {
-    text-decoration: underline;
-}
-
-.store-nav { overflow: hidden; }
-.store-nav input { float: right; }
-.store-nav > * { font-size: 100%; }
-.store-nav a { display: inline-block; padding: 4px; }
-a.wizard-nav-button {
-    padding: 0;
-}
-
-.store-errors {
-    background-color: #B81900;
-    overflow: hidden;
-    color: white;
-}
-
-/* Store other fields */
-
-.store-form .even { background-color: #eaeaea; }
-.store-form .odd  { background-color: #f4f4f4; }
-
-.field-wrapper {
-    display: table-row;
-    padding: 4px;
-    overflow: hidden;
-}
-.field-wrapper > * {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 4px 8px;
-}
-
-.required-field:after {
-    content: '*';
-    padding-left: 1ex;
-    font-weight: bold;
-    color: #08d;
-}
-
-.field-label textarea {
-    width: 400px;
-}
-.field-input ul {
-    margin: 0 !important;
-    min-width: 200px;
-}
-.field-input li {
-    list-style-type: none;
-    margin: 0 !important;
-}
-
-.field-desc .errorlist {
-    color: red;
-}
-
 /* ---------- Store items ---------- */
 
-.total-price {
-    padding: 8px 4px;
-    text-align: right;
+.store {
+    padding-bottom: 32px;
+}
+
+.store-nav {
+    text-align: center;
+    .nav {
+        // make nav possible to center
+        display: inline-block
+    }
 }
 
 .store-item {
+    width: auto;
+    display: block;
     padding: 16px 8px 8px;
     border-top: 1px solid #ccc;
     margin-top: 8px;
-    vertical-align: top;
     overflow: hidden;
+
+    &:first-child {
+        border-top: none;
+    }
 }
 
 .item-title, .item-price {
@@ -137,34 +42,56 @@ a.wizard-nav-button {
     float: left;
     margin: 0 1em 1em 0;
 }
-.item-description { margin-left: 80px; }
-
-.item-amount-field {
-    height: 30px;
-    width: 60px;
+@media screen and (min-width: $screen-sm-min) {
+    .item-description { margin-left: 80px; }
+}
+@media screen and (max-width: $screen-xs-max) {
+    // push description below title and image
+    .item-description { clear: left; }
 }
 
-.item-field {
-    float: right;
+.product-availability-info {
+    margin-top: 5px;
 }
-.store-form > .store-data { background: transparent;}
-.store-data > .store-item { margin: 8px 0; }
 
-.store-item:first-child { margin-top: 0; border: 0;}
-.store-item:last-child { margin-bottom: 0; }
+.cart-item {
+    padding: 4px;
+    background: #fff;
+    box-shadow: rgba(#000, .2) 0 2px 8px;
+    margin-top: 1px;
 
-.store-item > * {
-    float: left; position: relative; left: 100%; margin-left: -100%;
+    .cart-item-image {
+        margin-right: 8px;
+        width: 32px;
+        height: 32px;
+    }
+    .cart-item-name {
+        white-space: nowrap;
+        float: left;
+    }
 }
-.store-item > .item-details {
-    margin-left: -100%; width: 85%;
+
+.cart-total {
+    margin: 8px;
+
+    strong {
+        font-size: 130%;
+    }
 }
-.store-item > .item-amount {
-    margin-left: -15%; width: 15%;
-    text-align: right;
+
+.store-summary .form-group {
+    // default 15px, too much
+    margin-bottom: 5px;
 }
-.store-item .item-amount input {
-    margin: 0;
+
+.form-group.form-group-required {
+    position: relative;
+    label:after {
+        content: '*';
+        position: absolute;
+        left: 100%;
+        margin-left: -8px;
+    }
 }
 
 .items-summary { padding: 8px; }
@@ -182,12 +109,6 @@ a.wizard-nav-button {
 .items-summary .items-total { border-top: 1px solid #eee; }
 .items-summary .items-total td { text-align: right; }
 
-/* ---- jQuery UI compatibility ---- */
-
-.store-data .ui-widget input {
-    border: 0;
-}
-
 /* ---- discounts ---- */
 
 .item-discount {
@@ -198,50 +119,50 @@ a.wizard-nav-button {
 
 .item-discount::before {
     position: absolute;
-	@include awesome-glyph('\f096');
+    @include awesome-glyph('\f096');
     margin: 0 0 0 -15px;
     top: 1px;
     color: #999;
 }
 
 .discount-enabled .item-discount::before {
-	@include awesome-glyph('\f046');
-	opacity: 1;
+    @include awesome-glyph('\f046');
+    opacity: 1;
     color: #090;
 }
 
 .item-discount::after {
-	font-weight: bold;
-	transition: opacity 1s, color 2s;
-	color: #ff0;
-	opacity: 0;
+    font-weight: bold;
+    transition: opacity 1s, color 2s;
+    color: #ff0;
+    opacity: 0;
 }
 
 .discount-indicator {
-	display: none;
+    display: none;
 }
 
 .discount-enabled .item-price {
-	color: #020;
+    color: #020;
 }
 
 .discount-enabled .item-price::before {
-	@include awesome-glyph('\f0d7');
-	color: #090;
-	padding-right: 8px;
+    @include awesome-glyph('\f0d7');
+    color: #090;
+    padding-right: 8px;
 }
 
 .item-summary-discounted .item-summary-price::before {
-	@include awesome-glyph('\f0d7');
-	color: #090;
-	padding-right: 8px;
+    @include awesome-glyph('\f0d7');
+    color: #090;
+    padding-right: 8px;
 }
 
 .item-summary-discounted {
-	.item-summary-price::before,
-	.item-summary-subtotal::before {
-		@include awesome-glyph('\f0d7');
-		color: #090;
-		padding-right: 8px;
-	}
+    .item-summary-price::before,
+    .item-summary-subtotal::before {
+        @include awesome-glyph('\f0d7');
+        color: #090;
+        padding-right: 8px;
+    }
 }

@@ -4,6 +4,7 @@ import os
 from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.conf import settings
 from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
@@ -61,10 +62,19 @@ class StoreItem(models.Model):
         'Alennusprosentti',
         default=0,
         help_text='Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+    is_ticket = models.BooleanField(
+        'Tuote on lipputuote',
+        default=False,
+        help_text='Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen')
 
     def is_discount_available(self):
         """Returns True if a discount exists for this item."""
         return self.discount_amount >= 0
+
+    @property
+    def variants(self):
+        """ Returns a queryset with the available item variants """
+        return StoreItemVariant.objects.filter(item=self)
 
     def get_discount_factor(self):
         """Gets the potential discount factor, for views/templates/JS.
@@ -77,7 +87,8 @@ class StoreItem(models.Model):
         return self.is_discount_available() and amount >= self.discount_amount
 
     def image_available(self):
-        return os.path.exists(self.imagefile_original.name)
+        full_path = os.path.join(settings.MEDIA_ROOT, self.imagefile_original.name)
+        return os.path.isfile(full_path)
 
     def get_discounted_unit_price(self, amount):
         """Returns decimal price of item considering any quantity discount."""
@@ -117,6 +128,18 @@ class StoreItem(models.Model):
     class Meta:
         verbose_name = "tuote"
         verbose_name_plural = "tuotteet"
+
+
+class StoreItemVariant(models.Model):
+    item = models.ForeignKey(StoreItem)
+    name = models.CharField('Tuotevariantin nimi', max_length=32, blank=False, null=False)
+
+    def __str__(self):
+        return "{}: {}".format(self.item.name, self.name)
+
+    class Meta:
+        verbose_name = "tuotevariantti"
+        verbose_name_plural = "tuotevariantit"
 
 
 class StoreTransaction(models.Model):
@@ -242,18 +265,29 @@ class StoreTransaction(models.Model):
     def get_distinct_storeitems_and_prices(self):
         """Returns a list of unique (StoreItem, price) tuples related to
         this transaction."""
-        # get (item-id, price) tuples
-        items = self.get_transaction_items().values_list(
-            'item', 'purchase_price').distinct()
-        itemlist = []
-        for key, price in items:
-            # this isn't a performance issue with our database
-            itemlist.append((StoreItem.objects.filter(pk=key).get(), price))
-        return itemlist
 
-    def get_storeitem_count(self, store_item):
-        return TransactionItem.objects.filter(
-            item=store_item, transaction=self).count()
+        items = {}
+        transaction_items = self.get_transaction_items().values_list('item', 'variant', 'purchase_price')
+        for item, variant, price in transaction_items:
+            if item not in items:
+                items[item] = {}
+            items[item][variant] = price
+
+        item_list = []
+        for item_key, variants in items.items():
+            for variant_key, price in variants.items():
+                item_list.append((
+                    StoreItem.objects.get(pk=item_key),
+                    StoreItemVariant.objects.get(pk=variant_key) if variant_key else None,
+                    price
+                ))
+        return item_list
+
+    def get_storeitem_count(self, store_item, variant=None):
+        q = TransactionItem.objects.filter(item=store_item, transaction=self)
+        if variant:
+            q = q.filter(variant=variant)
+        return q.count()
 
     def __str__(self):
         return self.full_name
@@ -273,6 +307,10 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(
         StoreItem,
         verbose_name='Tuote')
+    variant = models.ForeignKey(
+        StoreItemVariant,
+        verbose_name='Tuotevariantti',
+        null=True)
     transaction = models.ForeignKey(
         StoreTransaction,
         verbose_name='Ostotapahtuma')

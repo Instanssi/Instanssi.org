@@ -15,39 +15,37 @@
 
 {% block jquery %}
 {{ block.super }}
-	$(".jq-button").button();
-	$("#tokens_table").tablesorter({widgets: ['zebra'], sortList: [[2,0],[3,0]]}).tablesorterPager({container: $("#tokens_pager")}); 
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
     <h2>Avaimet</h2>
 {% if tokens %}
-    <a href="{% url 'manage-kompomaatti:votecodes-print' selected_event_id %}" class="jq-button">Vapaat tokenit .PDF muodossa</a>
-	<table id="tokens_table" class="tablesorter"> 
-	<thead>
-		<tr>
-			<th>Token</th>
-			<th>Assosiaatio (käyttäjä)</th>
-			<th>Assosiaatio (email)</th>
-			<th>Assosioitu</th>
-		</tr>
-	</thead>
-	<tbody>
+    <a href="{% url 'manage-kompomaatti:votecodes-print' selected_event_id %}" class="btn btn-primary">Vapaat tokenit .PDF muodossa</a>
+    <table class="table table-striped table-condensed"
+           data-toggle="table" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-page-size="25">
+    <thead>
+        <tr>
+            <th data-field="id" data-sortable="true">ID</th>
+            <th data-field="token" data-sortable="true">Token</th>
+            <th data-field="user" data-sortable="true">Assosiaatio (käyttäjä)</th>
+            <th data-field="email" data-sortable="true">Assosiaatio (email)</th>
+            <th data-field="associated" data-sortable="true">Assosioitu</th>
+        </tr>
+    </thead>
+    <tbody>
 {% for token in tokens %}
-		<tr>
-			<td>{{ token.key }}</td>
-			<td>{{ token.associated_to.username }}</td>
-			<td>{{ token.associated_to.email }}</td>
-			<td>{{ token.time|date:"d.m.Y \k\l\o\. H:i" }}</td>
-		</tr>
+        <tr>
+            <td>{{ token.id }}</td>
+            <td>{{ token.key }}</td>
+            <td>{{ token.associated_to.username }}</td>
+            <td>{{ token.associated_to.email }}</td>
+            <td>{{ token.time|date:"d.m.Y \k\l\o\. H:i" }}</td>
+        </tr>
 {% endfor %}
-	</tbody>
-	</table>
-	<div id="tokens_pager" class="pager">
-		{% include "common/pagination.html" %}
-	</div>
-	<br />
+    </tbody>
+    </table>
+    <br />
 {% else %}
     <p>Ei äänestyskoodeja.</p>
 {% endif %}

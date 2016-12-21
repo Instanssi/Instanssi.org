@@ -6,22 +6,11 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_description').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
-    });
-    $('#submit-id-submit').addClass('wymupdate');
+    $('#id_description').summernote({height: 250, lang: 'fi-FI'});
 {% endblock %}
 
 {% block crumbs %}
@@ -33,5 +22,14 @@
 {% block content %}
 {{ block.super }}
 <h2>Muokkaa tuotetta</h2>
-{% crispy editform editform.helper %}
+<form method="post" action="" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Lisää tuote</legend>
+        {% crispy item_form item_form.helper %}
+        {% crispy variant_formset variant_formset.form.helper %}
+        <div class="buttonHolder">
+            <input type="submit" name="submit" value="Tallenna" class="btn btn-primary" id="submit-id-submit">
+        </div>
+    </fieldset>
+</form>
 {% endblock %}

@@ -10,7 +10,6 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".button").button();
 {% endblock %}
 
 {% block crumbs %}
@@ -48,7 +47,7 @@
 {% if signed_up %}
     <p>Olet ilmoittautunut nimimerkillä <strong>{{ participation.participant_name }}</strong>.</p>
     {% if can_participate %}
-    <a class="button" href="{% url 'km:competition-signout' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
+    <a class="btn btn-primary"" href="{% url 'km:competition-signout' sel_event_id competition.id %}">Poista ilmoittautuminen</a>
     {% endif %}
 {% else %}
     <p>Et ole ilmoittautunut.</p>

@@ -22,8 +22,8 @@
 <h2>Tilaushaku</h2>
 <p>Hae tilauksia/tuotteita kirjoittamalla osa asiakkaan nimeä tai tuotteen/tilauksen tunnisteen alkuosa.</p>
 <form id="order-search-form" method="get" action="{% url 'infodesk:order_search' %}">
-  <input id="order-search" type="text" name="term"></input>
-  <input type="submit" value="Hae"></input>
+    <input id="order-search" type="text" name="term" />
+    <input type="submit" value="Hae" />
 </form>
 
 <div id="order-search-results">
@@ -33,7 +33,7 @@
 
   {% if transactions %}
   <h3>Tilaukset</h3>
-  <table class="infotable lookup">
+  <table class="table table-striped table-condensed lookup">
   <tr>
     <th>#</th>
     <th>Tilaaja</th>

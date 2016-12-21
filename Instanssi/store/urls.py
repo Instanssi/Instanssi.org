@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url, include
-from Instanssi.store.views import StoreWizard, store_forms, index, terms, privacy, ti_view, ta_view
+from django.views.generic import TemplateView
 
-store_view = StoreWizard.as_view(
-    store_forms, url_name='store:order_step', done_step_name='store:order_done')
+from Instanssi.store.views import ti_view, ta_view
 
 urlpatterns = [
-    url(r'^$', index, name="index"),
-    url(r'^order/$', store_view, name='order'),
-    url(r'^order/(?P<step>.+)/$', store_view, name='order_step'),
+    url(r'^$', TemplateView.as_view(template_name='store/index.html'), name="index"),
+    url(r'^order/$', TemplateView.as_view(template_name='store/store.html'), name='order'),
+    url(r'^terms/$', TemplateView.as_view(template_name='store/terms.html'), name='terms'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='store/privacy.html'), name='privacy'),
     url(r'^pm/', include('Instanssi.store.methods.urls', namespace='pm')),
-    url(r'^terms/$', terms, name='terms'),
-    url(r'^privacy/$', privacy, name='privacy'),
     url(r'^ti/(?P<item_key>\w+)/$', ti_view, name='ti_view'),
     url(r'^ta/(?P<transaction_key>\w+)/$', ta_view, name='ta_view')
 ]

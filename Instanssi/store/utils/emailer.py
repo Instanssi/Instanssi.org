@@ -64,13 +64,13 @@ class ReceiptMailer(Mailer):
     def transactionurl(self, var):
         self.params['transactionurl'] = var
 
-    def add_item(self, id, name, price, amount):
-        itemtotal = price * amount
+    def add_item(self, item_id, name, price, amount):
+        item_total = price * amount
         self.params['items'].append({
-            'id': id,
+            'id': item_id,
             'name': name,
             'price': price,
             'amount': amount,
-            'total': itemtotal,
+            'total': item_total,
         })
-        self.params['total'] += itemtotal
+        self.params['total'] += item_total

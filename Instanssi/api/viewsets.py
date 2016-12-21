@@ -1,13 +1,34 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission, SAFE_METHODS
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.compat import is_authenticated
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
-    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer
+    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
+    StoreTransactionSerializer
 from Instanssi.kompomaatti.models import Event, Competition, Compo
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
+from Instanssi.store.models import StoreItem
+from Instanssi.store.handlers import begin_payment_process
+
+
+class IsAuthenticatedOrWriteOnly(BasePermission):
+    def has_permission(self, request, view):
+        return (
+            request.method == 'POST' or
+            request.method in SAFE_METHODS or
+            request.user and is_authenticated(request.user)
+        )
+
+
+class WriteOnlyModelViewSet(CreateModelMixin,
+                            GenericViewSet):
+    pass
 
 
 class FilterMixin(object):
@@ -18,9 +39,13 @@ class FilterMixin(object):
 
     @staticmethod
     def filter_by_lim_off(queryset, request):
-        limit = int(request.query_params.get('limit', 100))
-        offset = int(request.query_params.get('offset', 0))
-        return queryset[offset:offset+limit]
+        limit = request.query_params.get('limit')
+        offset = request.query_params.get('offset')
+        if limit or offset:
+            limit = int(limit) or 100
+            offset = int(offset) or 0
+            return queryset[offset:offset+limit]
+        return queryset
 
     @staticmethod
     def order_by(queryset, request, default='id', whitelist=None):
@@ -39,7 +64,7 @@ class EventViewSet(ReadOnlyModelViewSet, FilterMixin):
     this data.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -63,7 +88,7 @@ class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
     1: Stopped
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is '-id'. Allowed: id, -id
@@ -87,7 +112,7 @@ class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
     1: Lowest score first
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -107,7 +132,7 @@ class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
     Exposes all compos.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -127,7 +152,7 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
     Exposes all programme events.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -147,7 +172,7 @@ class SponsorViewSet(ReadOnlyModelViewSet, FilterMixin):
     Exposes all sponsors.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -167,7 +192,7 @@ class MessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     Exposes all sponsor messages.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
@@ -187,7 +212,7 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     Exposes all saved IRC messages. Note that order is order is descending by default.
 
     Allows GET filters:
-    * limit: Limit amount of returned objects. Default is 100.
+    * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
     * order_by: Set ordering, default is '-id'. Allowed: id, -id
@@ -200,3 +225,35 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
         q = self.order_by(q, self.request, default='-id')
         q = self.filter_by_lim_off(q, self.request)
         return q
+
+
+class StoreItemViewSet(ReadOnlyModelViewSet):
+    """
+    Exposes all available store items.  This entrypoint does not require authentication/authorization.
+    """
+    serializer_class = StoreItemSerializer
+    queryset = StoreItem.items_available()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = []
+
+
+class StoreTransactionViewSet(WriteOnlyModelViewSet):
+    """
+    Handles saving store transactions. This entrypoint does not require authentication/authorization.
+    """
+    serializer_class = StoreTransactionSerializer
+    permission_classes = [IsAuthenticatedOrWriteOnly]
+    authentication_classes = []
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            if serializer.validated_data['save']:
+                ta = serializer.save()
+                payment_method = serializer.validated_data['payment_method']
+                response_url = begin_payment_process(payment_method, ta)
+                return Response({"url": response_url}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

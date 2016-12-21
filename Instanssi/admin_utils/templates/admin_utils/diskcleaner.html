@@ -13,13 +13,6 @@
 
 {% block jquery %}
 {{ block.super }}
-    $(".tablesorter").tablesorter({widgets: ['zebra'], sortList: [[1,1],]});
-    $("#cleanup-button").button();
-    $("#unforeseen_consequences").button();
-    $("#unforeseen_consequences").click(function() {
-        $("#dangerous_button").css('display', 'block');
-        $("#unforeseen_consequences").hide();
-    });
 {% endblock %}
 
 {% block content %}
@@ -32,18 +25,15 @@
     Levynpuhdistaja poistaa _kaikki_ tiedostot kansioista entryfiles, sourcefiles and imagefiles, joille
     ei ole tietokannassa relaatiota!
 </p>
-<p>
-    <span id="unforeseen_consequences">Paina tästä jos olet lukenut ja ymmärtänyt.</span>
-</p>
 
-<form action="" method="post" id="dangerous_button" style="display: none;">
+<form action="" method="post" id="dangerous_button">
     {% csrf_token %}
-    <input style="margin-left: 350px;" type="submit" value="Nuketa tiedostot!" name="cleanup-button" id="cleanup-button" />
+    <input type="submit" value="Nuketa tiedostot!" class="btn btn-danger delete_link" name="cleanup-button" id="cleanup-button" />
 </form>
 
 <h3>Entryfiles</h3>
 {% if orphan_entryfiles %}
-<table class="tablesorter">
+<table class="table table-striped table-condensed">
     <thead>
         <tr>
             <th>Nimi</th>
@@ -65,7 +55,7 @@
 
 <h3>Sourcefiles</h3>
 {% if orphan_sourcefiles %}
-<table class="tablesorter">
+<table class="table table-striped table-condensed">
     <thead>
         <tr>
             <th>Nimi</th>
@@ -87,7 +77,7 @@
 
 <h3>Imagefiles</h3>
 {% if orphan_imagefiles %}
-<table class="tablesorter">
+<table class="table table-striped table-condensed">
     <thead>
         <tr>
             <th>Nimi</th>

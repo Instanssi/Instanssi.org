@@ -5,9 +5,9 @@ from Instanssi.common.misc import get_url
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
-from Instanssi.store.models import StoreTransaction, TransactionItem
+from django.http import HttpResponse, Http404
+from django.shortcuts import render
+from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import bitpay, ta_common
 
 # Logging related
@@ -38,10 +38,10 @@ def start_process(ta):
     except bitpay.BitpayException as ex:
         a, b = ex.args
         logger.error('(%s) %s', b, a)
-        return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
+        return reverse('store:pm:bitpay-failure')
     except Exception as ex:
         logger.error('%s.', ex)
-        return HttpResponseRedirect(reverse('store:pm:bitpay-failure'))
+        return reverse('store:pm:bitpay-failure')
 
     # Save token, redirect
     ta.token = msg['id']
@@ -49,7 +49,7 @@ def start_process(ta):
     ta.save()
 
     # All done, redirect user
-    return HttpResponseRedirect(msg['url'])
+    return msg['url']
 
 
 def handle_failure(request):
@@ -57,7 +57,6 @@ def handle_failure(request):
     
     # FIXME this never comes from bitpay but is here because of
     # mysterious Exception redirects in previous function.
-
     return render(request, 'store/failure.html')
 
 
@@ -82,37 +81,32 @@ def handle_notify(request):
     
     # Try to find correct transaction
     # If transactions is not found, this will throw 404.
-    ta_is_valid = False
     try:
         ta = StoreTransaction.objects.get(pk=transaction_id, token=bitpay_id)
-        
-        # If transaction is paid and confirmed, stop here.
-        if ta.is_paid:
-            return HttpResponse("")
-        
-        # Okay, transaction found and it's good.
-        ta_is_valid = True
     except StoreTransaction.DoesNotExist:
         logger.warning("Error while attempting to validate bitpay notification!")
         raise Http404
-    
-    # We have a valid transaction. Do something about it.
-    if ta_is_valid:
-        if status == 'confirmed' or status == 'complete':
-            # Paid and confirmed.
-            if not ta_common.handle_payment(ta):
-                raise Http404
-            return HttpResponse("")
 
-        if status == 'paid':
-            # Paid but not confirmed
-            ta_common.handle_pending(ta)
-            return HttpResponse("")
-                        
-        if status == 'expired':
-            # Payment expired, assume cancelled
-            ta_common.handle_cancellation(ta)
-            return HttpResponse("")
+    # If transaction is paid and confirmed, stop here.
+    if ta.is_paid:
+        return HttpResponse("")
+
+    # We have a valid transaction. Do something about it.
+    if status == 'confirmed' or status == 'complete':
+        # Paid and confirmed.
+        if not ta_common.handle_payment(ta):
+            raise Http404
+        return HttpResponse("")
+
+    if status == 'paid':
+        # Paid but not confirmed
+        ta_common.handle_pending(ta)
+        return HttpResponse("")
+
+    if status == 'expired':
+        # Payment expired, assume cancelled
+        ta_common.handle_cancellation(ta)
+        return HttpResponse("")
 
     logger.warning("Unhandled bitpay notification '%s' for id %d.", status, ta.id)
 

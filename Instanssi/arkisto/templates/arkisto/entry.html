@@ -7,9 +7,9 @@
 
 {% block jquery %}
 {{ block.super }}
-	  audiojs.events.ready(function() {
-	    var as = audiojs.createAll();
-	  });
+      audiojs.events.ready(function() {
+        var as = audiojs.createAll();
+      });
 {% endblock %}
 
 {% block crumbs %}
@@ -20,16 +20,16 @@
 
 {% block content %}
 {{ block.super }}
-		<div id="entry-holder">
-			<div class="center">
-				<p class="title">
-				    <span class="name">{{ entry.name }}</span> 
-				    by <span class="by">{{ entry.creator }}</span>
-				</p>
+        <div id="entry-holder">
+            <div class="center">
+                <p class="title">
+                    <span class="name">{{ entry.name }}</span>
+                    by <span class="by">{{ entry.creator }}</span>
+                </p>
 {% if entry.get_show_list.youtube %}
                 <iframe id="ytplayer" style="float: left;"
-                	type="text/html" width="640" height="390" frameborder="0"
-                	src="{{ entry.get_youtube_embed_url }}?autoplay=0&origin=http://instanssi.org/arkisto"></iframe>
+                    type="text/html" width="640" height="390" frameborder="0"
+                    src="{{ entry.get_youtube_embed_url }}?autoplay=0&origin=http://instanssi.org/arkisto"></iframe>
 {% endif %}
 {% if entry.get_show_list.image or entry.get_show_list.jplayer or entry.get_show_list.noshow %}
                 {% if entry.imagefile_medium %}
@@ -38,36 +38,36 @@
                 <img class="img" src="{% static "arkisto/img/filler_medium.png" %}" alt="Audio file" />
                 {% endif %}
 {% endif %}
-				<div class="info">
+                <div class="info">
                     <ul class="facts">
                         <li class="fact-name">{{ entry.compo.name }}</li>
 {% if entry.disqualified %}
                         <li class="fact-disqualified">Diskattu!</li>
 {% else %}
-	{% if entry.compo.show_voting_results %}
+    {% if entry.compo.show_voting_results %}
                         <li class="fact-rank">{{ entry.get_rank }}. sija</li>
                         <li class="fact-score">{{ entry.get_score|floatformat:"2" }} pistettä</li>
-	{% endif %}
+    {% endif %}
 {% endif %}
                     </ul>
-				<hr />
+                <hr />
 {% if not entry.get_show_list.youtube %}
-	{% if entry.get_format == ".mp3" or entry.get_format == ".ogg" %}
-				<p><audio src="{{ entry.entryfile.url }}" preload="auto" /></p>
-	{% endif %}
+    {% if entry.get_format == ".mp3" or entry.get_format == ".ogg" %}
+                <p><audio src="{{ entry.entryfile.url }}" preload="auto" /></p>
+    {% endif %}
 {% endif %}
-				<p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
+                <p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
 {% if entry.sourcefile %}
-				<p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>
+                <p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>
 {% endif %}
-				</div>
-				<div class="clearer"></div>
-			</div>
-			<div class="desc">{{ entry.description|linebreaksbr }}</div>
+                </div>
+                <div class="clearer"></div>
+            </div>
+            <div class="desc">{{ entry.description|linebreaksbr }}</div>
 {% if entry.disqualified %}
-			<div class="desc"><strong>Entry on diskattu:</strong><br />{{ entry.disqualified_reason|linebreaksbr }}</div>
+            <div class="desc"><strong>Entry on diskattu:</strong><br />{{ entry.disqualified_reason|linebreaksbr }}</div>
 {% endif %}
-		</div>
+        </div>
 
 {% endblock %}
 

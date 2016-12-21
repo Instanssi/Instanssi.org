@@ -13,3 +13,6 @@ testing/output/*
 *.py~
 *.txt~
 .idea
+.env
+**/node_modules
+**/.vscode

@@ -1,0 +1,51 @@
+<div v-bind:class="isDiscountActive() ? 'store-item form discount-enabled' : 'store-item form'">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="product-title">
+                <a class="product-thumbnail"
+                    @click.prevent="showFullSize"
+                    :href="product.imagefile_original_url"
+                    :data-title="product.name"
+                    data-toggle="lightbox"
+                    data-type="image"
+                >
+                    <img class="item-image img-fluid" :src="product.imagefile_thumbnail_url" width="48" height="48" />
+                </a>
+                <div class="item-title">{{ product.name }}</div>
+            </div>
+            <div class="item-description">
+                <div v-if="product.description" v-html="product.description"></div>
+                <div v-if="product.discount_amount > 0" class="item-discount">
+                    <strong>{{ product.discount_percentage }} %</strong> alennus, jos ostat ainakin <strong>{{ product.discount_amount }}</strong> kappaletta!
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 form-inline">
+            <div class="item-price text-right">{{ effectivePrice | formatPrice }}</div>
+            <div class="text-right">
+                <select class="form-control product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
+                    <option v-for="variant in product.variants" v-bind:value="variant">
+                        {{ variant.name }}
+                    </option>
+                </select>
+                <button class="btn btn-success" :class="{ 'disabled': isOutOfStock }" v-on:click="addItem()">
+                    <span class="fa fa-plus" /> Lisää
+                </button>
+                <div v-if="product.num_available < 1" class="text-danger product-availability-info">
+                    Tuote lopussa.
+                </div>
+                <div v-else-if="isOutOfStock && product.num_available > 0" class="text-danger product-availability-info">
+                    Vain {{ product.num_available}} kpl saatavilla.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" v-if="cartItems">
+        <div class="col-sm-12">
+            <store-cart-item v-for="item in cartItems"
+                :item="item"
+                :changeItemCount="changeItemCount"
+                :removeItemFromCart="removeItemFromCart" />
+        </div>
+    </div>
+</div>

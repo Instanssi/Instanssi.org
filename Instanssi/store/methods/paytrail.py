@@ -19,12 +19,11 @@ def start_process(ta):
 
     product_list = []
 
-    for store_item, purchase_price in ta.get_distinct_storeitems_and_prices():
-        count = ta.get_storeitem_count(store_item)
-
+    for store_item, item_variant, purchase_price in ta.get_distinct_storeitems_and_prices():
+        count = ta.get_storeitem_count(store_item, variant=item_variant)
         product_list.append({
-            'title': store_item.name,
-            'code': str(store_item.id),
+            'title': '{}, {}'.format(store_item.name, item_variant.name) if item_variant else store_item.name,
+            'code': '{}:{}'.format(store_item.id, item_variant.id) if item_variant else str(store_item.id),
             'amount': str(count),
             'price': str(purchase_price),
             'vat': '0',
@@ -67,10 +66,10 @@ def start_process(ta):
     except paytrail.PaytrailException as ex:
         a, b = ex.args
         logger.error('(%s) %s', b, a)
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        return reverse('store:pm:paytrail-failure')
     except Exception as ex:
         logger.error('%s.', ex)
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        return reverse('store:pm:paytrail-failure')
 
     # Save token, redirect
     ta.token = msg['token']
@@ -78,7 +77,7 @@ def start_process(ta):
     ta.save()
 
     # All done, redirect user
-    return HttpResponseRedirect(msg['url'])
+    return msg['url']
 
 
 def handle_failure(request):

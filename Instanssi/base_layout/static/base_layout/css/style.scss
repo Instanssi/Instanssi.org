@@ -1,11 +1,10 @@
 @import 'common.scss';
 
 body {
+    font-size: 14px;
     margin: 0px;
     padding: 0px;
-    background: #555;
-	background: linear-gradient(#1b1b1b 100px, #555 550px, #555 100%);
-    font-size: 14px;
+    @include body-background-mixin();
 }
 
 h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
@@ -13,12 +12,8 @@ h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
     font-size: 100%;
 }
 
-p {
-	line-height: 130%;
-}
-
 strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 sup { font-size: 75%; vertical-align: super; }
@@ -51,43 +46,70 @@ p,pre,blockquote,ul,ol {
     margin-bottom: 0.75em;
 }
 
-p {
-    text-align: justify;
-}
-
 hr {
     border: 0; border-top: 1px dotted #aaa;
 }
 
-a { color: $theme-color; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+    color: $theme-color-mid;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
 
 /* ---------- Base layout tuning ---------- */
 
-.container {
-	max-width: 1200px;
-	width: 90%;
-	min-width: 550px;
-	margin: 0 auto;
-    clear: both;
-}
-
 #base {
-	min-height: 100vh;
-	background-color: #f9f9f9;
-	box-shadow: 0px 0px 5px #888;
-	-moz-box-shadow: 0px 0px 5px #888;
-	-webkit-box-shadow: 0px 0px 5px #888;
+    min-height: 100vh;
+    background-color: #fff;
 }
 
 /* ---------- Header ---------- */
 
-#header {
-    background: $theme-color;
-    background: url('../../main2016/images/banner-bg.png') repeat-x;
-    background-size: contain;
-    background-position: top center;
+.body-background {
+    $banner-image-0: '/static/main2017/images/banner-bg-1.png';
+    $banner-image-1: '/static/main2017/images/banner-bg-2.png';
+
+    .header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .header-bg-0 {
+        background: url($banner-image-0) repeat-x;
+        background: url($banner-image-0) repeat-x calc(50% - 110px);
+        // try to align looping background snake with the one in the header
+        // position separate from background declaration because of IE/Edge issues
+        background-position-x: center;
+        background-position-y: 5px;
+        background-position-x: calc(50% - 85px);
+
+        // TODO: Does filter: blur still kill perf on mobiles?
+        -webkit-filter: blur(2px);
+        filter: blur(2px);
+    }
+
+    .header-bg-1 {
+        background: url($banner-image-1) repeat-x;
+        background: url($banner-image-1) repeat-x calc(50% - 110px);
+        // try to align looping background snake with the one in the header
+        background-position: calc(50% - 85px) 5px;
+    }
+    z-index: 0;
 }
+#header, #base {
+    position: relative;
+}
+
+.content {
+    z-index: 0;
+}
+
 #header h1, #header h1 span, #usertools a {
     text-shadow: black 1px 1px 1px;
     font-family: $title-font-family;
@@ -95,7 +117,7 @@ a:hover { text-decoration: underline; }
 }
 #usertools a { font-size: 1.2em; }
 #header h1, #header h1 span {
-    font-size: 3em;
+    font-size: 3.5em;
 }
 #header h1 {
     padding-bottom: 7px;
@@ -107,11 +129,13 @@ a:hover { text-decoration: underline; }
 #header h1 a, #usertools a { color: #fff; }
 #header h1 a, h1 a:visited { text-decoration: none; }
 #header h1 a {
-    text-shadow: #16a 4px 0 3px, #16a -4px 0 3px;
+    text-shadow: #124 2px 3px 3px, #124 -2px 3px 3px;
 }
 
 #header_nav {
     min-height: 32px;
+    background: rgba(darken($theme-color, 10%), 0.9);
+    color: #fff;
 }
 #header_nav:after {
     display: table;
@@ -127,7 +151,7 @@ a:hover { text-decoration: underline; }
 #header_nav ul.sub-level { display: none; }
 
 #header_nav li:hover .sub-level {
-    background-color: #18242b;
+    background-color: $theme-color;
     display: block;
     position: absolute;
     left: 0px;
@@ -145,17 +169,14 @@ a:hover { text-decoration: underline; }
 
 /* ----------- Some common stuff for menuitems ---------- */
 
-li.menu-down-arrow { background-image: url('../img/arrow_down.png'); }
-li.menu-right-arrow { background-image: url('../img/arrow_right.png'); }
-li.menu-right-arrow,
-li.menu-down-arrow {
-    background-position: 95% center;
-    background-repeat: no-repeat;
-    padding-right: 15px;
-}
+.menuitem.menu-down-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0d7');
 
-.menuitem:hover {
-    background-color: #18242b;
+}
+.menuitem.menu-right-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0da');
 }
 
 .menuitem a,
@@ -166,7 +187,11 @@ li.menu-down-arrow {
     transition: background-color $transition-small;
 }
 
-.menuitem a:hover { background-color: $theme-nav-hover; }
+.menuitem a:hover {
+    background-color: $theme-nav-hover;
+    color: #fff;
+    text-decoration: none;
+}
 .menuitem:hover { position: relative; }
 ul.sub-level { z-index: 99; }
 
@@ -214,7 +239,7 @@ ul#crumbpath li {
 ul#crumbpath li:before {
     content: '> ';
     color: #555;
-    padding: 4px;
+    padding: $spacing-small;
 }
 ul#crumbpath li:first-child:before {
     content: '';
@@ -222,26 +247,14 @@ ul#crumbpath li:first-child:before {
 }
 ul#crumbpath li * {
     font-size: 12px;
-    padding: 4px 0;
+    padding: $spacing-small 0;
 }
 ul#crumbpath a {
-    color: $theme-color;
+    color: $theme-color-mid;
     text-decoration: none;
 }
 ul#crumbpath a:hover {
     text-decoration: underline;
-}
-
-@media screen and (max-width: 720px) {
-    .container {
-        width: 100%;
-        min-width: 0;
-    }
-}
-
-/* Landscape phones */
-@media (max-width: 480px) {
-	#header { background: #111122; }
 }
 
 /* ---- usertools ---- */
@@ -250,73 +263,59 @@ ul#crumbpath a:hover {
     padding: 8px;
     position: relative;
     z-index: 1;
-}
-#usertools:before {
-    background: rgba(0, 0, 0, .2);
-    border: 1px solid white;
-    /*background: repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(0,120,0,.1) 10px, transparent 11px), linear-gradient(#ddd, #fff);*/
-    -webkit-transform: rotate(-2deg);
-    -moz-transform: rotate(-2deg);
-    transform: rotate(-2deg);
+    background: rgba(0,0,0,.25);
 
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    content: ' ';
-    position: absolute;
-    z-index: -1;
-}
-#usertools .user-image {
-    float: right;
-    width: 44px; height: 44px;
-    font-size: 0;
-}
-#usertools.unauthenticated .user-image {
-    /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
-}
-#usertools img {
-    box-shadow: 0 0 2px #555;
-}
-#usertools div {
-    float: right;
-    vertical-align: middle;
-    text-align: right;
-    padding-top: 0.1em;
-}
-#usertools div a {
-    padding: 0.25em;
-    padding-right: 0.6em;
-    display: block;
-}
-#usertools a, #usertools a:visited {
-    color: #fff;
-    text-decoration: none;
-}
-#usertools a:hover {
-    color: #fff;
-    /*text-shadow: 0 0 2px #c33;*/
-    text-shadow: #048 1px 1px 1px
+    .user-image {
+        float: right;
+        width: 44px; height: 44px;
+        font-size: 0;
+    }
+    &.unauthenticated .user-image {
+        /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
+    }
+    img {
+        box-shadow: 0 0 2px #555;
+    }
+    div {
+        float: right;
+        vertical-align: middle;
+        text-align: right;
+        padding-top: 0.1em;
+    }
+    div a {
+        padding: 0.25em;
+        padding-right: 0.6em;
+        display: block;
+    }
+    a, a:visited {
+        color: #fff;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #fff;
+        text-shadow: #048 1px 1px 1px
+    }
 }
 
-.login-button span::before {
+.login-button::before {
     display: inline;
     padding-right: 8px;
 }
 // we might want to hint at login method in the usertools box, so
 // the logins are listed here instead of the users app
-.login-facebook span::before {
+.login-facebook::before {
     @include awesome-glyph('\f09a');
 }
-.login-steam span::before {
+.login-steam::before {
     @include awesome-glyph('\f1b7');
 }
-.login-google span::before {
+.login-google::before {
     @include awesome-glyph('\f1a0');
 }
-.login-github span::before {
+.login-github::before {
     @include awesome-glyph('\f09b');
 }
-.login-twitter span::before {
+.login-twitter::before {
     @include awesome-glyph('\f099');
 }
 

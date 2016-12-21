@@ -1,26 +1,12 @@
 
 /* ---------- Pro H4x ---------- */
 
-/* Don't show delete functionality without Javascript support! */
-.delete_link {
-	display: none;
-}
-
-.custom_icon_style {
-	float: left;
-	display: inline-block;
-	width: 17px;
-	height: 17px;
-	border: 1px solid #bbbbbb;
-	background-color: #eeeeee;
-	margin-left: 5px;
-	margin-right: 5px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-
-.custom_icon_style:hover {
-	background-color: #cccccc;
+/* For nested forms */
+div.inner_form {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 /* ---------- Left side navigation bar ---------- */
@@ -70,39 +56,3 @@
 	border-top: 0px; 
 }
 
-/* ---------- Generic tables ---------- */
-
-table { 
-	border-collapse: collapse; 
-	width: 100%; 
-}
-
-table th { 
-	padding: 5px; 
-	border: 1px solid #aaaaaa; 
-	background-color: rgba(40,52,59,1); 
-	color: #eeeeee; 
-	text-align: left; 
-}
-
-table td { 
-	padding: 5px; 
-	border: 1px solid #aaaaaa; 
-	background-color: #eeeeee;
-	vertical-align: middle;
-}
-
-/* ---------- Tablesorter pagination ---------- */
-
-div.pager {
-	vertical-align: middle;
-}
-
-div.pager img {
-	margin-bottom: 2px;
-}
-
-div.pager select,
-div.pager input {
-	border: 1px solid #777777;
-}

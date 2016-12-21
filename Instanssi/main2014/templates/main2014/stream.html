@@ -3,24 +3,24 @@
 
 {% block head %}
 {{ block.super }}
-	<script src="//releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
+    <script src="//releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-	$f("live", "//releases.flowplayer.org/swf/flowplayer-3.2.16.swf", {
-	    clip: {
-		url: 'myStream',
-		live: true,
-		provider: 'influxis'
-	    },
-	    plugins: {
-		influxis: {
-		    url: "flowplayer.rtmp-3.2.12.swf",
-		    netConnectionUrl: 'rtmp://qek5.kyla.fi/live'
-		}
-	    }
-	});
+    $f("live", "//releases.flowplayer.org/swf/flowplayer-3.2.16.swf", {
+        clip: {
+        url: 'myStream',
+        live: true,
+        provider: 'influxis'
+        },
+        plugins: {
+        influxis: {
+            url: "flowplayer.rtmp-3.2.12.swf",
+            netConnectionUrl: 'rtmp://qek5.kyla.fi/live'
+        }
+        }
+    });
 {% endblock %}
 
 {% block content %}

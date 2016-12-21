@@ -31,6 +31,12 @@
                 <button class="btn btn-success" :class="{ 'disabled': isOutOfStock }" v-on:click="addItem()">
                     <span class="fa fa-plus" /> Lisää
                 </button>
+                <div v-if="product.num_available < 1" class="text-danger product-availability-info">
+                    Tuote lopussa.
+                </div>
+                <div v-else-if="isOutOfStock && product.num_available > 0" class="text-danger product-availability-info">
+                    Vain {{ product.num_available}} kpl saatavilla.
+                </div>
             </div>
         </div>
     </div>

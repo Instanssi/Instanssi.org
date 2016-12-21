@@ -362,15 +362,15 @@ let app = new Vue({
             if (found >= 0) {
                 let cartItem = this.cart[found];
                 this.changeItemCount(cartItem, 1);
-            } else {
+            } else if (product.num_available > 0) {
                 // if it isn't, push a new item
                 this.cart.push({
                     count: 1,
                     product: product,
                     variant: variant
                 });
+                this.updateCart();
             }
-            this.updateCart();
         },
         /**
          * Removes one item from the cart.

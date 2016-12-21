@@ -6,7 +6,7 @@
         <store-form-group title="Sähköposti" field="email" autocomplete="email" @update="update" :messages="messages" :data="data" :required="true" type="email" />
         <store-form-group title="Vahvista sähköposti" autocomplete="email" field="email2" @update="update" :messages="messages" :data="data" :required="true" type="email" />
         <store-form-group title="Matkapuhelin" field="mobile" autocomplete="tel" @update="update" :messages="messages" :data="data" type="tel" />
-        <store-form-group title="Muu puhelinnumero" field="telephone" @update="update" :messages="messages" :data="data" type="tel" />
+        <store-form-group title="Muu puhelinnumero" field="telephone" autocomplete="off" @update="update" :messages="messages" :data="data" type="tel" />
     </div>
     <div class="col-lg-6">
         <store-form-group title="Katuosoite" field="street" autocomplete="billing street-address" @update="update" :messages="messages" :data="data" :required="true" />

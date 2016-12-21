@@ -50,6 +50,10 @@
     .item-description { clear: left; }
 }
 
+.product-availability-info {
+    margin-top: 5px;
+}
+
 .cart-item {
     padding: 4px;
     background: #fff;
@@ -63,6 +67,7 @@
     }
     .cart-item-name {
         white-space: nowrap;
+        float: left;
     }
 }
 

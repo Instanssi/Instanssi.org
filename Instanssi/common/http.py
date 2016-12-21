@@ -29,4 +29,4 @@ class Http403Middleware(MiddlewareMixin):
         if isinstance(exception, Http403):
             if getattr(settings, 'DEBUG'):
                 raise PermissionDenied             
-            return render_to_403(context_instance=RequestContext(request))      
+            return render_to_403()

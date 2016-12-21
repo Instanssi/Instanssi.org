@@ -55,6 +55,12 @@ $banner-image-1: '../images/banner-bg-2.png';
         background: url('../images/cube-2017-0.png') no-repeat;
         transform: rotate(140deg);
     }
+    .cube-2017-2 {
+        height: 96px;
+        width: 96px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        transform: rotate(-40deg);
+    }
     // TODO: Mobile positioning
     .cube-2017 {
         position: absolute;

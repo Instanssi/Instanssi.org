@@ -56,6 +56,7 @@ $(function () {
             { class: 'cube-2017 cube-2017-0', x: '200px', y: '15px', s: '192px' },
             // omnomnom
             { class: 'cube-2017 cube-2017-1', x: '570px', y: '220px', s: '96px' },
+            { class: 'cube-2017 cube-2017-2', x: '770px', y: '50px', s: '128px' },
         ];
 
         cubeData.forEach(function(cd) {

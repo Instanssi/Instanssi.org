@@ -193,7 +193,10 @@ a:hover {
     text-decoration: none;
 }
 .menuitem:hover { position: relative; }
-ul.sub-level { z-index: 99; }
+ul.sub-level {
+    z-index: 99;
+    margin-top: 14px;
+}
 
 /* ---------- Contents ---------- */
 

@@ -71,7 +71,7 @@ def handle_notify(request):
     
     # Get data, and make sure it looks right
     try:
-        data = json.loads(request.body)
+        data = json.loads(request.body.decode('utf-8'))
         transaction_id = int(data['posData'])
         bitpay_id = data['id']
         status = data['status']

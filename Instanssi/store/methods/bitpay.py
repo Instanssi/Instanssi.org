@@ -37,10 +37,10 @@ def start_process(ta):
         msg = bitpay.request(settings.BITPAY_KEY, data)
     except bitpay.BitpayException as ex:
         a, b = ex.args
-        logger.error('(%s) %s', b, a)
+        logger.exception('(%s) %s', b, a)
         return reverse('store:pm:bitpay-failure')
     except Exception as ex:
-        logger.error('%s.', ex)
+        logger.exception('%s.', ex)
         return reverse('store:pm:bitpay-failure')
 
     # Save token, redirect

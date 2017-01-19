@@ -65,10 +65,10 @@ def start_process(ta):
         msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
     except paytrail.PaytrailException as ex:
         a, b = ex.args
-        logger.error('(%s) %s', b, a)
+        logger.exception('(%s) %s', b, a)
         return reverse('store:pm:paytrail-failure')
     except Exception as ex:
-        logger.error('%s.', ex)
+        logger.exception('%s.', ex)
         return reverse('store:pm:paytrail-failure')
 
     # Save token, redirect

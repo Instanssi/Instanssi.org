@@ -233,6 +233,7 @@ $banner-image-1: '../images/banner-bg-2.png';
             .item-blog a::before { @include awesome-glyph('\f015'); }
             .item-kompos a::before { @include awesome-glyph('\f091'); }
             .item-programme a::before { @include awesome-glyph('\f133'); }
+            .item-schedule a::before { @include awesome-glyph('\f017'); }
         }
     }
 }

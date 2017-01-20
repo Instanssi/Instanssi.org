@@ -59,7 +59,7 @@ def loggedout(request):
 
 @user_access_required
 def profile(request):
-    from social.apps.django_app.default.models import DjangoStorage
+    from social_django.models import DjangoStorage
 
     if request.method == "POST":
         profileform = ProfileForm(request.POST, instance=request.user, user=request.user)

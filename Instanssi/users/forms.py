@@ -89,11 +89,13 @@ class OpenIDLoginForm(forms.Form):
         # Initial values
         self.fields['next'].initial = self.next
         self.fields['sps'].choices = [
+            ('', 'Valitse OpenID-palveluntarjoaja'),
             ('https://korppi.jyu.fi/openid/', 'Korppi'),
             ('https://me.yahoo.com', 'Yahoo'),
         ]
+        self.fields['sps'].required = False
         self.fields['sps'].initial = 0
-        self.fields['openid_identifier'].initial = 'https://korppi.jyu.fi/openid/'
+        self.fields['openid_identifier'].initial = ''
         
 
 class ProfileForm(forms.ModelForm):

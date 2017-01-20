@@ -70,8 +70,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'Instanssi.common.context_processors.short_language_code',
                 'Instanssi.common.context_processors.google_settings',
-                'social.apps.django_app.context_processors.backends',
-                'social.apps.django_app.context_processors.login_redirect',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -135,7 +135,7 @@ INSTALLED_APPS = (
     'oauth2_provider',
     'twitter_tag',
     'crispy_forms',
-    'social.apps.django_app.default',
+    'social_django',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -148,13 +148,13 @@ INSTALLED_APPS = (
 
 # Authentication backends, notice the openid backend here.
 AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.github.GithubOAuth2',
-    'social.backends.battlenet.BattleNetOAuth2',
-    'social.backends.steam.SteamOpenId',
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.battlenet.BattleNetOAuth2',
+    'social_core.backends.steam.SteamOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
 

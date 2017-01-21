@@ -1,0 +1,40 @@
+{% extends "admin_store/base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Myyntimäärät{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block crumbs %}
+{{ block.super }}
+    <li><a href="{% url 'manage-store:amounts' %}">Myyntimäärät</a></li>
+    <li>Selaa</li>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h2>Myyntimäärät</h2>
+
+    {% for treeitem in item_tree %}
+        <h3>{{ treeitem.event.name }}</h3>
+        <ul>
+        {% for item in treeitem.items %}
+            <li>{{ item.sold_item.item.name }}: {{ item.count }}
+                {% if item.variants %}
+                    <ul>
+                    {% for variant in item.variants %}
+                        <li>{{ variant.sold_variant.name }}: {{ variant.count }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

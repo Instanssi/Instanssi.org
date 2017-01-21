@@ -43,7 +43,8 @@ def amounts(request):
     # TODO: This is a really quickly made thing; needs optimizing.
 
     for event in Event.objects.iterator():
-        counts = TransactionItem.objects.filter(item__event=event).values('item').annotate(Count('item'))
+        counts = TransactionItem.objects\
+            .filter(item__event=event).exclude(transaction__time_paid=None).values('item').annotate(Count('item'))
         if not counts:
             continue
 

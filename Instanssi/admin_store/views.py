@@ -53,7 +53,7 @@ def amounts(request):
                 continue
 
             # Find item description
-            item = TransactionItem.objects.select_related('item').get(pk=c['item'])
+            item = StoreItem.objects.get(pk=c['item'])
 
             # Find available variants (if any) and count them
             variants = TransactionItem.objects.filter(item=c['item']).values('variant').annotate(Count('variant'))

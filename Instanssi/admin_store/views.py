@@ -44,7 +44,10 @@ def amounts(request):
 
     for event in Event.objects.iterator():
         counts = TransactionItem.objects\
-            .filter(item__event=event).exclude(transaction__time_paid=None).values('item').annotate(Count('item'))
+            .filter(item__event=event)\
+            .exclude(transaction__time_paid=None)\
+            .values('item')\
+            .annotate(Count('item'))
         if not counts:
             continue
 
@@ -57,7 +60,11 @@ def amounts(request):
             item = StoreItem.objects.get(pk=c['item'])
 
             # Find available variants (if any) and count them
-            variants = TransactionItem.objects.filter(item=c['item']).values('variant').annotate(Count('variant'))
+            variants = TransactionItem.objects\
+                .filter(item=c['item']) \
+                .exclude(transaction__time_paid=None)\
+                .values('variant')\
+                .annotate(Count('variant'))
             variant_list = []
             for v in variants:
                 if not v['variant']:

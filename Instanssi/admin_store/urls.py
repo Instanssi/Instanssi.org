@@ -2,11 +2,12 @@
 
 from django.conf.urls import url
 from Instanssi.admin_store.views import index, items, export, status, tis, tis_csv, transaction_status,\
-    edit_item, delete_item
+    edit_item, delete_item, amounts
 
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^items/$', items, name="items"),
+    url(r'^amounts/$', amounts, name="amounts"),
     url(r'^export/$', export, name="export"),
     url(r'^status/$', status, name="status"),
     url(r'^tis/$', tis, name="transactionitems"),

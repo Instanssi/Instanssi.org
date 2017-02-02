@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from Instanssi.common.http import Http403
-from Instanssi.common.auth import staff_access_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template import loader, Context
 from django.forms import inlineformset_factory
+from django.db.models import Count
+
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.store.models import *
 from Instanssi.admin_store.forms import StoreItemForm, TaItemExportForm, StoreItemVariantForm
+from Instanssi.store.models import StoreItem, StoreItemVariant, StoreTransaction, TransactionItem
+from Instanssi.kompomaatti.models import Event
 
 # Logging related
 import logging
@@ -30,6 +34,64 @@ def export(request):
         form = TaItemExportForm()
     
     return admin_render(request, "admin_store/export.html", {'form': form})
+
+
+@staff_access_required
+def amounts(request):
+    item_tree = []
+
+    # TODO: This is a really quickly made thing; needs optimizing.
+
+    for event in Event.objects.iterator():
+        counts = TransactionItem.objects\
+            .filter(item__event=event)\
+            .exclude(transaction__time_paid=None)\
+            .values('item')\
+            .annotate(Count('item'))
+        if not counts:
+            continue
+
+        item_list = []
+        for c in counts:
+            if not c['item']:
+                continue
+
+            # Find item description
+            item = StoreItem.objects.get(pk=c['item'])
+
+            # Find available variants (if any) and count them
+            variants = TransactionItem.objects\
+                .filter(item=c['item']) \
+                .exclude(transaction__time_paid=None)\
+                .values('variant')\
+                .annotate(Count('variant'))
+            variant_list = []
+            for v in variants:
+                if not v['variant']:
+                    continue
+                variant = StoreItemVariant.objects.get(pk=v['variant'])
+                variant_list.append({
+                    'sold_variant': variant,
+                    'count': v['variant__count']
+                })
+
+            # Add everything to a list for template
+            item_list.append({
+                'sold_item': item,
+                'count': c['item__count'],
+                'variants': variant_list,
+            })
+
+        # Add the event & item list to outgoing template data
+        item_tree.append({
+            'event': event,
+            'items': item_list
+        })
+
+    # Render response
+    return admin_render(request, "admin_store/amounts.html", {
+        'item_tree': item_tree
+    })
 
 
 @staff_access_required

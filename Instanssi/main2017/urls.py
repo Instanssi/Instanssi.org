@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^kompot/$', pageloader, {'templatename': 'kompot'}, name="kompot"),
     url(r'^kilpailusopimus/$', pageloader, {'templatename': 'kilpailusopimus'}, name="kilpailusopimus"),
     url(r'^stream/$', pageloader, {'templatename': 'stream'}, name="stream"),
+    url(r'^saannot/$', pageloader, {'templatename': 'saannot'}, name="saannot"),
 ]

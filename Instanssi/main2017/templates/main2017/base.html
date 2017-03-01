@@ -85,7 +85,9 @@
                     <a href="{% url 'store:index' %}" class="btn btn-primary">Osta lippu!</a>
                 </section>
                 <section class="widget widget-rules">
-                    <a href="{% url 'main2017:saannot' %}"><h3>Tapahtuman säännöt</h3></a>
+                    <a href="{% url 'main2017:saannot' %}">
+                        <h3><span class="fa fa-info-circle"></span> Tapahtuman säännöt</h3>
+                    </a>
                 </section>
                 {% block widgets %}
                 <section class="widget widget-twitter">

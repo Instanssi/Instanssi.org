@@ -6,7 +6,14 @@
         <h2 class="title">
             {{ prog.title }}
         </h2>
-        <a class="schedule-link" href="{% url 'main2017:aikataulu' %}#sp-{{ prog.id }}">{{ prog.short_start_time }}</a>
+        <div class="pull-right text-right">
+            <div>
+                <a class="schedule-link" href="{% url 'main2017:aikataulu' %}#sp-{{ prog.id }}">
+                    <span class="fa fa-clock-o"></span> {{ prog.short_start_time }}
+                </a>
+            </div>
+            <div>{{ prog.place }}</div>
+        </div>
         <div class="person">
 {% if prog.icon_original or prog.icon2_original %}
             <div class="icon">
@@ -29,6 +36,7 @@
                 <span class="titles">{{ prog.presenters_titles }}</span>
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="description">
             {{ prog.description|safe }}
         </div>

@@ -10,11 +10,6 @@
         float: right;
         text-decoration: none;
         margin-right: 8px;
-
-        &::before {
-            @include awesome-glyph('\f017');
-            margin-right: 4px;
-        }
     }
     .serviceicons { text-align: right; margin-right: 8px; }
     .serviceicons a { text-decoration: none; }

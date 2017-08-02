@@ -1,6 +1,6 @@
 /**
  * This is a stylesheet for a demo presentation for impress.js
- * 
+ *
  * Edited by Katajakasa
  */
 
@@ -13,8 +13,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
     margin: 0;
@@ -26,7 +26,7 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
@@ -53,8 +53,10 @@ table {
 body {
     font-family: 'Open Sans', sans-serif;
     min-height: 700px;
-    background: url('../images/snow.png');
-    -webkit-font-smoothing: antialiased;
+    color: #fff;
+    margin: 0;
+    background: #091122;
+    text-shadow: rgba(20, 160, 200, 0.3) .3em 0 .3em, rgba(20, 160, 200, 0.3) -.3em 0 .3em;
 }
 
 b, strong { font-weight: bold }
@@ -64,21 +66,17 @@ i, em { font-style: italic}
 body     { pointer-events: none; }
 #impress { pointer-events: auto; }
 
-
-
 /* Omat tyylit */
 
 div.centered {
 	width: 100%;
 	text-align: center;
-	text-shadow: #555 3px 3px 8px;
+    text-shadow: rgba(20, 160, 200, 0.3) .1em 0 .1em, rgba(20, 160, 200, 0.3) -.1em 0 .1em;
 }
 
 p.componame {
 	font-size: 3.5em;
-	font-family: 'Exo', sans-serif;
 	font-weight: bold;
-	font-variant: small-caps;
 }
 
 p.entry {
@@ -149,7 +147,7 @@ p.compothanks {
 .fallback-message {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.3;
-    
+
     display: none;
     width: 780px;
     padding: 10px 10px 0;

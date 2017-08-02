@@ -1,14 +1,13 @@
-/* common.scss
-   Sitewide SCSS (theme colors, etc.) goes here.
+/* common.2017.scss
+   Old variables from the 2017 theme, kept for theme compatibility.
 */
 
-$theme-color: #071b6f;
+$theme-color: #13285e;
 
-$theme-color-dark: #040230;
+$theme-color-dark: #0b1937;
 
-// Used for hover highlights and stuff.
-// Meant to be the same color as in the flyers and shirt design
-$theme-color-bright: #3a418f;
+// meant to be the same color as in the flyers and shirt design
+$theme-color-bright: #01a8ff;
 
 // brighter theme color for link text and stuff
 $theme-color-mid: ($theme-color + $theme-color-bright) / 2;
@@ -17,7 +16,7 @@ $theme-nav-hover: $theme-color-mid;
 
 $background-color: #1b1b1b;
 
-$bg-gradient-top: $theme-color;
+$bg-gradient-top: #0a3270;
 $bg-gradient-bottom: lighten($background-color, 5);
 $bg-gradient-height: 640px;
 

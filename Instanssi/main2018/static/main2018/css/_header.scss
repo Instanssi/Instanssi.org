@@ -1,0 +1,239 @@
+$banner-image-0: '../images/banner-bg-1.png';
+$banner-image-1: '../images/banner-bg-2.png';
+
+#page-header {
+    position: relative; // grab any absolute-positioned stuff
+    overflow: hidden;
+    // z-index: 0;
+
+    .header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .header-bg-0 {
+        background: url($banner-image-0) repeat-x;
+        background: url($banner-image-0) repeat-x calc(50% - 110px);
+        // try to align looping background snake with the one in the header
+        // position separate from background declaration because of IE/Edge issues
+        background-position-x: center;
+        background-position-y: 5px;
+        background-position-x: calc(50% - 85px);
+
+        // TODO: Does filter: blur still kill perf on mobiles?
+        -webkit-filter: blur(2px);
+        filter: blur(2px);
+    }
+
+    .header-bg-1 {
+        background: url($banner-image-1) repeat-x;
+        background: url($banner-image-1) repeat-x calc(50% - 110px);
+        // try to align looping background snake with the one in the header
+        background-position: calc(50% - 85px) 5px;
+    }
+
+    .header-bg-cubes {
+        // this is also a 'container' for consistent positioning
+        position: relative;
+    }
+
+    .cube-2017-0 {
+        left: -128px;
+        top: 64px;
+        height: 128px;
+        width: 128px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        // background-position: scale;
+    }
+    .cube-2017-1 {
+        height: 96px;
+        width: 96px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        transform: rotate(140deg);
+    }
+    .cube-2017-2 {
+        height: 96px;
+        width: 96px;
+        background: url('../images/cube-2017-0.png') no-repeat;
+        transform: rotate(-40deg);
+    }
+    // TODO: Mobile positioning
+    .cube-2017 {
+        position: absolute;
+        background-size: contain;
+    }
+
+    .snek {
+        opacity: .9;
+        position: relative;
+        left: 100px;
+
+        .snek-head {
+            left: 50%;
+            margin-left: -50%;
+            pointer-events: none;
+            position: absolute;
+            width: 640px;
+            height: 300px;
+            background: url('../images/banner-snek.png') no-repeat;
+            background-size: 100%;
+        }
+        /*
+        .snek-tail {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            //box-shadow: $theme-color-bright 0 0 4px;
+            background: url('../images/banner-cube-1.png') no-repeat;
+            background-size: 100%;
+        }*/
+    }
+
+    a {
+        text-decoration: none; // no underline pls
+    }
+
+    // logo and info
+
+    .header-info {
+        min-height: $main-header-height;
+        padding: 0 8px;
+
+        // position to prevent the (positioned) art from covering this
+        position: relative;
+
+        color: #fff;
+
+        &:after {
+            // The big logo
+            margin-left: 4px; // fix alignment with content
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50px;
+            width: 480px;
+            height: 140px;
+            max-width: 100%;
+            background: url('../images/logo.png') 50% no-repeat;
+            background-size: 100%;
+
+            @media screen and (max-width: $screen-xs-min - 1px) {
+                top: 0px;
+                max-width: 75%;
+                height: 100px;
+            }
+        }
+        h1, .tagline, .time {
+            margin-left: 8px;
+            font-family: $title-font-family;
+            color: #fff;
+        }
+        .tagline, .time {
+            margin-bottom: 5px;
+            text-shadow: #124 0 2px 3px;
+            text-shadow: #124 0 2px 3px, #124 0 2px 6px;
+        }
+        .tagline {
+            font-size: 20px;
+        }
+        .time {
+            font-size: 24px;
+            padding: 180px 0 0 8px;
+        }
+
+        h1 {
+            font-size: 55px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0;
+            line-height: 400%;
+            text-shadow: #124 4px 0 3px, #124 -4px 0 3px;
+        }
+
+    }
+
+    // Mobile menu button
+    .nav-btn {
+        display: none;
+        // margin: 8px 0 0;
+        padding: 8px 8px;
+        color: #fff;
+        background: rgba($theme-color-bright, 0.5);
+        box-shadow: rgba(#000, .25) 1px 1px 4px;
+        cursor: pointer;
+
+        .fa {
+            // mimic logo's styling with text color and shadow
+            color: #fff;
+            text-shadow: rgba($theme-color, .5) 0 0 8px;
+        }
+
+        &:active {
+            background: $theme-color-bright;
+        }
+    }
+
+    // Navigation menu
+    nav {
+        bottom: 0px;
+        position: relative;
+        background: rgba(darken($theme-color, 10%), 0.9);
+        ul {
+            margin: 0px;
+            .menu-item {
+                float: left;
+                width: auto;
+                a {
+                    font-family: $title-font-family;
+                    text-transform: uppercase;
+                    padding: 12px 15px;
+                    display: inline-block;
+                    -webkit-transition: background-color $transition-large ease-in-out;
+                    transition: background-color $transition-large ease;
+                    text-decoration: none;
+                    position: relative;
+                    color: #fff;
+                    top: 0px;
+                    background: rgba(255,255,255,0);
+                    &:hover {
+                        background: $theme-nav-hover;
+                    }
+                }
+            }
+            .menu-item-right {
+                float: right;
+            }
+            .current-menu-item {
+                background: $theme-color-bright;
+                a {
+                    color: #fff;
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+            }
+            .menu-item a {
+                padding-left: 15px;
+                position: relative
+            }
+            .menu-item a::before {
+                margin-right: 8px;
+                display: inline-block;
+            }
+            .item-store a::before { @include awesome-glyph('\f07a'); }
+            .item-archive a::before { @include awesome-glyph('\f187'); }
+            .item-kompomaatti a::before { @include awesome-glyph('\f1b2'); }
+            .item-english a::before{ @include awesome-glyph('\f0ac'); }
+            .item-info a::before { @include awesome-glyph('\f129'); }
+            .item-blog a::before { @include awesome-glyph('\f015'); }
+            .item-kompos a::before { @include awesome-glyph('\f091'); }
+            .item-programme a::before { @include awesome-glyph('\f133'); }
+            .item-schedule a::before { @include awesome-glyph('\f017'); }
+        }
+    }
+}

@@ -38,10 +38,10 @@ OAUTH2_PROVIDER = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'oauth2_provider.ext.rest_framework.TokenHasReadWriteScope',
+        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',

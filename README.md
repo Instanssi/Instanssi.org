@@ -34,7 +34,8 @@ Projektin asentaminen
 Vaatimukset
 -----------
 
-Python-tulkista vaaditaan versio 3.4.x. PIP tulee olla asennettuna.
+Python-tulkista vaaditaan versio 3.4.x. PIP tulee olla asennettuna. Ajamiseen kannattaa luoda virtualenv (defaulttina
+virtualenv käyttää python2 tulkkia, joten muista erikseen määrittää python3-tulkin sijainti!).
 
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
 

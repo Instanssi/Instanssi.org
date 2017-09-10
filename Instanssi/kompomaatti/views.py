@@ -7,6 +7,7 @@ from Instanssi.common.rest import rest_api, RestResponse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from Instanssi.kompomaatti.forms import VoteCodeRequestForm, VoteCodeAssocForm, ParticipationForm,\
     EntryForm, TicketVoteCodeAssocForm
@@ -16,8 +17,6 @@ from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, co
 from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.store.models import TransactionItem
-
-from datetime import datetime
 
 
 def eventselect(request):
@@ -284,7 +283,7 @@ def compoentry_edit(request, event_id, compo_id, entry_id):
     compo = get_object_or_404(Compo, pk=int(compo_id))
     
     # Check if user is allowed to edit
-    if datetime.now() >= compo.editing_end:
+    if timezone.now() >= compo.editing_end:
         raise Http403
     
     # Get entry (make sure the user owns it, too)
@@ -314,7 +313,7 @@ def compoentry_delete(request, event_id, compo_id, entry_id):
     compo = get_object_or_404(Compo, pk=int(compo_id))
     
     # Check if user is allowed to edit
-    if datetime.now() >= compo.adding_end:
+    if timezone.now() >= compo.adding_end:
         raise Http403
     
     # Get entry (make sure the user owns it, too)
@@ -346,7 +345,7 @@ def competition_details(request, event_id, competition_id):
     
     # Check if user can participate (deadline not caught yet)
     can_participate = False
-    if datetime.now() < competition.participation_end:
+    if timezone.now() < competition.participation_end:
         can_participate = True
         
     # Handle signup form
@@ -397,7 +396,7 @@ def competition_signout(request, event_id, competition_id):
     competition = get_object_or_404(Competition, pk=int(competition_id))
     
     # Check if user is still allowed to sign up
-    if datetime.now() >= competition.participation_end:
+    if timezone.now() >= competition.participation_end:
         raise Http403
     
     # Delete participation
@@ -415,7 +414,7 @@ def entry_details(request, event_id, compo_id, entry_id):
     compo = get_object_or_404(Compo, pk=int(compo_id))
     
     # Make sure voting has started before allowing this page to be shown
-    if datetime.now() < compo.voting_start:
+    if timezone.now() < compo.voting_start:
         raise Http404
     
     # Get entry

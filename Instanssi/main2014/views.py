@@ -4,10 +4,11 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
 from Instanssi.main2014.models import ToimistoJahti, ToimistoSuoritus
 from Instanssi.main2014.forms import ToimistoCodeForm
 from Instanssi.common.auth import user_access_required
-from datetime import datetime
 
 
 def pageloader(request, templatename):
@@ -40,7 +41,7 @@ def reportointi(request):
             s = ToimistoSuoritus()
             s.user = request.user
             s.nick = codeform.cleaned_data['nick']
-            s.time = datetime.now()
+            s.time = timezone.now()
             s.save()
             return HttpResponseRedirect(reverse('main2014:toimisto-kiitos'))
     else:

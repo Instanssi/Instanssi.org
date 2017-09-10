@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-from datetime import datetime
+
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
+
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
 from Instanssi.kompomaatti.models import Entry, VoteCode, TicketVoteCode, VoteCodeRequest, CompetitionParticipation
 from Instanssi.store.models import TransactionItem
@@ -72,7 +74,7 @@ class TicketVoteCodeAssocForm(forms.Form):
         obj.event = self.event
         obj.associated_to = self.user
         obj.ticket = transaction_item
-        obj.time = datetime.now()
+        obj.time = timezone.now()
         obj.save()
 
 
@@ -108,7 +110,7 @@ class VoteCodeAssocForm(forms.Form):
     def save(self):
         vc = VoteCode.objects.get(event=self.event, key=self.cleaned_data['code'])
         vc.associated_to = self.user
-        vc.time = datetime.now()
+        vc.time = timezone.now()
         vc.save()
 
 

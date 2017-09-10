@@ -5,10 +5,10 @@ from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.admin_blog.forms import BlogEntryForm, BlogEntryEditForm
 from Instanssi.admin_base.misc.custom_render import admin_render
-from datetime import datetime
 
 # Logging related
 import logging
@@ -28,7 +28,7 @@ def index(request, sel_event_id):
         if form.is_valid():
             entry = form.save(commit=False)
             entry.event_id = int(sel_event_id)
-            entry.date = datetime.now()
+            entry.date = timezone.now()
             entry.user = request.user
             entry.save()
             logger.info('Blog entry "'+entry.title+'" added.', extra={'user': request.user, 'event_id': sel_event_id})

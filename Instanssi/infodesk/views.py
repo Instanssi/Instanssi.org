@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-
 from Instanssi.common.auth import infodesk_access_required
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from Instanssi.common.responses import JSONResponse
 from Instanssi.infodesk.forms import TransactionKeyScanForm, ItemKeyScanForm
@@ -150,7 +149,7 @@ def transaction_check(request):
 def item_mark(request, item_id):
     """Mark an item as delivered."""
     item = get_object_or_404(TransactionItem, pk=item_id)
-    item.time_delivered = datetime.now()
+    item.time_delivered = timezone.now()
     item.save()
     if item.transaction.is_paid:
         logger.info('Item %d marked as delivered.' % (item.id,),

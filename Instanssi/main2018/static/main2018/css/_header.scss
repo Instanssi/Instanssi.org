@@ -1,4 +1,4 @@
-$banner-image-0: '../images/banner-bg-1.png';
+$banner-image-0: '../images/banner-bg.jpg';
 $banner-image-1: '../images/banner-bg-2.png';
 
 #page-header {
@@ -8,6 +8,8 @@ $banner-image-1: '../images/banner-bg-2.png';
 
     .header-bg {
         position: absolute;
+        background: url($banner-image-0) repeat-x;
+        background-position: contain;
         top: 0;
         left: 0;
         width: 100%;
@@ -15,83 +17,44 @@ $banner-image-1: '../images/banner-bg-2.png';
         pointer-events: none;
     }
 
-    .header-bg-0 {
-        background: url($banner-image-0) repeat-x;
-        background: url($banner-image-0) repeat-x calc(50% - 110px);
-        // try to align looping background snake with the one in the header
-        // position separate from background declaration because of IE/Edge issues
-        background-position-x: center;
-        background-position-y: 5px;
-        background-position-x: calc(50% - 85px);
-
-        // TODO: Does filter: blur still kill perf on mobiles?
-        -webkit-filter: blur(2px);
-        filter: blur(2px);
-    }
-
-    .header-bg-1 {
-        background: url($banner-image-1) repeat-x;
-        background: url($banner-image-1) repeat-x calc(50% - 110px);
-        // try to align looping background snake with the one in the header
-        background-position: calc(50% - 85px) 5px;
-    }
-
-    .header-bg-cubes {
+    .header-bg-fx {
         // this is also a 'container' for consistent positioning
         position: relative;
     }
 
-    .cube-2017-0 {
-        left: -128px;
-        top: 64px;
-        height: 128px;
-        width: 128px;
-        background: url('../images/cube-2017-0.png') no-repeat;
-        // background-position: scale;
+    .halo-orange {
+        /*left: 815px;
+        top: 171px;
+        width: 147px;
+        height: 147px;*/
+        background: url('../images/halo-orange.png') no-repeat;
     }
-    .cube-2017-1 {
-        height: 96px;
-        width: 96px;
-        background: url('../images/cube-2017-0.png') no-repeat;
-        transform: rotate(140deg);
+    .halo-green {
+        /*left: 531px;
+        top: 6px;
+        width: 218px;
+        height: 218px;*/
+        background: url('../images/halo-green.png') no-repeat;
     }
-    .cube-2017-2 {
-        height: 96px;
-        width: 96px;
-        background: url('../images/cube-2017-0.png') no-repeat;
-        transform: rotate(-40deg);
+    .halo-blue {
+        /*left: 202px;
+        top: 87px;
+        width: 257px;
+        height: 256px;*/
+        background: url('../images/halo-blue.png') no-repeat;
+    }
+    .halo-purple {
+        /*left: -8px;
+        top: -17px;
+        height: 220px;
+        width: 220px;*/
+        background: url('../images/halo-purple.png') no-repeat;
     }
     // TODO: Mobile positioning
-    .cube-2017 {
+    .halo-2018 {
         position: absolute;
         background-size: contain;
-    }
-
-    .snek {
-        opacity: .9;
-        position: relative;
-        left: 100px;
-
-        .snek-head {
-            left: 50%;
-            margin-left: -50%;
-            pointer-events: none;
-            position: absolute;
-            width: 640px;
-            height: 300px;
-            background: url('../images/banner-snek.png') no-repeat;
-            background-size: 100%;
-        }
-        /*
-        .snek-tail {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #fff;
-            //box-shadow: $theme-color-bright 0 0 4px;
-            background: url('../images/banner-cube-1.png') no-repeat;
-            background-size: 100%;
-        }*/
+        transition: opacity linear 0.5s;
     }
 
     a {
@@ -111,18 +74,19 @@ $banner-image-1: '../images/banner-bg-2.png';
 
         &:after {
             // The big logo
-            margin-left: 4px; // fix alignment with content
+            margin-left: -24px; // fix alignment with content
             content: '';
             display: block;
             position: absolute;
-            top: 50px;
-            width: 480px;
-            height: 140px;
+            top: 20px;
+            width: 530px;
+            height: 200px;
             max-width: 100%;
             background: url('../images/logo.png') 50% no-repeat;
             background-size: 100%;
 
             @media screen and (max-width: $screen-xs-min - 1px) {
+                margin-left: -16px;
                 top: 0px;
                 max-width: 75%;
                 height: 100px;
@@ -179,27 +143,24 @@ $banner-image-1: '../images/banner-bg-2.png';
     }
 
     // Navigation menu
-    nav {
-        bottom: 0px;
-        position: relative;
+    nav.main-nav {
+        padding: 0;
+        margin-bottom: $spacing-large;
         background: rgba(darken($theme-color, 10%), 0.9);
         ul {
-            margin: 0px;
-            .menu-item {
-                float: left;
-                width: auto;
+            border: 0;
+            li {
                 a {
                     font-family: $title-font-family;
                     text-transform: uppercase;
-                    padding: 12px 15px;
-                    display: inline-block;
-                    -webkit-transition: background-color $transition-large ease-in-out;
                     transition: background-color $transition-large ease;
                     text-decoration: none;
-                    position: relative;
+
                     color: #fff;
-                    top: 0px;
                     background: rgba(255,255,255,0);
+                    // Bootstrap default is 2px
+                    margin-right: 0;
+
                     &:hover {
                         background: $theme-nav-hover;
                     }
@@ -217,23 +178,23 @@ $banner-image-1: '../images/banner-bg-2.png';
                     }
                 }
             }
-            .menu-item a {
+            li a {
                 padding-left: 15px;
-                position: relative
+                position: relative;
             }
-            .menu-item a::before {
+            li a::before {
                 margin-right: 8px;
                 display: inline-block;
             }
             .item-store a::before { @include awesome-glyph('\f07a'); }
-            .item-archive a::before { @include awesome-glyph('\f187'); }
+            .item-blog a::before { @include awesome-glyph('\f015'); }
+            /*.item-archive a::before { @include awesome-glyph('\f187'); }
             .item-kompomaatti a::before { @include awesome-glyph('\f1b2'); }
             .item-english a::before{ @include awesome-glyph('\f0ac'); }
             .item-info a::before { @include awesome-glyph('\f129'); }
-            .item-blog a::before { @include awesome-glyph('\f015'); }
             .item-kompos a::before { @include awesome-glyph('\f091'); }
             .item-programme a::before { @include awesome-glyph('\f133'); }
-            .item-schedule a::before { @include awesome-glyph('\f017'); }
+            .item-schedule a::before { @include awesome-glyph('\f017'); }*/
         }
     }
 }

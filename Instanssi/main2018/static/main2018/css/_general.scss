@@ -7,9 +7,6 @@ html , body {
     padding: 0;
     height: 100%;
 }
-.clearer, .clear {
-    clear: both;
-}
 img {
     // prevent images from blowing up page
     max-width: 99% !important;
@@ -106,23 +103,20 @@ sub {
     }
 }
 
-#page-wrap {
+body {
     position: relative;
-    background: $bg-gradient-bottom;
-    background: linear-gradient($bg-gradient-top 0, $bg-gradient-bottom $bg-gradient-height);
+
+    background-color: #000;
+    background: url('../images/banner-bg.jpg') repeat-x, #000;
+    background-size: 100%;
+    background-position: top;
 }
 
 #content {
-    background: #fff;
+    // background: #fff;
     box-sizing: border-box;
-    padding: 24px 10px 24px;
+    // padding: 24px 10px 24px;
 
     min-height: 100vh;
     min-height: $main-content-height;
-}
-
-.container {
-    width: 900px;
-    margin: 0 auto;
-    padding: 0px 0px;
 }

@@ -12,65 +12,39 @@ $(function () {
             $nav.toggleClass('active');
         });
     }
+    layoutButton();
 
-    function snek() {
-        var $layer0 = $('.header-bg-0');
-        var $layer1 = $('.header-bg-1');
-        var $window = $(window);
+    var haloElements = [];
 
-        function moveLayers(offset) {
-            var ww = $window.width();
+    function halos() {
+        var $container = $('.header-bg-fx');
 
-            // center pattern by default
-            var base = ww / 2;
-
-            // mimic media query behavior in our procedural inline CSS
-            // (offsets mostly found through trial and error)
-            if (ww >= 1200) {
-                base += 230;
-            } else if (ww >= 980) {
-                base += 230 + 65;
-            } else {
-                base += 230 + 140;
-            }
-            var pos = base + offset / 100;
-            $layer1.css('background-position-x', pos);
-            // TODO: Cubes!
-        }
-        $('body').mousemove(function (ev) {
-            // TODO: Make this smoother! Keep track of the current and target offset, and animate it until we reach our goal.
-            // (use requestframe if available?)
-            moveLayers($window.width() / 2 - ev.pageX);
-        });
-        $window.resize(function(ev) {
-            moveLayers(0);
-        });
-        moveLayers(0);
-    }
-
-    function cubes() {
-        var $container = $('.header-bg-cubes');
-        // var IMAGE_BASE_PATH = '/static/main2018/images/';
-
-        var cubeData = [
-            { class: 'cube-2017 cube-2017-0', x: '200px', y: '15px', s: '192px' },
-            // omnomnom
-            { class: 'cube-2017 cube-2017-1', x: '570px', y: '220px', s: '96px' },
-            { class: 'cube-2017 cube-2017-2', x: '770px', y: '50px', s: '128px' },
+        var haloData = [
+            { class: 'halo-2018 halo-orange', x: 815, y: 171, s: 147 },
+            { class: 'halo-2018 halo-green', x: 531, y: 6, s: 218 },
+            { class: 'halo-2018 halo-blue', x: 202, y: 87, s: 257 },
+            { class: 'halo-2018 halo-purple', x: -8, y: -17, s: 220 },
         ];
 
-        cubeData.forEach(function(cd) {
+        haloData.forEach(function(cd) {
             // var src = IMAGE_BASE_PATH + cd.src;
-            var $cube = $('<div class="' + cd.class + '"/>');
-            $cube.css('left', cd.x);
-            $cube.css('top', cd.y);
-            $cube.css('width', cd.s);
-            $cube.css('height', cd.s);
-            $container.append($cube);
+            var $halo = $('<div class="' + cd.class + '"/>');
+            $halo.css('left', cd.x / 2);
+            $halo.css('top', cd.y / 2);
+            $halo.css('width', cd.s / 2);
+            $halo.css('height', cd.s / 2);
+            $container.append($halo);
+            haloElements.push($halo);
         });
+
     }
 
-    layoutButton();
-    snek();
-    cubes();
+    document.addEventListener('mouseover', function() {
+        haloElements.forEach(function(haloElement, index) {
+            var val = Math.sin(new Date().valueOf() / 1000 + index);
+            haloElement.css('opacity', val * 0.5 + 0.5);
+        });
+    }, 500);
+
+    halos();
 });

@@ -2,13 +2,15 @@
    Sitewide SCSS (theme colors, etc.) goes here.
 */
 
-$theme-color: #071b6f;
-
-$theme-color-dark: #040230;
+// https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
 
 // Used for hover highlights and stuff.
-// Meant to be the same color as in the flyers and shirt design
-$theme-color-bright: #3a418f;
+$theme-color-bright: #54b;
+
+$theme-color: darken($theme-color-bright, 20%);
+
+$theme-color-dark: darken($theme-color-bright, 40%);
+
 
 // brighter theme color for link text and stuff
 $theme-color-mid: ($theme-color + $theme-color-bright) / 2;
@@ -31,14 +33,23 @@ $spacing-large: 16px;
 $spacing-medium: 8px;
 $spacing-small: 4px;
 
+// Bootstrap 4's names for the default spacer.
+$spacer: $spacing-medium;
+$spacer-x: $spacer;
+$spacer-y: $spacer;
+
 // overrides for certain Bootstrap SASS defaults
 $brand-primary: $theme-color;
 $border-radius-base: 0;
 $border-radius-large: 0;
 $border-radius-small: 0;
+
 $navbar-default-color: #ddd;
 $navbar-default-link-hover-color: #fff;
 $navbar-default-link-hover-bg: $theme-nav-hover;
+
+$nav-tabs-border-color: $theme-color-bright;
+$nav-tabs-link-hover-border-color: $theme-color-bright;
 
 // default is the brand color, but we want to vary this a bit
 $component-active-bg: $theme-color-bright;

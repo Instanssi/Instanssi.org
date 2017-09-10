@@ -1,5 +1,10 @@
 @import 'reset.scss';
-@import 'base_layout/css/common.scss';
+
+// Picked up from
+$theme-color-orange: #ffcc2b;
+$theme-color-green: #3bff2b;
+$theme-color-blue: #2bd1ff;
+$theme-color-purple: #f92bff;
 
 // desktop screens
 $screen-lg-min: 1200px;
@@ -12,6 +17,10 @@ $screen-sm-min: 768px;
 // landscape phones / small tablets
 $screen-xs-max: 480px;
 $screen-xs-min: 480px;
+
+// ---- last chance to override bootstrap defaults for site theme ----
+@import 'base_layout/css/common.scss';
+
 
 @media screen and (min-width: $screen-lg-min) {
     .hidden-lg-up { display: none; }
@@ -41,6 +50,13 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 @import '_sidebar.scss';
 @import '_footer.scss';
 
+.content-wrap {
+    // This wraps the main content section, excluding the Bootstrap
+    // container's padding.
+    background: #fdfdfd;
+    padding: $spacer;
+}
+
 /* Stream */
 .stream-window {
     width: 644px;
@@ -61,65 +77,8 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     transition: all $transition-small ease-in-out;
 }
 
-// TODO: Try to separate large-scale layout media queries from the rest.
-// - move them to _general.scss?
-
-/* Large desktop */
-@media (min-width: 1200px) {
-    .container {
-        width: 1024px;
-        margin: 0 auto;
-    }
-
-    #content #primary {
-        width: 600px;
-        margin-right: 100px;
-    }
-
-    #content aside {
-        width: 300px;
-    }
-
-    #sidebar-widgets {
-        width: 300px;
-    }
-}
-
-@media (max-width: 1199px) {
-    #page-footer .sponsors {
-        width: 700px;
-    }
-}
-
-@media (min-width: 980px) and (max-width: 1199px) {
-    #content #primary {
-        width: 560px;
-    }
-    #page-header .header-bg {
-        background-position-x: calc(50% - 20px);
-    }
-}
-
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
-    .container {
-        width: 750px;
-        margin: 0 auto;
-    }
-
-    #content #primary {
-        width: 520px;
-        margin-right: 10px;
-    }
-
-    #sidebar-widgets {
-        width: 200px;
-    }
-
-    .header-effect {
-        display: none;
-    }
-
     #page-footer .sponsors {
         width: 550px;
     }
@@ -137,42 +96,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 /* Landscape phone to portrait tablet */
 /* (this is the size where we drop the main layout columns ) */
 @media (max-width: 767px) {
-    .container {
-        width: 100%;
-        padding: 0;
-    }
-
-    .snek {
-        display: none;
-    }
-
-    .header-bg-1 {
-        display: none;
-    }
-
-    #page-header .header-info {
-        .time {
-            padding-left: 0;
-        }
-        &:after {
-            margin: 0;
-        }
-    }
-
-    #content #primary {
-        width: 100%;
-        margin-right: 0px;
-        margin-bottom: 40px;
-    }
-
-    #sidebar-widgets {
-        width: 100%;
-    }
-
-    .header-effect {
-        display: none;
-    }
-
     #page-footer {
         bottom: 0px;
         padding-top: 16px;
@@ -212,10 +135,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         }
     }
 
-    #content {
-        padding-bottom: 40px;
-    }
-
     form {
         label {
             min-width: 1px;
@@ -253,8 +172,14 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     }
 
     // flatten content
-    #content {
-        padding: $spacing-large 0;
+    #content, .main-nav-container {
+        padding: 0;
+    }
+    nav.main-nav {
+        margin-bottom: 0;
+    }
+    #page-footer {
+        margin-top: 0;
     }
     #page-footer .container { padding: 0; }
 
@@ -314,12 +239,9 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         }
 
         nav ul {
-            .menu-item {
+            li {
                 width: 50%;
                 padding: 0px;
-            }
-
-            .menu-item-right {
                 float: left;
             }
 

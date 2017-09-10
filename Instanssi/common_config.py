@@ -11,6 +11,9 @@ MEDIA_URL = '/uploads/'
 STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
 
+# Use timezones in database
+USE_TZ = True
+
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 LOGIN_URL = '/users/login/'

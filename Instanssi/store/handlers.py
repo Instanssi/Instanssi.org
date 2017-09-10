@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import uuid
 import logging
 
 from django.db import transaction
+from django.utils import timezone
 
-from Instanssi.store.methods import paytrail, bitpay
+from Instanssi.store.methods import paytrail, bitpay, PaymentMethod
 from Instanssi.store.models import StoreTransaction, StoreItem, TransactionItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ class TransactionException(Exception):
     pass
 
 
-def validate_item(item):
+def validate_item(item: dict):
     # First, make sure the item exists at all
     try:
         store_item = StoreItem.items_available().get(id=item['item_id'])
@@ -35,7 +35,7 @@ def validate_item(item):
         raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
 
 
-def create_store_transaction(data):
+def create_store_transaction(data: dict):
     # Handle creation of the order in a transaction to avoid creating crap to db in errors
     try:
         with transaction.atomic():
@@ -51,7 +51,7 @@ def create_store_transaction(data):
             ta.city = data['city']
             ta.country = data['country']
             ta.information = data['information']
-            ta.time_created = datetime.now()
+            ta.time_created = timezone.now()
             ta.key = uuid.uuid4().hex
             ta.save()
 
@@ -82,10 +82,8 @@ def create_store_transaction(data):
         raise
 
 
-def begin_payment_process(method, ta):
-    if method == 0:
-        # Handle bitpay payment
-        return bitpay.start_process(ta)
-    else:
-        # Handle paytrail payment
-        return paytrail.start_process(ta)
+def begin_payment_process(method: PaymentMethod, ta: StoreTransaction):
+    return {
+        PaymentMethod.BITPAY: bitpay.start_process,
+        PaymentMethod.PAYTRAIL: paytrail.start_process
+    }[method](ta)

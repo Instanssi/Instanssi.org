@@ -5,7 +5,8 @@ django-debug-toolbar==1.8
 django-imagekit==4.0.1
 django-twitter-tag==1.2.1
 Pillow==4.2.1
-python-social-auth[django]==0.3.6
+social-auth-core==1.4.0
+social-auth-app-django==0.1.0
 reportlab==3.4.0
 django-libsass==0.7
 django-compressor==2.2

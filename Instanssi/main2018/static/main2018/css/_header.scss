@@ -153,23 +153,29 @@ $banner-image-1: '../images/banner-bg-2.png';
                 a {
                     font-family: $title-font-family;
                     text-transform: uppercase;
-                    transition: background-color $transition-large ease;
+                    transition: background-image $transition-large ease;
                     text-decoration: none;
 
                     color: #fff;
-                    background: rgba(255,255,255,0);
+                    background: rgba(#fff, 0);
                     // Bootstrap default is 2px
                     margin-right: 0;
 
+                    border: 0;
+
                     &:hover {
-                        background: $theme-nav-hover;
+                        border: 0;
+                        background: linear-gradient(
+                            rgba(#fff, 0.0),
+                            rgba(#fff, 0.33)
+                        );
                     }
                 }
             }
             .menu-item-right {
                 float: right;
             }
-            .current-menu-item {
+            li.active {
                 background: $theme-color-bright;
                 a {
                     color: #fff;

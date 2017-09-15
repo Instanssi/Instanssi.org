@@ -15,12 +15,12 @@
     <nav class="main-nav">
         <div class="clearer"></div>
         <ul class="nav nav-tabs">
-            <li class="item-blog {% if templatename == 'index' %}current-menu-item{% endif %}"><a href="{% url 'main2018:index' %}">Blogi</a></li>
-            <li class="item-info {% if templatename == 'info' %}current-menu-item{% endif %}"><a href="{% url 'main2018:info' %}">Info</a></li>
-            <li class="item-kompos {% if templatename == 'kompot' %}current-menu-item{% endif %}"><a href="{% url 'main2018:kompot' %}">Kompot</a></li>
-            <li class="item-programme {% if templatename == 'ohjelma' %}current-menu-item{% endif %}"><a href="{% url 'main2018:ohjelma' %}">Ohjelma</a></li>
-            <li class="item-english {% if templatename == 'english' %}current-menu-item{% endif %}"><a href="{% url 'main2018:english' %}">In English</a></li>
-            <!--<li class="item-stream {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2018:stream' %}">Stream</a></li>-->
+            <li class="item-blog {% if templatename == 'index' %}active{% endif %}"><a href="{% url 'main2018:index' %}">Blogi</a></li>
+            <li class="item-info {% if templatename == 'info' %}active{% endif %}"><a href="{% url 'main2018:info' %}">Info</a></li>
+            <li class="item-kompos {% if templatename == 'kompot' %}active{% endif %}"><a href="{% url 'main2018:kompot' %}">Kompot</a></li>
+            <li class="item-programme {% if templatename == 'ohjelma' %}active{% endif %}"><a href="{% url 'main2018:ohjelma' %}">Ohjelma</a></li>
+            <li class="item-english {% if templatename == 'english' %}active{% endif %}"><a href="{% url 'main2018:english' %}">In English</a></li>
+            <!--<li class="item-stream {% if templatename == 'stream' %}active{% endif %}" ><a href="{% url 'main2018:stream' %}">Stream</a></li>-->
             <li class="menu-item-right item-store"><a href="{% url 'store:index' %}">Kauppa</a></li>
             <li class="menu-item-right item-kompomaatti"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
             <li class="menu-item-right item-archive"><a href="{% url 'archive:index' %}">Arkisto</a></li>

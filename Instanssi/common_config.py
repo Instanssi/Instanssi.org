@@ -36,6 +36,10 @@ OAUTH2_PROVIDER = {
     }
 }
 
+RAVEN_CONFIG = {
+    'dsn': '',
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
@@ -144,6 +148,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'compressor',
+    'raven.contrib.django.raven_compat',
 )
 
 # Authentication backends, notice the openid backend here.

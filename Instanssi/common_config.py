@@ -5,6 +5,13 @@ import os
 CONTENTDIR = os.path.dirname(__file__)
 PROJECTDIR = os.path.dirname(CONTENTDIR)
 
+ADMINS = ()
+MANAGERS = ADMINS
+
+SITE_ID = 1
+USE_I18N = True
+USE_L10N = False
+
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
@@ -163,6 +170,58 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Log handlers, insert our own database log handler
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'log_db': {
+            'level': 'INFO',
+            'class': 'Instanssi.dblog.handlers.DBLogHandler',
+        },
+        'console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'Instanssi': {
+            'handlers': ['log_db', 'console'],
+            'level': 'INFO'
+        },
+    }
+}
+
 
 def enable_api_session_access():
     """
@@ -187,8 +246,11 @@ def make_cache_conf(debug_mode):
     else:
         return {
             'default': {
-                'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-                'LOCATION': '/tmp/instanssi_cache',
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379/2",
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                }
             }
         }
 

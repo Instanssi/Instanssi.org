@@ -177,13 +177,18 @@ LOGGING = {
     'disable_existing_loggers': False,
     'root': {
         'level': 'WARNING',
-        'handlers': ['sentry'],
+        'handlers': ['sentry', 'console', 'main_log'],
     },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s '
                       '%(process)d %(thread)d %(message)s'
         },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
     },
     'handlers': {
         'sentry': {
@@ -194,31 +199,37 @@ LOGGING = {
             'level': 'INFO',
             'class': 'Instanssi.dblog.handlers.DBLogHandler',
         },
+        'main_log': {
+            'filters': ['require_debug_false'],
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{}/var/log/main.log'.format(PROJECTDIR),
+            'formatter': 'verbose',
+        },
         'console': {
             'level': 'WARNING',
             'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
             'formatter': 'verbose'
         }
     },
     'loggers': {
         'django.db.backends': {
             'level': 'WARNING',
-            'handlers': ['console'],
+            'handlers': ['console', 'main_log'],
             'propagate': False,
         },
         'raven': {
             'level': 'WARNING',
-            'handlers': ['console'],
+            'handlers': ['console', 'main_log'],
             'propagate': False,
         },
         'sentry.errors': {
             'level': 'WARNING',
-            'handlers': ['console'],
+            'handlers': ['console', 'main_log'],
             'propagate': False,
         },
         'Instanssi': {
-            'handlers': ['log_db', 'console', 'sentry'],
+            'handlers': ['log_db', 'console', 'sentry', 'main_log'],
             'level': 'INFO',
             'propagate': False,
         },

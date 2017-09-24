@@ -201,23 +201,24 @@ LOGGING = {
     },
     'loggers': {
         'django.db.backends': {
-            'level': 'ERROR',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
         'raven': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
         'sentry.errors': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'handlers': ['console'],
             'propagate': False,
         },
         'Instanssi': {
-            'handlers': ['log_db', 'console'],
-            'level': 'INFO'
+            'handlers': ['log_db', 'console', 'sentry'],
+            'level': 'INFO',
+            'propagate': False,
         },
     }
 }

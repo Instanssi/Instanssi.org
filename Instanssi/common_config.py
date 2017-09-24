@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 
 CONTENTDIR = os.path.dirname(__file__)
 PROJECTDIR = os.path.dirname(CONTENTDIR)
@@ -196,6 +197,7 @@ LOGGING = {
         'console': {
             'level': 'WARNING',
             'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
             'formatter': 'verbose'
         }
     },

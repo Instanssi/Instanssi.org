@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'Instanssi.ext_programme',
     'Instanssi.screenshow',
     'Instanssi.dblog',
-    'Instanssi.json_api',
     'Instanssi.store',
     'Instanssi.infodesk',
     'imagekit',

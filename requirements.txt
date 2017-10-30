@@ -1,18 +1,23 @@
-Django==1.10.5
-django-countries==4.0
-django-crispy-forms==1.6.1
-django-debug-toolbar==1.6
-django-imagekit==3.3
+Django==1.11.6
+django-countries==4.6.1
+django-crispy-forms==1.7.0
+django-debug-toolbar==1.8
+django-imagekit==4.0.1
 django-twitter-tag==1.2.1
-Pillow==4.0.0
-python-social-auth[django]==0.3.3
-reportlab==3.3.0
+Pillow==4.3.0
+social-auth-core==1.5.0
+social-auth-app-django==2.0.0
+reportlab==3.4.0
 django-libsass==0.7
-django-compressor==2.1
-requests==2.12.5
-djangorestframework==3.5.3
-django-oauth-toolkit==0.11.0
-requests-oauthlib==0.7.0
+django-compressor==2.2
+requests==2.18.4
+raven==6.3.0
+django-redis==4.8.0
+djangorestframework==3.7.1
+django-oauth-toolkit==1.0.0
+requests-oauthlib==0.8.0
+tabulate==0.8.1
+arrow==0.10.0  # Proper iso8601 parsing
 loremipsum==1.0.5  # For providing test data
 mock==2.0.0  # For testing against mocks
-faker==0.7.3  # For providing test data
+faker==0.8.6  # For providing test data

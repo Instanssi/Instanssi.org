@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os.path
+from urllib.parse import urlparse, parse_qs
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from datetime import datetime
-from urllib.parse import urlparse, parse_qs
+
 from Instanssi.kompomaatti.misc import entrysort
 
 
@@ -249,24 +250,24 @@ class Compo(models.Model):
     def is_voting_open(self):
         if not self.is_votable:
             return False
-        if self.voting_start <= datetime.now() < self.voting_end:
+        if self.voting_start <= timezone.now() < self.voting_end:
             return True
         return False
     
     def is_adding_open(self):
-        if datetime.now() < self.adding_end:
+        if timezone.now() < self.adding_end:
             return True
         return False
 
     def is_editing_open(self):
-        if datetime.now() < self.editing_end:
+        if timezone.now() < self.editing_end:
             return True
         return False
 
     def has_voting_started(self):
         if not self.is_votable:
             return False
-        if datetime.now() > self.voting_start:
+        if timezone.now() > self.voting_start:
             return True
         return False
 

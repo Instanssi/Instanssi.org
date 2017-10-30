@@ -5,11 +5,14 @@ from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
+from django.core.mail import send_mail
 from django_countries.fields import CountryField
+from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
 from Instanssi.common.misc import get_url
+from Instanssi.store.utils.receipt import ReceiptParams
 
 
 class StoreItem(models.Model):
@@ -343,3 +346,39 @@ class TransactionItem(models.Model):
     class Meta:
         verbose_name = "transaktiotuote"
         verbose_name_plural = "transaktiotuotteet"
+
+
+class Receipt(models.Model):
+    subject = models.CharField('Aihe', max_length=256)
+    mail_to = models.CharField('Vastaanottajan osoite', max_length=256)
+    mail_from = models.CharField('Lähettäjän osoite', max_length=256)
+    sent = models.DateTimeField('Lähetysaika', default=None, null=True)
+    params = models.TextField('Lähetysparametrit', default=None, null=True)
+    content = models.TextField('Kuitin sisältö', default=None, null=True)
+
+    @classmethod
+    def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams):
+        # First, save header information and save so that we get a receipt ID
+        r = cls()
+        r.subject = subject
+        r.mail_to = mail_to
+        r.mail_from = mail_from
+        r.save()
+
+        # Next, set receipt id for receipt, and generate params and contents.
+        params.receipt_number(r.id)
+        r.params = params.get_json()
+        r.content = params.get_body()
+        r.save()
+
+        # Return newly created object for use, eg. for calling send()
+        return r
+
+    def send(self):
+        self.sent = timezone.now()
+        send_mail(self.subject, self.content, self.mail_from, (self.mail_to,))
+        self.save()
+
+    class Meta:
+        verbose_name = "kuitti"
+        verbose_name_plural = "kuitit"

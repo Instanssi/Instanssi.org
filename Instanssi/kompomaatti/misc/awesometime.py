@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 def todayhelper():
-    today = datetime.today()
-    return datetime(day=today.day, year=today.year, month=today.month)
+    today = timezone.now().date()
+    return datetime(day=today.day, year=today.year, month=today.month, tzinfo=timezone.now().tzinfo)
 
 
 def format_single_helper(t):
-    now = datetime.now()
+    now = timezone.now()
     today = todayhelper()
     tomorrow = today + timedelta(days=1)
     the_day_after_tomorrow = today + timedelta(days=2)  # Must honor the movie!
@@ -36,7 +37,7 @@ def delta_total_seconds(delta):
 
 
 def format_between(t1, t2):
-    now = datetime.now()
+    now = timezone.now()
     today = todayhelper()
 
     if t2 < now:

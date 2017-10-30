@@ -1,15 +1,26 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 
 CONTENTDIR = os.path.dirname(__file__)
 PROJECTDIR = os.path.dirname(CONTENTDIR)
+
+ADMINS = ()
+MANAGERS = ADMINS
+
+SITE_ID = 1
+USE_I18N = True
+USE_L10N = False
 
 # Files
 MEDIA_ROOT = os.path.join(PROJECTDIR, 'content/uploads/')
 MEDIA_URL = '/uploads/'
 STATIC_ROOT = os.path.join(PROJECTDIR, 'content/static/')
 STATIC_URL = '/static/'
+
+# Use timezones in database
+USE_TZ = True
 
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
@@ -36,12 +47,16 @@ OAUTH2_PROVIDER = {
     }
 }
 
+RAVEN_CONFIG = {
+    'dsn': '',
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'oauth2_provider.ext.rest_framework.TokenHasReadWriteScope',
+        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -145,6 +160,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'compressor',
+    'raven.contrib.django.raven_compat',
 )
 
 # Authentication backends, notice the openid backend here.
@@ -158,6 +174,71 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.steam.SteamOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+# Log handlers, insert our own database log handler
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry', 'console', 'main_log'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'log_db': {
+            'level': 'INFO',
+            'class': 'Instanssi.dblog.handlers.DBLogHandler',
+        },
+        'main_log': {
+            'filters': ['require_debug_false'],
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{}/var/log/main.log'.format(PROJECTDIR),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'WARNING',
+            'handlers': ['console', 'main_log'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'WARNING',
+            'handlers': ['console', 'main_log'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'WARNING',
+            'handlers': ['console', 'main_log'],
+            'propagate': False,
+        },
+        'Instanssi': {
+            'handlers': ['log_db', 'console', 'sentry', 'main_log'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}
 
 
 def enable_api_session_access():
@@ -183,8 +264,11 @@ def make_cache_conf(debug_mode):
     else:
         return {
             'default': {
-                'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-                'LOCATION': '/tmp/instanssi_cache',
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379/2",
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                }
             }
         }
 

@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import uuid
+from decimal import Decimal
+from random import randint
 
+from Instanssi.common.misc import get_url
 from Instanssi.store.models import TransactionItem
+from Instanssi.store.utils.receipt import ReceiptParams
+from Instanssi.store.models import Receipt
+from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException
 from Instanssi.common.testing.store import StoreTestData, BitpayFakeResponse, PaytrailFakeResponse
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
@@ -10,11 +16,15 @@ from Instanssi.common.testing.utils import q_reverse
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 import mock
+from faker import Faker
 
 
 class StoreTests(TestCase):
     def setUp(self):
+        self.maxDiff = 100000
+
         self.event = KompomaattiTestData.create_test_event('TestEvent')
         self.items = []
         self.variants = {}
@@ -38,6 +48,87 @@ class StoreTests(TestCase):
 
         # Create a test transaction
         self.transaction = StoreTestData.create_test_transaction(self.items, self.variants)
+
+    def test_receipt_params(self):
+        f = Faker("fi_FI")
+        p = ReceiptParams()
+        p.receipt_number(randint(10000, 99999))
+        p.order_number(randint(10000, 99999))
+        p.receipt_date(timezone.now())
+        p.order_date(timezone.now())
+        p.first_name(f.first_name())
+        p.last_name(f.last_name())
+        p.email(f.email())
+        p.mobile(f.phone_number())
+        p.telephone(f.phone_number())
+        p.company(f.company())
+        p.street(f.street_address())
+        p.city(f.city())
+        p.postal_code(f.postcode())
+        p.country(f.country())
+        p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
+        for k in range(3):
+            p.add_item(
+                item_id=randint(0, 999999),
+                price=Decimal(randint(0, 100)),
+                name="Test product name goes here {}".format(k),
+                amount=randint(1, 5),
+                tax='0%'
+            )
+        n = ReceiptParams(p.get_json())
+        self.assertDictEqual(p.params, n.params)
+        self.assertEquals(p.get_body(), n.get_body())
+
+    def test_create_receipt(self):
+        f = Faker('fi_FI')
+        subject = "Test email #{}".format(randint(10000, 99999))
+        email_from = 'Instanssi.org <{}>'.format(f.email())
+        email_to = f.email()
+        p = ReceiptParams()
+        p.order_number(randint(10000, 99999))
+        p.receipt_date(timezone.now())
+        p.order_date(timezone.now())
+        p.first_name(f.first_name())
+        p.last_name(f.last_name())
+        p.email(email_to)
+        p.mobile(f.phone_number())
+        p.telephone(f.phone_number())
+        p.company(f.company())
+        p.street(f.street_address())
+        p.city(f.city())
+        p.postal_code(f.postcode())
+        p.country(f.country())
+        p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
+        for k in range(3):
+            p.add_item(
+                item_id=randint(0, 999999),
+                price=Decimal(randint(0, 100)),
+                name="Test product name goes here {}".format(k),
+                amount=randint(1, 5),
+                tax='0%'
+            )
+
+        # Just make sure everything looks like it should in the database object
+        r = Receipt.create(
+            mail_to=email_to,
+            mail_from=email_from,
+            subject=subject,
+            params=p)
+        self.assertEquals(r.subject, subject)
+        self.assertEquals(r.mail_from, email_from)
+        self.assertEquals(r.mail_to, email_to)
+        self.assertIsNotNone(r.content)
+        self.assertIsNotNone(r.params)
+        self.assertIsNone(r.sent)
+
+        # Try to load from database, make sure everything matches
+        n = ReceiptParams(r.params)
+        self.assertDictEqual(p.params, n.params)
+        self.assertEquals(p.get_body(), n.get_body())
+
+        # Send and make sure date is set
+        r.send()
+        self.assertIsNotNone(r.sent)
 
     def test_validate_item(self):
         """ Make sure that item validation function works """
@@ -129,37 +220,37 @@ class StoreTests(TestCase):
         self.assertEqual(non_discount_item.original_price, 20)
         self.assertEqual(non_discount_item.purchase_price, 20)
 
-    @mock.patch('Instanssi.store.utils.paytrail.requests.post',
-                return_value=PaytrailFakeResponse(401, PaytrailFakeResponse.create_failure()))
+    @mock.patch('Instanssi.store.utils.paytrail.requests.post')
     def test_paytrail_begin_payment_process_bad_request(self, mock_post):
         """ Make sure paytrail fails properly (we should get a failure redirect url) """
-        result = begin_payment_process(1, self.transaction)
+        mock_post.return_value = PaytrailFakeResponse(401, PaytrailFakeResponse.create_failure())
+        result = begin_payment_process(PaymentMethod(1), self.transaction)
         self.assertEqual(result, reverse('store:pm:paytrail-failure'))
         self.assertEqual(self.transaction.token, '')
 
-    @mock.patch('Instanssi.store.utils.paytrail.requests.post',
-                return_value=PaytrailFakeResponse(201, PaytrailFakeResponse.create_success(order_no="234246654",
-                                                                             token=uuid.uuid4().hex)))
+    @mock.patch('Instanssi.store.utils.paytrail.requests.post')
     def test_paytrail_begin_payment_process_good_request(self, mock_post):
         """ Make sure paytrail works with a good request (we should get a redirect URL) """
-        result = begin_payment_process(1, self.transaction)
+        mock_post.return_value = PaytrailFakeResponse(201, PaytrailFakeResponse.create_success(
+            order_no="234246654", token=uuid.uuid4().hex))
+        result = begin_payment_process(PaymentMethod(1), self.transaction)
         self.transaction.refresh_from_db()
         self.assertNotEqual(self.transaction.token, None)
         self.assertEqual(self.transaction.payment_method_name, "Paytrail")
         self.assertEqual(result, "https://payment.paytrail.com/payment/load/token/{}".format(self.transaction.token))
 
-    @mock.patch('Instanssi.store.utils.bitpay.requests.post',
-                return_value=BitpayFakeResponse(401, BitpayFakeResponse.create_failure()))
+    @mock.patch('Instanssi.store.utils.bitpay.requests.post')
     def test_bitpay_begin_payment_process_bad_request(self, mock_post):
         """ Make sure bitpay fails properly (we should get a failure redirect url) """
-        result = begin_payment_process(0, self.transaction)
+        mock_post.return_value = BitpayFakeResponse(401, BitpayFakeResponse.create_failure())
+        result = begin_payment_process(PaymentMethod(0), self.transaction)
         self.assertEqual(result, reverse('store:pm:bitpay-failure'))
 
-    @mock.patch('Instanssi.store.utils.bitpay.requests.post',
-                return_value=BitpayFakeResponse(201, BitpayFakeResponse.create_success(order_no="3456454560")))
+    @mock.patch('Instanssi.store.utils.bitpay.requests.post')
     def test_bitpay_begin_payment_process_good_request(self, mock_post):
         """ Make sure bitpay works with a good request (we should get a redirect URL) """
-        result = begin_payment_process(0, self.transaction)
+        mock_post.return_value = BitpayFakeResponse(201, BitpayFakeResponse.create_success(order_no="3456454560"))
+        result = begin_payment_process(PaymentMethod(0), self.transaction)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.token, '3456454560')
         self.assertEqual(self.transaction.payment_method_name, "Bitpay")

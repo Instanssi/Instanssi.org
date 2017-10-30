@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from Instanssi.common.http import Http403
-from Instanssi.common.auth import staff_access_required
+import hashlib
+import logging
+import os
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.template import loader, Context
+from django.db import IntegrityError
+from django.utils import timezone
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
 
 from Instanssi.kompomaatti.models import VoteCode, VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
     CompetitionParticipation
@@ -14,19 +19,9 @@ from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminCompetitionFo
     AdminEntryAddForm, AdminEntryEditForm, AdminParticipationEditForm, CloneCompoForm, CreateTokensForm
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 
-# For votecode stuff
-from django.db import IntegrityError
-from datetime import datetime
-import hashlib
-import os
-    
-# For generating a paper version of votecodes
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm
-
-# Logging related
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -545,7 +540,7 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
         c.event_id = int(sel_event_id)
         c.key = str(hashlib.md5(bytes(os.urandom(8))).hexdigest()[:8])
         c.associated_to = vcr.user
-        c.time = datetime.now()
+        c.time = timezone.now()
         c.save()
         logger.info('Votecode request from "{}" accepted.'.format(vcr.user.username),
                     extra={'user': request.user, 'event_id': sel_event_id})

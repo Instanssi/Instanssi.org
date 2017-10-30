@@ -5,16 +5,16 @@ from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.compat import is_authenticated
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
-    StoreTransactionSerializer
-from Instanssi.kompomaatti.models import Event, Competition, Compo
+    StoreTransactionSerializer, CompoEntrySerializer
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
 from Instanssi.store.handlers import begin_payment_process
+from Instanssi.store.methods import PaymentMethod
 
 
 class IsAuthenticatedOrWriteOnly(BasePermission):
@@ -22,7 +22,7 @@ class IsAuthenticatedOrWriteOnly(BasePermission):
         return (
             request.method == 'POST' or
             request.method in SAFE_METHODS or
-            request.user and is_authenticated(request.user)
+            request.user.is_authenticated()
         )
 
 
@@ -36,6 +36,11 @@ class FilterMixin(object):
     def filter_by_event(queryset, request):
         event = request.query_params.get('event', None)
         return queryset.filter(event=event) if event else queryset
+
+    @staticmethod
+    def filter_by_compo(queryset, request):
+        compo = request.query_params.get('compo', None)
+        return queryset.filter(compo=compo) if compo else queryset
 
     @staticmethod
     def filter_by_lim_off(queryset, request):
@@ -147,6 +152,26 @@ class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
         return q
 
 
+class CompoEntryViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all compo entries.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * compo: Filter by compo id
+    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    """
+    serializer_class = CompoEntrySerializer
+
+    def get_queryset(self):
+        q = Entry.objects.filter(compo__active=True)
+        q = self.filter_by_compo(q, self.request)
+        q = self.order_by(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
 class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
     """
     Exposes all programme events.
@@ -250,7 +275,7 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
         if serializer.is_valid():
             if serializer.validated_data['save']:
                 ta = serializer.save()
-                payment_method = serializer.validated_data['payment_method']
+                payment_method = PaymentMethod(serializer.validated_data['payment_method'])
                 response_url = begin_payment_process(payment_method, ta)
                 return Response({"url": response_url}, status=status.HTTP_201_CREATED)
             else:

@@ -2,14 +2,14 @@
 
 import uuid
 import random
-from datetime import datetime
+
+from django.utils import timezone
+from faker import Factory
 
 from Instanssi.store.models import StoreItem, StoreItemVariant
 from Instanssi.store.handlers import create_store_transaction
 from Instanssi.common.testing.requests import FakeResponse
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
-
-from faker import Factory
 
 fake = Factory.create('fi_FI')
 
@@ -145,17 +145,17 @@ class StoreTestData(object):
     @staticmethod
     def create_full_pending_transaction():
         ta = StoreTestData.create_full_started_transaction()
-        ta.time_pending = datetime.now()
+        ta.time_pending = timezone.now()
         return ta
 
     @staticmethod
     def create_full_paid_transaction():
         ta = StoreTestData.create_full_pending_transaction()
-        ta.time_paid = datetime.now()
+        ta.time_paid = timezone.now()
         return ta
 
     @staticmethod
     def create_full_cancelled_transaction():
         ta = StoreTestData.create_full_pending_transaction()
-        ta.time_cancelled = datetime.now()
+        ta.time_cancelled = timezone.now()
         return ta

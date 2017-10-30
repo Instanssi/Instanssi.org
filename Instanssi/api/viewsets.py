@@ -8,8 +8,8 @@ from rest_framework import status
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
-    StoreTransactionSerializer, CompoEntrySerializer
-from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry
+    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
@@ -41,6 +41,11 @@ class FilterMixin(object):
     def filter_by_compo(queryset, request):
         compo = request.query_params.get('compo', None)
         return queryset.filter(compo=compo) if compo else queryset
+
+    @staticmethod
+    def filter_by_competition(queryset, request):
+        competition = request.query_params.get('competition', None)
+        return queryset.filter(competition=competition) if competition else queryset
 
     @staticmethod
     def filter_by_lim_off(queryset, request):
@@ -127,6 +132,27 @@ class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
     def get_queryset(self):
         q = Competition.objects.filter(active=True)
         q = self.filter_by_event(q, self.request)
+        q = self.order_by(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+
+class CompetitionParticipationViewSet(ReadOnlyModelViewSet, FilterMixin):
+    """
+    Exposes all competition participations. This is everything that does not drop neatly to the democompo category,
+    eg. sports events etc.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * competition: Filter by competition id
+    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    """
+    serializer_class = CompetitionParticipationSerializer
+
+    def get_queryset(self):
+        q = CompetitionParticipation.objects.filter(competition__active=True)
+        q = self.filter_by_competition(q, self.request)
         q = self.order_by(q, self.request)
         q = self.filter_by_lim_off(q, self.request)
         return q

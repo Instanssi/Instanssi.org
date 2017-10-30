@@ -7,7 +7,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMet
     CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
 
 from Instanssi.store.handlers import validate_item, create_store_transaction, TransactionException
-from Instanssi.kompomaatti.models import Event, Competition, Compo
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant
@@ -32,12 +32,86 @@ class CompetitionSerializer(HyperlinkedModelSerializer):
 
 
 class CompoSerializer(HyperlinkedModelSerializer):
+    source_format_list = SerializerMethodField()
+    entry_format_list = SerializerMethodField()
+    image_format_list = SerializerMethodField()
+
+    def get_source_format_list(self, obj):
+        if obj.source_formats:
+            return obj.source_formats.split('|')
+        return []
+
+    def get_entry_format_list(self, obj):
+        if obj.formats:
+            return obj.formats.split('|')
+        return []
+
+    def get_image_format_list(self, obj):
+        if obj.image_formats:
+            return obj.image_formats.split('|')
+        return []
+
     class Meta:
         model = Compo
         fields = ('id', 'event', 'name', 'description', 'adding_end', 'editing_end', 'compo_start', 'voting_start',
-                  'voting_end')
+                  'voting_end', 'entry_sizelimit', 'source_sizelimit', 'source_format_list', 'entry_format_list',
+                  'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
+        }
+
+
+class CompoEntrySerializer(HyperlinkedModelSerializer):
+    entryfile_url = SerializerMethodField()
+    sourcefile_url = SerializerMethodField()
+    imagefile_original_url = SerializerMethodField()
+    imagefile_thumbnail_url = SerializerMethodField()
+    imagefile_medium_url = SerializerMethodField()
+    rank = SerializerMethodField()
+    score = SerializerMethodField()
+
+    def get_entryfile_url(self, obj):
+        if obj.entryfile:
+            return self.context['request'].build_absolute_uri(obj.entryfile.url)
+        return None
+
+    def get_sourcefile_url(self, obj):
+        if obj.sourcefile:
+            return self.context['request'].build_absolute_uri(obj.sourcefile.url)
+        return None
+
+    def get_imagefile_original_url(self, obj):
+        if obj.imagefile_original:
+            return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
+        return None
+
+    def get_imagefile_medium_url(self, obj):
+        if obj.imagefile_medium:
+            return self.context['request'].build_absolute_uri(obj.imagefile_medium.url)
+        return None
+
+    def get_imagefile_thumbnail_url(self, obj):
+        if obj.imagefile_thumbnail:
+            return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
+        return None
+
+    def get_rank(self, obj):
+        if obj.compo.show_voting_results:
+            return obj.get_rank()
+        return None
+
+    def get_score(self, obj):
+        if obj.compo.show_voting_results:
+            return obj.get_score()
+        return None
+
+    class Meta:
+        model = Entry
+        fields = ('compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
+                  'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
+                  'disqualified', 'disqualified_reason', 'score', 'rank')
+        extra_kwargs = {
+            'compo': {'view_name': 'api:compos-detail'}
         }
 
 

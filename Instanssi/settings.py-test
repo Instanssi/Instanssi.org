@@ -39,6 +39,7 @@ SHORT_LANGUAGE_CODE = 'fi'
 SITE_ID = 1
 USE_I18N = True
 USE_L10N = False
+USE_TZ = True
 
 # Code for main2014 site (Toimisto password)
 MAIN2014_TOIMISTO_CODE = u''

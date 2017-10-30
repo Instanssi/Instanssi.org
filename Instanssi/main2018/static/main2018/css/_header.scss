@@ -68,7 +68,8 @@ $banner-image-1: '../images/banner-bg-2.png';
             background-size: 100%;
 
             @media screen and (max-width: $screen-xs-min - 1px) {
-                margin-left: -16px;
+                // tweak logo to align with text
+                margin-left: -10px;
                 top: 0px;
                 max-width: 75%;
                 height: 100px;
@@ -142,6 +143,11 @@ $banner-image-1: '../images/banner-bg-2.png';
                     background: rgba(#fff, 0);
                     // Bootstrap default is 2px
                     margin-right: 0;
+
+                    @media screen and (max-width: $screen-md-max) {
+                        // tighten navbar layout a bit to fit all links
+                        padding: 12px;
+                    }
 
                     border: 0;
 

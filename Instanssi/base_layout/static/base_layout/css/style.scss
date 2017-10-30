@@ -68,9 +68,6 @@ a:hover {
 /* ---------- Header ---------- */
 
 .body-background {
-    $banner-image-0: '/static/main2017/images/banner-bg-1.png';
-    $banner-image-1: '/static/main2017/images/banner-bg-2.png';
-
     .header-bg {
         position: absolute;
         top: 0;
@@ -79,28 +76,6 @@ a:hover {
         height: 100%;
         pointer-events: none;
     }
-
-    .header-bg-0 {
-        background: url($banner-image-0) repeat-x;
-        background: url($banner-image-0) repeat-x calc(50% - 110px);
-        // try to align looping background snake with the one in the header
-        // position separate from background declaration because of IE/Edge issues
-        background-position-x: center;
-        background-position-y: 5px;
-        background-position-x: calc(50% - 85px);
-
-        // TODO: Does filter: blur still kill perf on mobiles?
-        -webkit-filter: blur(2px);
-        filter: blur(2px);
-    }
-
-    .header-bg-1 {
-        background: url($banner-image-1) repeat-x;
-        background: url($banner-image-1) repeat-x calc(50% - 110px);
-        // try to align looping background snake with the one in the header
-        background-position: calc(50% - 85px) 5px;
-    }
-    z-index: 0;
 }
 #header, #base {
     position: relative;

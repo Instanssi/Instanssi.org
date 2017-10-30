@@ -8,7 +8,7 @@ from rest_framework import status
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
-    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer
+    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
@@ -26,8 +26,7 @@ class IsAuthenticatedOrWriteOnly(BasePermission):
         )
 
 
-class WriteOnlyModelViewSet(CreateModelMixin,
-                            GenericViewSet):
+class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet):
     pass
 
 
@@ -65,6 +64,20 @@ class FilterMixin(object):
         if order_by not in whitelist:
             return queryset.order_by(default)
         return queryset.order_by(order_by)
+
+
+class CurrentUserViewSet(ReadOnlyModelViewSet):
+    """
+    Shows data to the authenticated user about self
+    """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def list(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 
 class EventViewSet(ReadOnlyModelViewSet, FilterMixin):

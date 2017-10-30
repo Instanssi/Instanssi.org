@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
-from datetime import datetime
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 
@@ -78,7 +78,7 @@ def playing_api(request, event_id):
 def messages_api(request, event_id):
     messages = []
     for msg in Message.objects.filter(event_id=event_id):
-        if msg.show_start <= datetime.now() <= msg.show_end:
+        if msg.show_start <= timezone.now() <= msg.show_end:
             messages.append(mark_safe(msg.text))
     return JSONResponse({'messages': messages})
 

@@ -1,6 +1,6 @@
-Hei,
+{% load store_tags %}Hei,
 
-Tilauksenne numerolla {{ ordernumber }} on nyt käsitelty. Mikäli huomaatte virheitä
+Tilauksenne numerolla {{ order_number }} on nyt käsitelty. Mikäli huomaatte virheitä
 tilausluettelossa, ottakaa yhteys meihin välittömästi (webmaster@instanssi.org).
 Ohessa seuraa tilausluettelo sekä linkki tuotteiden ja lippujen lunastukseen vaadittaviin
 tunnisteisiin.
@@ -11,25 +11,34 @@ lipunmyynnistä.
 Tilaajan tiedot:
 ----------------
 
-Nimi:          {{ firstname }} {{ lastname }}
+Nimi:          {{ first_name }} {{ last_name }}
 Sähköposti:    {{ email }}
 Yritys:        {{ company }}
 Puhelinnumero: {{ telephone }}
 Kännykkä:      {{ mobile }}
 Katuosoite:    {{ street }}
 Kaupunki:      {{ city }}
-Postinumero:   {{ postalcode }}
+Postinumero:   {{ postal_code }}
 Maakoodi:      {{ country }}
 
-Tilausluettelo:
----------------
+Myyjän tiedot:
+--------------
 
-ID     Määrä Tuoteseloste                               Hinta  Yhteensä
-=======================================================================
-{% for item in items %}{{ item.id|ljust:"6" }} {{ item.amount|ljust:"5" }} {{ item.name|ljust:"42" }} {{ item.price|ljust:"6" }} {{ item.total|ljust:"8" }}
-{% endfor %}
-Yhteensä: {{ total }} EUR
+Linkki Jyväskylä ry (2147178-4)
+Agora, Ag C233.2, PL 35
+40014 Jyväskylän yliopisto
 
+Tilauksen tiedot:
+-----------------
+
+Tilausnumero: {{ order_number }}
+Tilausaika: {{ order_date|date:"d.m.Y H:i" }}
+Kuittinumero: {{ receipt_number }}
+Kuitin toimitusaika:  {{ receipt_date|date:"d.m.Y H:i" }}
+
+{% render_product_list items %}
+
+Yhteensä: {{ total }} EUR (Alv 0%, AVL 4§)
 
 Tuotteiden nouto & liput:
 -------------------------
@@ -38,7 +47,7 @@ Tilaukseenne kuuluvat liput ja tuotteet lunastetaan tapahtuman aikana infotiskil
 Tuotteiden ja lippujen lunastukseen tarvitaan tosite, joka löytyy allaolevasta osoitteesta. 
 Tositteen voi joko tulostaa tai esittää mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.
 
-{{ transactionurl }}
+{{ transaction_url }}
 
 Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen oikeuttavina avaimina
 äänestysjärjestelmässämme kompomaatissa. Voit rekisteröidä avaimesi jo ennakkoon kirjautumalla Kompomaattiin
@@ -48,5 +57,5 @@ Muista tyhjentää selaimesi sivuhistoria ja välimuisti käytyäsi lippusivulla
 mikäli tietokonettasi käyttää useampi henkilö!
 
 -- 
-Instanssi 2017
+Instanssi 2018
 https://instanssi.org

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 from Instanssi.common.rest import RestResponse, rest_api
 from Instanssi.common.http import Http403
@@ -61,7 +61,7 @@ def song_set(request):
         event=event,
         title=title,
         artist=artist,
-        time=datetime.now(),
+        time=timezone.now(),
         state=1 if state == 'stop' else 0
     )
 

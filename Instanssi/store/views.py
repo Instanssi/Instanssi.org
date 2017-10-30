@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
@@ -22,7 +22,7 @@ def mark_item_delivered(request, item_key):
         raise PermissionDenied()
 
     item = TransactionItem.objects.get(key=item_key)
-    item.time_delivered = datetime.now()
+    item.time_delivered = timezone.now()
     item.save()
 
 

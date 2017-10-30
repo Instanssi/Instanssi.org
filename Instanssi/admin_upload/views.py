@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from Instanssi.common.http import Http403
-from Instanssi.common.auth import staff_access_required
+import logging
+
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils import timezone
+
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_base.misc.custom_render import admin_render
-from datetime import datetime
 
-# Logging related
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -28,7 +29,7 @@ def index(request, sel_event_id):
         if uploadform.is_valid():
             data = uploadform.save(commit=False)
             data.user = request.user
-            data.date = datetime.now()
+            data.date = timezone.now()
             data.event_id = int(sel_event_id)
             data.save()
             logger.info('File "{}" uploaded.'.format(data.file.name),

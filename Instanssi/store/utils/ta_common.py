@@ -1,71 +1,77 @@
 # -*- coding: utf-8 -*-
 
-from Instanssi.common.misc import get_url
-from datetime import datetime
-from django.conf import settings
-from django.core.urlresolvers import reverse
-from Instanssi.store.utils.emailer import ReceiptMailer
-
-# Logging related
 import logging
+
+from django.core.urlresolvers import reverse
+from django.utils import timezone
+
+from Instanssi.store.utils.receipt import ReceiptParams
+from Instanssi.common.misc import get_url
+from Instanssi.store.models import StoreTransaction, Receipt
+
 logger = logging.getLogger(__name__)
 
 
-def handle_cancellation(ta):
+def handle_cancellation(ta: StoreTransaction):
     if not ta.time_cancelled:
-        ta.time_cancelled = datetime.now()
+        ta.time_cancelled = timezone.now()
         ta.save()
         logger.info('Store transaction {} cancelled.'.format(ta.id))
     else:
         logger.warning('Attempted to mark store transaction {} as cancelled twice'.format(ta.id))
 
 
-def handle_pending(ta):
+def handle_pending(ta: StoreTransaction):
     if ta.time_cancelled:
         logger.warning('Cannot mark store transaction {} pending; is already cancelled.'.format(ta.id))
     elif not ta.time_pending:
-        ta.time_pending = datetime.now()
+        ta.time_pending = timezone.now()
         ta.save()
         logger.info('Store transaction {} paid, pending confirmation.'.format(ta.id))
     else:
         logger.warning('Attempted to mark store transaction {} as pending twice'.format(ta.id))
 
 
-def handle_payment(ta):
+def handle_payment(ta: StoreTransaction):
+    # Mark as paid asap
+    ta.time_paid = timezone.now()
+    ta.save()
+
     # Deliver email.
-    mailer = ReceiptMailer('"Instanssi" <noreply@' + settings.DOMAIN + '>', ta.email, 'Instanssi.org kuitti')
-    mailer.ordernumber(ta.id)
-    mailer.firstname(ta.firstname)
-    mailer.lastname(ta.lastname)
-    mailer.email(ta.email)
-    mailer.company(ta.company)
-    mailer.mobile(ta.mobile)
-    mailer.telephone(ta.telephone)
-    mailer.street(ta.street)
-    mailer.city(ta.city)
-    mailer.postalcode(ta.postalcode)
-    mailer.country(ta.country)
+    params = ReceiptParams()
+    params.order_number(ta.id)
+    params.order_date(ta.time_created)
+    params.receipt_date(ta.time_paid)
+    params.first_name(ta.firstname)
+    params.last_name(ta.lastname)
+    params.email(ta.email)
+    params.company(ta.company)
+    params.mobile(ta.mobile)
+    params.telephone(ta.telephone)
+    params.street(ta.street)
+    params.city(ta.city)
+    params.postal_code(ta.postalcode)
+    params.country(ta.country)
+    params.transaction_url(get_url(reverse('store:ta_view', args=(ta.key,))))
 
     # Add items to email
     for item, variant, purchase_price in ta.get_distinct_storeitems_and_prices():
         i_amount = ta.get_storeitem_count(item, variant=variant)
         i_name = '{}, {}'.format(item.name, variant.name) if variant else item.name
         i_id = '{}:{}'.format(item.id, variant.id) if variant else item.id
-        mailer.add_item(i_id, i_name, purchase_price, i_amount)
-
-    # Form transaction url
-    transaction_url = get_url(reverse('store:ta_view', args=(ta.key,)))
-    mailer.transactionurl(transaction_url)
+        params.add_item(i_id, i_name, purchase_price, i_amount, '0%')
 
     # Send mail
     try:
-        mailer.send()
+        receipt = Receipt.create(
+            mail_to=ta.email,
+            mail_from='"Instanssi" <noreply@instanssi.org>',
+            subject='Instanssi.org: Kuitti tilaukselle #'.format(ta.id),
+            params=params)
+        receipt.send()
     except Exception as ex:
-        logger.error('{}.'.format(ex))
+        logger.exception('Store: {}.'.format(ex))
         return False
 
-    # Mark as paid
-    ta.time_paid = datetime.now()
-    ta.save()
     logger.info('Store transaction {} confirmed.'.format(ta.id))
     return True

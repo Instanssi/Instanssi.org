@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import logging
 
+from django.utils import timezone
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
     CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
 
@@ -62,7 +62,7 @@ class SongSerializer(HyperlinkedModelSerializer):
         NPSong.objects.filter(event=validated_data['event']).update(state=1)
         song = NPSong(**validated_data)
         song.state = 0
-        song.time = datetime.now()
+        song.time = timezone.now()
         song.save()
         return song
 

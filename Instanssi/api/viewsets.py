@@ -15,6 +15,7 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
 from Instanssi.store.handlers import begin_payment_process
+from Instanssi.store.methods import PaymentMethod
 
 
 class IsAuthenticatedOrWriteOnly(BasePermission):
@@ -250,7 +251,7 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
         if serializer.is_valid():
             if serializer.validated_data['save']:
                 ta = serializer.save()
-                payment_method = serializer.validated_data['payment_method']
+                payment_method = PaymentMethod(serializer.validated_data['payment_method'])
                 response_url = begin_payment_process(payment_method, ta)
                 return Response({"url": response_url}, status=status.HTTP_201_CREATED)
             else:

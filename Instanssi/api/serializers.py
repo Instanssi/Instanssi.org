@@ -114,12 +114,12 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
     disqualified_reason = SerializerMethodField()
 
     def get_entryfile_url(self, obj):
-        if obj.entryfile:
+        if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
             return self.context['request'].build_absolute_uri(obj.entryfile.url)
         return None
 
     def get_sourcefile_url(self, obj):
-        if obj.sourcefile:
+        if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
             return self.context['request'].build_absolute_uri(obj.sourcefile.url)
         return None
 

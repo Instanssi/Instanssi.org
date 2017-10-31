@@ -53,16 +53,20 @@ RAVEN_CONFIG = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication'
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ]
 }
 
@@ -237,18 +241,6 @@ LOGGING = {
         },
     }
 }
-
-
-def enable_api_session_access():
-    """
-    This is for enabling debug mode, easier access for rest API testing
-    :return:
-    """
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
-    REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = ['rest_framework.permissions.AllowAny']
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
-    REST_FRAMEWORK['DEFAULT_PARSER_CLASSES'].append('rest_framework.parsers.FormParser')
-    REST_FRAMEWORK['DEFAULT_PARSER_CLASSES'].append('rest_framework.parsers.MultiPartParser')
 
 
 def make_cache_conf(debug_mode):

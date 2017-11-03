@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
     StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer
+from .utils import GroupBasePermission, CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, \
+    FilterMixin, ReadUpdateModelViewSet
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
@@ -17,60 +20,11 @@ from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
 
 
-class IsAuthenticatedOrWriteOnly(BasePermission):
-    def has_permission(self, request, view):
-        return (
-            request.method == 'POST' or
-            request.method in SAFE_METHODS or
-            request.user.is_authenticated()
-        )
-
-
-class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet):
-    pass
-
-
-class FilterMixin(object):
-    @staticmethod
-    def filter_by_event(queryset, request):
-        event = request.query_params.get('event', None)
-        return queryset.filter(event=event) if event else queryset
-
-    @staticmethod
-    def filter_by_compo(queryset, request):
-        compo = request.query_params.get('compo', None)
-        return queryset.filter(compo=compo) if compo else queryset
-
-    @staticmethod
-    def filter_by_competition(queryset, request):
-        competition = request.query_params.get('competition', None)
-        return queryset.filter(competition=competition) if competition else queryset
-
-    @staticmethod
-    def filter_by_lim_off(queryset, request):
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset')
-        if limit or offset:
-            limit = int(limit) or 100
-            offset = int(offset) or 0
-            return queryset[offset:offset+limit]
-        return queryset
-
-    @staticmethod
-    def order_by(queryset, request, default='id', whitelist=None):
-        if not whitelist:
-            whitelist = ['id', '-id']
-        order_by = request.query_params.get('order_by', default)
-        if order_by not in whitelist:
-            return queryset.order_by(default)
-        return queryset.order_by(order_by)
-
-
-class CurrentUserViewSet(ReadOnlyModelViewSet):
+class CurrentUserViewSet(ReadUpdateModelViewSet):
     """
     Shows data to the authenticated user about self
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
@@ -117,6 +71,7 @@ class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
     * order_by: Set ordering, default is '-id'. Allowed: id, -id
     """
     serializer_class = SongSerializer
+    permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
 
     def get_queryset(self):
         q = NPSong.objects.get_queryset()

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class UserSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email')
 
 
 class EventSerializer(HyperlinkedModelSerializer):
@@ -186,7 +186,10 @@ class SongSerializer(HyperlinkedModelSerializer):
         }
 
     def create(self, validated_data):
-        NPSong.objects.filter(event=validated_data['event']).update(state=1)
+        # Set old playing songs to stopped
+        NPSong.objects.filter(event=validated_data['event'], state=0).update(state=1)
+
+        # Add new song, set state to playing
         song = NPSong(**validated_data)
         song.state = 0
         song.time = timezone.now()

@@ -3,16 +3,23 @@
 import logging
 
 from django.utils import timezone
+from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
     CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
 
 from Instanssi.store.handlers import validate_item, create_store_transaction, TransactionException
-from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
+
+
+class UserSerializer(HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 
 class EventSerializer(HyperlinkedModelSerializer):
@@ -25,9 +32,43 @@ class CompetitionSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Competition
         fields = ('id', 'event', 'name', 'description', 'participation_end', 'start', 'end', 'score_type',
-                  'score_sort')
+                  'score_sort', 'show_results')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
+        }
+
+
+class CompetitionParticipationSerializer(HyperlinkedModelSerializer):
+    rank = SerializerMethodField()
+    score = SerializerMethodField()
+    disqualified = SerializerMethodField()
+    disqualified_reason = SerializerMethodField()
+
+    def get_disqualified_reason(self, obj):
+        if obj.competition.show_results:
+            return obj.disqualified_reason
+        return None
+
+    def get_disqualified(self, obj):
+        if obj.competition.show_results:
+            return obj.disqualified
+        return None
+
+    def get_rank(self, obj):
+        if obj.competition.show_results:
+            return obj.get_rank()
+        return None
+
+    def get_score(self, obj):
+        if obj.competition.show_results:
+            return obj.get_formatted_score()
+        return None
+
+    class Meta:
+        model = CompetitionParticipation
+        fields = ('id', 'competition', 'participant_name', 'score', 'rank', 'disqualified', 'disqualified_reason')
+        extra_kwargs = {
+            'competition': {'view_name': 'api:competitions-detail'}
         }
 
 
@@ -69,6 +110,8 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
     imagefile_medium_url = SerializerMethodField()
     rank = SerializerMethodField()
     score = SerializerMethodField()
+    disqualified = SerializerMethodField()
+    disqualified_reason = SerializerMethodField()
 
     def get_entryfile_url(self, obj):
         if obj.entryfile:
@@ -95,6 +138,16 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
             return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
         return None
 
+    def get_disqualified_reason(self, obj):
+        if obj.compo.show_voting_results:
+            return obj.disqualified_reason
+        return None
+
+    def get_disqualified(self, obj):
+        if obj.compo.show_voting_results:
+            return obj.disqualified
+        return None
+
     def get_rank(self, obj):
         if obj.compo.show_voting_results:
             return obj.get_rank()
@@ -107,7 +160,7 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Entry
-        fields = ('compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
                   'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
                   'disqualified', 'disqualified_reason', 'score', 'rank')
         extra_kwargs = {

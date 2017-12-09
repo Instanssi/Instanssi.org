@@ -10,7 +10,7 @@ from django.views.generic import RedirectView
 # URLS
 urlpatterns = [
     url('', include('social_django.urls', namespace='social')),
-    url(r'^api/', include('Instanssi.api.urls', namespace="api")),
+    url(r'^api/v1/', include('Instanssi.api.urls', namespace="api")),
     url(r'^2012/', include('Instanssi.main2012.urls', namespace="main2012")),
     url(r'^2013/', include('Instanssi.main2013.urls', namespace="main2013")),
     url(r'^2014/', include('Instanssi.main2014.urls', namespace="main2014")),
@@ -32,7 +32,6 @@ urlpatterns = [
     url(r'^manage/(?P<sel_event_id>\d+)/kompomaatti/', include('Instanssi.admin_kompomaatti.urls', namespace='manage-kompomaatti')),
     url(r'^manage/(?P<sel_event_id>\d+)/programme/', include('Instanssi.admin_programme.urls', namespace='manage-programme')),
     url(r'^manage/', include('Instanssi.admin_base.urls', namespace='manage-base')),
-    url(r'^api/', include('Instanssi.json_api.urls', namespace="json_api")),
     url(r'^users/', include('Instanssi.users.urls', namespace='users')),
     url(r'^blog/', include('Instanssi.ext_blog.urls', namespace="ext-blog")),
     url(r'^arkisto/', include('Instanssi.arkisto.urls', namespace='archive')),

@@ -6,15 +6,35 @@
     // float: left;
     // width: 300px;
 
-    .social-media { margin-bottom: 20px; }
-    .social-media a { margin-right: 3%; }
-    .social-media a:hover { opacity: 0.7; }
+    .social-media-icons {
+        margin: 0 (-$spacer/2);
 
-    .widget { margin-bottom: 20px; }
+        a {
+            display: inline-block;
+            margin: 0 ($spacer/2) $spacer;
+            &:hover {
+                opacity: .7;
+            }
+            > img {
+                // Can we trust IE to keep aspect this time?
+                // Also, !important because some old hack meant to keep
+                // 3000+px blog images in check
+                max-width: 32px !important;
+                max-height: 32px !important;
+            }
+        }
+    }
 
-    #tweets { margin-left: 5px; margin-right: 5px; }
-    #tweets .link a, #tweets .time { font-size: 11px; }
-    #tweets li { margin-bottom: 20px; }
+    .widget { margin-bottom: $spacer; }
+
+    #tweets { margin: 0 $spacer; }
+    #tweets .link a,
+    #tweets .time {
+        font-size: 11px;
+    }
+    #tweets li {
+        margin-bottom: 20px;
+    }
 }
 
 .widget-rekry {

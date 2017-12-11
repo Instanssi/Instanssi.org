@@ -3,9 +3,6 @@
 }*/
 
 #sidebar {
-    // float: left;
-    // width: 300px;
-
     .social-media-icons {
         margin: 0 (-$spacer/2);
 
@@ -33,7 +30,11 @@
         font-size: 11px;
     }
     #tweets li {
-        margin-bottom: 20px;
+        margin-bottom: $spacer;
+    }
+
+    .widget-content {
+        padding: 0 $spacer;
     }
 }
 

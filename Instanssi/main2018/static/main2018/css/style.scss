@@ -1,6 +1,6 @@
 @import 'reset.scss';
 
-// Picked up from
+// Picked up from the flyer image.
 $theme-color-orange: #ffcc2b;
 $theme-color-green: #3bff2b;
 $theme-color-blue: #2bd1ff;
@@ -79,10 +79,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
-    #page-footer .sponsors {
-        width: 550px;
-    }
-
     form input[type="text"] {
         width: 96%;
         padding: 2%;
@@ -97,17 +93,13 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 /* (this is the size where we drop the main layout columns ) */
 @media (max-width: 767px) {
     #page-footer {
-        bottom: 0px;
-        padding-top: 16px;
+        padding-top: $spacer;
 
-        .sitemap, .sponsors {
+        section {
             text-align: center;
         }
 
         .sitemap {
-            width: 100%;
-            margin: 0px 0px 20px 0px;
-
             li.menu-item {
                 display: inline-block;
 
@@ -115,11 +107,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
                     padding: 8px;
                 }
             }
-        }
-
-        .sponsors {
-            width: 100%;
-            margin: 0;
         }
 
         .sponsors-container {
@@ -181,7 +168,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     #page-footer {
         margin-top: 0;
     }
-    #page-footer .container { padding: 0; }
 
     #page-wrap {
         // hidden anyway, don't even try to render gradient on mobile

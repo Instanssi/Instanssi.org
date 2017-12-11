@@ -7,14 +7,7 @@
     bottom: 0px;
     padding: $spacing-large 0;
 
-    .container {
-        box-sizing: border-box;
-        padding: 0 10px 0;
-    }
-
     section {
-        float: left;
-
         h2 {
             font-size: 18px;
             color: #fff;
@@ -22,18 +15,11 @@
         }
     }
 
-    .sitemap {
-        width: 150px;
-        margin-bottom: 20px;
-    }
-
     .sponsors {
-        width: 740px;
-
         .sponsor {
             width: 128px;
             float: left;
-            padding: 0% 1% 1% 0%;
+            padding: 0 $spacer $spacer 0;
 
             &.white {
                 background: #fff;
@@ -42,7 +28,7 @@
             a {
                 display: block;
                 line-height: 0px;
-                padding: 4%;
+                padding: $spacer;
                 background: #fff;
             }
 
@@ -56,16 +42,12 @@
         }
     }
 
-    .contact {
-        width: 150px;
-    }
-
     .menu-item {
-        margin: 8px 0 8px;
+        margin: $spacer 0 $spacer;
     }
 
     .menu-item a {
-        padding: 8px;
+        padding: $spacer;
         color: #ccc;
         text-decoration: none;
     }

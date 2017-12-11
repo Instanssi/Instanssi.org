@@ -31,7 +31,11 @@ h1 {
 }
 
 #content h1 {
-    padding: 0 8px;
+    padding: 0 $spacer;
+}
+
+#content h2 {
+    padding: 0 $spacer;
 }
 
 h2,

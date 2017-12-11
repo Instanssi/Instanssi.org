@@ -129,7 +129,8 @@ $banner-image-1: '../images/banner-bg-2.png';
     nav.main-nav {
         padding: 0;
         margin-bottom: $spacing-large;
-        background: rgba(darken($theme-color, 10%), 0.9);
+        //background: rgba(darken($theme-color, 10%), 0.9);
+        background: rgba(#222, 0.9);
         ul {
             border: 0;
             li {
@@ -138,6 +139,8 @@ $banner-image-1: '../images/banner-bg-2.png';
                     text-transform: uppercase;
                     transition: background-image $transition-large ease;
                     text-decoration: none;
+
+                    padding: ($spacer * 1.5) ($spacer * 2);
 
                     color: #fff;
                     background: rgba(#fff, 0);
@@ -152,7 +155,7 @@ $banner-image-1: '../images/banner-bg-2.png';
                     border: 0;
 
                     position: relative;
-                    $link-hover-bg: $theme-color-blue;
+                    $link-hover-bg: $theme-color-bright;
 
                     &:after {
                         content: '';

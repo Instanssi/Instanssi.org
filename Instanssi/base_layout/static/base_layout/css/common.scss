@@ -5,11 +5,12 @@
 // https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
 
 // Used for hover highlights and stuff.
-$theme-color-bright: #26a;
+// $theme-color-bright: #26a;
+$theme-color-bright: #00a8ff;
 
 $theme-color: darken($theme-color-bright, 15%);
 
-$theme-color-dark: darken($theme-color-bright, 25%);
+$theme-color-dark: #222;
 
 
 // brighter theme color for link text and stuff

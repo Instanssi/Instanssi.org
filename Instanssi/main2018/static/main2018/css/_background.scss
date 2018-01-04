@@ -1,0 +1,32 @@
+// Background effects. These may be changed by JS at runtime.
+
+#page-background {
+    > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: contain;
+    }
+    .layer-cyan {
+        background-image: url('../images/bg/cyan.png');
+    }
+    .layer-green {
+        background-image: url('../images/bg/green.png');
+    }
+    .layer-purple {
+        background-image: url('../images/bg/purple.png');
+    }
+    .layer-yellow {
+        background-image: url('../images/bg/yellow.png');
+    }
+}
+
+#content {
+    // raise content above the background effect
+    position: relative;
+}

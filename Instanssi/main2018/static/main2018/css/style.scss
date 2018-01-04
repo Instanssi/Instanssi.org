@@ -49,7 +49,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 @import '_primary.scss';
 @import '_sidebar.scss';
 @import '_footer.scss';
-@import '_background.scss';
 
 .content-wrap {
     // This wraps the main content section, excluding the Bootstrap

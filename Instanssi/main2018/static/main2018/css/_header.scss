@@ -1,14 +1,11 @@
-$banner-image-0: '../images/banner-bg.jpg';
-$banner-image-1: '../images/banner-bg-2.png';
-
 #page-header {
     position: relative;
     overflow: hidden;
 
     .header-bg {
         position: absolute;
-        background: url($banner-image-0) repeat-x;
-        background-position: contain;
+        // background: url($banner-image-0) repeat-x;
+        // background-position: contain;
         top: 0;
         left: 0;
         width: 100%;

@@ -11,6 +11,8 @@
         background-repeat: no-repeat;
         background-position: top center;
         background-size: contain;
+
+        transition: opacity 2s ease-in-out;
     }
     .layer-cyan {
         background-image: url('../images/bg/cyan.png');
@@ -29,4 +31,12 @@
 #content {
     // raise content above the background effect
     position: relative;
+}
+
+@media (max-width: $screen-sm-max) {
+    #page-background {
+        display: none;
+
+        // TODO: Make a merged image and display it as a static background?
+    }
 }

@@ -14,9 +14,8 @@ $(function () {
     }
     layoutButton();
 
-    var haloElements = [];
-
     function halos() {
+        var haloElements = [];
         var $container = $('.header-bg-fx');
 
         var haloData = [
@@ -37,14 +36,32 @@ $(function () {
             haloElements.push($halo);
         });
 
+        document.addEventListener('mouseover', function() {
+            haloElements.forEach(function(haloElement, index) {
+                var val = Math.sin(new Date().valueOf() / 1000 + index);
+                haloElement.css('opacity', val * 0.5 + 0.5);
+            });
+        }, 500);
     }
-
-    document.addEventListener('mouseover', function() {
-        haloElements.forEach(function(haloElement, index) {
-            var val = Math.sin(new Date().valueOf() / 1000 + index);
-            haloElement.css('opacity', val * 0.5 + 0.5);
-        });
-    }, 500);
-
     halos();
+
+    function backgrounds() {
+        var bgElements = [
+            '.layer-cyan',
+            '.layer-green',
+            '.layer-purple',
+            '.layer-yellow'
+        ].map(function(selector) {
+            return $(selector);
+        });
+
+        var x = 0;
+        setInterval(function() {
+            bgElements.forEach(function(bgElement, index) {
+                bgElement.css('opacity', 0.5 + 0.5 * Math.sin((x + index) * Math.PI / 4));
+            });
+            x++;
+        }, 2000);
+    }
+    backgrounds();
 });

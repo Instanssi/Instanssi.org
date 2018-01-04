@@ -55,13 +55,16 @@ $(function () {
             return $(selector);
         });
 
-        var x = 0;
-        setInterval(function() {
+        function update() {
+            // Using the clock for this keeps the look consistent when navigating.
+            var x = new Date().valueOf() / 2000;
             bgElements.forEach(function(bgElement, index) {
                 bgElement.css('opacity', 0.5 + 0.5 * Math.sin((x + index) * Math.PI / 4));
             });
-            x++;
-        }, 2000);
+        }
+
+        setInterval(update, 2000);
+        update();
     }
     backgrounds();
 });

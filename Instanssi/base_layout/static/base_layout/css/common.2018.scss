@@ -101,6 +101,9 @@ $brand-primary: $theme-color-bright;
 }
 
 // Background effects. These may be changed by JS at runtime.
+body {
+    background-color: #222 !important;
+}
 #page-background {
     > * {
         position: absolute;

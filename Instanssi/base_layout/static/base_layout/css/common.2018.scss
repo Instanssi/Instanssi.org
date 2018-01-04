@@ -102,6 +102,7 @@ $brand-primary: $theme-color-bright;
 
 // Background effects. These may be changed by JS at runtime.
 body {
+    position: relative;
     background-color: #222 !important;
 }
 #page-background {
@@ -114,21 +115,19 @@ body {
 
         background-repeat: no-repeat;
         background-position: top center;
-        background-size: contain;
-
         transition: opacity 2s ease-in-out;
     }
     .layer-cyan {
-        background-image: url('../../main2018/images/bg/cyan.png');
+        background-image: url('../../main2018/images/bg/cyan-1600.png');
     }
     .layer-green {
-        background-image: url('../../main2018/images/bg/green.png');
+        background-image: url('../../main2018/images/bg/green-1600.png');
     }
     .layer-purple {
-        background-image: url('../../main2018/images/bg/purple.png');
+        background-image: url('../../main2018/images/bg/purple-1600.png');
     }
     .layer-yellow {
-        background-image: url('../../main2018/images/bg/yellow.png');
+        background-image: url('../../main2018/images/bg/yellow-1600.png');
     }
 }
 

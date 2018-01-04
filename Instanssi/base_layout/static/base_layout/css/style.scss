@@ -99,7 +99,7 @@ a:hover {
 
 #header_nav {
     min-height: 32px;
-    background: rgba(darken($theme-color, 10%), 0.9);
+    background: $theme-color-dark;
     color: #fff;
 }
 #header_nav:after {

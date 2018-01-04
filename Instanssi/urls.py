@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2017:index')), name='root-index')
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2018:index')), name='root-index')
 ]
 
 # Add admin panel link if debug mode is on

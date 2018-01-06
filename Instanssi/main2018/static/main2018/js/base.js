@@ -63,7 +63,11 @@ $(function () {
             });
         }
 
-        setInterval(update, 2000);
+        // Start the 2 s animation every 2.1 s.
+        // The transitions sometimes glitch on Firefox if the opacity
+        // target value changes mid-transition.
+        // The gap isn't too noticeable, especially with ease-in-out.
+        setInterval(update, 2100);
         update();
     }
     backgrounds();

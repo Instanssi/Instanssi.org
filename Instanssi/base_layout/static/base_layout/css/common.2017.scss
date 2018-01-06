@@ -1,0 +1,94 @@
+/* common.2017.scss
+   Old variables from the 2017 theme, kept for theme compatibility.
+*/
+
+$theme-color: #13285e;
+
+$theme-color-dark: #0b1937;
+
+// meant to be the same color as in the flyers and shirt design
+$theme-color-bright: #01a8ff;
+
+// brighter theme color for link text and stuff
+$theme-color-mid: ($theme-color + $theme-color-bright) / 2;
+
+$theme-nav-hover: $theme-color-mid;
+
+$background-color: #1b1b1b;
+
+$bg-gradient-top: #0a3270;
+$bg-gradient-bottom: lighten($background-color, 5);
+$bg-gradient-height: 640px;
+
+$body-font-family: 'Open Sans', sans-serif;
+$title-font-family: 'Exo 2', $body-font-family;
+
+$transition-small: .2s;
+$transition-large: .4s;
+
+$spacing-large: 16px;
+$spacing-medium: 8px;
+$spacing-small: 4px;
+
+// overrides for certain Bootstrap SASS defaults
+$brand-primary: $theme-color;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+$navbar-default-color: #ddd;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-link-hover-bg: $theme-nav-hover;
+
+// default is the brand color, but we want to vary this a bit
+$component-active-bg: $theme-color-bright;
+
+// actually, let's just try this...
+$brand-primary: $theme-color-bright;
+
+@import './bootstrap.scss';
+
+@mixin awesome-glyph($code) {
+    font: normal normal normal 1em/1 FontAwesome;
+    content: $code;
+}
+
+// This hides content visually but should not block screen readers, scraping
+// and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
+.sr-only {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.loading-container {
+    position: relative;
+    min-height: 42px;
+}
+.loading-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(#fff, .5);
+}
+.loading-overlay > .fa {
+    color: $brand-primary;
+    position: absolute;
+    left: 50%; top: 50%;
+    // fa-3x is about 42px wide, so this centers it nicely in both directions
+    margin-left: -21px;
+    margin-top: -21px;
+}
+.loading-overlay.loading-overlay-active {
+    display: block;
+}
+
+@mixin body-background-mixin() {
+    position: relative;
+    background: $bg-gradient-bottom;
+    background: linear-gradient($bg-gradient-top 0, $bg-gradient-bottom $bg-gradient-height);
+}

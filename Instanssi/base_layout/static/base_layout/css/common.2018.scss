@@ -1,0 +1,140 @@
+/* common.scss
+   Sitewide SCSS (theme colors, etc.) goes here.
+*/
+
+// https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
+
+// Used for hover highlights and stuff.
+// $theme-color-bright: #26a;
+$theme-color-bright: #00a8ff;
+
+$theme-color: darken($theme-color-bright, 15%);
+
+$theme-color-dark: #333;
+
+
+// brighter theme color for link text and stuff
+$theme-color-mid: ($theme-color + $theme-color-bright) / 2;
+
+$theme-nav-hover: $theme-color-mid;
+
+$background-color: #1b1b1b;
+
+$bg-gradient-top: $theme-color;
+$bg-gradient-bottom: lighten($background-color, 5);
+$bg-gradient-height: 640px;
+
+$body-font-family: 'Open Sans', sans-serif;
+$title-font-family: 'Exo 2', $body-font-family;
+
+$transition-small: .2s;
+$transition-large: .4s;
+
+$spacing-large: 16px;
+$spacing-medium: 8px;
+$spacing-small: 4px;
+
+// Bootstrap 4's names for the default spacer.
+$spacer: $spacing-medium;
+$spacer-x: $spacer;
+$spacer-y: $spacer;
+
+// overrides for certain Bootstrap SASS defaults
+$brand-primary: $theme-color;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+
+$navbar-default-color: #ddd;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-link-hover-bg: $theme-nav-hover;
+
+$nav-tabs-border-color: $theme-color-bright;
+$nav-tabs-link-hover-border-color: $theme-color-bright;
+
+// default is the brand color, but we want to vary this a bit
+$component-active-bg: $theme-color-bright;
+
+// actually, let's just try this...
+$brand-primary: $theme-color-bright;
+
+@import './bootstrap.scss';
+
+@mixin awesome-glyph($code) {
+    font: normal normal normal 1em/1 FontAwesome;
+    content: $code;
+}
+
+// This hides content visually but should not block screen readers, scraping
+// and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
+.sr-only {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.loading-container {
+    position: relative;
+    min-height: 42px;
+}
+.loading-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(#fff, .5);
+}
+.loading-overlay > .fa {
+    color: $brand-primary;
+    position: absolute;
+    left: 50%; top: 50%;
+    // fa-3x is about 42px wide, so this centers it nicely in both directions
+    margin-left: -21px;
+    margin-top: -21px;
+}
+.loading-overlay.loading-overlay-active {
+    display: block;
+}
+
+// Background effects. These may be changed by JS at runtime.
+body {
+    position: relative;
+    background-color: #222 !important;
+}
+
+@media (min-width: $screen-xs-min) {
+    #page-background {
+        > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background-repeat: no-repeat;
+            background-position: top center;
+            transition: opacity 2s ease-in-out;
+        }
+        .layer-cyan {
+            background-image: url('../../main2018/images/bg/cyan-1600.png');
+        }
+        .layer-green {
+            background-image: url('../../main2018/images/bg/green-1600.png');
+        }
+        .layer-purple {
+            background-image: url('../../main2018/images/bg/purple-1600.png');
+        }
+        .layer-yellow {
+            background-image: url('../../main2018/images/bg/yellow-1600.png');
+        }
+    }
+}
+
+#content, #page-footer {
+    // raise content above the background effect
+    position: relative;
+}

@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^2015/', include('Instanssi.main2015.urls', namespace="main2015")),
     url(r'^2016/', include('Instanssi.main2016.urls', namespace="main2016")),
     url(r'^2017/', include('Instanssi.main2017.urls', namespace="main2017")),
+    url(r'^2018/', include('Instanssi.main2018.urls', namespace="main2018")),
     url(r'^manage/events/', include('Instanssi.admin_events.urls', namespace='manage-events')),
     url(r'^manage/users/', include('Instanssi.admin_users.urls', namespace='manage-users')),
     url(r'^manage/profile/', include('Instanssi.admin_profile.urls', namespace='manage-profile')),
@@ -38,7 +39,7 @@ urlpatterns = [
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2017:index')), name='root-index')
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2018:index')), name='root-index')
 ]
 
 # Add admin panel link if debug mode is on

@@ -48,7 +48,7 @@ function cartItemEquals(cartItem, product, variant) {
  * @returns {Promise.<Object>} - API response
  */
 function fetchItems() {
-    return storeXHR('GET', '/api/store_items/?format=json');
+    return storeXHR('GET', '/api/v1/store_items/?format=json');
 }
 /**
  * Submits a transaction to the store API.
@@ -56,7 +56,7 @@ function fetchItems() {
  * @returns {Promise.<Object>} - API response
  */
 function submitTransaction(transaction) {
-    return storeXHR('POST', '/api/store_transaction/?format=json', transaction);
+    return storeXHR('POST', '/api/v1/store_transaction/?format=json', transaction);
 }
 
 function scrollToTop() {

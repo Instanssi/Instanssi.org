@@ -16,7 +16,7 @@ div.step {
 #screenshow-container, canvas {
     width: 100%;
     height: 100%;
-    text-shadow: rgba(20, 160, 200, 0.5) .3em 0 .3em, rgba(20, 160, 200, 0.5) -.3em 0 .3em;
+    text-shadow: rgba(20, 160, 200, 0.3) .3em 0 .3em, rgba(20, 160, 200, 0.3) -.3em 0 .3em;
 }
 
 canvas {

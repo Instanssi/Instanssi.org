@@ -14,6 +14,7 @@ testing/output/*
 *.txt~
 .idea
 .env
+.virtualenv
 **/node_modules
 **/.vscode
 **/npm-debug.log

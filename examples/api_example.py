@@ -9,6 +9,9 @@ import json
 # REMOVE THIS IN PRODUCTION! Allows testing locally.
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
+# API URL (https for real instanssi site)
+API_ADDR = "http://localhost:8000/api/v1"
+
 # Test client ID and secret. Insert your own here.
 CLIENT_ID = 'bj6oxteE47zxS1I1QAwPb77FAqd9m2nWk8tiKfIx'
 CLIENT_SECRET = 'buV0Amz3HmjHri74UkH5OhVgT07iIpZC5onTey9S2w3obUQ2kLAoys0Tz3TAGppfgVBY4ozwZGRPvA7ua9Lf5jgLtQUy5BMgIkcPsvyHVoiX9gSiEOGsAzZ9zKO4ssvk'
@@ -26,7 +29,7 @@ def fetch_token(url, client_id, client_secret):
 
 
 def main():
-    token = fetch_token('http://localhost:8000/api/oauth2/token/', CLIENT_ID, CLIENT_SECRET)
+    token = fetch_token('{}/oauth2/token/'.format(API_ADDR), CLIENT_ID, CLIENT_SECRET)
     print("Scope:        {}".format(token['scope']))
     print("Token type:   {}".format(token['token_type']))
     print("Expires at:   {}".format(token['expires_at']))
@@ -36,13 +39,14 @@ def main():
     headers = {
         'Authorization': 'Bearer {}'.format(token['access_token'])
     }
-    r = requests.get('http://localhost:8000/api/events/', headers=headers)
+    r = requests.get('{}/events/'.format(API_ADDR), headers=headers)
     print("Response:     {}".format(r.status_code))
 
     if r.status_code == 200:
         data = json.loads(r.content.decode())
         print("Data:\n{}".format(data))
     else:
-        print("Data:         No data, wrong return code")
+        print("Data:         No data, wrong return code ({})".format(r.status_code))
+
 
 main()

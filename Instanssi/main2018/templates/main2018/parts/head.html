@@ -15,7 +15,9 @@
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="http://instanssi.org/2018/" />
-    <meta property="og:image" content="http://instanssi.org/static/main2018/images/icons/instanssi2017-fb-profile.png" />
+    <meta property="og:image" content="{% static 'main2018/images/icons/instanssi-og-256.png' %}" />
+    <meta property="og:image:width" content="256" />
+    <meta property="og:image:height" content="182" />
     <meta property="og:title" content="Instanssi - Digitaalisen tekemisen festivaali" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Instanssi" /> {% block head %}{% endblock %} {% if GOOGLE_ANALYTICS %}

@@ -71,7 +71,7 @@ Vue.filter('formatPrice', formatPrice);
  * Displays a single store product with cart counts and "add" button.
  */
 Vue.component('store-product', {
-    template: require('!raw-loader!./store_product.html'),
+    template: require('./store_product.html'),
     props: {
         product: Object,
         cart: Array,
@@ -210,7 +210,7 @@ let app = new Vue({
         /** Set when transaction is being submitted (prevent accidental spam) */
         submitting: false,
     },
-    template: require('!raw-loader!./store.html'),
+    template: require('./store.html'),
     created() {
         // fetch products list
         fetchItems().then((items) => {

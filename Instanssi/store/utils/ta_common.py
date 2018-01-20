@@ -33,7 +33,11 @@ def handle_pending(ta: StoreTransaction):
 
 
 def handle_payment(ta: StoreTransaction):
-    # Mark as paid asap
+    # If not yet marked as pending, mark it now
+    if not ta.time_pending:
+        ta.time_pending = timezone.now()
+
+    # Mark as paid right away, so failures later cannot change this
     ta.time_paid = timezone.now()
     ta.save()
 

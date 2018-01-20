@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
     CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
 
-from Instanssi.store.handlers import validate_item, create_store_transaction, TransactionException
+from Instanssi.store.methods import PaymentMethod
+from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
+    TransactionException
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
@@ -284,7 +286,7 @@ class StoreTransactionItemSerializer(Serializer):
     amount = IntegerField(min_value=1)
 
     def validate(self, data):
-        super(StoreTransactionItemSerializer, self).validate(data)
+        data = super(StoreTransactionItemSerializer, self).validate(data)
         try:
             validate_item(data)
         except TransactionException as e:
@@ -304,7 +306,7 @@ class StoreTransactionSerializer(Serializer):
     city = CharField(max_length=64)
     country = CharField(max_length=2)
     information = CharField(allow_blank=True, max_length=1024)
-    payment_method = ChoiceField(choices=[0, 1])  # 1 = paytrail, 0 = bitpay
+    payment_method = ChoiceField(choices=[e.value for e in PaymentMethod])
     read_terms = BooleanField()
     discount_key = CharField(allow_blank=True, required=False, max_length=32)
     items = StoreTransactionItemSerializer(many=True, required=True)
@@ -321,6 +323,14 @@ class StoreTransactionSerializer(Serializer):
         serializer = StoreTransactionItemSerializer(data=value, many=True)
         serializer.is_valid(raise_exception=True)
         return value
+
+    def validate(self, data):
+        data = super(StoreTransactionSerializer, self).validate(data)
+        try:
+            validate_payment_method(data['items'], PaymentMethod(data['payment_method']))
+        except TransactionException as e:
+            raise ValidationError(str(e))
+        return data
 
     def create(self, validated_data):
         return create_store_transaction(validated_data)

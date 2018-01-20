@@ -6,7 +6,7 @@ import logging
 from django.db import transaction
 from django.utils import timezone
 
-from Instanssi.store.methods import paytrail, bitpay, PaymentMethod
+from Instanssi.store.methods import paytrail, bitpay, no_method, PaymentMethod
 from Instanssi.store.models import StoreTransaction, StoreItem, TransactionItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
@@ -35,7 +35,30 @@ def validate_item(item: dict):
         raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
 
 
-def create_store_transaction(data: dict):
+def get_item_and_variant(item: dict) -> (StoreItem, StoreItemVariant):
+    """
+    Return store item and variant (if any).
+    """
+    store_item = StoreItem.items_available().get(pk=item['item_id'])
+    store_variant = store_item.variants.get(pk=item['variant_id']) if item['variant_id'] else None
+    return store_item, store_variant
+
+
+def validate_payment_method(items: list, method: PaymentMethod):
+    """
+    Make sure payment method is okay for the selected order. NO_METHOD is only acceptable when total sum of the order
+    is 0 eur! Other methods are always acceptable.
+    """
+
+    if method == PaymentMethod.NO_METHOD:
+        for item in items:
+            store_item, store_variant = get_item_and_variant(item)
+            purchase_price = store_item.get_discounted_unit_price(item['amount'])
+            if purchase_price > 0:
+                raise TransactionException("Valittu maksutapa ei ole sallittu tälle tilaukselle!")
+
+
+def create_store_transaction(data: dict) -> StoreTransaction:
     # Handle creation of the order in a transaction to avoid creating crap to db in errors
     try:
         with transaction.atomic():
@@ -57,16 +80,13 @@ def create_store_transaction(data: dict):
 
             # Check items
             for item in data['items']:
-                # First, make sure that the ordered item exists and is available
-                store_item = StoreItem.items_available().get(pk=item['item_id'])
-                store_variant = store_item.variants.get(pk=item['variant_id']) if item['variant_id'] else None
+                store_item, store_variant = get_item_and_variant(item)
 
                 # Find the price with discounts (if any)
-                amount = item['amount']
-                purchase_price = store_item.get_discounted_unit_price(amount)
+                purchase_price = store_item.get_discounted_unit_price(item['amount'])
 
                 # Form the transaction item(s)
-                for m in range(amount):
+                for m in range(item['amount']):
                     ta_item = TransactionItem()
                     ta_item.transaction = ta
                     ta_item.item = store_item
@@ -84,6 +104,7 @@ def create_store_transaction(data: dict):
 
 def begin_payment_process(method: PaymentMethod, ta: StoreTransaction):
     return {
+        PaymentMethod.NO_METHOD: no_method.start_process,
         PaymentMethod.BITPAY: bitpay.start_process,
         PaymentMethod.PAYTRAIL: paytrail.start_process
     }[method](ta)

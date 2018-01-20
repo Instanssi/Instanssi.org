@@ -8,6 +8,7 @@ from decimal import Decimal
 import json
 
 from datetime import datetime
+from django_countries.fields import Country, country_to_text
 from django.template.loader import render_to_string
 import arrow
 
@@ -18,6 +19,8 @@ class ReceiptEncoder(json.JSONEncoder):
             return arrow.get(o).isoformat()
         if isinstance(o, Decimal):
             return str(o)
+        if isinstance(o, Country):
+            return country_to_text(o)
         return json.JSONEncoder.default(self, o)
 
 

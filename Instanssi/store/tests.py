@@ -89,7 +89,7 @@ class StoreTests(TestCase):
         self.assertEquals(p.get_body(), n.get_body())
 
     def test_create_receipt(self):
-        """ Test receipt creation (towards database) """
+        """ Test receipt creation (to database) """
         f = Faker('fi_FI')
         subject = "Test email #{}".format(randint(10000, 99999))
         email_from = 'Instanssi.org <{}>'.format(f.email())

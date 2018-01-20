@@ -3,17 +3,20 @@
         <ul class="nav nav-pills">
             <li role="presentation" :class="{ 'active': step === 0, 'disabled': !canMoveToStep(0) }">
                 <a href="#" @click.prevent="toStep(0, false)">
-                    1. Tuotteet
+                    <span class="store-step-num">1.</span>
+                    <span class="store-step-title">Tuotteet</span>
                 </a>
             </li>
             <li role="presentation" :class="{ 'active': step === 1, 'disabled': !canMoveToStep(1) }">
                 <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, false)">
-                    2. Kori ja asiakastiedot
+                    <span class="store-step-num">2.</span>
+                    <span class="store-step-title">Kori ja asiakastiedot</span>
                 </a>
             </li>
             <li role="presentation" :class="{ 'active': step === 2, 'disabled': !canMoveToStep(2) }">
                 <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, false)">
-                    3. Yhteenveto ja maksutapa
+                    <span class="store-step-num">3.</span>
+                    <span class="store-step-title">Yhteenveto ja maksutapa</span>
                 </a>
             </li>
         </ul>

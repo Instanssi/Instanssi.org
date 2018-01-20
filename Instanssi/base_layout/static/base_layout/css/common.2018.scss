@@ -4,6 +4,7 @@
 
 // https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
 
+
 // Used for hover highlights and stuff.
 // $theme-color-bright: #26a;
 $theme-color-bright: #00a8ff;
@@ -45,6 +46,9 @@ $border-radius-base: 0;
 $border-radius-large: 0;
 $border-radius-small: 0;
 
+// default 30px
+$grid-gutter-width: $spacer * 4;
+
 $navbar-default-color: #ddd;
 $navbar-default-link-hover-color: #fff;
 $navbar-default-link-hover-bg: $theme-nav-hover;
@@ -57,6 +61,7 @@ $component-active-bg: $theme-color-bright;
 
 // actually, let's just try this...
 $brand-primary: $theme-color-bright;
+
 
 @import './bootstrap.scss';
 

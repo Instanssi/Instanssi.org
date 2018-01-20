@@ -15,11 +15,42 @@ function formatPriceLocaleString(price) {
 function formatPriceLegacy(price) {
     return price.toFixed(2) + ' €';
 }
-let formatPrice;
-if(toLocaleStringSupportsOptions) {
-    formatPrice = formatPriceLocaleString;
-} else {
-    formatPrice = formatPriceLegacy;
+
+export function formatPrice(price, ...args) {
+    if(toLocaleStringSupportsOptions) {
+        return formatPriceLocaleString(price, ...args);
+    } else {
+        return formatPriceLegacy(price, ...args);
+    }
+}
+
+/**
+ * Returns true if a cart item is a specific product (and optional variant).
+ * @param {Object} cartItem - Cart item to compare
+ * @param {Object} product - Product to compare
+ * @param {Object} [variant] - Variant to compare
+ * @returns {Boolean} - True if cart item is the same product (and variant)
+ */
+export function cartItemEquals(cartItem, product, variant) {
+    return cartItem.product.id === product.id &&
+        (!variant || (cartItem.variant && (variant.id === cartItem.variant.id)));
+}
+
+
+/**
+ * Gets the price of a certain quantity of a product, considering discounts, etc.
+ * @param {Object} product - Product / StoreItem
+ * @param {number} count - Number of items in cart
+ * @returns {number} - Effective price
+ */
+export function getDiscountedPrice(product, count) {
+    let qtyThresh = product.discount_amount;
+    let discountFactor = (100 - product.discount_percentage) / 100;
+    let multiplier = 1;
+    if(qtyThresh && count >= qtyThresh) {
+        multiplier *= discountFactor;
+    }
+    return product.price * multiplier;
 }
 
 /**
@@ -30,7 +61,7 @@ if(toLocaleStringSupportsOptions) {
  * @param {Object} [data] - Data to pass in the request (encoded into JSON)
  * @returns {Promise.Object} - Result
  */
-function storeXHR(method, path, data) {
+export function storeXHR(method, path, data) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.onload = function () {
@@ -154,4 +185,4 @@ let loadingOverlay = Vue.component('loading-overlay', {
     </div>`
 });
 
-export { formatPrice, storeXHR, storeFormGroup, storeMessages, loadingOverlay };
+export { storeFormGroup, storeMessages, loadingOverlay };

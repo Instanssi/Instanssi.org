@@ -6,42 +6,27 @@ import 'core-js/es6/object';
 import 'core-js/es6/promise';
 
 import Vue from 'vue';
-import { formatPrice, storeXHR, loadingOverlay } from './store_common.js';
+
+import {
+    formatPrice,
+    storeXHR,
+    loadingOverlay,
+    cartItemEquals,
+} from './store_common.js';
+
 import './store_information.js';
 import './store_cart.js';
+import './store_product.js';
 
 const PAYMENT_METHODS = [
     { id: 1, name: 'Paytrail verkkomaksu' },
-    { id: 0, name: 'BitPay (maksa BitCoinilla)' }
+    { id: 0, name: 'BitPay (maksa BitCoinilla)' },
 ];
 
-/**
- * Gets the price of a certain quantity of a product, considering discounts, etc.
- * @param {Object} product - Product / StoreItem
- * @param {number} count - Number of items in cart
- * @returns {number} - Effective price
- */
-function getDiscountedPrice(product, count) {
-    let qtyThresh = product.discount_amount;
-    let discountFactor = (100 - product.discount_percentage) / 100;
-    let multiplier = 1;
-    if(qtyThresh && count >= qtyThresh) {
-        multiplier *= discountFactor;
-    }
-    return product.price * multiplier;
-}
-
-/**
- * Returns true if a cart item is a specific product (and optional variant).
- * @param {Object} cartItem - Cart item to compare
- * @param {Object} product - Product to compare
- * @param {Object} [variant] - Variant to compare
- * @returns {Boolean} - True if cart item is the same product (and variant)
- */
-function cartItemEquals(cartItem, product, variant) {
-    return cartItem.product.id === product.id &&
-        (!variant || (cartItem.variant && (variant.id === cartItem.variant.id)));
-}
+const NO_PAYMENT_METHODS = [
+    // This is offered if and only if a non-empty cart's total is 0.
+    { id: -1, name: 'Ei maksua' },
+];
 
 /**
  * Fetch items from the store API.
@@ -67,105 +52,6 @@ function scrollToTop() {
 
 Vue.filter('formatPrice', formatPrice);
 
-/**
- * Displays a single store product with cart counts and "add" button.
- */
-Vue.component('store-product', {
-    template: require('./store_product.html'),
-    props: {
-        product: Object,
-        cart: Array,
-        messages: Object,
-        changeItemCount: Function,
-        removeItemFromCart: Function,
-    },
-    data() {
-        // because there can be many components of the same type, a component's
-        // "data" is a factory function that should return unique objects
-        return {
-            /** Currently selected item variant */
-            variant: null,
-        };
-    },
-    /**
-     * Initialize the store product component, auto-selecting variant if available
-     */
-    created() {
-        let product = this.product;
-        if (product.variants && product.variants.length) {
-            this.variant = product.variants[0];
-        }
-    },
-    methods: {
-        /**
-         * Signal that a new item should be added to the cart.
-         */
-        addItem() {
-            this.$emit('addItem', this.product, this.variant);
-        },
-        removeItem() {
-            this.$emit('removeItem', this.product, this.variant);
-        },
-        /**
-         * Gets current item + variant's count in the cart.
-         * @returns {number} - Number of items in the cart
-         */
-        getCartCount() {
-            const { product, variant } = this;
-            if(!this.cart) {
-                return 0;
-            }
-            let cartIndex = this.cart.findIndex((item) => {
-                return cartItemEquals(item, product, variant);
-            });
-
-            if(cartIndex < 0) {
-                return 0;
-            }
-            return this.cart[cartIndex].count;
-        },
-        /**
-         * Checks if the quantity discount applies to this product.
-         * @returns {Boolean} - True if quantity discount is active
-         */
-        isDiscountActive() {
-            const { product } = this;
-            let discountAmount = product.discount_amount;
-            return discountAmount > 0 && this.getCartCount() >= discountAmount;
-        },
-        /**
-         * Returns the effective unit price of this product, considering discounts.
-         * @returns {number} - Unit price
-         */
-        getEffectivePrice() {
-            return getDiscountedPrice(this.product, this.getCartCount());
-        },
-        /**
-         * Show full size image of the product.
-         */
-        showFullSize() {
-            let thumbnail = $(this.$el).find('.product-thumbnail');
-            $(thumbnail).ekkoLightbox();
-        }
-    },
-    computed: {
-        isOutOfStock() {
-            return this.getCartCount() >= this.product.num_available;
-        },
-        effectivePrice() {
-            return this.getEffectivePrice();
-        },
-        cartItems() {
-            let items = [];
-            this.cart.forEach((item) => {
-                if(cartItemEquals(item, this.product)) {
-                    items.push(item);
-                }
-            });
-            return items;
-        }
-    }
-});
 
 /**
  * Instanssi.org store frontend application.
@@ -202,7 +88,7 @@ let app = new Vue({
         /** Payment method, see PAYMENT_METHODS; default is Paytrail. */
         paymentMethod: 1,
         /** Current sum of cart item prices. */
-        totalPrice: 0,
+        // totalPrice: 0,
         /** True if the customer info has been validated and has not changed since then. */
         customerInfoIsValid: false,
         /** Set when purchase is ready to be paid. */
@@ -228,8 +114,18 @@ let app = new Vue({
     },
     computed: {
         paymentMethods() {
+            if(this.totalPrice <= 0) {
+                return NO_PAYMENT_METHODS;
+            }
             return PAYMENT_METHODS;
-        }
+        },
+        totalPrice() {
+            let totalPrice = 0;
+            this.cart.forEach((cartItem) => {
+                totalPrice += this.getSubtotal(cartItem);
+            });
+            return totalPrice;
+        },
     },
     methods: {
         canMoveToStep(step) {
@@ -339,12 +235,14 @@ let app = new Vue({
          * Update cart state, calculating total price and so on.
          */
         updateCart() {
-            let totalPrice = 0;
-            this.cart.forEach((cartItem) => {
-                totalPrice += this.getSubtotal(cartItem);
-            });
-            this.totalPrice = totalPrice;
-            // FIXME: Store cart in window.localStorage
+            const { totalPrice } = this;
+            if(totalPrice <= 0) {
+                // Set payment method to "no payment" if total price is 0.
+                this.paymentMethod = -1;
+            } else if(this.paymentMethod === -1 && totalPrice >= 0) {
+                // Change it back if the price changes.
+                this.paymentMethod = 1;
+            }
         },
         /**
          * Add an item to the cart.

@@ -8,14 +8,15 @@ from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
     StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
     UserCompoEntrySerializer
-from .utils import GroupBasePermission, CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, \
-    FilterMixin, ReadUpdateModelViewSet
+from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, ReadUpdateModelViewSet
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
@@ -38,7 +39,7 @@ class CurrentUserViewSet(ReadUpdateModelViewSet):
         return self.retrieve(request, *args, **kwargs)
 
 
-class EventViewSet(ReadOnlyModelViewSet, FilterMixin):
+class EventViewSet(ReadOnlyModelViewSet):
     """
     Exposes all Instanssi events. Note that ID's assigned to events are guaranteed to stay the same; they will not
     change, ever. So if you want, you can hardcode the event id's in your own code and don't need to bother fetching
@@ -48,19 +49,19 @@ class EventViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = Event.objects.filter(name__startswith='Instanssi')
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Event.objects.filter(name__startswith='Instanssi')
 
 
-class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
+class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin):
     """
     Exposes all Instanssi songs on playlist. Note that order is order is descending by default.
 
@@ -72,20 +73,20 @@ class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is '-id'. Allowed: id, -id
+    * ordering: Set ordering, default is '-id'. Allowed: id, -id
     """
     serializer_class = SongSerializer
     permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = NPSong.objects.get_queryset()
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request, default='-id')
-        return q
+        return NPSong.objects.get_queryset()
 
 
-class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
+class CompetitionViewSet(ReadOnlyModelViewSet):
     """
     Exposes all sports competitions.
 
@@ -97,19 +98,19 @@ class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompetitionSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = Competition.objects.filter(active=True)
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Competition.objects.filter(active=True)
 
 
-class CompetitionParticipationViewSet(ReadOnlyModelViewSet, FilterMixin):
+class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
     """
     Exposes all competition participations. This is everything that does not drop neatly to the democompo category,
     eg. sports events etc.
@@ -118,19 +119,19 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * competition: Filter by competition id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompetitionParticipationSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('competition',)
 
     def get_queryset(self):
-        q = CompetitionParticipation.objects.filter(competition__active=True)
-        q = self.filter_by_competition(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return CompetitionParticipation.objects.filter(competition__active=True)
 
 
-class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
+class CompoViewSet(ReadOnlyModelViewSet):
     """
     Exposes all compos.
 
@@ -138,19 +139,19 @@ class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompoSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = Compo.objects.filter(active=True)
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Compo.objects.filter(active=True)
 
 
-class CompoEntryViewSet(ReadOnlyModelViewSet, FilterMixin):
+class CompoEntryViewSet(ReadOnlyModelViewSet):
     """
     Exposes all compo entries.
 
@@ -158,19 +159,19 @@ class CompoEntryViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * compo: Filter by compo id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompoEntrySerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('compo',)
 
     def get_queryset(self):
-        q = Entry.objects.filter(compo__active=True)
-        q = self.filter_by_compo(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Entry.objects.filter(compo__active=True)
 
 
-class UserCompoEntryViewSet(ModelViewSet, FilterMixin):
+class UserCompoEntryViewSet(ModelViewSet):
     """
     Exposes only compo entries that belong to the logged user.
 
@@ -178,18 +179,18 @@ class UserCompoEntryViewSet(ModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * compo: Filter by compo id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('compo',)
 
     def get_queryset(self):
-        q = Entry.objects.filter(compo__active=True, user=self.request.user)
-        q = self.filter_by_compo(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Entry.objects.filter(compo__active=True, user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -208,7 +209,7 @@ class CompoEntryFileUploadView(APIView):
         return Response(status=204)
 
 
-class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
+class ProgrammeEventViewSet(ReadOnlyModelViewSet):
     """
     Exposes all programme events.
 
@@ -216,19 +217,19 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = ProgrammeEventSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = ProgrammeEvent.objects.filter(active=True)
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return ProgrammeEvent.objects.filter(active=True)
 
 
-class SponsorViewSet(ReadOnlyModelViewSet, FilterMixin):
+class SponsorViewSet(ReadOnlyModelViewSet):
     """
     Exposes all sponsors.
 
@@ -236,19 +237,19 @@ class SponsorViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = SponsorSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = Sponsor.objects.get_queryset()
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Sponsor.objects.get_queryset()
 
 
-class MessageViewSet(ReadOnlyModelViewSet, FilterMixin):
+class MessageViewSet(ReadOnlyModelViewSet):
     """
     Exposes all sponsor messages.
 
@@ -256,19 +257,19 @@ class MessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = MessageSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = Message.objects.get_queryset()
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request)
-        return q
+        return Message.objects.get_queryset()
 
 
-class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
+class IRCMessageViewSet(ReadOnlyModelViewSet):
     """
     Exposes all saved IRC messages. Note that order is order is descending by default.
 
@@ -276,16 +277,16 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * event: Filter by event id
-    * order_by: Set ordering, default is '-id'. Allowed: id, -id
+    * ordering: Set ordering, default is '-id'. Allowed: id, -id
     """
     serializer_class = IRCMessageSerializer
     pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
 
     def get_queryset(self):
-        q = IRCMessage.objects.get_queryset()
-        q = self.filter_by_event(q, self.request)
-        q = self.order_by(q, self.request, default='-id')
-        return q
+        return IRCMessage.objects.get_queryset()
 
 
 class StoreItemViewSet(ReadOnlyModelViewSet):

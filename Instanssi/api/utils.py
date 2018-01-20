@@ -39,29 +39,3 @@ class IsAuthenticatedOrWriteOnly(BasePermission):
 
 class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet):
     pass
-
-
-class FilterMixin(object):
-    @staticmethod
-    def filter_by_event(queryset, request):
-        event = request.query_params.get('event', None)
-        return queryset.filter(event=event) if event else queryset
-
-    @staticmethod
-    def filter_by_compo(queryset, request):
-        compo = request.query_params.get('compo', None)
-        return queryset.filter(compo=compo) if compo else queryset
-
-    @staticmethod
-    def filter_by_competition(queryset, request):
-        competition = request.query_params.get('competition', None)
-        return queryset.filter(competition=competition) if competition else queryset
-
-    @staticmethod
-    def order_by(queryset, request, default='id', whitelist=None):
-        if not whitelist:
-            whitelist = ['id', '-id']
-        order_by = request.query_params.get('order_by', default)
-        if order_by not in whitelist:
-            return queryset.order_by(default)
-        return queryset.order_by(order_by)

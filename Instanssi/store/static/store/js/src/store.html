@@ -2,19 +2,19 @@
     <div class="store-nav">
         <ul class="nav nav-pills">
             <li role="presentation" :class="{ 'active': step === 0, 'disabled': !canMoveToStep(0) }">
-                <a href="#" @click.prevent="toStep(0, false)">
+                <a href="#" @click.prevent="toStep(0, true)">
                     <span class="store-step-num">1.</span>
                     <span class="store-step-title">Tuotteet</span>
                 </a>
             </li>
             <li role="presentation" :class="{ 'active': step === 1, 'disabled': !canMoveToStep(1) }">
-                <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, false)">
+                <a href="#" @click.prevent="canMoveToStep(1) && toStep(1, true)">
                     <span class="store-step-num">2.</span>
                     <span class="store-step-title">Kori ja asiakastiedot</span>
                 </a>
             </li>
             <li role="presentation" :class="{ 'active': step === 2, 'disabled': !canMoveToStep(2) }">
-                <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, false)">
+                <a href="#" @click.prevent="canMoveToStep(2) && toStep(2, true)">
                     <span class="store-step-num">3.</span>
                     <span class="store-step-title">Yhteenveto ja maksutapa</span>
                 </a>

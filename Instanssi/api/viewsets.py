@@ -6,6 +6,7 @@ from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
@@ -50,12 +51,12 @@ class EventViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = EventSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Event.objects.filter(name__startswith='Instanssi')
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -75,12 +76,12 @@ class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin, FilterMixin):
     """
     serializer_class = SongSerializer
     permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = NPSong.objects.get_queryset()
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request, default='-id')
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -99,12 +100,12 @@ class CompetitionViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompetitionSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Competition.objects.filter(active=True)
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -120,12 +121,12 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompetitionParticipationSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = CompetitionParticipation.objects.filter(competition__active=True)
         q = self.filter_by_competition(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -140,12 +141,12 @@ class CompoViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompoSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Compo.objects.filter(active=True)
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -160,24 +161,34 @@ class CompoEntryViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = CompoEntrySerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Entry.objects.filter(compo__active=True)
         q = self.filter_by_compo(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
 class UserCompoEntryViewSet(ModelViewSet, FilterMixin):
+    """
+    Exposes only compo entries that belong to the logged user.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * compo: Filter by compo id
+    * order_by: Set ordering, default is 'id'. Allowed: id, -id
+    """
+
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Entry.objects.filter(compo__active=True, user=self.request.user)
         q = self.filter_by_compo(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
     def perform_create(self, serializer):
@@ -208,12 +219,12 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = ProgrammeEventSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = ProgrammeEvent.objects.filter(active=True)
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -228,12 +239,12 @@ class SponsorViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = SponsorSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Sponsor.objects.get_queryset()
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -248,12 +259,12 @@ class MessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is 'id'. Allowed: id, -id
     """
     serializer_class = MessageSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = Message.objects.get_queryset()
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request)
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 
@@ -268,12 +279,12 @@ class IRCMessageViewSet(ReadOnlyModelViewSet, FilterMixin):
     * order_by: Set ordering, default is '-id'. Allowed: id, -id
     """
     serializer_class = IRCMessageSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         q = IRCMessage.objects.get_queryset()
         q = self.filter_by_event(q, self.request)
         q = self.order_by(q, self.request, default='-id')
-        q = self.filter_by_lim_off(q, self.request)
         return q
 
 

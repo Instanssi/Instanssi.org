@@ -58,12 +58,6 @@ class FilterMixin(object):
         return queryset.filter(competition=competition) if competition else queryset
 
     @staticmethod
-    def filter_by_lim_off(queryset, request):
-        limit = int(request.query_params.get('limit', 100))
-        offset = int(request.query_params.get('offset', 0))
-        return queryset[offset:offset+limit]
-
-    @staticmethod
     def order_by(queryset, request, default='id', whitelist=None):
         if not whitelist:
             whitelist = ['id', '-id']

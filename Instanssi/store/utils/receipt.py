@@ -5,6 +5,7 @@ Receipt parameters handler
 """
 
 from decimal import Decimal
+from collections import OrderedDict
 import json
 
 from datetime import datetime
@@ -26,25 +27,25 @@ class ReceiptEncoder(json.JSONEncoder):
 
 class ReceiptParams(object):
     def __init__(self, source_json=None):
-        self.params = {
-            'order_number': '',
-            'receipt_number': '',
-            'receipt_date': '',
-            'order_date': '',
-            'first_name': '',
-            'last_name': '',
-            'mobile': '',
-            'email': '',
-            'telephone': '',
-            'company': '',
-            'street': '',
-            'city': '',
-            'postal_code': '',
-            'country': '',
-            'items': [],
-            'transaction_url': '',
-            'total': Decimal('0.00'),
-        }
+        self.params = OrderedDict(
+            order_number='',
+            receipt_number='',
+            receipt_date='',
+            order_date='',
+            first_name='',
+            last_name='',
+            mobile='',
+            email='',
+            telephone='',
+            company='',
+            street='',
+            city='',
+            postal_code='',
+            country='',
+            items=[],
+            transaction_url='',
+            total=Decimal('0.00'),
+        )
         if source_json:
             self.params.update(json.loads(source_json))
             for m in ['receipt_date', 'order_date']:
@@ -111,14 +112,14 @@ class ReceiptParams(object):
         :param tax: Tax (for display purposes, not used in calculations)
         """
         item_total = price * amount
-        self.params['items'].append({
-            'id': item_id,
-            'name': name,
-            'price': price,
-            'amount': amount,
-            'total': item_total,
-            'tax': tax
-        })
+        self.params['items'].append(OrderedDict(
+            id=item_id,
+            name=name,
+            price=price,
+            amount=amount,
+            total=item_total,
+            tax=tax
+        ))
         self.params['total'] += item_total
 
     def get_json(self) -> str:

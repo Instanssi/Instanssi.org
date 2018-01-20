@@ -5,7 +5,8 @@ from rest_framework import routers
 import oauth2_provider.views as oauth2_views
 from .viewsets import EventViewSet, SongViewSet, CompetitionViewSet, CompoViewSet, ProgrammeEventViewSet,\
     SponsorViewSet, MessageViewSet, IRCMessageViewSet, StoreItemViewSet, StoreTransactionViewSet,\
-    CompoEntryViewSet, CompetitionParticipationViewSet, CurrentUserViewSet
+    CompoEntryViewSet, CompetitionParticipationViewSet, CurrentUserViewSet, UserCompoEntryViewSet, \
+    CompoEntryFileUploadView
 
 # API Endpoints
 router = routers.DefaultRouter()
@@ -15,6 +16,8 @@ router.register(r'competitions', CompetitionViewSet, base_name='competitions')
 router.register(r'competition_participations', CompetitionParticipationViewSet, base_name='competition_participations')
 router.register(r'compos', CompoViewSet, base_name='compos')
 router.register(r'compo_entries', CompoEntryViewSet, base_name='compo_entries')
+router.register(r'user_entries', UserCompoEntryViewSet, base_name='user_entries')
+router.register(r'user_entries/upload', CompoEntryFileUploadView, base_name='upload_entry_file')
 router.register(r'programme_events', ProgrammeEventViewSet, base_name='programme_events')
 router.register(r'sponsors', SponsorViewSet, base_name='sponsors')
 router.register(r'messages', MessageViewSet, base_name='messages')

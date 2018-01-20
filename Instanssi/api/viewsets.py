@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.views import APIView
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.parsers import FileUploadParser
 from rest_framework import status
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
-    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer
+    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
+    UserCompoEntrySerializer
 from .utils import GroupBasePermission, CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, \
     FilterMixin, ReadUpdateModelViewSet
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
@@ -164,6 +167,34 @@ class CompoEntryViewSet(ReadOnlyModelViewSet, FilterMixin):
         q = self.order_by(q, self.request)
         q = self.filter_by_lim_off(q, self.request)
         return q
+
+
+class UserCompoEntryViewSet(ModelViewSet, FilterMixin):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserCompoEntrySerializer
+
+    def get_queryset(self):
+        q = Entry.objects.filter(compo__active=True, user=self.request.user)
+        q = self.filter_by_compo(q, self.request)
+        q = self.order_by(q, self.request)
+        q = self.filter_by_lim_off(q, self.request)
+        return q
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class CompoEntryFileUploadView(APIView):
+    parser_classes = (FileUploadParser,)
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        print(request.data)
+        file_obj = request.data['file']
+
+        return Response(status=204)
 
 
 class ProgrammeEventViewSet(ReadOnlyModelViewSet, FilterMixin):

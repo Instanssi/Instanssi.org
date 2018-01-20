@@ -5,7 +5,7 @@ import logging
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, PrimaryKeyRelatedField
 
 from Instanssi.store.handlers import validate_item, create_store_transaction, TransactionException
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
@@ -14,6 +14,11 @@ from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
+
+
+class CompoForeignKey(PrimaryKeyRelatedField):
+    def get_queryset(self):
+        return Compo.objects.filter(active=True, event__name__startswith='Instanssi')
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -164,7 +169,60 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
                   'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
                   'disqualified', 'disqualified_reason', 'score', 'rank')
         extra_kwargs = {
-            'compo': {'view_name': 'api:compos-detail'}
+            'compo': {'view_name': 'api:compos-detail'},
+        }
+
+
+class UserCompoEntrySerializer(HyperlinkedModelSerializer):
+    compo = CompoForeignKey()
+    entryfile_url = SerializerMethodField()
+    sourcefile_url = SerializerMethodField()
+    imagefile_original_url = SerializerMethodField()
+    imagefile_thumbnail_url = SerializerMethodField()
+    imagefile_medium_url = SerializerMethodField()
+
+    def get_entryfile_url(self, obj):
+        if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
+            return self.context['request'].build_absolute_uri(obj.entryfile.url)
+        return None
+
+    def get_sourcefile_url(self, obj):
+        if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
+            return self.context['request'].build_absolute_uri(obj.sourcefile.url)
+        return None
+
+    def get_imagefile_original_url(self, obj):
+        if obj.imagefile_original:
+            return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
+        return None
+
+    def get_imagefile_medium_url(self, obj):
+        if obj.imagefile_medium:
+            return self.context['request'].build_absolute_uri(obj.imagefile_medium.url)
+        return None
+
+    def get_imagefile_thumbnail_url(self, obj):
+        if obj.imagefile_thumbnail:
+            return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
+        return None
+
+    def validate_compo(self, compo):
+        if not compo.active or compo.adding_end <= timezone.now():
+            raise ValidationError("Kompoa ei ole olemassa tai siihen ei voi entryttää")
+        return compo
+
+    class Meta:
+        model = Entry
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
+                  'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url')
+        extra_kwargs = {
+            'compo': {'view_name': 'api:compos-detail'},
+            'id': {'read_only': True},
+            'entryfile_url': {'read_only': True},
+            'sourcefile_url': {'read_only': True},
+            'imagefile_original_url': {'read_only': True},
+            'imagefile_thumbnail_url': {'read_only': True},
+            'imagefile_medium_url': {'read_only': True},
         }
 
 

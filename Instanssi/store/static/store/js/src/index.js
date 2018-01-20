@@ -56,7 +56,7 @@ Vue.filter('formatPrice', formatPrice);
 /**
  * Instanssi.org store frontend application.
  */
-let app = new Vue({
+const app = new Vue({
     el: '#store',
     data: {
         /** Current step. 0 = products, 1 = info, 2 = summary & payment */

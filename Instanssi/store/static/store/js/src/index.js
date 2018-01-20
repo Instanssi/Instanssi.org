@@ -239,7 +239,7 @@ const app = new Vue({
             if(totalPrice <= 0) {
                 // Set payment method to "no payment" if total price is 0.
                 this.paymentMethod = -1;
-            } else if(this.paymentMethod === -1 && totalPrice >= 0) {
+            } else if(this.paymentMethod === -1 && totalPrice > 0) {
                 // Change it back if the price changes.
                 this.paymentMethod = 1;
             }

@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status
 from rest_framework.filters import OrderingFilter
@@ -184,6 +184,7 @@ class UserCompoEntryViewSet(ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
+    parser_classes = (MultiPartParser, FormParser,)
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
@@ -193,20 +194,11 @@ class UserCompoEntryViewSet(ModelViewSet):
         return Entry.objects.filter(compo__active=True, user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-class CompoEntryFileUploadView(APIView):
-    parser_classes = (FileUploadParser,)
-    permission_classes = [IsAuthenticated]
-
-    def put(self, request, *args, **kwargs):
-        print(args)
-        print(kwargs)
-        print(request.data)
-        file_obj = request.data['file']
-
-        return Response(status=204)
+        serializer.save(
+            user=self.request.user,
+            imagefile_original=self.request.data.get('imagefile_original'),
+            entryfile=self.request.data.get('entryfile'),
+            sourcefile=self.request.data.get('sourcefile'))
 
 
 class ProgrammeEventViewSet(ReadOnlyModelViewSet):

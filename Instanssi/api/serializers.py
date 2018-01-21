@@ -207,14 +207,20 @@ class UserCompoEntrySerializer(HyperlinkedModelSerializer):
         return None
 
     def validate_compo(self, compo):
-        if not compo.active or compo.adding_end <= timezone.now():
+        if not compo.active or not compo.is_adding_open():
             raise ValidationError("Kompoa ei ole olemassa tai siihen ei voi entryttää")
         return compo
 
+    def validate_entryfile(self, file):
+        if not file:
+            raise ValidationError("Entrytiedosto vaaditaan")
+        return file
+
     class Meta:
         model = Entry
-        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
-                  'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url')
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile', 'imagefile_original', 'sourcefile',
+                  'entryfile_url', 'sourcefile_url', 'imagefile_original_url', 'imagefile_thumbnail_url',
+                  'imagefile_medium_url', 'disqualified', 'disqualified_reason',)
         extra_kwargs = {
             'compo': {'view_name': 'api:compos-detail'},
             'id': {'read_only': True},
@@ -223,6 +229,11 @@ class UserCompoEntrySerializer(HyperlinkedModelSerializer):
             'imagefile_original_url': {'read_only': True},
             'imagefile_thumbnail_url': {'read_only': True},
             'imagefile_medium_url': {'read_only': True},
+            'disqualified': {'read_only': True},
+            'disqualified_reason': {'read_only': True},
+            'entryfile': {'write_only': True},
+            'sourcefile': {'write_only': True},
+            'imagefile_original': {'write_only': True}
         }
 
 

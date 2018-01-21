@@ -4,7 +4,7 @@ import Vue from 'vue';
  * Customer info form for a store order.
  */
 Vue.component('store-information-form', {
-    template: require('!raw-loader!./store_information.html'),
+    template: require('./store_information.html'),
     props: {
         /** Field error messages, maps field name -> array */
         messages: Object,
@@ -62,7 +62,7 @@ Vue.component('store-summary-field', {
  * Immutable listing of an order's contents and customer info.
  */
 Vue.component('store-order-summary', {
-    template: require('!raw-loader!./store_summary.html'),
+    template: require('./store_summary.html'),
     props: {
         /** Field error messages, maps field name -> array */
         messages: Object,

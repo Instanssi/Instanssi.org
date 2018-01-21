@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import uuid
+import logging
 from decimal import Decimal
 from random import randint
 
@@ -9,7 +10,7 @@ from Instanssi.store.models import TransactionItem
 from Instanssi.store.utils.receipt import ReceiptParams
 from Instanssi.store.models import Receipt
 from Instanssi.store.methods import PaymentMethod
-from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException
+from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException, validate_payment_method
 from Instanssi.common.testing.store import StoreTestData, BitpayFakeResponse, PaytrailFakeResponse
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
 from Instanssi.common.testing.utils import q_reverse
@@ -23,12 +24,15 @@ from faker import Faker
 
 class StoreTests(TestCase):
     def setUp(self):
+        # Disable logging for tests
+        logging.disable(logging.CRITICAL)
+
         self.maxDiff = 100000
 
         self.event = KompomaattiTestData.create_test_event('TestEvent')
         self.items = []
         self.variants = {}
-        for i in range(5):
+        for i in range(6):
             item = StoreTestData.create_test_item("TestItem {}".format(i), self.event, sort_index=i)
             self.items.append(item)
             self.variants[i] = StoreTestData.create_test_variants(item, 5)
@@ -46,10 +50,15 @@ class StoreTests(TestCase):
         self.items[2].discount_percentage = 50
         self.items[2].save()
 
+        # Item 5 is free
+        self.items[5].price = 0
+        self.items[5].save()
+
         # Create a test transaction
         self.transaction = StoreTestData.create_test_transaction(self.items, self.variants)
 
     def test_receipt_params(self):
+        """ Test receipt parameter handling logic """
         f = Faker("fi_FI")
         p = ReceiptParams()
         p.receipt_number(randint(10000, 99999))
@@ -80,6 +89,7 @@ class StoreTests(TestCase):
         self.assertEquals(p.get_body(), n.get_body())
 
     def test_create_receipt(self):
+        """ Test receipt creation (to database) """
         f = Faker('fi_FI')
         subject = "Test email #{}".format(randint(10000, 99999))
         email_from = 'Instanssi.org <{}>'.format(f.email())
@@ -156,6 +166,32 @@ class StoreTests(TestCase):
         with self.assertRaises(TransactionException):
             # Fail if variant does not belong to the product
             validate_item({**item_tpl, **{"item_id": self.items[1].id, "variant_id": self.variants[2][0].id}})
+
+    def test_validate_payment_method(self):
+        """ Make sure that payment validation works (NO_METHOD especially) """
+        item_tpl = {
+            "item_id": self.items[0].id,
+            "variant_id": None,
+            "amount": 2
+        }
+
+        free_items = [
+            {**item_tpl, **{"item_id": self.items[5].id}},
+        ]
+        expensive_items = [
+            {**item_tpl, **{"item_id": self.items[0].id}},
+            {**item_tpl, **{"item_id": self.items[1].id}},
+            {**item_tpl, **{"item_id": self.items[2].id}},
+            {**item_tpl, **{"item_id": self.items[3].id}}
+        ]
+
+        validate_payment_method(free_items, PaymentMethod(-1))
+        with self.assertRaises(TransactionException):
+            validate_payment_method(expensive_items, PaymentMethod(-1))
+        validate_payment_method(free_items, PaymentMethod(0))
+        validate_payment_method(expensive_items, PaymentMethod(0))
+        validate_payment_method(free_items, PaymentMethod(1))
+        validate_payment_method(expensive_items, PaymentMethod(1))
 
     def test_create_transaction(self):
         """ Make sure transaction creation works as it should, and make sure that values look as they should """
@@ -256,8 +292,20 @@ class StoreTests(TestCase):
         self.assertEqual(self.transaction.payment_method_name, "Bitpay")
         self.assertEqual(result, "https://test.bitpay.com/invoice?id={}".format(self.transaction.token))
 
+    def test_no_method_begin_payment_process_good_request(self):
+        """ Make sure NO_METHOD works with a good request (we should get a redirect URL) """
+        result = begin_payment_process(PaymentMethod(-1), self.transaction)
+        self.transaction.refresh_from_db()
+        self.assertEqual(self.transaction.payment_method_name, "No payment")
+        self.assertEqual(result, reverse('store:pm:no-method-success'))
+
+    def test_no_method_success_endpoint(self):
+        url = q_reverse('store:pm:no-method-success')
+        result = self.client.get(url)
+        self.assertTemplateUsed(result, 'store/success.html')
+        self.assertEqual(result.status_code, 200)
+
     def test_paytrail_success_endpoint(self):
-        # TODO: Implement this
         ta = StoreTestData.create_full_started_transaction()
         url = q_reverse('store:pm:paytrail-success', query={
             'ORDER_NUMBER': ta.id,
@@ -277,17 +325,13 @@ class StoreTests(TestCase):
         pass
 
     def test_paytrail_failure_endpoint(self):
-        """
-        Test paytrail failure endpoint. Note that this should be only a static page, no other functionality.
-        """
+        """ Test paytrail failure endpoint. Note that this should be only a static page, no other functionality. """
         result = self.client.get(reverse('store:pm:paytrail-failure'))
         self.assertTemplateUsed(result, 'store/failure.html')
         self.assertEqual(result.status_code, 200)
 
     def test_bitpay_success_endpoint(self):
-        """
-        Test bitpay success endpoint. Note that this should be only a static page, no other functionality.
-        """
+        """ Test bitpay success endpoint. Note that this should be only a static page, no other functionality. """
         result = self.client.get(reverse('store:pm:bitpay-success'))
         self.assertTemplateUsed(result, 'store/success.html')
         self.assertEqual(result.status_code, 200)
@@ -299,9 +343,7 @@ class StoreTests(TestCase):
         pass
 
     def test_bitpay_failure_endpoint(self):
-        """
-        Test bitpay failure endpoint. Note that this should be only a static page, no other functionality.
-        """
+        """ Test bitpay failure endpoint. Note that this should be only a static page, no other functionality. """
         result = self.client.get(reverse('store:pm:bitpay-failure'))
         self.assertTemplateUsed(result, 'store/failure.html')
         self.assertEqual(result.status_code, 200)

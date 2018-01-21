@@ -8,7 +8,7 @@ import Vue from 'vue';
  * Customer info form for a store order.
  */
 Vue.component('store-cart-item', {
-    template: require('!raw-loader!./store_cart_item.html'),
+    template: require('./store_cart_item.html'),
     props: {
         item: Object,
         readOnly: Boolean,

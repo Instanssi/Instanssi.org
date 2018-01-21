@@ -5,6 +5,8 @@
 
 import Vue from 'vue';
 
+export { storeXHR } from './store_api';
+
 // Support for this was still a bit patchy last I checked.
 let toLocaleStringSupportsOptions = !!(typeof Intl === 'object'
     && Intl && typeof Intl.NumberFormat === 'function');
@@ -15,42 +17,44 @@ function formatPriceLocaleString(price) {
 function formatPriceLegacy(price) {
     return price.toFixed(2) + ' €';
 }
-let formatPrice;
-if(toLocaleStringSupportsOptions) {
-    formatPrice = formatPriceLocaleString;
-} else {
-    formatPrice = formatPriceLegacy;
+
+export function formatPrice(price, ...args) {
+    if(toLocaleStringSupportsOptions) {
+        return formatPriceLocaleString(price, ...args);
+    } else {
+        return formatPriceLegacy(price, ...args);
+    }
 }
 
 /**
- * Perform an asynchronous HTTP request to a specific method and path,
- * optionally passing some data (not supported for GET requests).
- * @param {string} method - HTTP method, e.g. 'GET'
- * @param {string} path - URL or path to request
- * @param {Object} [data] - Data to pass in the request (encoded into JSON)
- * @returns {Promise.Object} - Result
+ * Returns true if a cart item is a specific product (and optional variant).
+ * @param {Object} cartItem - Cart item to compare
+ * @param {Object} product - Product to compare
+ * @param {Object} [variant] - Variant to compare
+ * @returns {Boolean} - True if cart item is the same product (and variant)
  */
-function storeXHR(method, path, data) {
-    return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            if(xhr.status >= 200 && xhr.status < 300) {
-                // tolerate empty response (technically, 204 no content should be used...)
-                let response = xhr.responseText;
-                resolve((response && response.length) ? JSON.parse(xhr.responseText) : null);
-            } else {
-                xhr.onerror();
-            }
-        };
-        xhr.onerror = function () {
-            reject(xhr.responseText ? JSON.parse(xhr.responseText) : null);
-        };
-        xhr.open(method, path);
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(data ? JSON.stringify(data) : null);
-    });
+export function cartItemEquals(cartItem, product, variant) {
+    return cartItem.product.id === product.id &&
+        (!variant || (cartItem.variant && (variant.id === cartItem.variant.id)));
 }
+
+
+/**
+ * Gets the price of a certain quantity of a product, considering discounts, etc.
+ * @param {Object} product - Product / StoreItem
+ * @param {number} count - Number of items in cart
+ * @returns {number} - Effective price
+ */
+export function getDiscountedPrice(product, count) {
+    let qtyThresh = product.discount_amount;
+    let discountFactor = (100 - product.discount_percentage) / 100;
+    let multiplier = 1;
+    if(qtyThresh && count >= qtyThresh) {
+        multiplier *= discountFactor;
+    }
+    return product.price * multiplier;
+}
+
 
 /**
  * Form group with a title, input field and any messages concerning the field.
@@ -154,4 +158,4 @@ let loadingOverlay = Vue.component('loading-overlay', {
     </div>`
 });
 
-export { formatPrice, storeXHR, storeFormGroup, storeMessages, loadingOverlay };
+export { storeFormGroup, storeMessages, loadingOverlay };

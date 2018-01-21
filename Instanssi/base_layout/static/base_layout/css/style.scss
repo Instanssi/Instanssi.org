@@ -110,9 +110,8 @@ a:hover {
 #header_nav_left { float: left; margin: 0; }
 #header_nav_right { float: right; margin: 0; }
 #header_nav .menuitem { float: left; }
-#header_nav .menuitem a { padding: 9px; }
-#header_nav .menuitem a:first-child { padding-left: 12px;}
-#header_nav ul.sub-level span { padding: 9px; }
+#header_nav .menuitem a { padding: $spacer; }
+#header_nav ul.sub-level span { padding: $spacer; }
 #header_nav ul.sub-level { display: none; }
 
 #header_nav li:hover .sub-level {
@@ -165,7 +164,7 @@ ul.sub-level {
 
 /* ---------- Contents ---------- */
 
-#contents { padding: 12px; }
+#contents { padding: $spacer; }
 #contents ul,
 #contents ol { margin-left: 2em; }
 #contents ul { list-style-type: disc; }
@@ -193,7 +192,7 @@ ul.sub-level {
 
 ul#crumbpath {
     font-size: 12px;
-    margin: 0 0 1.5em 0 !important;
+    margin: 0 0 $spacer 0 !important;
     padding: 0;
     width: 100%;
     display: block;
@@ -215,7 +214,7 @@ ul#crumbpath li:first-child:before {
 }
 ul#crumbpath li * {
     font-size: 12px;
-    padding: $spacing-small 0;
+    padding: $spacer 0;
 }
 ul#crumbpath a {
     color: $theme-color-mid;

@@ -79,24 +79,12 @@ class CompetitionParticipationSerializer(HyperlinkedModelSerializer):
 
 
 class CompoSerializer(HyperlinkedModelSerializer):
-    source_format_list = SerializerMethodField()
-    entry_format_list = SerializerMethodField()
-    image_format_list = SerializerMethodField()
-
-    def get_source_format_list(self, obj):
-        return obj.source_format_list
-
-    def get_entry_format_list(self, obj):
-        return obj.entry_format_list
-
-    def get_image_format_list(self, obj):
-        return obj.image_format_list
-
     class Meta:
         model = Compo
         fields = ('id', 'event', 'name', 'description', 'adding_end', 'editing_end', 'compo_start', 'voting_start',
-                  'voting_end', 'entry_sizelimit', 'source_sizelimit', 'source_format_list', 'entry_format_list',
-                  'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable')
+                  'voting_end', 'max_source_size', 'max_entry_size', 'max_image_size', 'source_format_list',
+                  'entry_format_list', 'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable',
+                  'is_imagefile_allowed', 'is_imagefile_required')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
         }

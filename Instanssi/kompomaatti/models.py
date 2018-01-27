@@ -9,7 +9,7 @@ from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
-from Instanssi.kompomaatti.misc import entrysort
+from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
 class Profile(models.Model):
@@ -147,6 +147,8 @@ class VoteCode(models.Model):
 
 
 class Compo(models.Model):
+    MAX_IMAGE_SIZE = 6 * 1024 * 1024
+
     ENTRY_VIEW_TYPES = (
         (0, 'Ei mitään'),
         (1, 'Youtube ensin, sitten kuva'),  # Videoentryille, koodauskompoille
@@ -271,14 +273,68 @@ class Compo(models.Model):
             return True
         return False
 
+    @property
+    def entry_format_list(self):
+        return self.formats.split('|')
+
+    @property
+    def source_format_list(self):
+        return self.source_formats.split('|')
+
+    @property
+    def image_format_list(self):
+        return self.image_formats.split('|')
+
+    @property
     def readable_entry_formats(self):
-        return ', '.join(self.formats.split('|'))
+        return ', '.join(self.entry_format_list)
 
+    @property
     def readable_source_formats(self):
-        return ', '.join(self.source_formats.split('|'))
+        return ', '.join(self.source_format_list)
 
+    @property
     def readable_image_formats(self):
-        return ', '.join(self.image_formats.split('|'))
+        return ', '.join(self.image_format_list)
+
+    @property
+    def max_source_size(self):
+        return self.source_sizelimit
+
+    @property
+    def max_entry_size(self):
+        return self.entry_sizelimit
+
+    @property
+    def max_image_size(self):
+        return self.MAX_IMAGE_SIZE
+
+    @property
+    def readable_max_source_size(self):
+        return sizeformat.sizeformat(self.max_source_size)
+
+    @property
+    def readable_max_entry_size(self):
+        return sizeformat.sizeformat(self.max_entry_size)
+
+    @property
+    def readable_max_image_size(self):
+        return sizeformat.sizeformat(self.max_image_size)
+
+    @property
+    def is_imagefile_required(self):
+        """ Is imagefile *required* for this compo """
+        return self.thumbnail_pref == 0
+
+    @property
+    def is_imagefile_allowed(self):
+        """ Is imagefile allowed for this compo """
+        return self.thumbnail_pref in [0, 2]
+
+    @property
+    def is_imagefile_copied(self):
+        """ Is imagefile copied from entryfile """
+        return self.thumbnail_pref == 1
 
 
 class Entry(models.Model):

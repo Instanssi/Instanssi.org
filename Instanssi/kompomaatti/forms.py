@@ -174,12 +174,12 @@ class EntryForm(forms.ModelForm):
             # Description for entryfile
             self.fields['entryfile'].help_text = \
                 "Tuotospaketti. Sallitut tiedostoformaatit: {}. Tiedoston maksimikoko on  {}.".format(
-                    self.compo.readable_entry_formats(), sizeformat(self.max_entry_size))
+                    self.compo.readable_entry_formats, sizeformat(self.max_entry_size))
 
             # Description for sourcefile
             self.fields['sourcefile'].help_text = \
                 "Lähdekoodipaketti. Sallitut tiedostoformaatit: {}. Tiedoston maksimikoko on {}.".format(
-                    self.compo.readable_source_formats(), sizeformat(self.max_source_size))
+                    self.compo.readable_source_formats, sizeformat(self.max_source_size))
         
         # If we want to show thumbnail field, set description etc.
         # Otherwise delete field from form.
@@ -193,8 +193,8 @@ class EntryForm(forms.ModelForm):
             # Description for imagefile
             self.fields['imagefile_original'].help_text = \
                 "Kuva teokselle. Tätä käytetään mm. arkistossa ja kompomaatin äänestysvaiheessa. Sallitut " \
-                "kuvaformaatit: {}. Tiedoston maksimikoko on {}.".format(self.compo.readable_image_formats(),
-                                                                          sizeformat(self.max_image_size))
+                "kuvaformaatit: {}. Tiedoston maksimikoko on {}.".format(self.compo.readable_image_formats,
+                                                                         sizeformat(self.max_image_size))
         else:
             del self.fields['imagefile_original']
 
@@ -227,7 +227,7 @@ class EntryForm(forms.ModelForm):
         # Check entry file format
         if not self.field_format_ok("entryfile", self.compo.formats):
             raise ValidationError('Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}'
-                                  .format(self.compo.readable_entry_formats()))
+                                  .format(self.compo.readable_entry_formats))
         
         # All done.
         return self.cleaned_data['entryfile']
@@ -245,7 +245,7 @@ class EntryForm(forms.ModelForm):
         # Check source file format
         if not self.field_format_ok("sourcefile", self.compo.source_formats):
             raise ValidationError('Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}.'
-                                  .format(self.compo.readable_source_formats()))
+                                  .format(self.compo.readable_source_formats))
         
         # All done.
         return self.cleaned_data['sourcefile']
@@ -263,7 +263,7 @@ class EntryForm(forms.ModelForm):
         # Check image format
         if not self.field_format_ok("imagefile_original", self.compo.image_formats):
             raise ValidationError('Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}.'
-                                  .format(self.compo.readable_image_formats()))
+                                  .format(self.compo.readable_image_formats))
         
         # Done
         return self.cleaned_data['imagefile_original']

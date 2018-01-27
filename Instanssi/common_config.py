@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'Instanssi.infodesk',
     'imagekit',
     'rest_framework',
+    'django_filters',
     'oauth2_provider',
     'twitter_tag',
     'crispy_forms',

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import os
 
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, PrimaryKeyRelatedField
 
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
@@ -16,6 +17,11 @@ from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
+
+
+class CompoForeignKey(PrimaryKeyRelatedField):
+    def get_queryset(self):
+        return Compo.objects.filter(active=True, event__name__startswith='Instanssi')
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -75,30 +81,12 @@ class CompetitionParticipationSerializer(HyperlinkedModelSerializer):
 
 
 class CompoSerializer(HyperlinkedModelSerializer):
-    source_format_list = SerializerMethodField()
-    entry_format_list = SerializerMethodField()
-    image_format_list = SerializerMethodField()
-
-    def get_source_format_list(self, obj):
-        if obj.source_formats:
-            return obj.source_formats.split('|')
-        return []
-
-    def get_entry_format_list(self, obj):
-        if obj.formats:
-            return obj.formats.split('|')
-        return []
-
-    def get_image_format_list(self, obj):
-        if obj.image_formats:
-            return obj.image_formats.split('|')
-        return []
-
     class Meta:
         model = Compo
         fields = ('id', 'event', 'name', 'description', 'adding_end', 'editing_end', 'compo_start', 'voting_start',
-                  'voting_end', 'entry_sizelimit', 'source_sizelimit', 'source_format_list', 'entry_format_list',
-                  'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable')
+                  'voting_end', 'max_source_size', 'max_entry_size', 'max_image_size', 'source_format_list',
+                  'entry_format_list', 'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable',
+                  'is_imagefile_allowed', 'is_imagefile_required')
         extra_kwargs = {
             'event': {'view_name': 'api:events-detail'}
         }
@@ -166,7 +154,144 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
                   'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
                   'disqualified', 'disqualified_reason', 'score', 'rank')
         extra_kwargs = {
-            'compo': {'view_name': 'api:compos-detail'}
+            'compo': {'view_name': 'api:compos-detail'},
+        }
+
+
+class UserCompoEntrySerializer(HyperlinkedModelSerializer):
+    compo = CompoForeignKey()
+    entryfile_url = SerializerMethodField()
+    sourcefile_url = SerializerMethodField()
+    imagefile_original_url = SerializerMethodField()
+    imagefile_thumbnail_url = SerializerMethodField()
+    imagefile_medium_url = SerializerMethodField()
+
+    def get_entryfile_url(self, obj):
+        if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
+            return self.context['request'].build_absolute_uri(obj.entryfile.url)
+        return None
+
+    def get_sourcefile_url(self, obj):
+        if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
+            return self.context['request'].build_absolute_uri(obj.sourcefile.url)
+        return None
+
+    def get_imagefile_original_url(self, obj):
+        if obj.imagefile_original:
+            return self.context['request'].build_absolute_uri(obj.imagefile_original.url)
+        return None
+
+    def get_imagefile_medium_url(self, obj):
+        if obj.imagefile_medium:
+            return self.context['request'].build_absolute_uri(obj.imagefile_medium.url)
+        return None
+
+    def get_imagefile_thumbnail_url(self, obj):
+        if obj.imagefile_thumbnail:
+            return self.context['request'].build_absolute_uri(obj.imagefile_thumbnail.url)
+        return None
+
+    def validate_compo(self, compo):
+        if not compo.active:
+            raise ValidationError("Kompoa ei ole olemassa")
+        if self.instance and not compo.is_editing_open():
+            raise ValidationError("Kompon muokkausaika on päättynyt")
+        if not self.instance and not compo.is_adding_open():
+            raise ValidationError("Kompon lisäysaika on päättynyt")
+        return compo
+
+    def _validate_file(self, file, accept_formats, accept_formats_readable, max_size, max_readable_size):
+        errors = []
+
+        # Make sure the file size is within limits
+        if file.size > max_size:
+            errors.append("Maksimi sallittu tiedostokoko on {}".format(max_readable_size))
+
+        # Make sure the file extension seems correct
+        ext = os.path.splitext(file.name)[1][1:]
+        if ext not in accept_formats:
+            errors.append("Sallitut tiedostotyypit ovat {}".format(accept_formats_readable))
+
+        return errors
+
+    def validate(self, data):
+        data = super(UserCompoEntrySerializer, self).validate(data)
+        compo = data['compo']
+
+        # Aggro if image field is missing but required
+        if not data.get('imagefile_original') and compo.is_imagefile_required:
+            raise ValidationError({'imagefile_original': ["Kuvatiedosto tarvitaan tälle kompolle"]})
+
+        # Also aggro if image field is supplied but not allowed
+        if data.get('imagefile_original') and not compo.is_imagefile_allowed:
+            raise ValidationError({'imagefile_original': ["Kuvatiedostoa ei tarvita tälle kompolle"]})
+
+        # Required validation function arguments for each field
+        errors = {}
+        check_files_on = {
+            'entryfile': (
+                 compo.entry_format_list, compo.readable_entry_formats,
+                 compo.max_entry_size, compo.readable_max_entry_size
+            ),
+            'sourcefile': (
+                 compo.source_format_list, compo.readable_source_formats,
+                 compo.max_source_size, compo.readable_max_source_size
+            ),
+            'imagefile_original': (
+                 compo.image_format_list, compo.readable_image_formats,
+                 compo.max_image_size, compo.readable_max_image_size
+            )
+        }
+
+        # Validate each file, and aggregate all errors to a nice dict of lists. This way we can return all possible
+        # errors at once instead of user having to try again and again.
+        for key, args in check_files_on.items():
+            file = data.get(key)
+            if not file:
+                continue
+            field_errors = self._validate_file(file, *args)
+            if field_errors:
+                errors[key] = field_errors
+        if errors:
+            raise ValidationError(errors)
+
+        return data
+
+    @staticmethod
+    def _maybe_copy_entry_to_image(instance):
+        """ If necessary, copy entryfile to imagefile for thumbnail data """
+        if instance.compo.is_imagefile_copied:
+            name = str('th_' + os.path.basename(instance.entryfile.name))
+            instance.imagefile_original.save(name, instance.entryfile)
+
+    def create(self, validated_data):
+        instance = super(UserCompoEntrySerializer, self).create(validated_data)
+        self._maybe_copy_entry_to_image(instance)
+        return instance
+
+    def update(self, instance, validated_data):
+        instance = super(UserCompoEntrySerializer, self).update(instance, validated_data)
+        self._maybe_copy_entry_to_image(instance)
+        return instance
+
+    class Meta:
+        model = Entry
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile', 'imagefile_original', 'sourcefile',
+                  'entryfile_url', 'sourcefile_url', 'imagefile_original_url', 'imagefile_thumbnail_url',
+                  'imagefile_medium_url', 'disqualified', 'disqualified_reason',)
+        extra_kwargs = {
+            'compo': {'view_name': 'api:compos-detail'},
+            'id': {'read_only': True},
+            'entryfile_url': {'read_only': True},
+            'sourcefile_url': {'read_only': True},
+            'imagefile_original_url': {'read_only': True},
+            'imagefile_thumbnail_url': {'read_only': True},
+            'imagefile_medium_url': {'read_only': True},
+            'disqualified': {'read_only': True},
+            'disqualified_reason': {'read_only': True},
+            'entryfile': {'write_only': True, 'required': True},
+            'sourcefile': {'write_only': True},
+            'imagefile_original': {'write_only': True}
         }
 
 

@@ -33,11 +33,20 @@ def index(request):
     disk_usage = 0
     for entry in entries:
         try:
-            disk_usage += entry.entryfile.size
+            try:
+                disk_usage += entry.entryfile.size
+            except ValueError:
+                pass
             if entry.sourcefile:
-                disk_usage += entry.sourcefile.size
+                try:
+                    disk_usage += entry.sourcefile.size
+                except ValueError:
+                    pass
             if entry.imagefile_original:
-                disk_usage += entry.imagefile_original.size
+                try:
+                    disk_usage += entry.imagefile_original.size
+                except ValueError:
+                    pass
         except OSError:
             pass
         except IOError:

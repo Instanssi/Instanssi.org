@@ -573,7 +573,7 @@ class Competition(models.Model):
         default=False)
 
     def __str__(self):
-        return self.name
+        return "{}: {}".format(self.event.name, self.name)
     
     class Meta:
         verbose_name = "kilpailu"
@@ -612,10 +612,10 @@ class CompetitionParticipation(models.Model):
 
     def get_rank(self):
         # Get results
-        rankby = '-score'
+        rank_by = '-score'
         if self.competition.score_sort == 1:
-            rankby = 'score'
-        results = CompetitionParticipation.objects.filter(competition_id=self.competition.id).order_by(rankby)
+            rank_by = 'score'
+        results = CompetitionParticipation.objects.filter(competition_id=self.competition.id).order_by(rank_by)
         
         # Find self
         rank = 1

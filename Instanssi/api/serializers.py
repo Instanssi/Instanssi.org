@@ -6,7 +6,7 @@ import os
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, PrimaryKeyRelatedField
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, HyperlinkedRelatedField
 
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
@@ -19,9 +19,14 @@ from Instanssi.store.models import StoreItem, StoreItemVariant
 logger = logging.getLogger(__name__)
 
 
-class CompoForeignKey(PrimaryKeyRelatedField):
+class CompoForeignKey(HyperlinkedRelatedField):
     def get_queryset(self):
         return Compo.objects.filter(active=True, event__name__startswith='Instanssi')
+
+
+class CompetitionForeignKey(HyperlinkedRelatedField):
+    def get_queryset(self):
+        return Competition.objects.filter(active=True, event__name__startswith='Instanssi')
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -158,8 +163,27 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
         }
 
 
+class UserCompetitionParticipationSerializer(HyperlinkedModelSerializer):
+    competition = CompetitionForeignKey(view_name='api:competitions-detail')
+
+    def validate(self, data):
+        data = super(UserCompetitionParticipationSerializer, self).validate(data)
+        obj = CompetitionParticipation.objects.filter(competition=data['competition'],
+                                                      user=self.context['request'].user).first()
+        if obj:
+            raise ValidationError("Olet jo osallistunut tähän kilpailuun")
+        return data
+
+    class Meta:
+        model = CompetitionParticipation
+        fields = ('id', 'competition', 'participant_name')
+        extra_kwargs = {
+            'id': {'read_only': True},
+        }
+
+
 class UserCompoEntrySerializer(HyperlinkedModelSerializer):
-    compo = CompoForeignKey()
+    compo = CompoForeignKey(view_name='api:compos-detail')
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -280,7 +304,6 @@ class UserCompoEntrySerializer(HyperlinkedModelSerializer):
                   'entryfile_url', 'sourcefile_url', 'imagefile_original_url', 'imagefile_thumbnail_url',
                   'imagefile_medium_url', 'disqualified', 'disqualified_reason',)
         extra_kwargs = {
-            'compo': {'view_name': 'api:compos-detail'},
             'id': {'read_only': True},
             'entryfile_url': {'read_only': True},
             'sourcefile_url': {'read_only': True},

@@ -86,7 +86,6 @@ class StoreTests(TestCase):
             )
         n = ReceiptParams(p.get_json())
         self.assertDictEqual(p.params, n.params)
-        self.assertEquals(p.get_body(), n.get_body())
 
     def test_create_receipt(self):
         """ Test receipt creation (to database) """
@@ -134,7 +133,6 @@ class StoreTests(TestCase):
         # Try to load from database, make sure everything matches
         n = ReceiptParams(r.params)
         self.assertDictEqual(p.params, n.params)
-        self.assertEquals(p.get_body(), n.get_body())
 
         # Send and make sure date is set
         r.send()

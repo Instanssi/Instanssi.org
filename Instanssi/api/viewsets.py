@@ -129,7 +129,7 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     Allows GET filters:
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
-    * compo: Filter by compo id
+    * competition: Filter by compo id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 

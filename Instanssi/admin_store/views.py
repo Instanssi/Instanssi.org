@@ -3,7 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
-from django.template import loader, Context
+from django.template import loader
 from django.forms import inlineformset_factory
 from django.db.models import Count
 
@@ -147,9 +147,9 @@ def tis_csv(request, event_id):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="instanssi_store.csv"'
     t = loader.get_template('admin_store/tis_csv.txt')
-    c = Context({
+    c = {
         'data': TransactionItem.objects.filter(item__event=event_id),
-    })
+    }
     response.write(t.render(c))
     return response
 

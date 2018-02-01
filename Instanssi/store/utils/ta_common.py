@@ -70,7 +70,7 @@ def handle_payment(ta: StoreTransaction):
         receipt = Receipt.create(
             mail_to=ta.email,
             mail_from='"Instanssi" <noreply@instanssi.org>',
-            subject='Instanssi.org: Kuitti tilaukselle #'.format(ta.id),
+            subject='Instanssi.org: Kuitti tilaukselle #{}'.format(ta.id),
             params=params)
         receipt.send()
     except Exception as ex:

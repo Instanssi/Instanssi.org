@@ -356,6 +356,9 @@ class Receipt(models.Model):
     params = models.TextField('Lähetysparametrit', default=None, null=True)
     content = models.TextField('Kuitin sisältö', default=None, null=True)
 
+    def __str__(self):
+        return "{}: {}".format(self.mail_to, self.subject)
+
     @classmethod
     def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams):
         # First, save header information and save so that we get a receipt ID

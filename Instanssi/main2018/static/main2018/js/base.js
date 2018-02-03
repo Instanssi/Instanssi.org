@@ -62,7 +62,7 @@ $(function () {
 
         function update() {
             if(!interacting) {
-                return false;
+                return;
             }
             interacting = false;
             // Using the clock for this keeps the look consistent when navigating.

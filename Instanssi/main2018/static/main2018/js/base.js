@@ -55,7 +55,16 @@ $(function () {
             return $(selector);
         });
 
+        // minimum delay between animations
+        var DELAY = 2500;
+        // track whether the user is interacting with the page or not
+        var interacting = false;
+
         function update() {
+            if(!interacting) {
+                return false;
+            }
+            interacting = false;
             // Using the clock for this keeps the look consistent when navigating.
             var x = new Date().valueOf() / 2000;
             bgElements.forEach(function(bgElement, index) {
@@ -63,11 +72,19 @@ $(function () {
             });
         }
 
+        function onInteraction() {
+            interacting = true;
+        }
+
+        document.addEventListener('mouseover', onInteraction);
+        document.addEventListener('mousedown', onInteraction);
+        document.addEventListener('keydown', onInteraction);
+
         // Start the 2 s animation every 2+ s.
         // The transitions sometimes glitch on Firefox if the opacity
         // target value changes mid-transition.
         // The gap isn't too noticeable, especially with ease-in-out.
-        setInterval(update, 2250);
+        setInterval(update, DELAY);
         update();
     }
     backgrounds();

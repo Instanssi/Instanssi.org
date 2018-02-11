@@ -15,11 +15,11 @@ from .serializers import EventSerializer, SongSerializer, CompetitionSerializer,
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
     StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
     UserCompoEntrySerializer, UserCompetitionParticipationSerializer, TicketVoteCodeSerializer, \
-    VoteCodeRequestSerializer
+    VoteCodeRequestSerializer, VoteGroupSerializer
 from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, ReadUpdateModelViewSet,\
     ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, VoteCodeRequest, \
-    TicketVoteCode
+    TicketVoteCode, VoteGroup
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
@@ -268,6 +268,30 @@ class TicketVoteCodeViewSet(ReadWriteModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(associated_to=self.request.user)
+
+
+class VoteGroupViewSet(ReadWriteModelViewSet):
+    """
+    Exposes compo entry votes belonging to the currently logged in user.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * compo: Filter by compo id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id, rank, -rank
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = VoteGroupSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id', 'rank',)
+    filter_fields = ('compo',)
+
+    def get_queryset(self):
+        return VoteGroup.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ProgrammeEventViewSet(ReadOnlyModelViewSet):

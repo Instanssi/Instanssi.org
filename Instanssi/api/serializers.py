@@ -11,10 +11,11 @@ from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMet
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
     TransactionException
-from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, TicketVoteCode, \
+    VoteCodeRequest
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
-from Instanssi.store.models import StoreItem, StoreItemVariant
+from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
 
 logger = logging.getLogger(__name__)
 
@@ -315,6 +316,74 @@ class UserCompoEntrySerializer(HyperlinkedModelSerializer):
             'entryfile': {'write_only': True, 'required': True},
             'sourcefile': {'write_only': True},
             'imagefile_original': {'write_only': True}
+        }
+
+
+class TicketVoteCodeSerializer(HyperlinkedModelSerializer):
+    ticket_key = CharField(min_length=8, trim_whitespace=True, source='key')
+
+    def validate(self, data):
+        data = super(TicketVoteCodeSerializer, self).validate(data)
+
+        obj = TicketVoteCode.objects.filter(event=data['event'],
+                                            associated_to=self.context['request'].user).first()
+        if obj:
+            raise ValidationError("Äänestyskoodi on jo hankittu")
+
+        # Check if key is already used, return error if it is
+        key = data['key']
+        try:
+            TicketVoteCode.objects.get(event=data['event'], ticket__key__startswith=key)
+            raise ValidationError({'ticket_key': ['Lippuavain on jo käytössä!']})
+        except TicketVoteCode.DoesNotExist:
+            pass
+
+        # Check if key exists at all
+        try:
+            TransactionItem.objects.get(item__event=data['event'], item__is_ticket=True, key__startswith=key)
+        except TransactionItem.DoesNotExist:
+            raise ValidationError({'ticket_key': ['Pyydettyä lippuavainta ei ole olemassa!']})
+
+        return data
+
+    def create(self, validated_data):
+        print(validated_data)
+        ticket_key = validated_data.pop('key')
+        instance = super(TicketVoteCodeSerializer, self).create(validated_data)
+        instance.ticket = TransactionItem.objects.get(
+            item__event=validated_data['event'],
+            item__is_ticket=True,
+            key__startswith=ticket_key)
+        instance.time = timezone.now()
+        instance.save()
+        return instance
+
+    class Meta:
+        model = TicketVoteCode
+        fields = ('id', 'event', 'time', 'ticket_key')
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail', 'required': True},
+            'time': {'read_only': True}
+        }
+
+
+class VoteCodeRequestSerializer(HyperlinkedModelSerializer):
+    def validate(self, data):
+        data = super(VoteCodeRequestSerializer, self).validate(data)
+
+        obj = VoteCodeRequest.objects.filter(event=data['event'],
+                                             user=self.context['request'].user).first()
+        if obj:
+            raise ValidationError("Äänestyskoodipyyntö on jo olemassa")
+
+        return data
+
+    class Meta:
+        model = VoteCodeRequest
+        fields = ('id', 'event', 'text',)
+        extra_kwargs = {
+            'event': {'view_name': 'api:events-detail', 'required': True},
+            'text': {'required': True}
         }
 
 

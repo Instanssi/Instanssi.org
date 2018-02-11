@@ -347,7 +347,6 @@ class TicketVoteCodeSerializer(HyperlinkedModelSerializer):
         return data
 
     def create(self, validated_data):
-        print(validated_data)
         ticket_key = validated_data.pop('key')
         instance = super(TicketVoteCodeSerializer, self).create(validated_data)
         instance.ticket = TransactionItem.objects.get(

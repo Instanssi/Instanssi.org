@@ -6,7 +6,7 @@ import oauth2_provider.views as oauth2_views
 from .viewsets import EventViewSet, SongViewSet, CompetitionViewSet, CompoViewSet, ProgrammeEventViewSet,\
     SponsorViewSet, MessageViewSet, IRCMessageViewSet, StoreItemViewSet, StoreTransactionViewSet,\
     CompoEntryViewSet, CompetitionParticipationViewSet, CurrentUserViewSet, UserCompoEntryViewSet,\
-    UserCompetitionParticipationViewSet
+    UserCompetitionParticipationViewSet, VoteCodeRequestViewSet, TicketVoteCodeViewSet
 
 # API Endpoints
 router = routers.DefaultRouter()
@@ -25,6 +25,8 @@ router.register(r'irc_messages', IRCMessageViewSet, base_name='irc_messages')
 router.register(r'store_items', StoreItemViewSet, base_name='store_items')
 router.register(r'store_transaction', StoreTransactionViewSet, base_name='store_transaction')
 router.register(r'current_user', CurrentUserViewSet, base_name='current_user')
+router.register(r'user_vote_codes', TicketVoteCodeViewSet, base_name='user_vote_codes')
+router.register(r'user_vote_code_requests', VoteCodeRequestViewSet, base_name='user_vote_code_requests')
 
 
 # Base endpoints for OAuth2 authorization

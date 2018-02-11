@@ -60,7 +60,6 @@ class VoteCodeRequest(models.Model):
         null=True)
     user = models.OneToOneField(
         User,
-        unique=True,
         verbose_name='Käyttäjä',
         help_text='Pyynnön esittänyt käyttäjä')
     text = models.TextField(
@@ -71,6 +70,7 @@ class VoteCodeRequest(models.Model):
         return self.user.username
 
     class Meta:
+        unique_together = (("event", "user"), )
         verbose_name = "äänestyskoodipyyntö"
         verbose_name_plural = "äänestyskoodipyynnöt"
 
@@ -101,8 +101,20 @@ class TicketVoteCode(models.Model):
         blank=True,
         null=True)
 
+    @property
+    def key(self):
+        if self.ticket:
+            return self.ticket.key
+        return None
+
+    @property
+    def associated_username(self):
+        if self.associated_to:
+            return self.associated_to.username
+        return None
+
     def __str__(self):
-        return '{}: {}'.format(self.ticket.key, self.associated_to.username)
+        return '{}: {}'.format(self.key, self.associated_username)
 
     class Meta:
         verbose_name = "lippuäänestusavain"

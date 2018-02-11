@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, ListModelMixin,\
+    DestroyModelMixin
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.contrib.auth.models import Group
 
@@ -25,6 +26,29 @@ class ReadUpdateModelViewSet(RetrieveModelMixin,
                              ListModelMixin,
                              UpdateModelMixin,
                              GenericViewSet):
+    pass
+
+
+class ReadWriteUpdateModelViewSet(CreateModelMixin,
+                                  RetrieveModelMixin,
+                                  ListModelMixin,
+                                  UpdateModelMixin,
+                                  GenericViewSet):
+    pass
+
+
+class ReadWriteModelViewSet(CreateModelMixin,
+                            RetrieveModelMixin,
+                            ListModelMixin,
+                            GenericViewSet):
+    pass
+
+
+class ReadWriteDeleteModelViewSet(CreateModelMixin,
+                                  DestroyModelMixin,
+                                  RetrieveModelMixin,
+                                  ListModelMixin,
+                                  GenericViewSet):
     pass
 
 

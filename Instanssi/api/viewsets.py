@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
-from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework import serializers
 from rest_framework import status
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -14,9 +14,12 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
     ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
     StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
-    UserCompoEntrySerializer, UserCompetitionParticipationSerializer
-from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, ReadUpdateModelViewSet
-from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation
+    UserCompoEntrySerializer, UserCompetitionParticipationSerializer, TicketVoteCodeSerializer, \
+    VoteCodeRequestSerializer
+from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, ReadUpdateModelViewSet,\
+    ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
+from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, VoteCodeRequest, \
+    TicketVoteCode
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem
@@ -58,7 +61,7 @@ class EventViewSet(ReadOnlyModelViewSet):
     filter_fields = ('id',)
 
 
-class SongViewSet(ReadOnlyModelViewSet, CreateModelMixin):
+class SongViewSet(ReadWriteModelViewSet):
     """
     Exposes all Instanssi songs on playlist. Note that order is order is descending by default.
 
@@ -205,12 +208,66 @@ class UserCompoEntryViewSet(ModelViewSet):
     def get_queryset(self):
         return Entry.objects.filter(compo__active=True, user=self.request.user)
 
+    def perform_destroy(self, instance):
+        if not instance.compo.is_editing_open():
+            raise serializers.ValidationError("Kompon muokkausaika on päättynyt")
+
     def perform_create(self, serializer):
         serializer.save(
             user=self.request.user,
             imagefile_original=self.request.data.get('imagefile_original'),
             entryfile=self.request.data.get('entryfile'),
             sourcefile=self.request.data.get('sourcefile'))
+
+
+class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
+    """
+    Exposes vote code requests belonging to the currently logged in user.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
+    """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = VoteCodeRequestSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
+
+    def get_queryset(self):
+        return VoteCodeRequest.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class TicketVoteCodeViewSet(ReadWriteModelViewSet):
+    """
+    Exposes vote codes belonging to the currently logged in user.
+
+    Allows GET filters:
+    * limit: Limit amount of returned objects.
+    * offset: Starting offset. Default is 0.
+    * event: Filter by event id
+    * ordering: Set ordering, default is 'id'. Allowed: id, -id
+    """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = TicketVoteCodeSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id',)
+    filter_fields = ('event',)
+
+    def get_queryset(self):
+        return TicketVoteCode.objects.filter(associated_to=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(associated_to=self.request.user)
 
 
 class ProgrammeEventViewSet(ReadOnlyModelViewSet):

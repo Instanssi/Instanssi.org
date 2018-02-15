@@ -9,6 +9,8 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
+from django.utils import timezone
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
 from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
@@ -178,12 +180,16 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     * compo: Filter by compo id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
-    queryset = Entry.objects.filter(compo__active=True)
     serializer_class = CompoEntrySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
     filter_fields = ('compo',)
+
+    def get_queryset(self):
+        return Entry.objects\
+            .filter(compo__active=True)\
+            .filter(Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True))
 
 
 class UserCompoEntryViewSet(ModelViewSet):

@@ -3,16 +3,18 @@
 import logging
 import os
 
+from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, HyperlinkedRelatedField
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, HyperlinkedRelatedField,\
+    ListField
 
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
     TransactionException
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, TicketVoteCode, \
-    VoteCodeRequest
+    VoteCodeRequest, Vote, VoteGroup
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
@@ -346,6 +348,7 @@ class TicketVoteCodeSerializer(HyperlinkedModelSerializer):
 
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         ticket_key = validated_data.pop('key')
         instance = super(TicketVoteCodeSerializer, self).create(validated_data)
@@ -386,20 +389,80 @@ class VoteCodeRequestSerializer(HyperlinkedModelSerializer):
         }
 
 
+class VoteGroupSerializer(HyperlinkedModelSerializer):
+    entries = ListField(
+        min_length=1,
+        child=HyperlinkedRelatedField(
+            view_name='api:compo_entries-detail',
+            queryset=Entry.objects.filter(
+                compo__active=True,
+                disqualified=False)))
+
+    def validate_compo(self, compo):
+        if not compo.is_voting_open():
+            raise ValidationError("Kompon äänestysaika ei ole voimassaä")
+        return compo
+
+    def validate_entries(self, entries):
+        # Fail if not unique entries
+        ids = [entry.id for entry in entries]
+        if len(ids) > len(set(ids)):
+            raise ValidationError("Voit äänestää entryä vain kerran")
+        return entries
+
+    def validate(self, data):
+        data = super(VoteGroupSerializer, self).validate(data)
+        compo = data['compo']
+        entries = data['entries']
+
+        # Make sure user has rights to vote
+        try:
+            TicketVoteCode.objects.get(associated_to=self.context['request'].user, event=compo.event)
+        except TicketVoteCode.DoesNotExist:
+            raise ValidationError("Äänestysoikeus puuttuu")
+
+        # Make sure entries belong to the requested compo
+        for entry in entries:
+            if entry.compo.id != compo.id:
+                raise ValidationError({'entries': ["Entry '{}' ei kuulu kompoon '{}'".format(entry, compo)]})
+
+        return data
+
+    @transaction.atomic
+    def create(self, validated_data):
+        entries = validated_data.pop('entries')
+        compo = validated_data['compo']
+        user = validated_data['user']
+
+        # Delete old entries (if any) and add new ones
+        group = VoteGroup.objects.filter(compo=compo, user=user).first()
+        if group:
+            group.delete_votes()
+        else:
+            group = super(VoteGroupSerializer, self).create(validated_data)
+
+        # Add new voted entries
+        group.create_votes(entries)
+
+        # That's that. Return the group.
+        return group
+
+    class Meta:
+        model = VoteGroup
+        fields = ('compo', 'entries',)
+        extra_kwargs = {
+            'compo': {'view_name': 'api:compos-detail', 'required': True},
+        }
+
+
 class SongSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = NPSong
         fields = ('id', 'event', 'title', 'artist', 'time', 'state')
         extra_kwargs = {
-            'state': {
-                'read_only': True
-            },
-            'time': {
-                'read_only': True
-            },
-            'id': {
-                'read_only': True
-            },
+            'state': {'read_only': True},
+            'time': {'read_only': True},
+            'id': {'read_only': True},
             'event': {'view_name': 'api:events-detail'}
         }
 

@@ -58,7 +58,7 @@ class VoteCodeRequest(models.Model):
         verbose_name='Tapahtuma',
         help_text='Tapahtuma, johon äänestysoikeutta pyydetään',
         null=True)
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User,
         verbose_name='Käyttäjä',
         help_text='Pyynnön esittänyt käyttäjä')
@@ -521,12 +521,45 @@ class Entry(models.Model):
         super(Entry, self).save(*args, **kwargs)
 
 
+class VoteGroup(models.Model):
+    user = models.ForeignKey(User, verbose_name="käyttäjä")
+    compo = models.ForeignKey(Compo, verbose_name="kompo")
+
+    @property
+    def entries(self):
+        return [v.entry for v in self.votes.order_by('rank')]
+
+    def delete_votes(self):
+        Vote.objects.filter(group=self).delete()
+
+    def create_votes(self, entries):
+        current_rank = 1
+        for entry in entries:
+            Vote(
+                user=self.user,
+                compo=self.compo,
+                rank=current_rank,
+                entry=entry,
+                group=self
+            ).save()
+            current_rank += 1
+
+    def __str__(self):
+        return 'votes for {} by {}'.format(self.compo.name, self.user.username)
+
+    class Meta:
+        unique_together = (('user', 'compo'),)
+        verbose_name = "ääniryhmä"
+        verbose_name_plural = "ääniryhmät"
+
+
 class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä")
     compo = models.ForeignKey(Compo, verbose_name="kompo")
     entry = models.ForeignKey(Entry, verbose_name="tuotos")
     rank = models.IntegerField('Sijoitus')
-    
+    group = models.ForeignKey(VoteGroup, default=None, null=True, blank=True, related_name='votes')
+
     def __str__(self):
         return '{} by {} as {}'.format(self.entry.name, self.user.username, self.rank)
     

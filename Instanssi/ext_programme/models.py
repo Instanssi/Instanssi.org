@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import arrow
 from django.db import models
+from django.conf import settings
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from Instanssi.kompomaatti.models import Event
+
 
 short_days = [
     'Ma',
@@ -75,10 +78,9 @@ class ProgrammeEvent(models.Model):
 
     @property
     def short_start_time(self):
-        start = self.start
-        if start:
-            return "%s %s" % (short_days[start.weekday()],
-                              start.strftime("%H:%M"))
+        if self.start:
+            start = arrow.get(self.start).to(settings.TIME_ZONE)
+            return "{} {}".format(short_days[start.weekday()], start.format("HH:mm"))
         return ""
 
     def save(self, *args, **kwargs):
@@ -87,7 +89,7 @@ class ProgrammeEvent(models.Model):
             this = ProgrammeEvent.objects.get(id=self.id)
             if this.icon_original != self.icon_original:
                 this.icon_original.delete(save=False)
-        except: 
+        except ProgrammeEvent.DoesNotExist:
             pass 
             
         # Continue with normal save

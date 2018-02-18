@@ -18,7 +18,7 @@ from .serializers import EventSerializer, SongSerializer, CompetitionSerializer,
     StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
     UserCompoEntrySerializer, UserCompetitionParticipationSerializer, TicketVoteCodeSerializer, \
     VoteCodeRequestSerializer, VoteGroupSerializer
-from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet, ReadUpdateModelViewSet,\
+from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet,\
     ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, VoteCodeRequest, \
     TicketVoteCode, VoteGroup
@@ -29,7 +29,7 @@ from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
 
 
-class CurrentUserViewSet(ReadUpdateModelViewSet):
+class CurrentUserViewSet(ReadOnlyModelViewSet):
     """
     Shows data to the authenticated user about self
     """
@@ -38,6 +38,9 @@ class CurrentUserViewSet(ReadUpdateModelViewSet):
 
     def get_object(self):
         return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        pass
 
     def list(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)

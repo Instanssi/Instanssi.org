@@ -6,15 +6,15 @@ import os
 from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import User
-from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, HyperlinkedRelatedField,\
-    ListField
+from rest_framework.serializers import SerializerMethodField, Serializer, EmailField,\
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, RelatedField,\
+    ListField, PrimaryKeyRelatedField
 
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import validate_item, validate_payment_method, create_store_transaction, \
     TransactionException
 from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, TicketVoteCode, \
-    VoteCodeRequest, Vote, VoteGroup
+    VoteCodeRequest, VoteGroup
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
@@ -22,39 +22,37 @@ from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
 logger = logging.getLogger(__name__)
 
 
-class CompoForeignKey(HyperlinkedRelatedField):
+class CompoForeignKey(PrimaryKeyRelatedField):
     def get_queryset(self):
         return Compo.objects.filter(active=True, event__name__startswith='Instanssi')
 
 
-class CompetitionForeignKey(HyperlinkedRelatedField):
+class CompetitionForeignKey(PrimaryKeyRelatedField):
     def get_queryset(self):
         return Competition.objects.filter(active=True, event__name__startswith='Instanssi')
 
 
-class UserSerializer(HyperlinkedModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email')
 
 
-class EventSerializer(HyperlinkedModelSerializer):
+class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'name', 'date', 'mainurl')
 
 
-class CompetitionSerializer(HyperlinkedModelSerializer):
+class CompetitionSerializer(ModelSerializer):
     class Meta:
         model = Competition
         fields = ('id', 'event', 'name', 'description', 'participation_end', 'start', 'end', 'score_type',
                   'score_sort', 'show_results')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
-class CompetitionParticipationSerializer(HyperlinkedModelSerializer):
+class CompetitionParticipationSerializer(ModelSerializer):
     rank = SerializerMethodField()
     score = SerializerMethodField()
     disqualified = SerializerMethodField()
@@ -83,24 +81,20 @@ class CompetitionParticipationSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = CompetitionParticipation
         fields = ('id', 'competition', 'participant_name', 'score', 'rank', 'disqualified', 'disqualified_reason')
-        extra_kwargs = {
-            'competition': {'view_name': 'api:competitions-detail'}
-        }
+        extra_kwargs = {}
 
 
-class CompoSerializer(HyperlinkedModelSerializer):
+class CompoSerializer(ModelSerializer):
     class Meta:
         model = Compo
         fields = ('id', 'event', 'name', 'description', 'adding_end', 'editing_end', 'compo_start', 'voting_start',
                   'voting_end', 'max_source_size', 'max_entry_size', 'max_image_size', 'source_format_list',
                   'entry_format_list', 'image_format_list', 'show_voting_results', 'entry_view_type', 'is_votable',
                   'is_imagefile_allowed', 'is_imagefile_required')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
-class CompoEntrySerializer(HyperlinkedModelSerializer):
+class CompoEntrySerializer(ModelSerializer):
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -161,13 +155,11 @@ class CompoEntrySerializer(HyperlinkedModelSerializer):
         fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
                   'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
                   'disqualified', 'disqualified_reason', 'score', 'rank')
-        extra_kwargs = {
-            'compo': {'view_name': 'api:compos-detail'},
-        }
+        extra_kwargs = {}
 
 
-class UserCompetitionParticipationSerializer(HyperlinkedModelSerializer):
-    competition = CompetitionForeignKey(view_name='api:competitions-detail')
+class UserCompetitionParticipationSerializer(ModelSerializer):
+    competition = CompetitionForeignKey()
 
     def validate(self, data):
         data = super(UserCompetitionParticipationSerializer, self).validate(data)
@@ -185,8 +177,8 @@ class UserCompetitionParticipationSerializer(HyperlinkedModelSerializer):
         }
 
 
-class UserCompoEntrySerializer(HyperlinkedModelSerializer):
-    compo = CompoForeignKey(view_name='api:compos-detail')
+class UserCompoEntrySerializer(ModelSerializer):
+    compo = CompoForeignKey()
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -321,7 +313,7 @@ class UserCompoEntrySerializer(HyperlinkedModelSerializer):
         }
 
 
-class TicketVoteCodeSerializer(HyperlinkedModelSerializer):
+class TicketVoteCodeSerializer(ModelSerializer):
     ticket_key = CharField(min_length=8, trim_whitespace=True, source='key')
 
     def validate(self, data):
@@ -364,12 +356,12 @@ class TicketVoteCodeSerializer(HyperlinkedModelSerializer):
         model = TicketVoteCode
         fields = ('id', 'event', 'time', 'ticket_key')
         extra_kwargs = {
-            'event': {'view_name': 'api:events-detail', 'required': True},
+            'event': {'required': True},
             'time': {'read_only': True}
         }
 
 
-class VoteCodeRequestSerializer(HyperlinkedModelSerializer):
+class VoteCodeRequestSerializer(ModelSerializer):
     def validate(self, data):
         data = super(VoteCodeRequestSerializer, self).validate(data)
 
@@ -384,16 +376,15 @@ class VoteCodeRequestSerializer(HyperlinkedModelSerializer):
         model = VoteCodeRequest
         fields = ('id', 'event', 'text',)
         extra_kwargs = {
-            'event': {'view_name': 'api:events-detail', 'required': True},
+            'event': {'required': True},
             'text': {'required': True}
         }
 
 
-class VoteGroupSerializer(HyperlinkedModelSerializer):
+class VoteGroupSerializer(ModelSerializer):
     entries = ListField(
         min_length=1,
-        child=HyperlinkedRelatedField(
-            view_name='api:compo_entries-detail',
+        child=PrimaryKeyRelatedField(
             queryset=Entry.objects.filter(
                 compo__active=True,
                 disqualified=False)))
@@ -451,11 +442,11 @@ class VoteGroupSerializer(HyperlinkedModelSerializer):
         model = VoteGroup
         fields = ('compo', 'entries',)
         extra_kwargs = {
-            'compo': {'view_name': 'api:compos-detail', 'required': True},
+            'compo': {'required': True},
         }
 
 
-class SongSerializer(HyperlinkedModelSerializer):
+class SongSerializer(ModelSerializer):
     class Meta:
         model = NPSong
         fields = ('id', 'event', 'title', 'artist', 'time', 'state')
@@ -463,7 +454,6 @@ class SongSerializer(HyperlinkedModelSerializer):
             'state': {'read_only': True},
             'time': {'read_only': True},
             'id': {'read_only': True},
-            'event': {'view_name': 'api:events-detail'}
         }
 
     def create(self, validated_data):
@@ -478,17 +468,15 @@ class SongSerializer(HyperlinkedModelSerializer):
         return song
 
 
-class ProgrammeEventSerializer(HyperlinkedModelSerializer):
+class ProgrammeEventSerializer(ModelSerializer):
     class Meta:
         model = ProgrammeEvent
         fields = ('id', 'event', 'start', 'end', 'description', 'title', 'presenters', 'presenters_titles',
                   'place')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
-class SponsorSerializer(HyperlinkedModelSerializer):
+class SponsorSerializer(ModelSerializer):
     logo_url = SerializerMethodField()
     logo_scaled_url = SerializerMethodField()
 
@@ -501,27 +489,21 @@ class SponsorSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Sponsor
         fields = ('id', 'event', 'name', 'logo_url', 'logo_scaled_url')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
-class MessageSerializer(HyperlinkedModelSerializer):
+class MessageSerializer(ModelSerializer):
     class Meta:
         model = Message
         fields = ('id', 'event', 'show_start', 'show_end', 'text')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
-class IRCMessageSerializer(HyperlinkedModelSerializer):
+class IRCMessageSerializer(ModelSerializer):
     class Meta:
         model = IRCMessage
         fields = ('id', 'event', 'date', 'nick', 'message')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
 class StoreItemVariantSerializer(ModelSerializer):
@@ -530,7 +512,7 @@ class StoreItemVariantSerializer(ModelSerializer):
         fields = ('id', 'name')
 
 
-class StoreItemSerializer(HyperlinkedModelSerializer):
+class StoreItemSerializer(ModelSerializer):
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     discount_factor = SerializerMethodField()
@@ -554,9 +536,7 @@ class StoreItemSerializer(HyperlinkedModelSerializer):
         fields = ('id', 'event', 'name', 'description', 'price', 'max', 'available', 'imagefile_original_url',
                   'imagefile_thumbnail_url', 'max_per_order', 'sort_index', 'discount_amount', 'discount_percentage',
                   'is_discount_available', 'discount_factor', 'num_available', 'variants')
-        extra_kwargs = {
-            'event': {'view_name': 'api:events-detail'}
-        }
+        extra_kwargs = {}
 
 
 class StoreTransactionItemSerializer(Serializer):
@@ -613,6 +593,3 @@ class StoreTransactionSerializer(Serializer):
 
     def create(self, validated_data):
         return create_store_transaction(validated_data)
-
-    def update(self, instance, validated_data):
-        pass

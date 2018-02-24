@@ -53,6 +53,12 @@ class Event(models.Model):
 
 
 class VoteCodeRequest(models.Model):
+    STATUS_TYPES = (
+        (0, 'Odottaa hyväksyntää'),
+        (1, 'Hyväksytty'),
+        (2, 'Hylätty'),
+    )
+
     event = models.ForeignKey(
         Event,
         verbose_name='Tapahtuma',
@@ -65,6 +71,10 @@ class VoteCodeRequest(models.Model):
     text = models.TextField(
         'Kuvaus',
         help_text='Lyhyt aneluteksti admineille :)')
+    status = models.IntegerField(
+        'Tila',
+        choices=STATUS_TYPES,
+        default=0)
 
     def __str__(self):
         return self.user.username

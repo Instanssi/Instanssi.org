@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import hashlib
 import logging
-import os
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.template import loader, Context
-from django.db import IntegrityError
-from django.utils import timezone
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm
 
-from Instanssi.kompomaatti.models import VoteCode, VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
+from Instanssi.kompomaatti.models import VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
     CompetitionParticipation
 from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminCompetitionForm, AdminCompetitionScoreForm,\
-    AdminEntryAddForm, AdminEntryEditForm, AdminParticipationEditForm, CloneCompoForm, CreateTokensForm
+    AdminEntryAddForm, AdminEntryEditForm, AdminParticipationEditForm, CloneCompoForm
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.common.http import Http403
@@ -428,43 +422,6 @@ def results(request, sel_event_id):
 
 
 @staff_access_required
-def votecodes(request, sel_event_id):
-    # Handle form
-    if request.method == 'POST':
-        # CHeck for permissions
-        if not request.user.has_perm('kompomaatti.add_votecode'):
-            raise Http403
-        
-        # Handle form
-        gentokensform = CreateTokensForm(request.POST)
-        if gentokensform.is_valid():
-            amount = int(gentokensform.cleaned_data['amount'])
-            for n in range(amount):
-                try:
-                    c = VoteCode()
-                    c.event_id = int(sel_event_id)
-                    c.key = str(hashlib.md5(bytes(os.urandom(8))).hexdigest()[:8])
-                    c.save()
-                except IntegrityError:
-                    n -= 1
-                    
-            logger.info('Votecodes generated.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:votecodes', args=(sel_event_id,))) 
-    else:
-        gentokensform = CreateTokensForm()
-        
-    # Get tokens
-    tokens = VoteCode.objects.filter(event_id=int(sel_event_id))
-    
-    # Render response
-    return admin_render(request, "admin_kompomaatti/votecodes.html", {
-        'tokens': tokens,
-        'gentokensform': gentokensform,
-        'selected_event_id': int(sel_event_id),
-    })
-
-
-@staff_access_required
 def ticket_votecodes(request, sel_event_id):
     # Get tokens
     tokens = TicketVoteCode.objects.filter(event_id=sel_event_id)
@@ -474,43 +431,6 @@ def ticket_votecodes(request, sel_event_id):
         'tokens': tokens,
         'selected_event_id': int(sel_event_id),
     })
-
-
-@staff_access_required
-def votecodes_print(request, sel_event_id):
-    # Get free votecodes
-    codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
-    
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=votecodes.pdf'
-
-    # Create the PDF object,
-    p = canvas.Canvas(response)
-    p.setAuthor("Kompomaatti")
-    p.setTitle("Äänestyskoodeja")
-    p.setFont("Helvetica-Oblique", 18)
-
-    # Print codes
-    height = 0
-    step = 2.12*cm
-    perpage = 14
-    codeno = 0
-    for code in codes:
-        p.line(0, height, 21 * cm, height)
-        p.drawString(1 * cm, height + 0.8 * cm, "Äänestyskoodi: {}".format(code.key))
-        height += step
-        codeno += 1
-        if codeno >= perpage:
-            p.showPage()
-            p.setFont("Helvetica-Oblique", 18)
-            height = 0
-            codeno = 0
-    p.showPage()
-
-    # Close the PDF object & dump out the response
-    p.save()
-    return response
 
 
 @staff_access_required
@@ -531,30 +451,29 @@ def votecoderequests_accept(request, sel_event_id, vcrid):
     if not request.user.has_perm('kompomaatti.change_votecode'):
         raise Http403
 
-    # Get the request
+    # Get the request and change status to accepted
     vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
-
-    # Add votecode for user. Bang your head to the wall until you succeed, etc.
-    try:
-        c = VoteCode()
-        c.event_id = int(sel_event_id)
-        c.key = str(hashlib.md5(bytes(os.urandom(8))).hexdigest()[:8])
-        c.associated_to = vcr.user
-        c.time = timezone.now()
-        c.save()
-        logger.info('Votecode request from "{}" accepted.'.format(vcr.user.username),
-                    extra={'user': request.user, 'event_id': sel_event_id})
-        done = True
-    except IntegrityError:
-        done = False
-
-    # Didn't happen, user likely already has votecode
-    if not done:
-        logger.info('Votecode request from "{}" scrapped; user already has votecode.'.format(vcr.user.username),
-                    extra={'user': request.user, 'event_id': sel_event_id})
-
-    # Request handled, delete it
-    vcr.delete()
+    logger.info('Votecode request from "{}" accepted.'.format(vcr.user.username),
+                extra={'user': request.user, 'event_id': sel_event_id})
+    vcr.status = 1
+    vcr.save()
 
     # Return to admin page
     return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,))) 
+
+
+@staff_access_required
+def votecoderequests_reject(request, sel_event_id, vcrid):
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_votecode'):
+        raise Http403
+
+    # Get the request and change status to accepted
+    vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
+    logger.info('Votecode request from "{}" rejected.'.format(vcr.user.username),
+                extra={'user': request.user, 'event_id': sel_event_id})
+    vcr.status = 2
+    vcr.save()
+
+    # Return to admin page
+    return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,)))

@@ -81,7 +81,14 @@
     {% endcomment %}
 
     <h3>Pyydä äänestysoikeutta suoraan</h3>
-    {% if request_made %}
+    {% if request_failed %}
+    <p>
+    <div class="ui-state-error ui-corner-all" style="padding: .7em;">
+        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        <strong>HUOM!</strong> Äänestyskoodipyyntösi on hylätty!
+    </div>
+    </p>
+    {% elif request_made %}
     <p>
     <div class="ui-state-highlight ui-corner-all" style="padding: .7em;">
         <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>

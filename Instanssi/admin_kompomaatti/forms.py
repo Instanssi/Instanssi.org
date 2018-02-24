@@ -246,23 +246,6 @@ class AdminEntryEditForm(forms.ModelForm):
         exclude = ('imagefile_thumbnail', 'imagefile_medium', 'archive_score', 'archive_rank')
 
 
-class CreateTokensForm(forms.Form):
-    amount = forms.IntegerField(min_value=1, max_value=100, label="Määrä", help_text="Montako tokenia luodaan.")
-    
-    def __init__(self, *args, **kwargs):
-        super(CreateTokensForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Fieldset(
-                'Generoi tokeneita',
-                'amount',
-                ButtonHolder(
-                    Submit('submit', 'Generoi')
-                )
-            )
-        )
-
-
 class CloneCompoForm(forms.Form):
     event = forms.ChoiceField()
 

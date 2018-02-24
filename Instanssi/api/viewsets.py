@@ -239,6 +239,11 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
     """
     Exposes vote code requests belonging to the currently logged in user.
 
+    Status field has following meanings:
+    0 = Pending
+    1 = Accepted (voting right granted)
+    2 = Rejected (no voting right)
+
     Allows GET filters:
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.

@@ -132,42 +132,6 @@ class TicketVoteCode(models.Model):
         unique_together = (("event", "ticket"), ("event", "associated_to"))
 
 
-class VoteCode(models.Model):
-    event = models.ForeignKey(
-        Event,
-        verbose_name='Tapahtuma',
-        help_text='Tapahtuma, johon äänestysavain on assosioitu',
-        blank=True,
-        null=True)
-    key = models.CharField(
-        'Avain',
-        help_text="Äänestysavain.",
-        max_length=64,
-        unique=True)
-    associated_to = models.ForeignKey(
-        User,
-        verbose_name='Käyttäjä',
-        help_text="Käyttäjä jolle avain on assosioitu",
-        blank=True,
-        null=True)
-    time = models.DateTimeField(
-        'Aikaleima',
-        help_text="Aika jolloin avain assosioitiin käyttäjälle.",
-        blank=True,
-        null=True)
-
-    def __str__(self):
-        if self.associated_to:
-            return '{}: {}'.format(self.key, self.associated_to.username)
-        else:
-            return str(self.key)
-
-    class Meta:
-        verbose_name = "äänestysavain"
-        verbose_name_plural = "äänestysavaimet"
-        unique_together = (("event", "key"), ("event", "associated_to"))
-
-
 class Compo(models.Model):
     MAX_IMAGE_SIZE = 6 * 1024 * 1024
 

@@ -35,8 +35,16 @@
                 <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
                 <td>{{ request.user.email }}</td>
                 <td>{{ request.text|linebreaksbr }}</td>
+                <td>
+                    {% if request.status == 0 %}Odottaa ...{% endif %}
+                    {% if request.status == 1 %}Hyväksytty{% endif %}
+                    {% if request.status == 2 %}Hylätty{% endif %}
+                </td>
 {% if perms.kompomaatti.change_votecode %}
-                <td><a href="{% url 'manage-kompomaatti:votecoderequest-accept' selected_event_id request.id %}">Salli</a></td>
+                <td>
+                    <a href="{% url 'manage-kompomaatti:votecoderequest-accept' selected_event_id request.id %}">Hyväksy</a> /
+                    <a href="{% url 'manage-kompomaatti:votecoderequest-reject' selected_event_id request.id %}">Hylkää</a>
+                </td>
 {% endif %}
             </tr>
 {% endfor %}

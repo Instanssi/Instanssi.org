@@ -3,8 +3,8 @@
 from django.conf.urls import url
 from Instanssi.admin_kompomaatti.views import index, competition_delete, competition_edit,\
     competition_participation_edit, compo_browse, compo_delete, compo_edit, competition_participations,\
-    competition_score, competitions_browse, results, votecoderequests, votecoderequests_accept, votecodes,\
-    votecodes_print, entries_csv, entry_browse, entry_delete, entry_edit, ticket_votecodes
+    competition_score, competitions_browse, results, votecoderequests, votecoderequests_accept, \
+    votecoderequests_reject, entries_csv, entry_browse, entry_delete, entry_edit, ticket_votecodes
 
 urlpatterns = [
     url(r'^$', index, name="index"),
@@ -27,9 +27,8 @@ urlpatterns = [
     url(r'^participations_edit/(?P<competition_id>\d+)/edit/(?P<pid>\d+)/', competition_participation_edit, name="participation-edit"),
     
     url(r'^results/', results, name="results"),
-    url(r'^votecodes/', votecodes, name="votecodes"),
     url(r'^ticket_votecodes/', ticket_votecodes, name="ticket_votecodes"),
-    url(r'^printcodes/', votecodes_print, name="votecodes-print"),
     url(r'^votecoderequests/', votecoderequests, name="votecoderequests"),
     url(r'^acceptreq/(?P<vcrid>\d+)/', votecoderequests_accept, name="votecoderequest-accept"),
+    url(r'^rejectreq/(?P<vcrid>\d+)/', votecoderequests_reject, name="votecoderequest-reject"),
 ]

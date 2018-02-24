@@ -9,10 +9,10 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from Instanssi.kompomaatti.forms import VoteCodeRequestForm, VoteCodeAssocForm, ParticipationForm,\
+from Instanssi.kompomaatti.forms import VoteCodeRequestForm, ParticipationForm,\
     EntryForm, TicketVoteCodeAssocForm
-from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode, VoteCode, Compo, Entry,\
-    Vote, CompetitionParticipation, Competition, Profile
+from Instanssi.kompomaatti.models import Event, VoteCodeRequest, TicketVoteCode, Compo, Entry,\
+    Vote, CompetitionParticipation, Competition, Profile, VoteGroup
 from Instanssi.kompomaatti.misc.time_formatting import compo_times_formatter, competition_times_formatter
 from Instanssi.kompomaatti.misc import awesometime, entrysort
 from Instanssi.kompomaatti.misc.events import get_upcoming
@@ -48,13 +48,6 @@ def index(request, event_id):
     # Check if user has an associated vote code
     votecode_associated = False
     if request.user.is_authenticated():
-        # See if user has a separate votecode
-        try:
-            VoteCode.objects.get(event=event_id, associated_to=request.user)
-            votecode_associated = True
-        except VoteCode.DoesNotExist:
-            pass
-
         # See if ticket is used as votecode
         try:
             TicketVoteCode.objects.get(event=event_id, associated_to=request.user)
@@ -107,19 +100,20 @@ def compo_details(request, event_id, compo_id):
     # Check if user may vote (voting open, user has code)
     can_vote = False
     if request.user.is_active and request.user.is_authenticated():
-        try:
-            VoteCode.objects.get(associated_to=request.user, event=event_id)
-            can_vote = True
-        except VoteCode.DoesNotExist:
-            pass
-
         # See if ticket is used as votecode
         try:
             TicketVoteCode.objects.get(associated_to=request.user, event=event_id)
             can_vote = True
         except TicketVoteCode.DoesNotExist:
             pass
-        
+
+        if not can_vote:
+            try:
+                VoteCodeRequest.objects.get(user=request.user, event=event_id, status=1)
+                can_vote = True
+            except VoteCodeRequest.DoesNotExist:
+                pass
+
     # Handle entry adding
     if request.method == 'POST' and compo.is_adding_open():
         # Make sure user is authenticated
@@ -174,16 +168,17 @@ def compo_vote(request, event_id, compo_id):
     # Make sure the user has an active votecode or ticket votecode
     can_vote = False
     try:
-        VoteCode.objects.get(associated_to=request.user, event=event_id)
-        can_vote = True
-    except VoteCode.DoesNotExist:
-        pass
-
-    try:
         TicketVoteCode.objects.get(associated_to=request.user, event=event_id)
         can_vote = True
     except TicketVoteCode.DoesNotExist:
         pass
+
+    if not can_vote:
+        try:
+            VoteCodeRequest.objects.get(user=request.user, event=event_id, status=1)
+            can_vote = True
+        except VoteCodeRequest.DoesNotExist:
+            pass
 
     if not can_vote:
         raise Http403
@@ -224,27 +219,26 @@ def compo_vote(request, event_id, compo_id):
                 _checked.append(id)
 
         # See that all id's are entries belonging to this compo
-        _cids = []
-        for entry in Entry.objects.filter(compo=compo, disqualified=False):
-            _cids.append(entry.id)
-        for result in results:
-            if result not in _cids:
-                return HttpResponse("Syötevirhe!")
-        
-        # Remove old votes by this user, on this compo
-        if has_voted:
-            Vote.objects.filter(user=request.user, compo=compo).delete()
-        
-        # Cast new votes
-        number = 1
-        for id in results:
-            vote = Vote()
-            vote.user = request.user
-            vote.compo = compo
-            vote.entry_id = id
-            vote.rank = number
-            vote.save()
-            number += 1
+        entries = []
+        try:
+            for entry_id in results:
+                entry = Entry.objects.get(compo=compo, disqualified=False, id=entry_id)
+                entries.append(entry)
+        except Entry.DoesNotExist:
+            return HttpResponse("Syötevirhe")
+
+        # Delete old entries (if any) and add new ones
+        group = VoteGroup.objects.filter(compo=compo, user=request.user).first()
+        if group:
+            group.delete_votes()
+        else:
+            group = VoteGroup.objects.create(
+                user=request.user,
+                compo=compo
+            )
+
+        # Add new voted entries
+        group.create_votes(entries)
         
         # Return success message
         return HttpResponse("0")
@@ -463,13 +457,6 @@ def votecode(request, event_id):
     reserved_code = None
     can_vote = False
     votecode_type = None
-    try:
-        separate_votecode = VoteCode.objects.get(event=event, associated_to=request.user)
-        reserved_code = separate_votecode.key
-        can_vote = True
-        votecode_type = 'votecode'
-    except VoteCode.DoesNotExist:
-        pass
 
     # Check if user has the right to vote via ticket
     try:
@@ -482,9 +469,16 @@ def votecode(request, event_id):
 
     # Check if request for vote code has been made
     request_made = False
+    request_failed = False
     try:
-        VoteCodeRequest.objects.get(event=event, user=request.user)
-        request_made = True
+        vcr = VoteCodeRequest.objects.get(event=event, user=request.user)
+        if vcr.status == 0:
+            request_made = True
+        elif vcr.status == 1:
+            can_vote = True
+            votecode_type = 'request'
+        else:
+            request_failed = True
     except VoteCodeRequest.DoesNotExist:
         pass
 
@@ -496,15 +490,6 @@ def votecode(request, event_id):
             return HttpResponseRedirect(reverse('km:votecode', args=(event_id,)))
     else:
         ticket_votecode_form = TicketVoteCodeAssocForm(event=event, user=request.user)
-
-    # Votecode Association form
-    if request.method == 'POST' and 'submit-vcassoc' in request.POST:
-        votecodeassocform = VoteCodeAssocForm(request.POST, event=event, user=request.user)
-        if votecodeassocform.is_valid():
-            votecodeassocform.save()
-            return HttpResponseRedirect(reverse('km:votecode', args=(event_id,)))
-    else:
-        votecodeassocform = VoteCodeAssocForm(event=event, user=request.user)
     
     # Votecode Request form
     if request.method == 'POST' and 'submit-vcreq' in request.POST:
@@ -521,12 +506,12 @@ def votecode(request, event_id):
     # Render
     return render(request, 'kompomaatti/votecode.html', {
         'sel_event_id': int(event_id),
-        'votecodeassocform': votecodeassocform,
         'votecoderequestform': votecoderequestform,
         'ticket_votecode_form': ticket_votecode_form,
         'reserved_code': reserved_code,
         'can_vote': can_vote,
         'votecode_type': votecode_type,
         'request_made': request_made,
+        'request_failed': request_failed
     })
 

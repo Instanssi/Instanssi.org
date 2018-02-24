@@ -405,10 +405,11 @@ class VoteCodeRequestSerializer(ModelSerializer):
 
     class Meta:
         model = VoteCodeRequest
-        fields = ('id', 'event', 'text',)
+        fields = ('id', 'event', 'text', 'status')
         extra_kwargs = {
             'event': {'required': True},
-            'text': {'required': True}
+            'text': {'required': True},
+            'status': {'read_only': True},
         }
 
 
@@ -431,6 +432,7 @@ class VoteGroupSerializer(ModelSerializer):
         data = super(VoteGroupSerializer, self).validate(data)
         compo = data['compo']
         entries = data['entries']
+        user = self.context['request'].user
 
         # Make sure compo voting is open
         if not compo.is_voting_open():
@@ -438,9 +440,12 @@ class VoteGroupSerializer(ModelSerializer):
 
         # Make sure user has rights to vote
         try:
-            TicketVoteCode.objects.get(associated_to=self.context['request'].user, event=compo.event)
+            TicketVoteCode.objects.get(associated_to=user, event=compo.event)
         except TicketVoteCode.DoesNotExist:
-            raise ValidationError("Äänestysoikeus puuttuu")
+            try:
+                VoteCodeRequest.objects.get(user=user, event=compo.event, status=1)
+            except VoteCodeRequest.DoesNotExist:
+                raise ValidationError("Äänestysoikeus puuttuu")
 
         # Make sure entries belong to the requested compo
         for entry in entries:

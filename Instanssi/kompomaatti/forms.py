@@ -9,7 +9,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 
 from Instanssi.kompomaatti.misc.sizeformat import sizeformat
-from Instanssi.kompomaatti.models import Entry, VoteCode, TicketVoteCode, VoteCodeRequest, CompetitionParticipation
+from Instanssi.kompomaatti.models import Entry, TicketVoteCode, VoteCodeRequest, CompetitionParticipation
 from Instanssi.store.models import TransactionItem
 
 
@@ -76,42 +76,6 @@ class TicketVoteCodeAssocForm(forms.Form):
         obj.ticket = transaction_item
         obj.time = timezone.now()
         obj.save()
-
-
-class VoteCodeAssocForm(forms.Form):
-    code = forms.CharField(max_length=8, label="Äänestyskoodi", help_text="Syötä saamasi äänestyskoodi tähän.")
-    
-    def __init__(self, *args, **kwargs):
-        # Init
-        self.event = kwargs.pop('event', None)
-        self.user = kwargs.pop('user', None)
-        super(VoteCodeAssocForm, self).__init__(*args, **kwargs)
-        
-        # Build form
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Fieldset(
-                'Syötä äänestyskoodi',
-                'code',
-                ButtonHolder(
-                    Submit('submit-vcassoc', 'Tallenna')
-                )
-            )
-        )
-        
-    def clean_code(self):
-        code = self.cleaned_data['code']
-        try:
-            VoteCode.objects.get(event=self.event, key=code)
-        except VoteCode.DoesNotExist:
-            raise ValidationError('Virheellinen koodi!')
-        return code
-    
-    def save(self):
-        vc = VoteCode.objects.get(event=self.event, key=self.cleaned_data['code'])
-        vc.associated_to = self.user
-        vc.time = timezone.now()
-        vc.save()
 
 
 class ParticipationForm(forms.ModelForm):

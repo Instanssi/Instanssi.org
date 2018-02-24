@@ -561,6 +561,7 @@ class APIAuthenticatedTests(TestCase):
             'id': 1,
             'event': self.event.id,
             'text': 'Test request',
+            'status': 0
         }])
 
         # Test main page OPTIONS
@@ -580,7 +581,8 @@ class APIAuthenticatedTests(TestCase):
         self.assertDictEqual(req.data, {
             'id': 1,
             'event': self.event.id,
-            'text': 'Test request 2'
+            'text': 'Test request 2',
+            'status': 0
         })
 
         # Test out PUT
@@ -596,7 +598,8 @@ class APIAuthenticatedTests(TestCase):
         self.assertDictEqual(req.data, {
             'id': 1,
             'event': self.event.id,
-            'text': 'Test request'
+            'text': 'Test request',
+            'status': 0
         })
 
         # Test DELETE (should error out)

@@ -8,8 +8,20 @@ from .viewsets import EventViewSet, SongViewSet, CompetitionViewSet, CompoViewSe
     CompoEntryViewSet, CompetitionParticipationViewSet, CurrentUserViewSet, UserCompoEntryViewSet,\
     UserCompetitionParticipationViewSet, VoteCodeRequestViewSet, TicketVoteCodeViewSet, VoteGroupViewSet
 
+
+class InstanssiAPIRoot(routers.APIRootView):
+    """
+    This is the v1 Instanssi API. Most things work only for logged in users.
+    """
+    pass
+
+
+class CustomRouter(routers.DefaultRouter):
+    APIRootView = InstanssiAPIRoot
+
+
 # API Endpoints
-router = routers.DefaultRouter()
+router = CustomRouter()
 router.register(r'events', EventViewSet, base_name='events')
 router.register(r'songs', SongViewSet, base_name='songs')
 router.register(r'competitions', CompetitionViewSet, base_name='competitions')

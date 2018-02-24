@@ -161,12 +161,28 @@ class CompoEntrySerializer(ModelSerializer):
 class UserCompetitionParticipationSerializer(ModelSerializer):
     competition = CompetitionForeignKey()
 
+    def validate_competition(self, competition):
+        if not competition.active:
+            raise ValidationError("Kilpailu ei ole aktiivinen")
+        return competition
+
     def validate(self, data):
+        competition = data.get('competition')
+        if not competition:
+            competition = self.instance.competition
+
+        # Check competition edits and additions
+        if not competition.is_participating_open():
+            raise ValidationError("Kilpailun osallistumisaika on päättynyt")
+
         data = super(UserCompetitionParticipationSerializer, self).validate(data)
-        obj = CompetitionParticipation.objects.filter(competition=data['competition'],
-                                                      user=self.context['request'].user).first()
-        if obj:
-            raise ValidationError("Olet jo osallistunut tähän kilpailuun")
+
+        has_changed = self.instance and self.instance.competition.id != competition.id
+        if not self.instance or has_changed:
+            obj = CompetitionParticipation.objects.filter(
+                competition=competition, user=self.context['request'].user).first()
+            if obj:
+                raise ValidationError("Olet jo osallistunut tähän kilpailuun")
         return data
 
     class Meta:
@@ -213,10 +229,6 @@ class UserCompoEntrySerializer(ModelSerializer):
     def validate_compo(self, compo):
         if not compo.active:
             raise ValidationError("Kompoa ei ole olemassa")
-        if self.instance and not compo.is_editing_open():
-            raise ValidationError("Kompon muokkausaika on päättynyt")
-        if not self.instance and not compo.is_adding_open():
-            raise ValidationError("Kompon lisäysaika on päättynyt")
         return compo
 
     def _validate_file(self, file, accept_formats, accept_formats_readable, max_size, max_readable_size):
@@ -235,7 +247,15 @@ class UserCompoEntrySerializer(ModelSerializer):
 
     def validate(self, data):
         data = super(UserCompoEntrySerializer, self).validate(data)
-        compo = data['compo']
+        compo = data.get('compo')
+        if not compo:
+            compo = self.instance.compo
+
+        # Check adding & editing time
+        if not self.instance and not compo.is_adding_open():
+            raise ValidationError("Kompon lisäysaika on päättynyt")
+        if self.instance and not compo.is_editing_open():
+            raise ValidationError("Kompon muokkausaika on päättynyt")
 
         # Aggro if image field is missing but required
         if not data.get('imagefile_original') and compo.is_imagefile_required:
@@ -334,7 +354,11 @@ class TicketVoteCodeSerializer(ModelSerializer):
 
         # Check if key exists at all
         try:
-            TransactionItem.objects.get(item__event=data['event'], item__is_ticket=True, key__startswith=key)
+            TransactionItem.objects.get(
+                item__event=data['event'],  # Must match event
+                item__is_ticket=True,  # Must be ticket
+                key__startswith=key,  # Must start with inserted code
+                transaction__time_paid__isnull=False)  # Must be paid
         except TransactionItem.DoesNotExist:
             raise ValidationError({'ticket_key': ['Pyydettyä lippuavainta ei ole olemassa!']})
 
@@ -363,12 +387,19 @@ class TicketVoteCodeSerializer(ModelSerializer):
 
 class VoteCodeRequestSerializer(ModelSerializer):
     def validate(self, data):
+        event = data.get('event')
+        if not event:
+            event = self.instance.event
+
         data = super(VoteCodeRequestSerializer, self).validate(data)
 
-        obj = VoteCodeRequest.objects.filter(event=data['event'],
-                                             user=self.context['request'].user).first()
-        if obj:
-            raise ValidationError("Äänestyskoodipyyntö on jo olemassa")
+        # If content has changed or is new, make sure to test for uniqueness
+        has_changed = self.instance and self.instance.event.id != event.id
+        if not self.instance or has_changed:
+            obj = VoteCodeRequest.objects.filter(
+                event=event, user=self.context['request'].user).first()
+            if obj:
+                raise ValidationError("Äänestyskoodipyyntö on jo olemassa")
 
         return data
 
@@ -389,11 +420,6 @@ class VoteGroupSerializer(ModelSerializer):
                 compo__active=True,
                 disqualified=False)))
 
-    def validate_compo(self, compo):
-        if not compo.is_voting_open():
-            raise ValidationError("Kompon äänestysaika ei ole voimassaä")
-        return compo
-
     def validate_entries(self, entries):
         # Fail if not unique entries
         ids = [entry.id for entry in entries]
@@ -405,6 +431,10 @@ class VoteGroupSerializer(ModelSerializer):
         data = super(VoteGroupSerializer, self).validate(data)
         compo = data['compo']
         entries = data['entries']
+
+        # Make sure compo voting is open
+        if not compo.is_voting_open():
+            raise ValidationError("Kompon äänestysaika ei ole voimassa")
 
         # Make sure user has rights to vote
         try:

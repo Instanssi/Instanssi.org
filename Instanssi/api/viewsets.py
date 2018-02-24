@@ -151,6 +151,11 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     def get_queryset(self):
         return CompetitionParticipation.objects.filter(competition__active=True, user=self.request.user)
 
+    def perform_destroy(self, instance):
+        if not instance.competition.is_participating_open():
+            raise serializers.ValidationError("Osallistuminen on päättynyt")
+        return super(UserCompetitionParticipationViewSet, self).perform_destroy(instance)
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -220,6 +225,7 @@ class UserCompoEntryViewSet(ModelViewSet):
     def perform_destroy(self, instance):
         if not instance.compo.is_editing_open():
             raise serializers.ValidationError("Kompon muokkausaika on päättynyt")
+        return super(UserCompoEntryViewSet, self).perform_destroy(instance)
 
     def perform_create(self, serializer):
         serializer.save(

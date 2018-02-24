@@ -617,6 +617,9 @@ class Competition(models.Model):
         help_text='Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.',
         default=False)
 
+    def is_participating_open(self):
+        return timezone.now() < self.participation_end
+
     def __str__(self):
         return "{}: {}".format(self.event.name, self.name)
     

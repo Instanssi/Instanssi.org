@@ -19,7 +19,7 @@ def index(request):
     vcreqs = []
     events = Event.objects.all()
     for event in events:
-        rcount = VoteCodeRequest.objects.filter(event=event).count()
+        rcount = VoteCodeRequest.objects.filter(event=event, status=0).count()
         if rcount > 0:
             important_flag = True
             vcreqs.append({

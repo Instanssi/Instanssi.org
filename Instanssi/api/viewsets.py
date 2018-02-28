@@ -227,12 +227,42 @@ class UserCompoEntryViewSet(ModelViewSet):
             raise serializers.ValidationError("Kompon muokkausaika on päättynyt")
         return super(UserCompoEntryViewSet, self).perform_destroy(instance)
 
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        delete_imagefile = False
+        delete_sourcefile = False
+
+        # Remove imagefile if requested (field is null)
+        if instance.imagefile_original is not None \
+                and 'imagefile_original' in request.data \
+                and len(request.data['imagefile_original']) == 0:
+            delete_imagefile = True
+
+        # remove sourcefile if requested (field is null)
+        if instance.sourcefile is not None \
+                and 'sourcefile' in request.data \
+                and len(request.data['sourcefile']) == 0:
+            delete_sourcefile = True
+
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        if delete_imagefile:
+            instance.imagefile_original = None
+        if delete_sourcefile:
+            instance.sourcefile = None
+
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
     def perform_create(self, serializer):
-        serializer.save(
-            user=self.request.user,
-            imagefile_original=self.request.data.get('imagefile_original'),
-            entryfile=self.request.data.get('entryfile'),
-            sourcefile=self.request.data.get('sourcefile'))
+        serializer.save(user=self.request.user)
 
 
 class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):

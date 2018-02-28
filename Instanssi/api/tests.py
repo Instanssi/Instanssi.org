@@ -377,6 +377,11 @@ class APIAuthenticatedTests(TestCase):
             'disqualified': False,
             'disqualified_reason': ''
         }])
+        self.assertIsNotNone(req.data[0]['entryfile_url'])
+        self.assertIsNotNone(req.data[0]['sourcefile_url'])
+        self.assertIsNotNone(req.data[0]['imagefile_original_url'])
+        self.assertIsNotNone(req.data[0]['imagefile_thumbnail_url'])
+        self.assertIsNotNone(req.data[0]['imagefile_medium_url'])
 
         # Test main page OPTIONS
         self.assertEqual(self.api.options(url).status_code, 200)
@@ -384,12 +389,14 @@ class APIAuthenticatedTests(TestCase):
         instance_url = "{}{}/".format(url, 2)
 
         # Test out PATCH
-        self.assertEqual(self.api.patch(instance_url, format='multipart', data={
+        req = self.api.patch(instance_url, format='multipart', data={
             'id': 3,  # Should not change
             'name': 'Test Entry 2',  # Should change
             'description': 'Awesome test entry description 2',  # Should change
             'creator': 'Test Creator 3000',  # Should change
-        }).status_code, 200)
+            'imagefile_original': '',
+        })
+        self.assertEqual(req.status_code, 200)
 
         # Make sure entry changed
         req = self.api.get(instance_url)
@@ -402,12 +409,14 @@ class APIAuthenticatedTests(TestCase):
             'creator': 'Test Creator 3000',
             'entryfile_url': req.data['entryfile_url'],
             'sourcefile_url': req.data['sourcefile_url'],
-            'imagefile_original_url': req.data['imagefile_original_url'],
-            'imagefile_thumbnail_url': req.data['imagefile_thumbnail_url'],
-            'imagefile_medium_url': req.data['imagefile_medium_url'],
+            'imagefile_original_url': None,
+            'imagefile_thumbnail_url': None,
+            'imagefile_medium_url': None,
             'disqualified': False,
             'disqualified_reason': ''
         })
+        self.assertIsNotNone(req.data['entryfile_url'])
+        self.assertIsNotNone(req.data['sourcefile_url'])
 
         # Test out PUT
         entry_file = SimpleUploadedFile("test_entry_file.zip", b'content', content_type="application/zip")
@@ -441,6 +450,11 @@ class APIAuthenticatedTests(TestCase):
             'disqualified': False,
             'disqualified_reason': ''
         })
+        self.assertIsNotNone(req.data['entryfile_url'])
+        self.assertIsNotNone(req.data['sourcefile_url'])
+        self.assertIsNotNone(req.data['imagefile_original_url'])
+        self.assertIsNotNone(req.data['imagefile_thumbnail_url'])
+        self.assertIsNotNone(req.data['imagefile_medium_url'])
 
         # Test DELETE
         self.assertEqual(self.api.delete(instance_url).status_code, 204)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import arrow
+from django.conf import settings
 from django import template
 from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
@@ -137,11 +139,12 @@ def render_calendar(event_id):
             'Lauantai',
             'Sunnuntai',
         ]
+        dt = arrow.get(key).to(settings.TIME_ZONE).format('DD.MM.')
         events.append({
             'items': grouped_events[key],
-            'title': days[key.weekday()] + ' ' + key.strftime('%d.%m.'),
+            'title': '{} {}'.format(days[key.weekday()], dt),
         })
-        
+
     # All done
     return {
         'event_id': event_id,

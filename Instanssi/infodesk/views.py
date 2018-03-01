@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import arrow
+
 from Instanssi.common.auth import infodesk_access_required
 
+from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
@@ -54,7 +57,7 @@ def order_search_ac(request):
     items = TransactionItem.objects.filter(ti_fuzzy_query(term))
 
     def fmt_t(t):
-        return t.strftime('%d.%m.%Y %H:%M')
+        return arrow.get(t).to(settings.TIME_ZONE).format('DD.MM.YYYY HH:mm')
 
     def format_transaction(t):
         return '%s, %s (%s)' % (t.lastname, t.firstname, fmt_t(t.time_created))

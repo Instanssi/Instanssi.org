@@ -5,7 +5,7 @@ import logging
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.template import loader, Context
+from django.template import loader
 
 from Instanssi.kompomaatti.models import VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
     CompetitionParticipation
@@ -59,10 +59,9 @@ def entries_csv(request, sel_event_id):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="instanssi_entries.csv"'
     t = loader.get_template('admin_kompomaatti/entries_csv.txt')
-    c = Context({
+    response.write(t.render({
         'entries': entries,
-    })
-    response.write(t.render(c))
+    }))
     return response
 
 

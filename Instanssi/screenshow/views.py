@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import arrow
+
 from django.shortcuts import render, get_object_or_404
 from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
 from django.utils import timezone
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 
@@ -32,14 +35,14 @@ def index(request, event_id):
 def settings_api(request, event_id):
     # Attempt to fetch custom settings from database
     try:
-        settings = {}
+        conf = {}
         s = ScreenConfig.objects.get(event_id=event_id)
-        settings['enable_twitter'] = s.enable_twitter
-        settings['enable_irc'] = s.enable_irc
-        settings['enable_videos'] = s.enable_videos
-        settings['video_interval'] = s.video_interval
-        return JSONResponse({'settings': settings})
-    except:
+        conf['enable_twitter'] = s.enable_twitter
+        conf['enable_irc'] = s.enable_irc
+        conf['enable_videos'] = s.enable_videos
+        conf['video_interval'] = s.video_interval
+        return JSONResponse({'settings': conf})
+    except ScreenConfig.DoesNotExist:
         pass
     
     # Return settings
@@ -53,7 +56,7 @@ def events_api(request, event_id):
     k = 0
     events = []
     for event in get_upcoming(e):
-        event['date'] = event['date'].strftime("%H:%M")
+        event['date'] = arrow.get(event['date']).to(settings.TIME_ZONE).format("HH:mm")
         events.append(event)
         
         # Only pick 5
@@ -111,7 +114,7 @@ def irc_api(request, event_id):
             'id': msg.id,
             'text': msg.message,
             'nick': msg.nick,
-            'time': msg.date.strftime("%H:%M"),
+            'time': arrow.get(msg.date).to(settings.TIME_ZONE).format("HH:mm")
         })
         
     # Respond

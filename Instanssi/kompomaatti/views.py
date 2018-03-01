@@ -54,6 +54,12 @@ def index(request, event_id):
             votecode_associated = True
         except TicketVoteCode.DoesNotExist:
             pass
+        # See if votecode request is accepted
+        try:
+            VoteCodeRequest.objects.get(event=event_id, user=request.user, status=1)
+            votecode_associated = True
+        except VoteCodeRequest.DoesNotExist:
+            pass
     else:
         votecode_associated = True
 

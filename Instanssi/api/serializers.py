@@ -131,12 +131,12 @@ class CompoEntrySerializer(ModelSerializer):
         return None
 
     def get_disqualified_reason(self, obj):
-        if obj.compo.show_voting_results:
+        if obj.compo.has_voting_started():
             return obj.disqualified_reason
         return None
 
     def get_disqualified(self, obj):
-        if obj.compo.show_voting_results:
+        if obj.compo.has_voting_started():
             return obj.disqualified
         return None
 

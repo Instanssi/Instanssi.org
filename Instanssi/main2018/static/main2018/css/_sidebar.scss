@@ -27,9 +27,9 @@
 
     .widget { margin-bottom: $spacer; }
 
-    #tweets { margin: 0 $spacer; }
+    #tweets { margin: 0; }
     #tweets .link a,
-    #tweets .time {
+    #tweets .time a {
         color: $brand-primary;
         font-size: 11px;
     }

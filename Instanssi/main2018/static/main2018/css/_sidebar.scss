@@ -30,6 +30,7 @@
     #tweets { margin: 0 $spacer; }
     #tweets .link a,
     #tweets .time {
+        color: $brand-primary;
         font-size: 11px;
     }
     #tweets li {

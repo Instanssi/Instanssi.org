@@ -22,8 +22,7 @@
             <li>
                 <span class="author">@{{ tweet.user.name }}: </span>
                 <span class="text">{{ tweet.text }}</span><br />
-                <span class="time">{{ tweet.datetime|date:"d.m.Y H:i" }}</span> &middot;
-                <span class="link"><a href="http://twitter.com/instanssi/status/{{ tweet.id }}">Lue twitterissä &raquo;</a></span>
+                <span class="time"><a href="http://twitter.com/instanssi/status/{{ tweet.id }}">{{ tweet.datetime|date:"d.m.Y H:i" }}</a></span>
             </li>
             {% endfor %}
         </ul>

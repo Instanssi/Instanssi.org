@@ -478,6 +478,7 @@ class VoteGroupSerializer(ModelSerializer):
         fields = ('compo', 'entries',)
         extra_kwargs = {
             'compo': {'required': True},
+            'entries': {'required': True},
         }
 
 

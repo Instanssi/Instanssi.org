@@ -328,13 +328,13 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
     * limit: Limit amount of returned objects.
     * offset: Starting offset. Default is 0.
     * compo: Filter by compo id
-    * ordering: Set ordering, default is 'id'. Allowed: id, -id, rank, -rank
+    * ordering: Set ordering. Allowed: compo, -compo
     """
     permission_classes = [IsAuthenticated]
     serializer_class = VoteGroupSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id', 'rank',)
+    ordering_fields = ('compo',)
     filter_fields = ('compo',)
 
     def get_queryset(self):

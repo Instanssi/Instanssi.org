@@ -41,10 +41,12 @@ def removeoldvotes(request, sel_event_id):
     # Don't allow removing votes if votes haven't yet been consolidated to entry rows (prevent data loss)
     if utils.is_votes_unoptimized(compo_ids):
         raise Http404
-    
+
     # Delete votes belonging to compos in this event
-    Vote.objects.filter(compo__in=compo_ids).delete()
-    
+    for group in VoteGroup.objects.filter(compo__in=compo_ids):
+        group.delete_votes()
+        group.delete()
+
     # Log it
     logger.info('Event old votes removed.', extra={'user': request.user, 'event': event})
     

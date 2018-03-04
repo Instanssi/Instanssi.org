@@ -75,7 +75,7 @@ def event(request, event_id):
     event_obj = get_object_or_404(Event, pk=event_id, archived=True)
 
     # Filter compos, videos and competitions
-    compos_q = Compo.objects.filter(event=event_obj, active=True, hide_from_archive=False)
+    compos_q = Compo.objects.filter(event=event_obj, active=True, hide_from_archive=False).order_by('name')
     videos_q = OtherVideoCategory.objects.filter(event=event_obj).order_by('name')
     competitions_q = Competition.objects.filter(event=event_obj, active=True, hide_from_archive=False).order_by('name')
 

@@ -3,6 +3,9 @@
 from django.conf.urls import url
 from Instanssi.store.methods import paytrail, bitpay, no_method
 
+app_name = "store"
+
+
 urlpatterns = [
     url(r'^nomethod/success/$', no_method.handle_success, name="no-method-success"),
     url(r'^paytrail/notify/$', paytrail.handle_notify, name="paytrail-notify"),

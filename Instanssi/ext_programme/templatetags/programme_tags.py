@@ -5,7 +5,7 @@ from django.conf import settings
 from django import template
 from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import time
 
 register = template.Library()

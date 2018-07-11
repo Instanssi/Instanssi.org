@@ -4,7 +4,7 @@ from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required
 from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.admin_programme.forms import ProgrammeEventForm

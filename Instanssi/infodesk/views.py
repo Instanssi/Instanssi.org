@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import timezone
 
 from Instanssi.common.responses import JSONResponse

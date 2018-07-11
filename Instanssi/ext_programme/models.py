@@ -26,7 +26,7 @@ class ProgrammeEvent(models.Model):
     )
 
     event = models.ForeignKey(
-        Event, verbose_name='Tapahtuma')
+        Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     start = models.DateTimeField(
         'Alku', help_text='Tapahtuman alkamisaika.')
     end = models.DateTimeField(

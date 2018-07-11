@@ -3,6 +3,9 @@
 from django.conf.urls import url
 from Instanssi.arkisto.views import index, entry, event, video, text_event, json_event
 
+app_name = "arkisto"
+
+
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^entry/(?P<entry_id>\d+)/', entry, name="entry"),

@@ -15,7 +15,8 @@ from Instanssi.kompomaatti.misc import entrysort, sizeformat
 class Profile(models.Model):
     user = models.ForeignKey(
         User,
-        verbose_name='Käyttäjä')
+        verbose_name='Käyttäjä',
+        on_delete=models.CASCADE)
     otherinfo = models.TextField(
         'Muut yhteystiedot',
         help_text='Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne.')
@@ -63,11 +64,13 @@ class VoteCodeRequest(models.Model):
         Event,
         verbose_name='Tapahtuma',
         help_text='Tapahtuma, johon äänestysoikeutta pyydetään',
-        null=True)
+        null=True,
+        on_delete=models.PROTECT)
     user = models.ForeignKey(
         User,
         verbose_name='Käyttäjä',
-        help_text='Pyynnön esittänyt käyttäjä')
+        help_text='Pyynnön esittänyt käyttäjä',
+        on_delete=models.CASCADE)
     text = models.TextField(
         'Kuvaus',
         help_text='Lyhyt aneluteksti admineille :)')
@@ -91,20 +94,22 @@ class TicketVoteCode(models.Model):
         verbose_name='Tapahtuma',
         help_text='Tapahtuma, johon äänestysavain on assosioitu',
         blank=True,
-        null=True)
+        null=True,
+        on_delete=models.PROTECT)
     associated_to = models.ForeignKey(
         User,
         verbose_name='Käyttäjä',
         help_text="Käyttäjä jolle avain on assosioitu",
+        on_delete=models.CASCADE,
         blank=True,
         null=True)
     ticket = models.ForeignKey(
         'store.TransactionItem',  # String to avoid circular dependency
         verbose_name='Lipputuote',
         help_text='Lipputuote jonka avainta käytetään äänestysavaimena',
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         blank=True,
-        null=True)
+        null=True,)
     time = models.DateTimeField(
         'Aikaleima',
         help_text="Aika jolloin avain assosioitiin käyttäjälle.",
@@ -151,7 +156,8 @@ class Compo(models.Model):
     event = models.ForeignKey(
         Event,
         verbose_name="tapahtuma",
-        help_text="Tapahtuma johon kompo kuuluu")
+        help_text="Tapahtuma johon kompo kuuluu",
+        on_delete=models.PROTECT)
     name = models.CharField(
         'Nimi',
         max_length=32,
@@ -327,11 +333,13 @@ class Entry(models.Model):
     user = models.ForeignKey(
         User,
         verbose_name="käyttäjä",
-        help_text="Käyttäjä jolle entry kuuluu")
+        help_text="Käyttäjä jolle entry kuuluu",
+        on_delete=models.PROTECT)
     compo = models.ForeignKey(
         Compo,
         verbose_name="kompo",
-        help_text="Kompo johon osallistutaan")
+        help_text="Kompo johon osallistutaan",
+        on_delete=models.PROTECT)
     name = models.CharField(
         'Nimi',
         max_length=64,
@@ -496,8 +504,8 @@ class Entry(models.Model):
 
 
 class VoteGroup(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä")
-    compo = models.ForeignKey(Compo, verbose_name="kompo")
+    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
+    compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
 
     @property
     def entries(self):
@@ -528,11 +536,11 @@ class VoteGroup(models.Model):
 
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä")
-    compo = models.ForeignKey(Compo, verbose_name="kompo")
-    entry = models.ForeignKey(Entry, verbose_name="tuotos")
+    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
+    compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, verbose_name="tuotos", on_delete=models.CASCADE)
     rank = models.IntegerField('Sijoitus')
-    group = models.ForeignKey(VoteGroup, default=None, null=True, blank=True, related_name='votes')
+    group = models.ForeignKey(VoteGroup, default=None, null=True, blank=True, related_name='votes', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} by {} as {}'.format(self.entry.name, self.user.username, self.rank)
@@ -551,7 +559,8 @@ class Competition(models.Model):
     event = models.ForeignKey(
         Event,
         verbose_name="Tapahtuma",
-        help_text="Tapahtuma johon kilpailu kuuluu")
+        help_text="Tapahtuma johon kilpailu kuuluu",
+        on_delete=models.PROTECT)
     name = models.CharField(
         'Nimi',
         max_length=32,
@@ -606,11 +615,13 @@ class CompetitionParticipation(models.Model):
     competition = models.ForeignKey(
         Competition,
         verbose_name='Kilpailu',
-        help_text='Kilpailu johon osallistuttu')
+        help_text='Kilpailu johon osallistuttu',
+        on_delete=models.CASCADE)
     user = models.ForeignKey(
         User,
         verbose_name='Käyttäjä',
-        help_text='Osallistuja')
+        help_text='Osallistuja',
+        on_delete=models.CASCADE)
     participant_name = models.CharField(
         'Osallistujan nimi',
         help_text='Nimimerkki jolla haluat osallistua.',

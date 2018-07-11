@@ -4,7 +4,7 @@ from Instanssi.common.auth import user_access_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from Instanssi.users.forms import OpenIDLoginForm, DjangoLoginForm, ProfileForm
 from Instanssi.common.misc import get_url_local_path
 
@@ -21,7 +21,7 @@ AUTH_METHODS = [
 
 
 def login(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:profile'))
     
     # Get referer for redirect

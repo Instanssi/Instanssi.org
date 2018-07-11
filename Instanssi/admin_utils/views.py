@@ -2,7 +2,7 @@
 
 from Instanssi.common.auth import su_access_required
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Entry
 from django.conf import settings

@@ -7,7 +7,7 @@ from imagekit.processors import ResizeToFit
 
 
 class NPSong(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     title = models.CharField('Kappale', max_length=255, blank=True)
     artist = models.CharField('Artisti', max_length=255, blank=True)
     time = models.DateTimeField('Aikaleima')
@@ -28,7 +28,8 @@ class ScreenConfig(models.Model):
     event = models.OneToOneField(
         Event,
         verbose_name='Tapahtuma',
-        unique=True)
+        unique=True,
+        on_delete=models.PROTECT)
     enable_videos = models.BooleanField(
         'Näytä videoita',
         help_text='Näytetäänkö esityksessä videoita playlistiltä.',
@@ -55,7 +56,7 @@ class ScreenConfig(models.Model):
 
 
 class PlaylistVideo(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     name = models.CharField('Nimi', max_length=64, help_text='Videon nimi tai otsikko.')
     url = models.URLField('Osoite', help_text='Linkki Youtube-videoon.')
     index = models.IntegerField(
@@ -71,7 +72,7 @@ class PlaylistVideo(models.Model):
 
 
 class Sponsor(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     name = models.CharField('Nimi', max_length=64, help_text='Sponsorin nimi')
     logo = models.ImageField('Kuva', upload_to='screen/sponsorlogos/', help_text="Sponsorin logo", blank=True)
     logo_scaled = ImageSpecField([ResizeToFit(800, 375, True)], source='logo', format='PNG')
@@ -96,7 +97,7 @@ class Sponsor(models.Model):
             
 
 class Message(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     show_start = models.DateTimeField('Alkuaika', help_text='Viestin näyttäminen alkaa')
     show_end = models.DateTimeField('Loppuaika', help_text='Viestin näyttäminen päättyy')
     text = models.TextField('Viesti', help_text='Viestin leipäteksti. Katso ettei tästä tule liian pitkä.')
@@ -113,7 +114,7 @@ class Message(models.Model):
 
 
 class IRCMessage(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
     date = models.DateTimeField('Aika')
     nick = models.CharField('Nimimerkki', max_length=64)
     message = models.TextField('Viesti')

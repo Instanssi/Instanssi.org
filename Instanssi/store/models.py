@@ -2,7 +2,7 @@
 
 import os
 from decimal import Decimal
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.conf import settings
 from django.core.mail import send_mail
@@ -21,7 +21,8 @@ class StoreItem(models.Model):
         verbose_name='Tapahtuma',
         help_text='Tapahtuma johon tuote liittyy.',
         blank=True,
-        null=True)
+        null=True,
+        on_delete=models.PROTECT)
     name = models.CharField(
         'Tuotteen nimi',
         help_text='Tuotteen lyhyt nimi.',
@@ -134,7 +135,7 @@ class StoreItem(models.Model):
 
 
 class StoreItemVariant(models.Model):
-    item = models.ForeignKey(StoreItem)
+    item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
     name = models.CharField('Tuotevariantin nimi', max_length=32, blank=False, null=False)
 
     def __str__(self):
@@ -309,14 +310,17 @@ class TransactionItem(models.Model):
         help_text='Lippuavain')
     item = models.ForeignKey(
         StoreItem,
-        verbose_name='Tuote')
+        verbose_name='Tuote',
+        on_delete=models.PROTECT)
     variant = models.ForeignKey(
         StoreItemVariant,
         verbose_name='Tuotevariantti',
-        null=True)
+        null=True,
+        on_delete=models.PROTECT)
     transaction = models.ForeignKey(
         StoreTransaction,
-        verbose_name='Ostotapahtuma')
+        verbose_name='Ostotapahtuma',
+        on_delete=models.CASCADE)
     time_delivered = models.DateTimeField(
         'Toimitusaika',
         null=True,

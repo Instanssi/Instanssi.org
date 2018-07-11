@@ -19,3 +19,7 @@ testing/output/*
 **/.vscode
 **/npm-debug.log
 var/
+venv/
+venv36/
+venv37/
+

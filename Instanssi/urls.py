@@ -2,7 +2,7 @@
 
 from django.conf.urls import include, url
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy, path
 from django.contrib import admin
 from django.views.static import serve
 from django.views.generic import RedirectView
@@ -46,7 +46,7 @@ urlpatterns = [
 if settings.DEBUG or settings.ADMIN:
     admin.autodiscover()
     urlpatterns += [
-        url(r'^admin/', include(admin.site.urls)),
+        path('admin/', admin.site.urls),
     ]
 
 if settings.DEBUG:

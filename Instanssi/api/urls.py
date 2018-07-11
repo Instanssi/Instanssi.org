@@ -8,6 +8,8 @@ from .viewsets import EventViewSet, SongViewSet, CompetitionViewSet, CompoViewSe
     CompoEntryViewSet, CompetitionParticipationViewSet, CurrentUserViewSet, UserCompoEntryViewSet,\
     UserCompetitionParticipationViewSet, VoteCodeRequestViewSet, TicketVoteCodeViewSet, VoteGroupViewSet
 
+app_name = "api"
+
 
 class InstanssiAPIRoot(routers.APIRootView):
     """
@@ -51,5 +53,5 @@ oauth2_endpoint_views = [
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^oauth2/', include(oauth2_endpoint_views, namespace="oauth2_provider")),
+    url(r'^oauth2/', include((oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider")),
 ]

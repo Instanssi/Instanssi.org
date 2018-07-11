@@ -5,7 +5,7 @@ from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from Instanssi.kompomaatti.models import Event
 from Instanssi.admin_events.forms import EventForm
 from Instanssi.admin_base.misc.custom_render import admin_render

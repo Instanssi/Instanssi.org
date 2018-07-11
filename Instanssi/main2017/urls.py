@@ -3,6 +3,8 @@
 from django.conf.urls import url
 from Instanssi.main2017.views import pageloader
 
+app_name = "main2017"
+
 
 urlpatterns = [
     url(r'^$', pageloader, {'templatename': 'index'}, name="index"),

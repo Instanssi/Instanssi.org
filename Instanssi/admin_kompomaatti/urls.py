@@ -6,6 +6,9 @@ from Instanssi.admin_kompomaatti.views import index, competition_delete, competi
     competition_score, competitions_browse, results, votecoderequests, votecoderequests_accept, \
     votecoderequests_reject, entries_csv, entry_browse, entry_delete, entry_edit, ticket_votecodes
 
+app_name = "admin_kompomaatti"
+
+
 urlpatterns = [
     url(r'^$', index, name="index"),
     

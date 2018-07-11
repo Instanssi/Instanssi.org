@@ -5,6 +5,9 @@ from Instanssi.admin_screenshow.views import index, config, ircmessage_delete, i
     messages, message_delete, message_edit, sponsor_delete, sponsor_edit, sponsors, playlist, playlist_delete, \
     playlist_edit
 
+app_name = "admin_screenshow"
+
+
 urlpatterns = [
     url(r'^$', index, name="index"),
     

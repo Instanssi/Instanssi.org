@@ -4,6 +4,9 @@ from django.conf.urls import url
 from Instanssi.infodesk.views import index, item_check, transaction_check, item_info, transaction_info, item_mark,\
     order_search, order_search_ac
 
+app_name = "infodesk"
+
+
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^item/check/', item_check, name="item_check"),

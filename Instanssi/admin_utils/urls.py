@@ -3,6 +3,8 @@
 from django.conf.urls import url
 from Instanssi.admin_utils.views import index, diskcleaner, dbchecker
 
+app_name = "admin_utils"
+
 
 urlpatterns = [
     url(r'^$', index, name="index"),

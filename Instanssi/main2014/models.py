@@ -23,7 +23,7 @@ class ToimistoJahti(models.Model):
 
 class ToimistoSuoritus(models.Model):
     user = models.ForeignKey(
-        User, verbose_name='Käyttäjä')
+        User, verbose_name='Käyttäjä', on_delete=models.CASCADE)
     nick = models.CharField(
         'Tunnusnimi', max_length=32, help_text="Agentin tunnusnimi", unique=True)
     time = models.DateTimeField(

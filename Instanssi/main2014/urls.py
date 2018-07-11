@@ -3,6 +3,8 @@
 from django.conf.urls import url
 from Instanssi.main2014.views import pageloader, reportointi, jahti, kiitos
 
+app_name = "main2014"
+
 
 urlpatterns = [
     url(r'^$', pageloader, {'templatename': 'index'}, name="index"),

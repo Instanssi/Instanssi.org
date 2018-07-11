@@ -4,7 +4,7 @@ from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from Instanssi.kompomaatti.models import *
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 from Instanssi.admin_arkisto.forms import VideoForm, VideoCategoryForm

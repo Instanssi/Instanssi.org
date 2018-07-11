@@ -16,7 +16,7 @@ from Instanssi.common.testing.kompomaatti import KompomaattiTestData
 from Instanssi.common.testing.utils import q_reverse
 
 from django.test import TestCase
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import timezone
 import mock
 from faker import Faker

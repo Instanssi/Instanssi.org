@@ -1,5 +1,5 @@
 from django.utils.http import urlencode
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def q_reverse(view_name, query=None, **kwargs):

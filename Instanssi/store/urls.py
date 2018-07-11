@@ -5,6 +5,9 @@ from django.views.generic import TemplateView
 
 from Instanssi.store.views import ti_view, ta_view
 
+app_name = "store"
+
+
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='store/index.html'), name="index"),
     url(r'^order/$', TemplateView.as_view(template_name='store/store.html'), name='order'),

@@ -4,6 +4,9 @@ from django.conf.urls import url
 from Instanssi.admin_store.views import index, items, export, status, tis, tis_csv, transaction_status,\
     edit_item, delete_item, amounts
 
+app_name = "admin_store"
+
+
 urlpatterns = [
     url(r'^$', index, name="index"),
     url(r'^items/$', items, name="items"),

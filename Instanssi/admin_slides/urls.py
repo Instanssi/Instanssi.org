@@ -3,6 +3,8 @@
 from django.conf.urls import url
 from Instanssi.admin_slides.views import index, slide_entries, slide_results
 
+app_name = "admin_slides"
+
 
 urlpatterns = [
     url(r'^$', index, name="index"),

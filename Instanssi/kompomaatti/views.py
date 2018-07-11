@@ -6,7 +6,7 @@ from Instanssi.common.rest import rest_api, RestResponse
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import timezone
 
 from Instanssi.kompomaatti.forms import VoteCodeRequestForm, ParticipationForm,\

@@ -2,7 +2,7 @@
 
 from django.http import HttpResponseRedirect
 from Instanssi.common.http import Http403
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def user_access_required(view_func):

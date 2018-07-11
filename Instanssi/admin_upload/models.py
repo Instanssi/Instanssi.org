@@ -7,8 +7,8 @@ import os.path
 
 
 class UploadedFile(models.Model):
-    event = models.ForeignKey(Event, verbose_name='Tapahtuma')
-    user = models.ForeignKey(User, verbose_name='Käyttäjä')
+    event = models.ForeignKey(Event, verbose_name='Tapahtuma', on_delete=models.PROTECT)
+    user = models.ForeignKey(User, verbose_name='Käyttäjä', on_delete=models.CASCADE)
     description = models.TextField(
         'Kuvaus', help_text='Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', blank=True)
     file = models.FileField('Tiedosto', upload_to='files/')

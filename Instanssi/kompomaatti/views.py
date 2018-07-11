@@ -47,7 +47,7 @@ def index(request, event_id):
     
     # Check if user has an associated vote code
     votecode_associated = False
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # See if ticket is used as votecode
         try:
             TicketVoteCode.objects.get(event=event_id, associated_to=request.user)
@@ -65,7 +65,7 @@ def index(request, event_id):
 
     # Get compos the user has not yet voted on
     not_voted_on = []
-    if request.user.is_active and request.user.is_authenticated() and votecode_associated:
+    if request.user.is_active and request.user.is_authenticated and votecode_associated:
         for compo in Compo.objects.filter(event=event_id, active=True):
             if compo.is_voting_open():
                 if Vote.objects.filter(user=request.user, compo=compo).count() == 0:
@@ -73,7 +73,7 @@ def index(request, event_id):
 
     # Has profile already been checked and saved
     profile_checked = False
-    if request.user.is_authenticated() and Profile.objects.filter(user=request.user).exists():
+    if request.user.is_authenticated and Profile.objects.filter(user=request.user).exists():
         profile_checked = True
 
     # All done, dump template
@@ -105,7 +105,7 @@ def compo_details(request, event_id, compo_id):
     
     # Check if user may vote (voting open, user has code)
     can_vote = False
-    if request.user.is_active and request.user.is_authenticated():
+    if request.user.is_active and request.user.is_authenticated:
         # See if ticket is used as votecode
         try:
             TicketVoteCode.objects.get(associated_to=request.user, event=event_id)
@@ -123,7 +123,7 @@ def compo_details(request, event_id, compo_id):
     # Handle entry adding
     if request.method == 'POST' and compo.is_adding_open():
         # Make sure user is authenticated
-        if not request.user.is_active or not request.user.is_authenticated():
+        if not request.user.is_active or not request.user.is_authenticated:
             raise Http403
         
         # Handle data
@@ -149,7 +149,7 @@ def compo_details(request, event_id, compo_id):
     # Stuff for users that have logged in 
     my_entries = []
     has_voted = False
-    if request.user.is_active and request.user.is_authenticated():
+    if request.user.is_active and request.user.is_authenticated:
         # Get all entries added by the user
         my_entries = Entry.objects.filter(compo=compo, user=request.user)
     
@@ -351,7 +351,7 @@ def competition_details(request, event_id, competition_id):
     # Handle signup form
     if request.method == 'POST' and can_participate:
         # Make sure user is authenticated
-        if not request.user.is_active or not request.user.is_authenticated():
+        if not request.user.is_active or not request.user.is_authenticated:
             raise Http403
         
         # Handle post data
@@ -371,7 +371,7 @@ def competition_details(request, event_id, competition_id):
     # Check if user has participated
     signed_up = False
     participation = None
-    if request.user.is_active and request.user.is_authenticated():
+    if request.user.is_active and request.user.is_authenticated:
         try:
             participation = CompetitionParticipation.objects.get(competition=competition, user=request.user)
             signed_up = True

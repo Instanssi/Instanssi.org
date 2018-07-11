@@ -21,7 +21,7 @@ AUTH_METHODS = [
 
 
 def login(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:profile'))
     
     # Get referer for redirect

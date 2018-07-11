@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def has_infodesk_access(request):
-    return request.user.is_authenticated() \
+    return request.user.is_authenticated \
         and request.user.is_active \
         and request.user.has_perm('store.change_storetransaction')
 

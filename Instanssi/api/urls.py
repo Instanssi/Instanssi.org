@@ -10,7 +10,7 @@ from .viewsets import (
     UserCompetitionParticipationViewSet, VoteCodeRequestViewSet, TicketVoteCodeViewSet, VoteGroupViewSet)
 from .admin_viewsets import (
     AdminEventViewSet, AdminCompoViewSet, AdminCompetitionParticipationViewSet, AdminCompetitionViewSet,
-    AdminCompoEntryViewSet, AdminUsersViewSet, AdminGroupsViewSet, AdminBlogEntryViewSet)
+    AdminCompoEntryViewSet, AdminUsersViewSet, AdminGroupsViewSet, AdminBlogEntryViewSet, AdminUploadedFileViewSet)
 
 app_name = "api"
 
@@ -56,6 +56,7 @@ router.register('admin/competitions', AdminCompetitionViewSet, base_name='admin_
 router.register('admin/competition_participations', AdminCompetitionParticipationViewSet,
                 base_name='admin_competition_participations')
 router.register('admin/blog_entries', AdminBlogEntryViewSet, base_name='admin_blog_entries')
+router.register('admin/uploaded_files', AdminUploadedFileViewSet, base_name='admin_uploaded_files')
 
 # Base endpoints for OAuth2 authorization
 oauth2_endpoint_views = [

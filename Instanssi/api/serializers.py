@@ -7,7 +7,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, RelatedField,\
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer,\
     ListField, PrimaryKeyRelatedField
 
 from Instanssi.store.methods import PaymentMethod
@@ -18,6 +18,7 @@ from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, Compe
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
 from Instanssi.store.models import StoreItem, StoreItemVariant, TransactionItem
+from .mixins import CompoEntrySerializerMixin
 
 logger = logging.getLogger(__name__)
 
@@ -167,9 +168,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
         return competition
 
     def validate(self, data):
-        competition = data.get('competition')
-        if not competition:
-            competition = self.instance.competition
+        competition = data.get('competition', self.instance.competition)
 
         # Check competition edits and additions
         if not competition.is_participating_open():
@@ -193,7 +192,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
         }
 
 
-class UserCompoEntrySerializer(ModelSerializer):
+class UserCompoEntrySerializer(ModelSerializer, CompoEntrySerializerMixin):
     compo = CompoForeignKey()
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
@@ -247,9 +246,7 @@ class UserCompoEntrySerializer(ModelSerializer):
 
     def validate(self, data):
         data = super(UserCompoEntrySerializer, self).validate(data)
-        compo = data.get('compo')
-        if not compo:
-            compo = self.instance.compo
+        compo = data.get('compo', self.instance.compo)
 
         # Check adding & editing time
         if not self.instance and not compo.is_adding_open():
@@ -257,13 +254,8 @@ class UserCompoEntrySerializer(ModelSerializer):
         if self.instance and not compo.is_editing_open():
             raise ValidationError("Kompon muokkausaika on päättynyt")
 
-        # Aggro if image field is missing but required
-        if not data.get('imagefile_original') and compo.is_imagefile_required:
-            raise ValidationError({'imagefile_original': ["Kuvatiedosto tarvitaan tälle kompolle"]})
-
-        # Also aggro if image field is supplied but not allowed
-        if data.get('imagefile_original') and not compo.is_imagefile_allowed:
-            raise ValidationError({'imagefile_original': ["Kuvatiedostoa ei tarvita tälle kompolle"]})
+        # Validate imagefile
+        self.validate_imagefile(data, compo)
 
         # Required validation function arguments for each field
         errors = {}
@@ -295,13 +287,6 @@ class UserCompoEntrySerializer(ModelSerializer):
             raise ValidationError(errors)
 
         return data
-
-    @staticmethod
-    def _maybe_copy_entry_to_image(instance):
-        """ If necessary, copy entryfile to imagefile for thumbnail data """
-        if instance.compo.is_imagefile_copied:
-            name = str('th_' + os.path.basename(instance.entryfile.name))
-            instance.imagefile_original.save(name, instance.entryfile)
 
     def create(self, validated_data):
         instance = super(UserCompoEntrySerializer, self).create(validated_data)

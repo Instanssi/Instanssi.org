@@ -3,10 +3,13 @@
 import logging
 
 from django.contrib.auth.models import User, Group
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, ListField, IntegerField, CharField
+from rest_framework.serializers import (ModelSerializer, SerializerMethodField, ListField, IntegerField, CharField,
+                                        ValidationError)
 
 from Instanssi.kompomaatti.models import Event, Compo, Competition, Entry, CompetitionParticipation
 from Instanssi.ext_blog.models import BlogEntry
+from Instanssi.admin_upload.models import UploadedFile
+from .mixins import CompoEntrySerializerMixin
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +73,7 @@ class AdminCompoSerializer(ModelSerializer):
                   'hide_from_frontpage', 'is_votable', 'thumbnail_pref')
 
 
-class AdminCompoEntrySerializer(ModelSerializer):
+class AdminCompoEntrySerializer(ModelSerializer, CompoEntrySerializerMixin):
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -114,6 +117,22 @@ class AdminCompoEntrySerializer(ModelSerializer):
             return obj.get_score()
         return None
 
+    def validate(self, data):
+        data = super(AdminCompoEntrySerializer, self).validate(data)
+        compo = data.get('compo', self.instance.compo)
+        self.validate_imagefile(data, compo)
+        return data
+
+    def create(self, validated_data):
+        instance = super(AdminCompoEntrySerializer, self).create(validated_data)
+        self._maybe_copy_entry_to_image(instance)
+        return instance
+
+    def update(self, instance, validated_data):
+        instance = super(AdminCompoEntrySerializer, self).update(instance, validated_data)
+        self._maybe_copy_entry_to_image(instance)
+        return instance
+
     class Meta:
         model = Entry
         fields = ('id', 'user', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
@@ -132,3 +151,9 @@ class AdminBlogEntrySerializer(ModelSerializer):
     class Meta:
         model = BlogEntry
         fields = ('id', 'event', 'user', 'title', 'text', 'date', 'public')
+
+
+class AdminUploadedFileSerializer(ModelSerializer):
+    class Meta:
+        model = UploadedFile
+        fields = ('id', 'event', 'user', 'description', 'file', 'date')

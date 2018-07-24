@@ -11,9 +11,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from Instanssi.kompomaatti.models import (
     Event, Compo, Entry, CompetitionParticipation, Competition)
 from Instanssi.ext_blog.models import BlogEntry
+from Instanssi.admin_upload.models import UploadedFile
 from .admin_serializers import (
     AdminEventSerializer, AdminCompoEntrySerializer, AdminCompoSerializer, AdminCompetitionSerializer,
-    AdminCompetitionParticipationSerializer, AdminUserSerializer, AdminGroupSerializer, AdminBlogEntrySerializer)
+    AdminCompetitionParticipationSerializer, AdminUserSerializer, AdminGroupSerializer, AdminBlogEntrySerializer,
+    AdminUploadedFileSerializer)
 
 
 class AdminUsersViewSet(ReadOnlyModelViewSet):
@@ -90,6 +92,16 @@ class AdminBlogEntryViewSet(ModelViewSet):
     queryset = BlogEntry.objects.all()
     permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = AdminBlogEntrySerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id', 'user', 'event',)
+    filter_fields = ('user', 'event',)
+
+
+class AdminUploadedFileViewSet(ModelViewSet):
+    queryset = UploadedFile.objects.all()
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = AdminUploadedFileSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id', 'user', 'event',)

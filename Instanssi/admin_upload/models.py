@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.models import Event
 import os.path
@@ -12,7 +13,7 @@ class UploadedFile(models.Model):
     description = models.TextField(
         'Kuvaus', help_text='Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', blank=True)
     file = models.FileField('Tiedosto', upload_to='files/')
-    date = models.DateTimeField('Aika')
+    date = models.DateTimeField('Aika', default=timezone.now)
     
     def __str__(self):
         return '{} by {}'.format(self.file.name, self.user.username)

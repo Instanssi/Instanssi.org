@@ -168,7 +168,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
         return competition
 
     def validate(self, data):
-        competition = data.get('competition', self.instance.competition)
+        competition = data.get('competition') or self.instance.competition
 
         # Check competition edits and additions
         if not competition.is_participating_open():
@@ -246,7 +246,7 @@ class UserCompoEntrySerializer(ModelSerializer, CompoEntrySerializerMixin):
 
     def validate(self, data):
         data = super(UserCompoEntrySerializer, self).validate(data)
-        compo = data.get('compo', self.instance.compo)
+        compo = data.get('compo') or self.instance.compo
 
         # Check adding & editing time
         if not self.instance and not compo.is_adding_open():

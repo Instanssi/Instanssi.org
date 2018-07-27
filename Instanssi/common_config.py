@@ -22,6 +22,9 @@ STATIC_URL = '/static/'
 # Use timezones in database
 USE_TZ = True
 
+# Max size for request body (8M)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
+
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 LOGIN_URL = '/users/login/'

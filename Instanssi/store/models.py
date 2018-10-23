@@ -299,7 +299,8 @@ class StoreTransaction(models.Model):
     class Meta:
         verbose_name = "transaktio"
         verbose_name_plural = "transaktiot"
-        permissions = (("view_storetransaction", "Can view store transactions"),)
+        # permissions = (("view_storetransaction", "Can view store transactions"),)
+        # default_permissions = ('add', 'change', 'delete',)
 
 
 class TransactionItem(models.Model):

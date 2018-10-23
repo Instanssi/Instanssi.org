@@ -1,16 +1,16 @@
 Django==2.0.9
-django-countries==5.3.1
+django-countries==5.3.2
 django-crispy-forms==1.7.2
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.10.1
 django-imagekit==4.0.2
 django-twitter-tag==1.2.1
 django-filter==1.1.0
-Pillow==5.2.0
+Pillow==5.3.0
 social-auth-core==1.7.0
 social-auth-app-django==2.1.0
 django-libsass==0.7
 django-compressor==2.2
-requests==2.19.1
+requests==2.20.0
 raven==6.9.0
 django-redis==4.9.0
 djangorestframework==3.8.2
@@ -20,4 +20,4 @@ tabulate==0.8.2
 arrow==0.12.1  # Proper iso8601 parsing
 loremipsum==1.0.5  # For providing test data
 mock==2.0.0  # For testing against mocks
-faker==0.8.16  # For providing test data
+faker==0.9.2  # For providing test data

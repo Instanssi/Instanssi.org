@@ -85,6 +85,9 @@ Vue.component('store-product', {
          * Show full size image of the product.
          */
         showFullSize() {
+            if (!this.product.imagefile_original_url) {
+                return;
+            }
             let thumbnail = $(this.$el).find('.product-thumbnail');
             $(thumbnail).ekkoLightbox();
         }

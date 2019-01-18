@@ -33,7 +33,11 @@ const NO_PAYMENT_METHODS = [
  * @returns {Promise.<Object>} - API response
  */
 function fetchItems() {
-    return storeXHR('GET', '/api/v1/store_items/?format=json');
+    const args = ['format=json'];
+    if (location.search) {
+        args.push(location.search.slice(1));
+    }
+    return storeXHR('GET', '/api/v1/store_items/?' + args.join('&'));
 }
 /**
  * Submits a transaction to the store API.

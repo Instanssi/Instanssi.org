@@ -21,6 +21,8 @@ class StoreItemForm(forms.ModelForm):
             'max',
             'available',
             'max_per_order',
+            'is_secret',
+            'secret_key',
             'imagefile_original',
             'sort_index',
             'discount_amount',
@@ -53,7 +55,7 @@ class TaItemExportForm(forms.Form):
         for ev in Event.objects.all().order_by('-id'):
             out.append((ev.id, ev.name))
         return out
-    
+
     def __init__(self, *args, **kwargs):
         super(TaItemExportForm, self).__init__(*args, **kwargs)
         self.fields['event'] = forms.ChoiceField(choices=self.get_event_list())

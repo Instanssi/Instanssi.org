@@ -421,9 +421,11 @@ class StoreItemViewSet(ReadOnlyModelViewSet):
     Exposes all available store items.  This entrypoint does not require authentication/authorization.
     """
     serializer_class = StoreItemSerializer
-    queryset = StoreItem.items_available()
     permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = []
+
+    def get_queryset(self):
+        return StoreItem.items_visible(secret_key=self.request.query_params.get('secret_key'))
 
 
 class StoreTransactionViewSet(WriteOnlyModelViewSet):

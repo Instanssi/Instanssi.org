@@ -4,6 +4,7 @@ import os
 from decimal import Decimal
 from django.urls import reverse
 from django.db import models
+from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
 from django_countries.fields import CountryField
@@ -70,6 +71,17 @@ class StoreItem(models.Model):
         'Tuote on lipputuote',
         default=False,
         help_text='Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen')
+    is_secret = models.BooleanField(
+        'Tuote on salainen',
+        default=False,
+        help_text='Tuote näkyy kaupassa vain salaisella linkillä'
+    )
+    secret_key = models.CharField(
+        'Salasana',
+        blank=True,
+        max_length=255,
+        help_text='Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa',
+    )
 
     def is_discount_available(self):
         """Returns True if a discount exists for this item."""
@@ -125,6 +137,15 @@ class StoreItem(models.Model):
     @staticmethod
     def items_available():
         return StoreItem.objects.filter(max__gt=0, available=True).order_by('sort_index')
+
+    @staticmethod
+    def items_visible(secret_key=None):
+        """Returns items visible in the store. May return additional items if
+        the user has said the magic word."""
+        return StoreItem.objects \
+            .filter(max__gt=0, available=True) \
+            .filter(Q(is_secret=False) | Q(secret_key=secret_key)) \
+            .order_by('sort_index')
 
     def __str__(self):
         return self.name

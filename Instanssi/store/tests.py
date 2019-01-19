@@ -6,7 +6,7 @@ from decimal import Decimal
 from random import randint
 
 from Instanssi.common.misc import get_url
-from Instanssi.store.models import TransactionItem
+from Instanssi.store.models import TransactionItem, StoreItem
 from Instanssi.store.utils.receipt import ReceiptParams
 from Instanssi.store.models import Receipt
 from Instanssi.store.methods import PaymentMethod
@@ -32,7 +32,7 @@ class StoreTests(TestCase):
         self.event = KompomaattiTestData.create_test_event('TestEvent')
         self.items = []
         self.variants = {}
-        for i in range(6):
+        for i in range(7):
             item = StoreTestData.create_test_item("TestItem {}".format(i), self.event, sort_index=i)
             self.items.append(item)
             self.variants[i] = StoreTestData.create_test_variants(item, 5)
@@ -54,8 +54,20 @@ class StoreTests(TestCase):
         self.items[5].price = 0
         self.items[5].save()
 
+        # Item 6 is secret
+        self.items[6].name = 'Secret item'
+        self.items[6].is_secret = True
+        self.items[6].secret_key = 'kissa'
+        self.items[6].save()
+
         # Create a test transaction
         self.transaction = StoreTestData.create_test_transaction(self.items, self.variants)
+
+    def test_secret_items(self):
+        """Test hiding secret items unless the correct key is provided."""
+        self.assertLess(len(StoreItem.items_visible()), len(StoreItem.items_available()))
+        self.assertLess(len(StoreItem.items_visible('cat')), len(StoreItem.items_available()))
+        self.assertEqual(len(StoreItem.items_visible('kissa')), len(StoreItem.items_available()))
 
     def test_receipt_params(self):
         """ Test receipt parameter handling logic """

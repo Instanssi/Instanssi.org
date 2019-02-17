@@ -1,7 +1,10 @@
 {% load static blog_tags twitter_tag cache compress %}
-<!--<section class="widget widget-store">
-    <a href="{% url 'store:index' %}" class="btn btn-primary">Osta lippu!</a>
+<section class="widget widget-store">
+    <a href="{% url 'store:index' %}">
+        <h3><span class="fa fa-euro"></span> Osta lippu!</h3>
+    </a>
 </section>
+<!--
 <section class="widget widget-stream">
     <a href="{% url 'main2019:stream' %}">
         <h3><span class="fa fa-twitch"></span> Stream</h3>
@@ -33,11 +36,10 @@
     <h2>Some</h2>
     <div class="widget-content">
         <div class="social-media-icons">
-            <a href="http://www.facebook.com/instanssi"><img src="{% static 'main2019/images/icons/icon-facebook.png' %}" alt="Facebook" ></a>
-            <a href="http://twitter.com/instanssi"><img src="{% static 'main2019/images/icons/icon-twitter.png' %}" alt="Twitter" ></a>
+            <a href="https://www.facebook.com/instanssi"><img src="{% static 'main2019/images/icons/icon-facebook.png' %}" alt="Facebook" ></a>
+            <a href="https://twitter.com/instanssi"><img src="{% static 'main2019/images/icons/icon-twitter.png' %}" alt="Twitter" ></a>
             <a href="https://telegram.me/Instanssi"><img src="{% static 'main2019/images/icons/icon-telegram.png' %}" alt="Telegram" ></a>
-            <a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2019/images/icons/icon-youtube.png' %}" alt="YouTube" ></a>
-            <a href="https://groups.google.com/forum/?fromgroups#!forum/instanssi"><img src="{% static 'main2019/images/icons/icon-googleplus.png' %}" alt="Google Groups" ></a>
+            <a href="https://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2019/images/icons/icon-youtube.png' %}" alt="YouTube" ></a>
             <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2019/images/icons/icon-rss.png' %}" alt="RSS" ></a>
             <div class="clearer"></div>
         </div>

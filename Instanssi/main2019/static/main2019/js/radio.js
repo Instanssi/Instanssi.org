@@ -6,9 +6,8 @@ $(function() {
     var calurl = "https://www.googleapis.com/calendar/v3/calendars/" + calid + "/events?key=" + apik + "&timeMin=2019-02-20T10:00:00%2B02:00";
     var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
 
-    function onPageLoad() {
-        calRequest();
-        setInterval(calRequest, 15000);
+    function lpad(number, digits) {
+        return Array(Math.max(digits - String(number).length + 1, 0)).join('0') + number;
     }
 
     function parseCal(params) {
@@ -25,10 +24,11 @@ $(function() {
             var day = startD.getDate();
             var endD = new Date(val.end.dateTime);
             var description = '<small>' + val.description + '</small>';
-            var startHour = startD.getHours() < 10 ? '0'+ startD.getHours() : startD.getHours();
-            var endHour = endD.getHours() < 10 ? '0' + endD.getHours() : endD.getHours();
-            var startMinutes = startD.getMinutes() === 0 ? '00' : startD.getMinutes();
-            var endMinutes = endD.getMinutes() === 0 ? '00' : endD.getMinutes();
+
+            var startHour = lpad(startD.getHours(), 2);
+            var endHour = lpad(endD.getHours(), 2);
+            var startMinutes = lpad(startD.getMinutes(), 2);
+            var endMinutes = lpad(endD.getMinutes(), 2);
 
             var month = startD.getMonth() + 1;
             var weekday = wds[startD.getDay()];
@@ -36,12 +36,15 @@ $(function() {
             var startTimeStr = startHour + ':' + startMinutes;
             var endTimeStr = endHour + ':' + endMinutes +'<br>';
             var timeStr = '<b>' + startTimeStr + '-' + endTimeStr+'</b>';
+
             if (dateStr !== oldDay) {
                 output += '<h3>' + dateStr + '</h3>';
             }
-            output += '<p>'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
+
             if (dateNow > val.start.dateTime && dateNow < val.end.dateTime) {
                 output += '<p class="nytsoi">'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
+            } else {
+                output += '<p>'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
             }
             oldDay = dateStr;
         });
@@ -65,5 +68,5 @@ $(function() {
         });
     }
 
-    onPageLoad();
+    calRequest();
 });

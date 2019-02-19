@@ -1,0 +1,73 @@
+{% extends "main2019/base.html" %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<script type="text/javascript" src="/static/main2019/js/radio.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/main2019/css/radio.css">
+<h1>Instanssiradio</h1>
+
+<h2>Mikä on instanssiradio?</h2>
+<p>
+  Instanssin tapahtumia voit seurata myös radion kautta.
+  Tapahtumaa varten on hankittu FM-radiolähetysluvat.
+  Radio tulee sellaisenaan myös audio-streamina ja sitä voit kuunnella netistä.
+</p>
+
+<h2>Milloin ja missä voit kuunnella?</h2>
+<p>
+  Instanssiradio soi FM-taajuudella <b>101.9 MHz</b> sekä audiostreamina http:llä osoitteessa <a href="http://radio.instanssi.org:8000/fm.opus">http://radio.instanssi.org:8000/fm.opus</a>
+  Radio soi pari viikkoa ennen ja jälkeen Instanssin, sekä tietysti tapahtuman aikana.
+</p>
+
+<h2>Millä ohjelmalla voit kuunnella nettiradiota?</h2>
+<p>
+    Useimmat soittimet tukevat http-streamin kuuntelua.
+</p>
+<ul>
+  <li>
+      Selaimet (yleisimmät nettiselaimet)
+  </li>
+  <li>
+      VLC
+  </li>
+  <li>
+    Foobar2000 
+</li>
+  <li>
+      Rhythmbox
+  </li>
+</ul>
+<h2>Radiosoitin</h2>
+<p>Radiossa soi tällä hetkellä: <pre id="stream_title">Haetaan..</pre></p>
+<audio preload="none" id ="radiostream_audio" controls>
+    <source src="http://radio.instanssi.org:8000/fm.opus" type="audio/ogg; codecs=opus">
+    <source src="http://radio.instanssi.org:8000/fm.mp3" type="audio/mpeg">
+  <p>Selaimesi ei tue html5-audio -elementtiä. <a href="http://radio.instanssi.org:8000/fm.opus">Suora linkki tästä.</a></p>
+</audio>
+
+<h2>Radio-ohjelmien aikataulu</h2>
+<div id="aikataulu"></div>
+
+<br><br>
+<p>Alla on linkit suoraan Google-kalenteriin.</p>
+<p><a href="https://calendar.google.com/calendar/ical/46oohofs0emt0rrm05darkobdo%40group.calendar.google.com/public/basic.ics" target="blank">Lataa iCal (ics) -tiedosto kalenterista.</a>
+  | <a href="https://calendar.google.com/calendar/embed?src=46oohofs0emt0rrm05darkobdo@group.calendar.google.com&ctz=Europe%2FHelsinki" target="blank">Avaa kalenteri omaan ikkunaan.</a>
+ </p>
+
+{% comment %}
+
+{% endcomment %}
+
+{% endblock %}
+{% block widgets %}
+{{ block.super }}
+{% endblock %}

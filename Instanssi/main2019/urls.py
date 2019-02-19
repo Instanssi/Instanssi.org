@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^stream/$', pageloader, {'templatename': 'stream'}, name="stream"),
     url(r'^saannot/$', pageloader, {'templatename': 'saannot'}, name="saannot"),
     url(r'^valot/$', pageloader, {'templatename': 'valot'}, name="valot"),
+    url(r'^radio/$', pageloader, {'templatename': 'radio'}, name="radio"),
 ]

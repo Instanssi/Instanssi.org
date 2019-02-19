@@ -2,6 +2,7 @@
 
 {% block head %}
 {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/main2019/css/radio.css">
 {% endblock %}
 
 {% block jquery %}
@@ -10,9 +11,6 @@
 
 {% block content %}
 {{ block.super }}
-
-<script type="text/javascript" src="/static/main2019/js/radio.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/main2019/css/radio.css">
 <h1>Instanssiradio</h1>
 
 <h2>Mikä on instanssiradio?</h2>
@@ -63,11 +61,9 @@
   | <a href="https://calendar.google.com/calendar/embed?src=46oohofs0emt0rrm05darkobdo@group.calendar.google.com&ctz=Europe%2FHelsinki" target="blank">Avaa kalenteri omaan ikkunaan.</a>
  </p>
 
-{% comment %}
-
-{% endcomment %}
-
+<script type="text/javascript" src="/static/main2019/js/radio.js"></script>
 {% endblock %}
+
 {% block widgets %}
 {{ block.super }}
 {% endblock %}

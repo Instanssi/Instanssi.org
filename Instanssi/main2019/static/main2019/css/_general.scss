@@ -37,25 +37,29 @@ h1 {
     padding: 0 $spacer;
 }
 
-h2,
-form legend
-.item .title,
-.header {
+form legend {
     font-family: $title-font-family;
-    //font-variant: small-caps;
+    background: $theme-color-dark;
+    font-weight: bold;
     font-size: 25px;
     margin: 20px 0;
     padding-left: 8px;
     padding-right: 8px;
     color: #fff;
-    font-weight: bold;
 }
 
 #content h2,
-form legend
 .item .title,
 .header {
-    background: $theme-color-dark;
+    color: $theme-color-dark;
+    font-family: $title-font-family;
+    border-bottom: 1px solid $theme-color-bright;
+    background: transparent;
+    font-weight: bold;
+    font-size: 25px;
+    margin: 20px 0;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 h3 {
     font-size: 16px;

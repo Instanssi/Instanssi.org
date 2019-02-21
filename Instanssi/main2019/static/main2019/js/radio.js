@@ -12,8 +12,9 @@ $(function() {
 
     function parseCal(params) {
         var oldDay = '';
-        var dateNow = new Date().toISOString();
-
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+        var dateNow = (new Date(Date.now() - tzoffset)).toISOString();
+        
         var newData = params.sort(function(a, b) {
             return (a.start.dateTime > b.start.dateTime) - (b.start.dateTime > a.start.dateTime);
         });
@@ -42,7 +43,7 @@ $(function() {
             }
 
             if (dateNow > val.start.dateTime && dateNow < val.end.dateTime) {
-                output += '<p class="nytsoi">'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
+                output += '<p style="background-color: #eee;">'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
             } else {
                 output += '<p>'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
             }

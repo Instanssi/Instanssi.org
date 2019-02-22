@@ -3,6 +3,7 @@
 $(function() {
     var calid = "46oohofs0emt0rrm05darkobdo@group.calendar.google.com";
     var apik = "AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos";
+
     var calurl = "https://www.googleapis.com/calendar/v3/calendars/" + calid + "/events?key=" + apik + "&timeMin=2019-02-20T10:00:00%2B02:00";
     var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
 
@@ -12,8 +13,7 @@ $(function() {
 
     function parseCal(params) {
         var oldDay = '';
-        var tzoffset = (new Date()).getTimezoneOffset() * 60000;
-        var dateNow = (new Date(Date.now() - tzoffset)).toISOString();
+        var dateNow = new Date().getTime();
         
         var newData = params.sort(function(a, b) {
             return (a.start.dateTime > b.start.dateTime) - (b.start.dateTime > a.start.dateTime);
@@ -42,7 +42,7 @@ $(function() {
                 output += '<h3>' + dateStr + '</h3>';
             }
 
-            if (dateNow > val.start.dateTime && dateNow < val.end.dateTime) {
+            if (dateNow > startD && dateNow < endD) {
                 output += '<p style="background-color: #eee;">'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
             } else {
                 output += '<p>'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';

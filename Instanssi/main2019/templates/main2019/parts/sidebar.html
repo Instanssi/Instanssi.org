@@ -1,17 +1,22 @@
 {% load static blog_tags twitter_tag cache compress %}
 <section class="widget widget-store">
     <a href="{% url 'store:index' %}">
-        <h3><span class="fa fa-euro"></span> Osta lippu!</h3>
+        <h3><span class="fa fa-fw fa-euro"></span> Osta lippu!</h3>
     </a>
 </section>
 <section class="widget widget-stream">
     <a href="{% url 'main2019:stream' %}">
-        <h3><span class="fa fa-twitch"></span> Stream</h3>
+        <h3><span class="fa fa-fw fa-twitch"></span> Stream</h3>
     </a>
 </section>
 <section class="widget widget-radio">
     <a href="{% url 'main2019:radio' %}">
-        <h3><span class="fa fa-music"></span> Instanssiradio</h3>
+        <h3><span class="fa fa-fw fa-music"></span> Instanssiradio</h3>
+    </a>
+</section>
+<section class="widget widget-valot">
+    <a href="{% url 'main2019:valot' %}">
+        <h3><span class="fa fa-fw fa-lightbulb-o"></span> Valot</h3>
     </a>
 </section>
 <!--<section class="widget widget-rules">

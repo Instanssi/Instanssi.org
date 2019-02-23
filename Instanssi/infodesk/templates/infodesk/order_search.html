@@ -48,8 +48,10 @@
     <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\ H:i" }}</td>
     <td>{{ transaction.get_status_text }}</td>
     <td><ul>{% for item in transaction.get_transaction_items %}
-       <li><a href="{% url 'infodesk:item_info' item.id %}">
-        {{ item.item.name }}</a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
+       <li>
+          <a href="{% url 'infodesk:item_info' item.id %}">
+            {{ item.item.name }}{% if item.variant %}, {{ item.variant.name }}{% endif %}
+          </a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
        </li>
     {% endfor %}</ul></td>
   </tr>

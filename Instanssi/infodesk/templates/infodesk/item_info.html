@@ -19,7 +19,9 @@
     <tbody>
         <tr>
             <th>Tuote</th>
-            <td>{{ item.item.name }}</td>
+            <td>
+                {{ item.item.name }}{% if item.variant %}, {{ item.variant.name }}{% endif %}
+            </td>
         </tr>
         <tr>
             <th>Avain</th>

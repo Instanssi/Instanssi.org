@@ -3,7 +3,10 @@
 $(function() {
     var calid = "46oohofs0emt0rrm05darkobdo@group.calendar.google.com";
     var apik = "AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos";
+    var sheetid = "1pRBIrNYjw5Qp1B8DyiyeKhFPFZB0hS_L94d4pa6V6YU";
 
+    var datarange = "Musiikki!A2:D2";
+    var sheeturl = "https://sheets.googleapis.com/v4/spreadsheets/" + sheetid + "/values/" + datarange + "?key=" + apik;
     var calurl = "https://www.googleapis.com/calendar/v3/calendars/" + calid + "/events?key=" + apik + "&timeMin=2019-02-20T10:00:00%2B02:00";
     var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
 
@@ -65,9 +68,68 @@ $(function() {
                     return;
                 }
                 parseCal(data.items);
+            },
+            complete: function() {
+                setTimeout(calRequest, 300000);     // 5 mins
             }
         });
     }
 
+    function parseSheet(params) {
+        var oldval = unescape($('#radiostream_nytsoi').html());
+        var updateStr = '';
+        if (params[1] !== '') {
+            // Kun Ohjelma -kenttä annettu
+            if (params[2] !== '' && params[3] !== '') {
+                // Jos lähetyksessä artisti & kappale -tiedot kummatkin
+                updateStr += params[1] + ': ' + params[2] + ' - ' + params[3];
+            } else if (params[3] !== '') {
+                // Jos lähetyksessä kappale -tiedot (kun striimataan esim. Traktorilla).
+                updateStr = params[1] + ': ' + params[3];
+            } else {
+                // Jos lähetyksessä ei näy artisti & kappale -tietoja.
+                updateStr = params[1];
+            }
+        } else if ($params[2] !== '' && params[3] !== '') {
+            // Jos musa tulee radion omasta playlististä
+            updateStr = params[2] + ' - ' + params[3];
+        } else if (params[2] !== '') {
+            // Jos vain artisti -tieto.
+            updateStr = params[2];
+        } else if (params[3] !== '') {
+            // Jos vain kappale -tieto.
+            updateStr = params[3];
+        } else {
+            // Kun metatietoja ei saatavilla lainkaan
+            // updateStr = 'Tuntematon.';
+        }
+
+        if (updateStr !== oldval) {
+            $('#radiostream_nytsoi').html(updateStr);
+        }
+    }
+
+    function sheetRequest() {
+        $.ajax({
+            url: sheeturl,
+            type: 'GET',
+            cache: false,
+            dataType: 'jsonp',
+            timeout: 3000,
+            success: function(data, status, jqXHR) {
+                if (status === 'error') {
+                    console.log('Ei saatu taulukon tietoja.');
+                    return;
+                }
+                parseSheet(data.values[0]);
+            },
+            complete: function() {
+                setTimeout(sheetRequest, 15000);    // 15 sec
+            }
+
+        });
+    }
+
     calRequest();
+    sheetRequest();
 });

@@ -1,13 +1,13 @@
 'use strict';
 
 $(function() {
-    var calid = "46oohofs0emt0rrm05darkobdo@group.calendar.google.com";
-    var apik = "AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos";
-    var sheetid = "1pRBIrNYjw5Qp1B8DyiyeKhFPFZB0hS_L94d4pa6V6YU";
+    var calid = '46oohofs0emt0rrm05darkobdo@group.calendar.google.com';
+    var apik = 'AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos';     // pub
+    var sheetid = '1pRBIrNYjw5Qp1B8DyiyeKhFPFZB0hS_L94d4pa6V6YU';
 
-    var datarange = "Musiikki!A2:D2";
-    var sheeturl = "https://sheets.googleapis.com/v4/spreadsheets/" + sheetid + "/values/" + datarange + "?key=" + apik;
-    var calurl = "https://www.googleapis.com/calendar/v3/calendars/" + calid + "/events?key=" + apik + "&timeMin=2019-02-20T10:00:00%2B02:00";
+    var datarange = escape('Musiikki!A2:D2');
+    var sheeturl = 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetid + '/values/' + datarange + '?key=' + apik;
+    var calurl = 'https://www.googleapis.com/calendar/v3/calendars/' + calid + '/events?key=' + apik + '&timeMin=2019-02-20T10:00:00%2B02:00';
     var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
 
     function lpad(number, digits) {
@@ -22,7 +22,7 @@ $(function() {
             return (a.start.dateTime > b.start.dateTime) - (b.start.dateTime > a.start.dateTime);
         });
 
-        var output = "";
+        var output = '';
         $.each(newData, function(i, val) {
             var startD = new Date(val.start.dateTime);
             var day = startD.getDate();
@@ -38,17 +38,17 @@ $(function() {
             var weekday = wds[startD.getDay()];
             var dateStr = weekday + ' ' + day + '.' + month + '.';
             var startTimeStr = startHour + ':' + startMinutes;
-            var endTimeStr = endHour + ':' + endMinutes +'<br>';
-            var timeStr = '<b>' + startTimeStr + '-' + endTimeStr+'</b>';
+            var endTimeStr = endHour + ':' + endMinutes + '<br>';
+            var timeStr = '<b>' + startTimeStr + '-' + endTimeStr + '</b>';
 
             if (dateStr !== oldDay) {
                 output += '<h3>' + dateStr + '</h3>';
             }
 
             if (dateNow > startD && dateNow < endD) {
-                output += '<p style="background-color: #eee;">'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
+                output += '<p style="background-color: #eee;">' + timeStr + ' ' + val.summary + ': ' + description + '</p>';
             } else {
-                output += '<p>'+ timeStr + ' ' + val.summary + ': ' + description + '</p>';
+                output += '<p>' + timeStr + ' ' + val.summary + ': ' + description + '</p>';
             }
             oldDay = dateStr;
         });
@@ -67,7 +67,9 @@ $(function() {
                     console.log('Ei saatu kalenterin tietoja.');
                     return;
                 }
-                parseCal(data.items);
+                if (typeof data !== 'undefined' && typeof data.items !== 'undefined') {
+                    parseCal(data.items);
+                }
             },
             complete: function() {
                 setTimeout(calRequest, 300000);     // 5 mins
@@ -90,7 +92,7 @@ $(function() {
                 // Jos lähetyksessä ei näy artisti & kappale -tietoja.
                 updateStr = params[1];
             }
-        } else if ($params[2] !== '' && params[3] !== '') {
+        } else if (params[2] !== '' && params[3] !== '') {
             // Jos musa tulee radion omasta playlististä
             updateStr = params[2] + ' - ' + params[3];
         } else if (params[2] !== '') {
@@ -121,12 +123,13 @@ $(function() {
                     console.log('Ei saatu taulukon tietoja.');
                     return;
                 }
-                parseSheet(data.values[0]);
+                if (typeof data !== 'undefined' && typeof data.values !== 'undefined') {
+                    parseSheet(data.values[0]);
+                }
             },
             complete: function() {
                 setTimeout(sheetRequest, 15000);    // 15 sec
             }
-
         });
     }
 

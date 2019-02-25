@@ -93,7 +93,7 @@ $(function() {
                 // Jos lähetyksessä ei näy artisti & kappale -tietoja.
                 updateStr = params[1];
             }
-        } else if (params[2] !== '' && typeof params[3] !== 'undefined' && params[3] !== '') {
+        } else if (typeof params[2] !== 'undefined' && params[2] !== '' && typeof params[3] !== 'undefined' && params[3] !== '') {
             // Jos musa tulee radion omasta playlististä
             updateStr = params[2] + ' - ' + params[3];
         } else if (typeof params[2] !== 'undefined' && params[2] !== '') {

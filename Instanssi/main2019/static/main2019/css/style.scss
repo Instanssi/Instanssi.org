@@ -16,7 +16,7 @@ $screen-sm-max: 979px;
 $screen-sm-min: 768px;
 // landscape phones / small tablets
 $screen-xs-max: 480px;
-$screen-xs-min: 480px;
+$screen-xs-min: 0px;
 
 // ---- last chance to override bootstrap defaults for site theme ----
 @import 'base_layout/css/common.scss';
@@ -35,8 +35,8 @@ $screen-xs-min: 480px;
     .hidden-xs-up { display: none; }
 }
 
-// note that these are minimum heights
-$main-header-height: 225px;
+$main-header-height-md: 265px;
+$main-header-height-lg: 313px;
 $main-footer-height: 320px;
 $main-header-actual: 275px;
 $main-footer-actual: $main-footer-height + $spacing-large * 2;
@@ -190,11 +190,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
             padding: 0;
 
-            p.time {
-                font-size: 20px;
-                padding-top: 84px;
-            }
-
             .logo > * {
                 margin: 0;
             }
@@ -215,7 +210,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
             .time {
                 font-size: 26px;
-                padding-top: 140px;
             }
         }
 

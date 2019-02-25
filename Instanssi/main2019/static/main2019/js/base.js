@@ -19,8 +19,6 @@ $(function () {
         var $container = $('.header-bg-fx');
 
         var haloData = [
-            { class: 'halo-2018 halo-orange', x: 815, y: 171, s: 147 },
-            { class: 'halo-2018 halo-green', x: 531, y: 6, s: 218 },
             { class: 'halo-2018 halo-blue', x: 202, y: 87, s: 257 },
             { class: 'halo-2018 halo-purple', x: -8, y: -17, s: 220 },
         ];

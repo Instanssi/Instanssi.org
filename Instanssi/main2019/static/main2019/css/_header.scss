@@ -1,22 +1,24 @@
+@mixin webbanner() {
+    background: url('../images/instanssi2019-webbanner-fs8.png') no-repeat center right;
+    background-size: contain;
+}
+
 #page-header {
     position: relative;
     overflow: hidden;
 
-    .header-bg {
-        position: absolute;
-        // background: url($banner-image-0) repeat-x;
-        // background-position: contain;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
-
-    .header-bg-fx {
+    > .container {
+        @include webbanner();
+        height: $main-header-height-lg;
         position: relative;
     }
 
+    .header-title {
+        height: $main-header-height-lg;
+    }
+    .header-bg-fx {
+        position: relative;
+    }
     .halo-orange {
         background: url('../images/halo-orange.png') no-repeat;
     }
@@ -29,7 +31,6 @@
     .halo-purple {
         background: url('../images/halo-purple.png') no-repeat;
     }
-    // TODO: Mobile positioning
     .halo-2018 {
         position: absolute;
         background-size: contain;
@@ -43,9 +44,7 @@
     // logo and info
 
     .header-info {
-        min-height: $main-header-height;
-        padding: 0 8px;
-
+        height: $main-header-height-lg;
         // position to prevent the (positioned) art from covering this
         position: relative;
 
@@ -57,14 +56,15 @@
             content: '';
             display: block;
             position: absolute;
-            top: 20px;
-            width: 600px;
-            height: 200px;
+            top: -20px;
+            width: 55%;
+            height: 90%;
             max-width: 100%;
-            background: url('../images/logo-fs8.png') 50% no-repeat;
-            background-size: 100%;
+            background: url('../images/instanssi2019-title-fs8.png') 50% no-repeat;
+            background-size: contain;
+            background-position: center left;
 
-            @media screen and (max-width: $screen-xs-min - 1px) {
+            @media screen and (max-width: $screen-xs-max - 1px) {
                 // tweak logo to align with text
                 margin-left: 0;
                 top: 0px;
@@ -78,16 +78,20 @@
             color: #fff;
         }
         .tagline, .time {
+            $glow: #ff2ef4a0;
             margin-bottom: 5px;
-            text-shadow: #124 0 2px 3px;
-            text-shadow: #124 0 2px 3px, #124 0 2px 6px;
+            text-shadow: $glow 0 0 3px;
+            text-shadow: $glow 0 0 3px, $glow 0 0 6px;
         }
         .tagline {
             font-size: 20px;
         }
         .time {
+            position: absolute;
             font-size: 24px;
-            padding: 180px 0 0 ($spacer * 1.5);
+            bottom: 80px;
+            left: 96px;
+            transform: rotate(-5deg);
         }
 
         h1 {
@@ -122,10 +126,16 @@
         }
     }
 
+    .main-nav-container {
+        position: absolute;
+        left: 0;
+        bottom: $spacer * 2;
+    }
+
     // Navigation menu
     nav.main-nav {
         padding: 0;
-        margin-bottom: $spacing-large;
+        // margin-bottom: $spacing-large;
         //background: rgba(darken($theme-color, 10%), 0.9);
         background: rgba($theme-color-dark, 0.9);
         ul {
@@ -208,5 +218,73 @@
             .item-programme a::before { @include awesome-glyph('\f133'); }
             .item-schedule a::before { @include awesome-glyph('\f017'); }*/
         }
+    }
+}
+
+#page-header {
+    @media screen and (max-width: $screen-md-max) {
+        &, & > .container, .header-info, .header-title {
+            height: $main-header-height-md;
+        }
+        .header-info {
+            .time {
+                bottom: 72px;
+                left: 96px;
+                transform: rotate(-5deg);
+            }
+        }
+    }
+    @media screen and (max-width: $screen-sm-max) {
+        height: auto;
+
+        & > .container, .header-info, .header-title {
+            height: 155px;
+        }
+        .main-nav-container {
+            width: auto;
+            margin: 0 (-$spacer * 2) ($spacer * 2);
+            position: static;
+        }
+        .header-info {
+            .time {
+                bottom: 5%;
+                font-size: 20px;
+                left: 48px;
+            }
+            &:after {
+                width: 65%;
+                top: 0;
+            }
+        }
+        & > .container {
+            height: auto;
+            background: none;
+        }
+        .header-title {
+            height: auto;
+            @include webbanner();
+            background-size: cover;
+        }
+    }
+    @media screen and (max-width: $screen-xs-max) {
+        & > .container {
+            height: auto;
+        }
+        .main-nav-container {
+            margin-bottom: 0;
+        }
+        .header-title {
+            max-height: 100px;
+        }
+        .header-info {
+            p.time {
+                display: none;
+                padding: 0;
+                transform: none;
+                left: $spacer;
+                bottom: $spacer;
+            }
+        }
+
     }
 }

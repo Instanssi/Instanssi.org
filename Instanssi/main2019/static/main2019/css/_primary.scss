@@ -14,7 +14,12 @@ body > * {
     img { margin-right: 8px; box-shadow: 0 0 8px #888;}
     img:last-child { margin-right: 0; }
     img.no-border { box-shadow: none; }
-    p { margin: 0 $spacing-medium 10px; }
+    p {
+        margin: 0 $spacing-medium 10px;
+        // deal with random non-breaking spaces and long URLs >:/
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     table {
         margin-bottom: 20px;

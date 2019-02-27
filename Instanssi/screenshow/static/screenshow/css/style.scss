@@ -1,7 +1,9 @@
+$screenshow-color: #ff2ef4;
+
 body {
     color: #fff;
     margin: 0;
-    background: #091122;
+    background: #060913;
 }
 
 div.step {
@@ -16,7 +18,7 @@ div.step {
 #screenshow-container, canvas {
     width: 100%;
     height: 100%;
-    text-shadow: rgba(20, 160, 200, 0.3) .3em 0 .3em, rgba(20, 160, 200, 0.3) -.3em 0 .3em;
+    text-shadow: rgba($screenshow-color, 0.6) 0 0 2em;
 }
 
 canvas {
@@ -39,7 +41,7 @@ div.dohide:not(.active) {
 }
 
 div.nohide:not(.active) {
-    opacity: 0.2;
+    opacity: 0.1;
 }
 
 div#nametext #front_header {
@@ -51,6 +53,17 @@ div#nametext #front_header {
     margin-bottom: 0;
 }
 
+div#nametext #front_header_image {
+    display: block;
+    position: relative;
+    height: 400px;
+    width: 100%;
+    // URL set in the JS-generated markup.
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 div#nametext .front_information {
     display: hidden;
     font-size: 40pt;
@@ -58,7 +71,7 @@ div#nametext .front_information {
     position: relative;
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 100#;
+    width: 100%;
 }
 
 div#nametext .front_right {

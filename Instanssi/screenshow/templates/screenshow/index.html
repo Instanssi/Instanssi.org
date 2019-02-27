@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{% load static compress %}
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,7 +8,7 @@
     <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
 
     <script type="text/javascript" src="{% static 'screenshow/js/jmpress.js' %}"></script>
-    
+
     <script type="text/javascript" src="{% static 'screenshow/js/settings.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/clock.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/events.js' %}"></script>
@@ -16,50 +16,55 @@
     <script type="text/javascript" src="{% static 'screenshow/js/mods/irc.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/messages.js' %}"></script>
     <script type="text/javascript" src="{% static 'screenshow/js/mods/playing.js' %}"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'screenshow/css/style.css' %}" />
+{% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'screenshow/css/style.scss' %}" />
+{% endcompress %}
+
     <script type="text/javascript">
     $(function() {
         "use strict";
-        
+
         // URLs to APIs
         var events_api_url = '{% url 'screen:events-api' event_id %}';
         var irc_api_url = '{% url 'screen:irc-api' event_id %}';
         var messages_api_url = '{% url 'screen:messages-api' event_id %}';
         var settings_api_url = '{% url 'screen:settings-api' event_id %}';
         var playing_api_url = '{% url 'screen:playing-api' event_id %}';
-        
+
+        var logo_url = '{% static 'main2019/images/instanssi2019-title-fs8.png' %}';
+
         // Set jmpress element
         var jm = $('#jmpress');
-        
+
         // Load settings
         var settings = new Settings(settings_api_url);
         settings.update();
-        
+
         // Set modules
         var modules = [];
         modules.push(new ScreenIrc(settings, jm, $('#irc'), irc_api_url));
         modules.push(new ScreenEvents(settings, jm, $('#events'), events_api_url));
         modules.push(new ScreenMessages(settings, jm, $('#messages'), messages_api_url));
         modules.push(new ScreenClock(settings, jm, $('#clock')));
-        modules.push(new ScreenFrontpage(settings, jm, $('#nametext')));
+        modules.push(new ScreenFrontpage(settings, jm, $('#nametext'), logo_url));
         modules.push(new ScreenNowPlaying(settings, jm, $('#playing'), playing_api_url));
-        
+
         // Init all modules
         $.each(modules, function(key, module){
-            module.init(); 
+            module.init();
         });
 
         // Init jmpress
         jm.jmpress({
             afterInit: function(element, eventData) {
                 $.each(modules, function(key, module){
-                    module.post_init(); 
+                    module.post_init();
                 });
             },
-            beforeChange: function(element, eventData) { 
+            beforeChange: function(element, eventData) {
                 // Update all on nametext slide
                 if(element.attr('id') == 'nametext') {
                     $.each(modules, function(key, module){
@@ -84,13 +89,13 @@
     <div id="nametext" class="step nohide text" data-x="0" data-y="0" data-z="0" data-scale="1.0" data-duration="8000"></div>
     <div id="clock" class="step dohide text" data-x="0" data-y="-500" data-z="0" data-rotate-z="90" data-scale="1.0" data-duration="8000"></div>
 {% for sponsor in sponsors %}
-    <div id="sponsor_{{ sponsor.id }}" 
-         class="step dohide text" 
-         data-x="{{ sponsor.x }}" 
-         data-y="{{ sponsor.y }}" 
+    <div id="sponsor_{{ sponsor.id }}"
+         class="step dohide text"
+         data-x="{{ sponsor.x }}"
+         data-y="{{ sponsor.y }}"
          data-z="{{ sponsor.z }}"
-         data-rotate-x="{{ sponsor.rot_x }}" 
-         data-rotate-y="{{ sponsor.rot_y }}" 
+         data-rotate-x="{{ sponsor.rot_x }}"
+         data-rotate-y="{{ sponsor.rot_y }}"
          data-rotate-z="{{ sponsor.rot_z }}"
          data-scale="0.1"
          data-duration="1500">

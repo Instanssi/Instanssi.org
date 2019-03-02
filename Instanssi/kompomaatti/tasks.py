@@ -29,6 +29,10 @@ def rebuild_collection(compo_id: int):
                 base_name = '{}-by-{}{}'\
                     .format(entry.name, entry.creator, ext)\
                     .replace(' ', '_')\
+                    .replace('/', '-') \
+                    .replace('\\', '-') \
+                    .replace('ä', 'a')\
+                    .replace('ö', 'o')\
                     .encode('ascii', 'ignore')\
                     .decode('ascii')
                 print("Compressing to {}".format(base_name))

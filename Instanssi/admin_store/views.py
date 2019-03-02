@@ -148,7 +148,7 @@ def tis_csv(request, event_id):
     response['Content-Disposition'] = 'attachment; filename="instanssi_store.csv"'
     t = loader.get_template('admin_store/tis_csv.txt')
     c = {
-        'data': TransactionItem.objects.filter(item__event=event_id),
+        'data': TransactionItem.objects.filter(item__event=event_id, time_delivered__isnull=False),
     }
     response.write(t.render(c))
     return response

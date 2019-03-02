@@ -15,6 +15,7 @@ from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required
+from Instanssi.kompomaatti import tasks
 
 logger = logging.getLogger(__name__)
 
@@ -393,6 +394,12 @@ def entry_delete(request, sel_event_id, entry_id):
 
 
 @staff_access_required
+def generate_result_package(request, sel_event_id, compo_id):
+    tasks.rebuild_collection.delay(compo_id)
+    return HttpResponseRedirect(reverse('manage-kompomaatti:results', args=(sel_event_id,)))
+
+
+@staff_access_required
 def results(request, sel_event_id):
     # Get compos. competitions
     compos = Compo.objects.filter(event_id=int(sel_event_id))
@@ -401,7 +408,7 @@ def results(request, sel_event_id):
     # Get the entries
     compo_results = {}
     for compo in compos:
-        compo_results[compo.name] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+        compo_results[compo] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
     
     # Get competition participations
     competition_results = {}

@@ -4,7 +4,8 @@ from django.conf.urls import url
 from Instanssi.admin_kompomaatti.views import index, competition_delete, competition_edit,\
     competition_participation_edit, compo_browse, compo_delete, compo_edit, competition_participations,\
     competition_score, competitions_browse, results, votecoderequests, votecoderequests_accept, \
-    votecoderequests_reject, entries_csv, entry_browse, entry_delete, entry_edit, ticket_votecodes
+    votecoderequests_reject, entries_csv, entry_browse, entry_delete, entry_edit, ticket_votecodes,\
+    generate_result_package
 
 app_name = "admin_kompomaatti"
 
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^participations_edit/(?P<competition_id>\d+)/edit/(?P<pid>\d+)/', competition_participation_edit, name="participation-edit"),
     
     url(r'^results/', results, name="results"),
+    url(r'^generate_result_package/(?P<compo_id>\d+)/', generate_result_package, name="generate_result_package"),
     url(r'^ticket_votecodes/', ticket_votecodes, name="ticket_votecodes"),
     url(r'^votecoderequests/', votecoderequests, name="votecoderequests"),
     url(r'^acceptreq/(?P<vcrid>\d+)/', votecoderequests_accept, name="votecoderequest-accept"),

@@ -503,6 +503,13 @@ class Entry(models.Model):
         super(Entry, self).save(*args, **kwargs)
 
 
+# These are packages that contain all entries for a compo
+class EntryCollection(models.Model):
+    compo = models.OneToOneField(Compo, on_delete=models.PROTECT, related_name='collection')
+    file = models.FileField(upload_to='kompomaatti/collections/', blank=True, null=True, default=None)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class VoteGroup(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)

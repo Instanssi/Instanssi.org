@@ -31,6 +31,9 @@ Projektin asentaminen
 6. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
    joskus olla tarpeen suorittaa migrate uudelleen.
 
+Jos tarvitset celeryä, sen voi käynnistää seuraavasti:
+`python -m celery -A Instanssi worker -l info --autoscale 2,1`
+
 Vaatimukset
 -----------
 

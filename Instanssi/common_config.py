@@ -25,6 +25,10 @@ USE_TZ = True
 # Max size for request body (8M)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 
+# Celery
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+
 # Admin panel settings
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 LOGIN_URL = '/users/login/'
@@ -248,6 +252,10 @@ LOGGING = {
         },
     }
 }
+
+
+def make_celery_conf(debug_mode):
+    return 'redis://127.0.0.1:6379/3', {}
 
 
 def make_cache_conf(debug_mode):

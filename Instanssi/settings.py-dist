@@ -110,6 +110,9 @@ EMAIL_BACKEND = make_email_conf(DEBUG)
 # Initialize cache configuration
 CACHES = make_cache_conf(DEBUG)
 
+# Initializes celery config
+CELERY_BROKER_URL, CELERY_BROKER_TRANSPORT_OPTIONS = make_celery_conf(DEBUG)
+
 # Internal ip addresses
 INTERNAL_IPS = (
     '127.0.0.1',

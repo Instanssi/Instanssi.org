@@ -233,21 +233,21 @@ class Compo(models.Model):
         choices=THUMBNAIL_REQ,
         default=2,
         help_text='Pikkukuvan luonti ja asettaminen.')
-    
+
     def __str__(self):
         return self.event.name + ': ' + self.name
-    
+
     class Meta:
         verbose_name = "kompo"
         verbose_name_plural = "kompot"
-            
+
     def is_voting_open(self):
         if not self.is_votable:
             return False
         if self.voting_start <= timezone.now() < self.voting_end:
             return True
         return False
-    
+
     def is_adding_open(self):
         if timezone.now() < self.adding_end:
             return True
@@ -267,15 +267,15 @@ class Compo(models.Model):
 
     @property
     def entry_format_list(self):
-        return self.formats.split('|')
+        return self.formats.lower().split('|')
 
     @property
     def source_format_list(self):
-        return self.source_formats.split('|')
+        return self.source_formats.lower().split('|')
 
     @property
     def image_format_list(self):
-        return self.image_formats.split('|')
+        return self.image_formats.lower().split('|')
 
     @property
     def readable_entry_formats(self):
@@ -403,15 +403,15 @@ class Entry(models.Model):
 
     def __str__(self):
         return '{} by {}'.format(self.name, self.creator)
-    
+
     class Meta:
         verbose_name = "tuotos"
         verbose_name_plural = "tuotokset"
-    
+
     def get_format(self):
         name, ext = os.path.splitext(self.entryfile.url)
         return ext
-    
+
     def get_score(self):
         if self.disqualified:  # If disqualified, score will be -1
             return -1.0
@@ -444,12 +444,12 @@ class Entry(models.Model):
         """Get embed URL for this entry's YouTube link."""
         video_id = self.youtube_url_to_id(self.youtube_url)
         return "//www.youtube.com/embed/{}/".format(video_id)
-        
+
     def get_rank(self):
         # If rank has been predefined, then use that
         if self.archive_rank:
             return self.archive_rank
-        
+
         # Otherwise calculate ranks by score
         entries = entrysort.sort_by_score(Entry.objects.filter(compo=self.compo))
         n = 1
@@ -458,14 +458,14 @@ class Entry(models.Model):
                 return n
             n += 1
         return n
-    
+
     def get_show_list(self):
         show = {
             'youtube': False,
             'image': False,
             'noshow': True
         }
-        
+
         state = self.compo.entry_view_type
         if state == 1:
             if self.youtube_url:
@@ -475,30 +475,30 @@ class Entry(models.Model):
         elif state == 2 or state == 3:  # 3 is deprecated
             if self.imagefile_original:
                 show['image'] = True
-        
+
         if show['image'] or show['youtube']:
             show['noshow'] = False
-            
+
         return show
-    
+
     def save(self, *args, **kwargs):
         try:
             this = Entry.objects.get(id=self.id)
-            
+
             # Check entryfile
             if this.entryfile != self.entryfile:
                 this.entryfile.delete(save=False)
-                
+
             # Check sourcefile
             if this.sourcefile != self.sourcefile:
                 this.sourcefile.delete(save=False)
-                
+
             # Check imagefile_original
             if this.imagefile_original != self.imagefile_original:
                 this.imagefile_original.delete(save=False)
         except:
-            pass 
-            
+            pass
+
         # Continue with normal save
         super(Entry, self).save(*args, **kwargs)
 
@@ -551,7 +551,7 @@ class Vote(models.Model):
 
     def __str__(self):
         return '{} by {} as {}'.format(self.entry.name, self.user.username, self.rank)
-    
+
     class Meta:
         verbose_name = "ääni"
         verbose_name_plural = "äänet"
@@ -612,7 +612,7 @@ class Competition(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.event.name, self.name)
-    
+
     class Meta:
         verbose_name = "kilpailu"
         verbose_name_plural = "kilpailut"
@@ -656,7 +656,7 @@ class CompetitionParticipation(models.Model):
         if self.competition.score_sort == 1:
             rank_by = 'score'
         results = CompetitionParticipation.objects.filter(competition_id=self.competition.id).order_by(rank_by)
-        
+
         # Find self
         rank = 1
         for p in results:

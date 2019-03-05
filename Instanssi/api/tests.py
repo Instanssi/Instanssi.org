@@ -360,6 +360,22 @@ class APIAuthenticatedTests(TestCase):
         })
         self.assertEqual(req.status_code, 201)
 
+        # Test POST with retro DOS style file extensions
+        entry_file = SimpleUploadedFile("test_entry_file.ZIP", b'content', content_type="application/zip")
+        source_file = SimpleUploadedFile("test_source_file.ZIP", b'content', content_type="application/zip")
+        image_file = SimpleUploadedFile("image_file.PNG", test_image, content_type="image/png")
+
+        req = self.api.post(url, format='multipart', data={
+            'compo': self.compo.id,
+            'name': 'Test Entry',
+            'description': 'Potentially problematic test entry',
+            'creator': '8.3 For Life',
+            'entryfile': entry_file,
+            'imagefile_original': image_file,
+            'sourcefile': source_file
+        })
+        self.assertEqual(req.status_code, 201)
+
         # Test GET: Make sure data looks okay
         req = self.api.get(url)
         self.assertEqual(req.status_code, 200)
@@ -374,6 +390,20 @@ class APIAuthenticatedTests(TestCase):
             'imagefile_original_url': req.data[0]['imagefile_original_url'],
             'imagefile_thumbnail_url': req.data[0]['imagefile_thumbnail_url'],
             'imagefile_medium_url': req.data[0]['imagefile_medium_url'],
+            'disqualified': False,
+            'disqualified_reason': ''
+        },
+        {
+            'id': 3,
+            'compo': self.compo.id,
+            'name': 'Test Entry',
+            'description': 'Potentially problematic test entry',
+            'creator': '8.3 For Life',
+            'entryfile_url': req.data[1]['entryfile_url'],
+            'sourcefile_url': req.data[1]['sourcefile_url'],
+            'imagefile_original_url': req.data[1]['imagefile_original_url'],
+            'imagefile_thumbnail_url': req.data[1]['imagefile_thumbnail_url'],
+            'imagefile_medium_url': req.data[1]['imagefile_medium_url'],
             'disqualified': False,
             'disqualified_reason': ''
         }])

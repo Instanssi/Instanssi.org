@@ -269,13 +269,25 @@ class Compo(models.Model):
     def entry_format_list(self):
         return self.formats.split('|')
 
+    @entry_format_list.setter
+    def entry_format_list(self, value):
+        self.formats = '|'.join(value)
+
     @property
     def source_format_list(self):
         return self.source_formats.split('|')
 
+    @source_format_list.setter
+    def source_format_list(self, value):
+        self.source_formats = '|'.join(value)
+
     @property
     def image_format_list(self):
         return self.image_formats.split('|')
+
+    @image_format_list.setter
+    def image_format_list(self, value):
+        self.image_formats = '|'.join(value)
 
     @property
     def readable_entry_formats(self):
@@ -293,9 +305,17 @@ class Compo(models.Model):
     def max_source_size(self):
         return self.source_sizelimit
 
+    @max_source_size.setter
+    def max_source_size(self, value):
+        self.source_sizelimit = value
+
     @property
     def max_entry_size(self):
         return self.entry_sizelimit
+
+    @max_entry_size.setter
+    def max_entry_size(self, value):
+        self.entry_sizelimit = value
 
     @property
     def max_image_size(self):

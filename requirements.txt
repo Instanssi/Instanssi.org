@@ -1,24 +1,24 @@
-Django==2.1.7
-django-countries==5.3.3
+Django==2.2.4
+django-countries==5.4
 django-crispy-forms==1.7.2
-django-debug-toolbar==1.11
+django-debug-toolbar==2.0
 django-imagekit==4.0.2
 django-twitter-tag==1.2.1
-django-filter==2.1.0
-celery==4.2.1
-Pillow==5.4.1
-social-auth-core==3.1.0
+django-filter==2.2.0
+celery==4.3.0
+Pillow==6.1.0
+social-auth-core==3.2.0
 social-auth-app-django==3.1.0
 django-libsass==0.7
-requests==2.21.0
+requests==2.22.0
 raven==6.10.0
 django-redis==4.10.0
-djangorestframework==3.9.1
+djangorestframework==3.10.2
 django-oauth-toolkit==1.2.0
 requests-oauthlib==1.2.0
 tabulate==0.8.3
-arrow==0.13.1  # Proper iso8601 parsing
+arrow==0.14.5  # Proper iso8601 parsing
 loremipsum==1.0.5  # For providing test data
-mock==2.0.0  # For testing against mocks
-faker==1.0.2  # For providing test data
+mock==3.0.5  # For testing against mocks
+faker==2.0.0  # For providing test data
 -e git://github.com/django-compressor/django-compressor.git@5ac34eb678051b1fca4194265bd7a17eea92023f#egg=django-compressor

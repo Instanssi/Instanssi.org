@@ -22,9 +22,9 @@ class UploadForm(forms.ModelForm):
                 )
             )
         )
-        
+
     def field_format_ok(self, fname, allowed):
-        return os.path.splitext(self.cleaned_data[fname].name)[1][1:] in allowed
+        return os.path.splitext(self.cleaned_data[fname].name)[1][1:].lower() in allowed
 
     def clean_file(self):
         # Check format
@@ -32,10 +32,10 @@ class UploadForm(forms.ModelForm):
                    'txt', 'ppt', 'pptx', 'xls', 'xlsx']
         if not self.field_format_ok("file", allowed):
             raise ValidationError('Tiedostotyyppi ei ole sallittu. Sallitut formaatit: {}.'.format(', '.join(allowed)))
-        
+
         # Return
         return self.cleaned_data['file']
-        
+
     class Meta:
         model = UploadedFile
         fields = ('description', 'file')

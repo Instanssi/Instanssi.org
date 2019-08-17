@@ -240,7 +240,7 @@ class UserCompoEntrySerializer(ModelSerializer):
 
         # Make sure the file extension seems correct
         ext = os.path.splitext(file.name)[1][1:]
-        if ext not in accept_formats:
+        if ext.lower() not in accept_formats:
             errors.append("Sallitut tiedostotyypit ovat {}".format(accept_formats_readable))
 
         return errors

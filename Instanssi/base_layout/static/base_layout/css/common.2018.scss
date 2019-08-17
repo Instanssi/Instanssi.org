@@ -15,7 +15,7 @@ $theme-color-dark: #333;
 
 
 // brighter theme color for link text and stuff
-$theme-color-mid: ($theme-color + $theme-color-bright) / 2;
+$theme-color-mid: mix($theme-color, $theme-color-bright);
 
 $theme-nav-hover: $theme-color-mid;
 

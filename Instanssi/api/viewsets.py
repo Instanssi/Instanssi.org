@@ -63,7 +63,7 @@ class EventViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('id',)
+    filterset_fields = ('id',)
 
 
 class SongViewSet(ReadWriteModelViewSet):
@@ -86,7 +86,7 @@ class SongViewSet(ReadWriteModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class CompetitionViewSet(ReadOnlyModelViewSet):
@@ -108,7 +108,7 @@ class CompetitionViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
@@ -127,7 +127,7 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('competition',)
+    filterset_fields = ('competition',)
 
 
 class UserCompetitionParticipationViewSet(ModelViewSet):
@@ -146,7 +146,7 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('competition',)
+    filterset_fields = ('competition',)
 
     def get_queryset(self):
         return CompetitionParticipation.objects.filter(competition__active=True, user=self.request.user)
@@ -175,7 +175,7 @@ class CompoViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class CompoEntryViewSet(ReadOnlyModelViewSet):
@@ -192,7 +192,7 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('compo',)
+    filterset_fields = ('compo',)
 
     def get_queryset(self):
         return Entry.objects\
@@ -217,7 +217,7 @@ class UserCompoEntryViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('compo',)
+    filterset_fields = ('compo',)
 
     def get_queryset(self):
         return Entry.objects.filter(compo__active=True, user=self.request.user)
@@ -286,7 +286,7 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
     def get_queryset(self):
         return VoteCodeRequest.objects.filter(user=self.request.user)
@@ -311,7 +311,7 @@ class TicketVoteCodeViewSet(ReadWriteModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
     def get_queryset(self):
         return TicketVoteCode.objects.filter(associated_to=self.request.user)
@@ -335,7 +335,7 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('compo',)
-    filter_fields = ('compo',)
+    filterset_fields = ('compo',)
 
     def get_queryset(self):
         return VoteGroup.objects.filter(user=self.request.user)
@@ -359,7 +359,7 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class SponsorViewSet(ReadOnlyModelViewSet):
@@ -377,7 +377,7 @@ class SponsorViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class MessageViewSet(ReadOnlyModelViewSet):
@@ -395,7 +395,7 @@ class MessageViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class IRCMessageViewSet(ReadOnlyModelViewSet):
@@ -413,7 +413,7 @@ class IRCMessageViewSet(ReadOnlyModelViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend,)
     ordering_fields = ('id',)
-    filter_fields = ('event',)
+    filterset_fields = ('event',)
 
 
 class StoreItemViewSet(ReadOnlyModelViewSet):

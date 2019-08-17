@@ -1,0 +1,53 @@
+/* .container aside > section > div {
+    padding: $spacing-medium;
+}*/
+
+#sidebar {
+    .social-media-icons {
+        margin: 0 (-$spacer/2);
+
+        a {
+            display: inline-block;
+            margin: 0 (16px/2) 16px;
+            &:hover {
+                opacity: .7;
+            }
+            > img {
+                // Can we trust IE to keep aspect this time?
+                // Also, !important because some old hack meant to keep
+                // 3000+px blog images in check
+                max-width: 32px !important;
+                max-height: 32px !important;
+            }
+        }
+    }
+    .instanssi-radio {
+        a { color: $brand-primary; }
+    }
+
+    .widget { margin-bottom: $spacer; }
+
+    #tweets { margin: 0; }
+    #tweets .link a,
+    #tweets .time a {
+        color: $brand-primary;
+        font-size: 11px;
+    }
+    #tweets li {
+        margin-bottom: $spacer;
+    }
+
+    .widget-content {
+        padding: 0 $spacer;
+    }
+}
+
+.widget-rekry {
+    ul {
+        list-style: disc outside none;
+        margin-left: 1.7em;
+    }
+    div {
+        margin: 1em 5px 1em;
+    }
+}

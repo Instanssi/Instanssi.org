@@ -135,9 +135,9 @@ class StoreTests(TestCase):
             mail_from=email_from,
             subject=subject,
             params=p)
-        self.assertEquals(r.subject, subject)
-        self.assertEquals(r.mail_from, email_from)
-        self.assertEquals(r.mail_to, email_to)
+        self.assertEqual(r.subject, subject)
+        self.assertEqual(r.mail_from, email_from)
+        self.assertEqual(r.mail_to, email_to)
         self.assertIsNotNone(r.content)
         self.assertIsNotNone(r.params)
         self.assertIsNone(r.sent)

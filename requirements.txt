@@ -18,7 +18,7 @@ djangorestframework==3.10.3
 django-oauth-toolkit==1.2.0
 requests-oauthlib==1.2.0
 tabulate==0.8.5
-arrow==0.15.2  # Proper iso8601 parsing
+arrow==0.15.3  # Proper iso8601 parsing
 loremipsum==1.0.5  # For providing test data
 mock==3.0.5  # For testing against mocks
 faker==2.0.3  # For providing test data

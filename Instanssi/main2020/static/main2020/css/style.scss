@@ -176,9 +176,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         overflow: hidden;
     }
     #page-header {
-        // provide some background for style
         background: #111122;
-        background: linear-gradient(scale-color($theme-color, $lightness: 30%) 0, #012 200px);
 
         .header-bg {
             display: none;

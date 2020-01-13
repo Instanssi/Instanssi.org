@@ -18,6 +18,17 @@ body * {
     font-family: $body-font-family;
 }
 
+body {
+    position: relative;
+    background: #302352;
+
+    // background-color: #000;
+    // background-size: 100%;
+    // background-position: top;
+
+    background: no-repeat top center/contain url(../images/webtausta.jpg), #302352;
+}
+
 h1 {
     font-family: $title-font-family;
     //font-variant: small-caps;
@@ -108,14 +119,6 @@ sub {
         color: #fff;
         opacity: 0.8;
     }
-}
-
-body {
-    position: relative;
-
-    background-color: #000;
-    background-size: 100%;
-    background-position: top;
 }
 
 #content {

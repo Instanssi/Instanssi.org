@@ -83,10 +83,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         width: 96%;
         padding: 2%;
     }
-
-    #page-header .header-bg {
-        background-position-x: calc(50% + 55px);
-    }
 }
 
 /* Landscape phone to portrait tablet */
@@ -176,8 +172,6 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         overflow: hidden;
     }
     #page-header {
-        background: #111122;
-
         .header-bg {
             display: none;
         }

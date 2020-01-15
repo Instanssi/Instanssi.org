@@ -26,7 +26,7 @@ $bg-gradient-bottom: lighten($background-color, 5);
 $bg-gradient-height: 640px;
 
 $body-font-family: 'Open Sans', sans-serif;
-$title-font-family: 'Exo 2', $body-font-family;
+$title-font-family: 'Exo 2', $body-font-family !default;
 
 $transition-small: .2s;
 $transition-large: .4s;

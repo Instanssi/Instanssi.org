@@ -64,8 +64,8 @@
             position: absolute;
             font-size: 24px;
             bottom: 100px;
-            left: 96px;
-            transform: rotate(-5deg);
+            left: 64px;
+            transform: rotate(-5.5deg);
         }
 
         h1 {
@@ -194,10 +194,13 @@
             height: $main-header-height-md;
         }
         .header-info {
+            height: 220px;
             .time {
-                bottom: 85px;
-                left: 96px;
-                transform: rotate(-5deg);
+                top: 115px;
+                left: 36px;
+            }
+            &:after {
+                width: 65%;
             }
         }
     }
@@ -214,7 +217,7 @@
         }
         .header-info {
             .time {
-                bottom: 10%;
+                top: 100px;
                 font-size: 20px;
                 left: 48px;
             }
@@ -244,11 +247,10 @@
         }
         .header-info {
             p.time {
-                display: none;
+                top: 70px;
+                font-size: 2.5vw;
                 padding: 0;
-                transform: none;
                 left: $spacer;
-                bottom: $spacer;
             }
         }
 

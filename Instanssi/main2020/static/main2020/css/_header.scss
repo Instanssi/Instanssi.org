@@ -115,6 +115,8 @@
         ul {
             border: 0;
             li {
+                // Cancel Bootstrap 3's nav bottom border trick.
+                margin-bottom: 0;
                 a {
                     font-family: $title-font-family;
                     text-transform: uppercase;

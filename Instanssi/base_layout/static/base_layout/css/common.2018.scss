@@ -9,7 +9,7 @@
 // $theme-color-bright: #26a;
 $theme-color-bright: #00a8ff !default;
 
-$theme-color: darken($theme-color-bright, 15%);
+$theme-color: darken($theme-color-bright, 15%) !default;
 
 $theme-color-dark: #333;
 

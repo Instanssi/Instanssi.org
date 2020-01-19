@@ -72,12 +72,16 @@ $brand-primary: $theme-color-bright;
 
 // This hides content visually but should not block screen readers, scraping
 // and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
-.sr-only {
+
+@mixin sr-only {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
     height: 1px;
     width: 1px;
     overflow: hidden;
+}
+.sr-only {
+    @include sr-only;
 }
 
 .loading-container {

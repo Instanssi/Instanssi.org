@@ -1,5 +1,6 @@
 $theme-color-bright: #6015dd;
 $theme-color: #302255;
+$theme-color-secondary: #00ccff;
 $title-font-family: 'Courier Prime', 'Courier New', monospace;
 
 @import './common.2018.scss';
@@ -8,4 +9,26 @@ h2, h3 {
     font-family: $title-font-family;
     font-weight: bold;
     border-bottom: 1px solid $theme-color-bright;
+}
+
+
+
+.base-layout #header h1 {
+    > .header-main-title {
+        float: left;
+        position: relative;
+        width: 250px;
+        height: 60px;
+        margin-right: 20px;
+        background-image: url('/static/main2020/images/2020_instanssiteksti_transparent.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        .main-title-text {
+            @include sr-only;
+        }
+
+    }
+    a {
+        text-shadow: $theme-color 2px 2px 3px;
+    }
 }

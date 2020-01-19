@@ -7,9 +7,9 @@
 
 // Used for hover highlights and stuff.
 // $theme-color-bright: #26a;
-$theme-color-bright: #00a8ff;
+$theme-color-bright: #00a8ff !default;
 
-$theme-color: darken($theme-color-bright, 15%);
+$theme-color: darken($theme-color-bright, 15%) !default;
 
 $theme-color-dark: #333;
 
@@ -26,7 +26,7 @@ $bg-gradient-bottom: lighten($background-color, 5);
 $bg-gradient-height: 640px;
 
 $body-font-family: 'Open Sans', sans-serif;
-$title-font-family: 'Exo 2', $body-font-family;
+$title-font-family: 'Exo 2', $body-font-family !default;
 
 $transition-small: .2s;
 $transition-large: .4s;
@@ -72,12 +72,16 @@ $brand-primary: $theme-color-bright;
 
 // This hides content visually but should not block screen readers, scraping
 // and so on. Similar CSS is used in WordPress core and the HTML5 boilerplate.
-.sr-only {
+
+@mixin sr-only {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
     height: 1px;
     width: 1px;
     overflow: hidden;
+}
+.sr-only {
+    @include sr-only;
 }
 
 .loading-container {

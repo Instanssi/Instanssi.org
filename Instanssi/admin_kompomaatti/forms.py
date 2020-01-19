@@ -12,15 +12,15 @@ from Instanssi.common.misc import parse_youtube_video_id
 class AdminCompetitionScoreForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.competition = kwargs.pop('competition', None)
-        
+
         # Init
         super(AdminCompetitionScoreForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout()
-        
+
         # Create a fieldset for everything
         fs = Fieldset('Pisteytys')
-    
+
         # Set fields
         participants = CompetitionParticipation.objects.filter(competition=self.competition)
         for p in participants:
@@ -30,16 +30,16 @@ class AdminCompetitionScoreForm(forms.Form):
             self.fields[name].help_text = 'Osallistujan {} saavuttama tulos.'.format(p.participant_name)
             self.fields[name].initial = p.score
             fs.fields.append(name)
-    
+
         # Add buttonholder
         bh = ButtonHolder(
             Submit('submit', 'Tallenna')
         )
         fs.fields.append(bh)
-        
+
         # Add fieldset to layout
         self.helper.layout.fields.append(fs)
-        
+
     def save(self):
         for k, v in self.cleaned_data.items():
             p = get_object_or_404(CompetitionParticipation, pk=int(k))
@@ -91,7 +91,7 @@ class AdminCompetitionForm(forms.ModelForm):
                 )
             )
         )
-        
+
     class Meta:
         model = Competition
         exclude = ('event',)
@@ -162,14 +162,14 @@ class AdminEntryAddForm(forms.ModelForm):
         # Initialize
         self.event = kwargs.pop('event', None)
         super(AdminEntryAddForm, self).__init__(*args, **kwargs)
-        
+
         # Set choices
         if self.event:
             compos = []
             for compo in Compo.objects.filter(event=self.event):
                 compos.append((compo.id, compo.name))
             self.fields['compo'].choices = compos
-        
+
         # Set form
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -180,6 +180,7 @@ class AdminEntryAddForm(forms.ModelForm):
                 'name',
                 'description',
                 'creator',
+                'platform',
                 'entryfile',
                 'sourcefile',
                 'imagefile_original',
@@ -216,7 +217,7 @@ class AdminEntryEditForm(forms.ModelForm):
         # Initialize
         self.event = kwargs.pop('event', None)
         super(AdminEntryEditForm, self).__init__(*args, **kwargs)
-        
+
         # Set choices for Compo field
         if self.event:
             compos = []
@@ -237,6 +238,7 @@ class AdminEntryEditForm(forms.ModelForm):
                 'name',
                 'description',
                 'creator',
+                'platform',
                 'entryfile',
                 'sourcefile',
                 'imagefile_original',

@@ -152,7 +152,7 @@ class CompoEntrySerializer(ModelSerializer):
 
     class Meta:
         model = Entry
-        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile_url', 'sourcefile_url',
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'platform', 'entryfile_url', 'sourcefile_url',
                   'imagefile_original_url', 'imagefile_thumbnail_url', 'imagefile_medium_url', 'youtube_url',
                   'disqualified', 'disqualified_reason', 'score', 'rank')
         extra_kwargs = {}
@@ -315,7 +315,7 @@ class UserCompoEntrySerializer(ModelSerializer):
 
     class Meta:
         model = Entry
-        fields = ('id', 'compo', 'name', 'description', 'creator', 'entryfile', 'imagefile_original', 'sourcefile',
+        fields = ('id', 'compo', 'name', 'description', 'creator', 'platform', 'entryfile', 'imagefile_original', 'sourcefile',
                   'entryfile_url', 'sourcefile_url', 'imagefile_original_url', 'imagefile_thumbnail_url',
                   'imagefile_medium_url', 'disqualified', 'disqualified_reason',)
         extra_kwargs = {

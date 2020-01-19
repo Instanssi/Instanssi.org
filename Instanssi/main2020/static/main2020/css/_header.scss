@@ -1,40 +1,14 @@
-@mixin webbanner() {
-    background: url('../images/instanssi2019-webbanner-fs8.png') no-repeat center right;
-    background-size: contain;
-}
-
 #page-header {
     position: relative;
     overflow: hidden;
 
     > .container {
-        @include webbanner();
         height: $main-header-height-lg;
         position: relative;
     }
 
     .header-title {
         height: $main-header-height-lg;
-    }
-    .header-bg-fx {
-        position: relative;
-    }
-    .halo-orange {
-        background: url('../images/halo-orange.png') no-repeat;
-    }
-    .halo-green {
-        background: url('../images/halo-green.png') no-repeat;
-    }
-    .halo-blue {
-        background: url('../images/halo-blue.png') no-repeat;
-    }
-    .halo-purple {
-        background: url('../images/halo-purple.png') no-repeat;
-    }
-    .halo-2018 {
-        position: absolute;
-        background-size: contain;
-        transition: opacity linear 0.5s;
     }
 
     a {
@@ -57,10 +31,10 @@
             display: block;
             position: absolute;
             top: -30px;
-            width: 55%;
+            width: 65%;
             height: 90%;
             max-width: 100%;
-            background: url('../images/instanssi2019-nth-edition-fs8.png') 50% no-repeat;
+            background: url('../images/2020_instanssiteksti_transparent.png') 50% no-repeat;
             background-size: contain;
             background-position: center left;
 
@@ -78,7 +52,7 @@
             color: #fff;
         }
         .tagline, .time {
-            $glow: #ff2ef4a0;
+            $glow: #4cd3f0a0;
             margin-bottom: 5px;
             text-shadow: $glow 0 0 3px;
             text-shadow: $glow 0 0 3px, $glow 0 0 6px;
@@ -89,9 +63,9 @@
         .time {
             position: absolute;
             font-size: 24px;
-            bottom: 90px;
-            left: 96px;
-            transform: rotate(-5deg);
+            bottom: 100px;
+            left: 64px;
+            transform: rotate(-5.5deg);
         }
 
         h1 {
@@ -141,6 +115,8 @@
         ul {
             border: 0;
             li {
+                // Cancel Bootstrap 3's nav bottom border trick.
+                margin-bottom: 0;
                 a {
                     font-family: $title-font-family;
                     text-transform: uppercase;
@@ -210,13 +186,6 @@
             }
             .item-store a::before { @include awesome-glyph('\f07a'); }
             .item-blog a::before { @include awesome-glyph('\f015'); }
-            /*.item-archive a::before { @include awesome-glyph('\f187'); }
-            .item-kompomaatti a::before { @include awesome-glyph('\f1b2'); }
-            .item-english a::before{ @include awesome-glyph('\f0ac'); }
-            .item-info a::before { @include awesome-glyph('\f129'); }
-            .item-kompos a::before { @include awesome-glyph('\f091'); }
-            .item-programme a::before { @include awesome-glyph('\f133'); }
-            .item-schedule a::before { @include awesome-glyph('\f017'); }*/
         }
     }
 }
@@ -227,10 +196,13 @@
             height: $main-header-height-md;
         }
         .header-info {
+            height: 220px;
             .time {
-                bottom: 72px;
-                left: 96px;
-                transform: rotate(-5deg);
+                top: 115px;
+                left: 36px;
+            }
+            &:after {
+                width: 65%;
             }
         }
     }
@@ -247,7 +219,7 @@
         }
         .header-info {
             .time {
-                bottom: 5%;
+                top: 100px;
                 font-size: 20px;
                 left: 48px;
             }
@@ -262,7 +234,6 @@
         }
         .header-title {
             height: auto;
-            @include webbanner();
             background-size: cover;
         }
     }
@@ -278,11 +249,10 @@
         }
         .header-info {
             p.time {
-                display: none;
+                top: 70px;
+                font-size: 2.5vw;
                 padding: 0;
-                transform: none;
                 left: $spacer;
-                bottom: $spacer;
             }
         }
 

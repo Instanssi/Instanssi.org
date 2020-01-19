@@ -27,7 +27,7 @@
     });
     </script>
 </head>
-<body>
+<body class="base-layout">
     <div id="page-background">
         <div class="layer-cyan"></div>
         <div class="layer-green"></div>
@@ -62,7 +62,9 @@
             </div>
         </div>
         {% endif %}
-        <h1><a href="/">Instanssi</a> <span class="section">{% block headername %}{% endblock %}</span></h1>
+        <h1><a class="header-main-title" href="/">
+            <span class="main-title-text">Instanssi</span>
+        </a> <span class="section">{% block headername %}{% endblock %}</span></h1>
     </div>
     <div id="header_nav" class="container">
         {% block headernav %}{% endblock %}

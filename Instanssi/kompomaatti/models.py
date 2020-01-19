@@ -351,6 +351,12 @@ class Entry(models.Model):
         'Tekijä',
         max_length=64,
         help_text='Tuotoksen tekijän tai tekijäryhmän nimi')
+    platform = models.CharField(
+        'Alusta',
+        max_length=128,
+        help_text='Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.',
+        null=True,
+        blank=True)
     entryfile = models.FileField(
         'Tiedosto',
         upload_to='kompomaatti/entryfiles/',

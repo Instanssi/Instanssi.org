@@ -13,9 +13,35 @@ img {
 }
 body * {
     color: #333;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 150%;
     font-family: $body-font-family;
+}
+
+body {
+    position: relative;
+    background: #2e204f !important;
+
+    &:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1172px;
+        background: no-repeat top center url(../images/webtausta.jpg);
+        background-size: 1172px auto;
+        @media screen and (min-width: $screen-xs-min) {
+            background-size: 100% auto;
+        }
+        @media screen and (min-width: $screen-sm-min) {
+            background-size: $screen-sm-min - $spacer * 2 auto;
+        }
+        @media screen and (min-width: $screen-md-min) {
+            background-size: $screen-md-min - $spacer * 2 auto;
+        }
+        @media screen and (min-width: $screen-lg-min) {
+            background-size: $screen-lg-min - $spacer * 2 auto;
+        }
+    }
 }
 
 h1 {
@@ -108,14 +134,6 @@ sub {
         color: #fff;
         opacity: 0.8;
     }
-}
-
-body {
-    position: relative;
-
-    background-color: #000;
-    background-size: 100%;
-    background-position: top;
 }
 
 #content {

@@ -129,6 +129,29 @@ class AdminCompoForm(forms.ModelForm):
             )
         )
 
+    def clean_formats(self):
+        return self.cleaned_data['formats'].lower()
+
+    def clean_image_formats(self):
+        return self.cleaned_data['image_formats'].lower()
+
+    def clean_source_formats(self):
+        return self.cleaned_data['source_formats'].lower()
+
+    def clean(self):
+        data = super().clean()
+
+        # Make sure that automatic thumbnails from entry field is only acceptable if field only accepts image files.
+        formats = data['formats'].split('|')
+        is_image = all([f in ['png', 'jpg', 'jpeg'] for f in formats])
+        if data['thumbnail_pref'] == 1 and not is_image:
+            raise ValidationError(
+                'Automaattiset thumbnailit käytettävissä vain jos '
+                'sallitut tiedostoformaatit ovat kuvaformaatteja (png, jpg)'
+            )
+
+        return data
+
     class Meta:
         model = Compo
         exclude = ('event',)

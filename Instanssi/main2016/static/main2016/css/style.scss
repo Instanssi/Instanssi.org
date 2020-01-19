@@ -1,4 +1,8 @@
 @import 'reset.scss';
+
+// The 2017 base styles work for this, too.
+// Later versions shared more code between main and base_layout so
+// they have their own common styles/variables files.
 @import 'base_layout/css/common.2017.scss';
 
 /* general */

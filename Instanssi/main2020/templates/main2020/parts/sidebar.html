@@ -1,10 +1,10 @@
 {% load static blog_tags twitter_tag cache compress %}
-<!--<section class="widget widget-store">
+<section class="widget widget-store">
     <a href="{% url 'store:index' %}">
         <h3><span class="fa fa-fw fa-euro"></span> Osta lippu!</h3>
     </a>
 </section>
-<section class="widget widget-stream">
+<!--<section class="widget widget-stream">
     <a href="{% url 'main2020:stream' %}">
         <h3><span class="fa fa-fw fa-twitch"></span> Stream</h3>
     </a>
@@ -25,6 +25,24 @@
     </a>
 </section>-->
 {% block widgets %}
+<section class="widget widget-rekry">
+  <h2>Rekrytointi</h2>
+  <div>Haluatko osallistua Instanssin järjestämiseen? Vuoden 2020 tiimissämme on vielä tilaa:</div>
+  <ul>
+    <li>Järjestyksenvalvojille</li>
+    <li>Infotiskin päivystäjille</li>
+    <li>Tapahtuman rakentajille / purkajille</li>
+  </ul>
+  <div>
+      Noin 12 tuntia töitä viikonlopun aikana tekeville Instanssi tarjoaa ilmaisen konepaikan. Lyhyemmän eli kuuden
+      (6) tunnin vuoron tekeville sisäänpääsy on ilmainen. Työt voi koostaa itselleen mielekkäimmistä tehtävistä.
+  </div>
+  <div>
+      <a href="https://forms.gle/zrZS7PtLEkZ1tBmH9">
+          <h3><span class="fa fa-fw fa-check"></span> Ilmoittaudu</h3>
+      </a>
+  </div>
+</section>
 <section class="widget widget-twitter">
     <h2>Twitter</h2>
     <div id="tweets" class="widget-content">

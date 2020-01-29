@@ -40,6 +40,10 @@
     .widget-content {
         padding: 0 $spacer;
     }
+    .widget.widget-store {
+        // Align with main content
+        margin-bottom: 28.9px;
+    }
 }
 
 .widget-rekry {

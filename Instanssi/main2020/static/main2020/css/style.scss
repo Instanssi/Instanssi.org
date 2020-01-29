@@ -54,7 +54,7 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     // This wraps the main content section, excluding the Bootstrap
     // container's padding.
     background: #fdfdfd;
-    padding: $spacer;
+    padding: $spacing-large;
 }
 
 /* Stream */

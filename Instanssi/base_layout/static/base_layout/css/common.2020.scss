@@ -5,13 +5,13 @@ $title-font-family: 'Courier Prime', 'Courier New', monospace;
 
 @import './common.2018.scss';
 
+h2, .base-layout h3 {
+    border-bottom: 1px solid $theme-color-bright;
+}
 h2, h3 {
     font-family: $title-font-family;
     font-weight: bold;
-    border-bottom: 1px solid $theme-color-bright;
 }
-
-
 
 .base-layout #header h1 {
     > .header-main-title {

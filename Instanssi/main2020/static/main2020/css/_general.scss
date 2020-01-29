@@ -49,14 +49,6 @@ h1 {
     line-height: 90%;
 }
 
-#content h1 {
-    padding: 0 $spacer;
-}
-
-#content h2 {
-    padding: 0 $spacer;
-}
-
 form legend {
     font-family: $title-font-family;
     background: $theme-color-dark;
@@ -76,14 +68,14 @@ form legend {
     border-bottom: 1px solid $theme-color-bright;
     background: transparent;
     font-weight: bold;
+    padding: 0 $spacer;
+    margin: 0 (-$spacer) ($spacer * 2);
     font-size: 25px;
-    margin: 20px 0;
-    padding-left: 8px;
-    padding-right: 8px;
 }
 h3 {
     font-size: 16px;
-    margin: 20px 8px;
+    margin: ($spacer * 2) (-$spacer);
+    padding: 0 $spacer;
     color: #000;
     font-weight: bold;
 }
@@ -117,16 +109,19 @@ sub {
 
 /* buttons */
 .btn {
-    border: 1px solid #48B9DC;
-    color: #fff !important;
+    border: 1px solid $theme-color;
     text-decoration: none !important;
     display: inline-block;
     padding: 6px 20px;
     border-radius: 0px;
 
+    &, & > * {
+        color: #fff !important;
+    }
+
     &:hover {
         color: #fff;
-        opacity: 0.8;
+        opacity: 0.9;
     }
 }
 

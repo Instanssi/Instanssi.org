@@ -7,7 +7,7 @@ $(function() {
 
     var datarange = escape('Musiikki!A2:D2');
     var sheeturl = 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetid + '/values/' + datarange + '?key=' + apik;
-    var calurl = 'https://www.googleapis.com/calendar/v3/calendars/' + calid + '/events?key=' + apik + '&timeMin=2020-02-20T10:00:00%2B02:00';
+    var calurl = 'https://www.googleapis.com/calendar/v3/calendars/' + calid + '/events?key=' + apik + '&timeMin=2020-02-20T10:00:00%2B02:00&timeMax=2020-05-20T10:00:00%2B02:00';
     var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
 
     var oldval = '';
@@ -19,7 +19,7 @@ $(function() {
     function parseCal(params) {
         var oldDay = '';
         var dateNow = new Date().getTime();
-        
+
         var newData = params.sort(function(a, b) {
             return (a.start.dateTime > b.start.dateTime) - (b.start.dateTime > a.start.dateTime);
         });

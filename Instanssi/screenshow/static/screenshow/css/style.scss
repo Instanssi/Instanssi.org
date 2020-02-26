@@ -1,9 +1,10 @@
-$screenshow-color: #ff2ef4;
+$screenshow-color: #00ccff;
+$background: #140e24;
 
 body {
     color: #fff;
     margin: 0;
-    background: #060913;
+    background: $background;
 }
 
 div.step {

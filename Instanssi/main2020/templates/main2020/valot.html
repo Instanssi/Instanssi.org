@@ -30,71 +30,21 @@
 <p></p>
 <p>
     RGB-valot on numeroitu 0..23 vastapäivään kiertäen, alkaen lavan vasemmalta puolelta. UV-valojen numerot ovat 24..27.
+    UV-valoja käytettäessä kannattaa pitää mielessä että valon intensiteetti on painotettu keskiarvo R, G ja B arvoista.
 </p>
 <h2>Protokolla</h2>
 <p>
-    Tehostepalvelimen rajapinta valoihin on yksinkertainen viestiprotokolla, jota voi käyttää UDP-paketeilla tai WebSocket-viesteillä. Sen suunnittelussa on erityisesti pyritty ottamaan huomioon ohjelmoitavuuden yksinkertaisuus liikaa kuitenkaan rajoittamatta laajennettavuutta. Valojen ohjaukseen ei siis tarvita mitään kirjastoja, vaan tehtävään soveltuu mikä tahansa kieli, jolla voidaan lähettää UDP-paketteja tai binäärimuotoisia WebSocket-viestejä.
-</p>
-<p>
-    Tehostepalvelimen viestipaketissa ensimmäinen tavu on protokollan versio, joka on tällä hetkellä aina numero yksi. Tämän jälkeen pakettiin voidaan liittää yksi tai useampi komento.
-</p>
-<p>
-    Yksittäinen RGB-valon komento koostuu 6 tavusta:
+    Tehostepalvelimen rajapinta valoihin on yksinkertainen viestiprotokolla, jota voi käyttää UDP-paketeilla
+    tai WebSocket-viesteillä. Sen suunnittelussa on erityisesti pyritty ottamaan huomioon ohjelmoitavuuden
+    yksinkertaisuus liikaa kuitenkaan rajoittamatta laajennettavuutta. Valojen ohjaukseen ei siis tarvita
+    mitään kirjastoja, vaan tehtävään soveltuu mikä tahansa kieli, jolla voidaan lähettää UDP-paketteja tai
+    binäärimuotoisia WebSocket-viestejä.
 </p>
 <p>
     Valopalvelimen websocket-rajapinta on auki osoitteessa valot.party:9910 ja UDP rajapinta osoitteessa valot.party:9909
 </p>
-<table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Arvo (uint8)</th>
-            <th>Selitys</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1.</td>
-            <td>1</td>
-            <td>Ohjattavan tehosteen tyyppi. 1 = Valo</td>
-        </tr>
-        <tr>
-            <td>2.</td>
-            <td>0-N</td>
-            <td>Valon numero. Katso yo. kuva.</td>
-        </tr>
-        <tr>
-            <td>3.</td>
-            <td>0</td>
-            <td>Valon tyyppi. 0 = RGB-valo</td>
-        </tr>
-        <tr>
-            <td>4.</td>
-            <td>0-255</td>
-            <td>Punaisen värin kirkkaus</td>
-        </tr>
-        <tr>
-            <td>5.</td>
-            <td>0-255</td>
-            <td>Vihreän värin kirkkaus</td>
-        </tr>
-        <tr>
-            <td>6.</td>
-            <td>0-255</td>
-            <td>Sinisen värin kirkkaus</td>
-        </tr>
-    </tbody>
-</table>
 <p>
-    Jos tarkoitus on päivittää kaikkien valojen tilaa nopeasti, samassa paketissa kannattaa antaa komento useammalle valolle kerrallaan.
-    UV-valoja käytettäessä kannattaa pitää mielessä että valon intensiteetti on painotettu keskiarvo R, G ja B arvoista.
+    Rajapintakuvaus ja python-esimerkki löytyy
+    <a href="https://github.com/turol/valoserveri/blob/master/use_examples/over_udp.py">valopalvelimen esimerkkikansiosta</a>.
 </p>
-<p>
-    Eli paketti ensimmäisen valon muuttamiseksi punaiseksi ja toisen siniseksi olisi seuraavanlainen:
-</p>
-<script src="https://gist.github.com/1678580.js?file=gistfile1.txt"></script>
-<p>
-    Tämä muuntuu koodiksi Python-ohjelmointikielellä seuraavasti
-</p>
-<script src="https://gist.github.com/teistiz/3b90f4d8cd15b7dcc917e1787b822a2a.js"></script>
 {% endblock %}

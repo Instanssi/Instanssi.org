@@ -18,6 +18,10 @@
         <p class="entry name">{{ entry.name }}</p>
         <p class="entry by">by</p>
         <p class="entry creator">{{ entry.creator }}</p>
+        {% if entry.platform %}
+        <br />
+        <p class="entry platform">({{ entry.platform }})</p>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

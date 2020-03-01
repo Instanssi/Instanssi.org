@@ -40,7 +40,10 @@
 {% endif %}
                 <div class="info">
                     <ul class="facts">
-                        <li class="fact-name">{{ entry.compo.name }}</li>
+                        <li class="fact-name">Kompo: {{ entry.compo.name }}</li>
+{% if entry.platform %}
+                        <li class="fact-platform">Platform: {{ entry.platform }}</li>
+{% endif %}
 {% if entry.disqualified %}
                         <li class="fact-disqualified">Diskattu!</li>
 {% else %}

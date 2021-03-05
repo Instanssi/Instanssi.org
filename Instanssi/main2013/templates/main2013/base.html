@@ -6,22 +6,21 @@
 <head>
     <meta charset="utf-8" />
     <title>Instanssi 2013</title>
-	<meta name="description" content="Digitaalisen tekemisen festivaali">
+    <meta name="description" content="Digitaalisen tekemisen festivaali">
     <meta name="viewport" content="initial-scale=1.0" />
-	<link rel="shortcut icon" href="{% static 'main2013/images/icons/icon-favicon.png' %}" />
-	
-	<!-- fonts -->
-	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-	<link href='//fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
-	
-	<!-- styles -->
-	<link rel="stylesheet" type="text/css" href="{% static 'main2013/css/reset.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'main2013/css/style.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
+    <link rel="shortcut icon" href="{% static 'main2013/images/icons/icon-favicon.png' %}" />
 
-	<!-- scripts -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script type="text/javascript" src="{% static 'main2013/js/modernizr-1.7.min.js' %}"></script>
+    <!-- fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Exo:400,900' rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="{% static 'main2013/css/reset.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main2013/css/style.css' %}" />
+
+    <!-- scripts -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'main2013/js/modernizr-1.7.min.js' %}"></script>
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
@@ -51,128 +50,126 @@
     <script type="text/javascript">
     $(function() {
 {% block jquery %}
-	$('#tweets').twitterfeed({
-		user: "Instanssi", 
-		tweetcount: 4
-	});
+    $('#tweets').twitterfeed({
+        user: "Instanssi",
+        tweetcount: 4
+    });
 {% endblock %}
     });
     </script>
 </head>
 <body>
-	<div id="page-wrap">
-		<header id="page-header">
-			<header id="header-top">
-			    <a href="{% url 'main2013:valot' %}">Effect Server</a>
-				<a href="{% url 'main2013:stream' %}">Stream</a>
-				<a href="{% url 'km:index' event_id %}">Kompomaatti</a>
-				<a href="{% url 'archive:index' %}">Arkisto</a>
-			</header>	
-			<div class="header-info container">
-				<a href="{% url 'main2013:index' %}" class="logo">
-					<h1>Instanssi2013</h1>
-					<p class="tagline">Digitaalisen tekemisen festivaali</p>
-					<p class="time">1. - 3.3. Jyväskylä</p>
-				</a>
-			</div>
-			
-			
-			<nav class="container">
-				<div class="nav-btn">
-					<div class="line" ></div>
-					<div class="line" ></div>
-					<div class="line" ></div>
-				</div>
-				<div class="clearer"></div>
-				<ul>
-					<li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
-					<li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
-					<li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
-					<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
-					<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
-					<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
-					<li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
-					<li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
-					<div class="clearer"></div>
-				</ul>
-			</nav>
-		</header>
-		<div id="content" class="container">
-			<section id="primary">
-				{% block content %}{% endblock %}
-			</section>
-			<aside id="twitter-widget" >
-				<section class="widget widget-twitter">
-					<h2>Twitter</h2>
-					<div id="tweets">
-					</div>
-				</section>
-				<!--<section class="widget">
-					<h2>Instanssiin vielä</h2>
-					<p><span id="countdown"></span></p>
-				</section>-->
-				<section class="widget widget-socialmedias">
-					<h2>Sosiaaliset mediat</h2>
-					<div class="social-media">
-						<a href="http://www.facebook.com/instanssi"><img src="{% static 'main2013/images/icons/icon-facebook.png' %}" alt="" ></a>
-						<a href="http://twitter.com/instanssi"><img src="{% static 'main2013/images/icons/icon-twitter.png' %}" alt="" ></a>
-						<a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2013/images/icons/icon-youtube.png' %}" alt="" ></a>
-						<a href="https://groups.google.com/forum/?fromgroups#!forum/instanssi"><img src="{% static 'main2013/images/icons/icon-googleplus.png' %}" alt="" ></a>
-						<a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2013/images/icons/icon-rss.png' %}" alt="" ></a>
-						<div class="clearer"></div>
-						<br />
-						<p>#instanssi @ IRCNet</p>
-					</div>
-				</section>
-			</aside>
-			<div class="clearer"></div>
-		</div>
-		<footer id="page-footer">
-			<div class="container">
-				<section class="sitemap">
-					<h1>Sivukartta</h1>
-					<ul>
-						<li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
-						<li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
-						<li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
-						<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
-						<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
-						<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
-						<li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
-						<li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
-						<div class="clearer"></div>
-					</ul>
-				</section>
-				<section class="sponsors">
-					<h1>Yhteistyössä mukana</h1>
-					<div class="sponsors-container">
-						<div class="sponsor"><a href="https://www.jyu.fi/it"><img src="{% static 'main2013/images/partners/jyuit.png' %}" alt="JYU IT logo" /></a></div>
-						<div class="sponsor"><a href="https://www.jyu.fi/it/laitokset/mit"><img src="{% static 'main2013/images/partners/tietotekniikanlaitos.png' %}" alt="JYU IT logo" /></a></div>
-						<div class="sponsor"><a href="http://linkkijkl.fi/"><img src="{% static 'main2013/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
-						<div class="sponsor"><a href="http://peda.net/veraja/jkllukiokoulutus/voionmaanlukio"><img src="{% static 'main2013/images/partners/jao.png' %}" alt="JAO logo" /></a></div>
-						<div class="sponsor"><a href="http://koodilehto.fi/"><img src="{% static 'main2013/images/partners/koodilehto.png' %}" alt="Koodilehto logo" /></a></div>
-						<div class="sponsor"><a href="http://www.magister.fi/"><img src="{% static 'main2013/images/partners/magister.png' %}" alt="Magister logo" /></a></div>
-						<div class="sponsor"><a href="http://www.protacon.fi/"><img src="{% static 'main2013/images/partners/protacon.png' %}" alt="Protacon logo" /></a></div>
-						<div class="sponsor"><a href="http://www.accenture.com/us-en/pages/index.aspx"><img src="{% static 'main2013/images/partners/accenture.png' %}" alt="Accenture logo" /></a></div>
-						<div class="sponsor"><a href="http://www.tieto.fi/"><img src="{% static 'main2013/images/partners/tieto.png' %}" alt="Tieto logo" /></a></div>
-						<div class="sponsor"><a href="http://www.codecenter.fi/"><img src="{% static 'main2013/images/partners/codecenter.png' %}" alt="Codecenter logo" /></a></div>
-						<div class="sponsor"><a href="http://www.verkkomaksut.fi/"><img src="{% static 'main2013/images/partners/suomen-verkkomaksut.png' %}" alt="Suomen verkkomaksut logo" /></a></div>
-						<div class="sponsor"><a href="http://www.aprilli.fi/"><img src="{% static 'main2013/images/partners/aprilli.png' %}" alt="Aprilli logo" /></a></div>
-						<div class="sponsor"><a href="http://www.jaadisain.fi/"><img src="{% static 'main2013/images/partners/jaadisain.png' %}" alt="JAA Disain logo" /></a></div>
-						<div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2013/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
-						<div class="sponsor"><a href="http://www.vhosti.fi/"><img src="{% static 'main2013/images/partners/vhost.png' %}" alt="Vhost logo" /></a></div>			
-						<div class="clear"></div>
-					</div>
-				</section>
-				<div class="clearer"></div>
-			</div>
-		</footer>
-	</div>
-	<!-- scripts -->
-	<script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
-	<script type="text/javascript" src="{% static 'main2013/js/twitter_feed.js' %}"></script>
-	<script type="text/javascript" src="{% static 'main2013/js/functions.js' %}"></script>
+    <div id="page-wrap">
+        <header id="page-header">
+            <header id="header-top">
+                <a href="{% url 'main2013:valot' %}">Effect Server</a>
+                <a href="{% url 'main2013:stream' %}">Stream</a>
+                <a href="{% url 'km:index' event_id %}">Kompomaatti</a>
+                <a href="{% url 'archive:index' %}">Arkisto</a>
+            </header>
+            <div class="header-info container">
+                <a href="{% url 'main2013:index' %}" class="logo">
+                    <h1>Instanssi2013</h1>
+                    <p class="tagline">Digitaalisen tekemisen festivaali</p>
+                    <p class="time">1. - 3.3. Jyväskylä</p>
+                </a>
+            </div>
 
+
+            <nav class="container">
+                <div class="nav-btn">
+                    <div class="line" ></div>
+                    <div class="line" ></div>
+                    <div class="line" ></div>
+                </div>
+                <div class="clearer"></div>
+                <ul>
+                    <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
+                    <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
+                    <li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
+                    <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
+                    <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
+                    <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
+                    <li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
+                    <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
+                    <div class="clearer"></div>
+                </ul>
+            </nav>
+        </header>
+        <div id="content" class="container">
+            <section id="primary">
+                {% block content %}{% endblock %}
+            </section>
+            <aside id="twitter-widget" >
+                <section class="widget widget-twitter">
+                    <h2>Twitter</h2>
+                    <div id="tweets">
+                    </div>
+                </section>
+                <!--<section class="widget">
+                    <h2>Instanssiin vielä</h2>
+                    <p><span id="countdown"></span></p>
+                </section>-->
+                <section class="widget widget-socialmedias">
+                    <h2>Sosiaaliset mediat</h2>
+                    <div class="social-media">
+                        <a href="http://www.facebook.com/instanssi"><img src="{% static 'main2013/images/icons/icon-facebook.png' %}" alt="" ></a>
+                        <a href="http://twitter.com/instanssi"><img src="{% static 'main2013/images/icons/icon-twitter.png' %}" alt="" ></a>
+                        <a href="http://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2013/images/icons/icon-youtube.png' %}" alt="" ></a>
+                        <a href="https://groups.google.com/forum/?fromgroups#!forum/instanssi"><img src="{% static 'main2013/images/icons/icon-googleplus.png' %}" alt="" ></a>
+                        <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2013/images/icons/icon-rss.png' %}" alt="" ></a>
+                        <div class="clearer"></div>
+                        <br />
+                        <p>#instanssi @ IRCNet</p>
+                    </div>
+                </section>
+            </aside>
+            <div class="clearer"></div>
+        </div>
+        <footer id="page-footer">
+            <div class="container">
+                <section class="sitemap">
+                    <h1>Sivukartta</h1>
+                    <ul>
+                        <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:index' %}">Blogi</a></li>
+                        <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:info' %}">Info</a></li>
+                        <li class="menu-item {% if templatename == 'liput' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:liput' %}">Liput</a></li>
+                        <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:aikataulu' %}">Aikataulu</a></li>
+                        <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:ohjelma' %}">Ohjelma</a></li>
+                        <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:kompot' %}">Kompot</a></li>
+                        <li class="menu-item {% if templatename == 'yhteystiedot' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:yhteystiedot' %}">Yhteystiedot</a></li>
+                        <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2013:english' %}">In English</a></li>
+                        <div class="clearer"></div>
+                    </ul>
+                </section>
+                <section class="sponsors">
+                    <h1>Yhteistyössä mukana</h1>
+                    <div class="sponsors-container">
+                        <div class="sponsor"><a href="https://www.jyu.fi/it"><img src="{% static 'main2013/images/partners/jyuit.png' %}" alt="JYU IT logo" /></a></div>
+                        <div class="sponsor"><a href="https://www.jyu.fi/it/laitokset/mit"><img src="{% static 'main2013/images/partners/tietotekniikanlaitos.png' %}" alt="JYU IT logo" /></a></div>
+                        <div class="sponsor"><a href="http://linkkijkl.fi/"><img src="{% static 'main2013/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
+                        <div class="sponsor"><a href="http://peda.net/veraja/jkllukiokoulutus/voionmaanlukio"><img src="{% static 'main2013/images/partners/jao.png' %}" alt="JAO logo" /></a></div>
+                        <div class="sponsor"><a href="http://koodilehto.fi/"><img src="{% static 'main2013/images/partners/koodilehto.png' %}" alt="Koodilehto logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.magister.fi/"><img src="{% static 'main2013/images/partners/magister.png' %}" alt="Magister logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.protacon.fi/"><img src="{% static 'main2013/images/partners/protacon.png' %}" alt="Protacon logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.accenture.com/us-en/pages/index.aspx"><img src="{% static 'main2013/images/partners/accenture.png' %}" alt="Accenture logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.tieto.fi/"><img src="{% static 'main2013/images/partners/tieto.png' %}" alt="Tieto logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.codecenter.fi/"><img src="{% static 'main2013/images/partners/codecenter.png' %}" alt="Codecenter logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.verkkomaksut.fi/"><img src="{% static 'main2013/images/partners/suomen-verkkomaksut.png' %}" alt="Suomen verkkomaksut logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.aprilli.fi/"><img src="{% static 'main2013/images/partners/aprilli.png' %}" alt="Aprilli logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.jaadisain.fi/"><img src="{% static 'main2013/images/partners/jaadisain.png' %}" alt="JAA Disain logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2013/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.vhosti.fi/"><img src="{% static 'main2013/images/partners/vhost.png' %}" alt="Vhost logo" /></a></div>
+                        <div class="clear"></div>
+                    </div>
+                </section>
+                <div class="clearer"></div>
+            </div>
+        </footer>
+    </div>
+    <!-- scripts -->
+    <script type="text/javascript" src="{% static 'libs/js/twitterlib/twitterlib.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2013/js/twitter_feed.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2013/js/functions.js' %}"></script>
 </body>
 </html>

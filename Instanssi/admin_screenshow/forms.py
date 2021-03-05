@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.screenshow.models import *
-import os
-import urlparse
+from urllib.parse import urlparse
+
 
 class ScreenConfigForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -14,20 +14,21 @@ class ScreenConfigForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Asetukset',
+                'Asetukset',
                 'enable_videos',
                 'enable_twitter',
                 'enable_irc',
                 'video_interval',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
         
     class Meta:
         model = ScreenConfig
-        fields = ('enable_videos','enable_twitter','enable_irc','video_interval')
+        fields = ('enable_videos', 'enable_twitter', 'enable_irc', 'video_interval')
+
 
 class PlaylistVideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -35,12 +36,12 @@ class PlaylistVideoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Video',
+                'Video',
                 'name',
                 'url',
                 'index',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -57,14 +58,15 @@ class PlaylistVideoForm(forms.ModelForm):
         
         # Check if the video id exists in query string
         if 'v' not in qs:
-            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
+            raise ValidationError('Osoitteesta ei löytynyt videotunnusta.')
             
         # All done. Return valid url
         return 'http://www.youtube.com/v/'+qs['v'][0]+'/'
         
     class Meta:
         model = PlaylistVideo
-        fields = ('name','url','index')
+        fields = ('name', 'url', 'index')
+
 
 class IRCMessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -72,19 +74,20 @@ class IRCMessageForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'IRC-Viesti',
+                'IRC-Viesti',
                 'nick',
                 'date',
                 'message',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
         
     class Meta:
         model = IRCMessage
-        fields = ('nick','message','date')
+        fields = ('nick', 'message', 'date')
+
 
 class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -92,19 +95,20 @@ class MessageForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Viesti',
+                'Viesti',
                 'show_start',
                 'show_end',
                 'text',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
         
     class Meta:
         model = Message
-        fields = ('show_start','show_end','text')
+        fields = ('show_start', 'show_end', 'text')
+
 
 class SponsorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -112,15 +116,15 @@ class SponsorForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Sponsori',
+                'Sponsori',
                 'name',
                 'logo',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
         
     class Meta:
         model = Sponsor
-        fields = ('name','logo')
+        fields = ('name', 'logo')

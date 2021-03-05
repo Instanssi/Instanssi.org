@@ -1,0 +1,18 @@
+  .___                 __                              .__
+  |   | ____   _______/  |______    ____   ______ _____|__|
+  |   |/    \ /  ___/\   __\__  \  /    \ /  ___//  ___/  |
+  |   |   |  \\___ \  |  |  / __ \|   |  \\___ \ \___ \|  |
+  |___|___|  /____  > |__| (____  /___|  /____  >____  >__|
+           \/     \/            \/     \/     \/     \/
+
+    {{ event.name }}
+    {{event.date|date:"c"}} @ Jyväskylä, Finland
+    https://instanssi.org
+
+{% for compo in compos %}
+  {{ compo.name|upper|safe }}
+  {% for entry in compo.entries %}
+  {{entry.get_rank|rjust:"2"}}. {%if entry.disqualified%}   DIS{%else%}{{entry.get_score|floatformat:2|rjust:"6"}}p{%endif%}  {{entry.name|safe}} - {{entry.creator|safe}}{% endfor %}
+
+{% endfor %} ---
+ DIS = Disqualified entry

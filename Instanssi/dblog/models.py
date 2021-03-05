@@ -1,29 +1,24 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User
 from Instanssi.kompomaatti.models import Event
 
+
 class DBLogEntry(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True)
-    event = models.ForeignKey(Event, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    event = models.ForeignKey(Event, blank=True, null=True, on_delete=models.PROTECT)
     date = models.DateTimeField(auto_now_add=True)
     module = models.CharField(max_length=64, blank=True)
     level = models.CharField(max_length=10)
     message = models.TextField()
 
-    def __unicode__(self):
-        if len(self.message) > 48:
-            return self.message[:48] + ' ...'
+    def __str__(self):
+        if len(self.message) > 64:
+            return '{} ...'.format(self.message[:64])
         else:
             return self.message
     
     class Meta:
-        verbose_name=u"lokimerkintä"
-        verbose_name_plural=u"lokimerkinnät"
-
-try:
-    admin.site.register(DBLogEntry)
-except:
-    pass
+        verbose_name = "lokimerkintä"
+        verbose_name_plural = "lokimerkinnät"

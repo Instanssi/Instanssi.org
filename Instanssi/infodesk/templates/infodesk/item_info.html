@@ -19,7 +19,9 @@
     <tbody>
         <tr>
             <th>Tuote</th>
-            <td>{{ item.item.name }}</td>
+            <td>
+                {{ item.item.name }}{% if item.variant %}, {{ item.variant.name }}{% endif %}
+            </td>
         </tr>
         <tr>
             <th>Avain</th>
@@ -64,9 +66,9 @@
 
 <h3>Toiminnot</h3>
 <p>
-    <a href="{% url 'infodesk:order_search' %}" class="button">Palaa hakusivulle</a>
+    <a href="{% url 'infodesk:order_search' %}" class="btn btn-primary">Palaa hakusivulle</a>
     {% if not item.is_delivered %}
-    <a href="{% url 'infodesk:item_mark' item.id %}" class="button">Merkkaa toimitetuksi</a>
+    <a href="{% url 'infodesk:item_mark' item.id %}" class="btn btn-primary">Merkkaa toimitetuksi</a>
     {% endif %}
 </p>
 

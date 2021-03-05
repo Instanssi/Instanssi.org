@@ -1,0 +1,323 @@
+@import 'common.scss';
+
+body {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+    background: #222;
+}
+
+h1,h2,h3,h4,h5,p,span,ul,ol,div,form,td {
+    font-family: $body-font-family;
+    font-size: 100%;
+}
+
+strong {
+    font-weight: bold;
+}
+
+sup { font-size: 75%; vertical-align: super; }
+sub { font-size: 75%; vertical-align: sub; }
+
+h1 {
+    font-weight: bold;
+    font-variant: small-caps;
+    padding-top: 18px;
+    padding-left: 10px;
+    font-size: 250%;
+}
+
+h2, h3 {
+    border-bottom: 1px dotted $theme-color;
+}
+h2 {
+    width: 100%;
+    font-size: 170%;
+    margin-bottom: 1em;
+}
+h3 {
+    font-size: 150%;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+}
+
+p,pre,blockquote,ul,ol {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+hr {
+    border: 0; border-top: 1px dotted #aaa;
+}
+
+a {
+    color: $theme-color-mid;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Base layout tuning ---------- */
+
+#base {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+/* ---------- Header ---------- */
+
+#header, #base {
+    position: relative;
+}
+
+.content {
+    z-index: 0;
+}
+
+#header h1, #header h1 span, #usertools a {
+    text-shadow: black 1px 1px 1px;
+    font-family: $title-font-family;
+    font-variant: normal;
+}
+#usertools a { font-size: 1.2em; }
+#header h1, #header h1 span {
+    font-size: 3.5em;
+}
+#header h1 {
+    padding-bottom: 7px;
+    font-variant: small-caps;
+    font-weight: 800;
+}
+#header h1 span { text-transform: none;}
+#header h1 .section { margin-left: .25em; font-size: .5em;}
+#header h1 a, #usertools a { color: #fff; }
+#header h1 a, h1 a:visited { text-decoration: none; }
+#header h1 a {
+    text-shadow: #124 2px 3px 3px, #124 -2px 3px 3px;
+}
+
+#header_nav {
+    min-height: 32px;
+    background: $theme-color-dark;
+    color: #fff;
+}
+#header_nav:after {
+    display: table;
+    content: ' ';
+    clear: both;
+}
+#header_nav_left { float: left; margin: 0; }
+#header_nav_right { float: right; margin: 0; }
+#header_nav .menuitem { float: left; }
+#header_nav .menuitem a { padding: $spacer; }
+#header_nav ul.sub-level span { padding: $spacer; }
+#header_nav ul.sub-level { display: none; }
+
+#header_nav li:hover .sub-level {
+    background-color: $theme-color;
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 21px;
+}
+
+#header_nav ul.sub-level li {
+    float: left;
+    width: 150px;
+    border-top: 1px dotted #111111;
+    z-index: 2;
+}
+
+#header_nav ul.sub-level li:first-child { border-top: 0px; }
+
+/* ----------- Some common stuff for menuitems ---------- */
+
+.menuitem.menu-down-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0d7');
+
+}
+.menuitem.menu-right-arrow > a:after {
+    padding-left: $spacing-medium;
+    @include awesome-glyph('\f0da');
+}
+
+.menuitem a,
+.menuitem span {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: background-color $transition-small;
+}
+
+.menuitem a:hover {
+    background-color: $theme-nav-hover;
+    color: #fff;
+    text-decoration: none;
+}
+.menuitem:hover { position: relative; }
+ul.sub-level {
+    z-index: 99;
+    margin-top: 14px;
+}
+
+/* ---------- Contents ---------- */
+
+#contents { padding: $spacer; }
+#contents ul,
+#contents ol { margin-left: 2em; }
+#contents ul { list-style-type: disc; }
+#contents ol { list-style-type: decimal; }
+
+#contents ol li,
+#contents ul li { margin-top: 0.8em; margin-bottom: 0.8em; }
+
+#contents pre {
+    font-family: "Consolas", monospace;
+    background-color: #eaeaff;
+    border: 1px solid #cdcdcd;
+    padding: 8px;
+}
+
+#contents blockquote {
+    background-color: #eaeaff;
+    border-left: 3px dotted #aaaaaa;
+    padding: 1px;
+    padding-left: 1em;
+    margin-left: 1em;
+}
+
+/* ---------- Crumbpath ---------- */
+
+ul#crumbpath {
+    font-size: 12px;
+    margin: 0 0 $spacer 0 !important;
+    padding: 0;
+    width: 100%;
+    display: block;
+}
+ul#crumbpath li {
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+    position: relative;
+}
+ul#crumbpath li:before {
+    content: '> ';
+    color: #555;
+    padding: $spacing-small;
+}
+ul#crumbpath li:first-child:before {
+    content: '';
+    padding: 0;
+}
+ul#crumbpath li * {
+    font-size: 12px;
+    padding: $spacer 0;
+}
+ul#crumbpath a {
+    color: $theme-color-mid;
+    text-decoration: none;
+}
+ul#crumbpath a:hover {
+    text-decoration: underline;
+}
+
+/* ---- usertools ---- */
+#usertools {
+    float: right;
+    padding: 2px 8px;
+    position: relative;
+    z-index: 1;
+    background: rgba(0,0,0,.25);
+
+    .user-image {
+        float: right;
+        width: 44px; height: 44px;
+        font-size: 0;
+    }
+    &.unauthenticated .user-image {
+        display: none;
+        /*background: url('../img/top_secret_42.png') 1px 1px no-repeat;*/
+    }
+    img {
+        box-shadow: 0 0 2px #555;
+    }
+    div {
+        float: right;
+        vertical-align: middle;
+        text-align: right;
+        padding-top: 0.1em;
+    }
+    div a {
+        padding: 0.25em;
+        padding-right: 0.6em;
+        display: block;
+    }
+    a, a:visited {
+        color: #fff;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #fff;
+        text-shadow: #048 1px 1px 1px
+    }
+}
+
+.login-button::before {
+    display: inline;
+    padding-right: 8px;
+}
+// we might want to hint at login method in the usertools box, so
+// the logins are listed here instead of the users app
+.login-facebook::before {
+    @include awesome-glyph('\f09a');
+}
+.login-steam::before {
+    @include awesome-glyph('\f1b7');
+}
+.login-google::before {
+    @include awesome-glyph('\f1a0');
+}
+.login-github::before {
+    @include awesome-glyph('\f09b');
+}
+.login-twitter::before {
+    @include awesome-glyph('\f099');
+}
+
+
+/* ---------- uniForm tweaks ---------- */
+
+form.uniForm { margin-top: 1.0em; }
+form.uniForm .ctrlHolder, form.uniForm .error { border-bottom: 1px dotted #aaaaaa;  }
+form.uniForm .buttonHolder { margin: 0; }
+form.uniForm .error { margin: 0.5em; }
+form.uniForm fieldset { border: 1px solid #999999; }
+form.uniForm fieldset legend {  padding: .3em; margin: 0 .7em; }
+
+/* ---- jQuery UI theming ---- */
+
+.ui-widget-content,
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    border: 1px solid #bbb;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    color: $theme-color;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    color: #c88;
+}
+
+.ui-state-highlight a {
+    text-decoration: underline;
+}

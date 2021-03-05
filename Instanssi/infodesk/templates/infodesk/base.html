@@ -6,10 +6,7 @@
 
 {% block head %}
     <!-- Infodesk library stuff -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
     <link rel="stylesheet" href="{% static "libs/select2/select2.css" %}" />
-    <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "libs/select2/select2.min.js" %}"></script>
 
     <!-- Infodesk custom fluff -->
@@ -17,9 +14,7 @@
 {% endblock %}
 
 {% block jquery %}
-        $('form.uniForm').uniform();
         $('.ui-widget').css('font-size','12px');
-        $('.button, #submit-id-submit').button();
 {% endblock %}
 
 {% block headernav %}

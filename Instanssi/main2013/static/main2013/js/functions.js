@@ -95,12 +95,4 @@ $(document).ready(function (){
 	}
 	$('.store-items').append('<div class="store-sum">Yhteensä: <span></span> €</div>');
 	storeSum();
-
-
-	/* fancybox for images */
-	$('.item-image').wrap( function(){
-		return '<a href="' + $( this ).attr( 'data-bigimg' ) + '" class="fancybox">';
-	});
-	$(".fancybox").fancybox();
-
 });

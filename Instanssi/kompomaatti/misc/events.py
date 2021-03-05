@@ -1,75 +1,66 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from django.utils import timezone
 import time
-from Instanssi.kompomaatti.models import Compo,Competition
+from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
 
+
 def get_upcoming(event):
-    compos = Compo.objects.filter(event=event, voting_end__gt=datetime.now(), active=True)
-    progs = ProgrammeEvent.objects.filter(event=event, start__gt=datetime.now(), active=True)
-    comps = Competition.objects.filter(event=event, start__gt=datetime.now(), active=True)
+    compos = Compo.objects.filter(event=event, voting_end__gt=timezone.now(), active=True)
+    progs = ProgrammeEvent.objects.filter(event=event, start__gt=timezone.now(), active=True)
+    comps = Competition.objects.filter(event=event, start__gt=timezone.now(), active=True)
     events = []
     
     # Handle compos
     for compo in compos:
         # Only show this if still valid
-        if compo.adding_end > datetime.now():
+        if compo.adding_end > timezone.now():
             events.append({
                 'id': compo.id,
                 'date': compo.adding_end,
-                'title': compo.name + u': ilmoittautuminen päättyy.',
+                'title': compo.name + ': ilmoittautuminen päättyy.',
                 'type': 1,
                 'icon': '',
             })
             
-        if compo.compo_start > datetime.now():
+        if compo.compo_start > timezone.now():
             events.append({
                 'id': compo.id,
                 'date': compo.compo_start,
-                'title': compo.name + u': kompo alkaa.',
+                'title': compo.name + ': kompo alkaa.',
                 'type': 1,
                 'icon': '',
             })
-            
-        '''
-        if compo.voting_start > datetime.now():
-            events.append({
-                'id': compo.id,
-                'date': compo.voting_start,
-                'title': compo.name + u': äänestys alkaa.',
-                'type': 1,
-                'icon': '',
-            })
-        '''
+
         if compo.is_votable:
             events.append({
                 'id': compo.id,
                 'date': compo.voting_end,
-                'title': compo.name + u': äänestys päättyy.',
+                'title': compo.name + ': äänestys päättyy.',
                 'type': 1,
                 'icon': '',
             })
     
     # Handle competitions
     for comp in comps:
-        if comp.participation_end > datetime.now():
+        if comp.participation_end > timezone.now():
             events.append({
                 'id': comp.id,
                 'date': comp.participation_end,
-                'title': comp.name + u': ilmoittautuminen päättyy.',
+                'title': comp.name + ': ilmoittautuminen päättyy.',
                 'type': 2,
                 'icon': '',
             })
         events.append({
             'id': comp.id,
             'date': comp.start,
-            'title': comp.name + u': kilpailu alkaa.',
+            'title': comp.name + ': kilpailu alkaa.',
             'type': 2,
             'icon': '',
         })
         
-    # Handle programmeevents
+    # Handle programme events
     for prog in progs:
         icon = None
         if prog.icon_small:
@@ -84,8 +75,5 @@ def get_upcoming(event):
         })
 
     # Sort list by datetime
-    def helper(object):
-        return time.mktime(object['date'].timetuple())
-    events = sorted(events, key=helper)
-
+    events = sorted(events, key=lambda o: time.mktime(o['date'].timetuple()))
     return events

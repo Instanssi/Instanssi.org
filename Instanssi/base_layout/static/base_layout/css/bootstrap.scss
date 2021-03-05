@@ -1,0 +1,58 @@
+@import "libs/bootstrap/assets/stylesheets/bootstrap/variables.scss";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/mixins";
+
+// Reset and dependencies
+
+// we already have a decent reset, and we don't need print layouts or extra icon fonts
+// @import "libs/bootstrap/assets/stylesheets/bootstrap/normalize";
+// @import "libs/bootstrap/assets/stylesheets/bootstrap/print";
+// @import "libs/bootstrap/assets/stylesheets/bootstrap/glyphicons";
+
+// Core CSS
+
+// not including this prevents Bootstrap from breaking our own link styles
+@import "libs/bootstrap/assets/stylesheets/bootstrap/scaffolding";
+
+@import "libs/bootstrap/assets/stylesheets/bootstrap/type";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/code";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/grid";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/tables";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/forms";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/buttons";
+
+// Components
+// leave out what we don't need for now
+
+@import "libs/bootstrap/assets/stylesheets/bootstrap/component-animations";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/dropdowns";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/button-groups";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/input-groups";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/navs";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/navbar";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/breadcrumbs";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/pagination";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/pager";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/labels";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/badges";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/jumbotron";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/thumbnails";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/alerts";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/progress-bars";
+//@import "libs/bootstrap/assets/stylesheets/bootstrap/media";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/list-group";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/panels";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/responsive-embed";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/wells";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/close";
+
+// Components w/ JavaScript
+// we're not even including the JS for now
+
+@import "libs/bootstrap/assets/stylesheets/bootstrap/modals";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/tooltip";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/popovers";
+// @import "libs/bootstrap/assets/stylesheets/bootstrap/carousel";
+
+// Utility classes
+@import "libs/bootstrap/assets/stylesheets/bootstrap/utilities";
+@import "libs/bootstrap/assets/stylesheets/bootstrap/responsive-utilities";

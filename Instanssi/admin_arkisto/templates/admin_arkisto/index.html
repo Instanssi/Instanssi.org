@@ -25,29 +25,29 @@
 
     <h3>Arkistoija</h3>
     <p>
-		Arkistoijalla voidaan tehdä erilaisia arkistointiin ja tietokannan siivoukseen liittyviä toimenpiteitä.
-		<strong>HUOM!</strong> Jotkin toiminnot saattavat poistaa dataa, joten kannattaa ottaa varmuuskopio tietokannasta
-		ennen näiden ominaisuuksien käyttämistä!
+        Arkistoijalla voidaan tehdä erilaisia arkistointiin ja tietokannan siivoukseen liittyviä toimenpiteitä.
+        <strong>HUOM!</strong> Jotkin toiminnot saattavat poistaa dataa, joten kannattaa ottaa varmuuskopio tietokannasta
+        ennen näiden ominaisuuksien käyttämistä!
     </p>
     <p>
-    	<a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Siirry käyttämään arkistoijaa &raquo;</a>
+        <a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Siirry käyttämään arkistoijaa &raquo;</a>
     </p>
     
     <h3>Videot</h3>
     <p>
-		Videot ovat tapahtumaan liittyviä videoita, esim. seminaarivideot, kilpailuvideot, kävijöiden haastattelut, jne. 
-		<strong>HUOM!</strong> Demoentryjen youtube-videot syötetään suoraan Entryn tietoihin Entryt-sivulla.
+        Videot ovat tapahtumaan liittyviä videoita, esim. seminaarivideot, kilpailuvideot, kävijöiden haastattelut, jne.
+        <strong>HUOM!</strong> Demoentryjen youtube-videot syötetään suoraan Entryn tietoihin Entryt-sivulla.
     </p>
     <p>
-    	<a href="{% url 'manage-arkisto:vids' selected_event_id %}">Siirry muokkaamaan videoita &raquo;</a>
+        <a href="{% url 'manage-arkisto:vids' selected_event_id %}">Siirry muokkaamaan videoita &raquo;</a>
     </p>
     
     <h3>Kategoriat</h3>
     <p>
-		Kategoriat ovat arkistossa näkyviä aliotsikoita tapahtumaan liittyville videoille. Kategoroita voisivat olla esim.
-		"Seminaarit" ja "Haastattelut" jne. Demoentryjen videot saavat otsikon automaattisesti kompon nimen mukaan.
+        Kategoriat ovat arkistossa näkyviä aliotsikoita tapahtumaan liittyville videoille. Kategoroita voisivat olla esim.
+        "Seminaarit" ja "Haastattelut" jne. Demoentryjen videot saavat otsikon automaattisesti kompon nimen mukaan.
     </p>
     <p>
-    	<a href="{% url 'manage-arkisto:vidcats' selected_event_id %}">Siirry muokkaamaan kategorioita &raquo;</a>
+        <a href="{% url 'manage-arkisto:vidcats' selected_event_id %}">Siirry muokkaamaan kategorioita &raquo;</a>
     </p>
 {% endblock %}

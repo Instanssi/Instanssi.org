@@ -1,0 +1,60 @@
+/* footer */
+#page-footer {
+    min-height: $main-footer-height;
+    margin-top: $spacing-large;
+    width: 100%;
+    background: #333;
+    bottom: 0px;
+    padding: $spacing-large 0;
+
+    section {
+        h2 {
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
+    }
+
+    .sponsors {
+        .sponsor {
+            width: 128px;
+            float: left;
+            padding: 0 $spacer $spacer 0;
+
+            &.white {
+                background: #fff;
+            }
+
+            a {
+                display: block;
+                line-height: 0px;
+                padding: $spacer;
+                background: #fff;
+            }
+
+            a:hover {
+                opacity: 0.9;
+            }
+
+            img {
+                background: #fff;
+            }
+        }
+    }
+
+    .menu-item {
+        margin: $spacer 0 $spacer;
+    }
+
+    .menu-item a {
+        padding: $spacer;
+        color: #ccc;
+        text-decoration: none;
+    }
+
+    .current-menu-item a {
+        color: #fff;
+        background: $theme-color;
+        text-decoration: none;
+    }
+}

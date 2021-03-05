@@ -22,8 +22,8 @@
 <h2>Tilaushaku</h2>
 <p>Hae tilauksia/tuotteita kirjoittamalla osa asiakkaan nimeä tai tuotteen/tilauksen tunnisteen alkuosa.</p>
 <form id="order-search-form" method="get" action="{% url 'infodesk:order_search' %}">
-  <input id="order-search" type="text" name="term"></input>
-  <input type="submit" value="Hae"></input>
+    <input id="order-search" type="text" name="term" />
+    <input type="submit" value="Hae" />
 </form>
 
 <div id="order-search-results">
@@ -33,7 +33,7 @@
 
   {% if transactions %}
   <h3>Tilaukset</h3>
-  <table class="infotable lookup">
+  <table class="table table-striped table-condensed lookup">
   <tr>
     <th>#</th>
     <th>Tilaaja</th>
@@ -45,11 +45,13 @@
   <tr>
     <td>{{ transaction.id }}</td>
     <td>{{ transaction.lastname }}, {{ transaction.firstname }}</td>
-    <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\. H:i" }}</td>
+    <td>{{ transaction.time_created|date:"d.m.Y \k\l\o\ H:i" }}</td>
     <td>{{ transaction.get_status_text }}</td>
-    <td><ul>{% for item in transaction.get_items %}
-       <li><a href="{% url 'infodesk:item_info' item.id %}">
-        {{ item.item.name }}</a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
+    <td><ul>{% for item in transaction.get_transaction_items %}
+       <li>
+          <a href="{% url 'infodesk:item_info' item.id %}">
+            {{ item.item.name }}{% if item.variant %}, {{ item.variant.name }}{% endif %}
+          </a> ({%if not item.is_delivered %}ei {%endif%}käytetty)
        </li>
     {% endfor %}</ul></td>
   </tr>

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.syndication.views import Feed, FeedDoesNotExist
+from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import Event
 
-class blog_feed_all(Feed):
+
+class BlogFeedAll(Feed):
     title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
@@ -14,7 +15,7 @@ class blog_feed_all(Feed):
     def get_object(self, request):
         return None
 
-    def items(self, obj):
+    def items(self):
         entries = []
         for entry in BlogEntry.objects.filter(public=True).order_by('-date'):
             entry.event_url = entry.event.mainurl
@@ -28,12 +29,12 @@ class blog_feed_all(Feed):
         return item.text
     
     def item_link(self, item):
-        print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
 
-class blog_feed(Feed):
+
+class BlogFeed(Feed):
     title = "Instanssi.org Blogi"
     link = "http://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
@@ -55,8 +56,6 @@ class blog_feed(Feed):
         return item.text
     
     def item_link(self, item):
-        print item.event_url
         if item.event_url and len(item.event_url) > 0:
             return item.event_url + '#'+str(item.id)
         return "http://"+settings.DOMAIN+"/#"+str(item.id)
-    

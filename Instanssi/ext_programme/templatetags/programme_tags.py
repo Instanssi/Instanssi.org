@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 
+import arrow
+from django.conf import settings
 from django import template
-from Instanssi.kompomaatti.models import Event,Compo,Competition
+from Instanssi.kompomaatti.models import Compo, Competition
 from Instanssi.ext_programme.models import ProgrammeEvent
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import time
 
 register = template.Library()
 
+
 @register.inclusion_tag('ext_programme/tags/programme.html')
 def render_programme(event_id):
     progs = ProgrammeEvent.objects.filter(event_id=event_id, event_type=1, active=True).order_by('start')
+
     return {
         'event_id': event_id,
         'progs': progs,
@@ -30,7 +34,7 @@ def render_calendar(event_id):
     for compo in compos:
         events.append({
             'date': compo.adding_end,
-            'title': compo.name + u': ilmoittautuminen päättyy',
+            'title': compo.name + ': ilmoittautuminen päättyy',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'place': '',
@@ -38,7 +42,7 @@ def render_calendar(event_id):
         })
         events.append({
             'date': compo.compo_start,
-            'title': compo.name + u': kompo alkaa',
+            'title': compo.name + ': kompo alkaa',
             'url': reverse('km:compo', args=(event_id, compo.id,)),
             'icon': '',
             'place': '',
@@ -56,7 +60,7 @@ def render_calendar(event_id):
         if compo.is_votable:
             events.append({
                 'date': compo.voting_end,
-                'title': compo.name + u': äänestys päättyy',
+                'title': compo.name + ': äänestys päättyy',
                 'url': reverse('km:compo', args=(event_id, compo.id,)),
                 'icon': '',
                 'place': '',
@@ -67,7 +71,7 @@ def render_calendar(event_id):
     for comp in comps:
         events.append({
             'date': comp.participation_end,
-            'title': comp.name + u': ilmoittautuminen päättyy',
+            'title': comp.name + ': ilmoittautuminen päättyy',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
             'place': '',
@@ -75,7 +79,7 @@ def render_calendar(event_id):
         })
         events.append({
             'date': comp.start,
-            'title': comp.name + u': kilpailu alkaa',
+            'title': comp.name + ': kilpailu alkaa',
             'url': reverse('km:competition', args=(event_id, comp.id,)),
             'icon': '',
             'place': '',
@@ -95,6 +99,7 @@ def render_calendar(event_id):
                 'url': None,
                 'place': prog.place,
                 'desc': '',
+                'id': 'sp-%d' % (prog.id,)
             })
         else:
             events.append({
@@ -104,11 +109,12 @@ def render_calendar(event_id):
                 'url': '../ohjelma/#%d' % (prog.id,),
                 'place': prog.place,
                 'desc': prog.title,
+                'id': 'sp-%d' % (prog.id,)
             })
 
     # Sort list 
-    def helper(object):
-        return time.mktime(object['date'].timetuple())
+    def helper(obj):
+        return time.mktime(obj['date'].timetuple())
     events = sorted(events, key=helper)
     
     # Group by day
@@ -125,19 +131,20 @@ def render_calendar(event_id):
     events = []
     for key in keys:
         days = [
-            u'Maanantai',
-            u'Tiistai',
-            u'Keskiviikko',
-            u'Torstai',
-            u'Perjantai',
-            u'Lauantai',
-            u'Sunnuntai',
+            'Maanantai',
+            'Tiistai',
+            'Keskiviikko',
+            'Torstai',
+            'Perjantai',
+            'Lauantai',
+            'Sunnuntai',
         ]
+        dt = arrow.get(key).to(settings.TIME_ZONE).format('DD.MM.')
         events.append({
             'items': grouped_events[key],
-            'title': days[key.weekday()] + u' ' + key.strftime('%d.%m.'),
+            'title': '{} {}'.format(days[key.weekday()], dt),
         })
-        
+
     # All done
     return {
         'event_id': event_id,

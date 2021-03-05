@@ -5,18 +5,19 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from django.contrib.auth.models import User
 
+
 class InformationChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InformationChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                '',
                 'first_name',
                 'last_name',
                 'email',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -25,12 +26,22 @@ class InformationChangeForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ('first_name','last_name','email')
+        fields = ('first_name', 'last_name', 'email')
+
 
 class PasswordChangeForm(forms.Form):
-    old_pw = forms.CharField(widget=forms.PasswordInput, label=u'Vanha salasana', help_text=u'Kirjoita vanha salasanasi turvallisuussyistä.')
-    new_pw = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana', help_text=u'Kirjoita uusi salasanasi. Tulee olla vähintään 8 merkkiä pitkä.')
-    new_pw_again = forms.CharField(widget=forms.PasswordInput, label=u'Uusi salasana uudelleen', help_text=u'Kirjoita uusi salasanasi toistamiseen varmistukseksi.')
+    old_pw = forms.CharField(
+        widget=forms.PasswordInput,
+        label='Vanha salasana',
+        help_text='Kirjoita vanha salasanasi turvallisuussyistä.')
+    new_pw = forms.CharField(
+        widget=forms.PasswordInput,
+        label='Uusi salasana',
+        help_text='Kirjoita uusi salasanasi. Tulee olla vähintään 8 merkkiä pitkä.')
+    new_pw_again = forms.CharField(
+        widget=forms.PasswordInput,
+        label='Uusi salasana uudelleen',
+        help_text='Kirjoita uusi salasanasi toistamiseen varmistukseksi.')
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -38,12 +49,12 @@ class PasswordChangeForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'',
+                '',
                 'old_pw',
                 'new_pw',
                 'new_pw_again',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -57,7 +68,7 @@ class PasswordChangeForm(forms.Form):
         # Make sure this is valid
         old = self.cleaned_data['old_pw']
         if not self.user.check_password(old):
-            raise forms.ValidationError(u'Vanha salasana väärin!')
+            raise forms.ValidationError('Vanha salasana väärin!')
             
         # Remember to return cleaned data
         return old
@@ -65,13 +76,13 @@ class PasswordChangeForm(forms.Form):
     def clean_new_pw(self):
         pw = self.cleaned_data['new_pw']
         if len(pw) < 8:
-            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+            raise forms.ValidationError('Salasanan tulee olla vähintään 8 merkkiä pitkä!')
         return pw
         
     def clean_new_pw_again(self):
         pw = self.cleaned_data['new_pw_again']
         if len(pw) < 8:
-            raise forms.ValidationError(u'Salasanan tulee olla vähintään 8 merkkiä pitkä!')
+            raise forms.ValidationError('Salasanan tulee olla vähintään 8 merkkiä pitkä!')
         return pw
         
     def clean(self):
@@ -81,10 +92,9 @@ class PasswordChangeForm(forms.Form):
         pwa = cleaned_data.get('new_pw')
         pwb = cleaned_data.get('new_pw_again')
         if pwa != pwb:
-            msg = u'Salasana ei vastaa edelliseen kenttään annettua!'
+            msg = 'Salasana ei vastaa edelliseen kenttään annettua!'
             self._errors["new_pw_again"] = self.error_class([msg])
             del cleaned_data["new_pw_again"]
                 
         # Remember to return cleaned data
         return cleaned_data
-    

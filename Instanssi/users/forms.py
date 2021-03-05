@@ -3,38 +3,39 @@
 from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.kompomaatti.models import Profile
-from common.misc import get_url_local_path
+from Instanssi.common.misc import get_url_local_path
+
 
 class DjangoLoginForm(forms.Form):
-    username = forms.CharField(label=u"Käyttäjätunnus", help_text=u"Django-käyttäjätunnus")
-    password = forms.CharField(label=u"Salasana", widget=forms.PasswordInput)
+    username = forms.CharField(label="Käyttäjätunnus", help_text="Django-käyttäjätunnus")
+    password = forms.CharField(label="Salasana", widget=forms.PasswordInput)
     next = forms.CharField(widget=forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):
-        self.next = kwargs.pop('next', '')
+        self.next_page = kwargs.pop('next', '')
+        self.logged_user = None
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
-        self.fields['next'].initial = self.next
+        self.fields['next'].initial = self.next_page
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Django kirjautuminen',
+                'Django kirjautuminen',
                 'username',
                 'password',
                 'next',
                 ButtonHolder (
-                    Submit('submit', u'Kirjaudu')
+                    Submit('submit', 'Kirjaudu')
                 )
             )
         )
 
     def clean_next(self):
-        next = get_url_local_path(self.cleaned_data['next'])
-        return next
+        return get_url_local_path(self.cleaned_data['next'])
 
     def clean(self):
         # Make sure the user is valid
@@ -44,24 +45,25 @@ class DjangoLoginForm(forms.Form):
             self.logged_user = auth.authenticate(
                 username=self.cleaned_data['username'],
                 password=self.cleaned_data['password'])
-            if self.logged_user == None or self.logged_user.is_active == False:
+            if not self.logged_user or self.logged_user.is_active is False:
                 self.logged_user = None
-                raise ValidationError(u'Väärä käyttäjätunnus tai salasana!')
+                raise ValidationError('Väärä käyttäjätunnus tai salasana!')
         return cleaned_data
 
     def login(self, request):
         auth.login(request, self.logged_user)
 
+
 class OpenIDLoginForm(forms.Form):
     sps = forms.ChoiceField(
-        label=u'Kirjautumispalvelu', 
-        help_text=u'Muutamia yleisimpiä kirjautumispalvelimia.')
+        label='Kirjautumispalvelu', 
+        help_text='Muutamia yleisimpiä kirjautumispalvelimia.')
     openid_identifier = forms.URLField(
         widget=forms.TextInput(), 
         max_length=255, 
         required=True, 
-        label=u'Osoite', 
-        help_text=u'Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.')
+        label='Osoite', 
+        help_text='Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.')
     next = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
@@ -74,12 +76,12 @@ class OpenIDLoginForm(forms.Form):
         self.helper.form_action = reverse('social:begin', args=('openid',))
         self.helper.layout = Layout(
             Fieldset(
-                u'OpenID kirjautuminen',
+                'OpenID kirjautuminen',
                 'sps',
                 'openid_identifier',
                 'next',
-                ButtonHolder (
-                    Submit('submit-login', u'Kirjaudu')
+                ButtonHolder(
+                    Submit('submit-login', 'Kirjaudu')
                 )
             )
         )
@@ -87,19 +89,20 @@ class OpenIDLoginForm(forms.Form):
         # Initial values
         self.fields['next'].initial = self.next
         self.fields['sps'].choices = [
-            ('https://www.google.com/accounts/o8/id', 'Google'),
+            ('', 'Valitse OpenID-palveluntarjoaja'),
             ('https://korppi.jyu.fi/openid/', 'Korppi'),
             ('https://me.yahoo.com', 'Yahoo'),
         ]
+        self.fields['sps'].required = False
         self.fields['sps'].initial = 0
-        self.fields['openid_identifier'].initial = 'https://www.google.com/accounts/o8/id'
+        self.fields['openid_identifier'].initial = ''
         
 
 class ProfileForm(forms.ModelForm):
     otherinfo = forms.CharField(
         widget=forms.Textarea(), 
-        label=u"Muut yhteystiedot", 
-        help_text=u"Muut yhteystiedot, mm. IRC-nick & verkko, jne.", 
+        label="Muut yhteystiedot", 
+        help_text="Muut yhteystiedot, mm. IRC-nick & verkko, jne.", 
         required=False)
     
     def __init__(self, *args, **kwargs):
@@ -111,14 +114,14 @@ class ProfileForm(forms.ModelForm):
         try:
             self.profile = Profile.objects.get(user=self.user)
         except Profile.DoesNotExist:
-            self.profile = Profile(user=self.user, otherinfo=u'')
+            self.profile = Profile(user=self.user, otherinfo='')
             self.profile.save()
         
         # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Käyttäjäprofiili',
+                'Käyttäjäprofiili',
                 'first_name',
                 'last_name',
                 'email',
@@ -130,9 +133,9 @@ class ProfileForm(forms.ModelForm):
         )
         
         # Finnish labels
-        self.fields['first_name'].label = u"Etunimi"
-        self.fields['last_name'].label = u"Sukunimi"
-        self.fields['email'].label = u"Sähköposti"
+        self.fields['first_name'].label = "Etunimi"
+        self.fields['last_name'].label = "Sukunimi"
+        self.fields['email'].label = "Sähköposti"
         self.fields['email'].required = True
         self.fields['otherinfo'].initial = self.profile.otherinfo
                 

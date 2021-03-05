@@ -7,62 +7,63 @@
 
 {% block head %}
     <!-- Management CSS (lib) -->
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/theme.default.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/tablesorter/jquery.tablesorter.pager.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/uni-form.css" %}" media="all" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/uni-form/default.uni-form.css" %}" media="all" />
-    <link rel="stylesheet" type="text/css" href="{% static "libs/css/datetimepicker/jquery.ui.datetime.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/summernote/summernote.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/lightbox/ekko-lightbox.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-table/bootstrap-table.min.css' %}" />
     
     <!-- Management JS (lib) -->
-    <script type="text/javascript" src="{% static "libs/js/datetimepicker/jquery-ui-timepicker-addon.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/uni-form/uni-form-validation.jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.pager.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/tablesorter/jquery.tablesorter.widgets.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "libs/js/other/tablesorter-widgets.js" %}"></script>
-    
+    <script type="text/javascript" src="{% static "libs/bootstrap/assets/javascripts/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/summernote/summernote.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/summernote/lang/summernote-fi-FI.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/momentjs/moment.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/momentjs/moment-fi-locale.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/lightbox/ekko-lightbox.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/bootstrap-table/bootstrap-table.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/bootstrap-table/locale/bootstrap-table-fi-FI.js" %}"></script>
+
     <!-- Management custom fluff -->
     <link rel="stylesheet" type="text/css" href="{% static "admin_base/css/style.css" %}" />
 {% endblock %}
 
 {% block jquery %}
+        $('.timeinput').datetimepicker({
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            format: "HH:mm:ss"
+        });
         $('.datetimeinput').datetimepicker({
-            dateFormat: 'yy-mm-dd',
-            timeFormat: 'hh:mm:ss',
-            stepMinute: 5,
-            timeOnlyTitle: 'Valitse aika',
-            timeText: 'Aika',
-            hourText: 'Tunti',
-            minuteText: 'Minuutti',
-            secondText: 'Sekunti',
-            millisecText: 'Millisekunti',
-            currentText: 'Nyt',
-            closeText: 'Sulje',
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            sideBySide: true,
+            format: "YYYY-MM-DD HH:mm:ss"
         });
-        $('.timeinput').timepicker({
-            showButtonPanel: false,
-            timeFormat: 'hh:mm:ss',
-            stepMinute: 5,
-            timeOnlyTitle: 'Valitse aika',
-            timeText: 'Aika',
-            hourText: 'Tunti',
-            minuteText: 'Minuutti',
-            secondText: 'Sekunti',
-            millisecText: 'Millisekunti',
-            currentText: 'Nyt',
-            closeText: 'Sulje',
+        $('.dateinput').datetimepicker({
+            locale: "fi",
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            },
+            format: "YYYY-MM-DD"
         });
-        $('form.uniForm').uniform();
-        $('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
-        $('.ui-widget').css('font-size','14px');
-        
-        $('.delete_link').addClass('ui-icon ui-icon-closethick custom_icon_style');
-        $('.edit_link').addClass('ui-icon ui-icon-pencil custom_icon_style');
-        $('.management_field').css('width','42px');
-        
-        $('.emailinput').addClass('textInput');
-        $('.numberinput').addClass('textInput');
-        $('.urlinput').addClass('textInput');
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+        $(".delete_link").click(function(){ return confirm("Varmista poisto"); });
 {% endblock %}
 
 {% block headernav %}
@@ -71,6 +72,7 @@
                 <a href="{% url 'manage-users:index' %}">Käyttäjät</a>
                 <ul class="sub-level">
                     <li class="menuitem"><a href="{% url 'manage-users:users' %}">Käyttäjät</a></li>
+                    <li class="menuitem"><a href="{% url 'manage-users:apps' %}">API</a></li>
                     <li class="menuitem"><a href="{% url 'manage-users:log' %}">Loki</a></li>
                 </ul>
             </li>
@@ -87,6 +89,7 @@
                 <a href="{% url 'manage-store:index' %}">Verkkokauppa</a>
                 <ul class="sub-level">
                     <li class="menuitem"><a href="{% url 'manage-store:items' %}">Tuotteet</a></li>
+                    <li class="menuitem"><a href="{% url 'manage-store:amounts' %}">Myyntimäärät</a></li>
 {% if perms.store.view_storetransaction %}
                     <li class="menuitem"><a href="{% url 'manage-store:status' %}">Ostotapahtumat</a></li>
                     <li class="menuitem"><a href="{% url 'manage-store:transactionitems' %}">Transaktiotuotteet</a></li>

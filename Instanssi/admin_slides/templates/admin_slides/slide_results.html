@@ -2,23 +2,27 @@
 
 {% block content %}
 <div id="title" class="step" data-x="0" data-y="-2000" data-z="-2000" data-rotate-y="0">
-	<div class="centered">
-		<p class="componame">{{ compo.name }}</p>
-	</div>
+    <div class="centered">
+        <p class="componame">{{ compo.name }}</p>
+    </div>
 </div>
 {% for entry in entries %}
 <div id="demo_{{ entry.id }}_score" class="step" data-x="{{ entry.score_x }}" data-y="{{ entry.score_y }}" data-z="{{ entry.score_z }}">
-	<div class="centered">
-		<p class="entry pos">{{ entry.rank }}. Sija</p>
-		<p class="entry score">{{ entry.score|floatformat:"2" }} pistettä</p>
-	</div>
+    <div class="centered">
+        <p class="entry pos">{{ entry.rank }}. Sija</p>
+        <p class="entry score">{{ entry.score|floatformat:"2" }} pistettä</p>
+    </div>
 </div>
 <div id="demo_{{ entry.id }}_information" class="step" data-x="{{ entry.info_x }}" data-y="{{ entry.info_y }}" data-z="{{ entry.info_z }}">
-	<div class="centered">
-		<p class="entry name">{{ entry.name }}</p>
-		<p class="entry by">by</p>
-		<p class="entry creator">{{ entry.creator }}</p>
-	</div>
+    <div class="centered">
+        <p class="entry name">{{ entry.name }}</p>
+        <p class="entry by">by</p>
+        <p class="entry creator">{{ entry.creator }}</p>
+        {% if entry.platform %}
+        <br />
+        <p class="entry platform">({{ entry.platform }})</p>
+        {% endif %}
+    </div>
 </div>
 {% endfor %}
 {% if r_entries %}
@@ -31,9 +35,9 @@
 </div>
 {% endif %}
 <div id="end" class="step" data-x="{{ last_x }}" data-y="{{ last_y }}" data-z="{{ last_z }}">
-	<div class="centered">
-		<p class="compothanks">That's all, folks!</p>
-		<a href="{% url 'manage-slides:index' selected_event_id %}">Pois &raquo;</a>
-	</div>
+    <div class="centered">
+        <p class="compothanks">That's all, folks!</p>
+        <a href="{% url 'manage-slides:index' selected_event_id %}">Pois &raquo;</a>
+    </div>
 </div>
 {% endblock %}

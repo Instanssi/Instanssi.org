@@ -1,0 +1,50 @@
+{% extends "main2020/base.html" %}
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<h1>Effect Server</h1>
+
+<h2>Mikä?</h2>
+<p>
+    Effect Server eli Tehostepalvelin on jatkoa Instansseilla aikaisemmin nähdylle Valopalvelimelle.
+</p>
+<p>
+    Tehostepalvelimen tarkoitus on tarjota Instanssin kävijöille ohjelmointirajapinta
+    partysalin valaistukseen ja mahdollisesti muihin salissa olevien tehosteiden hallintaan.
+    Vuoden 2020 Instanssissa salin valaistuksena on 24 RGB LED-valoa ja 4 UV-valoa.
+</p>
+<p>
+    Tehostepalvelimen lähdekoodi on saatavilla <a href="https://github.com/turol/valoserveri">GitHubissa</a>. Repositoriossa on myös muutamia koodiesimerkkejä.
+</p>
+<h2>Valojen asettelu</h2>
+<img class="no-border" src="{% static 'main2020/images/salivalot.svg' %}" style="max-height: 300px;">
+<p></p>
+<p>
+    RGB-valot on numeroitu 0..23 vastapäivään kiertäen, alkaen lavan vasemmalta puolelta. UV-valojen numerot ovat 24..27.
+    UV-valoja käytettäessä kannattaa pitää mielessä että valon intensiteetti on painotettu keskiarvo R, G ja B arvoista.
+</p>
+<h2>Protokolla</h2>
+<p>
+    Tehostepalvelimen rajapinta valoihin on yksinkertainen viestiprotokolla, jota voi käyttää UDP-paketeilla
+    tai WebSocket-viesteillä. Sen suunnittelussa on erityisesti pyritty ottamaan huomioon ohjelmoitavuuden
+    yksinkertaisuus liikaa kuitenkaan rajoittamatta laajennettavuutta. Valojen ohjaukseen ei siis tarvita
+    mitään kirjastoja, vaan tehtävään soveltuu mikä tahansa kieli, jolla voidaan lähettää UDP-paketteja tai
+    binäärimuotoisia WebSocket-viestejä.
+</p>
+<p>
+    Valopalvelimen websocket-rajapinta on auki osoitteessa valot.party:9910 ja UDP rajapinta osoitteessa valot.party:9909
+</p>
+<p>
+    Rajapintakuvaus ja python-esimerkki löytyy
+    <a href="https://github.com/turol/valoserveri/blob/master/use_examples/over_udp.py">valopalvelimen esimerkkikansiosta</a>.
+</p>
+{% endblock %}

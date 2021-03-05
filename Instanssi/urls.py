@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf import settings
+from django.urls import reverse_lazy, path
+from django.contrib import admin
+from django.views.static import serve
+from django.views.generic import RedirectView
 
 # URLS
-urlpatterns = patterns('',
-    url('', include('social.apps.django_app.urls', namespace='social')),
+urlpatterns = [
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^api/v1/', include('Instanssi.api.urls', namespace="api")),
     url(r'^2012/', include('Instanssi.main2012.urls', namespace="main2012")),
     url(r'^2013/', include('Instanssi.main2013.urls', namespace="main2013")),
     url(r'^2014/', include('Instanssi.main2014.urls', namespace="main2014")),
     url(r'^2015/', include('Instanssi.main2015.urls', namespace="main2015")),
+    url(r'^2016/', include('Instanssi.main2016.urls', namespace="main2016")),
+    url(r'^2017/', include('Instanssi.main2017.urls', namespace="main2017")),
+    url(r'^2018/', include('Instanssi.main2018.urls', namespace="main2018")),
+    url(r'^2019/', include('Instanssi.main2019.urls', namespace="main2019")),
+    url(r'^2020/', include('Instanssi.main2020.urls', namespace="main2020")),
     url(r'^manage/events/', include('Instanssi.admin_events.urls', namespace='manage-events')),
     url(r'^manage/users/', include('Instanssi.admin_users.urls', namespace='manage-users')),
     url(r'^manage/profile/', include('Instanssi.admin_profile.urls', namespace='manage-profile')),
@@ -24,7 +34,6 @@ urlpatterns = patterns('',
     url(r'^manage/(?P<sel_event_id>\d+)/kompomaatti/', include('Instanssi.admin_kompomaatti.urls', namespace='manage-kompomaatti')),
     url(r'^manage/(?P<sel_event_id>\d+)/programme/', include('Instanssi.admin_programme.urls', namespace='manage-programme')),
     url(r'^manage/', include('Instanssi.admin_base.urls', namespace='manage-base')),
-    url(r'^api/', include('Instanssi.json_api.urls', namespace="json_api")),
     url(r'^users/', include('Instanssi.users.urls', namespace='users')),
     url(r'^blog/', include('Instanssi.ext_blog.urls', namespace="ext-blog")),
     url(r'^arkisto/', include('Instanssi.arkisto.urls', namespace='archive')),
@@ -32,25 +41,20 @@ urlpatterns = patterns('',
     url(r'^screen/', include('Instanssi.screenshow.urls', namespace="screen")),
     url(r'^store/', include('Instanssi.store.urls', namespace='store')),
     url(r'^infodesk/', include('Instanssi.infodesk.urls', namespace='infodesk')),
-    url(r'^$', include('Instanssi.main2015.urls')),
-)
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('main2020:index')), name='root-index')
+]
 
 # Add admin panel link if debug mode is on
 if settings.DEBUG or settings.ADMIN:
-    from django.contrib import admin
-    urlpatterns += patterns('',
-        url(r'^admin/', include(admin.site.urls)),
-    )
+    admin.autodiscover()
+    urlpatterns += [
+        path('admin/', admin.site.urls),
+    ]
 
 if settings.DEBUG:
-    import debug_toolbar
-
     # Serve media files through static.serve when running in debug mode
     # Also, show debug_toolbar if debugging is on
-    urlpatterns += patterns('',
-        url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+    urlpatterns += [
+        url(r'^uploads/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 
-    # Use admin panel, if debug mode is on
-    admin.autodiscover()

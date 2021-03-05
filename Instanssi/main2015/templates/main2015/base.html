@@ -16,9 +16,8 @@
     <link href='//fonts.googleapis.com/css?family=Maven+Pro:300' rel='stylesheet' type='text/css'>
 
     <!-- styles -->
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css?v2' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'main2015/css/style.css?v2' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/css/reset.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main2015/css/style.css' %}" />
 
     <!-- scripts -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -75,12 +74,12 @@
                 <ul>
                     <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:index' %}">Blogi</a></li>
                     <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:info' %}">Info</a></li>
-                    <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>-->
-                    <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>-->
+                    <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>
+                    <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>
+                    <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>
                     <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:english' %}">In English</a></li>
                     <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:stream' %}">Stream</a></li>-->
-                    <!--<li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>-->
+                    <li class="menu-item" style="float: right;"><a href="{% url 'store:index' %}">Kauppa</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                     <li class="menu-item" style="float: right;"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                     <div class="clearer"></div>
@@ -92,9 +91,11 @@
                 {% block content %}{% endblock %}
             </section>
             <aside id="sidebar-widgets">
-                <!--<section class="widget widget-store">
+                <!--
+                <section class="widget widget-store">
                     <a href="{% url 'store:index' %}" class="btn full-width">Osta lippu!</a>
-                </section>-->
+                </section>
+                -->
                 <section class="widget widget-twitter">
                     <h2>Twitter</h2>
                     <div id="tweets">
@@ -136,12 +137,12 @@
                     <ul>
                         <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:index' %}">Blogi</a></li>
                         <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:info' %}">Info</a></li>
-                        <!--<li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>-->
-                        <!--<li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>-->
-                        <!--<li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>-->
+                        <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:kompot' %}">Kompot</a></li>
+                        <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:ohjelma' %}">Ohjelma</a></li>
+                        <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:aikataulu' %}">Aikataulu</a></li>
                         <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:english' %}">In English</a></li>
                         <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2015:stream' %}">Stream</a></li>-->
-                        <!--<li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>-->
+                        <li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>
                         <li class="menu-item"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
                         <li class="menu-item"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                         <div class="clearer"></div>
@@ -160,8 +161,11 @@
                         <div class="sponsor"><a href="http://www.paytrail.com/"><img src="{% static 'main2015/images/partners/paytrail.png' %}" alt="Paytrail logo" /></a></div>
                         <div class="sponsor"><a href="http://www.qvantel.com/"><img src="{% static 'main2015/images/partners/qvantel.png' %}" alt="Qvantel logo" /></a></div>
                         <div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2015/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
-                        <div class="sponsor"><a href="http://www.ramirent.fi/"><img src="{% static 'main2015/images/partners/ramirent.png' %}" alt="Ramirent logo" /></a></div>
                         <div class="sponsor"><a href="http://www.ketky.fi/"><img src="{% static 'main2015/images/partners/ketky.png' %}" alt="Ketky logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.flowa.fi/"><img src="{% static 'main2015/images/partners/flowa.png' %}" alt="Flowa logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.wayout.fi/"><img src="{% static 'main2015/images/partners/wayout.png' %}" alt="WayOut logo" /></a></div>
+                        <div class="sponsor"><a href="http://sc5.io/"><img src="{% static 'main2015/images/partners/sc5.png' %}" alt="SC5 logo" /></a></div>
+                        <div class="sponsor"><a href="http://www.proto-kk.fi"><img src="{% static 'main2015/images/partners/protopaja-kk.png' %}" alt="Protopaja Kalliokoski logo" /></a></div>
                         <div class="clear"></div>
                     </div>
                 </section>
@@ -170,7 +174,6 @@
         </footer>
     </div>
     <!-- scripts -->
-    <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
     <script type="text/javascript" src="{% static 'main2015/js/functions.js' %}"></script>
 </body>
 </html>

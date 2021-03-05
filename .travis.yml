@@ -1,0 +1,11 @@
+sudo: false
+language: python
+notifications:
+  email: false
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+install: "pip install --upgrade pip && pip install -r requirements.txt"
+script: cp Instanssi/settings.py-test Instanssi/settings.py && python manage.py migrate && python manage.py test

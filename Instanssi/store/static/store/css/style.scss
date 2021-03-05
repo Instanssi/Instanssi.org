@@ -1,0 +1,205 @@
+@import 'base_layout/css/common.scss';
+
+/* ---------- Store items ---------- */
+
+.store {
+    padding-bottom: ($spacer * 4);
+}
+
+.store-nav {
+    text-align: center;
+
+    // Keep the store nav at the top even after the user scrolls past it.
+    // https://github.com/Instanssi/Instanssi.org/issues/67
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+
+
+    @media screen and (max-width: $screen-xs-max) {
+        // Fill screen width on smaller screens.
+        margin-left: -($spacer * 3);
+        margin-right: -($spacer * 3);
+        padding-left: $spacer * 2;
+        padding-right: $spacer * 2;
+        max-width: 100vw;
+
+        box-shadow: rgba(#000, .2) 0 2px 8px;
+    }
+
+    ul.nav {
+        display: flex;
+        align-items: stretch;
+
+        margin: 0 !important;
+
+        li {
+            display: flex;
+            padding: 0 !important;
+            margin: 0 !important;
+            > a {
+                text-align: left;
+            }
+        }
+    }
+
+
+    .nav {
+        // make nav possible to center
+        display: inline-block
+    }
+}
+
+.store-item {
+    width: auto;
+    display: block;
+    padding: ($spacer * 2) $spacer $spacer;
+    border-top: 1px solid #ccc;
+    margin-top: $spacer;
+    overflow: hidden;
+
+    &:first-child {
+        border-top: none;
+    }
+}
+
+.item-title, .item-price {
+    border: 0;
+    font-size: 140%;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    min-height: 1.1em; // prevent content bouncing from discount marker
+}
+
+.item-image {
+    box-shadow: 0 0 1px 1px #555;
+    width: 65px;
+    height: 65px;
+    float: left;
+    margin: 0 1em 1em 0;
+}
+@media screen and (min-width: $screen-sm-min) {
+    .item-description { margin-left: 80px; }
+}
+@media screen and (max-width: $screen-xs-max) {
+    // push description below title and image
+    .item-description { clear: left; }
+}
+
+.product-availability-info {
+    margin-top: 5px;
+}
+
+.cart-item {
+    padding: ($spacer / 2);
+    background: #fff;
+    box-shadow: rgba(#000, .2) 0 2px 8px;
+    margin-top: 1px;
+
+    .cart-item-image {
+        margin-right: $spacer;
+        width: 32px;
+        height: 32px;
+    }
+    .cart-item-name {
+        white-space: nowrap;
+        float: left;
+    }
+}
+
+.cart-total {
+    margin: 8px;
+
+    strong {
+        font-size: 130%;
+    }
+}
+
+.store-summary .form-group {
+    // default 15px, too much
+    margin-bottom: 5px;
+}
+
+.form-group.form-group-required {
+    position: relative;
+    label:after {
+        content: '*';
+        position: absolute;
+        left: 100%;
+        margin-left: -$spacer;
+    }
+}
+
+.items-summary { padding: $spacer; }
+.items-summary h3 { margin: ($spacer / 2) 0 ($spacer * 2); }
+
+.items-summary table { background: #fff; width: 100%; }
+.items-summary th, .items-summary td {
+    padding: 8px;
+    text-align: left;
+    font-family: monospace;
+}
+.items-summary th { border-bottom: 1px solid #eee;}
+.items-summary tr > * { text-align: right; }
+.items-summary tr > *:first-child { text-align: left; width: 50%;}
+.items-summary .items-total { border-top: 1px solid #eee; }
+.items-summary .items-total td { text-align: right; }
+
+/* ---- discounts ---- */
+
+.item-discount {
+    position: relative;
+    padding: 0 0 0 ($spacer * 2);
+    margin: .75em 0;
+}
+
+.item-discount::before {
+    position: absolute;
+    @include awesome-glyph('\f096');
+    margin: 0 0 0 -15px;
+    top: 1px;
+    color: #999;
+}
+
+.discount-enabled .item-discount::before {
+    @include awesome-glyph('\f046');
+    opacity: 1;
+    color: #090;
+}
+
+.item-discount::after {
+    font-weight: bold;
+    transition: opacity 1s, color 2s;
+    color: #ff0;
+    opacity: 0;
+}
+
+.discount-indicator {
+    display: none;
+}
+
+.discount-enabled .item-price {
+    color: #020;
+}
+
+.discount-enabled .item-price::before {
+    @include awesome-glyph('\f0d7');
+    color: #090;
+    padding-right: $spacer;
+}
+
+.item-summary-discounted .item-summary-price::before {
+    @include awesome-glyph('\f0d7');
+    color: #090;
+    padding-right: $spacer;
+}
+
+.item-summary-discounted {
+    .item-summary-price::before,
+    .item-summary-subtotal::before {
+        @include awesome-glyph('\f0d7');
+        color: #090;
+        padding-right: $spacer;
+    }
+}

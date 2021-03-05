@@ -6,31 +6,11 @@
 
 {% block head %}
 {{ block.super }}
-    <script type="text/javascript" src="{% static "libs/js/wymeditor/jquery.wymeditor.min.js" %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
-    <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
 {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $('#id_description').wymeditor({
-        containersItems: [
-            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
-            {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
-            {'name': 'BLOCKQUOTE', 'title': 'Blockquote', 'css': 'wym_containers_blockquote'},
-            {'name': 'TH', 'title': 'Table_Header', 'css': 'wym_containers_th'}
-        ],
-        skin: 'silver',
-        lang: '{{ SHORT_LANGUAGE_CODE }}'
-    });
-    $('#submit-id-submit').addClass('wymupdate');
-
-    $(".fancybox").fancybox();
-
-    $("#items_table").tablesorter({widgets: ['zebra'], sortList: [[0,1],]}).tablesorterPager({container: $("#items_pager")});
-    $(".delete_link").click(function(){
-        return confirm("Haluatko varmasti poistaa tuotteen ?"); 
-    });
+    $('#id_description').summernote({height: 250, lang: 'fi-FI'});
 {% endblock %}
 
 {% block crumbs %}
@@ -43,20 +23,22 @@
 {{ block.super }}
 <h2>Tuotteet</h2>
 {% if items %}
-    <table id="items_table" class="tablesorter">
+    <table class="table table-striped table-condensed"
+           data-toggle="table" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-page-size="25">
         <thead>
             <tr>
-                <th>ID</th>
+                <th data-field="id" data-sortable="true">ID</th>
                 <th>Järjestys</th>
-                <th>Nimi</th>
-                <th>Tapahtuma</th>
+                <th data-field="name" data-sortable="true">Nimi</th>
+                <th data-field="event" data-sortable="true">Tapahtuma</th>
                 <th>Hinta</th>
-                <th>Saatavilla</th>
-                <th>Ostettu</th>
-                <th>Maksimi per tilaus</th>
-                <th>Ostettavissa</th>
-                <th class="sorter-false">&nbsp;</th>
-                <th class="sorter-false management_field"></th>
+                <th data-field="max" data-sortable="true">Saatavilla</th>
+                <th data-field="num_sold" data-sortable="true">Ostettu</th>
+                <th data-field="max_per_order" data-sortable="true">Maksimi per tilaus</th>
+                <th data-field="available" data-sortable="true">Ostettavissa</th>
+                <th></th>
+                {% if perms.store.change_storeitem %}<th></th>{% endif %}
+                {% if perms.store.delete_storeitem %}<th></th>{% endif %}
             </tr>
         </thead>
         <tbody>
@@ -71,33 +53,47 @@
                 <td>{{ item.num_sold }}</td>
                 <td>{{ item.max_per_order }}</td>
                 <td>{% if item.available %}Kyllä{% else %}Ei{% endif %}</td>
-                <td style="width: 34px; background-color: white;">
-                    {% if item.imagefile_original %}
-                    <a class="fancybox" href="{{ item.imagefile_original.url }}">
-                        <img src="{{ item.imagefile_thumbnail.url }}" width="32" height="32" alt="Tuotekuva" />
+                <td>
+                    {% if item.image_available %}
+                    <a data-toggle="lightbox" data-title="{{ item.name }}" data-type="image" href="{{ item.imagefile_original.url }}">
+                        <img src="{{ item.imagefile_thumbnail.url }}" width="16" height="16" alt="Tuotekuva" class="img-fluid" />
                     </a>
                     {% endif %}
                 </td>
-                <td>
 {% if perms.store.change_storeitem %}
-                    <a href="{% url 'manage-store:edit_item' item.id %}" class="edit_link">Muokkaa</a>
-{% endif %}
-{% if perms.store.delete_storeitem and item.sold == 0 %}
-                    <a href="{% url 'manage-store:delete_item' item.id%}" class="delete_link">Poista</a>
-{% endif %}
+                <td>
+                    <a href="{% url 'manage-store:edit_item' item.id %}"  class="edit_link btn btn-primary btn-xs" role="button">
+                        <span class="edit_link fa fa-pencil"></span>
+                    </a>
                 </td>
+{% endif %}
+{% if perms.store.delete_storeitem %}
+                <td>
+                    {% if item.sold == 0 %}
+                    <a href="{% url 'manage-store:delete_item' item.id %}"  class="delete_link btn btn-danger btn-xs" role="button">
+                        <span class="edit_link fa fa-trash"></span>
+                    </a>
+                    {% endif %}
+                </td>
+{% endif %}
             </tr>
 {% endfor %}
         </tbody>
     </table>
-    <div id="items_pager" class="pager">
-        {% include "common/pagination.html" %}
-    </div>
 {% else %}
     <p>Ei tuotteita!</p>
 {% endif %}
 
 {% if perms.store.add_storeitem %}
-{% crispy addform addform.helper %}
+    <form method="post" action="" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Lisää tuote</legend>
+            {% crispy item_form item_form.helper %}
+            {% crispy variant_formset variant_formset.form.helper %}
+            <div class="buttonHolder">
+                <input type="submit" name="submit" value="Tallenna" class="btn btn-primary" id="submit-id-submit">
+            </div>
+        </fieldset>
+    </form>
 {% endif %}
 {% endblock %}

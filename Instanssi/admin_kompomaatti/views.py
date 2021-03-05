@@ -1,29 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect,HttpResponse
-from django.core.urlresolvers import reverse
-from django.template import loader, Context
-from Instanssi.kompomaatti.models import *
-from Instanssi.admin_kompomaatti.forms import *
+import logging
+
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.shortcuts import get_object_or_404
+from django.template import loader
+
+from Instanssi.kompomaatti.models import VoteCodeRequest, TicketVoteCode, Compo, Event, Entry, Competition,\
+    CompetitionParticipation
+from Instanssi.admin_kompomaatti.forms import AdminCompoForm, AdminCompetitionForm, AdminCompetitionScoreForm,\
+    AdminEntryAddForm, AdminEntryEditForm, AdminParticipationEditForm, CloneCompoForm
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.admin_base.misc.custom_render import admin_render
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
+from Instanssi.kompomaatti import tasks
 
-# For votecode stuff
-from django.db import IntegrityError
-from datetime import datetime
-import random
-import hashlib
-    
-# For generating a paper version of votecodes
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm
-
-# Logging related
-import logging
 logger = logging.getLogger(__name__)
+
 
 @staff_access_required
 def index(request, sel_event_id):
@@ -31,6 +26,7 @@ def index(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/index.html", {
         'selected_event_id': int(sel_event_id),
     })
+
 
 @staff_access_required
 def entries_csv(request, sel_event_id):
@@ -51,22 +47,24 @@ def entries_csv(request, sel_event_id):
             entries = entries + compo_results
 
     # Placements, copypasta
-    output = []
     for entry in entries:
         m = entry.get_rank()
-        if m == 1: entry.placement = u'I'
-        if m == 2: entry.placement = u'II'
-        if m == 3: entry.placement = u'III'
+        if m == 1:
+            entry.placement = 'I'
+        if m == 2:
+            entry.placement = 'II'
+        if m == 3:
+            entry.placement = 'III'
 
     # Respond with entries CSV (text/csv)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="instanssi_entries.csv"'
     t = loader.get_template('admin_kompomaatti/entries_csv.txt')
-    c = Context({
+    response.write(t.render({
         'entries': entries,
-    })
-    response.write(t.render(c))
+    }))
     return response
+
 
 @staff_access_required
 def competition_score(request, sel_event_id, competition_id):
@@ -94,7 +92,8 @@ def competition_score(request, sel_event_id, competition_id):
         'scoreform': scoreform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def competition_participations(request, sel_event_id, competition_id):
     # Get competition
@@ -105,7 +104,8 @@ def competition_participations(request, sel_event_id, competition_id):
         'participants': participants,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def competition_participation_edit(request, sel_event_id, competition_id, pid):
     # CHeck for permissions
@@ -121,8 +121,10 @@ def competition_participation_edit(request, sel_event_id, competition_id, pid):
         pform = AdminParticipationEditForm(request.POST, instance=participant)
         if pform.is_valid():
             pform.save()
-            logger.info('Competition participation information edited.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:participations', args=(sel_event_id, competition_id,)))
+            logger.info('Competition participation information edited.',
+                        extra={'user': request.user, 'event_id': sel_event_id})
+            return HttpResponseRedirect(reverse('manage-kompomaatti:participations',
+                                                args=(sel_event_id, competition_id,)))
     else:
         pform = AdminParticipationEditForm(instance=participant)
     
@@ -151,7 +153,8 @@ def competitions_browse(request, sel_event_id):
             data = competitionform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            logger.info('Competition "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Competition "{}" added.'.format(data.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm()
@@ -162,7 +165,8 @@ def competitions_browse(request, sel_event_id):
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def competition_edit(request, sel_event_id, competition_id):
     # CHeck for permissions
@@ -177,7 +181,8 @@ def competition_edit(request, sel_event_id, competition_id):
         competitionform = AdminCompetitionForm(request.POST, instance=competition)
         if competitionform.is_valid():
             c = competitionform.save()
-            logger.info('Competition "'+c.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Competition "{}" edited.'.format(c.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
     else:
         competitionform = AdminCompetitionForm(instance=competition)
@@ -188,7 +193,8 @@ def competition_edit(request, sel_event_id, competition_id):
         'competitionform': competitionform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def competition_delete(request, sel_event_id, competition_id):
     # CHeck for permissions
@@ -199,20 +205,35 @@ def competition_delete(request, sel_event_id, competition_id):
     try:
         c = Competition.objects.get(pk=competition_id)
         c.delete()
-        logger.info('Competition "'+c.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
-    except:
+        logger.info('Competition "{}" deleted.'.format(c.name),
+                    extra={'user': request.user, 'event_id': sel_event_id})
+    except Competition.DoesNotExist:
         pass
     
     # Redirect
     return HttpResponseRedirect(reverse('manage-kompomaatti:competitions', args=(sel_event_id,))) 
-    
+
+
 @staff_access_required
 def compo_browse(request, sel_event_id):
     # Get compos
     compos = Compo.objects.filter(event_id=int(sel_event_id))
-    
+
+    if request.method == "POST" and 'submit-clone' in request.POST:
+        if not request.user.has_perm('kompomaatti.add_compo'):
+            raise Http403
+
+        clonecompoform = CloneCompoForm(request.POST)
+        if clonecompoform.is_valid():
+            clonecompoform.save(event_id=sel_event_id)
+            logger.info('Compos from other event cloned.',
+                        extra={'user': request.user, 'event_id': sel_event_id})
+            return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,)))
+    else:
+        clonecompoform = CloneCompoForm()
+
     # Form handling
-    if request.method == "POST":
+    if request.method == "POST" and 'submit-compo' in request.POST:
         # CHeck for permissions
         if not request.user.has_perm('kompomaatti.add_compo'):
             raise Http403
@@ -223,7 +244,8 @@ def compo_browse(request, sel_event_id):
             data = compoform.save(commit=False)
             data.event_id = int(sel_event_id)
             data.save()
-            logger.info('Compo "'+data.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Compo "{}" added.'.format(data.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
     else:
         compoform = AdminCompoForm()
@@ -232,9 +254,11 @@ def compo_browse(request, sel_event_id):
     return admin_render(request, "admin_kompomaatti/compo_browse.html", {
         'compos': compos,
         'compoform': compoform,
+        'clonecompoform': clonecompoform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def compo_edit(request, sel_event_id, compo_id):
     # CHeck for permissions
@@ -249,7 +273,8 @@ def compo_edit(request, sel_event_id, compo_id):
         editform = AdminCompoForm(request.POST, instance=compo)
         if editform.is_valid():
             c = editform.save()
-            logger.info('Compo "'+c.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Compo "{}" edited.'.format(c.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
     else:
         editform = AdminCompoForm(instance=compo)
@@ -260,7 +285,8 @@ def compo_edit(request, sel_event_id, compo_id):
         'editform': editform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def compo_delete(request, sel_event_id, compo_id):
     # CHeck for permissions
@@ -271,13 +297,15 @@ def compo_delete(request, sel_event_id, compo_id):
     try:
         c = Compo.objects.get(pk=compo_id)
         c.delete()
-        logger.info('Compo "'+c.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
-    except:
+        logger.info('Compo "{}" deleted.'.format(c.name),
+                    extra={'user': request.user, 'event_id': sel_event_id})
+    except Compo.DoesNotExist:
         pass
     
     # Redirect
     return HttpResponseRedirect(reverse('manage-kompomaatti:compos', args=(sel_event_id,))) 
-    
+
+
 @staff_access_required
 def entry_browse(request, sel_event_id):
     # Get event
@@ -293,7 +321,8 @@ def entry_browse(request, sel_event_id):
         entryform = AdminEntryAddForm(request.POST, request.FILES, event=event)
         if entryform.is_valid():
             e = entryform.save()
-            logger.info('Compo entry "'+e.name+'" added.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Compo entry "{}" added.'.format(e.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
     else:
         entryform = AdminEntryAddForm(event=event)
@@ -308,7 +337,8 @@ def entry_browse(request, sel_event_id):
         'entryform': entryform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def entry_edit(request, sel_event_id, entry_id):
     # CHeck for permissions
@@ -326,7 +356,8 @@ def entry_edit(request, sel_event_id, entry_id):
         editform = AdminEntryEditForm(request.POST, request.FILES, instance=entry, event=event)
         if editform.is_valid():
             e = editform.save()
-            logger.info('Compo entry "'+e.name+'" edited.', extra={'user': request.user, 'event_id': sel_event_id})
+            logger.info('Compo entry "{}" edited.'.format(e.name),
+                        extra={'user': request.user, 'event_id': sel_event_id})
             return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
     else:
         editform = AdminEntryEditForm(instance=entry, event=event)
@@ -337,7 +368,8 @@ def entry_edit(request, sel_event_id, entry_id):
         'editform': editform,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def entry_delete(request, sel_event_id, entry_id):
     # CHeck for permissions
@@ -354,11 +386,19 @@ def entry_delete(request, sel_event_id, entry_id):
     if entry.imagefile_original:
         entry.imagefile_original.delete()
     entry.delete()
-    logger.info('Compo entry "'+entry.name+'" deleted.', extra={'user': request.user, 'event_id': sel_event_id})
+    logger.info('Compo entry "{}" deleted.'.format(entry.name),
+                extra={'user': request.user, 'event_id': sel_event_id})
 
     # Redirect
     return HttpResponseRedirect(reverse('manage-kompomaatti:entries', args=(sel_event_id,))) 
-    
+
+
+@staff_access_required
+def generate_result_package(request, sel_event_id, compo_id):
+    tasks.rebuild_collection.delay(compo_id)
+    return HttpResponseRedirect(reverse('manage-kompomaatti:results', args=(sel_event_id,)))
+
+
 @staff_access_required
 def results(request, sel_event_id):
     # Get compos. competitions
@@ -368,7 +408,7 @@ def results(request, sel_event_id):
     # Get the entries
     compo_results = {}
     for compo in compos:
-        compo_results[compo.name] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+        compo_results[compo] = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
     
     # Get competition participations
     competition_results = {}
@@ -376,7 +416,8 @@ def results(request, sel_event_id):
         rankby = '-score'
         if competition.score_sort == 1:
             rankby = 'score'
-        competition_results[competition.name] = CompetitionParticipation.objects.filter(competition=competition).order_by(rankby)
+        competition_results[competition.name] = \
+            CompetitionParticipation.objects.filter(competition=competition).order_by(rankby)
     
     # Render response
     return admin_render(request, "admin_kompomaatti/results.html", {
@@ -384,79 +425,20 @@ def results(request, sel_event_id):
         'competition_results': competition_results,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
-def votecodes(request, sel_event_id):
-    # Handle form
-    if request.method == 'POST':
-        # CHeck for permissions
-        if not request.user.has_perm('kompomaatti.add_votecode'):
-            raise Http403
-        
-        # Handle form
-        gentokensform = CreateTokensForm(request.POST)
-        if gentokensform.is_valid():
-            amount = int(gentokensform.cleaned_data['amount'])
-            for n in range(amount):
-                try:
-                    c = VoteCode()
-                    c.event_id = int(sel_event_id)
-                    c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
-                    c.save()
-                except IntegrityError:
-                    n = n-1 # Ugly, may cause infinite loop...
-                    
-            logger.info('Votecodes generated.', extra={'user': request.user, 'event_id': sel_event_id})
-            return HttpResponseRedirect(reverse('manage-kompomaatti:votecodes', args=(sel_event_id,))) 
-    else:
-        gentokensform = CreateTokensForm()
-        
+def ticket_votecodes(request, sel_event_id):
     # Get tokens
-    tokens = VoteCode.objects.filter(event_id=int(sel_event_id))
-    
+    tokens = TicketVoteCode.objects.filter(event_id=sel_event_id)
+
     # Render response
-    return admin_render(request, "admin_kompomaatti/votecodes.html", {
+    return admin_render(request, "admin_kompomaatti/ticketvotecodes.html", {
         'tokens': tokens,
-        'gentokensform': gentokensform,
         'selected_event_id': int(sel_event_id),
     })
-    
-@staff_access_required
-def votecodes_print(request, sel_event_id):
-    # Get free votecodes
-    codes = VoteCode.objects.filter(event_id=int(sel_event_id), associated_to=None)
-    
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=votecodes.pdf'
 
-    # Create the PDF object,
-    p = canvas.Canvas(response)
-    p.setAuthor(u"Kompomaatti")
-    p.setTitle(u"Äänestyskoodeja")
-    p.setFont("Helvetica-Oblique", 18)
 
-    # Print codes
-    height = 0
-    step = 2.12*cm
-    perpage = 14
-    codeno = 0
-    for code in codes:
-        p.line(0,height,21*cm,height)
-        p.drawString(1*cm, height+0.8*cm, u"Äänestyskoodi: "+code.key)
-        height += step
-        codeno += 1
-        if codeno >= perpage:
-            p.showPage()
-            p.setFont("Helvetica-Oblique", 18)
-            height = 0
-            codeno = 0
-    p.showPage()
-
-    # Close the PDF object & dump out the response
-    p.save()
-    return response
-    
 @staff_access_required
 def votecoderequests(request, sel_event_id):
     # Get all requests
@@ -467,38 +449,37 @@ def votecoderequests(request, sel_event_id):
         'requests': requests,
         'selected_event_id': int(sel_event_id),
     })
-    
+
+
 @staff_access_required
 def votecoderequests_accept(request, sel_event_id, vcrid):
     # CHeck for permissions
     if not request.user.has_perm('kompomaatti.change_votecode'):
         raise Http403
-    
-    # Get the request
+
+    # Get the request and change status to accepted
     vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
-        
-    # Add votecode for user. Bang your head to the wall until you succeed, etc.
-    # TODO: Do something about this shit!
-    done = False
-    for i in range(25):
-        try:
-            c = VoteCode()
-            c.event_id = int(sel_event_id)
-            c.key = unicode(hashlib.md5(str(random.random())).hexdigest()[:8])
-            c.associated_to = vcr.user
-            c.time = datetime.now()
-            c.save()
-            logger.info('Votecode request from "'+vcr.user.username+'" accepted.', extra={'user': request.user, 'event_id': sel_event_id})
-            done = True
-            break;
-        except IntegrityError:
-            pass
-    
-    if not done:
-        return HttpResponse("Virhe yritettäessä lisätä satunnaista avainta ... FIXME!")
-            
-    # Delete request
-    vcr.delete()
-    
+    logger.info('Votecode request from "{}" accepted.'.format(vcr.user.username),
+                extra={'user': request.user, 'event_id': sel_event_id})
+    vcr.status = 1
+    vcr.save()
+
     # Return to admin page
     return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,))) 
+
+
+@staff_access_required
+def votecoderequests_reject(request, sel_event_id, vcrid):
+    # CHeck for permissions
+    if not request.user.has_perm('kompomaatti.change_votecode'):
+        raise Http403
+
+    # Get the request and change status to accepted
+    vcr = get_object_or_404(VoteCodeRequest, pk=vcrid)
+    logger.info('Votecode request from "{}" rejected.'.format(vcr.user.username),
+                extra={'user': request.user, 'event_id': sel_event_id})
+    vcr.status = 2
+    vcr.save()
+
+    # Return to admin page
+    return HttpResponseRedirect(reverse('manage-kompomaatti:votecoderequests', args=(sel_event_id,)))

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from common.misc import get_url
+from Instanssi.common.misc import get_url
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404
-from Instanssi.store.models import StoreTransaction, TransactionItem
+from django.shortcuts import render, get_object_or_404
+from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import paytrail, ta_common
 
 # Logging related
@@ -14,17 +14,18 @@ logger = logging.getLogger(__name__)
 
 
 def start_process(ta):
-    """This should be used to start the paytrail payment process. Will redirect as necessary."""
+    """This should be used to start the paytrail payment process.
+    Will redirect as necessary."""
 
     product_list = []
 
-    for item in TransactionItem.get_distinct_storeitems(ta):
-        amount = TransactionItem.get_transaction_item_amount(ta, item)
+    for store_item, item_variant, purchase_price in ta.get_distinct_storeitems_and_prices():
+        count = ta.get_storeitem_count(store_item, variant=item_variant)
         product_list.append({
-            'title': item.name,
-            'code': str(item.id),
-            'amount': str(amount),
-            'price': str(item.price),
+            'title': '{}, {}'.format(store_item.name, item_variant.name) if item_variant else store_item.name,
+            'code': '{}:{}'.format(store_item.id, item_variant.id) if item_variant else str(store_item.id),
+            'amount': str(count),
+            'price': str(purchase_price),
             'vat': '0',
             'type': 1,
         })
@@ -60,24 +61,23 @@ def start_process(ta):
     }
 
     # Make a request
-    msg = None
     try:
         msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
     except paytrail.PaytrailException as ex:
         a, b = ex.args
-        logger.error('(%s) %s' % (b, a))
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        logger.exception('(%s) %s', b, a)
+        return reverse('store:pm:paytrail-failure')
     except Exception as ex:
-        logger.error('%s.' % (ex))
-        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
+        logger.exception('%s.', ex)
+        return reverse('store:pm:paytrail-failure')
 
     # Save token, redirect
     ta.token = msg['token']
-    ta.payment_method_name = u'Paytrail'
+    ta.payment_method_name = 'Paytrail'
     ta.save()
 
     # All done, redirect user
-    return HttpResponseRedirect(msg['url'])
+    return msg['url']
 
 
 def handle_failure(request):
@@ -93,8 +93,9 @@ def handle_failure(request):
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         ta_common.handle_cancellation(ta)
+        return HttpResponseRedirect(reverse('store:pm:paytrail-failure'))
 
-    return render_to_response('store/failure.html')
+    return render(request, 'store/failure.html')
 
 
 def handle_success(request):
@@ -112,8 +113,9 @@ def handle_success(request):
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         ta_common.handle_pending(ta)
-    
-    return render_to_response('store/success.html')
+        return HttpResponseRedirect(reverse('store:pm:paytrail-success'))
+
+    return render(request, 'store/success.html')
 
 
 def handle_notify(request):
@@ -127,12 +129,12 @@ def handle_notify(request):
     authcode = request.GET.get('RETURN_AUTHCODE', '')
     secret = settings.VMAKSUT_SECRET
 
-    # Validata & handle
+    # Validate & handle
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
         # Get transaction
         ta = get_object_or_404(StoreTransaction, pk=int(order_number))
         if ta.is_paid:
-            logger.warning('Somebody is trying to pay an already paid transaction (%s).' % (ta.id))
+            logger.warning('Somebody is trying to pay an already paid transaction (%s).', ta.id)
             return HttpResponse("")
 
         # Use common functions to handle the payment

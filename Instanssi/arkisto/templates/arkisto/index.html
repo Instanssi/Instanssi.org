@@ -20,46 +20,46 @@
 {{ block.super }}
 
 {% for compo in compos %}
-	<h3>{{ compo.name }}</h3>
-	<div class="entry-holder">
+    <h3>{{ compo.name }}</h3>
+    <div class="entry-holder">
 {% for entry in compo.entries %}
-		<div class="entry">
+        <div class="entry">
 {% if compo.show_voting_results %}
-			<div class="sija">{% if entry.disqualified %}X{% else %}{{ forloop.counter }}{% endif %}</div>
+            <div class="sija">{% if entry.disqualified %}X{% else %}{{ forloop.counter }}{% endif %}</div>
 {% endif %}
-			<a href="{% url 'archive:entry' entry.id %}">
+            <a href="{% url 'archive:entry' entry.id %}">
 {% if entry.imagefile_thumbnail %}
-				<img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  /> 
+                <img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  />
 {% else %}
-				<img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
+                <img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
 {% endif %}
-			</a>
-			<p class="entry-name" title="{{ entry.name }}">{{ entry.name }}</p>
-			<p class="by" title="{{ entry.creator }}">{{ entry.creator }}</p>
-		</div>
+            </a>
+            <p class="entry-name" title="{{ entry.name }}">{{ entry.name }}</p>
+            <p class="by" title="{{ entry.creator }}">{{ entry.creator }}</p>
+        </div>
 {% endfor %}
-		<div class="clearer"></div>
-	</div>
+        <div class="clearer"></div>
+    </div>
 {% endfor %}
 
 {% for category in videos %}
 {% if category.videos %}
-	<h3>{{ category.name }}</h3>
-	<div class="entry-holder">
+    <h3>{{ category.name }}</h3>
+    <div class="entry-holder">
 {% for video in category.videos %}
-		<div class="entry">
-			<a href="{% url 'archive:video' video.id %}">
-				<img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
-			</a>
-			<p class="entry-name" title="{{ video.name }}">{{ video.name }}</p>
-		</div>
+        <div class="entry">
+            <a href="{% url 'archive:video' video.id %}">
+                <img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
+            </a>
+            <p class="entry-name" title="{{ video.name }}">{{ video.name }}</p>
+        </div>
 {% endfor %}
-		<div class="clearer"></div>
-	</div>
+        <div class="clearer"></div>
+    </div>
 {% endif %}
 {% endfor %}
 
-{% for comp in competitionlist %}
+{% for comp in competitions %}
     <h3>{{ comp.name }}</h3>
     <div class="entry-holder">
         <ol>
@@ -70,4 +70,7 @@
     </div>
 {% endfor %}
 
+
+<p><a href="{% url 'archive:text_event' event.id %}">Näytä tulokset tekstimuodossa / Show results in plaintext</a></p>
+<p><a href="{% url 'archive:json_event' event.id %}">Näytä tulokset JSON-formaatissa / Show results in JSON format</a></p>
 {% endblock %}

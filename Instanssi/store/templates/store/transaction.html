@@ -15,7 +15,8 @@
 {{ block.super }}
 <h1 class="noPrint">Tilaustiedot</h1>
 <p class="noPrint">
-    Tältä sivulta näet tilauksesi tiedot ja QR-koodin, jolla voit lunastaa kaikki tilauksen tuotteet tapahtuman aikana. Voit esittää QR-koodin tapahtumassa lipputiskillä joko tulosteena tai suoraan oman laitteen näytöltä.
+    Tältä sivulta näet tilauksesi tiedot ja QR-koodin, jolla voit lunastaa kaikki tilauksen tuotteet tapahtuman
+    aikana. Voit esittää QR-koodin tapahtumassa lipputiskillä joko tulosteena tai suoraan oman laitteen näytöltä.
 </p>
 
 <div class="order">
@@ -36,13 +37,21 @@
 {% if ta_items %}
 <h2 id="items" class="noPrint">Tuotteet</h1>
 <p class="noPrint">
-    Allaolevilla koodeilla tai linkeillä voi lunastaa yksittäisiä tilaukseen kuuluvia tuotteita. Voit lahjoittaa tuotteita kavereille jakamalla heille QR-koodeja tai ostosten URL-osoitteita. Huomaa, että jokainen koodi voidaan lunastaa vain kerran.
+    Allaolevilla koodeilla tai linkeillä voi lunastaa yksittäisiä tilaukseen kuuluvia tuotteita.
+    Voit lahjoittaa tuotteita kavereille jakamalla heille QR-koodeja tai ostosten URL-osoitteita.
+    Huomaa, että jokainen koodi voidaan lunastaa vain kerran.
+</p>
+<p>
+    Lippukoodin kahdeksan ensimmäistä merkkiä toimii myös äänestyskoodina, joten ethän hukkaa lippua!
 </p>
 <div class="items">
 {% for ta_item in ta_items %}
     <div class="item{% if ta_item.is_delivered %} delivered{% endif %}" >
         <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostetun tuotteen QR-koodi." />
-        <div class="item-heading"><h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}</a></h2> <span class="item-key">{{ ta_item.key }}</span></div>
+        <div class="item-heading">
+            <h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}{% if ta_item.variant %}, {{ ta_item.variant.name }}{% endif %}</a></h2>
+            <span class="item-key">{% if ta_item.item.is_ticket %}LIPPUKOODI{% else %}TUOTEKOODI{% endif %}: {{ ta_item.key }}</span>
+        </div>
         <div class="item-description">{{ ta_item.item.description|safe }}</div>
 
         {% if ta_item.is_delivered %}

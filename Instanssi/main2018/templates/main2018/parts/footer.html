@@ -1,0 +1,44 @@
+{% load static blog_tags twitter_tag cache compress %}
+
+<div class="container">
+    <div class="row">
+        <section class="sponsors col-md-8 col-md-push-2 col-sm-8 col-sm-push-4">
+            <h2>Yhteistyössä mukana</h2>
+            <div class="sponsors-container">
+                <div class="sponsor"><a href="https://jyvaskyla.hacklab.fi/"><img src="{% static 'main2018/images/partners/hacklab.png' %}" alt="Hacklab Jkl logo" /></a></div>
+                <div class="sponsor"><a href="http://linkkijkl.fi/"><img src="{% static 'main2018/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
+                <div class="sponsor"><a href="http://www.paytrail.com/"><img src="{% static 'main2018/images/partners/paytrail.png' %}" alt="Paytrail logo" /></a></div>
+                <div class="sponsor"><a href="http://www.musikantti.fi/"><img src="{% static 'main2018/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
+                <div class="sponsor"><a href="http://jimms.fi/"><img src="{% static 'main2018/images/partners/jimms.png' %}" alt="Jimms logo" /></a></div>
+                <div class="sponsor"><a href="http://www.arroweng.fi/"><img src="{% static 'main2018/images/partners/arrow.png' %}" alt="Arrow logo" /></a></div>
+                <div class="sponsor"><a href="https://www.cinia.fi/"><img src="{% static 'main2018/images/partners/cinia.png' %}" alt="Cinia logo" /></a></div>
+                <div class="sponsor"><a href="http://vectorama.info"><img src="{% static 'main2018/images/partners/vectorama_2.png' %}" alt="Vectorama logo" /></a></div>
+                <div class="sponsor"><a href="https://wunder.dog"><img src="{% static 'main2018/images/partners/wunderdog.png' %}" alt="Wunderdog logo" /></a></div>
+                <div class="sponsor"><a href="https://www.visma.fi/"><img src="{% static 'main2018/images/partners/visma.png' %}" alt="Visma logo" /></a></div>
+                <div class="sponsor"><a href="https://www.etteplan.com/"><img src="{% static 'main2018/images/partners/etteplan.png' %}" alt="Etteplan logo" /></a></div>
+                <div class="sponsor"><a href="https://www.gofore.com/"><img src="{% static 'main2018/images/partners/gofore.png' %}" alt="Gofore logo" /></a></div>
+                <div class="sponsor"><a href="https://www.reaktor.com/"><img src="{% static 'main2018/images/partners/reaktor.png' %}" alt="Reaktor logo" /></a></div>
+                <div class="clear"></div>
+            </div>
+        </section>
+        <section class="sitemap col-md-2 col-md-pull-8 col-sm-4 col-sm-pull-8">
+            <h2>Sivukartta</h2>
+            <ul>
+                <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}"><a href="{% url 'main2018:index' %}">Blogi</a></li>
+                <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}"><a href="{% url 'main2018:info' %}">Info</a></li>
+                <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}"><a href="{% url 'main2018:kompot' %}">Kompot</a></li>
+                <li class="menu-item {% if templatename == 'ohjelma' %}current-menu-item{% endif %}"><a href="{% url 'main2018:ohjelma' %}">Ohjelma</a></li>
+                <li class="menu-item {% if templatename == 'aikataulu' %}current-menu-item{% endif %}"><a href="{% url 'main2018:aikataulu' %}">Aikataulu</a></li>
+                <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}"><a href="{% url 'main2018:english' %}">In English</a></li>
+                <!--<li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2018:stream' %}">Stream</a></li>-->
+                <li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>
+                <li class="menu-item"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
+                <li class="menu-item"><a href="{% url 'archive:index' %}">Arkisto</a></li>
+                <div class="clearer"></div>
+            </ul>
+        </section>
+        <!--<section class="contact col-md-2 col-sm-12">
+            <h2>Yhteystiedot</h2>
+        </section>-->
+    </div>
+</div>

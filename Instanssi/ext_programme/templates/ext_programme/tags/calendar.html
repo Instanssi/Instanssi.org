@@ -14,7 +14,7 @@
         </thead>
         <tbody>
 {% for event in day.items %}
-            <tr>
+            <tr {% if event.id %}id="{{ event.id }}"{% endif %}>
                 <td class="time">{{ event.date|date:"H:i" }}</td>
                 <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
                 <td class="description">

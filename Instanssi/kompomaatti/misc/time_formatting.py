@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import awesometime
+from . import awesometime
+
 
 def compo_times_formatter(compo):
     compo.compo_time = awesometime.format_single(compo.compo_start)
@@ -8,6 +9,7 @@ def compo_times_formatter(compo):
     compo.editing_time = awesometime.format_single(compo.editing_end)
     compo.voting_time = awesometime.format_between(compo.voting_start, compo.voting_end)
     return compo
+
 
 def competition_times_formatter(competition):
     competition.start_time = awesometime.format_single(competition.start)

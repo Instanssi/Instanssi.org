@@ -13,11 +13,14 @@ ${BROWSER} =  firefox
 
 I Open The Store Page
     Open Browser  ${LOCALROOT}  ${BROWSER}
-    Go to  ${LOCALROOT}/2013/liput
-    Title Should Be  Instanssi 2013
+    Go to  ${LOCALROOT}/store/order/
+    Title Should Be  Kauppa - Tilaus
 
 Input Items To Buy
-    Input Text  id_item-2  1
+    Input Text  id_1-item-23  1
+
+Submit Products Form
+    Click Button Jatka *
 
 Input Contact Information
     Input Text  id_firstname  Tahvo
@@ -39,7 +42,9 @@ Submit Purchase Form
 Buy Stuff
     When I Open The Store Page
     And Input Items To Buy
+    And Submit Products Form
     And Input Contact Information
     And Submit Purchase Form
     Title Should Be  Valitse maksutapa
+    Close All Browsers
 

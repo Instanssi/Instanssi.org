@@ -1,0 +1,39 @@
+{% load static blog_tags twitter_tag cache compress %}
+
+<div class="container">
+    <div class="row">
+        <section class="sponsors col-md-8 col-md-push-2 col-sm-8 col-sm-push-4">
+            <h2>Yhteistyössä mukana</h2>
+            <div class="sponsors-container">
+                <div class="sponsor"><a href="https://jyvaskyla.hacklab.fi/"><img src="{% static 'main2019/images/partners/hacklab.png' %}" alt="Hacklab Jkl logo" /></a></div>
+                <div class="sponsor"><a href="https://www.musikantti.fi/"><img src="{% static 'main2019/images/partners/musikantti.png' %}" alt="Musikantti logo" /></a></div>
+                <div class="sponsor"><a href="https://linkkijkl.fi/"><img src="{% static 'main2019/images/partners/linkki.png' %}" alt="Linkki logo" /></a></div>
+                <div class="sponsor"><a href="https://www.paytrail.com/"><img src="{% static 'main2019/images/partners/paytrail.png' %}" alt="Paytrail logo" /></a></div>
+                <div class="sponsor"><a href="https://www.jimms.fi/"><img src="{% static 'main2019/images/partners/jimms.png' %}" alt="Jimms logo" /></a></div>
+                <div class="sponsor"><a href="https://www.ramirent.fi/"><img src="{% static 'main2019/images/partners/ramirent.png' %}" alt="Ramirent logo" /></a></div>
+                <div class="sponsor"><a href="https://www.visma.fi/"><img src="{% static 'main2019/images/partners/visma.png' %}" alt="Visma logo" /></a></div>
+                <div class="sponsor"><a href="https://nordcloud.com/"><img src="{% static 'main2019/images/partners/nordcloud.png' %}" alt="Nordcloud logo" /></a></div>
+                <div class="sponsor"><a href="http://www.brightgroup.fi/"><img src="{% static 'main2019/images/partners/bright.png' %}" alt="Bright logo" /></a></div>
+                <div class="sponsor"><a href="https://www.jyu.fi/it/fi"><img src="{% static 'main2019/images/partners/jyu_it_tdk.png' %}" alt="IT-tiedekunnan logo" /></a></div>
+                <div class="clear"></div>
+            </div>
+        </section>
+        <section class="sitemap col-md-2 col-md-pull-8 col-sm-4 col-sm-pull-8">
+            <h2>Sivukartta</h2>
+            <ul>
+                <li class="menu-item {% if templatename == 'index' %}current-menu-item{% endif %}"><a href="{% url 'main2019:index' %}">Blogi</a></li>
+                <li class="menu-item {% if templatename == 'info' %}current-menu-item{% endif %}"><a href="{% url 'main2019:info' %}">Info</a></li>
+                <li class="menu-item {% if templatename == 'kompot' %}current-menu-item{% endif %}"><a href="{% url 'main2019:kompot' %}">Kompot</a></li>
+                <li class="menu-item {% if templatename == 'english' %}current-menu-item{% endif %}"><a href="{% url 'main2019:english' %}">In English</a></li>
+                <li class="menu-item {% if templatename == 'stream' %}current-menu-item{% endif %}" ><a href="{% url 'main2019:stream' %}">Stream</a></li>
+                <li class="menu-item"><a href="{% url 'store:index' %}">Kauppa</a></li>
+                <li class="menu-item"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
+                <li class="menu-item"><a href="{% url 'archive:index' %}">Arkisto</a></li>
+                <div class="clearer"></div>
+            </ul>
+        </section>
+        <!--<section class="contact col-md-2 col-sm-12">
+            <h2>Yhteystiedot</h2>
+        </section>-->
+    </div>
+</div>

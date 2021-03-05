@@ -1,0 +1,135 @@
+html {
+    overflow-y: scroll;
+}
+html , body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+img {
+    // prevent images from blowing up page
+    max-width: 99% !important;
+    height: auto !important;
+}
+body * {
+    color: #333;
+    font-size: 15px;
+    line-height: 150%;
+    font-family: $body-font-family;
+}
+
+body {
+    position: relative;
+    background: #2e204f !important;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: -5vw;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: no-repeat top center url(../images/webtausta.jpg);
+        background-size: contain;
+        @media screen and (max-width: $screen-xs-max) {
+            top: -20px;
+            background-size: 100% auto;
+        }
+    }
+}
+
+h1 {
+    font-family: $title-font-family;
+    //font-variant: small-caps;
+    text-transform: uppercase;
+    font-size: 26px;
+    margin-bottom: .75em;
+    color: $theme-color-bright;
+    font-weight: bold;
+    line-height: 90%;
+}
+
+form legend {
+    font-family: $title-font-family;
+    background: $theme-color-dark;
+    font-weight: bold;
+    font-size: 25px;
+    margin: 20px 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #fff;
+}
+
+#content h2,
+.item .title,
+.header {
+    color: $theme-color-dark;
+    font-family: $title-font-family;
+    border-bottom: 1px solid $theme-color-bright;
+    background: transparent;
+    font-weight: bold;
+    padding: 0 $spacer;
+    margin: 0 (-$spacer) ($spacer * 2);
+    font-size: 25px;
+}
+h3 {
+    font-size: 16px;
+    margin: ($spacer * 2) (-$spacer);
+    padding: 0 $spacer;
+    color: #000;
+    font-weight: bold;
+}
+h4 {
+    font-size: 14px;
+    margin: 20px 8px;
+    color: #000;
+    font-weight: bold;
+}
+b, strong {
+    font-weight: bold;
+}
+i, em {
+    font-style: italic;
+}
+blockquote {
+    font-size:125%;
+    font-style: italic;
+    margin-left: 4%;
+    margin-bottom: 8px;
+}
+sup, sub {
+    font-size: 75%;
+}
+sup {
+    vertical-align: super;
+}
+sub {
+    vertical-align: sub;
+}
+
+/* buttons */
+.btn {
+    border: 1px solid $theme-color;
+    text-decoration: none !important;
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 0px;
+
+    &, & > * {
+        color: #fff !important;
+    }
+
+    &:hover {
+        color: #fff;
+        opacity: 0.9;
+    }
+}
+
+#content {
+    // background: #fff;
+    box-sizing: border-box;
+    // padding: 24px 10px 24px;
+
+    min-height: 100vh;
+    min-height: $main-content-height;
+}

@@ -1,5 +1,5 @@
 {% extends "kompomaatti/event_base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block title %}{{ block.super }} - Äänestyskoodi{% endblock %}
 
@@ -9,6 +9,41 @@
 
 {% block jquery %}
 {{ block.super }}
+    function handle_ticket_votecode_change() {
+        var f = $('#ticketvotecode');
+        var e = f.next();
+        $('#submit-id-submit-ticketvcassoc').attr("disabled", true);
+        if(f.val().length >= 8) {
+            var get_url = '/kompomaatti/{{ sel_event_id }}/validate_votecode_api/' + f.val() + '/';
+            $.get(get_url, function(data) {
+                if(data['code'] == 200) {
+                    e.html('<span class="ui-state-highlight ui-corner-all votecode-error">\
+                                <p>\
+                                    <span class="ui-icon ui-icon-check"></span>\
+                                    Lippuavain löydetty. Paina "Hae äänestysoikeus" jatkaaksesi.\
+                                </p>\
+                            </span>');
+                    $('#submit-id-submit-ticketvcassoc').attr("disabled", false);
+                } else {
+                    e.html('<span class="ui-state-error ui-corner-all votecode-error">\
+                                <p>\
+                                    <span class="ui-icon ui-icon-notice"></span>\
+                                    ' + data['errortext'] + '\
+                                </p>\
+                            </span>');
+                    $('#submit-id-submit-ticketvcassoc').attr("disabled", true);
+                }
+            });
+        } else if(f.val().length > 0) {
+            console.log("waiting for more text");
+            e.html("Syötä vielä " + (8 - f.val().length) + '  merkkiä.');
+        } else {
+            e.html("Syötä vähintään ensimmäiset kahdeksan (8) merkkiä lippukoodistasi tähän.");
+        }
+    }
+    $('#ticketvotecode').change(handle_ticket_votecode_change);
+    $('#ticketvotecode').keyup(handle_ticket_votecode_change);
+    handle_ticket_votecode_change();
 {% endblock %}
 
 {% block crumbs %}
@@ -22,11 +57,38 @@
 
 {% if can_vote %}
     <p>Sinulla on oikeus äänestää.</p>
-    <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>
+    {% if votecode_type == 'ticket' %}
+        <p>Käyttäjätiliisi on liitetty lippuavain <strong>{{ reserved_code|truncatechars:8 }}</strong></p>
+    {% elif votecode_type == 'votecode' %}
+        <p>Käyttöösi on varattu äänestystunnus <strong>{{ reserved_code }}</strong>.</p>
+    {% endif %}
 {% else %}
-    <p>Sinulle ei vielä ole oikeutta äänestää. Voit joko syöttää äänestykseen oikeuttavan koodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.</p>
+    <p>
+        Sinulle ei vielä ole oikeutta äänestää. Voit hankkia äänestysoikeuden syöttämällä äänestykseen oikeuttavan
+        pääsylippukoodin, tai pyytää äänioikeutta suoraan tapahtuman järjestäjiltä.
+    </p>
+
+    <h3>Pyydä äänestysoikeutta lippukoodilla</h3>
+    <p>Syötä allaolevaan kenttään vähintään 8 ensimmäistä merkkiä pääsylippusi avainkoodista.</p>
+    <p>
+        <img id="ticketcode_pic" src="{% static "kompomaatti/img/lippukoodi_kuvaus.png" %}" />
+    </p>
+    {% crispy ticket_votecode_form ticket_votecode_form.helper %}
+
+    {% comment %}
+    <h3>Pyydä äänestysoikeutta erillisellä äänestyskoodilla</h3>
     {% crispy votecodeassocform votecodeassocform.helper %}
-    {% if request_made %}
+    {% endcomment %}
+
+    <h3>Pyydä äänestysoikeutta suoraan</h3>
+    {% if request_failed %}
+    <p>
+    <div class="ui-state-error ui-corner-all" style="padding: .7em;">
+        <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        <strong>HUOM!</strong> Äänestyskoodipyyntösi on hylätty!
+    </div>
+    </p>
+    {% elif request_made %}
     <p>
     <div class="ui-state-highlight ui-corner-all" style="padding: .7em;">
         <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>

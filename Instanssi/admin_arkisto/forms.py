@@ -4,7 +4,8 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
-import urlparse
+from Instanssi.common.misc import parse_youtube_video_id
+
 
 class VideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -23,13 +24,13 @@ class VideoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Muu Video',
+                'Muu Video',
                 'name',
                 'category',
                 'description',
                 'youtube_url',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
@@ -38,26 +39,21 @@ class VideoForm(forms.ModelForm):
         # Make sure field has content
         if not self.cleaned_data['youtube_url']:
             return self.cleaned_data['youtube_url']
-        
-        # Check if we already have a valid embed url
-        url = self.cleaned_data['youtube_url']
-        if url.find('http://www.youtube.com/v/') == 0:
-            return url
 
-        # Parse querystring to find video ID
-        parsed = urlparse.urlparse(url)
-        qs = urlparse.parse_qs(parsed.query)
-        
-        # Check if the video id exists in query string
-        if 'v' not in qs:
-            raise ValidationError(u'Osoitteesta ei löytynyt videotunnusta.')
-            
-        # All done. Return valid url
-        return 'http://www.youtube.com/v/'+qs['v'][0]+'/'
-                
+        # Parse video id
+        video_id = parse_youtube_video_id(self.cleaned_data['youtube_url'])
+
+        # Warn if something is wrong
+        if not video_id:
+            raise forms.ValidationError('Osoitteesta ei löytynyt videotunnusta.')
+
+        # Return a new video url
+        return 'https://www.youtube.com/v/{}'.format(video_id)
+
     class Meta:
         model = OtherVideo
-        fields = ('category','name','description','youtube_url')
+        fields = ('category', 'name', 'description', 'youtube_url')
+
 
 class VideoCategoryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -65,10 +61,10 @@ class VideoCategoryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Kategoria',
+                'Kategoria',
                 'name',
                 ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                    Submit('submit', 'Tallenna')
                 )
             )
         )

@@ -5,51 +5,11 @@
 
 {% block head %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/fancybox/jquery.fancybox.css' %}" />
-    <script type="text/javascript" src="{% static 'libs/fancybox/jquery.fancybox.pack.js' %}"></script>
-{{ wizard.form.media }}
-{% endblock %}
+    <link rel="stylesheet" href="{% static 'libs/lightbox/ekko-lightbox.min.css' %}" />
+    {% endblock %}
 
 {% block jquery %}
 {{ block.super }}
-    $(".item-image a").fancybox();
-    
-    $('.wizard-nav-button').button();
-    $('.item-amount-field').each(function(){
-	$(this).spinner({
-	    max: parseInt($(this).attr('data-max'), 10),
-	    min: parseInt($(this).attr('data-min'), 10)
-        });
-    });
-    
-    function clean_field(field) {
-        var min = parseInt(field.attr('data-min'), 10);
-        var max = parseInt(field.attr('data-max'), 10);
-        var val = parseInt(field.val(), 10);
-        if(val > max) { field.val(max); }
-        if(val < min) { field.val(min); }
-    }
-    
-    function count_total_price() {
-        var total = 0;
-        $('.item-amount-field').each(function(index){
-            var price = parseInt($(this).attr('data-price'), 10);
-            var amount = parseInt($(this).spinner('value'), 10);
-            total += price * amount;
-        });
-        $('#total-price-field').text(total);
-    }
-    
-    $('.item-amount-field').keyup(function(){
-        clean_field($(this));
-        count_total_price();
-    });
-
-    $(".item-amount-field").on("spin", function(event, ui) {
-        $(this).spinner('value', ui.value);
-        count_total_price();
-    });
-    
 {% endblock %}
 
 {% block crumbs %}
@@ -61,92 +21,15 @@
 {{ block.super }}
 <h2>Tilaus</h2>
 
-<form class="store-form" action="" method="post">
-    <div class="store-header">
-        {% for step, name, num in friendly_steps %}
-        <span class="step{% if step == wizard.steps.step1 %} current{% endif %}">{% if step < wizard.steps.step1 %}
-            <a href="{% url 'store:order_step' step %}">{{ step }}.{{ name }}</a>
-            {% else %}
-            {{ step }}. {{ name }}
-            {% endif %}
-        </span>{% endfor %}
-    </div>
-    {% if wizard.steps.step0 == 2 %}
-    <div class="items-summary">
-        <table>
-            <tr>
-                <th>Tuote</th>
-                <th>Hinta</th>
-                <th>Määrä</th>
-                <th>Yhteensä</th>
-            </tr>
-            {% for item in items_summary %}
-            <tr>
-                <td>{{ item.item.name }}</td>
-                <td>{{ item.item.price }} €</td>
-                <td>{{ item.count }}</td>
-                <td>{{ item.subtotal }} €</td>
-            </tr>
-            {% endfor %}
-            <tr class="items-total">
-                <td colspan="4">{{ items_total }} €</td>
-            </tr>
-        </table>
-    </div>
-    {% endif %}
-    {% csrf_token %}
-    {{ wizard.management_form }}
+<div id="store">
+</div>
 
-    {% if wizard.form.non_field_errors %}
-    <div class="store-errors">
-        {{ wizard.form.non_field_errors }}
-    </div>
-    {% endif %}
-
-    <div class="store-data">
-    {% for field in wizard.form %}
-    {% if wizard.steps.step0 == 0 %}
-        <div class="store-item">
-            <div class="item-details">
-                <div class="item-image">
-                    {% if field.field.image_large %}
-                    <a href="{{ field.field.image_large }}">
-                        <img src="{{ field.field.image_small }}" width="64" height="64" alt="Tuotekuva" />
-                    </a>
-                    {% endif %}
-                </div>
-                <h3 class="item-title">{{ field.label}}
-                    {% if field.field.available <= 0 %}<div class="item-unavailable">(Lopussa)</div>{% endif %}
-                </h3>
-                <div class="item-description">{{ field.help_text|safe }}</div>
-                {% if field.errors %}<div class="field-errors">{{ field.errors }}</div>{% endif %}
-            </div>
-            <div class="item-amount">
-                <div class="item-price">{{ field.field.price }} &euro;</div>
-                <div class="item-field">{{ field }}</div>
-            </div>
-        </div>
-    {% else %}
-        <div class="field-wrapper {% cycle 'odd' 'even' %}">
-            <div class="field-label {% if field.field.required %}required-field{% endif %}">{{ field.label_tag }}</div>
-            <div class="field-input">{{ field }}</div>
-            <div class="field-desc">
-                {{ field.help_text|safe }}
-                {% if field.errors %}{{ field.errors }}{% endif %}
-            </div>
-        </div>
-    {% endif %}
-    {% endfor %}
-    </div>
-    {% if wizard.steps.step0 == 0 %}
-    <div class="total-price">Yhteensä: <span id="total-price-field">0</span> &euro;</div>
-    {% endif %}
-    <div class="store-nav">
-        {% if wizard.steps.prev %}
-        <a href="{% url 'store:order_step' wizard.steps.prev %}" class="wizard-nav-button">&laquo; Takaisin</a>
-        {% endif %}
-        <input type="submit" value="Jatka &raquo;" class="wizard-nav-button" />
-    </div>
-</form>
+<script src="{% static 'libs/bootstrap/assets/javascripts/bootstrap.min.js' %}"></script>
+<script src="{% static 'libs/lightbox/ekko-lightbox.min.js' %}"></script>
+<script src="{% static 'libs/vue/vue.js' %}"></script>
+<script src="{% static 'store/js/bundle.js' %}"></script>
+<noscript>
+The Instanssi Store requires JavaScript to function.
+</noscript>
 
 {% endblock %}

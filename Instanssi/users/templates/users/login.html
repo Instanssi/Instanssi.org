@@ -17,11 +17,9 @@
 
 {% block jquery %}
 {{ block.super }}
-    $('form.uniForm').uniform();
     $('#id_sps').change(function() {
         $('#id_openid_identifier').val($('#id_sps').val());
     });
-    $('.login-button').button();
 {% endblock %}
 
 {% block crumbs %}
@@ -31,10 +29,17 @@
 
 {% block content %}
 {{ block.super }}
-<h2>Kirjaudu sisään</h2>
-<p>Valitse kirjautumispalvelusi.</p>
+    <h2>Kirjaudu sisään</h2>
+    <p>Valitse kirjautumispalvelusi.</p>
+    <p>
+        Huom! Valitse kirjautumispalvelu huolella, ja käytä sitten vain sitä. Yhdellä kirjautumispalvelulla luodun
+        Instanssi-tilin sisältöön ei pääse käsiksi toisen kirjautumispalvelun kautta kirjauduttaessa.
+    </p>
 
-<a class="login-button" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">Facebook</a><br />
-{% crispy openidform openidform.helper %}<br />
-{% crispy djangoform djangoform.helper %}
+    {% for method in AUTH_METHODS %}
+        <a class="btn btn-primary login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={{ next }}">{{ method.2 }}</a>
+    {% endfor %}
+    <br />
+    {% crispy openidform openidform.helper %}<br />
+    {% crispy djangoform djangoform.helper %}
 {% endblock %}

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from common.responses import JSONResponse
-from Instanssi.kompomaatti.models import Event
+import arrow
+
+from django.shortcuts import render, get_object_or_404
+from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.screenshow.models import *
-from datetime import datetime
+from django.utils import timezone
+from django.conf import settings
+from django.utils.safestring import mark_safe
+
 
 def index(request, event_id):
     # Get sponsors
@@ -23,26 +26,28 @@ def index(request, event_id):
         x += 75
         
     # Render the show
-    return render_to_response('screenshow/index.html', {
+    return render(request, 'screenshow/index.html', {
         'event_id': event_id,
         'sponsors': sponsors,
-    }, context_instance=RequestContext(request))
+    })
+
 
 def settings_api(request, event_id):
     # Attempt to fetch custom settings from database
     try:
-        settings = {}
+        conf = {}
         s = ScreenConfig.objects.get(event_id=event_id)
-        settings['enable_twitter'] = s.enable_twitter
-        settings['enable_irc'] = s.enable_irc
-        settings['enable_videos'] = s.enable_videos
-        settings['video_interval'] = s.video_interval
-        return JSONResponse({'settings': settings})
-    except:
+        conf['enable_twitter'] = s.enable_twitter
+        conf['enable_irc'] = s.enable_irc
+        conf['enable_videos'] = s.enable_videos
+        conf['video_interval'] = s.video_interval
+        return JSONResponse({'settings': conf})
+    except ScreenConfig.DoesNotExist:
         pass
     
     # Return settings
     return JSONResponse({})
+
 
 def events_api(request, event_id):
     e = get_object_or_404(Event, pk=event_id)
@@ -51,19 +56,20 @@ def events_api(request, event_id):
     k = 0
     events = []
     for event in get_upcoming(e):
-        event['date'] = event['date'].strftime("%H:%M")
+        event['date'] = arrow.get(event['date']).to(settings.TIME_ZONE).format("HH:mm")
         events.append(event)
         
         # Only pick 5
-        k = k + 1
+        k += 1
         if k >= 5:
-            break;
+            break
 
     return JSONResponse({'events': events})
 
+
 def playing_api(request, event_id):
     playlist = []
-    for item in NPSong.objects.filter(event_id=event_id).order_by('-id'):
+    for item in NPSong.objects.filter(event_id=event_id).order_by('-id')[:10]:
         playlist.append({
             'title': item.title,
             'artist': item.artist,
@@ -71,12 +77,14 @@ def playing_api(request, event_id):
         })
     return JSONResponse({'playlist': playlist})
 
+
 def messages_api(request, event_id):
     messages = []
     for msg in Message.objects.filter(event_id=event_id):
-        if msg.show_start <= datetime.now() and msg.show_end >= datetime.now():
-            messages.append(msg.text)
+        if msg.show_start <= timezone.now() <= msg.show_end:
+            messages.append(mark_safe(msg.text))
     return JSONResponse({'messages': messages})
+
 
 def playlist_api(request, event_id):
     playlist = []
@@ -89,6 +97,7 @@ def playlist_api(request, event_id):
         })
     
     return JSONResponse({'playlist': playlist})
+
 
 def irc_api(request, event_id):
     # See if we got request data
@@ -105,7 +114,7 @@ def irc_api(request, event_id):
             'id': msg.id,
             'text': msg.message,
             'nick': msg.nick,
-            'time': msg.date.strftime("%H:%M"),
+            'time': arrow.get(msg.date).to(settings.TIME_ZONE).format("HH:mm")
         })
         
     # Respond

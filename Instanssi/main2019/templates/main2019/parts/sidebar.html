@@ -1,0 +1,60 @@
+{% load static blog_tags twitter_tag cache compress %}
+<!--<section class="widget widget-store">
+    <a href="{% url 'store:index' %}">
+        <h3><span class="fa fa-fw fa-euro"></span> Osta lippu!</h3>
+    </a>
+</section>
+<section class="widget widget-stream">
+    <a href="{% url 'main2019:stream' %}">
+        <h3><span class="fa fa-fw fa-twitch"></span> Stream</h3>
+    </a>
+</section>-->
+<section class="widget widget-radio">
+    <a href="{% url 'main2019:radio' %}">
+        <h3><span class="fa fa-fw fa-music"></span> Instanssiradio</h3>
+    </a>
+</section>
+<section class="widget widget-valot">
+    <a href="{% url 'main2019:valot' %}">
+        <h3><span class="fa fa-fw fa-lightbulb-o"></span> Valot</h3>
+    </a>
+</section>
+<!--<section class="widget widget-rules">
+    <a href="{% url 'main2019:saannot' %}">
+        <h3><span class="fa fa-info-circle"></span> Tapahtuman säännöt</h3>
+    </a>
+</section>-->
+{% block widgets %}
+<section class="widget widget-twitter">
+    <h2>Twitter</h2>
+    <div id="tweets" class="widget-content">
+        {% cache 600 twitter_bar %} {% get_tweets for "instanssi" as tweets exclude "replies" limit 5 %}
+        <ul>
+            {% for tweet in tweets %}
+            <li>
+                <span class="author">@{{ tweet.user.name }}: </span>
+                <span class="text">{{ tweet.text }}</span><br />
+                <span class="time"><a href="http://twitter.com/instanssi/status/{{ tweet.id }}">{{ tweet.datetime|date:"d.m.Y H:i" }}</a></span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endcache %}
+    </div>
+</section>
+<section class="widget widget-socialmedias">
+    <h2>Some</h2>
+    <div class="widget-content">
+        <div class="social-media-icons">
+            <a href="https://www.facebook.com/instanssi"><img src="{% static 'main2019/images/icons/icon-facebook.png' %}" alt="Facebook" ></a>
+            <a href="https://twitter.com/instanssi"><img src="{% static 'main2019/images/icons/icon-twitter.png' %}" alt="Twitter" ></a>
+            <a href="https://telegram.me/Instanssi"><img src="{% static 'main2019/images/icons/icon-telegram.png' %}" alt="Telegram" ></a>
+            <a href="https://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2019/images/icons/icon-youtube.png' %}" alt="YouTube" ></a>
+            <a href="https://instagram.com/instanssi.demoparty"><img src="{% static 'main2019/images/icons/icon-instagram.png' %}" alt="Instagram"></a>
+            <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2019/images/icons/icon-rss.png' %}" alt="RSS" ></a>
+            <div class="clearer"></div>
+        </div>
+        <p>#instanssi @ IRCNet</p>
+        <!--<p class="instanssi-radio"><a href="http://radio.instanssi.org">Tapahtumaradio</a> @ 105,4 MHz</p>-->
+    </div>
+</section>
+{% endblock %}

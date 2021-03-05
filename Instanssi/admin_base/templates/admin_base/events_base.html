@@ -17,15 +17,15 @@
 
 {% block base_begin %}
 {{ block.super }}
-	<ul id="left_nav">
-    	<li class="menuitem"><a href="{% url 'manage-blog:index' selected_event_id %}">Blogi</a></li>
+    <ul id="left_nav">
+        <li class="menuitem"><a href="{% url 'manage-blog:index' selected_event_id %}">Blogi</a></li>
         <li class="menuitem"><a href="{% url 'manage-slides:index' selected_event_id %}">Slaidit</a></li>
         <li class="menuitem"><a href="{% url 'manage-uploads:index' selected_event_id %}">Tiedostot</a></li>
         <li class="menuitem"><a href="{% url 'manage-programme:index' selected_event_id %}">Ohjelma</a></li>
         <li class="menuitem menu-right-arrow">
-        	<a href="{% url 'manage-arkisto:index' selected_event_id %}">Arkisto</a>
+            <a href="{% url 'manage-arkisto:index' selected_event_id %}">Arkisto</a>
             <ul class="sub-level">
-            	<li class="menuitem"><a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Arkistoija</a></li>
+                <li class="menuitem"><a href="{% url 'manage-arkisto:archiver' selected_event_id %}">Arkistoija</a></li>
                 <li class="menuitem"><a href="{% url 'manage-arkisto:vids' selected_event_id %}">Videot</a></li>
                 <li class="menuitem"><a href="{% url 'manage-arkisto:vidcats' selected_event_id %}">Kategoriat</a></li>
             </ul>
@@ -40,14 +40,14 @@
                 <li class="menuitem"><a href="{% url 'manage-screenshow:config' selected_event_id %}">Asetukset</a></li>
             </ul>
         </li>
-    	<li class="menuitem menu-right-arrow">
-        	<a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a>
+        <li class="menuitem menu-right-arrow">
+            <a href="{% url 'manage-kompomaatti:index' selected_event_id %}">Kompomaatti</a>
             <ul class="sub-level">
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:compos' selected_event_id %}">Kompot</a></li>
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:entries' selected_event_id %}">Entryt</a></li>
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:competitions' selected_event_id %}">Kilpailut</a></li>
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:results' selected_event_id %}">Tulokset</a></li>
-                <li class="menuitem"><a href="{% url 'manage-kompomaatti:votecodes' selected_event_id %}">Äänestyskoodit</a></li>
+                <li class="menuitem"><a href="{% url 'manage-kompomaatti:ticket_votecodes' selected_event_id %}">Lippuäänestyskoodit</a></li>
                 <li class="menuitem"><a href="{% url 'manage-kompomaatti:votecoderequests' selected_event_id %}">Koodipyynnöt</a></li>
             </ul>
         </li>

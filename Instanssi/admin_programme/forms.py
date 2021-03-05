@@ -5,13 +5,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
 from Instanssi.ext_programme.models import ProgrammeEvent
 
+
 class ProgrammeEventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProgrammeEventForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                u'Tapahtuma',
+                'Tapahtuma',
                 'event_type',
                 'title',
                 'description',
@@ -31,12 +32,12 @@ class ProgrammeEventForm(forms.ModelForm):
                 'wiki_url',
                 'gplus_url',
                 'active',
-                ButtonHolder (
-                    Submit('submit', u'Tallenna')
+                ButtonHolder(
+                    Submit('submit', 'Tallenna')
                 )
             )
         )
                 
     class Meta:
         model = ProgrammeEvent
-        exclude = ('event','icon_small',)
+        exclude = ('event', 'icon_small',)

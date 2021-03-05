@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from common.http import Http403
-from common.auth import staff_access_required
+from Instanssi.common.http import Http403
+from Instanssi.common.auth import staff_access_required
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest, Entry, Compo
+
 
 @staff_access_required
 def index(request):
@@ -18,7 +19,7 @@ def index(request):
     vcreqs = []
     events = Event.objects.all()
     for event in events:
-        rcount = VoteCodeRequest.objects.filter(event=event).count()
+        rcount = VoteCodeRequest.objects.filter(event=event, status=0).count()
         if rcount > 0:
             important_flag = True
             vcreqs.append({
@@ -31,13 +32,25 @@ def index(request):
     entries = Entry.objects.all()
     disk_usage = 0
     for entry in entries:
-        disk_usage += entry.entryfile.size
-        if entry.sourcefile:
-            disk_usage += entry.sourcefile.size
-        if entry.imagefile_original:
-            disk_usage += entry.imagefile_original.size
-        #    disk_usage += entry.imagefile_thumbnail.size
-        #    disk_usage += entry.imagefile_medium.size
+        try:
+            try:
+                disk_usage += entry.entryfile.size
+            except ValueError:
+                pass
+            if entry.sourcefile:
+                try:
+                    disk_usage += entry.sourcefile.size
+                except ValueError:
+                    pass
+            if entry.imagefile_original:
+                try:
+                    disk_usage += entry.imagefile_original.size
+                except ValueError:
+                    pass
+        except OSError:
+            pass
+        except IOError:
+            pass
             
     # Get some statistics
     stats = {

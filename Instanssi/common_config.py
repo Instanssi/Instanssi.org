@@ -33,6 +33,8 @@ CELERY_ACCEPT_CONTENT = ['json']
 ADMIN_LOGIN_URL = '/manage/auth/login/'
 LOGIN_URL = '/users/login/'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 STATICFILES_DIRS = (
     os.path.join(CONTENTDIR, 'static/'),
 )

@@ -1,4 +1,4 @@
-Django==2.2.19
+Django==2.2.20
 django-countries==7.0
 django-crispy-forms==1.11.1
 django-debug-toolbar==3.2.1

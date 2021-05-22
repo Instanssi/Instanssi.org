@@ -1,9 +1,10 @@
-Django==2.2.20
+Django==3.2.2
 django-countries==7.2
 django-crispy-forms==1.11.2
 django-debug-toolbar==3.2.1
 django-imagekit==4.0.2
 django-twitter-tag==1.2.1
+django-classy-tags==2.0.0  # N Used by twitter-tag, needed by django 3
 django-filter==2.4.0
 django-compressor==2.4.1
 celery==5.0.5

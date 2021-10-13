@@ -37,7 +37,7 @@ Jos tarvitset celeryä, sen voi käynnistää seuraavasti:
 Vaatimukset
 -----------
 
-Python-tulkista vaaditaan versio 3.7.x. PIP tulee olla asennettuna. Ajamiseen kannattaa luoda virtualenv (defaulttina
+Python-tulkista vaaditaan versio 3.9.x. PIP tulee olla asennettuna. Ajamiseen kannattaa luoda virtualenv (defaulttina
 virtualenv käyttää python2 tulkkia, joten muista erikseen määrittää python3-tulkin sijainti!).
 
 Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.

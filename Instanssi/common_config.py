@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'Instanssi.main2018',
     'Instanssi.main2019',
     'Instanssi.main2020',
+    'Instanssi.main2022',
     'Instanssi.admin_base',
     'Instanssi.admin_arkisto',
     'Instanssi.admin_blog',

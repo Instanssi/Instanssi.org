@@ -2,6 +2,7 @@
 
 import os
 import sys
+import sentry_sdk
 
 CONTENTDIR = os.path.dirname(__file__)
 PROJECTDIR = os.path.dirname(CONTENTDIR)
@@ -56,9 +57,7 @@ OAUTH2_PROVIDER = {
     }
 }
 
-RAVEN_CONFIG = {
-    'dsn': '',
-}
+SENTRY_DSN = ""
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -176,7 +175,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'compressor',
-    'raven.contrib.django.raven_compat',
 )
 
 # Authentication backends, notice the openid backend here.
@@ -197,7 +195,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'root': {
         'level': 'WARNING',
-        'handlers': ['sentry', 'console', 'main_log'],
+        'handlers': ['console', 'main_log'],
     },
     'formatters': {
         'verbose': {
@@ -211,10 +209,6 @@ LOGGING = {
         }
     },
     'handlers': {
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
         'log_db': {
             'level': 'INFO',
             'class': 'Instanssi.dblog.handlers.DBLogHandler',
@@ -238,18 +232,8 @@ LOGGING = {
             'handlers': ['console', 'main_log'],
             'propagate': False,
         },
-        'raven': {
-            'level': 'WARNING',
-            'handlers': ['console', 'main_log'],
-            'propagate': False,
-        },
-        'sentry.errors': {
-            'level': 'WARNING',
-            'handlers': ['console', 'main_log'],
-            'propagate': False,
-        },
         'Instanssi': {
-            'handlers': ['log_db', 'console', 'sentry', 'main_log'],
+            'handlers': ['log_db', 'console', 'main_log'],
             'level': 'INFO',
             'propagate': False,
         },
@@ -286,3 +270,17 @@ def make_email_conf(debug_mode):
         return 'django.core.mail.backends.console.EmailBackend'
     else:
         return 'django.core.mail.backends.smtp.EmailBackend'
+
+
+def setup_sentry(conf: dict) -> None:
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    from sentry_sdk.integrations.celery import CeleryIntegration
+    sentry_sdk.init(
+        dsn=conf['SENTRY_DSN'],
+        integrations=[
+            DjangoIntegration(),
+            RedisIntegration(),
+            CeleryIntegration(),
+        ]
+    )

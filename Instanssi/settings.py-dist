@@ -117,3 +117,6 @@ CELERY_BROKER_URL, CELERY_BROKER_TRANSPORT_OPTIONS = make_celery_conf(DEBUG)
 INTERNAL_IPS = (
     '127.0.0.1',
 )
+
+# Setup sentry
+setup_sentry(locals())

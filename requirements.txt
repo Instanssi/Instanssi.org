@@ -8,7 +8,7 @@ django-classy-tags==2.0.0  # N Used by twitter-tag, needed by django 3
 django-filter==21.1
 django-compressor==2.4.1
 celery==5.2.1
-Pillow==8.4.0
+Pillow==9.0.1
 social-auth-core==4.1.0
 social-auth-app-django==5.0.0
 django-libsass==0.9

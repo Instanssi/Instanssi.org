@@ -95,11 +95,6 @@ JSON_KEY = u'12341234'
 VMAKSUT_ID = u'13466'  # Test ID
 VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'  # Test secret
 
-# Bitpay API key etc. See https://bitpay.com/downloads/bitpayApi.pdf
-BITPAY_KEY = u'ReplaceMe5uxe6ohseokaebiyae1Oox6chie3bunga'
-BITPAY_SPEED = u'medium'  # Require 1 confirmation
-BITPAY_EMAIL = u'jaska.jokunen@instanssi.org'
-
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

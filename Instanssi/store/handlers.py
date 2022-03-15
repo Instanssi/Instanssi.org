@@ -6,7 +6,7 @@ import logging
 from django.db import transaction
 from django.utils import timezone
 
-from Instanssi.store.methods import paytrail, bitpay, no_method, PaymentMethod
+from Instanssi.store.methods import paytrail, no_method, PaymentMethod
 from Instanssi.store.models import StoreTransaction, StoreItem, TransactionItem, StoreItemVariant
 
 logger = logging.getLogger(__name__)
@@ -105,6 +105,5 @@ def create_store_transaction(data: dict) -> StoreTransaction:
 def begin_payment_process(method: PaymentMethod, ta: StoreTransaction):
     return {
         PaymentMethod.NO_METHOD: no_method.start_process,
-        PaymentMethod.BITPAY: bitpay.start_process,
         PaymentMethod.PAYTRAIL: paytrail.start_process
     }[method](ta)

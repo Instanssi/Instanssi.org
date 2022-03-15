@@ -11,7 +11,7 @@ from Instanssi.store.utils.receipt import ReceiptParams
 from Instanssi.store.models import Receipt
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException, validate_payment_method
-from Instanssi.common.testing.store import StoreTestData, BitpayFakeResponse, PaytrailFakeResponse
+from Instanssi.common.testing.store import StoreTestData, PaytrailFakeResponse
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
 from Instanssi.common.testing.utils import q_reverse
 
@@ -285,23 +285,6 @@ class StoreTests(TestCase):
         self.assertEqual(self.transaction.payment_method_name, "Paytrail")
         self.assertEqual(result, "https://payment.paytrail.com/payment/load/token/{}".format(self.transaction.token))
 
-    @mock.patch('Instanssi.store.utils.bitpay.requests.post')
-    def test_bitpay_begin_payment_process_bad_request(self, mock_post):
-        """ Make sure bitpay fails properly (we should get a failure redirect url) """
-        mock_post.return_value = BitpayFakeResponse(401, BitpayFakeResponse.create_failure())
-        result = begin_payment_process(PaymentMethod(0), self.transaction)
-        self.assertEqual(result, reverse('store:pm:bitpay-failure'))
-
-    @mock.patch('Instanssi.store.utils.bitpay.requests.post')
-    def test_bitpay_begin_payment_process_good_request(self, mock_post):
-        """ Make sure bitpay works with a good request (we should get a redirect URL) """
-        mock_post.return_value = BitpayFakeResponse(201, BitpayFakeResponse.create_success(order_no="3456454560"))
-        result = begin_payment_process(PaymentMethod(0), self.transaction)
-        self.transaction.refresh_from_db()
-        self.assertEqual(self.transaction.token, '3456454560')
-        self.assertEqual(self.transaction.payment_method_name, "Bitpay")
-        self.assertEqual(result, "https://test.bitpay.com/invoice?id={}".format(self.transaction.token))
-
     def test_no_method_begin_payment_process_good_request(self):
         """ Make sure NO_METHOD works with a good request (we should get a redirect URL) """
         result = begin_payment_process(PaymentMethod(-1), self.transaction)
@@ -339,22 +322,3 @@ class StoreTests(TestCase):
         result = self.client.get(reverse('store:pm:paytrail-failure'))
         self.assertTemplateUsed(result, 'store/failure.html')
         self.assertEqual(result.status_code, 200)
-
-    def test_bitpay_success_endpoint(self):
-        """ Test bitpay success endpoint. Note that this should be only a static page, no other functionality. """
-        result = self.client.get(reverse('store:pm:bitpay-success'))
-        self.assertTemplateUsed(result, 'store/success.html')
-        self.assertEqual(result.status_code, 200)
-
-    def test_bitpay_notify_endpoint(self):
-        # TODO: Implement this
-        #result = self.client.get(reverse('store:pm:bitpay-notify'))
-        #self.assertEqual(result.status_code, 200)
-        pass
-
-    def test_bitpay_failure_endpoint(self):
-        """ Test bitpay failure endpoint. Note that this should be only a static page, no other functionality. """
-        result = self.client.get(reverse('store:pm:bitpay-failure'))
-        self.assertTemplateUsed(result, 'store/failure.html')
-        self.assertEqual(result.status_code, 200)
-

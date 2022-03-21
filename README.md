@@ -1,8 +1,6 @@
 Instanssi.org website project
 =============================
 
-[![Build Status](https://travis-ci.org/Instanssi/Instanssi.org.svg?branch=master)](https://travis-ci.org/Instanssi/Instanssi.org)
-
 What is this ?
 --------------
 This project right here is the website of instanssi.org demoparty. It contains the main website (main2012),

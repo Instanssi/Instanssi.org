@@ -86,7 +86,7 @@ class StoreTests(TestCase):
         p.street(f.street_address())
         p.city(f.city())
         p.postal_code(f.postcode())
-        p.country(f.country())
+        p.country(f.country_code())
         p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
         for k in range(3):
             p.add_item(
@@ -96,6 +96,7 @@ class StoreTests(TestCase):
                 amount=randint(1, 5),
                 tax='0%'
             )
+
         n = ReceiptParams(p.get_json())
         self.assertDictEqual(p.params, n.params)
 
@@ -118,7 +119,7 @@ class StoreTests(TestCase):
         p.street(f.street_address())
         p.city(f.city())
         p.postal_code(f.postcode())
-        p.country(f.country())
+        p.country(f.country_code())
         p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
         for k in range(3):
             p.add_item(
@@ -198,8 +199,6 @@ class StoreTests(TestCase):
         validate_payment_method(free_items, PaymentMethod(-1))
         with self.assertRaises(TransactionException):
             validate_payment_method(expensive_items, PaymentMethod(-1))
-        validate_payment_method(free_items, PaymentMethod(0))
-        validate_payment_method(expensive_items, PaymentMethod(0))
         validate_payment_method(free_items, PaymentMethod(1))
         validate_payment_method(expensive_items, PaymentMethod(1))
 

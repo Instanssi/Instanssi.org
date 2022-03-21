@@ -9,7 +9,7 @@ from collections import OrderedDict
 import json
 
 from datetime import datetime
-from django_countries.fields import Country, country_to_text
+from django_countries.fields import Country
 from django.template.loader import render_to_string
 import arrow
 
@@ -21,11 +21,11 @@ class ReceiptEncoder(json.JSONEncoder):
         if isinstance(o, Decimal):
             return str(o)
         if isinstance(o, Country):
-            return country_to_text(o)
+            return o.code
         return json.JSONEncoder.default(self, o)
 
 
-class ReceiptParams(object):
+class ReceiptParams:
     def __init__(self, source_json=None):
         self.params = OrderedDict(
             order_number='',

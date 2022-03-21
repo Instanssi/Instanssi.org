@@ -52,13 +52,18 @@
             color: #fff;
         }
         .tagline, .time {
-            $glow: #4cd3f0a0;
             margin-bottom: 5px;
+            // Make text more readable against a bright background
+            $glow: #000; 
             text-shadow: $glow 0 0 3px;
             text-shadow: $glow 0 0 3px, $glow 0 0 6px;
         }
         .tagline {
             font-size: 20px;
+            position: absolute;
+            top: 180px;
+            left: 0;
+            transform: rotate(-5deg);
         }
         .time {
             position: absolute;

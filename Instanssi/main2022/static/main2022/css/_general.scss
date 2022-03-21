@@ -20,7 +20,7 @@ body * {
 
 body {
     position: relative;
-    background: #2e204f !important;
+    background: #000 !important;
 
     &:before {
         content: '';
@@ -30,10 +30,12 @@ body {
         right: 0;
         bottom: 0;
         background: no-repeat top center url(../images/webtausta.jpg);
-        background-size: contain;
+        background-size: 1423px auto;
+        background-position-y: -200px;
         @media screen and (max-width: $screen-xs-max) {
             top: -20px;
             background-size: 100% auto;
+            background-position: top center;
         }
     }
 }

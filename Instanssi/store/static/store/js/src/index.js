@@ -20,7 +20,6 @@ import './store_product.js';
 
 const PAYMENT_METHODS = [
     { id: 1, name: 'Paytrail verkkomaksu' },
-    { id: 0, name: 'BitPay (maksa Bitcoinilla)' },
 ];
 
 const NO_PAYMENT_METHODS = [

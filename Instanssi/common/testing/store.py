@@ -14,20 +14,6 @@ from Instanssi.common.testing.kompomaatti import KompomaattiTestData
 fake = Factory.create('fi_FI')
 
 
-class BitpayFakeResponse(FakeResponse):
-    @staticmethod
-    def create_success(order_no):
-        return {
-            'url': 'https://test.bitpay.com/invoice?id={}'.format(order_no),
-            'status': 'new',
-            'id': order_no
-        }
-
-    @staticmethod
-    def create_failure():
-        return {}
-
-
 class PaytrailFakeResponse(FakeResponse):
     @staticmethod
     def create_success(order_no, token):

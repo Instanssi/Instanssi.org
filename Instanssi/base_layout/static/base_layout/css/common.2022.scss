@@ -16,13 +16,15 @@ h2, h3 {
 }
 
 .base-layout #header h1 {
+    margin-top: 0;
+
     > .header-main-title {
         float: left;
         position: relative;
         width: 250px;
-        height: 60px;
+        height: 90px;
         margin-right: 20px;
-        background-image: url('/static/main2022/images/2020_instanssiteksti_transparent.png');
+        background-image: url('/static/main2022/images/logoteksti.png');
         background-size: contain;
         background-repeat: no-repeat;
         .main-title-text {
@@ -30,7 +32,11 @@ h2, h3 {
         }
 
     }
-    a {
-        text-shadow: $theme-color 2px 2px 3px;
-    }
+}
+
+body.base-layout {
+    background: url('/static/main2022/images/webtausta.jpg') no-repeat;
+    background-color: #000 !important;
+    background-position: top center;
+    background-size: 1400px auto;
 }

@@ -4,8 +4,8 @@
     <div class="header-title">
         <a href="{% url 'main2022:index' %}" class="logo">
             <div class="header-info">
-                <h1 class="sr-only">Instanssi&nbsp;2022</h1>
-                <p class="tagline sr-only">Digitaalisen tekemisen festivaali</p>
+                <h1 class="sr-only">Instanssi 2022</h1>
+                <p class="tagline">a Revision Satellite Partner</p>
                 <!--<p class="time">Jyväskylässä 2022!</p>-->
             </div>
         </a>
@@ -16,14 +16,14 @@
             <ul class="nav nav-tabs">
                 <li class="item-blog {% if templatename == 'index' %}active{% endif %}"><a href="{% url 'main2022:index' %}">Blogi</a></li>
                 <li class="item-info {% if templatename == 'info' %}active{% endif %}"><a href="{% url 'main2022:info' %}">Info</a></li>
-                <li class="item-kompos {% if templatename == 'kompot' %}active{% endif %}"><a href="{% url 'main2022:kompot' %}">Kompot</a></li>
+                <!--<li class="item-kompos {% if templatename == 'kompot' %}active{% endif %}"><a href="{% url 'main2022:kompot' %}">Kompot</a></li>-->
                 <li class="item-programme {% if templatename == 'ohjelma' %}active{% endif %}"><a href="{% url 'main2022:ohjelma' %}">Ohjelma</a></li>
-                <li class="item-schedule {% if templatename == 'aikataulu' %}active{% endif %}" ><a href="{% url 'main2022:aikataulu' %}">Aikataulu</a></li>
+                <!--<li class="item-schedule {% if templatename == 'aikataulu' %}active{% endif %}" ><a href="{% url 'main2022:aikataulu' %}">Aikataulu</a></li>-->
                 <li class="item-english {% if templatename == 'english' %}active{% endif %}"><a href="{% url 'main2022:english' %}">In English</a></li>
-                <li class="item-stream"><a href="https://www.twitch.tv/instanssi" target="_blank">Stream</a></li>
+                <!--<li class="item-stream"><a href="https://www.twitch.tv/instanssi" target="_blank">Stream</a></li>-->
                 <!--<li class="item-radio {% if templatename == 'radio' %}active{% endif %}"><a href="{% url 'main2022:radio' %}">Radio</a></li>-->
                 <li class="menu-item-right item-store"><a href="{% url 'store:index' %}">Kauppa</a></li>
-                <li class="menu-item-right item-kompomaatti"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>
+                <!--<li class="menu-item-right item-kompomaatti"><a href="{% url 'km:index' event_id %}">Kompomaatti</a></li>-->
                 <li class="menu-item-right item-archive"><a href="{% url 'archive:index' %}">Arkisto</a></li>
                 <div class="clearer"></div>
             </ul>

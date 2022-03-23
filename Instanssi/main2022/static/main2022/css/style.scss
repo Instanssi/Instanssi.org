@@ -65,6 +65,10 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
     text-align: center;
 }
 
+.meili::after {
+    content: '@instanssi.org';
+}
+
 #page-header nav ul {
     transition: max-height $transition-large ease-in-out;
 }

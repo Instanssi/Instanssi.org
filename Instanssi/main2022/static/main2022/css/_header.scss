@@ -24,7 +24,7 @@
 
         color: #fff;
 
-        
+
         &:after {
             // The big logo
             margin-left: -12px; // fix alignment with content
@@ -46,7 +46,7 @@
                 height: 100px;
             }
         }
-        
+
         h1, .tagline, .time {
             margin-left: $spacer;
             font-family: $title-font-family;
@@ -55,7 +55,7 @@
         .tagline, .time {
             margin-bottom: 5px;
             // Make text more readable against a bright background
-            $glow: #000; 
+            $glow: #000;
             text-shadow: $glow 0 0 3px;
             text-shadow: $glow 0 0 3px, $glow 0 0 6px;
         }
@@ -269,7 +269,8 @@
                 left: $spacer;
             }
             .tagline {
-                display: none;
+                top: 65px;
+                left: 35px;
             }
             &:after {
                 top: -5px;

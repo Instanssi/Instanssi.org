@@ -1,0 +1,128 @@
+{% extends "main2023/base.html" %}
+
+{% block head %}
+{{ block.super }}
+{% endblock %}
+
+{% block jquery %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+    <h1>Info</h1>
+
+    <h2>Mikä on Instanssi?</h2>
+    <p>
+      Instanssi on vuosittain järjestettävä digitaalisen tekemisen
+      festivaali Jyväskylässä. Tapahtuman
+      järjestävät <a href="https://jkl.hacklab.fi/">Hacklab Jyväskylä
+      ry</a> ja <a href="https://linkkijkl.fi/">Linkki Jyväskylä
+      ry</a>. Ensimmäinen Instanssi järjestettiin syksyllä 2010.
+    </p>
+    <p>
+        Instanssi on aloittelijaystävällinen tapahtuma, joka on tarkoitettu kaikille digitaalisesta kulttuurista kiinnostuneille. Tapahtuman ohjelma koostuu demoskene-aiheisista kompoista (eli kilpailuista), pelaamisesta, ohjelmoimisesta, esitelmistä ja työpajoista.
+    </p>
+    <p>
+      Tänä vuonna järjestämme Instanssin yhteistyössä saksalaisen
+      <a href="https://2022.revision-party.net/">Revision-tapahtuman</a>
+      kanssa. Instanssiin osallistujat voivat osallistua Revisionin
+      kilpasarjoihin eli kompoihin ja ne kaikki näytetään suorana
+      tapahtumapaikan valkokankaalta väkevän äänentoiston
+      tahdittamana.
+    </p>
+    <p>
+      Revisionin kompovalikoima onkin paljon Instanssia
+      laajempi. Instanssista tutut demo. 4 kilotavun demo, musiikki ja
+      grafiikka löytyvät, mutta näiden lisäksi on myös useita sarjoja
+      vanhoille tietokoneille, ASCII/ANSI-grafiikalle ja paljon muuta!
+      Myös kaikki Revisionin seminaariesitykset näytetään tarkoitusta
+      varten rakennetussa seminaarihuoneessamme.
+    </p>
+    <p>
+      Vaikka tapahtuma toteutetaan tänä vuonna hiukan eri konseptilla,
+      paljon Instanssin henkeä on jäljellä! Tarjoamme tänäkin vuonna
+      ohjelmoitavat valot, saunan ja kaikkea kivaa ajanvietettä.
+    </p>
+    <p>
+        Tapahtumaan voi saapua niin tekijänä kuin yleisönä. Raja on häilyvä, koska työpajojen ansiosta myös ensikertalainen voi päästä mukaan ja osallistua jopa kilpailuihin!
+    </p>
+    <p>
+        Lippuhinnat:
+    </p>
+    <ul>
+        <li>Kävijälippu 15 €</li>
+        <!--<li>Konepaikka (ennakko) 30 €</li>-->
+        <li>Konepaikka 40 €</li>
+        <li>Ökylippu 50 €</li>
+    </ul>
+
+    <h2>Aika ja paikka</h2>
+    <p>
+      Instanssi 2022 järjestetään 15.-18.4.2022 osoitteessa Voionmaankatu 18, Jyväskylä.
+    </p>
+
+    <iframe width="600"
+            height="450"
+            id="instanssi-location-map"
+            frameborder="0"
+            style="border:0; max-width:100%"
+            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJ3WoIEiN0hUYRogdPWJx7Alk&language=fi&key={{ GOOGLE_API_KEY }}" allowfullscreen></iframe>
+
+    <h2>Mitä mukaan?</h2>
+    <p>
+        Instanssiin tullessaan on hyvä varautua samaan malliin kuin laneille tai muille demopartyille tullessa.
+        Tässäpä lista, huomaa kahvikuppi:
+    </p>
+    <ul>
+      <li>
+          Tietokone tarvikkeineen, 10 metrin verkkojohto on hyvä idea, samoin jatkojohto jossa riittää reikiä kaikille
+          tuomillesi laitteille. Merkitse etenkin johtosi, mutta mielellään muutkin tuomasi tavarat, jotta löydät omasi
+          helposti lähtiessäsi.
+      </li>
+      <li>Makuupussi ja -alusta tai vastaavat yöpymisvälineet</li>
+      <li>Vaihtovaatteita viikonlopun tarpeiksi</li>
+      <li>Henkilökohtaiset hygieniavälineet: pyyhe, hammasharja ja sitä rataa. Tapahtumapaikalta löytyy suihku.</li>
+      <li>Käteistä rahaa mm. ovelta ostettavia lippuja tai t-paitoja varten</li>
+      <li>Oma kahvikuppi ilmaista kahvia ja teetä varten</li>
+      <li>Pientä purtavaa ja juotavaa kannattaa olla omastakin takaa. Tapahtumapaikalla on ainakin yksi yleisön käytössä oleva mikroaaltouuni, kahvinkeitin sekä vedenkeitin. Jääkaappitilaa on rajallisesti, joten tuo oma kylmälaukkusi.
+        <ul><li>Konepaikkojen sähköverkko ei kestä kävijöiden omia kodinkoneita, kuten kahvinkeittimiä, jääkaappeja tai mikroaaltouuneja. Saat tuoda oman peltier-elementillä varustetun matkakylmälaukun.</li></ul>
+      </li>
+      <li>Hilpeää partyfiilistä!</li>
+    </ul>
+
+    <h2>Mitä EI mukaan!</h2>
+    <p>Kiellettyjen asioiden &amp; aineiden lista.</p>
+    <ul>
+        <li>Reseptilääkkeet ilman reseptiä ja henkilöllisyystodistusta</li>
+        <li>Alkoholi</li>
+        <li>Huumausaineet</li>
+        <li>Ampuma- ja teräaseet sekä muut vahingoittamiseen tarkoitetut esineet</li>
+        <li>Monitoimityökalut</li>
+        <li>Ilotulitteet ja muut räjähteet</li>
+        <li>Laserosoittimet ja muut vastaavat esineet</li>
+        <li>Omat kodinkoneet (kahvinkeittimet, jääkaapit, pyykinpesukoneet, jne.)</li>
+    </ul>
+
+    <h2>Keskustelu</h2>
+    <p>
+        IRC: #instanssi @ IRCNet<br />
+        Matrix: <a href="https://matrix.to/#/#instanssi:jkl.hacklab.fi">#instanssi:jkl.hacklab.fi</a><br />
+        Telegram: <a href="https://telegram.me/Instanssi">https://telegram.me/Instanssi</a><br /><br />
+	Ylläolevat viestikanavat ovat sillattu toisiinsa, eli riittää kun pääset yhdelle niistä!
+    </p>
+    
+    <h2>Some</h2>
+    <p>
+        Twitter: <a href="https://twitter.com/instanssi">https://twitter.com/instanssi</a><br />
+        Facebook: <a href="https://www.facebook.com/instanssi">https://www.facebook.com/instanssi</a><br />
+        Youtube: <a href="https://www.youtube.com/user/InstanssiOrg">https://www.youtube.com/user/InstanssiOrg</a>
+    </p>
+
+    <h2>Yhteystiedot</h2>
+    <p>
+      Puhelin: <a href="tel:+358931576902">09 3157 6902</a><br />
+      Email: Koko työryhmän tavoitat osoitteesta <span class="meili">info</span>.
+    </p>
+{% endblock %}
+

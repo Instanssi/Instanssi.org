@@ -10,6 +10,7 @@ urlpatterns = [
     path("qr/", include("qr_code.urls", namespace="qr_code")),
     path("api/v1/", include("Instanssi.api.urls", namespace="api")),
     path("2022/", include("Instanssi.main2022.urls", namespace="main2022")),
+    path("2023/", include("Instanssi.main2023.urls", namespace="main2023")),
     path("manage/events/", include("Instanssi.admin_events.urls", namespace="manage-events")),
     path("manage/users/", include("Instanssi.admin_users.urls", namespace="manage-users")),
     path("manage/profile/", include("Instanssi.admin_profile.urls", namespace="manage-profile")),
@@ -55,7 +56,7 @@ urlpatterns = [
     path("screen/", include("Instanssi.screenshow.urls", namespace="screen")),
     path("store/", include("Instanssi.store.urls", namespace="store")),
     path("infodesk/", include("Instanssi.infodesk.urls", namespace="infodesk")),
-    path("", RedirectView.as_view(url=reverse_lazy("main2022:index")), name="root-index"),
+    path("", RedirectView.as_view(url=reverse_lazy("main2023:index")), name="root-index"),
 ]
 
 # Add admin panel link if debug mode is on

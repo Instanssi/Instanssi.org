@@ -9,49 +9,32 @@ of the comments and language used is in Finnish, because the programmers weren't
 internationalization :D
 
 This project has been originally developed for Instanssi 2012. Project is still alive and current development
-focus is to provide web site for Instanssi 2022.
+focus is to provide web site for Instanssi 2023.
+
+Requirements
+------------
+
+* Python 3.9.x (`https://www.python.org/`)
+* Poetry package manager (`https://python-poetry.org/docs/#installation`)
+* PostgreSQL or SQLite for database. SQLite should be fine for testing
+  and development purposes. MariaDB/MySQL is not tested or supported.
+
+Installing stuff for development
+--------------------------------
+
+1. Install the dependencies and clone this project.
+2. Copy `settings.py-dist` to `settings.py`. Change as needed. `settings.py` should never be added to
+   git, as it may contain secrets.
+3. Set up environment with poetry `poetry env use 3.9`.
+4. Install packages with poetry `poetry install --no-root`.
+5. Make sure your database is set up and configured in settings.py, and then run database
+   migrations to set up initial data `python manage.py migrate`.
+6. Create a superuser so that you can access the admin `python manage.py createsuperuser`.
+7. That's all. Now just start local dev server by running `python manage.py runserver`.
+
+Note that some background operations use celery. It can be started with following:
+`python -m celery -A Instanssi worker -l info --autoscale 2,1`
 
 License
 -------
 MIT. Please refer to `LICENSE` for more information.
-
-Mikä on tämä ?
---------------
-En jaksa kirjoittaa suomeksi, lue ylläolevat :D
-
-Projektin asentaminen
----------------------
-1. Kloonaa tämä projekti gitillä (git clone ...). Mikäli haluat tehdä muutoksia, forkkaa ja kloonaa omasta repositoriostasi.
-2. Kopioi `settings.py-dist` tiedostoksi `settings.py`. Muuta tarpeen mukaan.
-3. Asenna tarvittavat kirjastot. (kts. seuraava kappale)
-4. Suorita tietokantamigraatiot projektihakemistossa `python manage.py migrate`.
-5. Luo pääkäyttäjä `python manage.py createsuperuser`.
-6. Testaa ajamalla runserver (`python manage.py runserver`). Jos gittiin ilmestyy tietokantamallimuutoksia, saattaa
-   joskus olla tarpeen suorittaa migrate uudelleen.
-
-Jos tarvitset celeryä, sen voi käynnistää seuraavasti:
-`python -m celery -A Instanssi worker -l info --autoscale 2,1`
-
-Vaatimukset
------------
-
-Python-tulkista vaaditaan versio 3.9.x. PIP tulee olla asennettuna. Ajamiseen kannattaa luoda virtualenv (defaulttina
-virtualenv käyttää python2 tulkkia, joten muista erikseen määrittää python3-tulkin sijainti!).
-
-Seuraava koodirimpsu hakee kaikki tarpeelliset python-kirjastot ja dependenssit.
-
-    pip install --upgrade -r requirements.txt
-
-Testitapausten ajaminen
------------------------
-testing/ -hakemistossa on esimerkkejä Robot Framework - Selenium 2 -testeistä, joilla voidaan automatisoida nettisivujen klikkailua.
-
-Testien ajamiseen tarvitset robotframework-selenium2library -palikan:
-
-    pip install robotframework-selenium2library
-
-Tämän jälkeen testin voi ajaa testing-hakemistossa komennolla
-
-    pybot -d output/ testinnimi.txt
-
-Testi tuottaa output-hakemistoon testiraportin ja kuvakaappauksen lopputilastaan.

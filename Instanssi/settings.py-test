@@ -34,9 +34,6 @@ TIME_ZONE = 'Europe/Helsinki'
 LANGUAGE_CODE = 'fi-FI'
 SHORT_LANGUAGE_CODE = 'fi'
 
-# Code for main2014 site (Toimisto password)
-MAIN2014_TOIMISTO_CODE = u''
-
 # Hackish, but will do for now
 SSL_ON = True
 DOMAIN = 'instanssi.org'
@@ -143,7 +140,6 @@ LOGGING = {
         'Instanssi.admin_utils': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.admin_screenshow': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.admin_store': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.main2016': {'handlers': ['log_db'], 'level': 'INFO'},
         'Instanssi.infodesk': {'handlers': ['log_db'], 'level': 'INFO'},
     }
 }

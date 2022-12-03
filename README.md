@@ -35,6 +35,13 @@ Installing stuff for development
 Note that some background operations use celery. It can be started with following:
 `python -m celery -A Instanssi worker -l info --autoscale 2,1`
 
+Production deps
+---------------
+
+To install in production, remember to generate a new requirements.txt file.
+
+`poetry export --with=runtime -f requirements.txt -o requirements.txt`.
+
 License
 -------
 MIT. Please refer to `LICENSE` for more information.

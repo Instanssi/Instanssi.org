@@ -37,7 +37,7 @@ Faker = "^15.3.3"
 mock = "^4.0.3"
 
 [tool.poetry.group.runtime.dependencies]
-uwsgitop = "^0.11"
+gunicorn = "^20.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

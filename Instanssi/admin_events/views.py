@@ -10,7 +10,6 @@ from Instanssi.common.auth import staff_access_required
 from Instanssi.common.http import Http403
 from Instanssi.kompomaatti.models import Event
 
-# Logging related
 logger = logging.getLogger(__name__)
 
 

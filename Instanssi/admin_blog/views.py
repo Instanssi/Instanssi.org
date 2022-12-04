@@ -1,4 +1,3 @@
-# Logging related
 import logging
 
 from django.http import HttpResponseRedirect

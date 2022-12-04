@@ -7,6 +7,7 @@ from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+from Instanssi.common.misc import parse_youtube_video_id
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
@@ -412,25 +413,10 @@ class Entry(models.Model):
                     score += 1.0 / vote.rank
             return score
 
-    @staticmethod
-    def youtube_url_to_id(url):
-        """Convert any valid YouTube URL to its video id."""
-        # There's probably a regex that does this in one line...
-        parsed = urlparse(url)
-        querydict = parse_qs(parsed.query)
-        if "v" in querydict:
-            return querydict["v"][0]
-        split_path = parsed.path.split("/")  # => ["", "v", "asdf"]
-        if len(split_path) >= 2 and parsed.hostname == "youtu.be":
-            return split_path[1]
-        if len(split_path) >= 3 and split_path[1] == "v":
-            return split_path[2]
-        return None
-
     def get_youtube_embed_url(self):
         """Get embed URL for this entry's YouTube link."""
-        video_id = self.youtube_url_to_id(self.youtube_url)
-        return "//www.youtube.com/embed/{}/".format(video_id)
+        video_id = parse_youtube_video_id(self.youtube_url)
+        return f"//www.youtube.com/embed/{video_id}/"
 
     def get_rank(self):
         # If rank has been predefined, then use that

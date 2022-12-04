@@ -35,14 +35,8 @@ def render_calendar(event_id):
         events.append(
             {
                 "date": compo.adding_end,
-                "title": compo.name + ": ilmoittautuminen päättyy",
-                "url": reverse(
-                    "km:compo",
-                    args=(
-                        event_id,
-                        compo.id,
-                    ),
-                ),
+                "title": f"{compo.name}: ilmoittautuminen päättyy",
+                "url": reverse("km:compo", args=(event_id, compo.id)),
                 "icon": "",
                 "place": "",
                 "desc": "",
@@ -51,40 +45,19 @@ def render_calendar(event_id):
         events.append(
             {
                 "date": compo.compo_start,
-                "title": compo.name + ": kompo alkaa",
-                "url": reverse(
-                    "km:compo",
-                    args=(
-                        event_id,
-                        compo.id,
-                    ),
-                ),
+                "title": f"{compo.name}: kompo alkaa",
+                "url": reverse("km:compo", args=(event_id, compo.id)),
                 "icon": "",
                 "place": "",
                 "desc": "",
             }
         )
-        """events.append({
-            'date': compo.voting_start,
-            'title': compo.name + u': äänestys alkaa',
-            'url': reverse('km:compo', args=(event_id, compo.id,)),
-            'icon': '',
-            'place': '',
-            'desc': '',
-        })
-        """
         if compo.is_votable:
             events.append(
                 {
                     "date": compo.voting_end,
-                    "title": compo.name + ": äänestys päättyy",
-                    "url": reverse(
-                        "km:compo",
-                        args=(
-                            event_id,
-                            compo.id,
-                        ),
-                    ),
+                    "title": f"{compo.name}: äänestys päättyy",
+                    "url": reverse("km:compo", args=(event_id, compo.id)),
                     "icon": "",
                     "place": "",
                     "desc": "",
@@ -96,14 +69,8 @@ def render_calendar(event_id):
         events.append(
             {
                 "date": comp.participation_end,
-                "title": comp.name + ": ilmoittautuminen päättyy",
-                "url": reverse(
-                    "km:competition",
-                    args=(
-                        event_id,
-                        comp.id,
-                    ),
-                ),
+                "title": f"{comp.name}: ilmoittautuminen päättyy",
+                "url": reverse("km:competition", args=(event_id, comp.id)),
                 "icon": "",
                 "place": "",
                 "desc": "",
@@ -112,21 +79,15 @@ def render_calendar(event_id):
         events.append(
             {
                 "date": comp.start,
-                "title": comp.name + ": kilpailu alkaa",
-                "url": reverse(
-                    "km:competition",
-                    args=(
-                        event_id,
-                        comp.id,
-                    ),
-                ),
+                "title": f"{comp.name}: kilpailu alkaa",
+                "url": reverse("km:competition", args=(event_id, comp.id)),
                 "icon": "",
                 "place": "",
                 "desc": "",
             }
         )
 
-    # Handle programmeevents
+    # Handle programme-events
     for prog in progs:
         icon = None
         if prog.icon_small:
@@ -140,7 +101,7 @@ def render_calendar(event_id):
                     "url": None,
                     "place": prog.place,
                     "desc": "",
-                    "id": "sp-%d" % (prog.id,),
+                    "id": f"sp-{prog.id}",
                 }
             )
         else:
@@ -149,10 +110,10 @@ def render_calendar(event_id):
                     "date": prog.start,
                     "title": prog.presenters,
                     "icon": icon,
-                    "url": "../ohjelma/#%d" % (prog.id,),
+                    "url": f"../ohjelma/#{prog.id}",
                     "place": prog.place,
                     "desc": prog.title,
-                    "id": "sp-%d" % (prog.id,),
+                    "id": f"sp-{prog.id}",
                 }
             )
 

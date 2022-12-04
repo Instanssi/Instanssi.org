@@ -1,47 +1,57 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 from imagekit.admin import AdminThumbnail
-from Instanssi.kompomaatti.models import Compo, Entry, Event, Vote, VoteCodeRequest, Profile, Competition, \
-    CompetitionParticipation, TicketVoteCode, VoteGroup, EntryCollection
+
+from Instanssi.kompomaatti.models import (
+    Competition,
+    CompetitionParticipation,
+    Compo,
+    Entry,
+    EntryCollection,
+    Event,
+    Profile,
+    TicketVoteCode,
+    Vote,
+    VoteCodeRequest,
+    VoteGroup,
+)
 
 
 class TicketVoteCodeAdmin(admin.ModelAdmin):
     list_display = [
-        'associated_to',
-        'event',
-        'ticket',
-        'time',
+        "associated_to",
+        "event",
+        "ticket",
+        "time",
     ]
 
 
 class VoteCodeRequestAdmin(admin.ModelAdmin):
     list_display = [
-        'user',
-        'event',
-        'status',
-        'text',
+        "user",
+        "event",
+        "status",
+        "text",
     ]
 
 
 class EntryAdmin(admin.ModelAdmin):
     list_display = [
-        'name',
-        'compo',
-        'user',
-        'creator',
-        'entryfile',
-        'disqualified',
-        'admin_thumbnail',
+        "name",
+        "compo",
+        "user",
+        "creator",
+        "entryfile",
+        "disqualified",
+        "admin_thumbnail",
     ]
-    admin_thumbnail = AdminThumbnail(image_field='imagefile_thumbnail')
+    admin_thumbnail = AdminThumbnail(image_field="imagefile_thumbnail")
 
 
 class EntryCollectionAdmin(admin.ModelAdmin):
     list_display = [
-        'compo',
-        'file',
-        'updated_at',
+        "compo",
+        "file",
+        "updated_at",
     ]
 
 

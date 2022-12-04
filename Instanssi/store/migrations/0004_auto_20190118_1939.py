@@ -6,18 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('store', '0003_auto_20181023_1807'),
+        ("store", "0003_auto_20181023_1807"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='storeitem',
-            name='is_secret',
-            field=models.BooleanField(default=False, help_text='Tuote näkyy kaupassa vain salaisella linkillä', verbose_name='Tuote on salainen'),
+            model_name="storeitem",
+            name="is_secret",
+            field=models.BooleanField(
+                default=False,
+                help_text="Tuote näkyy kaupassa vain salaisella linkillä",
+                verbose_name="Tuote on salainen",
+            ),
         ),
         migrations.AddField(
-            model_name='storeitem',
-            name='secret_key',
-            field=models.CharField(blank=True, help_text='Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa', max_length=255, verbose_name='Salasana'),
+            model_name="storeitem",
+            name="secret_key",
+            field=models.CharField(
+                blank=True,
+                help_text="Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa",
+                max_length=255,
+                verbose_name="Salasana",
+            ),
         ),
     ]

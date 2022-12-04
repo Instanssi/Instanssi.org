@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-
-from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
+from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
+from django import forms
+
 from Instanssi.ext_blog.models import BlogEntry
+
 
 class BlogEntryEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -11,20 +11,19 @@ class BlogEntryEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                'Muokkaa blogientryä',
-                'title',
-                'text',
-                'date',
-                'public',
-                ButtonHolder (
-                    Submit('submit', 'Tallenna')
-                )
+                "Muokkaa blogientryä",
+                "title",
+                "text",
+                "date",
+                "public",
+                ButtonHolder(Submit("submit", "Tallenna")),
             )
         )
-        
+
     class Meta:
         model = BlogEntry
-        fields = ('title','text','public','date')
+        fields = ("title", "text", "public", "date")
+
 
 class BlogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -32,16 +31,14 @@ class BlogEntryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                'Lisää uusi blogientry',
-                'title',
-                'text',
-                'public',
-                ButtonHolder (
-                    Submit('submit', 'Tallenna')
-                )
+                "Lisää uusi blogientry",
+                "title",
+                "text",
+                "public",
+                ButtonHolder(Submit("submit", "Tallenna")),
             )
         )
-        
+
     class Meta:
         model = BlogEntry
-        fields = ('title','text','public')
+        fields = ("title", "text", "public")

@@ -29,6 +29,10 @@ jobs:
       run: |
         poetry env use ${{ matrix.python-version }}
         poetry install --no-root
+    - name: Run isort
+      run: poetry run isort --check-only Instanssi
+    - name: Run black
+      run: poetry run black --check --diff Instanssi
     - name: Run Tests
       run: |
         cp Instanssi/settings.py-test Instanssi/settings.py

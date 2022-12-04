@@ -1,38 +1,65 @@
-# -*- coding: utf-8 -*-
-
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework import serializers
-from rest_framework import status
-from rest_framework.filters import OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from django.utils import timezone
+from django_filters.rest_framework import DjangoFilterBackend
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
+from rest_framework import serializers, status
+from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from .serializers import EventSerializer, SongSerializer, CompetitionSerializer, CompoSerializer,\
-    ProgrammeEventSerializer, SponsorSerializer, MessageSerializer, IRCMessageSerializer, StoreItemSerializer,\
-    StoreTransactionSerializer, CompoEntrySerializer, CompetitionParticipationSerializer, UserSerializer, \
-    UserCompoEntrySerializer, UserCompetitionParticipationSerializer, TicketVoteCodeSerializer, \
-    VoteCodeRequestSerializer, VoteGroupSerializer
-from .utils import CanUpdateScreenData, IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet,\
-    ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
-from Instanssi.kompomaatti.models import Event, Competition, Compo, Entry, CompetitionParticipation, VoteCodeRequest, \
-    TicketVoteCode, VoteGroup
 from Instanssi.ext_programme.models import ProgrammeEvent
-from Instanssi.screenshow.models import NPSong, Sponsor, Message, IRCMessage
-from Instanssi.store.models import StoreItem
+from Instanssi.kompomaatti.models import (
+    Competition,
+    CompetitionParticipation,
+    Compo,
+    Entry,
+    Event,
+    TicketVoteCode,
+    VoteCodeRequest,
+    VoteGroup,
+)
+from Instanssi.screenshow.models import IRCMessage, Message, NPSong, Sponsor
 from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
+from Instanssi.store.models import StoreItem
+
+from .serializers import (
+    CompetitionParticipationSerializer,
+    CompetitionSerializer,
+    CompoEntrySerializer,
+    CompoSerializer,
+    EventSerializer,
+    IRCMessageSerializer,
+    MessageSerializer,
+    ProgrammeEventSerializer,
+    SongSerializer,
+    SponsorSerializer,
+    StoreItemSerializer,
+    StoreTransactionSerializer,
+    TicketVoteCodeSerializer,
+    UserCompetitionParticipationSerializer,
+    UserCompoEntrySerializer,
+    UserSerializer,
+    VoteCodeRequestSerializer,
+    VoteGroupSerializer,
+)
+from .utils import (
+    CanUpdateScreenData,
+    IsAuthenticatedOrWriteOnly,
+    ReadWriteModelViewSet,
+    ReadWriteUpdateModelViewSet,
+    WriteOnlyModelViewSet,
+)
 
 
 class CurrentUserViewSet(ReadOnlyModelViewSet):
     """
     Shows data to the authenticated user about self
     """
+
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
@@ -58,12 +85,16 @@ class EventViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
-    queryset = Event.objects.filter(name__startswith='Instanssi')
+
+    queryset = Event.objects.filter(name__startswith="Instanssi")
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('id',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("id",)
 
 
 class SongViewSet(ReadWriteModelViewSet):
@@ -80,13 +111,17 @@ class SongViewSet(ReadWriteModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is '-id'. Allowed: id, -id
     """
+
     queryset = NPSong.objects.get_queryset()
     serializer_class = SongSerializer
     permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class CompetitionViewSet(ReadOnlyModelViewSet):
@@ -103,12 +138,16 @@ class CompetitionViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = Competition.objects.filter(active=True)
     serializer_class = CompetitionSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
@@ -122,12 +161,16 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
     * competition: Filter by competition id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = CompetitionParticipation.objects.filter(competition__active=True)
     serializer_class = CompetitionParticipationSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('competition',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("competition",)
 
 
 class UserCompetitionParticipationViewSet(ModelViewSet):
@@ -144,9 +187,12 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompetitionParticipationSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('competition',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("competition",)
 
     def get_queryset(self):
         return CompetitionParticipation.objects.filter(competition__active=True, user=self.request.user)
@@ -170,12 +216,16 @@ class CompoViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = Compo.objects.filter(active=True)
     serializer_class = CompoSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class CompoEntryViewSet(ReadOnlyModelViewSet):
@@ -188,16 +238,20 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     * compo: Filter by compo id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     serializer_class = CompoEntrySerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('compo',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return Entry.objects\
-            .filter(compo__active=True)\
-            .filter(Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True))
+        return Entry.objects.filter(compo__active=True).filter(
+            Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True)
+        )
 
 
 class UserCompoEntryViewSet(ModelViewSet):
@@ -213,11 +267,17 @@ class UserCompoEntryViewSet(ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
-    parser_classes = (MultiPartParser, FormParser,)
+    parser_classes = (
+        MultiPartParser,
+        FormParser,
+    )
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('compo',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("compo",)
 
     def get_queryset(self):
         return Entry.objects.filter(compo__active=True, user=self.request.user)
@@ -233,15 +293,19 @@ class UserCompoEntryViewSet(ModelViewSet):
         delete_sourcefile = False
 
         # Remove imagefile if requested (field is null)
-        if instance.imagefile_original is not None \
-                and 'imagefile_original' in request.data \
-                and len(request.data['imagefile_original']) == 0:
+        if (
+            instance.imagefile_original is not None
+            and "imagefile_original" in request.data
+            and len(request.data["imagefile_original"]) == 0
+        ):
             delete_imagefile = True
 
         # remove sourcefile if requested (field is null)
-        if instance.sourcefile is not None \
-                and 'sourcefile' in request.data \
-                and len(request.data['sourcefile']) == 0:
+        if (
+            instance.sourcefile is not None
+            and "sourcefile" in request.data
+            and len(request.data["sourcefile"]) == 0
+        ):
             delete_sourcefile = True
 
         serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -254,7 +318,7 @@ class UserCompoEntryViewSet(ModelViewSet):
 
         self.perform_update(serializer)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
+        if getattr(instance, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
@@ -284,9 +348,12 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = VoteCodeRequestSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
     def get_queryset(self):
         return VoteCodeRequest.objects.filter(user=self.request.user)
@@ -309,9 +376,12 @@ class TicketVoteCodeViewSet(ReadWriteModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TicketVoteCodeSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
     def get_queryset(self):
         return TicketVoteCode.objects.filter(associated_to=self.request.user)
@@ -330,12 +400,16 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
     * compo: Filter by compo id
     * ordering: Set ordering. Allowed: compo, -compo
     """
+
     permission_classes = [IsAuthenticated]
     serializer_class = VoteGroupSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('compo',)
-    filterset_fields = ('compo',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("compo",)
+    filterset_fields = ("compo",)
 
     def get_queryset(self):
         return VoteGroup.objects.filter(user=self.request.user)
@@ -354,12 +428,16 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = ProgrammeEvent.objects.filter(active=True)
     serializer_class = ProgrammeEventSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class SponsorViewSet(ReadOnlyModelViewSet):
@@ -372,12 +450,16 @@ class SponsorViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = Sponsor.objects.get_queryset()
     serializer_class = SponsorSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class MessageViewSet(ReadOnlyModelViewSet):
@@ -390,12 +472,16 @@ class MessageViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
+
     queryset = Message.objects.get_queryset()
     serializer_class = MessageSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class IRCMessageViewSet(ReadOnlyModelViewSet):
@@ -408,30 +494,36 @@ class IRCMessageViewSet(ReadOnlyModelViewSet):
     * event: Filter by event id
     * ordering: Set ordering, default is '-id'. Allowed: id, -id
     """
+
     queryset = IRCMessage.objects.get_queryset()
     serializer_class = IRCMessageSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend,)
-    ordering_fields = ('id',)
-    filterset_fields = ('event',)
+    filter_backends = (
+        OrderingFilter,
+        DjangoFilterBackend,
+    )
+    ordering_fields = ("id",)
+    filterset_fields = ("event",)
 
 
 class StoreItemViewSet(ReadOnlyModelViewSet):
     """
     Exposes all available store items.  This entrypoint does not require authentication/authorization.
     """
+
     serializer_class = StoreItemSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = []
 
     def get_queryset(self):
-        return StoreItem.items_visible(secret_key=self.request.query_params.get('secret_key'))
+        return StoreItem.items_visible(secret_key=self.request.query_params.get("secret_key"))
 
 
 class StoreTransactionViewSet(WriteOnlyModelViewSet):
     """
     Handles saving store transactions. This entrypoint does not require authentication/authorization.
     """
+
     serializer_class = StoreTransactionSerializer
     permission_classes = [IsAuthenticatedOrWriteOnly]
     authentication_classes = []
@@ -439,9 +531,9 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            if serializer.validated_data['save']:
+            if serializer.validated_data["save"]:
                 ta = serializer.save()
-                payment_method = PaymentMethod(serializer.validated_data['payment_method'])
+                payment_method = PaymentMethod(serializer.validated_data["payment_method"])
                 response_url = begin_payment_process(payment_method, ta)
                 return Response({"url": response_url}, status=status.HTTP_201_CREATED)
             else:

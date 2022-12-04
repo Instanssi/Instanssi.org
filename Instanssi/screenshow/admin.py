@@ -1,8 +1,13 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
-from Instanssi.screenshow.models import IRCMessage, Message, Sponsor, PlaylistVideo, ScreenConfig, NPSong
 
+from Instanssi.screenshow.models import (
+    IRCMessage,
+    Message,
+    NPSong,
+    PlaylistVideo,
+    ScreenConfig,
+    Sponsor,
+)
 
 admin.site.register(IRCMessage)
 admin.site.register(Message)

@@ -1,29 +1,18 @@
-# -*- coding: utf-8 -*-
-
-from logging import Handler
+from logging import Handler, LogRecord
 
 
 class DBLogHandler(Handler, object):
     def __init__(self):
         super(DBLogHandler, self).__init__()
-    
-    def emit(self, record):
+
+    def emit(self, record: LogRecord) -> None:
         from .models import DBLogEntry as _LogEntry
-        
+
         entry = _LogEntry()
         entry.level = record.levelname
         entry.message = self.format(record)
         entry.module = record.name
-        try:
-            entry.event = record.event
-        except:
-            try:
-                entry.event_id = record.event_id
-            except:
-                pass
-        try:
-            entry.user = record.user
-        except:
-            pass
+        entry.event = getattr(record, "event", None)
+        entry.event_id = getattr(record, "event_id", None)
+        entry.user = getattr(record, "user", None)
         entry.save()
-

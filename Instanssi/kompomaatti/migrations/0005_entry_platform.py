@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('kompomaatti', '0004_entrycollection'),
+        ("kompomaatti", "0004_entrycollection"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='entry',
-            name='platform',
-            field=models.CharField(blank=True, help_text='Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.', max_length=128, null=True, verbose_name='Alusta'),
+            model_name="entry",
+            name="platform",
+            field=models.CharField(
+                blank=True,
+                help_text="Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.",
+                max_length=128,
+                null=True,
+                verbose_name="Alusta",
+            ),
         ),
     ]

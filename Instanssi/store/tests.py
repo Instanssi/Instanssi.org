@@ -1,25 +1,27 @@
-# -*- coding: utf-8 -*-
-
-import uuid
 import logging
+import uuid
 from decimal import Decimal
 from random import randint
 
-from Instanssi.common.misc import get_url
-from Instanssi.store.models import TransactionItem, StoreItem
-from Instanssi.store.utils.receipt import ReceiptParams
-from Instanssi.store.models import Receipt
-from Instanssi.store.methods import PaymentMethod
-from Instanssi.store.handlers import begin_payment_process, validate_item, TransactionException, validate_payment_method
-from Instanssi.common.testing.store import StoreTestData, PaytrailFakeResponse
-from Instanssi.common.testing.kompomaatti import KompomaattiTestData
-from Instanssi.common.testing.utils import q_reverse
-
+import mock
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-import mock
 from faker import Faker
+
+from Instanssi.common.misc import get_url
+from Instanssi.common.testing.kompomaatti import KompomaattiTestData
+from Instanssi.common.testing.store import PaytrailFakeResponse, StoreTestData
+from Instanssi.common.testing.utils import q_reverse
+from Instanssi.store.handlers import (
+    TransactionException,
+    begin_payment_process,
+    validate_item,
+    validate_payment_method,
+)
+from Instanssi.store.methods import PaymentMethod
+from Instanssi.store.models import Receipt, StoreItem, TransactionItem
+from Instanssi.store.utils.receipt import ReceiptParams
 
 
 class StoreTests(TestCase):
@@ -29,7 +31,7 @@ class StoreTests(TestCase):
 
         self.maxDiff = 100000
 
-        self.event = KompomaattiTestData.create_test_event('TestEvent')
+        self.event = KompomaattiTestData.create_test_event("TestEvent")
         self.items = []
         self.variants = {}
         for i in range(7):
@@ -55,9 +57,9 @@ class StoreTests(TestCase):
         self.items[5].save()
 
         # Item 6 is secret
-        self.items[6].name = 'Secret item'
+        self.items[6].name = "Secret item"
         self.items[6].is_secret = True
-        self.items[6].secret_key = 'kissa'
+        self.items[6].secret_key = "kissa"
         self.items[6].save()
 
         # Create a test transaction
@@ -66,11 +68,11 @@ class StoreTests(TestCase):
     def test_secret_items(self):
         """Test hiding secret items unless the correct key is provided."""
         self.assertLess(len(StoreItem.items_visible()), len(StoreItem.items_available()))
-        self.assertLess(len(StoreItem.items_visible('cat')), len(StoreItem.items_available()))
-        self.assertEqual(len(StoreItem.items_visible('kissa')), len(StoreItem.items_available()))
+        self.assertLess(len(StoreItem.items_visible("cat")), len(StoreItem.items_available()))
+        self.assertEqual(len(StoreItem.items_visible("kissa")), len(StoreItem.items_available()))
 
     def test_receipt_params(self):
-        """ Test receipt parameter handling logic """
+        """Test receipt parameter handling logic"""
         f = Faker("fi_FI")
         p = ReceiptParams()
         p.receipt_number(randint(10000, 99999))
@@ -87,24 +89,24 @@ class StoreTests(TestCase):
         p.city(f.city())
         p.postal_code(f.postcode())
         p.country(f.country_code())
-        p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
+        p.transaction_url(get_url(reverse("store:ta_view", args=("1234abcd",))))
         for k in range(3):
             p.add_item(
                 item_id=randint(0, 999999),
                 price=Decimal(randint(0, 100)),
                 name="Test product name goes here {}".format(k),
                 amount=randint(1, 5),
-                tax='0%'
+                tax="0%",
             )
 
         n = ReceiptParams(p.get_json())
         self.assertDictEqual(p.params, n.params)
 
     def test_create_receipt(self):
-        """ Test receipt creation (to database) """
-        f = Faker('fi_FI')
+        """Test receipt creation (to database)"""
+        f = Faker("fi_FI")
         subject = "Test email #{}".format(randint(10000, 99999))
-        email_from = 'Instanssi.org <{}>'.format(f.email())
+        email_from = "Instanssi.org <{}>".format(f.email())
         email_to = f.email()
         p = ReceiptParams()
         p.order_number(randint(10000, 99999))
@@ -120,22 +122,18 @@ class StoreTests(TestCase):
         p.city(f.city())
         p.postal_code(f.postcode())
         p.country(f.country_code())
-        p.transaction_url(get_url(reverse('store:ta_view', args=("1234abcd",))))
+        p.transaction_url(get_url(reverse("store:ta_view", args=("1234abcd",))))
         for k in range(3):
             p.add_item(
                 item_id=randint(0, 999999),
                 price=Decimal(randint(0, 100)),
                 name="Test product name goes here {}".format(k),
                 amount=randint(1, 5),
-                tax='0%'
+                tax="0%",
             )
 
         # Just make sure everything looks like it should in the database object
-        r = Receipt.create(
-            mail_to=email_to,
-            mail_from=email_from,
-            subject=subject,
-            params=p)
+        r = Receipt.create(mail_to=email_to, mail_from=email_from, subject=subject, params=p)
         self.assertEqual(r.subject, subject)
         self.assertEqual(r.mail_from, email_from)
         self.assertEqual(r.mail_to, email_to)
@@ -152,12 +150,8 @@ class StoreTests(TestCase):
         self.assertIsNotNone(r.sent)
 
     def test_validate_item(self):
-        """ Make sure that item validation function works """
-        item_tpl = {
-            "item_id": self.items[0].id,
-            "variant_id": None,
-            "amount": 1
-        }
+        """Make sure that item validation function works"""
+        item_tpl = {"item_id": self.items[0].id, "variant_id": None, "amount": 1}
 
         # Make sure too large or zero amount fails, but small enough does not
         validate_item({**item_tpl, **{"amount": 5}})
@@ -176,15 +170,13 @@ class StoreTests(TestCase):
         validate_item({**item_tpl, **{"item_id": self.items[1].id, "variant_id": self.variants[1][4].id}})
         with self.assertRaises(TransactionException):
             # Fail if variant does not belong to the product
-            validate_item({**item_tpl, **{"item_id": self.items[1].id, "variant_id": self.variants[2][0].id}})
+            validate_item(
+                {**item_tpl, **{"item_id": self.items[1].id, "variant_id": self.variants[2][0].id}}
+            )
 
     def test_validate_payment_method(self):
-        """ Make sure that payment validation works (NO_METHOD especially) """
-        item_tpl = {
-            "item_id": self.items[0].id,
-            "variant_id": None,
-            "amount": 2
-        }
+        """Make sure that payment validation works (NO_METHOD especially)"""
+        item_tpl = {"item_id": self.items[0].id, "variant_id": None, "amount": 2}
 
         free_items = [
             {**item_tpl, **{"item_id": self.items[5].id}},
@@ -193,7 +185,7 @@ class StoreTests(TestCase):
             {**item_tpl, **{"item_id": self.items[0].id}},
             {**item_tpl, **{"item_id": self.items[1].id}},
             {**item_tpl, **{"item_id": self.items[2].id}},
-            {**item_tpl, **{"item_id": self.items[3].id}}
+            {**item_tpl, **{"item_id": self.items[3].id}},
         ]
 
         validate_payment_method(free_items, PaymentMethod(-1))
@@ -203,7 +195,7 @@ class StoreTests(TestCase):
         validate_payment_method(expensive_items, PaymentMethod(1))
 
     def test_create_transaction(self):
-        """ Make sure transaction creation works as it should, and make sure that values look as they should """
+        """Make sure transaction creation works as it should, and make sure that values look as they should"""
         ta = self.transaction
 
         # Make sure the data fields have been filled
@@ -220,11 +212,11 @@ class StoreTests(TestCase):
         self.assertEqual(ta.city, "Duckburg")
         self.assertEqual(ta.country, "US")
         self.assertEqual(ta.information, "Quack, damn you!")
-        self.assertEqual(ta.token, '')
+        self.assertEqual(ta.token, "")
         self.assertEqual(ta.time_pending, None)
         self.assertEqual(ta.time_cancelled, None)
         self.assertEqual(ta.time_paid, None)
-        self.assertEqual(ta.payment_method_name, '')
+        self.assertEqual(ta.payment_method_name, "")
 
         # Test properties
         self.assertEqual(ta.is_cancelled, False)
@@ -265,59 +257,66 @@ class StoreTests(TestCase):
         self.assertEqual(non_discount_item.original_price, 20)
         self.assertEqual(non_discount_item.purchase_price, 20)
 
-    @mock.patch('Instanssi.store.utils.paytrail.requests.post')
+    @mock.patch("Instanssi.store.utils.paytrail.requests.post")
     def test_paytrail_begin_payment_process_bad_request(self, mock_post):
-        """ Make sure paytrail fails properly (we should get a failure redirect url) """
+        """Make sure paytrail fails properly (we should get a failure redirect url)"""
         mock_post.return_value = PaytrailFakeResponse(401, PaytrailFakeResponse.create_failure())
         result = begin_payment_process(PaymentMethod(1), self.transaction)
-        self.assertEqual(result, reverse('store:pm:paytrail-failure'))
-        self.assertEqual(self.transaction.token, '')
+        self.assertEqual(result, reverse("store:pm:paytrail-failure"))
+        self.assertEqual(self.transaction.token, "")
 
-    @mock.patch('Instanssi.store.utils.paytrail.requests.post')
+    @mock.patch("Instanssi.store.utils.paytrail.requests.post")
     def test_paytrail_begin_payment_process_good_request(self, mock_post):
-        """ Make sure paytrail works with a good request (we should get a redirect URL) """
-        mock_post.return_value = PaytrailFakeResponse(201, PaytrailFakeResponse.create_success(
-            order_no="234246654", token=uuid.uuid4().hex))
+        """Make sure paytrail works with a good request (we should get a redirect URL)"""
+        mock_post.return_value = PaytrailFakeResponse(
+            201, PaytrailFakeResponse.create_success(order_no="234246654", token=uuid.uuid4().hex)
+        )
         result = begin_payment_process(PaymentMethod(1), self.transaction)
         self.transaction.refresh_from_db()
         self.assertNotEqual(self.transaction.token, None)
         self.assertEqual(self.transaction.payment_method_name, "Paytrail")
-        self.assertEqual(result, "https://payment.paytrail.com/payment/load/token/{}".format(self.transaction.token))
+        self.assertEqual(
+            result,
+            "https://payment.paytrail.com/payment/load/token/{}".format(self.transaction.token),
+        )
 
     def test_no_method_begin_payment_process_good_request(self):
-        """ Make sure NO_METHOD works with a good request (we should get a redirect URL) """
+        """Make sure NO_METHOD works with a good request (we should get a redirect URL)"""
         result = begin_payment_process(PaymentMethod(-1), self.transaction)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.payment_method_name, "No payment")
-        self.assertEqual(result, reverse('store:pm:no-method-success'))
+        self.assertEqual(result, reverse("store:pm:no-method-success"))
 
     def test_no_method_success_endpoint(self):
-        url = q_reverse('store:pm:no-method-success')
+        url = q_reverse("store:pm:no-method-success")
         result = self.client.get(url)
-        self.assertTemplateUsed(result, 'store/success.html')
+        self.assertTemplateUsed(result, "store/success.html")
         self.assertEqual(result.status_code, 200)
 
     def test_paytrail_success_endpoint(self):
         ta = StoreTestData.create_full_started_transaction()
-        url = q_reverse('store:pm:paytrail-success', query={
-            'ORDER_NUMBER': ta.id,
-            'TIMESTAMP': 0,
-            'PAID': 'asd',
-            'METHOD': 2,
-            'RETURN_AUTHCODE': ''
-        })
+        url = q_reverse(
+            "store:pm:paytrail-success",
+            query={
+                "ORDER_NUMBER": ta.id,
+                "TIMESTAMP": 0,
+                "PAID": "asd",
+                "METHOD": 2,
+                "RETURN_AUTHCODE": "",
+            },
+        )
         result = self.client.get(url)
-        self.assertTemplateUsed(result, 'store/success.html')
+        self.assertTemplateUsed(result, "store/success.html")
         self.assertEqual(result.status_code, 200)
 
     def test_paytrail_notify_endpoint(self):
         # TODO: Implement this
-        #result = self.client.get(reverse('store:pm:paytrail-notify'))
-        #self.assertEqual(result.status_code, 200)
+        # result = self.client.get(reverse('store:pm:paytrail-notify'))
+        # self.assertEqual(result.status_code, 200)
         pass
 
     def test_paytrail_failure_endpoint(self):
-        """ Test paytrail failure endpoint. Note that this should be only a static page, no other functionality. """
-        result = self.client.get(reverse('store:pm:paytrail-failure'))
-        self.assertTemplateUsed(result, 'store/failure.html')
+        """Test paytrail failure endpoint. Note that this should be only a static page, no other functionality."""
+        result = self.client.get(reverse("store:pm:paytrail-failure"))
+        self.assertTemplateUsed(result, "store/failure.html")
         self.assertEqual(result.status_code, 200)

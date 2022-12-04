@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # NOTE! THIS FILE IS FOR AUTOMATED GITHUB ACTIONS CI TESTING ENVIRONMENT!
 
 from .common_config import *

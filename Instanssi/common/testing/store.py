@@ -1,17 +1,15 @@
-# -*- coding: utf-8 -*-
-
-import uuid
 import random
+import uuid
 
 from django.utils import timezone
 from faker import Factory
 
-from Instanssi.store.models import StoreItem, StoreItemVariant
-from Instanssi.store.handlers import create_store_transaction
-from Instanssi.common.testing.requests import FakeResponse
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
+from Instanssi.common.testing.requests import FakeResponse
+from Instanssi.store.handlers import create_store_transaction
+from Instanssi.store.models import StoreItem, StoreItemVariant
 
-fake = Factory.create('fi_FI')
+fake = Factory.create("fi_FI")
 
 
 class PaytrailFakeResponse(FakeResponse):
@@ -20,15 +18,12 @@ class PaytrailFakeResponse(FakeResponse):
         return {
             "orderNumber": order_no,
             "token": token,
-            "url": "https://payment.paytrail.com/payment/load/token/{}".format(token)
+            "url": "https://payment.paytrail.com/payment/load/token/{}".format(token),
         }
 
     @staticmethod
     def create_failure():
-        return {
-            "errorMessage": "Testing failure",
-            "errorCode": "401"
-        }
+        return {"errorMessage": "Testing failure", "errorCode": "401"}
 
 
 class StoreTestData(object):
@@ -37,15 +32,15 @@ class StoreTestData(object):
         item = StoreItem()
         item.name = name
         item.event = event
-        item.description = kwargs.get('description', fake.sentences(3))
-        item.price = kwargs.get('price', 20)
-        item.max = kwargs.get('max', 50)
-        item.available = kwargs.get('available', True)
-        item.max_per_order = kwargs.get('max_per_order', 5)
-        item.sort_index = kwargs.get('sort_index', 0)
-        item.discount_amount = kwargs.get('discount_amount', -1)
-        item.discount_percentage = kwargs.get('discount_percentage', 0)
-        item.is_ticket = kwargs.get('is_ticket', False)
+        item.description = kwargs.get("description", fake.sentences(3))
+        item.price = kwargs.get("price", 20)
+        item.max = kwargs.get("max", 50)
+        item.available = kwargs.get("available", True)
+        item.max_per_order = kwargs.get("max_per_order", 5)
+        item.sort_index = kwargs.get("sort_index", 0)
+        item.discount_amount = kwargs.get("discount_amount", -1)
+        item.discount_percentage = kwargs.get("discount_percentage", 0)
+        item.is_ticket = kwargs.get("is_ticket", False)
         item.save()
         return item
 
@@ -75,17 +70,9 @@ class StoreTestData(object):
             "country": "US",
             "information": "Quack, damn you!",
             "items": [
-                {
-                    "item_id": items[0].id,
-                    "variant_id": variants[0][4].id,
-                    "amount": 1
-                },
-                {
-                    "item_id": items[2].id,
-                    "variant_id": variants[2][3].id,
-                    "amount": 5
-                }
-            ]
+                {"item_id": items[0].id, "variant_id": variants[0][4].id, "amount": 1},
+                {"item_id": items[2].id, "variant_id": variants[2][3].id, "amount": 5},
+            ],
         }
         return create_store_transaction(item)
 
@@ -97,16 +84,10 @@ class StoreTestData(object):
             item = StoreTestData.create_test_item(fake.words(3), event)
             variants = StoreTestData.create_test_variants(item, random.randint(0, 5))
             for variant in variants:
-                test_items.append({
-                    "item_id": item.id,
-                    "variant_id": variant.id,
-                    "amount": random.randint(1, 10)
-                })
-            test_items.append({
-                "item_id": item.id,
-                "variant_id": None,
-                "amount": random.randint(1, 10)
-            })
+                test_items.append(
+                    {"item_id": item.id, "variant_id": variant.id, "amount": random.randint(1, 10)}
+                )
+            test_items.append({"item_id": item.id, "variant_id": None, "amount": random.randint(1, 10)})
 
         item = {
             "first_name": fake.first_name(),
@@ -120,7 +101,7 @@ class StoreTestData(object):
             "city": fake.city(),
             "country": fake.country_code(),
             "information": fake.sentences(1),
-            "items": test_items
+            "items": test_items,
         }
         ta = create_store_transaction(item)
         ta.token = uuid.uuid4().hex

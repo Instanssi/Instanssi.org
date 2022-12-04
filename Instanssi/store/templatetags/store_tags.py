@@ -10,10 +10,11 @@ def render_product_list(products):
         tabular_data=products,
         tablefmt="simple",
         headers={
-            'id': 'ID',
-            'name': 'Tuoteseloste',
-            'price': 'Hinta (€)',
-            'amount': 'Määrä',
-            'total': 'Yhteensä (€)',
-            'tax': 'Alv.',
-        })
+            "id": "ID",
+            "name": "Tuoteseloste",
+            "price": "Hinta (€)",
+            "amount": "Määrä",
+            "total": "Yhteensä (€)",
+            "tax": "Alv.",
+        },
+    )

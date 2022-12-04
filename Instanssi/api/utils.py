@@ -1,8 +1,13 @@
-from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, ListModelMixin,\
-    DestroyModelMixin
-from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.contrib.auth.models import Group
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+)
+from rest_framework.permissions import SAFE_METHODS, BasePermission
+from rest_framework.viewsets import GenericViewSet
 
 
 class GroupBasePermission(BasePermission):
@@ -20,43 +25,29 @@ class CanUpdateScreenData(GroupBasePermission):
     group_name = "screen_update"
 
 
-class ReadUpdateModelViewSet(RetrieveModelMixin,
-                             ListModelMixin,
-                             UpdateModelMixin,
-                             GenericViewSet):
+class ReadUpdateModelViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
     pass
 
 
-class ReadWriteUpdateModelViewSet(CreateModelMixin,
-                                  RetrieveModelMixin,
-                                  ListModelMixin,
-                                  UpdateModelMixin,
-                                  GenericViewSet):
+class ReadWriteUpdateModelViewSet(
+    CreateModelMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet
+):
     pass
 
 
-class ReadWriteModelViewSet(CreateModelMixin,
-                            RetrieveModelMixin,
-                            ListModelMixin,
-                            GenericViewSet):
+class ReadWriteModelViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
     pass
 
 
-class ReadWriteDeleteModelViewSet(CreateModelMixin,
-                                  DestroyModelMixin,
-                                  RetrieveModelMixin,
-                                  ListModelMixin,
-                                  GenericViewSet):
+class ReadWriteDeleteModelViewSet(
+    CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet
+):
     pass
 
 
 class IsAuthenticatedOrWriteOnly(BasePermission):
     def has_permission(self, request, view):
-        return (
-            request.method == 'POST' or
-            request.method in SAFE_METHODS or
-            request.user.is_authenticated
-        )
+        return request.method == "POST" or request.method in SAFE_METHODS or request.user.is_authenticated
 
 
 class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet):

@@ -1,84 +1,85 @@
 import os
 from decimal import Decimal
-from django.urls import reverse
-from django.db import models
-from django.db.models import Q
+
 from django.conf import settings
 from django.core.mail import send_mail
-from django_countries.fields import CountryField
+from django.db import models
+from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
+from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from Instanssi.kompomaatti.models import Event
+
 from Instanssi.common.misc import get_url
+from Instanssi.kompomaatti.models import Event
 from Instanssi.store.utils.receipt import ReceiptParams
 
 
 class StoreItem(models.Model):
     event = models.ForeignKey(
         Event,
-        verbose_name='Tapahtuma',
-        help_text='Tapahtuma johon tuote liittyy.',
+        verbose_name="Tapahtuma",
+        help_text="Tapahtuma johon tuote liittyy.",
         blank=True,
         null=True,
-        on_delete=models.PROTECT)
-    name = models.CharField(
-        'Tuotteen nimi',
-        help_text='Tuotteen lyhyt nimi.',
-        max_length=255)
-    description = models.TextField(
-        'Tuotteen kuvaus',
-        help_text='Tuotteen pitkä kuvaus.')
+        on_delete=models.PROTECT,
+    )
+    name = models.CharField("Tuotteen nimi", help_text="Tuotteen lyhyt nimi.", max_length=255)
+    description = models.TextField("Tuotteen kuvaus", help_text="Tuotteen pitkä kuvaus.")
     price = models.DecimalField(
-        'Tuotteen hinta',
-        help_text='Tuotteen hinta.',
-        max_digits=5,
-        decimal_places=2)
+        "Tuotteen hinta", help_text="Tuotteen hinta.", max_digits=5, decimal_places=2
+    )
     max = models.IntegerField(
-        'Kappaletta saatavilla',
-        help_text='Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.')
+        "Kappaletta saatavilla",
+        help_text="Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.",
+    )
     available = models.BooleanField(
-        'Ostettavissa',
-        default=False,
-        help_text='Ilmoittaa, näkyykö tuote kaupassa.')
+        "Ostettavissa", default=False, help_text="Ilmoittaa, näkyykö tuote kaupassa."
+    )
     imagefile_original = models.ImageField(
-        'Tuotekuva',
-        upload_to='store/images/',
-        help_text="Edustava kuva tuotteelle.", blank=True, null=True)
-    imagefile_thumbnail = ImageSpecField(
-        [ResizeToFill(64, 64)],
-        source='imagefile_original',
-        format='PNG')
+        "Tuotekuva",
+        upload_to="store/images/",
+        help_text="Edustava kuva tuotteelle.",
+        blank=True,
+        null=True,
+    )
+    imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source="imagefile_original", format="PNG")
     max_per_order = models.IntegerField(
-        'Maksimi per tilaus',
+        "Maksimi per tilaus",
         default=10,
-        help_text='Kuinka monta kappaletta voidaan ostaa kerralla.')
+        help_text="Kuinka monta kappaletta voidaan ostaa kerralla.",
+    )
     sort_index = models.IntegerField(
-        'Järjestysarvo',
+        "Järjestysarvo",
         default=0,
-        help_text='Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.')
+        help_text="Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.",
+    )
     discount_amount = models.IntegerField(
-        'Alennusmäärä',
+        "Alennusmäärä",
         default=-1,
-        help_text='Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)')
+        help_text="Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)",
+    )
     discount_percentage = models.IntegerField(
-        'Alennusprosentti',
+        "Alennusprosentti",
         default=0,
-        help_text='Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.')
+        help_text="Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.",
+    )
     is_ticket = models.BooleanField(
-        'Tuote on lipputuote',
+        "Tuote on lipputuote",
         default=False,
-        help_text='Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen')
+        help_text="Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen",
+    )
     is_secret = models.BooleanField(
-        'Tuote on salainen',
+        "Tuote on salainen",
         default=False,
-        help_text='Tuote näkyy kaupassa vain salaisella linkillä'
+        help_text="Tuote näkyy kaupassa vain salaisella linkillä",
     )
     secret_key = models.CharField(
-        'Salasana',
+        "Salasana",
         blank=True,
         max_length=255,
-        help_text='Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa',
+        help_text="Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa",
     )
 
     def is_discount_available(self):
@@ -87,7 +88,7 @@ class StoreItem(models.Model):
 
     @property
     def variants(self):
-        """ Returns a queryset with the available item variants """
+        """Returns a queryset with the available item variants"""
         return StoreItemVariant.objects.filter(item=self)
 
     def get_discount_factor(self):
@@ -113,7 +114,7 @@ class StoreItem(models.Model):
             price = self.price
         # If we need to consider rounding direction, this might be the place.
         # Pass "rounding=METHOD" as second argument.
-        return price.quantize(Decimal('0.01'))
+        return price.quantize(Decimal("0.01"))
 
     def get_discounted_subtotal(self, amount):
         """Returns decimal subtotal for a specific number of items, considering
@@ -127,23 +128,21 @@ class StoreItem(models.Model):
         return self.max - self.num_sold()
 
     def num_sold(self):
-        return TransactionItem.objects.filter(
-            transaction__time_paid__isnull=False,
-            item=self
-        ).count()
+        return TransactionItem.objects.filter(transaction__time_paid__isnull=False, item=self).count()
 
     @staticmethod
     def items_available():
-        return StoreItem.objects.filter(max__gt=0, available=True).order_by('sort_index')
+        return StoreItem.objects.filter(max__gt=0, available=True).order_by("sort_index")
 
     @staticmethod
     def items_visible(secret_key=None):
         """Returns items visible in the store. May return additional items if
         the user has said the magic word."""
-        return StoreItem.objects \
-            .filter(max__gt=0, available=True) \
-            .filter(Q(is_secret=False) | Q(secret_key=secret_key)) \
-            .order_by('sort_index')
+        return (
+            StoreItem.objects.filter(max__gt=0, available=True)
+            .filter(Q(is_secret=False) | Q(secret_key=secret_key))
+            .order_by("sort_index")
+        )
 
     def __str__(self):
         return self.name
@@ -155,7 +154,7 @@ class StoreItem(models.Model):
 
 class StoreItemVariant(models.Model):
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
-    name = models.CharField('Tuotevariantin nimi', max_length=32, blank=False, null=False)
+    name = models.CharField("Tuotevariantin nimi", max_length=32, blank=False, null=False)
 
     def __str__(self):
         return "{}: {}".format(self.item.name, self.name)
@@ -167,76 +166,40 @@ class StoreItemVariant(models.Model):
 
 class StoreTransaction(models.Model):
     token = models.CharField(
-        'Palvelutunniste',
-        help_text='Maksupalvelun maksukohtainen tunniste',
-        max_length=255)
-    time_created = models.DateTimeField(
-        'Luontiaika',
-        null=True,
-        blank=True)
-    time_paid = models.DateTimeField(
-        'Maksun varmistumisaika',
-        null=True,
-        blank=True)
-    time_pending = models.DateTimeField(
-        'Maksun maksuaika',
-        null=True,
-        blank=True)
-    time_cancelled = models.DateTimeField(
-        'Peruutusaika',
-        null=True,
-        blank=True)
+        "Palvelutunniste", help_text="Maksupalvelun maksukohtainen tunniste", max_length=255
+    )
+    time_created = models.DateTimeField("Luontiaika", null=True, blank=True)
+    time_paid = models.DateTimeField("Maksun varmistumisaika", null=True, blank=True)
+    time_pending = models.DateTimeField("Maksun maksuaika", null=True, blank=True)
+    time_cancelled = models.DateTimeField("Peruutusaika", null=True, blank=True)
     payment_method_name = models.CharField(
-        'Maksutapa',
-        help_text='Tapa jolla tilaus maksettiin',
-        max_length=32,
-        blank=True,
-        default='')
+        "Maksutapa", help_text="Tapa jolla tilaus maksettiin", max_length=32, blank=True, default=""
+    )
     key = models.CharField(
-        'Avain',
-        max_length=40,
-        unique=True,
-        help_text='Paikallinen maksukohtainen tunniste')
-    firstname = models.CharField(
-        'Etunimi',
-        max_length=64)
-    lastname = models.CharField(
-        'Sukunimi',
-        max_length=64)
-    company = models.CharField\
-        ('Yritys',
-         max_length=128,
-         blank=True)
+        "Avain", max_length=40, unique=True, help_text="Paikallinen maksukohtainen tunniste"
+    )
+    firstname = models.CharField("Etunimi", max_length=64)
+    lastname = models.CharField("Sukunimi", max_length=64)
+    company = models.CharField("Yritys", max_length=128, blank=True)
     email = models.EmailField(
-        'Sähköposti',
+        "Sähköposti",
         max_length=255,
-        help_text='Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen '
-                  'tarvittavat koodit lähetetään sinne.')
-    telephone = models.CharField(
-        'Puhelinnumero',
-        max_length=64,
-        blank=True)
-    mobile = models.CharField(
-        'Matkapuhelin',
-        max_length=64,
-        blank=True)
+        help_text="Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen "
+        "tarvittavat koodit lähetetään sinne.",
+    )
+    telephone = models.CharField("Puhelinnumero", max_length=64, blank=True)
+    mobile = models.CharField("Matkapuhelin", max_length=64, blank=True)
     street = models.CharField(
-        'Katuosoite',
-        max_length=128,
-        help_text='Katusoite tarvitaan maksupalvelun vaatimuksesta.')
-    postalcode = models.CharField(
-        'Postinumero',
-        max_length=16)
-    city = models.CharField(
-        'Postitoimipaikka',
-        max_length=64)
-    country = CountryField(
-        'Maa',
-        default='FI')
+        "Katuosoite", max_length=128, help_text="Katusoite tarvitaan maksupalvelun vaatimuksesta."
+    )
+    postalcode = models.CharField("Postinumero", max_length=16)
+    city = models.CharField("Postitoimipaikka", max_length=64)
+    country = CountryField("Maa", default="FI")
     information = models.TextField(
-        'Lisätiedot',
-        help_text='Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.',
-        blank=True)
+        "Lisätiedot",
+        help_text="Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.",
+        blank=True,
+    )
 
     @property
     def is_paid(self):
@@ -259,22 +222,22 @@ class StoreTransaction(models.Model):
 
     @property
     def qr_code(self):
-        return get_url(reverse('store:ta_view', kwargs={'transaction_key': self.key}))
+        return get_url(reverse("store:ta_view", kwargs={"transaction_key": self.key}))
 
     @property
     def full_name(self):
-        return '{} {}'.format(self.firstname, self.lastname)
+        return "{} {}".format(self.firstname, self.lastname)
 
     def get_status_text(self):
         if self.is_cancelled:
-            return 'Peruutettu'
+            return "Peruutettu"
         if self.is_delivered:
-            return 'Toimitettu'
+            return "Toimitettu"
         if self.is_paid:
-            return 'Maksettu'
+            return "Maksettu"
         if self.is_pending:
-            return 'Vireillä'
-        return 'Tuotteet valittu'
+            return "Vireillä"
+        return "Tuotteet valittu"
 
     def get_total_price(self):
         ret = 0
@@ -290,7 +253,7 @@ class StoreTransaction(models.Model):
         this transaction."""
 
         items = {}
-        transaction_items = self.get_transaction_items().values_list('item', 'variant', 'purchase_price')
+        transaction_items = self.get_transaction_items().values_list("item", "variant", "purchase_price")
         for item, variant, price in transaction_items:
             if item not in items:
                 items[item] = {}
@@ -299,11 +262,13 @@ class StoreTransaction(models.Model):
         item_list = []
         for item_key, variants in items.items():
             for variant_key, price in variants.items():
-                item_list.append((
-                    StoreItem.objects.get(pk=item_key),
-                    StoreItemVariant.objects.get(pk=variant_key) if variant_key else None,
-                    price
-                ))
+                item_list.append(
+                    (
+                        StoreItem.objects.get(pk=item_key),
+                        StoreItemVariant.objects.get(pk=variant_key) if variant_key else None,
+                        price,
+                    )
+                )
         return item_list
 
     def get_storeitem_count(self, store_item, variant=None):
@@ -323,38 +288,22 @@ class StoreTransaction(models.Model):
 
 
 class TransactionItem(models.Model):
-    key = models.CharField(
-        'Avain',
-        max_length=40,
-        unique=True,
-        help_text='Lippuavain')
-    item = models.ForeignKey(
-        StoreItem,
-        verbose_name='Tuote',
-        on_delete=models.PROTECT)
+    key = models.CharField("Avain", max_length=40, unique=True, help_text="Lippuavain")
+    item = models.ForeignKey(StoreItem, verbose_name="Tuote", on_delete=models.PROTECT)
     variant = models.ForeignKey(
-        StoreItemVariant,
-        verbose_name='Tuotevariantti',
-        null=True,
-        on_delete=models.PROTECT)
-    transaction = models.ForeignKey(
-        StoreTransaction,
-        verbose_name='Ostotapahtuma',
-        on_delete=models.CASCADE)
-    time_delivered = models.DateTimeField(
-        'Toimitusaika',
-        null=True,
-        blank=True)
+        StoreItemVariant, verbose_name="Tuotevariantti", null=True, on_delete=models.PROTECT
+    )
+    transaction = models.ForeignKey(StoreTransaction, verbose_name="Ostotapahtuma", on_delete=models.CASCADE)
+    time_delivered = models.DateTimeField("Toimitusaika", null=True, blank=True)
     purchase_price = models.DecimalField(
-        'Tuotteen hinta',
-        help_text='Tuotteen hinta ostoshetkellä',
-        max_digits=5,
-        decimal_places=2)
+        "Tuotteen hinta", help_text="Tuotteen hinta ostoshetkellä", max_digits=5, decimal_places=2
+    )
     original_price = models.DecimalField(
-        'Tuotteen alkuperäinen hinta',
-        help_text='Tuotteen hinta ostoshetkellä ilman alennuksia',
+        "Tuotteen alkuperäinen hinta",
+        help_text="Tuotteen hinta ostoshetkellä ilman alennuksia",
         max_digits=5,
-        decimal_places=2)
+        decimal_places=2,
+    )
 
     @property
     def is_delivered(self):
@@ -362,10 +311,10 @@ class TransactionItem(models.Model):
 
     @property
     def qr_code(self):
-        return get_url(reverse('store:ti_view', kwargs={'item_key': self.key}))
+        return get_url(reverse("store:ti_view", kwargs={"item_key": self.key}))
 
     def __str__(self):
-        return '{} for {}'.format(self.item.name, self.transaction.full_name)
+        return "{} for {}".format(self.item.name, self.transaction.full_name)
 
     class Meta:
         verbose_name = "transaktiotuote"
@@ -373,12 +322,12 @@ class TransactionItem(models.Model):
 
 
 class Receipt(models.Model):
-    subject = models.CharField('Aihe', max_length=256)
-    mail_to = models.CharField('Vastaanottajan osoite', max_length=256)
-    mail_from = models.CharField('Lähettäjän osoite', max_length=256)
-    sent = models.DateTimeField('Lähetysaika', default=None, null=True)
-    params = models.TextField('Lähetysparametrit', default=None, null=True)
-    content = models.TextField('Kuitin sisältö', default=None, null=True)
+    subject = models.CharField("Aihe", max_length=256)
+    mail_to = models.CharField("Vastaanottajan osoite", max_length=256)
+    mail_from = models.CharField("Lähettäjän osoite", max_length=256)
+    sent = models.DateTimeField("Lähetysaika", default=None, null=True)
+    params = models.TextField("Lähetysparametrit", default=None, null=True)
+    content = models.TextField("Kuitin sisältö", default=None, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.mail_to, self.subject)

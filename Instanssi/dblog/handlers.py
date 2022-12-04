@@ -4,10 +4,10 @@ from logging import Handler
 class DBLogHandler(Handler, object):
     def __init__(self):
         super(DBLogHandler, self).__init__()
-    
+
     def emit(self, record):
         from .models import DBLogEntry as _LogEntry
-        
+
         entry = _LogEntry()
         entry.level = record.levelname
         entry.message = self.format(record)
@@ -24,4 +24,3 @@ class DBLogHandler(Handler, object):
         except:
             pass
         entry.save()
-

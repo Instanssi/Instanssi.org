@@ -8,21 +8,32 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='UploadedFile',
+            name="UploadedFile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.TextField(blank=True, help_text='Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.', verbose_name='Kuvaus')),
-                ('file', models.FileField(upload_to='files/', verbose_name='Tiedosto')),
-                ('date', models.DateTimeField(verbose_name='Aika')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True,
+                        help_text="Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.",
+                        verbose_name="Kuvaus",
+                    ),
+                ),
+                ("file", models.FileField(upload_to="files/", verbose_name="Tiedosto")),
+                ("date", models.DateTimeField(verbose_name="Aika")),
             ],
             options={
-                'verbose_name': 'tiedosto',
-                'verbose_name_plural': 'tiedostot',
+                "verbose_name": "tiedosto",
+                "verbose_name_plural": "tiedostot",
             },
         ),
     ]

@@ -1,8 +1,9 @@
-from Instanssi.common.auth import staff_access_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_profile.forms import PasswordChangeForm, InformationChangeForm
+from Instanssi.admin_profile.forms import InformationChangeForm, PasswordChangeForm
+from Instanssi.common.auth import staff_access_required
 
 
 @staff_access_required
@@ -11,14 +12,18 @@ def password(request):
         pwform = PasswordChangeForm(request.POST, user=request.user)
         if pwform.is_valid():
             pwform.save()
-            return HttpResponseRedirect(reverse('manage-profile:password'))
+            return HttpResponseRedirect(reverse("manage-profile:password"))
     else:
         pwform = PasswordChangeForm()
-    
+
     # Render response
-    return admin_render(request, "admin_profile/password.html", {
-        'pwform': pwform,
-    })
+    return admin_render(
+        request,
+        "admin_profile/password.html",
+        {
+            "pwform": pwform,
+        },
+    )
 
 
 @staff_access_required
@@ -31,8 +36,12 @@ def profile(request):
             return HttpResponseRedirect(reverse("manage-profile:index"))
     else:
         profileform = InformationChangeForm(instance=request.user)
-    
+
     # Render response
-    return admin_render(request, "admin_profile/profile.html", {
-         'profileform': profileform,
-    })
+    return admin_render(
+        request,
+        "admin_profile/profile.html",
+        {
+            "profileform": profileform,
+        },
+    )

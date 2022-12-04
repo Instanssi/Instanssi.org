@@ -8,22 +8,26 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DBLogEntry',
+            name="DBLogEntry",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('module', models.CharField(blank=True, max_length=64)),
-                ('level', models.CharField(max_length=10)),
-                ('message', models.TextField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                ("module", models.CharField(blank=True, max_length=64)),
+                ("level", models.CharField(max_length=10)),
+                ("message", models.TextField()),
             ],
             options={
-                'verbose_name': 'lokimerkintä',
-                'verbose_name_plural': 'lokimerkinnät',
+                "verbose_name": "lokimerkintä",
+                "verbose_name_plural": "lokimerkinnät",
             },
         ),
     ]

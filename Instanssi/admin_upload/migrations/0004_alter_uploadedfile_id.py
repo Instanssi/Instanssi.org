@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin_upload', '0003_auto_20180711_2110'),
+        ("admin_upload", "0003_auto_20180711_2110"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='uploadedfile',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="uploadedfile",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
     ]

@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 from Instanssi.kompomaatti.models import Event
 
 
@@ -13,10 +14,10 @@ class DBLogEntry(models.Model):
 
     def __str__(self):
         if len(self.message) > 64:
-            return '{} ...'.format(self.message[:64])
+            return "{} ...".format(self.message[:64])
         else:
             return self.message
-    
+
     class Meta:
         verbose_name = "lokimerkintä"
         verbose_name_plural = "lokimerkinnät"

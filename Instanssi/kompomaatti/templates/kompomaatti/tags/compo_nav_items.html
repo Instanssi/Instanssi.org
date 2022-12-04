@@ -1,7 +1,0 @@
-{% if compos %}
-{% for compo in compos %}
-                    <li><a href="{% url 'km:compo' event_id compo.id %}">{{ compo.name }}</a></li>
-{% endfor %}
-{% else %}
-                    <li><span>---</span></l>
-{% endif %}

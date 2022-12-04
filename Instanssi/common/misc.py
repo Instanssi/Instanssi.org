@@ -1,3 +1,4 @@
+from typing import Optional
 from urllib.parse import parse_qs, urlparse, urlsplit, urlunsplit
 
 from django.conf import settings
@@ -16,10 +17,16 @@ def get_url_local_path(url):
     return new
 
 
-def parse_youtube_video_id(value):
-    query = urlparse(value)
+def parse_youtube_video_id(value: str) -> Optional[str]:
+    if value.startswith("//"):
+        query = urlparse(f"https:{value}")
+    elif not value.startswith(("http://", "https://")):
+        query = urlparse(f"https://{value}")
+    else:
+        query = urlparse(value)
+
     if query.hostname == "youtu.be":
-        return query.path[1:]
+        return query.path.split("/")[1]
     if query.hostname in ("www.youtube.com", "youtube.com"):
         if query.path == "/watch":
             p = parse_qs(query.query)

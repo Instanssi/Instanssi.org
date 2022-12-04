@@ -6,7 +6,15 @@ from django.utils.safestring import mark_safe
 
 from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
-from Instanssi.screenshow.models import *
+from Instanssi.kompomaatti.models import Event
+from Instanssi.screenshow.models import (
+    IRCMessage,
+    Message,
+    NPSong,
+    PlaylistVideo,
+    ScreenConfig,
+    Sponsor,
+)
 
 
 def index(request, event_id):

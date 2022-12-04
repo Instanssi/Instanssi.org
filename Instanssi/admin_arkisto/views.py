@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -10,7 +11,15 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 from Instanssi.common.auth import staff_access_required
 from Instanssi.common.http import Http403
-from Instanssi.kompomaatti.models import *
+from Instanssi.kompomaatti.models import (
+    Competition,
+    CompetitionParticipation,
+    Compo,
+    Entry,
+    Event,
+    Vote,
+    VoteGroup,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -8,9 +8,22 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 from Instanssi.admin_base.misc.custom_render import admin_render
-from Instanssi.admin_screenshow.forms import *
+from Instanssi.admin_screenshow.forms import (
+    IRCMessageForm,
+    MessageForm,
+    PlaylistVideoForm,
+    ScreenConfigForm,
+    SponsorForm,
+)
 from Instanssi.common.auth import staff_access_required
 from Instanssi.common.http import Http403
+from Instanssi.screenshow.models import (
+    IRCMessage,
+    Message,
+    PlaylistVideo,
+    ScreenConfig,
+    Sponsor,
+)
 
 logger = logging.getLogger(__name__)
 

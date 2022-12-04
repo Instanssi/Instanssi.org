@@ -4,7 +4,13 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from Instanssi.common.misc import parse_youtube_video_id
-from Instanssi.screenshow.models import *
+from Instanssi.screenshow.models import (
+    IRCMessage,
+    Message,
+    PlaylistVideo,
+    ScreenConfig,
+    Sponsor,
+)
 
 
 class ScreenConfigForm(forms.ModelForm):

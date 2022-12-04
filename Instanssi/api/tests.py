@@ -1,12 +1,10 @@
 import base64
 from datetime import timedelta
 
-import mock
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils import timezone
-from faker import Faker
 from rest_framework.test import APIClient
 
 from Instanssi.kompomaatti.models import Competition, Compo, Entry, Event

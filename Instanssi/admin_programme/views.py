@@ -99,7 +99,7 @@ def delete(request, sel_event_id, pev_id):
             'Programme event "{}" deleted.'.format(p.title),
             extra={"user": request.user, "event_id": sel_event_id},
         )
-    except:
+    except ProgrammeEvent.DoesNotExist:
         raise Http404
 
     # Render response

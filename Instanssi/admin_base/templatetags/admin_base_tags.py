@@ -15,6 +15,5 @@ def event_name(event_id):
     try:
         event = Event.objects.get(pk=event_id)
         return event.name
-    except:
-        pass
-    return ""
+    except Event.DoesNotExist:
+        return ""

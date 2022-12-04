@@ -479,7 +479,7 @@ class Entry(models.Model):
             # Check imagefile_original
             if this.imagefile_original != self.imagefile_original:
                 this.imagefile_original.delete(save=False)
-        except:
+        except Entry.DoesNotExist:
             pass
 
         # Continue with normal save

@@ -44,7 +44,7 @@ def config(request, sel_event_id):
     conf = None
     try:
         conf = ScreenConfig.objects.get(event_id=sel_event_id)
-    except:
+    except ScreenConfig.DoesNotExist:
         pass
 
     # Handle post data

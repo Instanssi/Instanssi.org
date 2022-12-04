@@ -27,7 +27,7 @@ def index(request):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            logger.info('Event "' + data.name + '" added.', extra={"user": request.user})
+            logger.info("Event %s added.", data.name, extra={"user": request.user})
             return HttpResponseRedirect(reverse("manage-events:index"))
     else:
         eventform = EventForm()
@@ -62,7 +62,7 @@ def edit(request, event_id):
             data = eventform.save(commit=False)
             data.archived = False
             data.save()
-            logger.info('Event "' + data.name + '" edited.', extra={"user": request.user})
+            logger.info("Event %s edited.", data.name, extra={"user": request.user})
             return HttpResponseRedirect(reverse("manage-events:index"))
     else:
         eventform = EventForm(instance=event)
@@ -87,8 +87,8 @@ def delete(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
         event.delete()
-        logger.info('Event "' + event.name + '" deleted.', extra={"user": request.user})
-    except:
+        logger.info("Event %s deleted.", event.name, extra={"user": request.user})
+    except Event.DoesNotExist:
         pass
 
     return HttpResponseRedirect(reverse("manage-events:index"))

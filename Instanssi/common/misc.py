@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf import settings
 from urllib.parse import urlsplit, urlunsplit, urlparse, parse_qs
 

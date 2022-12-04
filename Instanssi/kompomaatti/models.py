@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os.path
 from urllib.parse import urlparse, parse_qs
 

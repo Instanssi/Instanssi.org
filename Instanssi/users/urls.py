@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.users.views import profile, login, logout, loggedout
 

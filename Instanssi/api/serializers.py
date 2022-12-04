@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import logging
 import os
 
@@ -7,7 +5,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework.serializers import SerializerMethodField, Serializer, EmailField,\
-    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer, RelatedField,\
+    CharField, IntegerField, ChoiceField, BooleanField, ValidationError, ModelSerializer,\
     ListField, PrimaryKeyRelatedField
 
 from Instanssi.store.methods import PaymentMethod

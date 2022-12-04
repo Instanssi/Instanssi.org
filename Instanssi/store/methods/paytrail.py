@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Instanssi.common.misc import get_url
 from django.conf import settings
 from django.urls import reverse

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 def sizeformat(size):
     kb = 1024
     mb = kb * 1024

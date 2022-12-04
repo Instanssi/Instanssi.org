@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, ListModelMixin,\
     DestroyModelMixin

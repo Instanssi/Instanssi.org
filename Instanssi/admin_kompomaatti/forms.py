@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django import forms
 from django.shortcuts import get_object_or_404
 from crispy_forms.helper import FormHelper

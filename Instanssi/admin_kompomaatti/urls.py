@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_kompomaatti.views import index, competition_delete, competition_edit,\
     competition_participation_edit, compo_browse, compo_delete, compo_edit, competition_participations,\

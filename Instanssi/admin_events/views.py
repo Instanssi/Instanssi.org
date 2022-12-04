@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import logging
 from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required

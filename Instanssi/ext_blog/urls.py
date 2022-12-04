@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.ext_blog.views import BlogFeed, BlogFeedAll
 

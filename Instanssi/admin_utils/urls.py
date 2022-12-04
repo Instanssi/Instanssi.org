@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_utils.views import index, diskcleaner, dbchecker
 

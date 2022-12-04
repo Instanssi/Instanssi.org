@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_events.views import index, edit, delete
 

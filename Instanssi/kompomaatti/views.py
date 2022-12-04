@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Instanssi.common.http import Http403
 from Instanssi.common.auth import user_access_required
 from Instanssi.common.rest import rest_api, RestResponse

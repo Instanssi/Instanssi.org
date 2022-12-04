@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Instanssi.common.auth import staff_access_required
 from django.shortcuts import get_object_or_404
 from Instanssi.kompomaatti.models import Compo, Entry

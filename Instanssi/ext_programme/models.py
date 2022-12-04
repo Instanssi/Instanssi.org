@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import arrow
 from django.db import models
 from django.conf import settings

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 from imagekit.admin import AdminThumbnail
 from Instanssi.kompomaatti.models import Compo, Entry, Event, Vote, VoteCodeRequest, Profile, Competition, \

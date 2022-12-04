@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 from decimal import Decimal
 from django.urls import reverse

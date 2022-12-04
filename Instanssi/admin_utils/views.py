@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Instanssi.common.auth import su_access_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse

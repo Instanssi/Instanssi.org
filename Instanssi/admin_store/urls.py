@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_store.views import index, items, export, status, tis, tis_csv, transaction_status,\
     edit_item, delete_item, amounts

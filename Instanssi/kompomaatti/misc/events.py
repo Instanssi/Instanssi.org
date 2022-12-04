@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.utils import timezone
 import time
 from Instanssi.kompomaatti.models import Compo, Competition

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.http import HttpResponseRedirect
 from Instanssi.common.http import Http403
 from django.urls import reverse

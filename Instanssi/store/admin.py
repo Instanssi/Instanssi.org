@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 from Instanssi.store.models import StoreItem, StoreTransaction, TransactionItem, StoreItemVariant, Receipt
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.arkisto.views import index, entry, event, video, text_event, json_event
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import include, url
 from django.conf import settings
 from django.urls import reverse_lazy, path

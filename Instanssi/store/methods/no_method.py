@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.urls import reverse
 from django.shortcuts import render
 from Instanssi.store.utils import ta_common

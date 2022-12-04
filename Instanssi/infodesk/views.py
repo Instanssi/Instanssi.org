@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import arrow
 
 from Instanssi.common.auth import infodesk_access_required

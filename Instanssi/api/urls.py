@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url, include
 from rest_framework import routers
 import oauth2_provider.views as oauth2_views

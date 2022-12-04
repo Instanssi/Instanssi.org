@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.test import TestCase
 from Instanssi.kompomaatti.models import Entry
 

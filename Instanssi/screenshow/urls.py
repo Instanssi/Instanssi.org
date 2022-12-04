@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.screenshow.views import index, events_api, irc_api, messages_api, playlist_api, settings_api, playing_api
 

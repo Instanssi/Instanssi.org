@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Instanssi.common.http import Http403
 from Instanssi.common.auth import staff_access_required
 from django.http import Http404,HttpResponseRedirect

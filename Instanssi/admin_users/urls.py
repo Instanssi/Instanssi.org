@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_users.views import index, delete, edit, users, log, apps, delete_app
 

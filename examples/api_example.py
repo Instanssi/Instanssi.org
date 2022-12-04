@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from requests_oauthlib import OAuth2Session
 from oauthlib.oauth2 import BackendApplicationClient
 import requests

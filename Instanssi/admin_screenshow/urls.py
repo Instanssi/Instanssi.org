@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_screenshow.views import index, config, ircmessage_delete, ircmessage_edit, ircmessages, \
     messages, message_delete, message_edit, sponsor_delete, sponsor_edit, sponsors, playlist, playlist_delete, \

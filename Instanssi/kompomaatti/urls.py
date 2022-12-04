@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.kompomaatti.views import index, compos, compo_details, compo_vote, compoentry_delete, compoentry_edit, \
     entry_details, competition_details, competition_signout, competitions, votecode, eventselect, validate_votecode_api

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf.urls import url
 from Instanssi.admin_arkisto.views import index, archiver, show, hide, transferrights, optimizescores, removeoldvotes, \
     vids, cats, deletecat, deletevid, editcat, editvid

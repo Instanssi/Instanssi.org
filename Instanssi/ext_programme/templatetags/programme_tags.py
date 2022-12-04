@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import arrow
 from django.conf import settings
 from django import template

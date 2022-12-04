@@ -159,9 +159,8 @@ INSTALLED_APPS = (
     "compressor",
 )
 
-# Authentication backends, notice the openid backend here.
+# Authentication backends
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.open_id.OpenIdAuth",
     "social_core.backends.facebook.FacebookOAuth2",
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.twitter.TwitterOAuth",

@@ -4,14 +4,13 @@ from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.urls import reverse
 
 from Instanssi.common.misc import get_url_local_path
 from Instanssi.kompomaatti.models import Profile
 
 
 class DjangoLoginForm(forms.Form):
-    username = forms.CharField(label="Käyttäjätunnus", help_text="Django-käyttäjätunnus")
+    username = forms.CharField(label="Käyttäjätunnus")
     password = forms.CharField(label="Salasana", widget=forms.PasswordInput)
     next = forms.CharField(widget=forms.HiddenInput)
 
@@ -23,7 +22,7 @@ class DjangoLoginForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "Django kirjautuminen",
+                "Kirjautuminen käyttäjätunnuksilla",
                 "username",
                 "password",
                 "next",
@@ -49,49 +48,6 @@ class DjangoLoginForm(forms.Form):
 
     def login(self, request):
         auth.login(request, self.logged_user)
-
-
-class OpenIDLoginForm(forms.Form):
-    sps = forms.ChoiceField(
-        label="Kirjautumispalvelu", help_text="Muutamia yleisimpiä kirjautumispalvelimia."
-    )
-    openid_identifier = forms.URLField(
-        widget=forms.TextInput(),
-        max_length=255,
-        required=True,
-        label="Osoite",
-        help_text="Kirjautumispalvelun osoite. Voit joko valita ylläolevasta valikosta tunnetun, tai käyttää omaasi.",
-    )
-    next = forms.CharField(widget=forms.HiddenInput())
-
-    def __init__(self, *args, **kwargs):
-        # Init
-        self.next = kwargs.pop("next", "")
-        super(OpenIDLoginForm, self).__init__(*args, **kwargs)
-
-        # Build form
-        self.helper = FormHelper()
-        self.helper.form_action = reverse("social:begin", args=("openid",))
-        self.helper.layout = Layout(
-            Fieldset(
-                "OpenID kirjautuminen",
-                "sps",
-                "openid_identifier",
-                "next",
-                ButtonHolder(Submit("submit-login", "Kirjaudu")),
-            )
-        )
-
-        # Initial values
-        self.fields["next"].initial = self.next
-        self.fields["sps"].choices = [
-            ("", "Valitse OpenID-palveluntarjoaja"),
-            ("https://korppi.jyu.fi/openid/", "Korppi"),
-            ("https://me.yahoo.com", "Yahoo"),
-        ]
-        self.fields["sps"].required = False
-        self.fields["sps"].initial = 0
-        self.fields["openid_identifier"].initial = ""
 
 
 class ProfileForm(forms.ModelForm):
@@ -134,7 +90,7 @@ class ProfileForm(forms.ModelForm):
         self.fields["email"].required = True
         self.fields["otherinfo"].initial = self.profile.otherinfo
 
-    def save(self):
+    def save(self, commit=True):
         super(ProfileForm, self).save()
         self.profile.otherinfo = self.cleaned_data["otherinfo"]
         self.profile.save()

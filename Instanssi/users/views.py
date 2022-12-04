@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from Instanssi.common.auth import user_access_required
 from Instanssi.common.misc import get_url_local_path
-from Instanssi.users.forms import DjangoLoginForm, OpenIDLoginForm, ProfileForm
+from Instanssi.users.forms import DjangoLoginForm, ProfileForm
 
 AUTH_METHODS = [
     # Short name, social-auth, friendly name
@@ -38,17 +38,12 @@ def login(request):
     else:
         djangoform = DjangoLoginForm(next=next_page)
 
-    # Openid login form
-    # The form will be handled elsewhere; this is only for rendering the form.
-    openidform = OpenIDLoginForm(next=next_page)
-
     # Render response
     return render(
         request,
         "users/login.html",
         {
             "djangoform": djangoform,
-            "openidform": openidform,
             "next": next_page,
             "AUTH_METHODS": AUTH_METHODS,
         },

@@ -8,84 +8,78 @@ ADMIN = True
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECTDIR, 'database.db'),
-        'USER': '', 
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "database.db",
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "",
+        "PORT": "",
     }
 }
 
 # Google api stuff
-GOOGLE_API_KEY = ''
+GOOGLE_API_KEY = ""
 GOOGLE_ANALYTICS = False
-GOOGLE_ANALYTICS_CODE = ''
+GOOGLE_ANALYTICS_CODE = ""
 
 # Generic stuff
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1'
-]
-TIME_ZONE = 'Europe/Helsinki'
-LANGUAGE_CODE = 'fi-FI'
-SHORT_LANGUAGE_CODE = 'fi'
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+TIME_ZONE = "Europe/Helsinki"
+LANGUAGE_CODE = "fi-FI"
+SHORT_LANGUAGE_CODE = "fi"
 
 # Hackish, but will do for now
 SSL_ON = True
-DOMAIN = 'instanssi.org'
+DOMAIN = "instanssi.org"
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'qw35vb23t234dfgdfgdfgt'
+SECRET_KEY = "qw35vb23t234dfgdfgdfgt"
 
 # Twitter tag
-TWITTER_OAUTH_TOKEN = ''
-TWITTER_OAUTH_SECRET = ''
-TWITTER_CONSUMER_KEY = ''
-TWITTER_CONSUMER_SECRET = ''
+TWITTER_OAUTH_TOKEN = ""
+TWITTER_OAUTH_SECRET = ""
+TWITTER_CONSUMER_KEY = ""
+TWITTER_CONSUMER_SECRET = ""
 
 # Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ''
+SOCIAL_AUTH_STEAM_API_KEY = ""
 
 # Twitter Auth
 SOCIAL_AUTH_TWITTER_KEY = TWITTER_CONSUMER_KEY
 SOCIAL_AUTH_TWITTER_SECRET = TWITTER_CONSUMER_SECRET
 
 # Facebook
-SOCIAL_AUTH_FACEBOOK_KEY = ''
-SOCIAL_AUTH_FACEBOOK_SECRET = ''
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_KEY = ""
+SOCIAL_AUTH_FACEBOOK_SECRET = ""
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'locale': 'fi_FI',
-    'fields': 'id,name,email',
+    "locale": "fi_FI",
+    "fields": "id,name,email",
 }
 
 # Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
 
 # Battle.net
-SOCIAL_AUTH_BATTLENET_OAUTH2_KEY = ''
-SOCIAL_AUTH_BATTLENET_OAUTH2_SECRET = ''
+SOCIAL_AUTH_BATTLENET_OAUTH2_KEY = ""
+SOCIAL_AUTH_BATTLENET_OAUTH2_SECRET = ""
 
 # Github
-SOCIAL_AUTH_GITHUB_KEY = ''
-SOCIAL_AUTH_GITHUB_SECRET = ''
-SOCIAL_AUTH_GITHUB_SCOPE = ['email']
-
-# JSON api key
-JSON_KEY = u'12341234'
+SOCIAL_AUTH_GITHUB_KEY = ""
+SOCIAL_AUTH_GITHUB_SECRET = ""
+SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
 
 # Paytrail aka. Suomen Verkkomaksut
 # See http://docs.paytrail.com/fi/index-all.html for API specs
-VMAKSUT_ID = u'13466'  # Test ID
-VMAKSUT_SECRET = u'6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ'  # Test secret
+VMAKSUT_ID = "13466"  # Test ID
+VMAKSUT_SECRET = "6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ"  # Test secret
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 
 # Initialize email configuration
 EMAIL_BACKEND = make_email_conf(DEBUG)
@@ -97,48 +91,41 @@ CACHES = make_cache_conf(DEBUG)
 CELERY_BROKER_URL, CELERY_BROKER_TRANSPORT_OPTIONS = make_celery_conf(DEBUG)
 
 # Internal ip addresses
-INTERNAL_IPS = (
-    '127.0.0.1',
-)
+INTERNAL_IPS = ("127.0.0.1",)
 
 # Log handlers, insert our own database log handler
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "handlers": {
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
         },
-        'log_db': {
-            'level': 'INFO',
-            'class': 'Instanssi.dblog.handlers.DBLogHandler',
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        "log_db": {
+            "level": "INFO",
+            "class": "Instanssi.dblog.handlers.DBLogHandler",
         },
-        'Instanssi.store': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_arkisto': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_users': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_blog': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_events': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_kompomaatti': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_programme': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_upload': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_utils': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_screenshow': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.admin_store': {'handlers': ['log_db'], 'level': 'INFO'},
-        'Instanssi.infodesk': {'handlers': ['log_db'], 'level': 'INFO'},
-    }
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["mail_admins"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+        "Instanssi.store": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_arkisto": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_users": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_blog": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_events": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_kompomaatti": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_programme": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_upload": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_utils": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_screenshow": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.admin_store": {"handlers": ["log_db"], "level": "INFO"},
+        "Instanssi.infodesk": {"handlers": ["log_db"], "level": "INFO"},
+    },
 }
-

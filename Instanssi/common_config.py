@@ -1,5 +1,4 @@
 import os
-import sys
 
 import sentry_sdk
 
@@ -250,7 +249,7 @@ def setup_sentry(conf: dict) -> None:
     from sentry_sdk.integrations.redis import RedisIntegration
 
     sentry_sdk.init(
-        dsn=conf["SENTRY_DSN"],
+        dsn=conf.get("SENTRY_DSN"),
         integrations=[
             DjangoIntegration(),
             RedisIntegration(),

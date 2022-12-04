@@ -331,7 +331,8 @@ def cats(request, sel_event_id):
             cat.event = event
             cat.save()
             logger.info(
-                "Added archive video category ".format(cat.name),
+                "Added archive video category %s",
+                cat.name,
                 extra={"user": request.user, "event": event},
             )
             return HttpResponseRedirect(reverse("manage-arkisto:vidcats", args=(sel_event_id,)))

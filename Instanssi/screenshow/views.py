@@ -107,14 +107,7 @@ def playlist_api(request, event_id):
 
 
 def irc_api(request, event_id):
-    # See if we got request data
-    filter_id = 0
-    try:
-        filter_id = request.GET["last_id"]
-    except:
-        pass
-
-    # handle datetimes
+    filter_id = int(request.GET.get("last_id", "0"))
     messages = []
     for msg in IRCMessage.objects.filter(id__gt=filter_id, event_id=event_id):
         messages.append(

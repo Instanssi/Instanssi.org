@@ -1,11 +1,5 @@
 @import 'reset';
 
-// Picked up from the flyer image.
-$theme-color-orange: #ffcc2b;
-$theme-color-green: #3bff2b;
-$theme-color-blue: #2bd1ff;
-$theme-color-purple: #f92bff;
-
 // desktop screens
 $screen-lg-min: 1200px;
 // landscape tablets
@@ -19,7 +13,7 @@ $screen-xs-max: 480px;
 $screen-xs-min: 0px;
 
 // ---- last chance to override bootstrap defaults for site theme ----
-@import 'base_layout/css/common.2022.scss';
+@import 'base_layout/css/common.2023.scss';
 
 
 @media screen and (min-width: $screen-lg-min) {

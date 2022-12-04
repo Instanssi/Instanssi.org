@@ -1,0 +1,41 @@
+
+
+$theme-color-bright: #1178d0;
+$theme-color: #1178d0;
+$theme-color-secondary: #00ccff;
+$title-font-family: 'Exo 2', sans-serif, monospace;
+
+@import './common.2018.scss';
+
+h2, .base-layout h3 {
+    border-bottom: 1px solid $theme-color-bright;
+}
+h2, h3 {
+    font-family: $title-font-family;
+    font-weight: 400;
+}
+
+.base-layout #header h1 {
+    margin-top: 0;
+
+    > .header-main-title {
+        float: left;
+        position: relative;
+        width: 250px;
+        height: 90px;
+        margin-right: 20px;
+        background-image: url('/static/main2023/images/logoteksti.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        .main-title-text {
+            @include sr-only;
+        }
+    }
+}
+
+body.base-layout {
+    background: url('/static/main2023/images/webtausta.jpg') no-repeat;
+    background-color: #000 !important;
+    background-position: top center;
+    background-size: 1400px auto;
+}

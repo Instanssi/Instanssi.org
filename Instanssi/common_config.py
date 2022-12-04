@@ -1,9 +1,9 @@
-import os
+from pathlib import Path
 
 import sentry_sdk
 
-CONTENTDIR = os.path.dirname(__file__)
-PROJECTDIR = os.path.dirname(CONTENTDIR)
+PROJECT_DIR = Path(__file__).resolve(strict=True).parent
+BASE_DIR = PROJECT_DIR.parent
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -13,9 +13,9 @@ USE_I18N = True
 USE_L10N = False
 
 # Files
-MEDIA_ROOT = os.path.join(PROJECTDIR, "content/uploads/")
+MEDIA_ROOT = BASE_DIR / "content" / "uploads"
 MEDIA_URL = "/uploads/"
-STATIC_ROOT = os.path.join(PROJECTDIR, "content/static/")
+STATIC_ROOT = BASE_DIR / "content" / "static"
 STATIC_URL = "/static/"
 
 # Use timezones in database
@@ -34,7 +34,8 @@ LOGIN_URL = "/users/login/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STATICFILES_DIRS = (os.path.join(CONTENTDIR, "static/"),)
+COMMON_STATIC_DIR = PROJECT_DIR / "static"
+STATICFILES_DIRS = (COMMON_STATIC_DIR,)
 
 COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
@@ -72,9 +73,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            os.path.join(CONTENTDIR, "templates/"),
-        ],
+        "DIRS": [PROJECT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -191,7 +190,7 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "{}/var/log/main.log".format(PROJECTDIR),
+            "filename": BASE_DIR / "var" / "log" / "main.log",
             "formatter": "verbose",
         },
         "console": {"level": "WARNING", "class": "logging.StreamHandler", "formatter": "verbose"},

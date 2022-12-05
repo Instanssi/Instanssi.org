@@ -1,8 +1,8 @@
 import logging
-import os
 
-from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
@@ -15,7 +15,6 @@ from Instanssi.admin_screenshow.forms import (
     SponsorForm,
 )
 from Instanssi.common.auth import staff_access_required
-from Instanssi.common.http import Http403
 from Instanssi.screenshow.models import (
     IRCMessage,
     Message,
@@ -28,390 +27,282 @@ logger = logging.getLogger(__name__)
 
 
 @staff_access_required
-def index(request, sel_event_id):
-    return admin_render(
-        request,
-        "admin_screenshow/index.html",
-        {
-            "selected_event_id": int(sel_event_id),
-        },
-    )
+def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
+    return admin_render(request, "admin_screenshow/index.html", {"selected_event_id": selected_event_id})
 
 
 @staff_access_required
-def config(request, sel_event_id):
-    # Try to get configuration for event
-    conf = None
+def config(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     try:
-        conf = ScreenConfig.objects.get(event_id=sel_event_id)
+        conf = ScreenConfig.objects.get(event_id=selected_event_id)
     except ScreenConfig.DoesNotExist:
-        pass
+        conf = None
 
-    # Handle post data
     if request.method == "POST":
-        # Check for permissions
         if not request.user.has_perm("screenshow.change_screenconfig"):
-            raise Http403
+            raise PermissionDenied()
 
-        # Handle form
-        configform = ScreenConfigForm(request.POST, instance=conf)
-        if configform.is_valid():
-            data = configform.save(commit=False)
-            data.event_id = sel_event_id
+        config_form = ScreenConfigForm(request.POST, instance=conf)
+        if config_form.is_valid():
+            data = config_form.save(commit=False)
+            data.event_id = selected_event_id
             data.save()
             logger.info(
-                "Screenshow configuration changed.",
-                extra={"user": request.user, "event_id": sel_event_id},
+                "Screenshow configuration changed",
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:config", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:config", args=(selected_event_id,)))
     else:
-        configform = ScreenConfigForm(instance=conf)
+        config_form = ScreenConfigForm(instance=conf)
 
-    # Dump template contents
     return admin_render(
         request,
         "admin_screenshow/config.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "configform": configform,
-        },
+        {"selected_event_id": selected_event_id, "configform": config_form},
     )
 
 
 @staff_access_required
-def playlist(request, sel_event_id):
-    # Check for form data
+def playlist(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     if request.method == "POST":
-        # Check for permissions
         if not request.user.has_perm("screenshow.add_playlistvideo"):
-            raise Http403
+            raise PermissionDenied()
 
-        # Handle data
-        playlistform = PlaylistVideoForm(request.POST)
-        if playlistform.is_valid():
-            data = playlistform.save(commit=False)
-            data.event_id = sel_event_id
+        playlist_form = PlaylistVideoForm(request.POST)
+        if playlist_form.is_valid():
+            data = playlist_form.save(commit=False)
+            data.event_id = selected_event_id
             data.save()
             logger.info(
-                'Video "{}" added to playlist.'.format(data.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "Video '%s' added to playlist",
+                data.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(selected_event_id,)))
     else:
-        playlistform = PlaylistVideoForm()
+        playlist_form = PlaylistVideoForm()
 
-    # Get messages
-    videos = PlaylistVideo.objects.filter(event_id=sel_event_id).order_by("-index")
-
-    # Dump template
+    videos = PlaylistVideo.objects.filter(event_id=selected_event_id).order_by("-index")
     return admin_render(
         request,
         "admin_screenshow/playlist.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "videos": videos,
-            "playlistform": playlistform,
-        },
+        {"selected_event_id": selected_event_id, "videos": videos, "playlistform": playlist_form},
     )
 
 
 @staff_access_required
-def playlist_edit(request, sel_event_id, video_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.change_playlistvideo"):
-        raise Http403
+@permission_required("screenshow.change_playlistvideo", raise_exception=True)
+def playlist_edit(request: HttpRequest, selected_event_id: int, video_id: int) -> HttpResponse:
+    playlist_video = get_object_or_404(PlaylistVideo, pk=video_id)
 
-    # Get initial data
-    playlist = get_object_or_404(PlaylistVideo, pk=video_id)
-
-    # Check for form data
     if request.method == "POST":
-        playlistform = PlaylistVideoForm(request.POST, instance=playlist)
-        if playlistform.is_valid():
-            v = playlistform.save()
+        playlist_form = PlaylistVideoForm(request.POST, instance=playlist_video)
+        if playlist_form.is_valid():
+            v = playlist_form.save()
             logger.info(
-                'Video "{}" edited on playlist.'.format(v.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "Video '%s' edited on playlist",
+                v.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(selected_event_id,)))
     else:
-        playlistform = PlaylistVideoForm(instance=playlist)
+        playlist_form = PlaylistVideoForm(instance=playlist_video)
 
-    # Dump template
     return admin_render(
         request,
         "admin_screenshow/playlist_edit.html",
         {
-            "selected_event_id": int(sel_event_id),
-            "video_id": int(video_id),
-            "playlistform": playlistform,
+            "selected_event_id": selected_event_id,
+            "video_id": video_id,
+            "playlistform": playlist_form,
         },
     )
 
 
 @staff_access_required
-def playlist_delete(request, sel_event_id, video_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.delete_playlistvideo"):
-        raise Http403
-
-    # Attempt to delete
-    try:
-        v = PlaylistVideo.objects.get(pk=video_id)
-        v.delete()
-        logger.info(
-            'Video "{}" deleted from playlist.'.format(v.name),
-            extra={"user": request.user, "event_id": sel_event_id},
-        )
-    except PlaylistVideo.DoesNotExist:
-        pass
-
-    # Dump template
-    return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(sel_event_id,)))
+@permission_required("screenshow.delete_playlistvideo", raise_exception=True)
+def playlist_delete(request: HttpRequest, selected_event_id: int, video_id: int) -> HttpResponse:
+    v = get_object_or_404(PlaylistVideo, pk=video_id)
+    v.delete()
+    logger.info(
+        "Video '%s' deleted from playlist",
+        v.name,
+        extra={"user": request.user, "event_id": selected_event_id},
+    )
+    return HttpResponseRedirect(reverse("manage-screenshow:playlist", args=(selected_event_id,)))
 
 
 @staff_access_required
-def ircmessages(request, sel_event_id):
-    # Get messages
-    messages = IRCMessage.objects.filter(event_id=sel_event_id)
-
-    # Dump template
+def irc_messages(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     return admin_render(
         request,
         "admin_screenshow/ircmessages.html",
         {
-            "selected_event_id": int(sel_event_id),
-            "messages": messages,
+            "selected_event_id": selected_event_id,
+            "messages": IRCMessage.objects.filter(event_id=selected_event_id),
         },
     )
 
 
 @staff_access_required
-def ircmessage_edit(request, sel_event_id, message_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.change_ircmessage"):
-        raise Http403
-
-    # Get initial data
+@permission_required("screenshow.change_ircmessage", raise_exception=True)
+def ircmessage_edit(request: HttpRequest, selected_event_id: int, message_id: int) -> HttpResponse:
     message = get_object_or_404(IRCMessage, pk=message_id)
 
-    # Check for form data
     if request.method == "POST":
-        messageform = IRCMessageForm(request.POST, instance=message)
-        if messageform.is_valid():
-            messageform.save()
+        message_form = IRCMessageForm(request.POST, instance=message)
+        if message_form.is_valid():
+            message_form.save()
             logger.info(
-                "IRC Message {} edited".format(message.id),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "IRC Message '%s' edited",
+                message.id,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:ircmessages", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:ircmessages", args=(selected_event_id,)))
     else:
-        messageform = IRCMessageForm(instance=message)
+        message_form = IRCMessageForm(instance=message)
 
-    # Dump template
     return admin_render(
         request,
         "admin_screenshow/ircmessage_edit.html",
         {
-            "selected_event_id": int(sel_event_id),
-            "message_id": int(message_id),
-            "messageform": messageform,
+            "selected_event_id": selected_event_id,
+            "message_id": message_id,
+            "messageform": message_form,
         },
     )
 
 
 @staff_access_required
-def ircmessage_delete(request, sel_event_id, message_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.delete_ircmessage"):
-        raise Http403
-
-    # Attempt to delete
-    try:
-        IRCMessage.objects.get(pk=message_id).delete()
-        logger.info(
-            "IRC Message {} deleted.".format(message_id),
-            extra={"user": request.user, "event_id": sel_event_id},
-        )
-    except Message.DoesNotExist:
-        pass
-
-    # Dump template
-    return HttpResponseRedirect(reverse("manage-screenshow:ircmessages", args=(sel_event_id,)))
+@permission_required("screenshow.delete_ircmessage", raise_exception=True)
+def ircmessage_delete(request: HttpRequest, selected_event_id: int, message_id: int) -> HttpResponse:
+    message = get_object_or_404(IRCMessage, pk=message_id)
+    message.delete()
+    logger.info(
+        "IRC Message '%s' deleted",
+        message.message[:10],
+        extra={"user": request.user, "event_id": selected_event_id},
+    )
+    return HttpResponseRedirect(reverse("manage-screenshow:ircmessages", args=(selected_event_id,)))
 
 
 @staff_access_required
-def messages(request, sel_event_id):
-    # Check for form data
+def messages(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     if request.method == "POST":
-        # Check for permissions
         if not request.user.has_perm("screenshow.add_message"):
-            raise Http403
+            raise PermissionDenied()
 
-        # Handle data
-        messageform = MessageForm(request.POST)
-        if messageform.is_valid():
-            data = messageform.save(commit=False)
-            data.event_id = sel_event_id
+        message_form = MessageForm(request.POST)
+        if message_form.is_valid():
+            data = message_form.save(commit=False)
+            data.event_id = selected_event_id
             data.save()
-            logger.info("Message added.", extra={"user": request.user, "event_id": sel_event_id})
-            return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(sel_event_id,)))
+            logger.info("Message added", extra={"user": request.user, "event_id": selected_event_id})
+            return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(selected_event_id,)))
     else:
-        messageform = MessageForm()
+        message_form = MessageForm()
 
-    # Get messages
-    messages = Message.objects.filter(event_id=sel_event_id)
-
-    # Dump template
+    screen_messages = Message.objects.filter(event_id=selected_event_id)
     return admin_render(
         request,
         "admin_screenshow/messages.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "messageform": messageform,
-            "messages": messages,
-        },
+        {"selected_event_id": selected_event_id, "messageform": message_form, "messages": screen_messages},
     )
 
 
 @staff_access_required
-def message_edit(request, sel_event_id, message_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.change_message"):
-        raise Http403
-
-    # Get initial data
+@permission_required("screenshow.change_message", raise_exception=True)
+def message_edit(request: HttpRequest, selected_event_id: int, message_id: int) -> HttpResponse:
     message = get_object_or_404(Message, pk=message_id)
 
-    # Check for form data
     if request.method == "POST":
-        messageform = MessageForm(request.POST, instance=message)
-        if messageform.is_valid():
-            messageform.save()
-            logger.info("Message edited.", extra={"user": request.user, "event_id": sel_event_id})
-            return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(sel_event_id,)))
+        message_form = MessageForm(request.POST, instance=message)
+        if message_form.is_valid():
+            message_form.save()
+            logger.info("Message edited.", extra={"user": request.user, "event_id": selected_event_id})
+            return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(selected_event_id,)))
     else:
-        messageform = MessageForm(instance=message)
+        message_form = MessageForm(instance=message)
 
-    # Dump template
     return admin_render(
         request,
         "admin_screenshow/message_edit.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "message_id": int(message_id),
-            "messageform": messageform,
-        },
+        {"selected_event_id": selected_event_id, "message_id": message_id, "messageform": message_form},
     )
 
 
 @staff_access_required
-def message_delete(request, sel_event_id, message_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.delete_message"):
-        raise Http403
-
-    # Attempt to delete
-    try:
-        Message.objects.get(pk=message_id).delete()
-        logger.info("Message deleted.", extra={"user": request.user, "event_id": sel_event_id})
-    except Message.DoesNotExist:
-        pass
-
-    # Dump template
-    return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(sel_event_id,)))
+@permission_required("screenshow.delete_message", raise_exception=True)
+def message_delete(request: HttpRequest, selected_event_id: int, message_id: int) -> HttpResponse:
+    message = get_object_or_404(Message, pk=message_id)
+    message.delete()
+    logger.info("Message deleted.", extra={"user": request.user, "event_id": selected_event_id})
+    return HttpResponseRedirect(reverse("manage-screenshow:messages", args=(selected_event_id,)))
 
 
 @staff_access_required
-def sponsors(request, sel_event_id):
-    # Check for form data
+def sponsors(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     if request.method == "POST":
-        # Check for permissions
         if not request.user.has_perm("screenshow.add_sponsor"):
-            raise Http403
+            raise PermissionDenied()
 
-        # Handle data
-        sponsorform = SponsorForm(request.POST, request.FILES)
-        if sponsorform.is_valid():
-            data = sponsorform.save(commit=False)
-            data.event_id = sel_event_id
+        sponsor_form = SponsorForm(request.POST, request.FILES)
+        if sponsor_form.is_valid():
+            data = sponsor_form.save(commit=False)
+            data.event_id = selected_event_id
             data.save()
             logger.info(
-                'Sponsor "{}" added.'.format(data.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "Sponsor '%s' added",
+                data.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(selected_event_id,)))
     else:
-        sponsorform = SponsorForm()
+        sponsor_form = SponsorForm()
 
-    # Get sponsors
-    sponsors = Sponsor.objects.filter(event_id=sel_event_id)
-
-    # Dump template
+    screen_sponsors = Sponsor.objects.filter(event_id=selected_event_id)
     return admin_render(
         request,
         "admin_screenshow/sponsors.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "sponsorform": sponsorform,
-            "sponsors": sponsors,
-        },
+        {"selected_event_id": selected_event_id, "sponsorform": sponsor_form, "sponsors": screen_sponsors},
     )
 
 
 @staff_access_required
-def sponsor_edit(request, sel_event_id, sponsor_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.change_sponsor"):
-        raise Http403
-
-    # Get initial data
+@permission_required("screenshow.change_sponsor", raise_exception=True)
+def sponsor_edit(request: HttpRequest, selected_event_id: int, sponsor_id: int) -> HttpResponse:
     sponsor = get_object_or_404(Sponsor, pk=sponsor_id)
 
-    # Check for form data
     if request.method == "POST":
-        sponsorform = SponsorForm(request.POST, request.FILES, instance=sponsor)
-        if sponsorform.is_valid():
-            s = sponsorform.save()
+        sponsor_form = SponsorForm(request.POST, request.FILES, instance=sponsor)
+        if sponsor_form.is_valid():
+            s = sponsor_form.save()
             logger.info(
-                'Sponsor "{}" edited.'.format(s.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "Sponsor '%s' edited",
+                s.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(selected_event_id,)))
     else:
-        sponsorform = SponsorForm(instance=sponsor)
+        sponsor_form = SponsorForm(instance=sponsor)
 
-    # Dump template
     return admin_render(
         request,
         "admin_screenshow/sponsor_edit.html",
-        {
-            "selected_event_id": int(sel_event_id),
-            "sponsor_id": int(sponsor_id),
-            "sponsorform": sponsorform,
-        },
+        {"selected_event_id": selected_event_id, "sponsor_id": sponsor_id, "sponsorform": sponsor_form},
     )
 
 
 @staff_access_required
-def sponsor_delete(request, sel_event_id, sponsor_id):
-    # Check for permissions
-    if not request.user.has_perm("screenshow.delete_sponsor"):
-        raise Http403
-
-    # Attempt to delete
-    try:
-        sponsor = Sponsor.objects.get(pk=sponsor_id)
-        full_name = os.path.join(settings.MEDIA_ROOT, sponsor.logo.name)
-        if sponsor.logo and os.path.exists(full_name):
-            sponsor.logo.delete()
-        sponsor.delete()
-        logger.info(
-            'Sponsor "{}" deleted.'.format(sponsor.name),
-            extra={"user": request.user, "event_id": sel_event_id},
-        )
-    except Sponsor.DoesNotExist:
-        pass
-
-    # Dump template
-    return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(sel_event_id,)))
+@permission_required("screenshow.delete_sponsor", raise_exception=True)
+def sponsor_delete(request: HttpRequest, selected_event_id: int, sponsor_id: int) -> HttpResponse:
+    sponsor = get_object_or_404(Sponsor, pk=sponsor_id)
+    if sponsor.logo:
+        sponsor.logo.delete()
+    sponsor.delete()
+    logger.info(
+        "Sponsor '%s' deleted",
+        sponsor.name,
+        extra={"user": request.user, "event_id": selected_event_id},
+    )
+    return HttpResponseRedirect(reverse("manage-screenshow:sponsors", args=(selected_event_id,)))

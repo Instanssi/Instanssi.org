@@ -222,7 +222,7 @@ def video_categories(request: HttpRequest, selected_event_id: int) -> HttpRespon
     event = get_object_or_404(Event, pk=selected_event_id)
     if request.method == "POST":
         if not request.user.has_perm("arkisto.add_othervideocategory"):
-            raise PermissionDenied
+            raise PermissionDenied()
 
         # Handle form
         cat_form = VideoCategoryForm(request.POST)

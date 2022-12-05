@@ -2,6 +2,7 @@ import logging
 import uuid
 
 from django.db import transaction
+from django.http import HttpRequest
 from django.utils import timezone
 
 from Instanssi.store.methods import PaymentMethod, no_method, paytrail
@@ -105,8 +106,8 @@ def create_store_transaction(data: dict) -> StoreTransaction:
         raise
 
 
-def begin_payment_process(method: PaymentMethod, ta: StoreTransaction):
+def begin_payment_process(request: HttpRequest, method: PaymentMethod, ta: StoreTransaction) -> str:
     return {
         PaymentMethod.NO_METHOD: no_method.start_process,
         PaymentMethod.PAYTRAIL: paytrail.start_process,
-    }[method](ta)
+    }[method](request, ta)

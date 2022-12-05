@@ -1,36 +1,36 @@
 import logging
 
+from django.http import HttpRequest
 from django.urls import reverse
 from django.utils import timezone
 
-from Instanssi.common.misc import get_url
 from Instanssi.store.models import Receipt, StoreTransaction
 from Instanssi.store.utils.receipt import ReceiptParams
 
 logger = logging.getLogger(__name__)
 
 
-def handle_cancellation(ta: StoreTransaction):
+def handle_cancellation(ta: StoreTransaction) -> None:
     if not ta.time_cancelled:
         ta.time_cancelled = timezone.now()
         ta.save()
-        logger.info("Store transaction {} cancelled.".format(ta.id))
+        logger.info("Store transaction %s cancelled.", ta.id)
     else:
-        logger.warning("Attempted to mark store transaction {} as cancelled twice".format(ta.id))
+        logger.warning("Attempted to mark store transaction %s as cancelled twice", ta.id)
 
 
-def handle_pending(ta: StoreTransaction):
+def handle_pending(ta: StoreTransaction) -> None:
     if ta.time_cancelled:
-        logger.warning("Cannot mark store transaction {} pending; is already cancelled.".format(ta.id))
+        logger.warning("Cannot mark store transaction %s pending; is already cancelled.", ta.id)
     elif not ta.time_pending:
         ta.time_pending = timezone.now()
         ta.save()
-        logger.info("Store transaction {} paid, pending confirmation.".format(ta.id))
+        logger.info("Store transaction %s paid, pending confirmation.", ta.id)
     else:
-        logger.warning("Attempted to mark store transaction {} as pending twice".format(ta.id))
+        logger.warning("Attempted to mark store transaction %s as pending twice", ta.id)
 
 
-def handle_payment(ta: StoreTransaction):
+def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
     # If not yet marked as pending, mark it now
     if not ta.time_pending:
         ta.time_pending = timezone.now()
@@ -54,13 +54,13 @@ def handle_payment(ta: StoreTransaction):
     params.city(ta.city)
     params.postal_code(ta.postalcode)
     params.country(ta.country)
-    params.transaction_url(get_url(reverse("store:ta_view", args=(ta.key,))))
+    params.transaction_url(request.build_absolute_uri(reverse("store:ta_view", args=(ta.key,))))
 
     # Add items to email
     for item, variant, purchase_price in ta.get_distinct_storeitems_and_prices():
         i_amount = ta.get_storeitem_count(item, variant=variant)
-        i_name = "{}, {}".format(item.name, variant.name) if variant else item.name
-        i_id = "{}:{}".format(item.id, variant.id) if variant else item.id
+        i_name = f"{item.name}, {variant.name}" if variant else item.name
+        i_id = f"{item.id}:{variant.id}" if variant else item.id
         params.add_item(i_id, i_name, purchase_price, i_amount, "0%")
 
     # Send mail
@@ -68,7 +68,7 @@ def handle_payment(ta: StoreTransaction):
         receipt = Receipt.create(
             mail_to=ta.email,
             mail_from='"Instanssi" <noreply@instanssi.org>',
-            subject="Instanssi.org: Kuitti tilaukselle #{}".format(ta.id),
+            subject=f"Instanssi.org: Kuitti tilaukselle #{ta.id}",
             params=params,
         )
         receipt.send()

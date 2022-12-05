@@ -4,12 +4,11 @@ from decimal import Decimal
 from random import randint
 
 import mock
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils import timezone
 from faker import Faker
 
-from Instanssi.common.misc import get_url
 from Instanssi.common.testing.kompomaatti import KompomaattiTestData
 from Instanssi.common.testing.store import PaytrailFakeResponse, StoreTestData
 from Instanssi.common.testing.utils import q_reverse
@@ -89,12 +88,12 @@ class StoreTests(TestCase):
         p.city(f.city())
         p.postal_code(f.postcode())
         p.country(f.country_code())
-        p.transaction_url(get_url(reverse("store:ta_view", args=("1234abcd",))))
+        p.transaction_url(reverse("store:ta_view", args=("1234abcd",)))
         for k in range(3):
             p.add_item(
                 item_id=randint(0, 999999),
                 price=Decimal(randint(0, 100)),
-                name="Test product name goes here {}".format(k),
+                name=f"Test product name goes here {k}",
                 amount=randint(1, 5),
                 tax="0%",
             )
@@ -122,7 +121,7 @@ class StoreTests(TestCase):
         p.city(f.city())
         p.postal_code(f.postcode())
         p.country(f.country_code())
-        p.transaction_url(get_url(reverse("store:ta_view", args=("1234abcd",))))
+        p.transaction_url(reverse("store:ta_view", args=("1234abcd",)))
         for k in range(3):
             p.add_item(
                 item_id=randint(0, 999999),
@@ -261,7 +260,8 @@ class StoreTests(TestCase):
     def test_paytrail_begin_payment_process_bad_request(self, mock_post):
         """Make sure paytrail fails properly (we should get a failure redirect url)"""
         mock_post.return_value = PaytrailFakeResponse(401, PaytrailFakeResponse.create_failure())
-        result = begin_payment_process(PaymentMethod(1), self.transaction)
+        request = RequestFactory().get("/")
+        result = begin_payment_process(request, PaymentMethod(1), self.transaction)
         self.assertEqual(result, reverse("store:pm:paytrail-failure"))
         self.assertEqual(self.transaction.token, "")
 
@@ -271,7 +271,8 @@ class StoreTests(TestCase):
         mock_post.return_value = PaytrailFakeResponse(
             201, PaytrailFakeResponse.create_success(order_no="234246654", token=uuid.uuid4().hex)
         )
-        result = begin_payment_process(PaymentMethod(1), self.transaction)
+        request = RequestFactory().get("/")
+        result = begin_payment_process(request, PaymentMethod(1), self.transaction)
         self.transaction.refresh_from_db()
         self.assertNotEqual(self.transaction.token, None)
         self.assertEqual(self.transaction.payment_method_name, "Paytrail")
@@ -282,7 +283,8 @@ class StoreTests(TestCase):
 
     def test_no_method_begin_payment_process_good_request(self):
         """Make sure NO_METHOD works with a good request (we should get a redirect URL)"""
-        result = begin_payment_process(PaymentMethod(-1), self.transaction)
+        request = RequestFactory().get("/")
+        result = begin_payment_process(request, PaymentMethod(-1), self.transaction)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.payment_method_name, "No payment")
         self.assertEqual(result, reverse("store:pm:no-method-success"))

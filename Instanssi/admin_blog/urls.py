@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_blog.views import delete, edit, index
 
@@ -6,7 +6,7 @@ app_name = "admin_blog"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^delete/(?P<entry_id>\d+)/", delete, name="delete"),
-    url(r"^edit/(?P<entry_id>\d+)/", edit, name="edit"),
+    path("", index, name="index"),
+    path("delete/<int:entry_id>/", delete, name="delete"),
+    path("edit/<int:entry_id>/", edit, name="edit"),
 ]

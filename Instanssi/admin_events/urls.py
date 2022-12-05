@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_events.views import delete, edit, index
 
@@ -6,7 +6,7 @@ app_name = "admin_events"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^edit/(?P<event_id>\d+)/", edit, name="edit"),
-    url(r"^delete/(?P<event_id>\d+)/", delete, name="delete"),
+    path("", index, name="index"),
+    path("edit/<int:event_id>/", edit, name="edit"),
+    path("delete/<int:event_id>/", delete, name="delete"),
 ]

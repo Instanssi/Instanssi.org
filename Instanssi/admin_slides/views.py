@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 
 from Instanssi.admin_base.misc.custom_render import admin_render
@@ -7,24 +8,20 @@ from Instanssi.kompomaatti.models import Compo, Entry
 
 
 @staff_access_required
-def index(request, sel_event_id):
-    # Render response
+def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     return admin_render(
         request,
         "admin_slides/index.html",
         {
-            "compos": Compo.objects.filter(event_id=sel_event_id),
-            "selected_event_id": int(sel_event_id),
+            "compos": Compo.objects.filter(event_id=selected_event_id),
+            "selected_event_id": selected_event_id,
         },
     )
 
 
 @staff_access_required
-def slide_results(request, sel_event_id, compo_id):
-    # Get the compo
+def slide_results(request: HttpRequest, selected_event_id: int, compo_id: int) -> HttpResponse:
     c = get_object_or_404(Compo, pk=compo_id)
-
-    # Get the entries
     s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
 
     i = 0
@@ -62,7 +59,6 @@ def slide_results(request, sel_event_id, compo_id):
 
     i += 1
 
-    # Render
     return admin_render(
         request,
         "admin_slides/slide_results.html",
@@ -76,17 +72,14 @@ def slide_results(request, sel_event_id, compo_id):
             "last_x": 0,
             "last_y": (i + 2) * 2000,
             "last_z": (i + 2) * 2000,
-            "selected_event_id": int(sel_event_id),
+            "selected_event_id": selected_event_id,
         },
     )
 
 
 @staff_access_required
-def slide_entries(request, sel_event_id, compo_id):
-    # Get the compo
+def slide_entries(request: HttpRequest, selected_event_id: int, compo_id: int) -> HttpResponse:
     c = get_object_or_404(Compo, pk=compo_id)
-
-    # Get the entries
     s_entries = entrysort.sort_by_score(Entry.objects.filter(compo=c, disqualified=False))
 
     i = 0
@@ -114,7 +107,6 @@ def slide_entries(request, sel_event_id, compo_id):
         i += 1
         flip = not flip
 
-    # Render
     return admin_render(
         request,
         "admin_slides/slide_entries.html",
@@ -123,6 +115,6 @@ def slide_entries(request, sel_event_id, compo_id):
             "compo": c,
             "last_y": -i * 2500,
             "last_rot_x": flip,
-            "selected_event_id": int(sel_event_id),
+            "selected_event_id": selected_event_id,
         },
     )

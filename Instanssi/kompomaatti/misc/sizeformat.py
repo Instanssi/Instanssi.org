@@ -1,4 +1,4 @@
-def sizeformat(size):
+def size_format(size: int) -> str:
     kb = 1024
     mb = kb * 1024
     gb = mb * 1024

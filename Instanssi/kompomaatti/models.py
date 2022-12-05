@@ -293,15 +293,15 @@ class Compo(models.Model):
 
     @property
     def readable_max_source_size(self):
-        return sizeformat.sizeformat(self.max_source_size)
+        return sizeformat.size_format(self.max_source_size)
 
     @property
     def readable_max_entry_size(self):
-        return sizeformat.sizeformat(self.max_entry_size)
+        return sizeformat.size_format(self.max_entry_size)
 
     @property
     def readable_max_image_size(self):
-        return sizeformat.sizeformat(self.max_image_size)
+        return sizeformat.size_format(self.max_image_size)
 
     @property
     def is_imagefile_required(self):

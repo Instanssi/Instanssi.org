@@ -28,7 +28,7 @@ urlpatterns = [
         include("Instanssi.admin_blog.urls", namespace="manage-blog"),
     ),
     url(
-        r"^manage/(?P<sel_event_id>\d+)/arkisto/",
+        "manage/<int:selected_event_id>/arkisto/",
         include("Instanssi.admin_arkisto.urls", namespace="manage-arkisto"),
     ),
     url(
@@ -67,7 +67,6 @@ if settings.DEBUG or settings.ADMIN:
 
 if settings.DEBUG:
     # Serve media files through static.serve when running in debug mode
-    # Also, show debug_toolbar if debugging is on
     urlpatterns += [
         url(r"^uploads/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     ]

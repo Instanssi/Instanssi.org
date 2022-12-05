@@ -1,6 +1,8 @@
 import logging
 
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -9,99 +11,74 @@ from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_upload.forms import UploadForm
 from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.common.auth import staff_access_required
-from Instanssi.common.http import Http403
 
 logger = logging.getLogger(__name__)
 
 
 @staff_access_required
-def index(request, sel_event_id):
-    # Handle form data, if any
+def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     if request.method == "POST":
-        # Check for permissions
         if not request.user.has_perm("admin_upload.add_uploadedfile"):
-            raise Http403
+            raise PermissionDenied()
 
-        # Handle form
-        uploadform = UploadForm(request.POST, request.FILES)
-        if uploadform.is_valid():
-            data = uploadform.save(commit=False)
+        upload_form = UploadForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            data = upload_form.save(commit=False)
             data.user = request.user
             data.date = timezone.now()
-            data.event_id = int(sel_event_id)
+            data.event_id = selected_event_id
             data.save()
             logger.info(
-                'File "{}" uploaded.'.format(data.file.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "File '%s' uploaded.",
+                data.file.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-uploads:index", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-uploads:index", args=(selected_event_id,)))
     else:
-        uploadform = UploadForm()
+        upload_form = UploadForm()
 
-    # Get filelist
-    files = UploadedFile.objects.filter(event_id=sel_event_id)
-
-    # Render response
+    files = UploadedFile.objects.filter(event_id=selected_event_id)
     return admin_render(
         request,
         "admin_upload/index.html",
-        {
-            "files": files,
-            "uploadform": uploadform,
-            "selected_event_id": int(sel_event_id),
-        },
+        {"files": files, "uploadform": upload_form, "selected_event_id": selected_event_id},
     )
 
 
 @staff_access_required
-def deletefile(request, sel_event_id, file_id):
-    # Check for permissions
-    if not request.user.has_perm("admin_upload.delete_uploadedfile"):
-        raise Http403
-
-    # Delete the file
-    try:
-        rec = UploadedFile.objects.get(id=file_id)
-        logger.info(
-            'File "{}" deleted.'.format(rec.file.name),
-            extra={"user": request.user, "event_id": sel_event_id},
-        )
-        rec.file.delete()
-        rec.delete()
-    except UploadedFile.DoesNotExist:
-        pass
-
-    return HttpResponseRedirect(reverse("manage-uploads:index", args=(sel_event_id,)))
+@permission_required("admin_upload.delete_uploadedfile", raise_exception=True)
+def delete_file(request: HttpRequest, selected_event_id: int, file_id: int) -> HttpResponse:
+    rec = get_object_or_404(UploadedFile, pk=file_id)
+    rec.file.delete()
+    rec.delete()
+    logger.info(
+        "File '%s' deleted.",
+        rec.file.name,
+        extra={"user": request.user, "event_id": selected_event_id},
+    )
+    return HttpResponseRedirect(reverse("manage-uploads:index", args=(selected_event_id,)))
 
 
 @staff_access_required
-def editfile(request, sel_event_id, file_id):
-    # Check for permissions
-    if not request.user.has_perm("admin_upload.change_uploadedfile"):
-        raise Http403
+@permission_required("admin_upload.change_uploadedfile", raise_exception=True)
+def edit_file(request: HttpRequest, selected_event_id: int, file_id: int) -> HttpResponse:
+    uploaded_file = get_object_or_404(UploadedFile, pk=file_id)
 
-    # Get previously uploaded file
-    uploadedfile = get_object_or_404(UploadedFile, pk=file_id)
-
-    # Handle form data
     if request.method == "POST":
-        uploadform = UploadForm(request.POST, request.FILES, instance=uploadedfile)
-        if uploadform.is_valid():
-            data = uploadform.save()
+        upload_form = UploadForm(request.POST, request.FILES, instance=uploaded_file)
+        if upload_form.is_valid():
+            data = upload_form.save()
             logger.info(
-                'File "{}" edited.'.format(data.file.name),
-                extra={"user": request.user, "event_id": sel_event_id},
+                "File '%s' edited.",
+                data.file.name,
+                extra={"user": request.user, "event_id": selected_event_id},
             )
-            return HttpResponseRedirect(reverse("manage-uploads:index", args=(sel_event_id,)))
+            return HttpResponseRedirect(reverse("manage-uploads:index", args=(selected_event_id,)))
     else:
-        uploadform = UploadForm(instance=uploadedfile)
+        upload_form = UploadForm(instance=uploaded_file)
 
-    # Render response
     return admin_render(
         request,
         "admin_upload/edit.html",
-        {
-            "uploadform": uploadform,
-            "selected_event_id": int(sel_event_id),
-        },
+        {"uploadform": upload_form, "selected_event_id": selected_event_id},
     )

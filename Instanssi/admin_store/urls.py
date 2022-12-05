@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_store.views import (
     amounts,
@@ -17,18 +17,14 @@ app_name = "admin_store"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^items/$", items, name="items"),
-    url(r"^amounts/$", amounts, name="amounts"),
-    url(r"^export/$", export, name="export"),
-    url(r"^status/$", status, name="status"),
-    url(r"^tis/$", tis, name="transactionitems"),
-    url(r"^tis_csv/(?P<event_id>\d+)/$", tis_csv, name="transactions_csv"),
-    url(
-        r"^transactionstatus/(?P<transaction_id>\d+)/$",
-        transaction_status,
-        name="transactionstatus",
-    ),
-    url(r"^edititem/(?P<item_id>\d+)/$", edit_item, name="edit_item"),
-    url(r"^deleteitem/(?P<item_id>\d+)/$", delete_item, name="delete_item"),
+    path("", index, name="index"),
+    path("items/", items, name="items"),
+    path("amounts/", amounts, name="amounts"),
+    path("export/", export, name="export"),
+    path("status/", status, name="status"),
+    path("tis/", tis, name="transactionitems"),
+    path("tis_csv/<int:event_id>/", tis_csv, name="transactions_csv"),
+    path("transactionstatus/<int:transaction_id>/", transaction_status, name="transactionstatus"),
+    path("edititem/<int:item_id>/", edit_item, name="edit_item"),
+    path("deleteitem/<int:item_id>/", delete_item, name="delete_item"),
 ]

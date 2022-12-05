@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_users.views import (
     apps,
@@ -14,11 +14,11 @@ app_name = "admin_users"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^users/(?P<su_id>\d+)/delete/", delete, name="delete"),
-    url(r"^users/(?P<su_id>\d+)/edit/", edit, name="edit"),
-    url(r"^users/$", users, name="users"),
-    url(r"^apps/(?P<app_id>\d+)/delete/", delete_app, name="delete_app"),
-    url(r"^apps/$", apps, name="apps"),
-    url(r"^log/$", log, name="log"),
+    path("", index, name="index"),
+    path("users/<int:su_id>/delete/", delete, name="delete"),
+    path("users/<int:su_id>/edit/", edit, name="edit"),
+    path("users/", users, name="users"),
+    path("apps/<int:app_id>/delete/", delete_app, name="delete_app"),
+    path("apps/", apps, name="apps"),
+    path("log/", log, name="log"),
 ]

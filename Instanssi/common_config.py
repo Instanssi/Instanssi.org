@@ -110,7 +110,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "Instanssi.common.http.Http403Middleware",
 ]
 
 ROOT_URLCONF = "Instanssi.urls"

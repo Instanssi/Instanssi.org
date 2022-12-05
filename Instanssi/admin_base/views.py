@@ -1,26 +1,25 @@
+from typing import Any, Dict, List
+
+from django.http import HttpRequest, HttpResponse
+
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.common.auth import staff_access_required
-from Instanssi.common.http import Http403
 from Instanssi.kompomaatti.models import Compo, Entry, Event, VoteCodeRequest
 
 
 @staff_access_required
-def index(request):
-    # Make sure the user is staff.
-    if not request.user.is_staff:
-        raise Http403
-
+def index(request: HttpRequest) -> HttpResponse:
     # Flag that tells if there are any important notices for the user
     important_flag = False
 
     # Check if there are any waiting votecode requests
-    vcreqs = []
+    vote_code_requests: List[Dict[str, Any]] = []
     events = Event.objects.all()
     for event in events:
         rcount = VoteCodeRequest.objects.filter(event=event, status=0).count()
         if rcount > 0:
             important_flag = True
-            vcreqs.append(
+            vote_code_requests.append(
                 {
                     "count": rcount,
                     "event_id": event.id,
@@ -28,28 +27,15 @@ def index(request):
                 }
             )
 
-    # Find disk usage for entries
+    # Find total disk usage for entries
     entries = Entry.objects.all()
-    disk_usage = 0
+    disk_usage: int = 0
     for entry in entries:
         try:
-            try:
-                disk_usage += entry.entryfile.size
-            except ValueError:
-                pass
-            if entry.sourcefile:
-                try:
-                    disk_usage += entry.sourcefile.size
-                except ValueError:
-                    pass
-            if entry.imagefile_original:
-                try:
-                    disk_usage += entry.imagefile_original.size
-                except ValueError:
-                    pass
+            disk_usage += entry.entryfile.size if entry.entryfile else 0
+            disk_usage += entry.sourcefile.size if entry.sourcefile else 0
+            disk_usage += entry.imagefile_original.size if entry.imagefile_original else 0
         except OSError:
-            pass
-        except IOError:
             pass
 
     # Get some statistics
@@ -60,14 +46,13 @@ def index(request):
         "space_usage": disk_usage,
     }
 
-    # Render response
     return admin_render(
         request,
         "admin_base/index.html",
         {
-            "real_name": request.user.first_name + " " + request.user.last_name,
+            "real_name": request.user.get_full_name(),
             "important_flag": important_flag,
-            "vcreqs": vcreqs,
+            "vcreqs": vote_code_requests,
             "stats": stats,
         },
     )

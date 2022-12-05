@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_base.views import index
 
@@ -6,5 +6,5 @@ app_name = "admin_base"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
+    path("", index, name="index"),
 ]

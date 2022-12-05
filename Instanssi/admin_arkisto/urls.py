@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_arkisto.views import (
     archiver,
@@ -20,17 +20,17 @@ app_name = "admin_arkisto"
 
 
 urlpatterns = [
-    url("", index, name="index"),
-    url("archiver/", archiver, name="archiver"),
-    url("show/", show, name="archiver-show"),
-    url("hide/", hide, name="archiver-hide"),
-    url("transferrights/", transfer_rights, name="archiver-tr"),
-    url("optimizescores/", optimizes_scores, name="archiver-os"),
-    url("removeoldvotes/", remove_old_votes, name="archiver-rv"),
-    url("vids/", videos, name="vids"),
-    url("vidcats/", video_categories, name="vidcats"),
-    url("deletevid/<int:video_id>/", delete_video, name="vids-delete"),
-    url("deletecat/<int:category_id>/", delete_video_category, name="vidcats-delete"),
-    url("editvid/<int:video_id>/", edit_video, name="vids-edit"),
-    url("editcat/<int:category_id>/", edit_video_category, name="vidcats-edit"),
+    path("", index, name="index"),
+    path("archiver/", archiver, name="archiver"),
+    path("show/", show, name="archiver-show"),
+    path("hide/", hide, name="archiver-hide"),
+    path("transferrights/", transfer_rights, name="archiver-tr"),
+    path("optimizescores/", optimizes_scores, name="archiver-os"),
+    path("removeoldvotes/", remove_old_votes, name="archiver-rv"),
+    path("vids/", videos, name="vids"),
+    path("vidcats/", video_categories, name="vidcats"),
+    path("deletevid/<int:video_id>/", delete_video, name="vids-delete"),
+    path("deletecat/<int:category_id>/", delete_video_category, name="vidcats-delete"),
+    path("editvid/<int:video_id>/", edit_video, name="vids-edit"),
+    path("editcat/<int:category_id>/", edit_video_category, name="vidcats-edit"),
 ]

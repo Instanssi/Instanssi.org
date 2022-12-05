@@ -1,5 +1,6 @@
 import oauth2_provider.views as oauth2_views
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import path
 from rest_framework import routers
 
 from .viewsets import (
@@ -64,17 +65,13 @@ router.register(r"user_vote_code_requests", VoteCodeRequestViewSet, basename="us
 router.register(r"user_votes", VoteGroupViewSet, basename="user_votes")
 
 
-# Base endpoints for OAuth2 authorization
 oauth2_endpoint_views = [
-    url(r"^authorize/$", oauth2_views.AuthorizationView.as_view(), name="authorize"),
-    url(r"^token/$", oauth2_views.TokenView.as_view(), name="token"),
-    url(r"^revoke-token/$", oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
+    path("authorize/", oauth2_views.AuthorizationView.as_view(), name="authorize"),
+    path("token/", oauth2_views.TokenView.as_view(), name="token"),
+    path("revoke-token/", oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
 ]
 
 urlpatterns = [
-    url(r"^", include(router.urls)),
-    url(
-        r"^oauth2/",
-        include((oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"),
-    ),
+    path("", include(router.urls)),
+    path("oauth2/", include((oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider")),
 ]

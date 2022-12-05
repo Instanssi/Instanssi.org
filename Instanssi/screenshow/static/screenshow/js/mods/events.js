@@ -29,7 +29,7 @@ function ScreenEvents(settings, jmobj, obj, url) {
         this.obj.html(output);
         
         // Show only if there is data to show :)
-        this.obj.data("stepData").exclude = (output.length == 0);
+        this.obj.data("stepData").exclude = (output.length === 0);
         this.jmobj.jmpress('reapply', this.obj);
     }
     

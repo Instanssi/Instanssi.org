@@ -28,14 +28,14 @@ function ScreenIrc(settings, jmobj, obj, url) {
     }
     
     this.display_cache = function() {
-        var lines = 0;
-        var i = 0;
-        
+        let lines = 0;
+        let i = 0;
+
         // Try to render the screen full of text, but not too full :)
         for(i = this.cache.length-1; i > 0; i--) {
-            var text_len = this.cache[i]['text'].length;
-            var nick_len = this.cache[i]['nick'].length;
-            var estimated_lines = Math.floor( (text_len + nick_len + 9) / this.chars_per_line) + 1;
+            const text_len = this.cache[i]['text'].length;
+            const nick_len = this.cache[i]['nick'].length;
+            const estimated_lines = Math.floor((text_len + nick_len + 9) / this.chars_per_line) + 1;
             if( (lines + estimated_lines) > this.lines_per_screen) {
                 break;
             }
@@ -63,7 +63,7 @@ function ScreenIrc(settings, jmobj, obj, url) {
     
     this.toggle = function() {
         if(this.settings.get('enable_irc')) {
-            this.obj.data("stepData").exclude = (this.cache.length == 0);
+            this.obj.data("stepData").exclude = (this.cache.length === 0);
         } else {
             this.obj.data("stepData").exclude = true;
         }

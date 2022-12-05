@@ -29,23 +29,21 @@ function ScreenClock(settings, jmobj, obj) {
 
     this.update = function() {
         // Get times
-        var now = new Date();
-        var hour = now.getHours();
-        var minute = now.getMinutes();
-        var second = now.getSeconds();
-        var day = now.getDate();
-        var month = now.getMonth()+1;
-        var year = now.getFullYear();
-        
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const second = now.getSeconds();
+        const day = now.getDate();
+        const month = now.getMonth() + 1;
+        const year = now.getFullYear();
+
         // Form texts
-        var timetext = (hour < 10 ? "0"+hour : hour) +':'+ (minute < 10 ? "0"+minute : minute) +':'+ (second < 10 ? "0"+second : second);
-        var datetext = (day < 10 ? "0"+day : day) +'.'+ (month < 10 ? "0"+month : month) +'.'+ year;
-        
+        const time_text = (hour < 10 ? "0" + hour : hour) + ':' + (minute < 10 ? "0" + minute : minute) + ':' + (second < 10 ? "0" + second : second);
+        const date_text = (day < 10 ? "0" + day : day) + '.' + (month < 10 ? "0" + month : month) + '.' + year;
+
         // Write HTML
-        this.time_obj.html(timetext);
-        this.date_obj.html(datetext);
-        
-        // Reinit timer
+        this.time_obj.html(time_text);
+        this.date_obj.html(date_text);
         this.init_timer();
     }
     

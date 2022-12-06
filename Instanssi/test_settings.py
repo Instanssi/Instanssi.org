@@ -1,4 +1,4 @@
-# NOTE! THIS FILE IS FOR AUTOMATED GITHUB ACTIONS CI TESTING ENVIRONMENT!
+# NOTE! THIS FILE IS FOR CI AND UNITTEST TESTING ENVIRONMENT!
 
 from .common_config import *
 
@@ -10,7 +10,7 @@ ADMIN = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "database.db",
+        "NAME": ":memory:",
         "USER": "",
         "PASSWORD": "",
         "HOST": "",

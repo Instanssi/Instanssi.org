@@ -1,6 +1,6 @@
 import arrow
 from django.conf import settings
-from django.http import JsonResponse, HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.safestring import mark_safe

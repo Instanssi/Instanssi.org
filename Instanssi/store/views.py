@@ -3,8 +3,8 @@ import logging
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.decorators.cache import never_cache
 from django.utils import timezone
+from django.views.decorators.cache import never_cache
 
 from Instanssi.store.models import StoreTransaction, TransactionItem
 

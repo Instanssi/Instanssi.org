@@ -10,16 +10,14 @@ MANAGERS = ADMINS
 
 SITE_ID = 1
 USE_I18N = True
-USE_L10N = False
+USE_L10N = True
+USE_TZ = True
 
 # Files
 MEDIA_ROOT = BASE_DIR / "content" / "uploads"
 MEDIA_URL = "/uploads/"
 STATIC_ROOT = BASE_DIR / "content" / "static"
 STATIC_URL = "/static/"
-
-# Use timezones in database
-USE_TZ = True
 
 # Max size for request body (8M)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024

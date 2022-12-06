@@ -33,7 +33,9 @@ jobs:
       run: poetry run isort --check-only Instanssi
     - name: Run black
       run: poetry run black --check --diff Instanssi
-    - name: Run Tests
+    - name: Run pytest
+      run: poetry run pytest
+    - name: Run old tests
       run: |
-        cp Instanssi/settings.py-test Instanssi/settings.py
+        cp Instanssi/test_settings.py Instanssi/settings.py
         poetry run python manage.py test

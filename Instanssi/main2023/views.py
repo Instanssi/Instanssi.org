@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 
-def pageloader(request, templatename):
-    return render(request, 'main2023/'+templatename+'.html', {
-        'event_id': 22,  # Instanssi 2023 ID
-        'templatename': templatename,
-    })
+def page_loader(request: HttpRequest, template_name: str) -> HttpResponse:
+    # Instanssi ID is 22 in production database, so we hardcode that.
+    return render(request, f"main2023/{template_name}.html", {"event_id": 22, "templatename": template_name})

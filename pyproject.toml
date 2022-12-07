@@ -38,6 +38,7 @@ black = "^22.10.0"
 isort = "^5.10.1"
 pytest = "^7.2.0"
 pytest-django = "^4.5.2"
+pytest-cov = "^4.0.0"
 freezegun = "^1.2.2"
 requests-mock = "^1.10.0"
 
@@ -62,4 +63,9 @@ minversion = "6.0"
 testpaths = ["tests"]
 filterwarnings = [
     "ignore::DeprecationWarning"
+]
+
+[tool.coverage.run]
+omit = [
+    "**/migrations/*",
 ]

@@ -35,6 +35,13 @@ Installing stuff for development
 Note that some background operations use celery. It can be started with following:
 `python -m celery -A Instanssi worker -l info --autoscale 2,1`
 
+Running tests
+-------------
+
+Just do `pytest` in the main directory :)
+
+To also get coverage, do `pytest --cov=Instanssi`
+
 Production deps
 ---------------
 

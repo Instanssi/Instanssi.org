@@ -73,8 +73,8 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
         )
         receipt.send()
     except Exception as ex:
-        logger.exception("Store: {}.".format(ex))
+        logger.exception("Store: %s", ex)
         return False
 
-    logger.info("Store transaction {} confirmed.".format(ta.id))
+    logger.info("Store transaction %s confirmed.", ta.id)
     return True

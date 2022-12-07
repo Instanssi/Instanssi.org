@@ -5,7 +5,7 @@ Receipt parameters handler
 import json
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import arrow
 from django.template.loader import render_to_string
@@ -25,34 +25,64 @@ class ReceiptEncoder(json.JSONEncoder):
 
 class ReceiptParams:
     def __init__(self, source_json: Optional[Union[bytes, str]] = None) -> None:
-        self.params = dict(
-            order_number=0,
-            receipt_number=0,
-            receipt_date=None,
-            order_date=None,
-            first_name="",
-            last_name="",
-            mobile="",
-            email="",
-            telephone="",
-            company="",
-            street="",
-            city="",
-            postal_code="",
-            country="",
-            items=[],
-            transaction_url="",
-            total=Decimal("0.00"),
-        )
+        self.params: Dict[str, Any]
         if source_json:
-            self.params.update(json.loads(source_json))
-            for m in ["receipt_date", "order_date"]:
-                self.params[m] = arrow.get(self.params[m]).datetime
-            for k in range(len(self.params["items"])):
-                item = self.params["items"][k]
-                for m in ["price", "total"]:
-                    item[m] = Decimal(item[m])
-            self.params["total"] = Decimal(self.params["total"])
+            self.params = self.from_json(json.loads(source_json))
+        else:
+            self.params = dict(
+                order_number=0,
+                receipt_number=0,
+                receipt_date=None,
+                order_date=None,
+                first_name="",
+                last_name="",
+                mobile="",
+                email="",
+                telephone="",
+                company="",
+                street="",
+                city="",
+                postal_code="",
+                country="",
+                items=[],
+                transaction_url="",
+                total=Decimal("0.00"),
+            )
+
+    @staticmethod
+    def from_json(src: dict) -> dict:
+        items = []
+        for src_item in src["items"]:
+            items.append(
+                dict(
+                    id=src_item["id"],
+                    name=src_item["name"],
+                    price=Decimal(src_item["price"]),
+                    amount=src_item["amount"],
+                    total=Decimal(src_item["total"]),
+                    tax=src_item["tax"],
+                )
+            )
+
+        return dict(
+            order_number=src["order_number"],
+            receipt_number=src["receipt_number"],
+            receipt_date=arrow.get(src["receipt_date"]).datetime,
+            order_date=arrow.get(src["order_date"]).datetime,
+            first_name=src["first_name"],
+            last_name=src["last_name"],
+            mobile=src["mobile"],
+            email=src["email"],
+            telephone=src["telephone"],
+            company=src["company"],
+            street=src["street"],
+            city=src["city"],
+            postal_code=src["postal_code"],
+            country=src["country"],
+            items=items,
+            transaction_url=src["transaction_url"],
+            total=Decimal(src["total"]),
+        )
 
     def receipt_number(self, var: int) -> None:
         self.params["receipt_number"] = var

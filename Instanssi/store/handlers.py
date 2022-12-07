@@ -1,5 +1,6 @@
 import logging
 import uuid
+from typing import Any, Dict, Tuple, List
 
 from django.db import transaction
 from django.http import HttpRequest
@@ -20,7 +21,10 @@ class TransactionException(Exception):
     pass
 
 
-def validate_item(item: dict):
+def validate_item(item: Dict[str, Any]) -> None:
+    if item["amount"] < 1:
+        raise TransactionException("Tuotetta on ostettava vähintään yksi kappale")
+
     # First, make sure the item exists at all
     try:
         store_item = StoreItem.items_available().get(id=item["item_id"])
@@ -39,7 +43,7 @@ def validate_item(item: dict):
         raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
 
 
-def get_item_and_variant(item: dict) -> (StoreItem, StoreItemVariant):
+def get_item_and_variant(item: Dict[str, Any]) -> Tuple[StoreItem, StoreItemVariant]:
     """
     Return store item and variant (if any).
     """
@@ -48,12 +52,11 @@ def get_item_and_variant(item: dict) -> (StoreItem, StoreItemVariant):
     return store_item, store_variant
 
 
-def validate_payment_method(items: list, method: PaymentMethod):
+def validate_payment_method(items: List[Dict[str, Any]], method: PaymentMethod) -> None:
     """
     Make sure payment method is okay for the selected order. NO_METHOD is only acceptable when total sum of the order
     is 0 eur! Other methods are always acceptable.
     """
-
     if method == PaymentMethod.NO_METHOD:
         for item in items:
             store_item, store_variant = get_item_and_variant(item)
@@ -62,7 +65,7 @@ def validate_payment_method(items: list, method: PaymentMethod):
                 raise TransactionException("Valittu maksutapa ei ole sallittu tälle tilaukselle!")
 
 
-def create_store_transaction(data: dict) -> StoreTransaction:
+def create_store_transaction(data: Dict[str, Any]) -> StoreTransaction:
     # Handle creation of the order in a transaction to avoid creating crap to db in errors
     try:
         with transaction.atomic():

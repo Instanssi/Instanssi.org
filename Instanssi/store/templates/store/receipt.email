@@ -1,12 +1,13 @@
 {% load store_tags %}Hei,
 
-Tilauksenne numerolla {{ order_number }} on nyt käsitelty. Mikäli huomaatte virheitä
-tilausluettelossa, ottakaa yhteys meihin välittömästi (webmaster@instanssi.org).
-Ohessa seuraa tilausluettelo sekä linkki tuotteiden ja lippujen lunastukseen vaadittaviin
-tunnisteisiin.
+Tilauksenne numerolla {{ order_number }} on nyt käsitelty.
 
-Huom! Tilauksen sisältämät tuotteet kuten T-paidat voi noutaa tapahtuman aikana 
-lipunmyynnistä.
+Mikäli huomaatte virheitä tilausluettelossa, ottakaa yhteys meihin
+välittömästi (webmaster@instanssi.org). Ohessa seuraa tilausluettelo sekä
+linkki tuotteiden ja lippujen lunastukseen vaadittaviin tunnisteisiin.
+
+Huom! Tilauksen sisältämät tuotteet kuten T-paidat voi noutaa tapahtuman
+aikana lipunmyynnistä.
 
 Tilaajan tiedot:
 ----------------
@@ -34,7 +35,7 @@ Tilauksen tiedot:
 Tilausnumero: {{ order_number }}
 Tilausaika: {{ order_date|date:"d.m.Y H:i" }}
 Kuittinumero: {{ receipt_number }}
-Kuitin toimitusaika:  {{ receipt_date|date:"d.m.Y H:i" }}
+Kuitin toimitusaika: {{ receipt_date|date:"d.m.Y H:i" }}
 
 {% render_product_list items %}
 
@@ -43,15 +44,17 @@ Yhteensä: {{ total }} EUR (Alv 0%, AVL 4§)
 Tuotteiden nouto & liput:
 -------------------------
 
-Tilaukseenne kuuluvat liput ja tuotteet lunastetaan tapahtuman aikana infotiskiltä.
-Tuotteiden ja lippujen lunastukseen tarvitaan tosite, joka löytyy allaolevasta osoitteesta. 
-Tositteen voi joko tulostaa tai esittää mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.
+Tilaukseenne kuuluvat liput ja tuotteet lunastetaan tapahtuman aikana
+infotiskiltä. Tuotteiden ja lippujen lunastukseen tarvitaan tosite, joka
+löytyy allaolevasta osoitteesta. Tositteen voi joko tulostaa tai esittää
+mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.
 
-{{ transaction_url }}
+https://instanssi.org{{ transaction_url }}
 
-Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen oikeuttavina avaimina
-äänestysjärjestelmässämme kompomaatissa. Voit rekisteröidä avaimesi jo ennakkoon kirjautumalla Kompomaattiin
-osoitteessa https://instanssi.org/kompomaatti/
+Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen
+oikeuttavina avaimina äänestysjärjestelmässämme kompomaatissa. Voit
+rekisteröidä avaimesi jo ennakkoon kirjautumalla Kompomaattiin osoitteessa
+https://instanssi.org/kompomaatti/
 
 Muista tyhjentää selaimesi sivuhistoria ja välimuisti käytyäsi lippusivulla, 
 mikäli tietokonettasi käyttää useampi henkilö!

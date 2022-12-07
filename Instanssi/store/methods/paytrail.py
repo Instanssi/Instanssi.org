@@ -66,7 +66,9 @@ def start_process(request: HttpRequest, ta: StoreTransaction) -> str:
 
     # Make a request
     try:
-        msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
+        msg = paytrail.request(
+            settings.PAYTRAIL_API_URL, settings.PAYTRAIL_ID, settings.PAYTRAIL_SECRET, data
+        )
     except paytrail.PaytrailException as ex:
         a, b = ex.args
         logger.exception("(%s) %s", b, a)
@@ -91,7 +93,7 @@ def handle_failure(request: HttpRequest) -> HttpResponse:
     order_number = request.GET.get("ORDER_NUMBER", "")
     timestamp = request.GET.get("TIMESTAMP", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
@@ -111,7 +113,7 @@ def handle_success(request: HttpRequest) -> HttpResponse:
     paid = request.GET.get("PAID", "")
     method = request.GET.get("METHOD", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate, and mark transaction as pending
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
@@ -131,7 +133,7 @@ def handle_notify(request: HttpRequest) -> HttpResponse:
     paid = request.GET.get("PAID", "")
     method = request.GET.get("METHOD", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate & handle
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):

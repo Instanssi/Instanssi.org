@@ -1,10 +1,11 @@
 import os
 from decimal import Decimal
+from typing import Optional, List, Tuple
 
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils import timezone
 from django_countries.fields import CountryField
@@ -82,30 +83,30 @@ class StoreItem(models.Model):
         help_text="Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa",
     )
 
-    def is_discount_available(self):
+    def is_discount_available(self) -> bool:
         """Returns True if a discount exists for this item."""
         return self.discount_amount >= 0
 
     @property
-    def variants(self):
+    def variants(self) -> QuerySet:
         """Returns a queryset with the available item variants"""
         return StoreItemVariant.objects.filter(item=self)
 
-    def get_discount_factor(self):
+    def get_discount_factor(self) -> float:
         """Gets the potential discount factor, for views/templates/JS.
 
         Decimal arithmetic is used for actual price calculations."""
         return (100.0 - self.discount_percentage) / 100.0
 
-    def is_discount_enabled(self, amount):
+    def is_discount_enabled(self, amount: int) -> bool:
         """Returns True if discount applies to a specific quantity of this."""
         return self.is_discount_available() and amount >= self.discount_amount
 
-    def image_available(self):
+    def image_available(self) -> bool:
         full_path = os.path.join(settings.MEDIA_ROOT, self.imagefile_original.name)
         return os.path.isfile(full_path)
 
-    def get_discounted_unit_price(self, amount):
+    def get_discounted_unit_price(self, amount: int) -> Decimal:
         """Returns decimal price of item considering any quantity discount."""
         if self.is_discount_enabled(amount):
             factor = (Decimal(100) - Decimal(self.discount_percentage)) / 100
@@ -116,26 +117,26 @@ class StoreItem(models.Model):
         # Pass "rounding=METHOD" as second argument.
         return price.quantize(Decimal("0.01"))
 
-    def get_discounted_subtotal(self, amount):
+    def get_discounted_subtotal(self, amount: int) -> Decimal:
         """Returns decimal subtotal for a specific number of items, considering
         any quantity discount."""
         return self.get_discounted_unit_price(amount) * amount
 
-    def num_available(self):
+    def num_available(self) -> int:
         return min(self.max - self.num_sold(), self.max_per_order)
 
-    def num_in_store(self):
+    def num_in_store(self) -> int:
         return self.max - self.num_sold()
 
-    def num_sold(self):
+    def num_sold(self) -> int:
         return TransactionItem.objects.filter(transaction__time_paid__isnull=False, item=self).count()
 
     @staticmethod
-    def items_available():
+    def items_available() -> QuerySet:
         return StoreItem.objects.filter(max__gt=0, available=True).order_by("sort_index")
 
     @staticmethod
-    def items_visible(secret_key=None):
+    def items_visible(secret_key: Optional[str] = None) -> QuerySet:
         """Returns items visible in the store. May return additional items if
         the user has said the magic word."""
         return (
@@ -144,7 +145,7 @@ class StoreItem(models.Model):
             .order_by("sort_index")
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
@@ -156,7 +157,7 @@ class StoreItemVariant(models.Model):
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
     name = models.CharField("Tuotevariantin nimi", max_length=32, blank=False, null=False)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}: {}".format(self.item.name, self.name)
 
     class Meta:
@@ -202,33 +203,33 @@ class StoreTransaction(models.Model):
     )
 
     @property
-    def is_paid(self):
+    def is_paid(self) -> bool:
         return self.time_paid is not None
 
     @property
-    def is_cancelled(self):
+    def is_cancelled(self) -> bool:
         return self.time_cancelled is not None
 
     @property
-    def is_pending(self):
+    def is_pending(self) -> bool:
         return self.time_pending is not None
 
     @property
-    def is_delivered(self):
+    def is_delivered(self) -> bool:
         for item in self.get_transaction_items():
             if not item.is_delivered:
                 return False
         return True
 
     @property
-    def qr_code(self):
+    def qr_code(self) -> str:
         return get_url(reverse("store:ta_view", kwargs={"transaction_key": self.key}))
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return "{} {}".format(self.firstname, self.lastname)
 
-    def get_status_text(self):
+    def get_status_text(self) -> str:
         if self.is_cancelled:
             return "Peruutettu"
         if self.is_delivered:
@@ -239,16 +240,16 @@ class StoreTransaction(models.Model):
             return "Vireillä"
         return "Tuotteet valittu"
 
-    def get_total_price(self):
-        ret = 0
+    def get_total_price(self) -> Decimal:
+        ret = Decimal("0")
         for item in TransactionItem.objects.filter(transaction=self):
             ret += item.purchase_price
         return ret
 
-    def get_transaction_items(self):
+    def get_transaction_items(self) -> QuerySet:
         return TransactionItem.objects.filter(transaction=self)
 
-    def get_distinct_storeitems_and_prices(self):
+    def get_distinct_storeitems_and_prices(self) -> List[Tuple[StoreItem, StoreItemVariant, Decimal]]:
         """Returns a list of unique (StoreItem, price) tuples related to
         this transaction."""
 
@@ -271,13 +272,13 @@ class StoreTransaction(models.Model):
                 )
         return item_list
 
-    def get_storeitem_count(self, store_item, variant=None):
+    def get_storeitem_count(self, store_item: StoreItem, variant: Optional[StoreItemVariant] = None) -> int:
         q = TransactionItem.objects.filter(item=store_item, transaction=self)
         if variant:
             q = q.filter(variant=variant)
         return q.count()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.full_name
 
     class Meta:
@@ -306,14 +307,14 @@ class TransactionItem(models.Model):
     )
 
     @property
-    def is_delivered(self):
+    def is_delivered(self) -> bool:
         return self.time_delivered is not None
 
     @property
-    def qr_code(self):
+    def qr_code(self) -> str:
         return get_url(reverse("store:ti_view", kwargs={"item_key": self.key}))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{} for {}".format(self.item.name, self.transaction.full_name)
 
     class Meta:
@@ -329,11 +330,11 @@ class Receipt(models.Model):
     params = models.TextField("Lähetysparametrit", default=None, null=True)
     content = models.TextField("Kuitin sisältö", default=None, null=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}: {}".format(self.mail_to, self.subject)
 
     @classmethod
-    def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams):
+    def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams) -> "Receipt":
         # First, save header information and save so that we get a receipt ID
         r = cls()
         r.subject = subject
@@ -350,7 +351,7 @@ class Receipt(models.Model):
         # Return newly created object for use, eg. for calling send()
         return r
 
-    def send(self):
+    def send(self) -> None:
         self.sent = timezone.now()
         send_mail(self.subject, self.content, self.mail_from, (self.mail_to,))
         self.save()

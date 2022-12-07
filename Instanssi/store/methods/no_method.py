@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -22,5 +22,5 @@ def start_process(request: HttpRequest, ta: StoreTransaction) -> str:
     return reverse("store:pm:no-method-success")
 
 
-def handle_success(request):
+def handle_success(request: HttpRequest) -> HttpResponse:
     return render(request, "store/success.html")

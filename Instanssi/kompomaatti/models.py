@@ -1,5 +1,4 @@
 import os.path
-from urllib.parse import parse_qs, urlparse
 
 from django.contrib.auth.models import User
 from django.db import models

@@ -1,18 +1,17 @@
 import json
-from uuid import UUID
 from decimal import Decimal
+from uuid import UUID
 
+import arrow
+import pytest
 from django.conf import settings
 from freezegun import freeze_time
-import arrow
-
-import pytest
 
 from Instanssi.store.handlers import (
     TransactionException,
+    create_store_transaction,
     validate_item,
     validate_payment_method,
-    create_store_transaction,
 )
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreItem, TransactionItem

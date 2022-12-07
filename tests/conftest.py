@@ -6,8 +6,8 @@ from uuid import uuid4
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.utils import timezone
 from django.test import Client
+from django.utils import timezone
 from faker import Faker
 from pytest import fixture
 from rest_framework.test import APIClient

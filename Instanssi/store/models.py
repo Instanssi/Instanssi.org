@@ -1,6 +1,6 @@
 import os
 from decimal import Decimal
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
 
 from django.conf import settings
 from django.core.mail import send_mail

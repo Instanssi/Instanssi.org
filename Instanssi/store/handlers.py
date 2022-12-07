@@ -1,6 +1,6 @@
 import logging
 import uuid
-from typing import Any, Dict, Tuple, List
+from typing import Any, Dict, List, Tuple
 
 from django.db import transaction
 from django.http import HttpRequest

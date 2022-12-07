@@ -1,7 +1,7 @@
 import pytest
 from django.core import mail
-from django.urls import reverse
 from django.test import RequestFactory
+from django.urls import reverse
 
 from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod

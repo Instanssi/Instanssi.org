@@ -1,12 +1,17 @@
 from decimal import Decimal
-from typing import Callable, Any, Dict
+from typing import Any, Callable, Dict
 from uuid import uuid4
 
 from django.urls import reverse
 from django.utils import timezone
 from pytest import fixture
 
-from Instanssi.store.models import StoreItem, StoreTransaction, Receipt, StoreItemVariant
+from Instanssi.store.models import (
+    Receipt,
+    StoreItem,
+    StoreItemVariant,
+    StoreTransaction,
+)
 from Instanssi.store.utils.receipt import ReceiptParams
 
 

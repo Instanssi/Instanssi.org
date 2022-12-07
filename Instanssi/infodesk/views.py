@@ -95,11 +95,11 @@ def order_search(request):
 
         # FIXME: Even a regex might look cleaner than this.
         if term.startswith(TXN_PREFIX):
-            txn_id = term[len(TXN_PREFIX) :]
+            txn_id = term[len(TXN_PREFIX):]
             if txn_id.isdigit():
                 txn_filter = Q(id__exact=txn_id)
         if term.startswith(TXN_ITEM_PREFIX):
-            item_filter = Q(key__exact=term[len(TXN_ITEM_PREFIX) :])
+            item_filter = Q(key__exact=term[len(TXN_ITEM_PREFIX):])
 
         # If we don't have a more specific filter, just show all fuzzy results
         if not txn_filter:

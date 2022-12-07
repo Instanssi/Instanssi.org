@@ -7,7 +7,6 @@ import pytest
 import requests_mock
 from django.conf import settings
 from django.core import mail
-from django.template import Template
 from django.test import RequestFactory
 from django.urls import reverse
 
@@ -253,7 +252,7 @@ def test_paytrail_failure_endpoint_does_not_validate(page_client, new_transactio
         query={
             "ORDER_NUMBER": str(new_transaction.id),
             "TIMESTAMP": "0",
-            "RETURN_AUTHCODE": "", # Invalid hash code
+            "RETURN_AUTHCODE": "",  # Invalid hash code
         },
     )
     result = page_client.get(url)

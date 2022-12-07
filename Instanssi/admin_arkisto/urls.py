@@ -1,36 +1,36 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_arkisto.views import (
     archiver,
-    cats,
-    deletecat,
-    deletevid,
-    editcat,
-    editvid,
+    delete_video,
+    delete_video_category,
+    edit_video,
+    edit_video_category,
     hide,
     index,
-    optimizescores,
-    removeoldvotes,
+    optimizes_scores,
+    remove_old_votes,
     show,
-    transferrights,
-    vids,
+    transfer_rights,
+    video_categories,
+    videos,
 )
 
 app_name = "admin_arkisto"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^archiver/", archiver, name="archiver"),
-    url(r"^show/", show, name="archiver-show"),
-    url(r"^hide/", hide, name="archiver-hide"),
-    url(r"^transferrights/", transferrights, name="archiver-tr"),
-    url(r"^optimizescores/", optimizescores, name="archiver-os"),
-    url(r"^removeoldvotes/", removeoldvotes, name="archiver-rv"),
-    url(r"^vids/", vids, name="vids"),
-    url(r"^vidcats/", cats, name="vidcats"),
-    url(r"^deletevid/(?P<video_id>\d+)/", deletevid, name="vids-delete"),
-    url(r"^deletecat/(?P<category_id>\d+)/", deletecat, name="vidcats-delete"),
-    url(r"^editvid/(?P<video_id>\d+)/", editvid, name="vids-edit"),
-    url(r"^editcat/(?P<category_id>\d+)/", editcat, name="vidcats-edit"),
+    path("", index, name="index"),
+    path("archiver/", archiver, name="archiver"),
+    path("show/", show, name="archiver-show"),
+    path("hide/", hide, name="archiver-hide"),
+    path("transferrights/", transfer_rights, name="archiver-tr"),
+    path("optimizescores/", optimizes_scores, name="archiver-os"),
+    path("removeoldvotes/", remove_old_votes, name="archiver-rv"),
+    path("vids/", videos, name="vids"),
+    path("vidcats/", video_categories, name="vidcats"),
+    path("deletevid/<int:video_id>/", delete_video, name="vids-delete"),
+    path("deletecat/<int:category_id>/", delete_video_category, name="vidcats-delete"),
+    path("editvid/<int:video_id>/", edit_video, name="vids-edit"),
+    path("editcat/<int:category_id>/", edit_video_category, name="vidcats-edit"),
 ]

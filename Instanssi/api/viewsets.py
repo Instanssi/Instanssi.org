@@ -534,7 +534,7 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
             if serializer.validated_data["save"]:
                 ta = serializer.save()
                 payment_method = PaymentMethod(serializer.validated_data["payment_method"])
-                response_url = begin_payment_process(payment_method, ta)
+                response_url = begin_payment_process(request, payment_method, ta)
                 return Response({"url": response_url}, status=status.HTTP_201_CREATED)
             else:
                 return Response(status=status.HTTP_200_OK)

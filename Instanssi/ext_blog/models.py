@@ -16,8 +16,8 @@ class BlogEntry(models.Model):
         default=False,
     )
 
-    def __str__(self):
-        return "{} by {}".format(self.title, self.user.username)
+    def __str__(self) -> str:
+        return self.title
 
     class Meta:
         verbose_name = "entry"
@@ -31,8 +31,8 @@ class BlogComment(models.Model):
     text = models.TextField("Kommentti", help_text="Kommenttiteksti.")
     date = models.DateTimeField("Aika")
 
-    def __str__(self):
-        return "{} by {}".format(self.entry.title, self.user.username)
+    def __str__(self) -> str:
+        return self.text[:20]
 
     class Meta:
         verbose_name = "kommentti"

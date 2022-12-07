@@ -1,33 +1,28 @@
 import logging
 
 from django.conf import settings
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from Instanssi.common.misc import get_url
 from Instanssi.store.models import StoreTransaction
 from Instanssi.store.utils import paytrail, ta_common
 
 logger = logging.getLogger(__name__)
 
 
-def start_process(ta):
+def start_process(request: HttpRequest, ta: StoreTransaction) -> str:
     """This should be used to start the paytrail payment process.
     Will redirect as necessary."""
 
     product_list = []
 
-    for store_item, item_variant, purchase_price in ta.get_distinct_storeitems_and_prices():
-        count = ta.get_storeitem_count(store_item, variant=item_variant)
+    for store_item, item_variant, purchase_price in ta.get_sorted_store_items_and_prices():
+        count = ta.get_store_item_count(store_item, variant=item_variant)
         product_list.append(
             {
-                "title": "{}, {}".format(store_item.name, item_variant.name)
-                if item_variant
-                else store_item.name,
-                "code": "{}:{}".format(store_item.id, item_variant.id)
-                if item_variant
-                else str(store_item.id),
+                "title": f"{store_item.name}, {item_variant.name}" if item_variant else store_item.name,
+                "code": f"{store_item.id}:{item_variant.id}" if item_variant else str(store_item.id),
                 "amount": str(count),
                 "price": str(purchase_price),
                 "vat": "0",
@@ -40,9 +35,9 @@ def start_process(ta):
         "currency": "EUR",
         "locale": "fi_FI",
         "urlSet": {
-            "success": get_url(reverse("store:pm:paytrail-success")),
-            "failure": get_url(reverse("store:pm:paytrail-failure")),
-            "notification": get_url(reverse("store:pm:paytrail-notify")),
+            "success": request.build_absolute_uri(reverse("store:pm:paytrail-success")),
+            "failure": request.build_absolute_uri(reverse("store:pm:paytrail-failure")),
+            "notification": request.build_absolute_uri(reverse("store:pm:paytrail-notify")),
             "pending": "",
         },
         "orderDetails": {
@@ -67,7 +62,9 @@ def start_process(ta):
 
     # Make a request
     try:
-        msg = paytrail.request(settings.VMAKSUT_ID, settings.VMAKSUT_SECRET, data)
+        msg = paytrail.request(
+            settings.PAYTRAIL_API_URL, settings.PAYTRAIL_ID, settings.PAYTRAIL_SECRET, data
+        )
     except paytrail.PaytrailException as ex:
         a, b = ex.args
         logger.exception("(%s) %s", b, a)
@@ -85,14 +82,14 @@ def start_process(ta):
     return msg["url"]
 
 
-def handle_failure(request):
+def handle_failure(request: HttpRequest) -> HttpResponse:
     """Handles failure message from paytrail"""
 
     # Get parameters
     order_number = request.GET.get("ORDER_NUMBER", "")
     timestamp = request.GET.get("TIMESTAMP", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate, and mark transaction as cancelled
     if paytrail.validate_failure(order_number, timestamp, authcode, secret):
@@ -103,7 +100,7 @@ def handle_failure(request):
     return render(request, "store/failure.html")
 
 
-def handle_success(request):
+def handle_success(request: HttpRequest) -> HttpResponse:
     """Handles the success user redirect from Paytrail"""
 
     # Get parameters
@@ -112,7 +109,7 @@ def handle_success(request):
     paid = request.GET.get("PAID", "")
     method = request.GET.get("METHOD", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate, and mark transaction as pending
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
@@ -123,7 +120,7 @@ def handle_success(request):
     return render(request, "store/success.html")
 
 
-def handle_notify(request):
+def handle_notify(request: HttpRequest) -> HttpResponse:
     """Handles the actual success notification from Paytrail"""
 
     # Get parameters
@@ -132,7 +129,7 @@ def handle_notify(request):
     paid = request.GET.get("PAID", "")
     method = request.GET.get("METHOD", "")
     authcode = request.GET.get("RETURN_AUTHCODE", "")
-    secret = settings.VMAKSUT_SECRET
+    secret = settings.PAYTRAIL_SECRET
 
     # Validate & handle
     if paytrail.validate_success(order_number, timestamp, paid, method, authcode, secret):
@@ -145,7 +142,7 @@ def handle_notify(request):
         # Use common functions to handle the payment
         # If handling the payment fails, cause 404.
         # This will tell paytrail to try notifying again later.
-        if not ta_common.handle_payment(ta):
+        if not ta_common.handle_payment(request, ta):
             raise Http404
     else:
         logger.warning("Error while attempting to validate paytrail notification!")

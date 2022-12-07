@@ -10,7 +10,6 @@ python = "^3.9"
 Django = "^3.2"
 django-countries = "^7.4.2"
 django-crispy-forms = "^1.14.0"
-django-debug-toolbar = "^3.7.0"
 django-imagekit = "^4.1.0"
 django-twitter-tag = "^1.2.1"
 django-classy-tags = "^4.0.0"
@@ -37,6 +36,10 @@ Faker = "^15.3.3"
 mock = "^4.0.3"
 black = "^22.10.0"
 isort = "^5.10.1"
+pytest = "^7.2.0"
+pytest-django = "^4.5.2"
+freezegun = "^1.2.2"
+requests-mock = "^1.10.0"
 
 [tool.poetry.group.runtime.dependencies]
 gunicorn = "^20.1.0"
@@ -51,3 +54,12 @@ profile = "black"
 [tool.black]
 line-length = 109
 target-version = ['py39']
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "Instanssi.test_settings"
+FAIL_INVALID_TEMPLATE_VARS = true
+minversion = "6.0"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]

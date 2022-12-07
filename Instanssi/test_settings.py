@@ -1,4 +1,4 @@
-# NOTE! THIS FILE IS FOR AUTOMATED GITHUB ACTIONS CI TESTING ENVIRONMENT!
+# NOTE! THIS FILE IS FOR CI AND UNITTEST TESTING ENVIRONMENT!
 
 from .common_config import *
 
@@ -10,7 +10,7 @@ ADMIN = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "database.db",
+        "NAME": ":memory:",
         "USER": "",
         "PASSWORD": "",
         "HOST": "",
@@ -72,10 +72,10 @@ SOCIAL_AUTH_GITHUB_KEY = ""
 SOCIAL_AUTH_GITHUB_SECRET = ""
 SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
 
-# Paytrail aka. Suomen Verkkomaksut
-# See http://docs.paytrail.com/fi/index-all.html for API specs
-VMAKSUT_ID = "13466"  # Test ID
-VMAKSUT_SECRET = "6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ"  # Test secret
+# Paytrail, mock addresses
+PAYTRAIL_ID = ""
+PAYTRAIL_SECRET = ""
+PAYTRAIL_API_URL = "http://localhost:8000"
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG

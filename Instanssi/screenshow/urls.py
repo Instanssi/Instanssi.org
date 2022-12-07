@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.screenshow.views import (
     events_api,
@@ -14,11 +14,11 @@ app_name = "screenshow"
 
 
 urlpatterns = [
-    url(r"^(?P<event_id>\d+)/$", index, name="index"),
-    url(r"^(?P<event_id>\d+)/api/events/", events_api, name="events-api"),
-    url(r"^(?P<event_id>\d+)/api/irc/", irc_api, name="irc-api"),
-    url(r"^(?P<event_id>\d+)/api/messages/", messages_api, name="messages-api"),
-    url(r"^(?P<event_id>\d+)/api/playlist/", playlist_api, name="playlist-api"),
-    url(r"^(?P<event_id>\d+)/api/settings/", settings_api, name="settings-api"),
-    url(r"^(?P<event_id>\d+)/api/playing/", playing_api, name="playing-api"),
+    path("<int:event_id>/", index, name="index"),
+    path("<int:event_id>/api/events/", events_api, name="events-api"),
+    path("<int:event_id>/api/irc/", irc_api, name="irc-api"),
+    path("<int:event_id>/api/messages/", messages_api, name="messages-api"),
+    path("<int:event_id>/api/playlist/", playlist_api, name="playlist-api"),
+    path("<int:event_id>/api/settings/", settings_api, name="settings-api"),
+    path("<int:event_id>/api/playing/", playing_api, name="playing-api"),
 ]

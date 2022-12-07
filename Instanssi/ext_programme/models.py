@@ -1,3 +1,5 @@
+from typing import Any
+
 import arrow
 from django.conf import settings
 from django.db import models
@@ -70,13 +72,13 @@ class ProgrammeEvent(models.Model):
     active = models.BooleanField("Aktiivinen", help_text="Deaktivoidut piilotetaan.", default=True)
 
     @property
-    def short_start_time(self):
+    def short_start_time(self) -> str:
         if self.start:
             start = arrow.get(self.start).to(settings.TIME_ZONE)
             return "{} {}".format(short_days[start.weekday()], start.format("HH:mm"))
         return ""
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         # Delete old icon file when editing
         try:
             this = ProgrammeEvent.objects.get(id=self.id)
@@ -88,7 +90,7 @@ class ProgrammeEvent(models.Model):
         # Continue with normal save
         super(ProgrammeEvent, self).save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
     class Meta:

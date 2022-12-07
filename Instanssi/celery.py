@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import os
+from typing import Any
 
 from celery import Celery
 
@@ -12,5 +13,5 @@ app.autodiscover_tasks()
 
 
 @app.task(bind=True)
-def debug_task(self):
+def debug_task(self: Any) -> None:
     print("Request: {0!r}".format(self.request))

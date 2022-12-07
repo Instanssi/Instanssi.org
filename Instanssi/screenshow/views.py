@@ -1,10 +1,10 @@
 import arrow
 from django.conf import settings
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 
-from Instanssi.common.responses import JSONResponse
 from Instanssi.kompomaatti.misc.events import get_upcoming
 from Instanssi.kompomaatti.models import Event
 from Instanssi.screenshow.models import (
@@ -17,8 +17,7 @@ from Instanssi.screenshow.models import (
 )
 
 
-def index(request, event_id):
-    # Get sponsors
+def index(request: HttpRequest, event_id: int) -> HttpResponse:
     sponsors = []
     x = -300
     for sponsor in Sponsor.objects.filter(event_id=event_id):
@@ -31,18 +30,10 @@ def index(request, event_id):
         sponsors.append(sponsor)
         x += 75
 
-    # Render the show
-    return render(
-        request,
-        "screenshow/index.html",
-        {
-            "event_id": event_id,
-            "sponsors": sponsors,
-        },
-    )
+    return render(request, "screenshow/index.html", {"event_id": event_id, "sponsors": sponsors})
 
 
-def settings_api(request, event_id):
+def settings_api(request: HttpRequest, event_id: int) -> HttpResponse:
     # Attempt to fetch custom settings from database
     try:
         conf = {}
@@ -51,33 +42,24 @@ def settings_api(request, event_id):
         conf["enable_irc"] = s.enable_irc
         conf["enable_videos"] = s.enable_videos
         conf["video_interval"] = s.video_interval
-        return JSONResponse({"settings": conf})
+        return JsonResponse({"settings": conf})
     except ScreenConfig.DoesNotExist:
-        pass
-
-    # Return settings
-    return JSONResponse({})
+        return JsonResponse({})
 
 
-def events_api(request, event_id):
+def events_api(request: HttpRequest, event_id: int) -> HttpResponse:
     e = get_object_or_404(Event, pk=event_id)
 
     # Get upcoming stuff
-    k = 0
     events = []
-    for event in get_upcoming(e):
+    for event in get_upcoming(e)[:5]:
         event["date"] = arrow.get(event["date"]).to(settings.TIME_ZONE).format("HH:mm")
         events.append(event)
 
-        # Only pick 5
-        k += 1
-        if k >= 5:
-            break
-
-    return JSONResponse({"events": events})
+    return JsonResponse({"events": events})
 
 
-def playing_api(request, event_id):
+def playing_api(request: HttpRequest, event_id: int) -> HttpResponse:
     playlist = []
     for item in NPSong.objects.filter(event_id=event_id).order_by("-id")[:10]:
         playlist.append(
@@ -87,26 +69,25 @@ def playing_api(request, event_id):
                 "state": item.state,
             }
         )
-    return JSONResponse({"playlist": playlist})
+    return JsonResponse({"playlist": playlist})
 
 
-def messages_api(request, event_id):
+def messages_api(request: HttpRequest, event_id: int) -> HttpResponse:
     messages = []
-    for msg in Message.objects.filter(event_id=event_id):
-        if msg.show_start <= timezone.now() <= msg.show_end:
-            messages.append(mark_safe(msg.text))
-    return JSONResponse({"messages": messages})
+    now = timezone.now()
+    for msg in Message.objects.filter(event_id=event_id, show_start__lt=now, show_end__gt=now):
+        messages.append(mark_safe(msg.text))
+    return JsonResponse({"messages": messages})
 
 
-def playlist_api(request, event_id):
+def playlist_api(request: HttpRequest, event_id: int) -> HttpResponse:
     playlist = []
     for v in PlaylistVideo.objects.filter(event_id=event_id).order_by("index"):
         playlist.append({"name": v.name, "url": v.url, "id": v.id, "index": v.index})
+    return JsonResponse({"playlist": playlist})
 
-    return JSONResponse({"playlist": playlist})
 
-
-def irc_api(request, event_id):
+def irc_api(request: HttpRequest, event_id: int) -> HttpResponse:
     filter_id = int(request.GET.get("last_id", "0"))
     messages = []
     for msg in IRCMessage.objects.filter(id__gt=filter_id, event_id=event_id):
@@ -118,6 +99,4 @@ def irc_api(request, event_id):
                 "time": arrow.get(msg.date).to(settings.TIME_ZONE).format("HH:mm"),
             }
         )
-
-    # Respond
-    return JSONResponse({"log": messages})
+    return JsonResponse({"log": messages})

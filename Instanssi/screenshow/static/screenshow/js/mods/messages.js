@@ -32,14 +32,14 @@ function ScreenMessages(settings, jmobj, obj, url) {
         this.cache = data['messages'];
         
         // Set jmpress stuff
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
+        this.obj.data("stepData").exclude = (this.cache.length === 0);
         this.obj.data("stepData").duration = this.cache.length * 5000;
         this.jmobj.jmpress('reapply', this.obj);
     }
     
     this.fetch_error = function(jqXHR, status, errorThrown) {
         console.log("There was a problem while fetching message data.");
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
+        this.obj.data("stepData").exclude = (this.cache.length === 0);
     }
     
     this.update = function() {

@@ -1,7 +1,9 @@
 import logging
 import uuid
+from typing import Any, Dict, List, Optional, Tuple
 
 from django.db import transaction
+from django.http import HttpRequest
 from django.utils import timezone
 
 from Instanssi.store.methods import PaymentMethod, no_method, paytrail
@@ -19,7 +21,16 @@ class TransactionException(Exception):
     pass
 
 
-def validate_item(item: dict):
+def validate_items(items: List[Dict[str, Any]]) -> None:
+    item_ids = {(item["item_id"], item["variant_id"]) for item in items}
+    if len(item_ids) < len(items):
+        raise TransactionException("Samaa tuotevarianttia saa olla korissa vain kerran")
+
+
+def validate_item(item: Dict[str, Any]) -> None:
+    if item["amount"] < 1:
+        raise TransactionException("Tuotetta on ostettava vähintään yksi kappale")
+
     # First, make sure the item exists at all
     try:
         store_item = StoreItem.items_available().get(id=item["item_id"])
@@ -38,7 +49,7 @@ def validate_item(item: dict):
         raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
 
 
-def get_item_and_variant(item: dict) -> (StoreItem, StoreItemVariant):
+def get_item_and_variant(item: Dict[str, Any]) -> Tuple[StoreItem, Optional[StoreItemVariant]]:
     """
     Return store item and variant (if any).
     """
@@ -47,21 +58,20 @@ def get_item_and_variant(item: dict) -> (StoreItem, StoreItemVariant):
     return store_item, store_variant
 
 
-def validate_payment_method(items: list, method: PaymentMethod):
+def validate_payment_method(items: List[Dict[str, Any]], method: PaymentMethod) -> None:
     """
     Make sure payment method is okay for the selected order. NO_METHOD is only acceptable when total sum of the order
     is 0 eur! Other methods are always acceptable.
     """
-
     if method == PaymentMethod.NO_METHOD:
         for item in items:
-            store_item, store_variant = get_item_and_variant(item)
+            store_item, _ = get_item_and_variant(item)
             purchase_price = store_item.get_discounted_unit_price(item["amount"])
             if purchase_price > 0:
                 raise TransactionException("Valittu maksutapa ei ole sallittu tälle tilaukselle!")
 
 
-def create_store_transaction(data: dict) -> StoreTransaction:
+def create_store_transaction(data: Dict[str, Any]) -> StoreTransaction:
     # Handle creation of the order in a transaction to avoid creating crap to db in errors
     try:
         with transaction.atomic():
@@ -105,8 +115,8 @@ def create_store_transaction(data: dict) -> StoreTransaction:
         raise
 
 
-def begin_payment_process(method: PaymentMethod, ta: StoreTransaction):
+def begin_payment_process(request: HttpRequest, method: PaymentMethod, ta: StoreTransaction) -> str:
     return {
         PaymentMethod.NO_METHOD: no_method.start_process,
         PaymentMethod.PAYTRAIL: paytrail.start_process,
-    }[method](ta)
+    }[method](request, ta)

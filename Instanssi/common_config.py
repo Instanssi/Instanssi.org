@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Tuple
 
 import sentry_sdk
 
@@ -10,16 +11,14 @@ MANAGERS = ADMINS
 
 SITE_ID = 1
 USE_I18N = True
-USE_L10N = False
+USE_L10N = True
+USE_TZ = True
 
 # Files
 MEDIA_ROOT = BASE_DIR / "content" / "uploads"
 MEDIA_URL = "/uploads/"
 STATIC_ROOT = BASE_DIR / "content" / "static"
 STATIC_URL = "/static/"
-
-# Use timezones in database
-USE_TZ = True
 
 # Max size for request body (8M)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
@@ -110,7 +109,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "Instanssi.common.http.Http403Middleware",
 ]
 
 ROOT_URLCONF = "Instanssi.urls"
@@ -210,11 +208,11 @@ LOGGING = {
 }
 
 
-def make_celery_conf(debug_mode):
+def make_celery_conf(debug_mode: bool) -> Tuple[str, dict]:
     return "redis://127.0.0.1:6379/3", {}
 
 
-def make_cache_conf(debug_mode):
+def make_cache_conf(debug_mode: bool) -> dict:
     if debug_mode:
         return {
             "default": {
@@ -234,7 +232,7 @@ def make_cache_conf(debug_mode):
         }
 
 
-def make_email_conf(debug_mode):
+def make_email_conf(debug_mode: bool) -> str:
     if debug_mode:
         return "django.core.mail.backends.console.EmailBackend"
     else:

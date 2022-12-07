@@ -61,7 +61,7 @@
     
 {% if perms.kompomaatti.change_entry %}
     <h3>Käyttäjäoikeuksien tila</h3>
-{% if untransferred %}
+{% if has_non_archived_items %}
 {% if ongoing_activity %}
     <p>Tapahtuma on kesken, joten käyttäjäoikeuksia ei voida muuttaa.</p>
 {% else %}

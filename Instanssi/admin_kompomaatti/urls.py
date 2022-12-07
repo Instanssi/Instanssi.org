@@ -1,6 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_kompomaatti.views import (
+    accept_vote_code_request,
     competition_delete,
     competition_edit,
     competition_participation_edit,
@@ -16,51 +17,38 @@ from Instanssi.admin_kompomaatti.views import (
     entry_edit,
     generate_result_package,
     index,
+    reject_vote_code_request,
     results,
-    ticket_votecodes,
-    votecoderequests,
-    votecoderequests_accept,
-    votecoderequests_reject,
+    ticket_vote_codes,
+    vote_code_requests,
 )
 
 app_name = "admin_kompomaatti"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^compos/", compo_browse, name="compos"),
-    url(r"^editcompo/(?P<compo_id>\d+)/", compo_edit, name="compo-edit"),
-    url(r"^deletecompo/(?P<compo_id>\d+)/", compo_delete, name="compo-delete"),
-    url(r"^entries_csv/", entries_csv, name="entries_csv"),
-    url(r"^entries/", entry_browse, name="entries"),
-    url(r"^editentry/(?P<entry_id>\d+)/", entry_edit, name="entry-edit"),
-    url(r"^deleteentry/(?P<entry_id>\d+)/", entry_delete, name="entry-delete"),
-    url(r"^competitions/", competitions_browse, name="competitions"),
-    url(r"^editcompetition/(?P<competition_id>\d+)/", competition_edit, name="competition-edit"),
-    url(
-        r"^deletecompetition/(?P<competition_id>\d+)/",
-        competition_delete,
-        name="competition-delete",
-    ),
-    url(r"^score/(?P<competition_id>\d+)/", competition_score, name="score"),
-    url(
-        r"^participations/(?P<competition_id>\d+)/",
-        competition_participations,
-        name="participations",
-    ),
-    url(
-        r"^participations_edit/(?P<competition_id>\d+)/edit/(?P<pid>\d+)/",
+    path("", index, name="index"),
+    path("compos/", compo_browse, name="compos"),
+    path("editcompo/<int:compo_id>/", compo_edit, name="compo-edit"),
+    path("deletecompo/<int:compo_id>/", compo_delete, name="compo-delete"),
+    path("entries_csv/", entries_csv, name="entries_csv"),
+    path("entries/", entry_browse, name="entries"),
+    path("editentry/<int:entry_id>/", entry_edit, name="entry-edit"),
+    path("deleteentry/<int:entry_id>/", entry_delete, name="entry-delete"),
+    path("competitions/", competitions_browse, name="competitions"),
+    path("editcompetition/<int:competition_id>/", competition_edit, name="competition-edit"),
+    path("deletecompetition/<int:competition_id>/", competition_delete, name="competition-delete"),
+    path("score/<int:competition_id>/", competition_score, name="score"),
+    path("participations/<int:competition_id>/", competition_participations, name="participations"),
+    path(
+        "participations_edit/<int:competition_id>/edit/<int:participation_id>/",
         competition_participation_edit,
         name="participation-edit",
     ),
-    url(r"^results/", results, name="results"),
-    url(
-        r"^generate_result_package/(?P<compo_id>\d+)/",
-        generate_result_package,
-        name="generate_result_package",
-    ),
-    url(r"^ticket_votecodes/", ticket_votecodes, name="ticket_votecodes"),
-    url(r"^votecoderequests/", votecoderequests, name="votecoderequests"),
-    url(r"^acceptreq/(?P<vcrid>\d+)/", votecoderequests_accept, name="votecoderequest-accept"),
-    url(r"^rejectreq/(?P<vcrid>\d+)/", votecoderequests_reject, name="votecoderequest-reject"),
+    path("results/", results, name="results"),
+    path("generate_result_package/<int:compo_id>/", generate_result_package, name="generate_result_package"),
+    path("ticket_votecodes/", ticket_vote_codes, name="ticket_votecodes"),
+    path("votecoderequests/", vote_code_requests, name="votecoderequests"),
+    path("acceptreq/<int:vote_code_request_id>/", accept_vote_code_request, name="votecoderequest-accept"),
+    path("rejectreq/<int:vote_code_request_id>/", reject_vote_code_request, name="votecoderequest-reject"),
 ]

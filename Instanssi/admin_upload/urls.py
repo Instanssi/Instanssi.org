@@ -1,12 +1,12 @@
-from django.conf.urls import url
+from django.urls import path
 
-from Instanssi.admin_upload.views import deletefile, editfile, index
+from Instanssi.admin_upload.views import delete_file, edit_file, index
 
 app_name = "admin_upload"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^delete/(?P<file_id>\d+)/", deletefile, name="delete"),
-    url(r"^edit/(?P<file_id>\d+)/", editfile, name="edit"),
+    path("", index, name="index"),
+    path("delete/<int:file_id>/", delete_file, name="delete"),
+    path("edit/<int:file_id>/", edit_file, name="edit"),
 ]

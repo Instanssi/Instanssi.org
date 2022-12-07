@@ -16,25 +16,21 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
     this.is_stopped = false;
     
     this.init = function() {}
-    
-    this.post_init = function() {
-        this.obj.on('enterStep', $.proxy(this.start, this));
-        this.obj.on('leaveStep', $.proxy(this.stop, this));
-    }
+    this.post_init = function() {}
     
     this.render = function(data) {
         // Write HTML from cache
-        var output = '';
-        var k = 0;
+        let output = '';
+        let k = 0;
         $.each(this.cache, function(key, value) {
-            if(k < 5 && value['state'] == 0) {
-                if(k == 0) {
+            if(k < 5 && value['state'] === 0) {
+                if(k === 0) {
                     output += '<p class="playing_song">&raquo; ';
                 } else {
                     output += '<p class="old_song">';
                 }
                 output += value['artist'];
-                if(value['artist'] != '' && value['title'] != '') {
+                if(value['artist'] !== '' && value['title'] !== '') {
                     output += ' &middot; ';
                 } 
                 output += value['title'];
@@ -52,15 +48,15 @@ function ScreenNowPlaying(settings, jmobj, obj, url) {
         
         // Set jmpress stuff
         if(this.cache.length > 0) {
-            this.is_stopped = (this.cache[0]['state'] == 1);
+            this.is_stopped = (this.cache[0]['state'] === 1);
         }
-        this.obj.data("stepData").exclude = (this.cache.length == 0 || this.is_stopped);
+        this.obj.data("stepData").exclude = (this.cache.length === 0 || this.is_stopped);
         this.jmobj.jmpress('reapply', this.obj);
     }
     
     this.fetch_error = function(jqXHR, status, errorThrown) {
         console.log("There was a problem while fetching playlist data.");
-        this.obj.data("stepData").exclude = (this.cache.length == 0);
+        this.obj.data("stepData").exclude = (this.cache.length === 0);
     }
     
     this.update = function() {

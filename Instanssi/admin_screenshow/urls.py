@@ -1,11 +1,11 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.admin_screenshow.views import (
     config,
     index,
+    irc_messages,
     ircmessage_delete,
     ircmessage_edit,
-    ircmessages,
     message_delete,
     message_edit,
     messages,
@@ -21,18 +21,18 @@ app_name = "admin_screenshow"
 
 
 urlpatterns = [
-    url(r"^$", index, name="index"),
-    url(r"^config/$", config, name="config"),
-    url(r"^ircmessages/(?P<message_id>\d+)/delete/", ircmessage_delete, name="delete-ircmessage"),
-    url(r"^ircmessages/(?P<message_id>\d+)/edit/", ircmessage_edit, name="edit-ircmessage"),
-    url(r"^ircmessages/$", ircmessages, name="ircmessages"),
-    url(r"^messages/(?P<message_id>\d+)/delete/", message_delete, name="delete-message"),
-    url(r"^messages/(?P<message_id>\d+)/edit/", message_edit, name="edit-message"),
-    url(r"^messages/$", messages, name="messages"),
-    url(r"^sponsors/(?P<sponsor_id>\d+)/delete/", sponsor_delete, name="delete-sponsor"),
-    url(r"^sponsors/(?P<sponsor_id>\d+)/edit/", sponsor_edit, name="edit-sponsor"),
-    url(r"^sponsors/$", sponsors, name="sponsors"),
-    url(r"^playlist/(?P<video_id>\d+)/delete/", playlist_delete, name="delete-playlist"),
-    url(r"^playlist/(?P<video_id>\d+)/edit/", playlist_edit, name="edit-playlist"),
-    url(r"^playlist/$", playlist, name="playlist"),
+    path("", index, name="index"),
+    path("config/", config, name="config"),
+    path("ircmessages/<int:message_id>/delete/", ircmessage_delete, name="delete-ircmessage"),
+    path("ircmessages/<int:message_id>/edit/", ircmessage_edit, name="edit-ircmessage"),
+    path("ircmessages/", irc_messages, name="ircmessages"),
+    path("messages/<int:message_id>/delete/", message_delete, name="delete-message"),
+    path("messages/<int:message_id>/edit/", message_edit, name="edit-message"),
+    path("messages/", messages, name="messages"),
+    path("sponsors/<int:sponsor_id>/delete/", sponsor_delete, name="delete-sponsor"),
+    path("sponsors/<int:sponsor_id>/edit/", sponsor_edit, name="edit-sponsor"),
+    path("sponsors/", sponsors, name="sponsors"),
+    path("playlist/<int:video_id>/delete/", playlist_delete, name="delete-playlist"),
+    path("playlist/<int:video_id>/edit/", playlist_edit, name="edit-playlist"),
+    path("playlist/", playlist, name="playlist"),
 ]

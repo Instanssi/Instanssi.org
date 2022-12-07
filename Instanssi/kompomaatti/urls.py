@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.kompomaatti.views import dummy_index
 
@@ -10,8 +10,8 @@ anything in this main website, but the new SPA site will respond to these. There
 compatibility.
 """
 urlpatterns = [
-    url(r"^$", dummy_index, name="eventselect"),
-    url(r"^(?P<event_id>\d+)/$", dummy_index, name="index"),
-    url(r"^(?P<event_id>\d+)/compo/(?P<compo_id>\d+)/$", dummy_index, name="compo"),
-    url(r"^(?P<event_id>\d+)/competition/(?P<competition_id>\d+)/$", dummy_index, name="competition"),
+    path("", dummy_index, name="eventselect"),
+    path("<int:event_id>/", dummy_index, name="index"),
+    path("<int:event_id>/compo/<int:compo_id>/", dummy_index, name="compo"),
+    path("<int:event_id>/competition/<int:competition_id>/", dummy_index, name="competition"),
 ]

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
@@ -12,7 +14,7 @@ class NPSong(models.Model):
     time = models.DateTimeField("Aikaleima")
     state = models.IntegerField("Tila", choices=((0, "Play"), (1, "Stop")))
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.state == 0:
             return "[Play] {} - {}".format(self.title, self.artist)
         else:
@@ -42,7 +44,7 @@ class ScreenConfig(models.Model):
         default=5,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Asetukset tapahtumalle {}".format(self.event.name)
 
     class Meta:
@@ -59,7 +61,7 @@ class PlaylistVideo(models.Model):
         help_text="Indeksi toistolistan järjestelemiseen. Pienimmällä numerolla varustetut toistetaan ensimmäiseksi.",
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
@@ -75,14 +77,14 @@ class Sponsor(models.Model):
     )
     logo_scaled = ImageSpecField([ResizeToFit(800, 375, True)], source="logo", format="PNG")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
         verbose_name = "sponsori"
         verbose_name_plural = "sponsorit"
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         try:
             this = Sponsor.objects.get(id=self.id)
             if this.logo != self.logo:
@@ -100,7 +102,7 @@ class Message(models.Model):
     show_end = models.DateTimeField("Loppuaika", help_text="Viestin näyttäminen päättyy")
     text = models.TextField("Viesti", help_text="Viestin leipäteksti. Katso ettei tästä tule liian pitkä.")
 
-    def __str__(self):
+    def __str__(self) -> str:
         if len(self.text) > 32:
             return "{} ...".format(self.text[:32])
         else:
@@ -117,7 +119,7 @@ class IRCMessage(models.Model):
     nick = models.CharField("Nimimerkki", max_length=64)
     message = models.TextField("Viesti")
 
-    def __str__(self):
+    def __str__(self) -> str:
         if len(self.message) > 32:
             return "{} ...".format(self.message[:32])
         else:

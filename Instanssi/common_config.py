@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Tuple
 
 import sentry_sdk
 
@@ -207,11 +208,11 @@ LOGGING = {
 }
 
 
-def make_celery_conf(debug_mode):
+def make_celery_conf(debug_mode: bool) -> Tuple[str, dict]:
     return "redis://127.0.0.1:6379/3", {}
 
 
-def make_cache_conf(debug_mode):
+def make_cache_conf(debug_mode: bool) -> dict:
     if debug_mode:
         return {
             "default": {
@@ -231,7 +232,7 @@ def make_cache_conf(debug_mode):
         }
 
 
-def make_email_conf(debug_mode):
+def make_email_conf(debug_mode: bool) -> str:
     if debug_mode:
         return "django.core.mail.backends.console.EmailBackend"
     else:

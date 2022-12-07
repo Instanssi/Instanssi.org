@@ -1,4 +1,5 @@
-import os.path
+from pathlib import Path
+from typing import Any, Iterable, List, Optional
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -16,7 +17,7 @@ class Profile(models.Model):
         "Muut yhteystiedot", help_text="Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.username
 
     class Meta:
@@ -30,7 +31,7 @@ class Event(models.Model):
     archived = models.BooleanField("Arkistoitu", help_text="Saa näyttää arkistossa", default=False)
     mainurl = models.URLField("Tapahtuman pääsivu", help_text="URL Tapahtuman pääsivustolle", blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "[{}] {}".format(self.pk, self.name)
 
     class Meta:
@@ -61,7 +62,7 @@ class VoteCodeRequest(models.Model):
     text = models.TextField("Kuvaus", help_text="Lyhyt aneluteksti admineille :)")
     status = models.IntegerField("Tila", choices=STATUS_TYPES, default=0)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.username
 
     class Meta:
@@ -100,18 +101,18 @@ class TicketVoteCode(models.Model):
     )
 
     @property
-    def key(self):
+    def key(self) -> Optional[str]:
         if self.ticket:
             return self.ticket.key
         return None
 
     @property
-    def associated_username(self):
+    def associated_username(self) -> Optional[str]:
         if self.associated_to:
             return self.associated_to.username
         return None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}: {}".format(self.key, self.associated_username)
 
     class Meta:
@@ -223,31 +224,31 @@ class Compo(models.Model):
         help_text="Pikkukuvan luonti ja asettaminen.",
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.event.name + ": " + self.name
 
     class Meta:
         verbose_name = "kompo"
         verbose_name_plural = "kompot"
 
-    def is_voting_open(self):
+    def is_voting_open(self) -> bool:
         if not self.is_votable:
             return False
         if self.voting_start <= timezone.now() < self.voting_end:
             return True
         return False
 
-    def is_adding_open(self):
+    def is_adding_open(self) -> bool:
         if timezone.now() < self.adding_end:
             return True
         return False
 
-    def is_editing_open(self):
+    def is_editing_open(self) -> bool:
         if timezone.now() < self.editing_end:
             return True
         return False
 
-    def has_voting_started(self):
+    def has_voting_started(self) -> bool:
         if not self.is_votable:
             return False
         if timezone.now() > self.voting_start:
@@ -255,65 +256,65 @@ class Compo(models.Model):
         return False
 
     @property
-    def entry_format_list(self):
+    def entry_format_list(self) -> List[str]:
         return self.formats.lower().split("|")
 
     @property
-    def source_format_list(self):
+    def source_format_list(self) -> List[str]:
         return self.source_formats.lower().split("|")
 
     @property
-    def image_format_list(self):
+    def image_format_list(self) -> List[str]:
         return self.image_formats.lower().split("|")
 
     @property
-    def readable_entry_formats(self):
+    def readable_entry_formats(self) -> str:
         return ", ".join(self.entry_format_list)
 
     @property
-    def readable_source_formats(self):
+    def readable_source_formats(self) -> str:
         return ", ".join(self.source_format_list)
 
     @property
-    def readable_image_formats(self):
+    def readable_image_formats(self) -> str:
         return ", ".join(self.image_format_list)
 
     @property
-    def max_source_size(self):
+    def max_source_size(self) -> int:
         return self.source_sizelimit
 
     @property
-    def max_entry_size(self):
+    def max_entry_size(self) -> int:
         return self.entry_sizelimit
 
     @property
-    def max_image_size(self):
+    def max_image_size(self) -> int:
         return self.MAX_IMAGE_SIZE
 
     @property
-    def readable_max_source_size(self):
+    def readable_max_source_size(self) -> str:
         return sizeformat.size_format(self.max_source_size)
 
     @property
-    def readable_max_entry_size(self):
+    def readable_max_entry_size(self) -> str:
         return sizeformat.size_format(self.max_entry_size)
 
     @property
-    def readable_max_image_size(self):
+    def readable_max_image_size(self) -> str:
         return sizeformat.size_format(self.max_image_size)
 
     @property
-    def is_imagefile_required(self):
+    def is_imagefile_required(self) -> bool:
         """Is imagefile *required* for this compo"""
         return self.thumbnail_pref == 0
 
     @property
-    def is_imagefile_allowed(self):
+    def is_imagefile_allowed(self) -> bool:
         """Is imagefile allowed for this compo"""
         return self.thumbnail_pref in [0, 2]
 
     @property
-    def is_imagefile_copied(self):
+    def is_imagefile_copied(self) -> bool:
         """Is imagefile copied from entryfile"""
         return self.thumbnail_pref == 1
 
@@ -388,18 +389,17 @@ class Entry(models.Model):
         blank=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{} by {}".format(self.name, self.creator)
 
     class Meta:
         verbose_name = "tuotos"
         verbose_name_plural = "tuotokset"
 
-    def get_format(self):
-        name, ext = os.path.splitext(self.entryfile.url)
-        return ext
+    def get_format(self) -> str:
+        return Path(self.entryfile.url).suffix
 
-    def get_score(self):
+    def get_score(self) -> float:
         if self.disqualified:  # If disqualified, score will be -1
             return -1.0
         elif self.archive_score:  # If entry is archived, the score will be simple to get
@@ -412,12 +412,12 @@ class Entry(models.Model):
                     score += 1.0 / vote.rank
             return score
 
-    def get_youtube_embed_url(self):
+    def get_youtube_embed_url(self) -> str:
         """Get embed URL for this entry's YouTube link."""
         video_id = parse_youtube_video_id(self.youtube_url)
         return f"//www.youtube.com/embed/{video_id}/"
 
-    def get_rank(self):
+    def get_rank(self) -> int:
         # If rank has been predefined, then use that
         if self.archive_rank:
             return self.archive_rank
@@ -431,7 +431,7 @@ class Entry(models.Model):
             n += 1
         return n
 
-    def get_show_list(self):
+    def get_show_list(self) -> dict:
         show = {"youtube": False, "image": False, "noshow": True}
 
         state = self.compo.entry_view_type
@@ -449,7 +449,7 @@ class Entry(models.Model):
 
         return show
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         try:
             this = Entry.objects.get(id=self.id)
 
@@ -483,19 +483,19 @@ class VoteGroup(models.Model):
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
 
     @property
-    def entries(self):
+    def entries(self) -> List[Entry]:
         return [v.entry for v in self.votes.order_by("rank")]
 
-    def delete_votes(self):
+    def delete_votes(self) -> None:
         Vote.objects.filter(group=self).delete()
 
-    def create_votes(self, entries):
+    def create_votes(self, entries: Iterable[Entry]) -> None:
         current_rank = 1
         for entry in entries:
             Vote(user=self.user, compo=self.compo, rank=current_rank, entry=entry, group=self).save()
             current_rank += 1
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "votes for {} by {}".format(self.compo.name, self.user.username)
 
     class Meta:
@@ -518,7 +518,7 @@ class Vote(models.Model):
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{} by {} as {}".format(self.entry.name, self.user.username, self.rank)
 
     class Meta:
@@ -572,10 +572,10 @@ class Competition(models.Model):
         default=False,
     )
 
-    def is_participating_open(self):
+    def is_participating_open(self) -> bool:
         return timezone.now() < self.participation_end
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}: {}".format(self.event.name, self.name)
 
     class Meta:
@@ -607,10 +607,10 @@ class CompetitionParticipation(models.Model):
     )
     disqualified_reason = models.TextField("Diskauksen syy", blank=True)
 
-    def get_formatted_score(self):
+    def get_formatted_score(self) -> str:
         return "{} {}".format(self.score, self.competition.score_type)
 
-    def get_rank(self):
+    def get_rank(self) -> int:
         # Get results
         rank_by = "-score"
         if self.competition.score_sort == 1:
@@ -628,7 +628,7 @@ class CompetitionParticipation(models.Model):
                 rank += 1
         return rank
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}, {}: {}".format(self.competition.name, self.participant_name, self.score)
 
     class Meta:

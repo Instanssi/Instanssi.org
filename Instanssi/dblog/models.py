@@ -12,7 +12,7 @@ class DBLogEntry(models.Model):
     level = models.CharField(max_length=10)
     message = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         if len(self.message) > 64:
             return "{} ...".format(self.message[:64])
         else:

@@ -1,4 +1,5 @@
 import os.path
+from typing import Any
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -15,17 +16,17 @@ class UploadedFile(models.Model):
     file = models.FileField("Tiedosto", upload_to="files/")
     date = models.DateTimeField("Aika")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{} by {}".format(self.file.name, self.user.username)
 
     class Meta:
         verbose_name = "tiedosto"
         verbose_name_plural = "tiedostot"
 
-    def name(self):
-        return os.path.basename(self.file.name)
+    def name(self) -> str:
+        return str(os.path.basename(self.file.name))
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         # Delete old file when editing
         try:
             this = UploadedFile.objects.get(id=self.id)

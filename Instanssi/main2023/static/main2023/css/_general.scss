@@ -33,9 +33,8 @@ body {
         background-size: 1920px auto;
         background-position-y: 0;
         @media screen and (max-width: $screen-xs-max) {
-            top: -20px;
-            background-size: 100% auto;
-            background-position: top center;
+            background-size: 120vw auto;
+            background-position: top -10vw;
         }
     }
 }

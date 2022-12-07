@@ -7,6 +7,7 @@ from uuid import uuid4
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+from django.test import Client
 from faker import Faker
 from pytest import fixture
 from rest_framework.test import APIClient
@@ -84,7 +85,14 @@ def image_png2(test_image) -> SimpleUploadedFile:
 
 @fixture
 def api_client() -> APIClient:
+    """Use this to test Django rest framework pages"""
     return APIClient()
+
+
+@fixture
+def page_client() -> Client:
+    """Use this to test normal (non-api) Django pages"""
+    return Client()
 
 
 @fixture

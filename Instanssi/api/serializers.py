@@ -34,6 +34,7 @@ from Instanssi.store.handlers import (
     TransactionException,
     create_store_transaction,
     validate_item,
+    validate_items,
     validate_payment_method,
 )
 from Instanssi.store.methods import PaymentMethod
@@ -733,6 +734,10 @@ class StoreTransactionSerializer(Serializer):
             raise ValidationError("Ostoskorissa on oltava vähintään yksi tuote")
         serializer = StoreTransactionItemSerializer(data=value, many=True)
         serializer.is_valid(raise_exception=True)
+        try:
+            validate_items(value)
+        except TransactionException as e:
+            raise ValidationError(str(e))
         return value
 
     def validate(self, data):

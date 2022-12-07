@@ -249,30 +249,20 @@ class StoreTransaction(models.Model):
     def get_transaction_items(self) -> QuerySet:
         return TransactionItem.objects.filter(transaction=self)
 
-    def get_distinct_storeitems_and_prices(self) -> List[Tuple[StoreItem, StoreItemVariant, Decimal]]:
-        """Returns a list of unique (StoreItem, price) tuples related to
-        this transaction."""
+    def get_sorted_store_items_and_prices(
+        self,
+    ) -> List[Tuple[StoreItem, Optional[StoreItemVariant], Decimal]]:
+        """Returns a list of unique (StoreItem, price) tuples related to this transaction."""
+        return [
+            (
+                transaction_item.item,
+                transaction_item.variant,
+                transaction_item.purchase_price,
+            )
+            for transaction_item in self.get_transaction_items().order_by("item__name", "variant_id")
+        ]
 
-        items = {}
-        transaction_items = self.get_transaction_items().values_list("item", "variant", "purchase_price")
-        for item, variant, price in transaction_items:
-            if item not in items:
-                items[item] = {}
-            items[item][variant] = price
-
-        item_list = []
-        for item_key, variants in items.items():
-            for variant_key, price in variants.items():
-                item_list.append(
-                    (
-                        StoreItem.objects.get(pk=item_key),
-                        StoreItemVariant.objects.get(pk=variant_key) if variant_key else None,
-                        price,
-                    )
-                )
-        return item_list
-
-    def get_storeitem_count(self, store_item: StoreItem, variant: Optional[StoreItemVariant] = None) -> int:
+    def get_store_item_count(self, store_item: StoreItem, variant: Optional[StoreItemVariant] = None) -> int:
         q = TransactionItem.objects.filter(item=store_item, transaction=self)
         if variant:
             q = q.filter(variant=variant)

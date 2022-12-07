@@ -57,8 +57,8 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
     params.transaction_url(request.build_absolute_uri(reverse("store:ta_view", args=(ta.key,))))
 
     # Add items to email
-    for item, variant, purchase_price in ta.get_distinct_storeitems_and_prices():
-        i_amount = ta.get_storeitem_count(item, variant=variant)
+    for item, variant, purchase_price in ta.get_sorted_store_items_and_prices():
+        i_amount = ta.get_store_item_count(item, variant=variant)
         i_name = f"{item.name}, {variant.name}" if variant else item.name
         i_id = f"{item.id}:{variant.id}" if variant else item.id
         params.add_item(i_id, i_name, purchase_price, i_amount, "0%")

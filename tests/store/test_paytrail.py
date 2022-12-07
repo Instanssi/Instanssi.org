@@ -12,7 +12,7 @@ from django.urls import reverse
 
 from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
-from Instanssi.store.models import Receipt
+from Instanssi.store.models import Receipt, StoreTransaction
 
 
 def form_query(view_name: str, query: Dict[str, str], **kwargs) -> str:
@@ -64,7 +64,13 @@ def test_paytrail_begin_payment_process_bad_request(new_transaction):
 
 
 @pytest.mark.django_db
-def test_paytrail_begin_payment_process_good_request(new_transaction):
+def test_paytrail_begin_payment_process_good_request(
+    new_transaction: StoreTransaction,
+    new_transaction_item,
+    new_transaction_item3,
+    new_transaction_item4,
+    new_transaction_item2,
+):
     """Make sure paytrail works with a good request (we should get a redirect URL)"""
     request = RequestFactory().get("/")
     token = uuid4().hex
@@ -80,6 +86,70 @@ def test_paytrail_begin_payment_process_good_request(new_transaction):
             },
         )
         result = begin_payment_process(request, PaymentMethod.PAYTRAIL, new_transaction)
+
+        assert m.called_once
+        assert m.last_request.json() == {
+            "currency": "EUR",
+            "locale": "fi_FI",
+            "orderDetails": {
+                "contact": {
+                    "address": {
+                        "country": new_transaction.country.code,
+                        "postalCode": new_transaction.postalcode,
+                        "postalOffice": new_transaction.city,
+                        "street": new_transaction.street,
+                    },
+                    "companyName": new_transaction.company,
+                    "email": new_transaction.email,
+                    "firstName": new_transaction.firstname,
+                    "lastName": new_transaction.lastname,
+                    "mobile": new_transaction.mobile,
+                    "telephone": new_transaction.telephone,
+                },
+                "includeVat": 1,
+                "products": [
+                    {
+                        "amount": "1",
+                        "code": "3",
+                        "price": "20.00",
+                        "title": "Secret item",
+                        "type": 1,
+                        "vat": "0",
+                    },
+                    {
+                        "amount": "1",
+                        "code": "2",
+                        "price": "20.00",
+                        "title": "Test item 1",
+                        "type": 1,
+                        "vat": "0",
+                    },
+                    {
+                        "amount": "1",
+                        "code": "1:1",
+                        "price": "20.00",
+                        "title": "Test item 1, XXL",
+                        "type": 1,
+                        "vat": "0",
+                    },
+                    {
+                        "amount": "1",
+                        "code": "1:2",
+                        "price": "20.00",
+                        "title": "Test item 1, S",
+                        "type": 1,
+                        "vat": "0",
+                    },
+                ],
+            },
+            "orderNumber": "1",
+            "urlSet": {
+                "failure": "http://testserver/store/pm/paytrail/failure/",
+                "notification": "http://testserver/store/pm/paytrail/notify/",
+                "pending": "",
+                "success": "http://testserver/store/pm/paytrail/success/",
+            },
+        }
 
     # Verify the result
     assert result == f"https://localhost/payment/load/token/{token}"

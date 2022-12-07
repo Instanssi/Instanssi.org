@@ -11,6 +11,7 @@ from Instanssi.store.handlers import (
     TransactionException,
     create_store_transaction,
     validate_item,
+    validate_items,
     validate_payment_method,
 )
 from Instanssi.store.methods import PaymentMethod
@@ -136,6 +137,39 @@ def test_create_receipt_email_content(receipt, receipt_params):
         "Instanssi\n"
         "https://instanssi.org\n"
     )
+
+
+@pytest.mark.django_db
+def test_validate_items_ok(store_item, variant_item, store_item_variant, store_item_variant2):
+    validate_items(
+        [
+            {"item_id": store_item.id, "variant_id": None, "amount": 1},
+            {"item_id": variant_item.id, "variant_id": store_item_variant, "amount": 1},
+            {"item_id": variant_item.id, "variant_id": store_item_variant2, "amount": 1},
+        ]
+    )
+
+
+@pytest.mark.django_db
+def test_validate_items_too_many_similar_variants(variant_item, store_item_variant):
+    with pytest.raises(TransactionException):
+        validate_items(
+            [
+                {"item_id": variant_item.id, "variant_id": store_item_variant, "amount": 1},
+                {"item_id": variant_item.id, "variant_id": store_item_variant, "amount": 1},
+            ]
+        )
+
+
+@pytest.mark.django_db
+def test_validate_items_too_many_similar_items(store_item):
+    with pytest.raises(TransactionException):
+        validate_items(
+            [
+                {"item_id": store_item.id, "variant_id": None, "amount": 1},
+                {"item_id": store_item.id, "variant_id": None, "amount": 1},
+            ]
+        )
 
 
 @pytest.mark.django_db
@@ -270,8 +304,8 @@ def test_create_transaction_ok(transaction_base, store_item, variant_item, store
     # Check price functions
     assert transaction.get_transaction_items().count() == 6
     assert transaction.get_total_price() == Decimal("120.0")
-    assert transaction.get_storeitem_count(store_item) == 1
-    assert transaction.get_storeitem_count(variant_item) == 5
+    assert transaction.get_store_item_count(store_item) == 1
+    assert transaction.get_store_item_count(variant_item) == 5
 
     # Make sure transaction items went through
     for transaction_item in transaction.get_transaction_items():

@@ -1,6 +1,6 @@
 import logging
 import uuid
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from django.db import transaction
 from django.http import HttpRequest
@@ -19,6 +19,12 @@ logger = logging.getLogger(__name__)
 
 class TransactionException(Exception):
     pass
+
+
+def validate_items(items: List[Dict[str, Any]]) -> None:
+    item_ids = {(item["item_id"], item["variant_id"]) for item in items}
+    if len(item_ids) < len(items):
+        raise TransactionException("Samaa tuotevarianttia saa olla korissa vain kerran")
 
 
 def validate_item(item: Dict[str, Any]) -> None:
@@ -43,7 +49,7 @@ def validate_item(item: Dict[str, Any]) -> None:
         raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
 
 
-def get_item_and_variant(item: Dict[str, Any]) -> Tuple[StoreItem, StoreItemVariant]:
+def get_item_and_variant(item: Dict[str, Any]) -> Tuple[StoreItem, Optional[StoreItemVariant]]:
     """
     Return store item and variant (if any).
     """
@@ -59,7 +65,7 @@ def validate_payment_method(items: List[Dict[str, Any]], method: PaymentMethod) 
     """
     if method == PaymentMethod.NO_METHOD:
         for item in items:
-            store_item, store_variant = get_item_and_variant(item)
+            store_item, _ = get_item_and_variant(item)
             purchase_price = store_item.get_discounted_unit_price(item["amount"])
             if purchase_price > 0:
                 raise TransactionException("Valittu maksutapa ei ole sallittu tälle tilaukselle!")

@@ -129,7 +129,7 @@ class ReceiptParams:
     def transaction_url(self, var: str) -> None:
         self.params["transaction_url"] = var
 
-    def add_item(self, item_id: int, name: str, price: Decimal, amount: int, tax: str) -> None:
+    def add_item(self, item_id: str, name: str, price: Decimal, amount: int, tax: str) -> None:
         """
         Add an item to the bought list, and increment total cost calculator
 

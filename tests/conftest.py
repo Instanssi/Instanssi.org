@@ -430,6 +430,18 @@ def new_transaction_item(new_transaction, variant_item, store_item_variant) -> T
 
 
 @fixture
+def new_transaction_item_copy(new_transaction, variant_item, store_item_variant) -> TransactionItem:
+    return TransactionItem.objects.create(
+        key=uuid4().hex,
+        transaction=new_transaction,
+        item=variant_item,
+        variant=store_item_variant,
+        purchase_price=variant_item.price,
+        original_price=variant_item.price,
+    )
+
+
+@fixture
 def new_transaction_item2(new_transaction, variant_item, store_item_variant2) -> TransactionItem:
     return TransactionItem.objects.create(
         key=uuid4().hex,

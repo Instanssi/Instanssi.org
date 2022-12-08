@@ -1,3 +1,4 @@
+import csv
 import logging
 
 from django.contrib.auth.decorators import permission_required
@@ -134,13 +135,43 @@ def status(request: HttpRequest) -> HttpResponse:
 @staff_access_required
 @permission_required("store.view_storetransaction", raise_exception=True)
 def tis_csv(request: HttpRequest, event_id: int) -> HttpResponse:
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="instanssi_store.csv"'
-    t = loader.get_template("admin_store/tis_csv.txt")
-    c = {
-        "data": TransactionItem.objects.filter(item__event=event_id, transaction__time_paid__isnull=False),
-    }
-    response.write(t.render(c))
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="instanssi_entries.csv"'},
+    )
+    writer = csv.writer(response, dialect="unix")
+    writer.writerow(
+        [
+            "TransaktioID",
+            "TuoteID",
+            "Aikaleima",
+            "Tuotteen nimi",
+            "Hinta",
+            "Etunimi",
+            "Sukunimi",
+            "Sähköposti",
+            "Toimitettu",
+        ]
+    )
+
+    transaction_items = TransactionItem.objects.filter(
+        item__event=event_id, transaction__time_paid__isnull=False
+    )
+    for tx in transaction_items:
+        writer.writerow(
+            [
+                tx.transaction_id,
+                tx.item_id,
+                tx.transaction.time_created.isoformat(),
+                tx.item.name,
+                tx.purchase_price,
+                tx.transaction.firstname,
+                tx.transaction.lastname,
+                tx.transaction.email,
+                tx.is_delivered,
+            ]
+        )
+
     return response
 
 

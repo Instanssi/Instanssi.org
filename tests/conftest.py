@@ -1,11 +1,12 @@
 import base64
 import secrets
+from contextlib import contextmanager
 from datetime import timedelta
 from decimal import Decimal
 from typing import Any, Callable, Dict
 from uuid import uuid4
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
 from django.urls import reverse
@@ -105,6 +106,18 @@ def page_client() -> Client:
 
 
 @fixture
+def login_as(page_client, password, create_user):
+    @contextmanager
+    def _inner(**kwargs):
+        user = create_user(**kwargs)
+        page_client.login(username=user.username, password=password)
+        yield page_client
+        page_client.logout()
+
+    return _inner
+
+
+@fixture
 def password() -> str:
     return secrets.token_hex(16)
 
@@ -117,42 +130,68 @@ def auth_client(api_client, base_user, password) -> APIClient:
 
 
 @fixture
-def staff_client(api_client, staff_user, password) -> APIClient:
+def staff_page_client(page_client, staff_user, password) -> APIClient:
+    page_client.login(username=staff_user.username, password=password)
+    yield page_client
+    page_client.logout()
+
+
+@fixture
+def super_page_client(page_client, super_user, password) -> APIClient:
+    page_client.login(username=super_user.username, password=password)
+    yield page_client
+    page_client.logout()
+
+
+@fixture
+def staff_api_client(api_client, staff_user, password) -> APIClient:
     api_client.login(username=staff_user.username, password=password)
     yield api_client
     api_client.logout()
 
 
 @fixture
-def super_client(api_client, super_user, password) -> APIClient:
+def super_api_client(api_client, super_user, password) -> APIClient:
     api_client.login(username=super_user.username, password=password)
     yield api_client
     api_client.logout()
 
 
 @fixture
-def base_user(faker, password) -> User:
-    return User.objects.create_user(
-        username=faker.user_name(),
-        email=faker.email(),
-        first_name=faker.first_name(),
-        last_name=faker.last_name(),
-        password=password,
-    )
+def create_user(faker, password):
+    def _inner(**kwargs) -> User:
+        permissions = kwargs.pop("permissions", None)
+        obj: User = User.objects.create_user(
+            username=faker.user_name(),
+            email=faker.email(),
+            first_name=faker.first_name(),
+            last_name=faker.last_name(),
+            password=password,
+            **kwargs,
+        )
+        if permissions:
+            for permission in permissions:
+                app, name = permission.split(".")
+                obj.user_permissions.add(Permission.objects.get(content_type__app_label=app, codename=name))
+
+        return obj
+
+    return _inner
 
 
 @fixture
-def staff_user(base_user: User) -> User:
-    base_user.is_staff = True
-    base_user.save(update_fields=["is_staff"])
-    return base_user
+def base_user(create_user) -> User:
+    return create_user()
 
 
 @fixture
-def super_user(base_user: User) -> User:
-    base_user.is_superuser = True
-    base_user.save(update_fields=["is_superuser"])
-    return base_user
+def staff_user(create_user) -> User:
+    return create_user(is_staff=True)
+
+
+@fixture
+def super_user(create_user) -> User:
+    return create_user(is_staff=True, is_superuser=True)
 
 
 @fixture
@@ -209,6 +248,20 @@ def votable_compo(faker, event) -> Compo:
 
 
 @fixture
+def closed_compo(faker, event) -> Compo:
+    return Compo.objects.create(
+        event=event,
+        name="Closed Compo",
+        description="Test Compo should be closed!",
+        adding_end=timezone.now() + timedelta(hours=-6),
+        editing_end=timezone.now() + timedelta(hours=-2),
+        compo_start=timezone.now() + timedelta(hours=-1),
+        voting_start=timezone.now() + timedelta(minutes=-30),
+        voting_end=timezone.now() + timedelta(minutes=-5),
+    )
+
+
+@fixture
 def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, image_png) -> Compo:
     return Entry.objects.create(
         compo=open_compo,
@@ -220,6 +273,23 @@ def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, im
         entryfile=entry_zip,
         sourcefile=source_zip,
         imagefile_original=image_png,
+    )
+
+
+@fixture
+def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, image_png) -> Compo:
+    return Entry.objects.create(
+        compo=closed_compo,
+        user=base_user,
+        name="Closed Entry",
+        description=faker.text(),
+        creator=faker.name(),
+        platform="Commodore 64",
+        entryfile=entry_zip,
+        sourcefile=source_zip,
+        imagefile_original=image_png,
+        archive_score=5,
+        archive_rank=1,
     )
 
 

@@ -1,3 +1,4 @@
+import csv
 import logging
 
 from django.contrib.auth.decorators import permission_required
@@ -42,27 +43,19 @@ def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
 def entries_csv(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     event = get_object_or_404(Event, pk=selected_event_id)
     compos = Compo.objects.filter(event=event)
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="instanssi_entries.csv"'},
+    )
 
-    # Get top three entries of all compos
-    entries = []
+    # Write data directly to the response via the CSV writer
+    writer = csv.writer(response, dialect="unix")
     for compo in compos:
-        entries.extend(entrysort.sort_by_score(Entry.objects.filter(compo=compo))[:3])
+        for entry in entrysort.sort_by_score(Entry.objects.filter(compo=compo))[:3]:
+            m = entry.get_rank()
+            placement = "I" * m
+            writer.writerow([entry.name, entry.creator, placement, entry.compo.name])
 
-    # Placements, copypasta
-    for entry in entries:
-        m = entry.get_rank()
-        if m == 1:
-            entry.placement = "I"
-        if m == 2:
-            entry.placement = "II"
-        if m == 3:
-            entry.placement = "III"
-
-    # Respond with entries CSV (text/csv)
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="instanssi_entries.csv"'
-    t = loader.get_template("admin_kompomaatti/entries_csv.txt")
-    response.write(t.render({"entries": entries}))
     return response
 
 

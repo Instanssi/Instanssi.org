@@ -20,5 +20,4 @@ urlpatterns = [
     path("users/", users, name="users"),
     path("apps/<int:app_id>/delete/", delete_app, name="delete_app"),
     path("apps/", apps, name="apps"),
-    path("log/", log, name="log"),
 ]

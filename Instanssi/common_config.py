@@ -113,6 +113,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "auditlog.middleware.AuditlogMiddleware",
 ]
 
 ROOT_URLCONF = "Instanssi.urls"
@@ -159,6 +160,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "compressor",
     "qr_code",
+    "auditlog",
 )
 
 # Authentication backends
@@ -176,36 +178,29 @@ AUTHENTICATION_BACKENDS = (
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {
-        "level": "WARNING",
-        "handlers": ["console", "main_log"],
-    },
     "formatters": {
-        "verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"},
+        "verbose": {"format": "[%(levelname)s][%(asctime)s] %(module)s: %(message)s"},
     },
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "filters": {
+        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
+    },
     "handlers": {
-        "log_db": {
-            "level": "INFO",
-            "class": "Instanssi.dblog.handlers.DBLogHandler",
-        },
         "main_log": {
-            "filters": ["require_debug_false"],
             "level": "INFO",
             "class": "logging.FileHandler",
             "filename": BASE_DIR / "var" / "log" / "main.log",
             "formatter": "verbose",
+            "filters": ["require_debug_false"],
         },
-        "console": {"level": "WARNING", "class": "logging.StreamHandler", "formatter": "verbose"},
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
     },
     "loggers": {
-        "django.db.backends": {
-            "level": "WARNING",
+        "": {
             "handlers": ["console", "main_log"],
-            "propagate": False,
-        },
-        "Instanssi": {
-            "handlers": ["log_db", "console", "main_log"],
             "level": "INFO",
             "propagate": False,
         },

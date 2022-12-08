@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -24,16 +25,4 @@ class BlogEntry(models.Model):
         verbose_name_plural = "entryt"
 
 
-class BlogComment(models.Model):
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
-    entry = models.ForeignKey(BlogEntry, verbose_name="Entry", on_delete=models.CASCADE)
-    title = models.CharField("Otsikko", help_text="Lyhyt otsikko kommentille.", max_length=128, blank=True)
-    text = models.TextField("Kommentti", help_text="Kommenttiteksti.")
-    date = models.DateTimeField("Aika")
-
-    def __str__(self) -> str:
-        return self.text[:20]
-
-    class Meta:
-        verbose_name = "kommentti"
-        verbose_name_plural = "kommentit"
+auditlog.register(BlogEntry)

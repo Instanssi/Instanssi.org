@@ -94,35 +94,13 @@ INTERNAL_IPS = ("127.0.0.1",)
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "formatters": {
+        "verbose": {"format": "[%(levelname)s][%(asctime)s] %(module)s: %(message)s"},
+    },
     "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-        "log_db": {
-            "level": "INFO",
-            "class": "Instanssi.dblog.handlers.DBLogHandler",
-        },
+        "console": {"level": "WARNING", "class": "logging.StreamHandler", "formatter": "verbose"},
     },
     "loggers": {
-        "django.request": {
-            "handlers": ["mail_admins"],
-            "level": "ERROR",
-            "propagate": True,
-        },
-        "Instanssi.store": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_arkisto": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_users": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_blog": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_events": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_kompomaatti": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_programme": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_upload": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_utils": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_screenshow": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.admin_store": {"handlers": ["log_db"], "level": "INFO"},
-        "Instanssi.infodesk": {"handlers": ["log_db"], "level": "INFO"},
+        "": {"handlers": ["console"], "level": "INFO"},
     },
 }

@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 from typing import List, Optional, Tuple
 
+from auditlog.registry import auditlog
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import models
@@ -364,3 +365,10 @@ class Receipt(models.Model):
     class Meta:
         verbose_name = "kuitti"
         verbose_name_plural = "kuitit"
+
+
+auditlog.register(StoreItem)
+auditlog.register(StoreItemVariant)
+auditlog.register(StoreTransaction)
+auditlog.register(TransactionItem)
+auditlog.register(Receipt)

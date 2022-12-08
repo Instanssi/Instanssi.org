@@ -301,11 +301,12 @@ def test_create_transaction_ok(transaction_base, store_item, variant_item, store
     # Make sure this doesn't crash
     assert transaction.qr_code.startswith("http")
 
-    # Check price functions
+    # Check price functions (just so that they work)
     assert transaction.get_transaction_items().count() == 6
     assert transaction.get_total_price() == Decimal("120.0")
     assert transaction.get_store_item_count(store_item) == 1
     assert transaction.get_store_item_count(variant_item) == 5
+    assert len(transaction.get_distinct_store_items_and_prices()) == 2
 
     # Make sure transaction items went through
     for transaction_item in transaction.get_transaction_items():
@@ -330,6 +331,98 @@ def test_create_transaction_ok(transaction_base, store_item, variant_item, store
     for item in bought_items:
         assert item.original_price == Decimal("20")
         assert item.purchase_price == Decimal("20")
+
+
+@freeze_time(FAKE_NOW)
+@pytest.mark.django_db
+def test_transaction_with_same_items_and_prices(
+    new_transaction, new_transaction_item, new_transaction_item2, new_transaction_item_copy
+):
+    """
+    Since two of the transaction items have the same item, variant and price, we should only find one distinct entry
+    for those. new_transaction_item2 is unique, so it should also show up.
+    """
+    assert new_transaction.get_distinct_store_items_and_prices() == [
+        (new_transaction_item2.item, new_transaction_item2.variant, new_transaction_item2.purchase_price),
+        (
+            new_transaction_item_copy.item,
+            new_transaction_item_copy.variant,
+            new_transaction_item_copy.purchase_price,
+        ),
+    ]
+
+    # One unique item
+    assert (
+        new_transaction.get_store_item_count(
+            new_transaction_item2.item,
+            variant=new_transaction_item2.variant,
+            purchase_price=new_transaction_item2.purchase_price,
+        )
+        == 1
+    )
+
+    # Two items with the same item, variant and price.
+    assert (
+        new_transaction.get_store_item_count(
+            new_transaction_item_copy.item,
+            variant=new_transaction_item_copy.variant,
+            purchase_price=new_transaction_item_copy.purchase_price,
+        )
+        == 2
+    )
+
+
+@freeze_time(FAKE_NOW)
+@pytest.mark.django_db
+def test_transaction_with_same_items_and_different_prices(
+    new_transaction, new_transaction_item, new_transaction_item2, new_transaction_item_copy
+):
+    """
+    Since all of the transaction items have the different price (although two have same store item and variant),
+    we should find one distinct entries for all three.
+    """
+    new_transaction_item_copy.purchase_price = Decimal("55.55")  # Change price for one variant
+    new_transaction_item_copy.save()
+
+    assert new_transaction.get_distinct_store_items_and_prices() == [
+        (new_transaction_item2.item, new_transaction_item2.variant, new_transaction_item2.purchase_price),
+        (new_transaction_item.item, new_transaction_item.variant, new_transaction_item.purchase_price),
+        (
+            new_transaction_item_copy.item,
+            new_transaction_item_copy.variant,
+            new_transaction_item_copy.purchase_price,
+        ),
+    ]
+
+    # One unique item (no variant)
+    assert (
+        new_transaction.get_store_item_count(
+            new_transaction_item2.item,
+            variant=new_transaction_item2.variant,
+            purchase_price=new_transaction_item2.purchase_price,
+        )
+        == 1
+    )
+
+    # Independent variant with its own price
+    assert (
+        new_transaction.get_store_item_count(
+            new_transaction_item.item,
+            variant=new_transaction_item.variant,
+            purchase_price=new_transaction_item.purchase_price,
+        )
+        == 1
+    )
+
+    # Independent variant with its own price
+    assert (
+        new_transaction.get_store_item_count(
+            new_transaction_item_copy.item,
+            variant=new_transaction_item_copy.variant,
+            purchase_price=new_transaction_item_copy.purchase_price,
+        )
+        == 1
+    )
 
 
 @pytest.mark.django_db

@@ -249,15 +249,15 @@ class StoreTransaction(models.Model):
     def get_transaction_items(self) -> QuerySet:
         return TransactionItem.objects.filter(transaction=self)
 
-    def get_sorted_store_items_and_prices(
+    def get_distinct_store_items_and_prices(
         self,
     ) -> List[Tuple[StoreItem, Optional[StoreItemVariant], Decimal]]:
         """
-        Returns a list of unique (StoreItem, price) tuples related to this transaction.
-        We trust here that all TransactionItems that have the same item-id and variant-id also have the same price.
+        We find the unique item groups here. Because in database we have all the bought items as individual
+        items, we need to group them up for payment service and receipt. This function handles that.
         """
         qs = self.get_transaction_items().order_by("item__name", "variant__name")
-        unique_items = {(t_item.item_id, t_item.variant_id): t_item for t_item in qs}
+        unique_items = {(t_item.item_id, t_item.variant_id, t_item.purchase_price): t_item for t_item in qs}
         return [
             (
                 transaction_item.item,
@@ -267,10 +267,21 @@ class StoreTransaction(models.Model):
             for _, transaction_item in unique_items.items()
         ]
 
-    def get_store_item_count(self, store_item: StoreItem, variant: Optional[StoreItemVariant] = None) -> int:
+    def get_store_item_count(
+        self,
+        store_item: StoreItem,
+        variant: Optional[StoreItemVariant] = None,
+        purchase_price: Optional[Decimal] = None,
+    ) -> int:
+        """
+        Gets transaction item by its linked store-item. You can also use item variant and purchase price to make the
+        query more detailed.
+        """
         q = TransactionItem.objects.filter(item=store_item, transaction=self)
         if variant:
             q = q.filter(variant=variant)
+        if purchase_price:
+            q = q.filter(purchase_price=purchase_price)
         return q.count()
 
     def __str__(self) -> str:

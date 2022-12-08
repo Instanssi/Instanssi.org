@@ -7,7 +7,6 @@ from django.db.models import Count
 from django.forms import inlineformset_factory
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.template import loader
 from django.urls import reverse
 
 from Instanssi.admin_base.misc.custom_render import admin_render

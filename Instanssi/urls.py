@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
@@ -67,5 +67,5 @@ if settings.DEBUG or settings.ADMIN:
 if settings.DEBUG:
     # Serve media files through static.serve when running in debug mode
     urlpatterns += [
-        url(r"^uploads/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+        path("uploads/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}),
     ]

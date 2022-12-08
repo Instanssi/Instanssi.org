@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from Instanssi.users.views import loggedout, login, logout, profile
 
@@ -6,8 +6,8 @@ app_name = "users"
 
 
 urlpatterns = [
-    url(r"^profile/$", profile, name="profile"),
-    url(r"^login/$", login, name="login"),
-    url(r"^logout/$", logout, name="logout"),
-    url(r"^loggedout/$", loggedout, name="loggedout"),
+    path("profile/", profile, name="profile"),
+    path("login/", login, name="login"),
+    path("logout/", logout, name="logout"),
+    path("loggedout/", loggedout, name="loggedout"),
 ]

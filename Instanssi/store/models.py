@@ -252,14 +252,19 @@ class StoreTransaction(models.Model):
     def get_sorted_store_items_and_prices(
         self,
     ) -> List[Tuple[StoreItem, Optional[StoreItemVariant], Decimal]]:
-        """Returns a list of unique (StoreItem, price) tuples related to this transaction."""
+        """
+        Returns a list of unique (StoreItem, price) tuples related to this transaction.
+        We trust here that all TransactionItems that have the same item-id and variant-id also have the same price.
+        """
+        qs = self.get_transaction_items().order_by("item__name", "variant__name")
+        unique_items = {(t_item.item_id, t_item.variant_id): t_item for t_item in qs}
         return [
             (
                 transaction_item.item,
                 transaction_item.variant,
                 transaction_item.purchase_price,
             )
-            for transaction_item in self.get_transaction_items().order_by("item__name", "variant_id")
+            for _, transaction_item in unique_items.items()
         ]
 
     def get_store_item_count(self, store_item: StoreItem, variant: Optional[StoreItemVariant] = None) -> int:

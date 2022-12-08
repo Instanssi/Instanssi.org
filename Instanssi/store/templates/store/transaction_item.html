@@ -1,5 +1,5 @@
 {% extends "store/transaction_base.html" %}
-{% load static %}
+{% load static qr_code store_tags %}
 
 {% block title %}{{ block.super }} - Tilattu tuote{% endblock %}
 
@@ -14,7 +14,11 @@
 {% block content %}
 {{ block.super }}
 <div class="item{% if ta_item.is_delivered %} delivered{% endif %}" >
-    <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostoksen QR-koodi." />
+    <img class="item-code"
+         src="{% qr_url_from_text ta_item.qr_code_path|absolute_url:request boost_error=True version=6 image_format="svg" %}"
+         width="160"
+         height="160"
+         alt="Ostoksen QR-koodi" />
     <div class="item-heading">
         <h2>{{ ta_item.item.name }}{% if ta_item.variant %}, {{ ta_item.variant.name }}{% endif %}</h2>
         <span class="item-key">{% if ta_item.item.is_ticket %}LIPPUKOODI{% else %}TUOTEKOODI{% endif %}: {{ ta_item.key }}</span>

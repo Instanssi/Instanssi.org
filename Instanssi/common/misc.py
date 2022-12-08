@@ -1,14 +1,6 @@
 from typing import Optional
 from urllib.parse import parse_qs, urlparse, urlsplit, urlunsplit
 
-from django.conf import settings
-
-
-def get_url(path: str) -> str:
-    proto = "https://" if settings.SSL_ON else "http://"
-    host = settings.DOMAIN
-    return "{}{}{}".format(proto, host, path or "")
-
 
 def get_url_local_path(url: str) -> str:
     parsed = urlsplit(url)

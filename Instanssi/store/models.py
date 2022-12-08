@@ -12,7 +12,6 @@ from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
-from Instanssi.common.misc import get_url
 from Instanssi.kompomaatti.models import Event
 from Instanssi.store.utils.receipt import ReceiptParams
 
@@ -222,8 +221,8 @@ class StoreTransaction(models.Model):
         return True
 
     @property
-    def qr_code(self) -> str:
-        return get_url(reverse("store:ta_view", kwargs={"transaction_key": self.key}))
+    def qr_code_path(self) -> str:
+        return reverse("store:ta_view", kwargs={"transaction_key": self.key})
 
     @property
     def full_name(self) -> str:
@@ -317,8 +316,8 @@ class TransactionItem(models.Model):
         return self.time_delivered is not None
 
     @property
-    def qr_code(self) -> str:
-        return get_url(reverse("store:ti_view", kwargs={"item_key": self.key}))
+    def qr_code_path(self) -> str:
+        return reverse("store:ti_view", kwargs={"item_key": self.key})
 
     def __str__(self) -> str:
         return "{} for {}".format(self.item.name, self.transaction.full_name)

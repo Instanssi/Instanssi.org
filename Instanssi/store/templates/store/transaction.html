@@ -1,5 +1,5 @@
 {% extends "store/transaction_base.html" %}
-{% load static %}
+{% load static qr_code store_tags %}
 
 {% block title %}{{ block.super }} - Tilaustiedot{% endblock %}
 
@@ -20,7 +20,12 @@
 </p>
 
 <div class="order">
-<img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ transaction.qr_code }}" width="160" height="160" alt="Tilauksen QR-koodi." />
+
+<img class="item-code"
+     src="{% qr_url_from_text transaction.qr_code_path|absolute_url:request boost_error=True version=6 image_format="svg" %}"
+     width="160"
+     height="160"
+     alt="Tilauksen QR-koodi" />
 <h2>Tilaus</h2>
 <span class="item-key">{{ transaction.key }}</span>
 <table>
@@ -47,7 +52,11 @@
 <div class="items">
 {% for ta_item in ta_items %}
     <div class="item{% if ta_item.is_delivered %} delivered{% endif %}" >
-        <img class="item-code" src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ ta_item.qr_code }}" width="160" height="160" alt="Ostetun tuotteen QR-koodi." />
+        <img class="item-code"
+             src="{% qr_url_from_text ta_item.qr_code_path|absolute_url:request boost_error=True version=6 image_format="svg" %}"
+             width="160"
+             height="160"
+             alt="Ostetun tuotteen QR-koodi" />
         <div class="item-heading">
             <h2><a href="{% url 'store:ti_view' ta_item.key %}">{{ ta_item.item.name }}{% if ta_item.variant %}, {{ ta_item.variant.name }}{% endif %}</a></h2>
             <span class="item-key">{% if ta_item.item.is_ticket %}LIPPUKOODI{% else %}TUOTEKOODI{% endif %}: {{ ta_item.key }}</span>

@@ -18,3 +18,8 @@ def render_product_list(products):
             "tax": "Alv.",
         },
     )
+
+
+@register.filter
+def absolute_url(path, request):
+    return request.build_absolute_uri(path)

@@ -7,6 +7,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path("", include("social_django.urls", namespace="social")),
+    path("qr/", include("qr_code.urls", namespace="qr_code")),
     path("api/v1/", include("Instanssi.api.urls", namespace="api")),
     path("2022/", include("Instanssi.main2022.urls", namespace="main2022")),
     path("manage/events/", include("Instanssi.admin_events.urls", namespace="manage-events")),

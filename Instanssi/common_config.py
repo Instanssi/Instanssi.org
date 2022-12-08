@@ -20,6 +20,10 @@ MEDIA_URL = "/uploads/"
 STATIC_ROOT = BASE_DIR / "content" / "static"
 STATIC_URL = "/static/"
 
+# We map qr_code library to /qr/ via path mapping, no need for the library to
+# add any more path segments.
+SERVE_QR_CODE_IMAGE_PATH = ""
+
 # Max size for request body (8M)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 
@@ -154,6 +158,7 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.admin",
     "compressor",
+    "qr_code",
 )
 
 # Authentication backends

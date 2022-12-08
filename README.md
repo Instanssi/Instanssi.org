@@ -35,6 +35,17 @@ Installing stuff for development
 Note that some background operations use celery. It can be started with following:
 `python -m celery -A Instanssi worker -l info --autoscale 2,1`
 
+Running in production
+---------------------
+
+Either use gunicorn (WSGI) or uvicorn (ASGI). Currently gunicorn is recommended, uvicorn is in testing.
+
+* With gunicorn: `gunicorn` (it automatically uses the gunicorn.conf.py config file)
+* With uvicorn: `uvicorn Instanssi.asgi:application` (No other config needed)
+
+Note that gunicorn does not work on windows due to missing fcntl package, so there your
+best bet is uvicorn.
+
 Running tests
 -------------
 

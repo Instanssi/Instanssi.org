@@ -299,7 +299,7 @@ def test_create_transaction_ok(transaction_base, store_item, variant_item, store
     assert transaction.full_name == "Donald Duck"
 
     # Make sure this doesn't crash
-    assert transaction.qr_code.startswith("http")
+    assert transaction.qr_code_path.startswith("/store")
 
     # Check price functions (just so that they work)
     assert transaction.get_transaction_items().count() == 6
@@ -318,7 +318,7 @@ def test_create_transaction_ok(transaction_base, store_item, variant_item, store
         assert transaction_item.time_delivered is None
         assert UUID(transaction_item.key)
         assert transaction_item.is_delivered is False
-        assert transaction_item.qr_code.startswith("http") is True
+        assert transaction_item.qr_code_path.startswith("/store")
 
     # Check amounts (manually)
     assert TransactionItem.objects.filter(transaction=transaction, item=store_item).count() == 1

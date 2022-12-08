@@ -42,6 +42,8 @@ Just do `pytest` in the main directory :)
 
 To also get coverage, do `pytest --cov=Instanssi`
 
+Also, you can run tests in parallel using `pytest -n 4`.
+
 Production deps
 ---------------
 

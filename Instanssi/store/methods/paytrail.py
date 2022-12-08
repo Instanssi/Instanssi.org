@@ -17,8 +17,8 @@ def start_process(request: HttpRequest, ta: StoreTransaction) -> str:
 
     product_list = []
 
-    for store_item, item_variant, purchase_price in ta.get_sorted_store_items_and_prices():
-        count = ta.get_store_item_count(store_item, variant=item_variant)
+    for store_item, item_variant, purchase_price in ta.get_distinct_store_items_and_prices():
+        count = ta.get_store_item_count(store_item, variant=item_variant, purchase_price=purchase_price)
         product_list.append(
             {
                 "title": f"{store_item.name}, {item_variant.name}" if item_variant else store_item.name,

@@ -1,3 +1,4 @@
+# flake8: noqa
 # NOTE! THIS FILE IS FOR CI AND UNITTEST TESTING ENVIRONMENT!
 
 from .common_config import *

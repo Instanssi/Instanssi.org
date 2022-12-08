@@ -30,10 +30,6 @@ TIME_ZONE = "Europe/Helsinki"
 LANGUAGE_CODE = "fi-FI"
 SHORT_LANGUAGE_CODE = "fi"
 
-# Hackish, but will do for now
-SSL_ON = True
-DOMAIN = "instanssi.org"
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"
 

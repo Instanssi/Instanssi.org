@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any, Iterable, List, Optional
 
+from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -634,3 +635,16 @@ class CompetitionParticipation(models.Model):
     class Meta:
         verbose_name = "ilmoittautuminen"
         verbose_name_plural = "ilmoittautumiset"
+
+
+auditlog.register(Compo)
+auditlog.register(Competition)
+auditlog.register(Entry)
+auditlog.register(CompetitionParticipation)
+auditlog.register(Vote)
+auditlog.register(VoteGroup)
+auditlog.register(VoteCodeRequest)
+auditlog.register(EntryCollection)
+auditlog.register(Profile)
+auditlog.register(Event)
+auditlog.register(TicketVoteCode)

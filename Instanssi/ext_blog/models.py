@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -37,3 +38,6 @@ class BlogComment(models.Model):
     class Meta:
         verbose_name = "kommentti"
         verbose_name_plural = "kommentit"
+
+
+auditlog.register(BlogEntry)

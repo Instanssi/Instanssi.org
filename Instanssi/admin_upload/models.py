@@ -1,6 +1,7 @@
 import os.path
 from typing import Any
 
+from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -37,3 +38,6 @@ class UploadedFile(models.Model):
 
         # Continue with normal save
         super(UploadedFile, self).save(*args, **kwargs)
+
+
+auditlog.register(UploadedFile)

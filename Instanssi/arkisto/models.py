@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.db import models
 
 from Instanssi.kompomaatti.models import Event
@@ -27,3 +28,7 @@ class OtherVideo(models.Model):
     class Meta:
         verbose_name = "muu video"
         verbose_name_plural = "muut videot"
+
+
+auditlog.register(OtherVideoCategory)
+auditlog.register(OtherVideo)

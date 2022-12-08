@@ -1,5 +1,6 @@
 from typing import Any
 
+from auditlog.registry import auditlog
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
@@ -128,3 +129,11 @@ class IRCMessage(models.Model):
     class Meta:
         verbose_name = "irc-viesti"
         verbose_name_plural = "irc-viestit"
+
+
+auditlog.register(NPSong)
+auditlog.register(ScreenConfig)
+auditlog.register(PlaylistVideo)
+auditlog.register(Sponsor)
+auditlog.register(Message)
+auditlog.register(IRCMessage)

@@ -1,6 +1,7 @@
 from typing import Any
 
 import arrow
+from auditlog.registry import auditlog
 from django.conf import settings
 from django.db import models
 from imagekit.models import ImageSpecField
@@ -96,3 +97,6 @@ class ProgrammeEvent(models.Model):
     class Meta:
         verbose_name = "ohjelmatapahtuma"
         verbose_name_plural = "ohjelmatapahtumat"
+
+
+auditlog.register(ProgrammeEvent)

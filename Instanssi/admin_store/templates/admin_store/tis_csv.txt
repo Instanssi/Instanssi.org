@@ -1,3 +1,0 @@
-TransaktioID,TuoteID,Aikaleima,Tuotteen nimi,Hinta,Etunimi,Sukunimi,Sähköposti,Toimitettu
-{% for ti in data %}{{ ti.transaction.id }},{{ ti.item.id }},{{ ti.transaction.time_created|date:"c" }},{{ ti.item.name|addslashes }},{{ ti.purchase_price }},{{ ti.transaction.firstname|addslashes }},{{ ti.transaction.lastname|addslashes }},{{ ti.transaction.email|addslashes }},{% if ti.is_delivered %}Kyllä{% else %}Ei{% endif %}
-{% endfor %}

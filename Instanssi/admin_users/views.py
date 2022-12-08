@@ -14,7 +14,6 @@ from Instanssi.admin_users.forms import (
     UserEditForm,
 )
 from Instanssi.common.auth import staff_access_required, su_access_required
-from Instanssi.dblog.models import DBLogEntry
 
 logger = logging.getLogger(__name__)
 

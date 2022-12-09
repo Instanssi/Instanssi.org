@@ -1,6 +1,7 @@
 from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import QuerySet
 
 from Instanssi.kompomaatti.models import Event
 
@@ -16,6 +17,10 @@ class BlogEntry(models.Model):
         help_text="Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.",
         default=False,
     )
+
+    @classmethod
+    def get_latest(cls, public: bool = True) -> QuerySet:
+        return cls.objects.filter(public=public).order_by("-date")
 
     def __str__(self) -> str:
         return self.title

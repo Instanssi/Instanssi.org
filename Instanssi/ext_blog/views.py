@@ -17,7 +17,11 @@ class RSSEntry:
     event_url: str
 
 
-class BlogFeedBase(Feed):
+class BlogFeed(Feed):
+    title = "Instanssi.org Blogi"
+    link = "https://instanssi.org"
+    description = "Instanssi-demopartyn uusimmat uutiset."
+
     @staticmethod
     def item_to_rss(entry: BlogEntry, url: Optional[str] = None) -> RSSEntry:
         return RSSEntry(
@@ -40,22 +44,5 @@ class BlogFeedBase(Feed):
     def item_link(self, item: RSSEntry) -> str:
         return f"{item.event_url}#{item.id}"
 
-
-class BlogFeedAll(BlogFeedBase):
-    title = "Instanssi.org Blogi"
-    link = "https://instanssi.org"
-    description = "Instanssi-demopartyn uusimmat uutiset."
-
     def items(self) -> List[RSSEntry]:
-        entries = BlogEntry.objects.filter(public=True).order_by("-date")[:25]
-        return [self.item_to_rss(entry) for entry in entries]
-
-
-class BlogFeed(BlogFeedBase):
-    title = "Instanssi.org Blogi"
-    link = "https://instanssi.org"
-    description = "Instanssi-demopartyn uusimmat uutiset."
-
-    def items(self, obj: Event) -> List[RSSEntry]:
-        entries = BlogEntry.objects.filter(event=obj, public=True).order_by("-date")[:25]
-        return [self.item_to_rss(entry, obj.mainurl) for entry in entries]
+        return [self.item_to_rss(entry) for entry in BlogEntry.get_latest()[:25]]

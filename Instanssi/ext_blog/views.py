@@ -5,7 +5,6 @@ from typing import List, Optional
 from django.contrib.syndication.views import Feed
 
 from Instanssi.ext_blog.models import BlogEntry
-from Instanssi.kompomaatti.models import Event
 
 
 @dataclass

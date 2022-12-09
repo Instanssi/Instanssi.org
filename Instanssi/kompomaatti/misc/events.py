@@ -20,7 +20,7 @@ def get_upcoming(event):
                 {
                     "id": compo.id,
                     "date": compo.adding_end,
-                    "title": compo.name + ": ilmoittautuminen päättyy.",
+                    "title": f"{compo.name}: ilmoittautuminen päättyy.",
                     "type": 1,
                     "icon": "",
                 }
@@ -31,7 +31,7 @@ def get_upcoming(event):
                 {
                     "id": compo.id,
                     "date": compo.compo_start,
-                    "title": compo.name + ": kompo alkaa.",
+                    "title": f"{compo.name}: kompo alkaa.",
                     "type": 1,
                     "icon": "",
                 }
@@ -42,7 +42,7 @@ def get_upcoming(event):
                 {
                     "id": compo.id,
                     "date": compo.voting_end,
-                    "title": compo.name + ": äänestys päättyy.",
+                    "title": f"{compo.name}: äänestys päättyy.",
                     "type": 1,
                     "icon": "",
                 }
@@ -55,7 +55,7 @@ def get_upcoming(event):
                 {
                     "id": comp.id,
                     "date": comp.participation_end,
-                    "title": comp.name + ": ilmoittautuminen päättyy.",
+                    "title": f"{comp.name}: ilmoittautuminen päättyy.",
                     "type": 2,
                     "icon": "",
                 }
@@ -64,7 +64,7 @@ def get_upcoming(event):
             {
                 "id": comp.id,
                 "date": comp.start,
-                "title": comp.name + ": kilpailu alkaa.",
+                "title": f"{comp.name}: kilpailu alkaa.",
                 "type": 2,
                 "icon": "",
             }

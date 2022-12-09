@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> {% compress css %}
-    <link rel="stylesheet" type="text/x-scss" href="{% static 'main2022/css/style.scss' %}" /> {% endcompress %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'main2022/css/style.scss' %}" />
+    {% endcompress %}
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% url 'ext-blog:rss' %}" />
@@ -21,12 +23,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:title" content="Instanssi - Digitaalisen tekemisen festivaali" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Instanssi" /> {% block head %}{% endblock %}
-    <script type="text/javascript">
-        $(function () {
-            {% block jquery %}
-            {% endblock %}
-        });
-    </script>
+    <meta property="og:site_name" content="Instanssi" />
+    {% block head %}{% endblock %}
     <script type="text/javascript" src="{% static 'main2022/js/base.js' %}"></script>
 </head>

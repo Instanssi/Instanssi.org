@@ -1,12 +1,13 @@
 import time
+from typing import Any, Dict, List
 
 from django.utils import timezone
 
 from Instanssi.ext_programme.models import ProgrammeEvent
-from Instanssi.kompomaatti.models import Competition, Compo
+from Instanssi.kompomaatti.models import Competition, Compo, Event
 
 
-def get_upcoming(event):
+def get_upcoming(event: Event) -> List[Dict[str, Any]]:
     compos = Compo.objects.filter(event=event, voting_end__gt=timezone.now(), active=True)
     progs = ProgrammeEvent.objects.filter(event=event, start__gt=timezone.now(), active=True)
     comps = Competition.objects.filter(event=event, start__gt=timezone.now(), active=True)
@@ -87,5 +88,4 @@ def get_upcoming(event):
         )
 
     # Sort list by datetime
-    events = sorted(events, key=lambda o: time.mktime(o["date"].timetuple()))
-    return events
+    return sorted(events, key=lambda o: time.mktime(o["date"].timetuple()))

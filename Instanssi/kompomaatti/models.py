@@ -226,7 +226,7 @@ class Compo(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.event.name + ": " + self.name
+        return f"{self.event.name}: {self.name}"
 
     class Meta:
         verbose_name = "kompo"

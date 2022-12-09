@@ -1,4 +1,5 @@
 import logging
+from typing import Final
 
 import arrow
 from django.conf import settings
@@ -20,8 +21,10 @@ from Instanssi.store.models import StoreTransaction, TransactionItem
 
 logger = logging.getLogger(__name__)
 
-TXN_PREFIX = "transaction:"
-TXN_ITEM_PREFIX = "item:"
+TXN_PREFIX: Final[str] = "transaction:"
+TXN_PREFIX_LEN: Final[int] = len(TXN_PREFIX)
+TXN_ITEM_PREFIX: Final[str] = "item:"
+TXN_ITEM_PREFIX_LEN: Final[int] = len(TXN_ITEM_PREFIX)
 
 
 @infodesk_access_required
@@ -95,11 +98,11 @@ def order_search(request):
 
         # FIXME: Even a regex might look cleaner than this.
         if term.startswith(TXN_PREFIX):
-            txn_id = term[len(TXN_PREFIX) :]
+            txn_id = term[TXN_PREFIX_LEN:]
             if txn_id.isdigit():
                 txn_filter = Q(id__exact=txn_id)
         if term.startswith(TXN_ITEM_PREFIX):
-            item_filter = Q(key__exact=term[len(TXN_ITEM_PREFIX) :])
+            item_filter = Q(key__exact=term[TXN_ITEM_PREFIX_LEN:])
 
         # If we don't have a more specific filter, just show all fuzzy results
         if not txn_filter:

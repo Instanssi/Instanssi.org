@@ -3,7 +3,7 @@ import io
 
 import pytest
 from django.urls import reverse
-from mock import ANY
+from unittest.mock import ANY
 
 
 @pytest.mark.django_db

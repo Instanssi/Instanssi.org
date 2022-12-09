@@ -21,14 +21,11 @@ DATABASES = {
 
 # Google api stuff
 GOOGLE_API_KEY = ""
-GOOGLE_ANALYTICS = False
-GOOGLE_ANALYTICS_CODE = ""
 
 # Generic stuff
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 TIME_ZONE = "Europe/Helsinki"
 LANGUAGE_CODE = "fi-FI"
-SHORT_LANGUAGE_CODE = "fi"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"

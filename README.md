@@ -47,6 +47,19 @@ Either use gunicorn (WSGI) or uvicorn (ASGI). Currently gunicorn is recommended,
 Note that gunicorn does not work on windows due to missing fcntl package, so there your
 best bet is uvicorn.
 
+Deploying
+---------
+
+When deploying, the following steps need to be run:
+
+```
+python manage.py collectstatic --noinput --ignore **/*.scss
+python manage.py compress
+python manage.py migrate
+```
+
+After this, restart the WSGI/ASGI runner.
+
 Running tests
 -------------
 

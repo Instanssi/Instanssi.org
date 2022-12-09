@@ -1,12 +1,10 @@
-{% extends "main2022/base.html" %}
+{% extends "main2022/base.html" %}{% load static compress %}
 
 {% block head %}
 {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="/static/main2022/css/radio.css">
-{% endblock %}
-
-{% block jquery %}
-{{ block.super }}
+    {% compress js %}
+    <script type="text/javascript" src="{% static 'main2022/js/radio.js' %}" defer></script>
+    {% endcompress %}
 {% endblock %}
 
 {% block content %}
@@ -35,7 +33,7 @@
 </ul>
 <h2>Radiosoitin</h2>
 <p><b>Radiossa soi tällä hetkellä:</b> <span id="radiostream_nytsoi">Haetaan...</span></p>
-<audio preload="none" id ="radiostream_audio" controls>
+<audio preload="none" id="radiostream_audio" controls>
     <source src="http://radio.instanssi.org:8000/fm.opus" type="audio/ogg; codecs=opus">
     <source src="http://radio.instanssi.org:8000/fm.mp3" type="audio/mpeg">
     <p>Selaimesi ei tue html5-audio -elementtiä. <a href="http://radio.instanssi.org:8000/fm.opus" target="_blank">Suora linkki tästä.</a></p>
@@ -48,11 +46,11 @@
 
 <br><br>
 <p>Alla on linkit suoraan Google-kalenteriin.</p>
-<p><a href="https://calendar.google.com/calendar/ical/46oohofs0emt0rrm05darkobdo%40group.calendar.google.com/public/basic.ics" target="_blank">Lataa iCal (ics) -tiedosto kalenterista.</a>
-  | <a href="https://calendar.google.com/calendar/embed?src=46oohofs0emt0rrm05darkobdo@group.calendar.google.com&ctz=Europe%2FHelsinki" target="_blank">Avaa kalenteri omaan ikkunaan.</a>
+<p>
+    <a href="https://calendar.google.com/calendar/ical/46oohofs0emt0rrm05darkobdo%40group.calendar.google.com/public/basic.ics" target="_blank">Lataa iCal (ics) -tiedosto kalenterista.</a>
+    |
+    <a href="https://calendar.google.com/calendar/embed?src=46oohofs0emt0rrm05darkobdo@group.calendar.google.com&ctz=Europe%2FHelsinki" target="_blank">Avaa kalenteri omaan ikkunaan.</a>
 </p>
-
-<script type="text/javascript" src="/static/main2022/js/radio.js"></script>
 {% endblock %}
 
 {% block widgets %}

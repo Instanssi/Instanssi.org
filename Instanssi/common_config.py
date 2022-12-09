@@ -42,10 +42,7 @@ STATICFILES_DIRS = (COMMON_STATIC_DIR,)
 
 COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
-COMPRESS_CSS_FILTERS = (
-    "compressor.filters.css_default.CssAbsoluteFilter",
-    "compressor.filters.cssmin.rCSSMinFilter",
-)
+COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
 
 OAUTH2_PROVIDER = {
     "SCOPES": {"read": "Read scope", "write": "Write scope", "groups": "Access to your groups"}

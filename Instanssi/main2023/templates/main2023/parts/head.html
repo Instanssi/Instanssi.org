@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/x-scss" href="{% static 'main2023/css/style.scss' %}" /> {% endcompress %}
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% blog_rss_url %}" />
+    <link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% url 'ext-blog:rss' %}" />
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="https://instanssi.org/2023/" />
     <!--<meta property="og:image" content="{% static 'main2023/images/instanssi2-og.jpg' %}" />-->

@@ -85,8 +85,6 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
-                "Instanssi.common.context_processors.short_language_code",
-                "Instanssi.common.context_processors.google_settings",
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",
             ],

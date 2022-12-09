@@ -1,7 +1,10 @@
-{% extends "main2022/base.html" %}{% load compress static %}
+{% extends "main2022/base.html" %}{% load static compress %}
 
 {% block head %}
 {{ block.super }}
+    {% compress js %}
+    <script type="text/javascript" src="{% static 'main2022/js/radio.js' %}" defer></script>
+    {% endcompress %}
 {% endblock %}
 
 {% block content %}
@@ -48,8 +51,6 @@
     |
     <a href="https://calendar.google.com/calendar/embed?src=46oohofs0emt0rrm05darkobdo@group.calendar.google.com&ctz=Europe%2FHelsinki" target="_blank">Avaa kalenteri omaan ikkunaan.</a>
 </p>
-
-<script type="text/javascript" src="/static/main2022/js/radio.js"></script>
 {% endblock %}
 
 {% block widgets %}

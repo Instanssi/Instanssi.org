@@ -1,14 +1,6 @@
 from django.urls import path
 
-from Instanssi.admin_users.views import (
-    apps,
-    delete,
-    delete_app,
-    edit,
-    index,
-    log,
-    users,
-)
+from Instanssi.admin_users.views import apps, delete, delete_app, edit, index, users
 
 app_name = "admin_users"
 

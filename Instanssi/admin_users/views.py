@@ -24,13 +24,6 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 @staff_access_required
-def log(request: HttpRequest) -> HttpResponse:
-    return admin_render(
-        request, "admin_users/log.html", {"entries": DBLogEntry.objects.all().order_by("-date")}
-    )
-
-
-@staff_access_required
 def users(request: HttpRequest) -> HttpResponse:
     if request.user.is_superuser:
         if request.method == "POST":

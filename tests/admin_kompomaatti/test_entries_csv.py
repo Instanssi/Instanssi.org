@@ -1,9 +1,9 @@
 import csv
 import io
+from unittest.mock import ANY
 
 import pytest
 from django.urls import reverse
-from unittest.mock import ANY
 
 
 @pytest.mark.django_db

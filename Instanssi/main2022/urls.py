@@ -8,7 +8,6 @@ urlpatterns = [
     path("", page_loader, {"template_name": "index"}, name="index"),
     path("info/", page_loader, {"template_name": "info"}, name="info"),
     path("english/", page_loader, {"template_name": "english"}, name="english"),
-    path("yhteystiedot/", page_loader, {"template_name": "info"}, name="yhteystiedot"),
     path("ohjelma/", page_loader, {"template_name": "ohjelma"}, name="ohjelma"),
     path("aikataulu/", page_loader, {"template_name": "aikataulu"}, name="aikataulu"),
     path("kompot/", page_loader, {"template_name": "kompot"}, name="kompot"),

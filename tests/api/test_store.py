@@ -224,7 +224,7 @@ def test_store_api_transaction_post_ok_no_save(transaction_base, api_client, sto
 
 
 @pytest.mark.django_db
-@mock.patch("Instanssi.api.viewsets.begin_payment_process")
+@mock.patch("Instanssi.api.viewsets.store.begin_payment_process")
 def test_store_api_transaction_post_ok_with_save(mocked_payment, transaction_base, api_client, store_item):
     mocked_payment.return_value = "/test/path/"
 

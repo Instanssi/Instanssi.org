@@ -1,16 +1,29 @@
+import logging
+
 from django.db.models import Q
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
-from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
-from rest_framework import serializers, status
+from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from Instanssi.ext_programme.models import ProgrammeEvent
+from Instanssi.api.serializers.kompomaatti import (
+    CompetitionParticipationSerializer,
+    CompetitionSerializer,
+    CompoEntrySerializer,
+    CompoSerializer,
+    EventSerializer,
+    TicketVoteCodeSerializer,
+    UserCompetitionParticipationSerializer,
+    UserCompoEntrySerializer,
+    VoteCodeRequestSerializer,
+    VoteGroupSerializer,
+)
+from Instanssi.api.utils import ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,
@@ -21,56 +34,8 @@ from Instanssi.kompomaatti.models import (
     VoteCodeRequest,
     VoteGroup,
 )
-from Instanssi.screenshow.models import IRCMessage, Message, NPSong, Sponsor
-from Instanssi.store.handlers import begin_payment_process
-from Instanssi.store.methods import PaymentMethod
-from Instanssi.store.models import StoreItem
 
-from .serializers import (
-    CompetitionParticipationSerializer,
-    CompetitionSerializer,
-    CompoEntrySerializer,
-    CompoSerializer,
-    EventSerializer,
-    IRCMessageSerializer,
-    MessageSerializer,
-    ProgrammeEventSerializer,
-    SongSerializer,
-    SponsorSerializer,
-    StoreItemSerializer,
-    StoreTransactionSerializer,
-    TicketVoteCodeSerializer,
-    UserCompetitionParticipationSerializer,
-    UserCompoEntrySerializer,
-    UserSerializer,
-    VoteCodeRequestSerializer,
-    VoteGroupSerializer,
-)
-from .utils import (
-    CanUpdateScreenData,
-    IsAuthenticatedOrWriteOnly,
-    ReadWriteModelViewSet,
-    ReadWriteUpdateModelViewSet,
-    WriteOnlyModelViewSet,
-)
-
-
-class CurrentUserViewSet(ReadOnlyModelViewSet):
-    """
-    Shows data to the authenticated user about self
-    """
-
-    permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
-
-    def get_object(self):
-        return self.request.user
-
-    def update(self, request, *args, **kwargs):
-        pass
-
-    def list(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+logger = logging.getLogger(__name__)
 
 
 class EventViewSet(ReadOnlyModelViewSet):
@@ -95,33 +60,6 @@ class EventViewSet(ReadOnlyModelViewSet):
     )
     ordering_fields = ("id",)
     filterset_fields = ("id",)
-
-
-class SongViewSet(ReadWriteModelViewSet):
-    """
-    Exposes all Instanssi songs on playlist. Note that order is order is descending by default.
-
-    State:
-    0: Playing
-    1: Stopped
-
-    Allows GET filters:
-    * limit: Limit amount of returned objects.
-    * offset: Starting offset. Default is 0.
-    * event: Filter by event id
-    * ordering: Set ordering, default is '-id'. Allowed: id, -id
-    """
-
-    queryset = NPSong.objects.get_queryset()
-    serializer_class = SongSerializer
-    permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id",)
-    filterset_fields = ("event",)
 
 
 class CompetitionViewSet(ReadOnlyModelViewSet):
@@ -416,127 +354,3 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-
-class ProgrammeEventViewSet(ReadOnlyModelViewSet):
-    """
-    Exposes all programme events.
-
-    Allows GET filters:
-    * limit: Limit amount of returned objects.
-    * offset: Starting offset. Default is 0.
-    * event: Filter by event id
-    * ordering: Set ordering, default is 'id'. Allowed: id, -id
-    """
-
-    queryset = ProgrammeEvent.objects.filter(active=True)
-    serializer_class = ProgrammeEventSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id",)
-    filterset_fields = ("event",)
-
-
-class SponsorViewSet(ReadOnlyModelViewSet):
-    """
-    Exposes all sponsors.
-
-    Allows GET filters:
-    * limit: Limit amount of returned objects.
-    * offset: Starting offset. Default is 0.
-    * event: Filter by event id
-    * ordering: Set ordering, default is 'id'. Allowed: id, -id
-    """
-
-    queryset = Sponsor.objects.get_queryset()
-    serializer_class = SponsorSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id",)
-    filterset_fields = ("event",)
-
-
-class MessageViewSet(ReadOnlyModelViewSet):
-    """
-    Exposes all sponsor messages.
-
-    Allows GET filters:
-    * limit: Limit amount of returned objects.
-    * offset: Starting offset. Default is 0.
-    * event: Filter by event id
-    * ordering: Set ordering, default is 'id'. Allowed: id, -id
-    """
-
-    queryset = Message.objects.get_queryset()
-    serializer_class = MessageSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id",)
-    filterset_fields = ("event",)
-
-
-class IRCMessageViewSet(ReadOnlyModelViewSet):
-    """
-    Exposes all saved IRC messages. Note that order is order is descending by default.
-
-    Allows GET filters:
-    * limit: Limit amount of returned objects.
-    * offset: Starting offset. Default is 0.
-    * event: Filter by event id
-    * ordering: Set ordering, default is '-id'. Allowed: id, -id
-    """
-
-    queryset = IRCMessage.objects.get_queryset()
-    serializer_class = IRCMessageSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id",)
-    filterset_fields = ("event",)
-
-
-class StoreItemViewSet(ReadOnlyModelViewSet):
-    """
-    Exposes all available store items.  This entrypoint does not require authentication/authorization.
-    """
-
-    serializer_class = StoreItemSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    authentication_classes = []
-
-    def get_queryset(self):
-        return StoreItem.items_visible(secret_key=self.request.query_params.get("secret_key"))
-
-
-class StoreTransactionViewSet(WriteOnlyModelViewSet):
-    """
-    Handles saving store transactions. This entrypoint does not require authentication/authorization.
-    """
-
-    serializer_class = StoreTransactionSerializer
-    permission_classes = [IsAuthenticatedOrWriteOnly]
-    authentication_classes = []
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            if serializer.validated_data["save"]:
-                ta = serializer.save()
-                payment_method = PaymentMethod(serializer.validated_data["payment_method"])
-                response_url = begin_payment_process(request, payment_method, ta)
-                return Response({"url": response_url}, status=status.HTTP_201_CREATED)
-            else:
-                return Response(status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

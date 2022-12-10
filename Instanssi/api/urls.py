@@ -3,26 +3,27 @@ from django.conf.urls import include
 from django.urls import path
 from rest_framework import routers
 
-from .viewsets import (
+from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,
     CompetitionViewSet,
     CompoEntryViewSet,
     CompoViewSet,
-    CurrentUserViewSet,
     EventViewSet,
-    IRCMessageViewSet,
-    MessageViewSet,
-    ProgrammeEventViewSet,
-    SongViewSet,
-    SponsorViewSet,
-    StoreItemViewSet,
-    StoreTransactionViewSet,
     TicketVoteCodeViewSet,
     UserCompetitionParticipationViewSet,
     UserCompoEntryViewSet,
     VoteCodeRequestViewSet,
     VoteGroupViewSet,
 )
+from .viewsets.programme import ProgrammeEventViewSet
+from .viewsets.screenshow import (
+    IRCMessageViewSet,
+    MessageViewSet,
+    SongViewSet,
+    SponsorViewSet,
+)
+from .viewsets.store import StoreItemViewSet, StoreTransactionViewSet
+from .viewsets.user import CurrentUserViewSet
 
 app_name = "api"
 

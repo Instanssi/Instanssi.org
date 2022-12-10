@@ -67,6 +67,16 @@
     }
     @include position-cubes(1, 0px);
 
+    .dragoncube {
+        &--blue { animation-delay: 1s; }
+        &--purple { animation-delay: 5s; }
+        &--pink { animation-delay: 3s; }
+        animation: upDown 5s alternate infinite ease-in-out;
+    }
+    @keyframes upDown {
+      to { transform: translatey(15px);}
+    }
+
     // logo and info
 
     .header-info {

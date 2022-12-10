@@ -20,6 +20,9 @@ MEDIA_URL = "/uploads/"
 STATIC_ROOT = BASE_DIR / "content" / "static"
 STATIC_URL = "/static/"
 
+# These configuration options are revealed to templates via settings.OPTION_NAME.
+TEMPLATE_SETTINGS_EXPORT = ["GOOGLE_API_KEY"]
+
 # We map qr_code library to /qr/ via path mapping, no need for the library to
 # add any more path segments.
 SERVE_QR_CODE_IMAGE_PATH = ""
@@ -84,6 +87,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.template.context_processors.request",
+                "Instanssi.common.context.settings_export",
                 "django.contrib.messages.context_processors.messages",
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",

@@ -71,6 +71,11 @@ PAYTRAIL_ID = ""
 PAYTRAIL_SECRET = ""
 PAYTRAIL_API_URL = "http://localhost:8000"
 
+# Paytrail APIv2
+PAYTRAIL_V2_ID = ""
+PAYTRAIL_V2_SECRET = ""
+PAYTRAIL_V2_API_URL = "http://localhost:8000"
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"

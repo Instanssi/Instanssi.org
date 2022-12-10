@@ -1,0 +1,1377 @@
+{
+    "transactionId": "7f17f6d8-7b39-11ed-8278-439349c0f5fa",
+    "href": "https://pay.paytrail.com/pay/7f17f6d8-7b39-11ed-8278-439349c0f5fa",
+    "reference": "5692692575",
+    "terms": "Valitsemalla maksutavan hyv\u00e4ksyt <a href=\"https://www.paytrail.com/kuluttaja/maksupalveluehdot\" target=\"_blank\">maksupalveluehdot</a>",
+    "groups": [
+        {
+            "id": "credit",
+            "name": "Lasku- ja osamaksutavat",
+            "icon": "https://resources.paytrail.com/images/payment-group-icons/credit.png",
+            "svg": "https://resources.paytrail.com/images/payment-group-icons/credit.svg"
+        },
+        {
+            "id": "mobile",
+            "name": "Mobiilimaksutavat",
+            "icon": "https://resources.paytrail.com/images/payment-group-icons/mobile.png",
+            "svg": "https://resources.paytrail.com/images/payment-group-icons/mobile.svg"
+        },
+        {
+            "id": "creditcard",
+            "name": "Korttimaksutavat",
+            "icon": "https://resources.paytrail.com/images/payment-group-icons/creditcard.png",
+            "svg": "https://resources.paytrail.com/images/payment-group-icons/creditcard.svg"
+        },
+        {
+            "id": "bank",
+            "name": "Pankkimaksutavat",
+            "icon": "https://resources.paytrail.com/images/payment-group-icons/bank.png",
+            "svg": "https://resources.paytrail.com/images/payment-group-icons/bank.svg"
+        }
+    ],
+    "providers": [
+        {
+            "name": "Collector",
+            "url": "https://pay.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/collectorb2c/",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/walley.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/walley.svg",
+            "parameters": [
+                {
+                    "name": "checkout-transaction-id",
+                    "value": "7f17f6d8-7b39-11ed-8278-439349c0f5fa"
+                },
+                {
+                    "name": "checkout-account",
+                    "value": "375917"
+                },
+                {
+                    "name": "checkout-method",
+                    "value": "POST"
+                },
+                {
+                    "name": "checkout-algorithm",
+                    "value": "sha256"
+                },
+                {
+                    "name": "checkout-timestamp",
+                    "value": "2022-12-13T22:57:19.406Z"
+                },
+                {
+                    "name": "checkout-nonce",
+                    "value": "8f43f392-6c4a-45fa-a68d-46ba58a803a7"
+                },
+                {
+                    "name": "signature",
+                    "value": "f692251d83c2b626c3e5320b5880bed29a0f7e263db72ea18e3c7a4c773fab6d"
+                }
+            ],
+            "id": "collectorb2c",
+            "group": "credit"
+        },
+        {
+            "name": "Collector B2B",
+            "url": "https://pay.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/collectorb2b/",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/walley-yrityslasku.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/walley-yrityslasku.svg",
+            "parameters": [
+                {
+                    "name": "checkout-transaction-id",
+                    "value": "7f17f6d8-7b39-11ed-8278-439349c0f5fa"
+                },
+                {
+                    "name": "checkout-account",
+                    "value": "375917"
+                },
+                {
+                    "name": "checkout-method",
+                    "value": "POST"
+                },
+                {
+                    "name": "checkout-algorithm",
+                    "value": "sha256"
+                },
+                {
+                    "name": "checkout-timestamp",
+                    "value": "2022-12-13T22:57:19.406Z"
+                },
+                {
+                    "name": "checkout-nonce",
+                    "value": "dfb1f980-e889-4fa9-86df-c170139ec420"
+                },
+                {
+                    "name": "signature",
+                    "value": "551645cc616546e73e3aa44ab5b9bc5178d36f5999606a021351ca04dd9d06f7"
+                }
+            ],
+            "id": "collectorb2b",
+            "group": "credit"
+        },
+        {
+            "url": "https://qa-maksu.pivo.fi/api/payments",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/pivo.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/pivo.svg",
+            "name": "Pivo",
+            "group": "mobile",
+            "id": "pivo",
+            "parameters": [
+                {
+                    "name": "acquiring_id",
+                    "value": "checkout"
+                },
+                {
+                    "name": "amount",
+                    "value": "base64 MTAwMA=="
+                },
+                {
+                    "name": "cancel_url",
+                    "value": "base64 aHR0cHM6Ly9zZXJ2aWNlcy5wYXl0cmFpbC5jb20vcGF5bWVudHMvN2YxN2Y2ZDgtN2IzOS0xMWVkLTgyNzgtNDM5MzQ5YzBmNWZhL3Bpdm8vY2FuY2Vs"
+                },
+                {
+                    "name": "merchant_business_id",
+                    "value": "base64 MjIyMDc0Ni03"
+                },
+                {
+                    "name": "merchant_name",
+                    "value": "base64 VGVzdGlrYXVwcGE="
+                },
+                {
+                    "name": "reference",
+                    "value": "base64 NTY5MjY5MjU3NQ=="
+                },
+                {
+                    "name": "reject_url",
+                    "value": "base64 aHR0cHM6Ly9zZXJ2aWNlcy5wYXl0cmFpbC5jb20vcGF5bWVudHMvN2YxN2Y2ZDgtN2IzOS0xMWVkLTgyNzgtNDM5MzQ5YzBmNWZhL3Bpdm8vY2FuY2Vs"
+                },
+                {
+                    "name": "return_url",
+                    "value": "base64 aHR0cHM6Ly9zZXJ2aWNlcy5wYXl0cmFpbC5jb20vcGF5bWVudHMvN2YxN2Y2ZDgtN2IzOS0xMWVkLTgyNzgtNDM5MzQ5YzBmNWZhL3Bpdm8vc3VjY2Vzcw=="
+                },
+                {
+                    "name": "stamp",
+                    "value": "base64 NTY5MjY5MjU3NQ=="
+                },
+                {
+                    "name": "message",
+                    "value": "base64 TWFya2tpbm9pbnRpbmltaSAvIHJlZi1iNjJmNDQ1Y2Q2MjE0ZDgxYjViZGNhYTVmOTUzMjUzNQ=="
+                },
+                {
+                    "name": "merchant_webstore_url",
+                    "value": "base64 aHR0cDovL2NoZWNrb3V0LmZp"
+                },
+                {
+                    "name": "signature",
+                    "value": "checkout_qa 73a11ff0a02025a8895775cc0a85e37dab0aa7f3d40b8d570515b60f7b316215"
+                }
+            ]
+        },
+        {
+            "url": "https://v1-hub-staging.sph-test-solinor.com/form/view/pay_with_card",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/visa.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/visa.svg",
+            "name": "Visa",
+            "group": "creditcard",
+            "id": "creditcard",
+            "parameters": [
+                {
+                    "name": "sph-account",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-merchant",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-api-version",
+                    "value": "20200427"
+                },
+                {
+                    "name": "sph-timestamp",
+                    "value": "2022-12-13T22:57:19Z"
+                },
+                {
+                    "name": "sph-request-id",
+                    "value": "20c4712e-fe0b-4247-b391-ef95260ee9ce"
+                },
+                {
+                    "name": "sph-amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "sph-currency",
+                    "value": "EUR"
+                },
+                {
+                    "name": "sph-order",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "language",
+                    "value": "FI"
+                },
+                {
+                    "name": "description",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "sph-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-webhook-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-delay",
+                    "value": "60"
+                },
+                {
+                    "name": "sph-sub-merchant-id",
+                    "value": "375917"
+                },
+                {
+                    "name": "sph-sub-merchant-name",
+                    "value": "Markkinointinimi"
+                },
+                {
+                    "name": "sph-sub-merchant-street-address",
+                    "value": "Esimerkkikatu 2"
+                },
+                {
+                    "name": "sph-sub-merchant-city",
+                    "value": "Helsinki"
+                },
+                {
+                    "name": "sph-sub-merchant-postal-code",
+                    "value": "00580"
+                },
+                {
+                    "name": "sph-sub-merchant-telephone",
+                    "value": "0401234567"
+                },
+                {
+                    "name": "sph-sub-merchant-country-code",
+                    "value": "FI"
+                },
+                {
+                    "name": "sph-sub-merchant-merchant-category-code",
+                    "value": "4814"
+                },
+                {
+                    "name": "signature",
+                    "value": "SPH1 checkout_1 a65a757b8ac809e2e3c536dd3a49ce504d3e3566612e474a58a0807af7168a1c"
+                }
+            ]
+        },
+        {
+            "url": "https://v1-hub-staging.sph-test-solinor.com/form/view/pay_with_card",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/visa-electron.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/visa-electron.svg",
+            "name": "Visa Electron",
+            "group": "creditcard",
+            "id": "creditcard",
+            "parameters": [
+                {
+                    "name": "sph-account",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-merchant",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-api-version",
+                    "value": "20200427"
+                },
+                {
+                    "name": "sph-timestamp",
+                    "value": "2022-12-13T22:57:19Z"
+                },
+                {
+                    "name": "sph-request-id",
+                    "value": "d46b0267-40d4-4b0c-b645-922bf5393f1a"
+                },
+                {
+                    "name": "sph-amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "sph-currency",
+                    "value": "EUR"
+                },
+                {
+                    "name": "sph-order",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "language",
+                    "value": "FI"
+                },
+                {
+                    "name": "description",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "sph-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-webhook-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-delay",
+                    "value": "60"
+                },
+                {
+                    "name": "sph-sub-merchant-id",
+                    "value": "375917"
+                },
+                {
+                    "name": "sph-sub-merchant-name",
+                    "value": "Markkinointinimi"
+                },
+                {
+                    "name": "sph-sub-merchant-street-address",
+                    "value": "Esimerkkikatu 2"
+                },
+                {
+                    "name": "sph-sub-merchant-city",
+                    "value": "Helsinki"
+                },
+                {
+                    "name": "sph-sub-merchant-postal-code",
+                    "value": "00580"
+                },
+                {
+                    "name": "sph-sub-merchant-telephone",
+                    "value": "0401234567"
+                },
+                {
+                    "name": "sph-sub-merchant-country-code",
+                    "value": "FI"
+                },
+                {
+                    "name": "sph-sub-merchant-merchant-category-code",
+                    "value": "4814"
+                },
+                {
+                    "name": "signature",
+                    "value": "SPH1 checkout_1 42b0a845066c4040f53e2f9bf055796534bd7e142c35abe1a69a8edc82575bf8"
+                }
+            ]
+        },
+        {
+            "url": "https://v1-hub-staging.sph-test-solinor.com/form/view/pay_with_card",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/mastercard.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/mastercard.svg",
+            "name": "Mastercard",
+            "group": "creditcard",
+            "id": "creditcard",
+            "parameters": [
+                {
+                    "name": "sph-account",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-merchant",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-api-version",
+                    "value": "20200427"
+                },
+                {
+                    "name": "sph-timestamp",
+                    "value": "2022-12-13T22:57:19Z"
+                },
+                {
+                    "name": "sph-request-id",
+                    "value": "0b5b52dc-21ac-4855-aaf9-c8b2f17220fd"
+                },
+                {
+                    "name": "sph-amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "sph-currency",
+                    "value": "EUR"
+                },
+                {
+                    "name": "sph-order",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "language",
+                    "value": "FI"
+                },
+                {
+                    "name": "description",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "sph-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/success"
+                },
+                {
+                    "name": "sph-webhook-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/creditcard/cancel"
+                },
+                {
+                    "name": "sph-webhook-delay",
+                    "value": "60"
+                },
+                {
+                    "name": "sph-sub-merchant-id",
+                    "value": "375917"
+                },
+                {
+                    "name": "sph-sub-merchant-name",
+                    "value": "Markkinointinimi"
+                },
+                {
+                    "name": "sph-sub-merchant-street-address",
+                    "value": "Esimerkkikatu 2"
+                },
+                {
+                    "name": "sph-sub-merchant-city",
+                    "value": "Helsinki"
+                },
+                {
+                    "name": "sph-sub-merchant-postal-code",
+                    "value": "00580"
+                },
+                {
+                    "name": "sph-sub-merchant-telephone",
+                    "value": "0401234567"
+                },
+                {
+                    "name": "sph-sub-merchant-country-code",
+                    "value": "FI"
+                },
+                {
+                    "name": "sph-sub-merchant-merchant-category-code",
+                    "value": "4814"
+                },
+                {
+                    "name": "signature",
+                    "value": "SPH1 checkout_1 3f2e9b1711f420fb865e356f72133d53bded6fbb099b84e2e35cd75daab74fc0"
+                }
+            ]
+        },
+        {
+            "url": "https://v1-hub-staging.sph-test-solinor.com/form/view/pay_with_card",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/amex.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/amex.svg",
+            "name": "American Express",
+            "group": "creditcard",
+            "id": "amex",
+            "parameters": [
+                {
+                    "name": "sph-account",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-merchant",
+                    "value": "checkout"
+                },
+                {
+                    "name": "sph-api-version",
+                    "value": "20200427"
+                },
+                {
+                    "name": "sph-timestamp",
+                    "value": "2022-12-13T22:57:19Z"
+                },
+                {
+                    "name": "sph-request-id",
+                    "value": "4b5bee65-cd0a-42c5-b5e9-366a28c1e5c1"
+                },
+                {
+                    "name": "sph-amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "sph-currency",
+                    "value": "EUR"
+                },
+                {
+                    "name": "sph-order",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "language",
+                    "value": "FI"
+                },
+                {
+                    "name": "description",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "sph-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/success"
+                },
+                {
+                    "name": "sph-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/cancel"
+                },
+                {
+                    "name": "sph-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/cancel"
+                },
+                {
+                    "name": "sph-webhook-success-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/success"
+                },
+                {
+                    "name": "sph-webhook-cancel-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/cancel"
+                },
+                {
+                    "name": "sph-webhook-failure-url",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/amex/cancel"
+                },
+                {
+                    "name": "sph-webhook-delay",
+                    "value": "60"
+                },
+                {
+                    "name": "sph-sub-merchant-id",
+                    "value": "375917"
+                },
+                {
+                    "name": "sph-sub-merchant-name",
+                    "value": "Markkinointinimi"
+                },
+                {
+                    "name": "sph-sub-merchant-street-address",
+                    "value": "Esimerkkikatu 2"
+                },
+                {
+                    "name": "sph-sub-merchant-city",
+                    "value": "Helsinki"
+                },
+                {
+                    "name": "sph-sub-merchant-postal-code",
+                    "value": "00580"
+                },
+                {
+                    "name": "sph-sub-merchant-telephone",
+                    "value": "0401234567"
+                },
+                {
+                    "name": "sph-sub-merchant-country-code",
+                    "value": "FI"
+                },
+                {
+                    "name": "sph-sub-merchant-merchant-category-code",
+                    "value": "4814"
+                },
+                {
+                    "name": "signature",
+                    "value": "SPH1 checkout_1 5d96ba62f41f734dc7d98b12234fa9910df08ebfe8841d6d4c1f514b14989d2e"
+                }
+            ]
+        },
+        {
+            "name": "OP",
+            "url": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/osuuspankki/loading-and-redirect",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/osuuspankki.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/osuuspankki.svg",
+            "id": "osuuspankki",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "checkout-transaction-id",
+                    "value": "7f17f6d8-7b39-11ed-8278-439349c0f5fa"
+                },
+                {
+                    "name": "checkout-account",
+                    "value": "375917"
+                },
+                {
+                    "name": "checkout-method",
+                    "value": "POST"
+                },
+                {
+                    "name": "checkout-algorithm",
+                    "value": "sha256"
+                },
+                {
+                    "name": "checkout-timestamp",
+                    "value": "2022-12-13T22:57:19.403Z"
+                },
+                {
+                    "name": "checkout-nonce",
+                    "value": "67734a54-deb1-4fdc-ab6a-6af3ecc96045"
+                },
+                {
+                    "name": "signature",
+                    "value": "2f1901cedc99316a0ae893e70a2038a4cbc8587d29dc0185871952a25ef429fa"
+                }
+            ]
+        },
+        {
+            "name": "Nordea",
+            "url": "https://epmt.nordea.fi/cgi-bin/SOLOPM01",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/nordea.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/nordea.svg",
+            "id": "nordea",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "VERSION",
+                    "value": "0005"
+                },
+                {
+                    "name": "CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "ALG",
+                    "value": "02"
+                },
+                {
+                    "name": "DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "RCV_ID",
+                    "value": "12345678"
+                },
+                {
+                    "name": "RCV_ACCOUNT",
+                    "value": "29501800000014"
+                },
+                {
+                    "name": "RCV_NAME",
+                    "value": "Checkout Oy"
+                },
+                {
+                    "name": "KEYVERS",
+                    "value": "0001"
+                },
+                {
+                    "name": "AMOUNT",
+                    "value": "10.00"
+                },
+                {
+                    "name": "STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "LANGUAGE",
+                    "value": "1"
+                },
+                {
+                    "name": "MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/nordea/success?signature=e8ca8b9a341569d097db80aadad7c06fdcaeeec4a693fe85bacfe94ab27cf5a6&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkou
+t-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.403Z&checkout-nonce=07126a35-3575-49c1-a034-fd6a8de21d55"
+                },
+                {
+                    "name": "CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/nordea/cancel?signature=ec12aa5eba505828be891e6dd3746bf9ffeed2e1ced5c02d3aa3c8501dce66f5&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout
+-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.403Z&checkout-nonce=b8314334-34f6-4bc3-8288-d83e0484e003"
+                },
+                {
+                    "name": "REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/nordea/cancel?signature=8abe570f31dce5de7ddd1103ca97332ebc033510ce5132a7fbf3cc3ad3955a97&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout
+-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=5471ad70-e553-47b9-b16d-7976cd2365cc"
+                },
+                {
+                    "name": "ULT_BEN_ACCOUNT",
+                    "value": "FI7050000120480727"
+                },
+                {
+                    "name": "ULT_BEN_ACCOUNT_BIC",
+                    "value": "OKOYFIHH"
+                },
+                {
+                    "name": "ULT_BEN_NAME",
+                    "value": "Markkinointinimi"
+                },
+                {
+                    "name": "ULT_BEN_BID",
+                    "value": "2220746-7"
+                },
+                {
+                    "name": "ULT_BEN_IND_CODE",
+                    "value": "4764"
+                },
+                {
+                    "name": "MAC",
+                    "value": "46FC39A440EDAD1AED230779F13CDFA9DD68A4CC87269D601BC75B3FE7C34699EE5E1B9FCCEBB797FB41DCC8FB1478A3CD2AA1EAD12309C33561F080ABBAEF3E"
+                }
+            ]
+        },
+        {
+            "url": "https://verkkopankki.danskebank.fi/SP/vemaha/VemahaApp",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/danske.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/danske.svg",
+            "name": "Danske Bank",
+            "group": "bank",
+            "id": "danske",
+            "parameters": [
+                {
+                    "name": "VERSIO",
+                    "value": "4"
+                },
+                {
+                    "name": "ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "KNRO",
+                    "value": "000000000000"
+                },
+                {
+                    "name": "SUMMA",
+                    "value": "10.00"
+                },
+                {
+                    "name": "VIITE",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "VALUUTTA",
+                    "value": "EUR"
+                },
+                {
+                    "name": "ERAPAIVA",
+                    "value": "14.12.2022"
+                },
+                {
+                    "name": "OKURL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/danske/success"
+                },
+                {
+                    "name": "VIRHEURL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/danske/cancel"
+                },
+                {
+                    "name": "lng",
+                    "value": "1"
+                },
+                {
+                    "name": "TARKISTE",
+                    "value": "790AD8FFE4E9ECD9B3BAF4F78E43BE50C36B8C72DBF40BB2552EB510263E7A75"
+                }
+            ]
+        },
+        {
+            "name": "S-pankki",
+            "url": "https://online.s-pankki.fi/service/paybutton",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/spankki.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/spankki.svg",
+            "id": "spankki",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "AAB_VERSION",
+                    "value": "0002"
+                },
+                {
+                    "name": "AAB_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "AAB_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "AAB_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "AAB_RCV_NAME",
+                    "value": "Checkout Finland Oy"
+                },
+                {
+                    "name": "AAB_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "AAB_RCV_ID",
+                    "value": "SPANKKIESHOPID"
+                },
+                {
+                    "name": "AAB_RCV_ACCOUNT",
+                    "value": "FI4139390001002369"
+                },
+                {
+                    "name": "AAB_KEYVERS",
+                    "value": "0001"
+                },
+                {
+                    "name": "AAB_LANGUAGE",
+                    "value": "1"
+                },
+                {
+                    "name": "AAB_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "AAB_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "AAB_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "AAB_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/spankki/success"
+                },
+                {
+                    "name": "AAB_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/spankki/cancel"
+                },
+                {
+                    "name": "AAB_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/spankki/cancel"
+                },
+                {
+                    "name": "AAB_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "AAB_MAC",
+                    "value": "8707589302D7086FB05D2602298B8510C63A4636AD1A7B5D9FE6D34B8BF3AB9D"
+                }
+            ]
+        },
+        {
+            "name": "POP Pankki",
+            "url": "https://verkkomaksu.poppankki.fi/vm/login.html",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/pop.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/pop.svg",
+            "id": "pop",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "NET_VERSION",
+                    "value": "003"
+                },
+                {
+                    "name": "NET_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "NET_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "NET_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "NET_SELLER_ID",
+                    "value": "0000000000"
+                },
+                {
+                    "name": "NET_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "NET_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "NET_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "NET_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "NET_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "NET_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/pop/success?signature=9c7c03fa4e45e2576e56755deaef57e9fb509144f73d168641f948dd550853cd&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout-a
+lgorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=34e68594-8f7b-4d69-8844-e48e6d366af8"
+                },
+                {
+                    "name": "NET_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/pop/cancel?signature=24074d2a02c0b47809b17c8947f2209f3cd7a0fec45d78eabb2d4e2a3083d3e0&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout-al
+gorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=16fcf20a-aa80-4411-823e-d6e947f672f1"
+                },
+                {
+                    "name": "NET_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/pop/cancel?signature=9ca27ddaf0daf3cff47629bc5ab99c9d3008bd85e6d8d5c50f354fef2064e2cf&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout-al
+gorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=c47ab0c3-0025-4ed2-9de0-122e430f5afd"
+                },
+                {
+                    "name": "NET_MAC",
+                    "value": "A378474B6CF1CB553DD728E8EEF28C749B7679D81CA61725D6511B8E3A1EC2EC"
+                }
+            ]
+        },
+        {
+            "name": "OmaSp",
+            "url": "https://verkkomaksu.omasp.fi/vm/login.html",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/omasp.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/omasp.svg",
+            "id": "omasp",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "NET_VERSION",
+                    "value": "003"
+                },
+                {
+                    "name": "NET_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "NET_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "NET_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "NET_SELLER_ID",
+                    "value": "0000000000"
+                },
+                {
+                    "name": "NET_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "NET_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "NET_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "NET_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "NET_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "NET_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/omasp/success?signature=a9fbb0d3a5fe824e90a42a1e1e29460480519456daba6be44b8ecdd366813d06&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout
+-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.405Z&checkout-nonce=a4566195-f0a5-46fb-9727-fa615b0473b0"
+                },
+                {
+                    "name": "NET_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/omasp/cancel?signature=de1faa1520d8bd07294b5b1dda5d3e7997afdf4a94b456eae35ecfcdc7620d99&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout-
+algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.405Z&checkout-nonce=2f511417-fc68-4fb5-91d6-a336bf6cb9ca"
+                },
+                {
+                    "name": "NET_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/omasp/cancel?signature=996d1614a270d8f3b7e3e5b25ccb4e86fb0cd113255e5242614fc13b136cf324&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&checkout-
+algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.405Z&checkout-nonce=f4bc08ed-94d1-4624-bcfa-49ba62555843"
+                },
+                {
+                    "name": "NET_MAC",
+                    "value": "EF10F01BB5D801741E40ECC78F426892C3EE0278FD0010E0AA6DF5543A54C4B0"
+                }
+            ]
+        },
+        {
+            "name": "Aktia",
+            "url": "https://auth.aktia.fi/vmtest",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/aktia.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/aktia.svg",
+            "id": "aktia",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "NET_VERSION",
+                    "value": "010"
+                },
+                {
+                    "name": "NET_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "NET_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "NET_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "NET_SELLER_ID",
+                    "value": "1111111111111"
+                },
+                {
+                    "name": "NET_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "NET_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "NET_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "NET_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "NET_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "NET_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/aktia/success"
+                },
+                {
+                    "name": "NET_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/aktia/cancel"
+                },
+                {
+                    "name": "NET_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/aktia/cancel"
+                },
+                {
+                    "name": "NET_KEYVERS",
+                    "value": "0001"
+                },
+                {
+                    "name": "NET_MAC",
+                    "value": "10C9BDE3C1B290B32B5470859167BF6B8444A2E157F01306808185CC76B8817C"
+                }
+            ]
+        },
+        {
+            "name": "Handelsbanken",
+            "url": "https://verkkomaksu.handelsbanken.fi/vm/login.html",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/handelsbanken.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/handelsbanken.svg",
+            "id": "handelsbanken",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "NET_VERSION",
+                    "value": "003"
+                },
+                {
+                    "name": "NET_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "NET_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "NET_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "NET_SELLER_ID",
+                    "value": "0000000000"
+                },
+                {
+                    "name": "NET_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "NET_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "NET_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "NET_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "NET_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "NET_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/handelsbanken/success?signature=74a67915d4ddda0814da764e79f9c7a52b38ea1477fdd56319d55e98c6c0ccc7&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&
+checkout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=7e5924ed-d826-45b0-a093-d993e5562ddf"
+                },
+                {
+                    "name": "NET_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/handelsbanken/cancel?signature=15f73e8b799cd436e280f002970ff00b46af1e3a9fbf021e73775d436c169dba&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&c
+heckout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=b0e42419-7ba5-4cf2-bd42-7210df4646f3"
+                },
+                {
+                    "name": "NET_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/handelsbanken/cancel?signature=39bc0f6a967961e938f6bf0ba9b65ab84236b858f27c25a4c284ae05f47e8646&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&c
+heckout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=3a3987f4-b1c2-4ec2-8d54-a91ba60c5000"
+                },
+                {
+                    "name": "NET_MAC",
+                    "value": "E590507978CF44AA23A52BEAC672E00D63A2296FA9D6B1F389C19CC3C4433B53"
+                }
+            ]
+        },
+        {
+            "name": "S\u00e4\u00e4st\u00f6pankki",
+            "url": "https://verkkomaksu.saastopankki.fi/vm/login.html",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/saastopankki.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/saastopankki.svg",
+            "id": "saastopankki",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "NET_VERSION",
+                    "value": "003"
+                },
+                {
+                    "name": "NET_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "NET_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "NET_ALG",
+                    "value": "03"
+                },
+                {
+                    "name": "NET_SELLER_ID",
+                    "value": "0000000000"
+                },
+                {
+                    "name": "NET_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "NET_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "NET_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "NET_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "NET_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "NET_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/saastopankki/success?signature=a352e305ccc3a0647a4413381e0c4e688a4510b1f08a3d92e25a28861c7b0a8a&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&c
+heckout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=f128bb94-f4ed-4abb-99b0-e8af27893a0b"
+                },
+                {
+                    "name": "NET_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/saastopankki/cancel?signature=7ad2cb3a3beb0c18b4f0a8b81113e1a0045f14b5973a4c551e27db135de7f6cb&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&ch
+eckout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.404Z&checkout-nonce=f41a31ff-95ee-4695-8b55-210f76263d49"
+                },
+                {
+                    "name": "NET_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/saastopankki/cancel?signature=e7fce2e6bc52006540a7125ad8c68034c623a1d7d53d635b2ed8e3572b2cf3d7&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&checkout-account=375917&checkout-method=GET&ch
+eckout-algorithm=sha256&checkout-timestamp=2022-12-13T22%3A57%3A19.405Z&checkout-nonce=1fda3d86-80bd-424b-ac11-df810b129959"
+                },
+                {
+                    "name": "NET_MAC",
+                    "value": "8ECBE53FCB9BF8C7A439EDA115A5C9829B30D3D27AE987656BF440A75D6AA4EB"
+                }
+            ]
+        },
+        {
+            "name": "\u00c5landsbanken",
+            "url": "https://online.alandsbanken.fi/service/paybutton",
+            "icon": "https://resources.paytrail.com/images/payment-method-logos/alandsbanken.png",
+            "svg": "https://resources.paytrail.com/images/payment-method-logos/alandsbanken.svg",
+            "id": "alandsbanken",
+            "group": "bank",
+            "parameters": [
+                {
+                    "name": "AAB_VERSION",
+                    "value": "0002"
+                },
+                {
+                    "name": "AAB_DATE",
+                    "value": "EXPRESS"
+                },
+                {
+                    "name": "AAB_CONFIRM",
+                    "value": "YES"
+                },
+                {
+                    "name": "AAB_ALG",
+                    "value": "01"
+                },
+                {
+                    "name": "AAB_RCV_NAME",
+                    "value": "Checkout Finland Oy"
+                },
+                {
+                    "name": "AAB_STAMP",
+                    "value": "568943964"
+                },
+                {
+                    "name": "AAB_RCV_ID",
+                    "value": "AABESHOPID"
+                },
+                {
+                    "name": "AAB_RCV_ACCOUNT",
+                    "value": "FI7766010001130855"
+                },
+                {
+                    "name": "AAB_KEYVERS",
+                    "value": "0001"
+                },
+                {
+                    "name": "AAB_LANGUAGE",
+                    "value": "1"
+                },
+                {
+                    "name": "AAB_AMOUNT",
+                    "value": "10,00"
+                },
+                {
+                    "name": "AAB_REF",
+                    "value": "5692692575"
+                },
+                {
+                    "name": "AAB_MSG",
+                    "value": "Markkinointinimi / ref-b62f445cd6214d81b5bdcaa5f9532535"
+                },
+                {
+                    "name": "AAB_RETURN",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/alandsbanken/success"
+                },
+                {
+                    "name": "AAB_CANCEL",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/alandsbanken/cancel"
+                },
+                {
+                    "name": "AAB_REJECT",
+                    "value": "https://services.paytrail.com/payments/7f17f6d8-7b39-11ed-8278-439349c0f5fa/alandsbanken/cancel"
+                },
+                {
+                    "name": "AAB_CUR",
+                    "value": "EUR"
+                },
+                {
+                    "name": "AAB_MAC",
+                    "value": "CE131A2CD8FB419CD66F96EE901E0549"
+                }
+            ]
+        }
+    ],
+    "customProviders": {
+        "applepay": {
+            "parameters": [
+                {
+                    "name": "checkout-transaction-id",
+                    "value": "7f17f6d8-7b39-11ed-8278-439349c0f5fa"
+                },
+                {
+                    "name": "checkout-account",
+                    "value": "375917"
+                },
+                {
+                    "name": "checkout-method",
+                    "value": "POST"
+                },
+                {
+                    "name": "checkout-algorithm",
+                    "value": "sha256"
+                },
+                {
+                    "name": "checkout-timestamp",
+                    "value": "2022-12-13T22:57:19.407Z"
+                },
+                {
+                    "name": "checkout-nonce",
+                    "value": "f9cdc8ad-4e77-461d-b097-13bf60310e15"
+                },
+                {
+                    "name": "signature",
+                    "value": "430e205bc266cb057267a6ae3b3c6c7cdc023536fb14c3c5b34f5ee9b787d202"
+                },
+                {
+                    "name": "amount",
+                    "value": "10.00"
+                },
+                {
+                    "name": "label",
+                    "value": "Paytrail Oyj"
+                },
+                {
+                    "name": "currency",
+                    "value": "EUR"
+                }
+            ]
+        }
+    }
+}

@@ -5,6 +5,7 @@ from Instanssi.store.models import (
     StoreItem,
     StoreItemVariant,
     StoreTransaction,
+    StoreTransactionEvent,
     TransactionItem,
 )
 
@@ -20,6 +21,15 @@ class StoreTransactionAdmin(admin.ModelAdmin):
         "time_paid",
         "time_cancelled",
         "payment_method_name",
+    ]
+
+
+class StoreTransactionEventAdmin(admin.ModelAdmin):
+    list_display = [
+        "transaction",
+        "message",
+        "data",
+        "created",
     ]
 
 
@@ -59,6 +69,7 @@ class StoreItemAdmin(admin.ModelAdmin):
 
 admin.site.register(StoreItem, StoreItemAdmin)
 admin.site.register(StoreTransaction, StoreTransactionAdmin)
+admin.site.register(StoreTransactionEvent, StoreTransactionEventAdmin)
 admin.site.register(TransactionItem, TransactionItemAdmin)
 admin.site.register(StoreItemVariant)
 admin.site.register(Receipt, ReceiptAdmin)

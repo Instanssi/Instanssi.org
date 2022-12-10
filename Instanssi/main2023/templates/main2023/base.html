@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-{% load static blog_tags twitter_tag cache compress %}
-{% include './parts/head.html' %}
+<head>
+    {% include './parts/head.html' %}
+    {% block head %}{% endblock %}
+</head>
 <body>
     <header id="page-header">
         {% include './parts/header.html' %}

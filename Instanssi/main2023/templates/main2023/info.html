@@ -1,13 +1,5 @@
 {% extends "main2023/base.html" %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
-
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
-
 {% block content %}
 {{ block.super }}
     <h1>Info</h1>
@@ -34,7 +26,7 @@
             id="instanssi-location-map"
             frameborder="0"
             style="border:0; max-width:100%"
-            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJ3WoIEiN0hUYRogdPWJx7Alk&language=fi&key={{ GOOGLE_API_KEY }}" allowfullscreen></iframe>
+            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJ3WoIEiN0hUYRogdPWJx7Alk&language=fi&key={{ settings.GOOGLE_API_KEY }}" allowfullscreen></iframe>
     -->
 
     <h2>Mitä mukaan?</h2>
@@ -74,7 +66,6 @@
 
     <h2>Keskustelu</h2>
     <p>
-        IRC: #instanssi @ IRCNet<br />
         Matrix: <a href="https://matrix.to/#/#instanssi:jkl.hacklab.fi">#instanssi:jkl.hacklab.fi</a><br />
         Telegram: <a href="https://telegram.me/Instanssi">https://telegram.me/Instanssi</a><br /><br />
 	Ylläolevat viestikanavat ovat sillattu toisiinsa, eli riittää kun pääset yhdelle niistä!
@@ -93,4 +84,3 @@
       Email: Koko työryhmän tavoitat osoitteesta <span class="meili">info</span>.
     </p>
 {% endblock %}
-

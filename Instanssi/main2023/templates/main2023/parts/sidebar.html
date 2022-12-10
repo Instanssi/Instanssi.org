@@ -1,4 +1,4 @@
-{% load static blog_tags twitter_tag cache compress %}
+{% load static twitter_tag cache %}
 <!--<section class="widget widget-store">
     <a class="btn btn-primary" href="{% url 'store:index' %}">
         <span class="fa fa-fw fa-euro"></span> Osta lippu!
@@ -75,7 +75,6 @@
             <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2023/images/icons/icon-rss.png' %}" alt="RSS" ></a>
             <div class="clearer"></div>
         </div>
-        <p>#instanssi @ IRCNet</p>
         <!--<p class="instanssi-radio"><a href="http://radio.instanssi.org">Tapahtumaradio</a> @ 105,4 MHz</p>-->
     </div>
 </section>

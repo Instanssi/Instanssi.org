@@ -4,7 +4,7 @@
 {% block head %}
 {{ block.super }}
     {% compress js %}
-    <script type="text/javascript" src="{% static 'main2023/js/radio.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main2023/js/radio.js' %}" defer></script>
     {% endcompress %}
 {% endblock %}
 

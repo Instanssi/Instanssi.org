@@ -1,47 +1,49 @@
-'use strict';
+/* global $ */
 
 $(function() {
-    var calid = '46oohofs0emt0rrm05darkobdo@group.calendar.google.com';
-    var apik = 'AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos';     // pub
-    var sheetid = '1pRBIrNYjw5Qp1B8DyiyeKhFPFZB0hS_L94d4pa6V6YU';
+    'use strict';
 
-    var datarange = escape('Musiikki!A2:D2');
-    var sheeturl = 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetid + '/values/' + datarange + '?key=' + apik;
-    var calurl = 'https://www.googleapis.com/calendar/v3/calendars/' + calid + '/events?key=' + apik + '&timeMin=2021-02-20T10:00:00%2B02:00&timeMax=2021-05-20T10:00:00%2B02:00';
-    var wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
+    const calid = '46oohofs0emt0rrm05darkobdo@group.calendar.google.com';
+    const apik = 'AIzaSyAnSBTmLepfcMtJoft8foXhstAv7PpYTos';     // pub
+    const sheetid = '1pRBIrNYjw5Qp1B8DyiyeKhFPFZB0hS_L94d4pa6V6YU';
 
-    var oldval = '';
+    const datarange = escape('Musiikki!A2:D2');
+    const sheeturl = 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetid + '/values/' + datarange + '?key=' + apik;
+    const calurl = 'https://www.googleapis.com/calendar/v3/calendars/' + calid + '/events?key=' + apik + '&timeMin=2021-02-20T10:00:00%2B02:00&timeMax=2021-05-20T10:00:00%2B02:00';
+    const wds = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
+
+    let oldval = '';
 
     function lpad(number, digits) {
         return Array(Math.max(digits - String(number).length + 1, 0)).join('0') + number;
     }
 
     function parseCal(params) {
-        var oldDay = '';
-        var dateNow = new Date().getTime();
+        let oldDay = '';
+        const dateNow = new Date().getTime();
 
-        var newData = params.sort(function(a, b) {
+        const newData = params.sort(function (a, b) {
             return (a.start.dateTime > b.start.dateTime) - (b.start.dateTime > a.start.dateTime);
         });
 
-        var output = '';
+        let output = '';
         $.each(newData, function(i, val) {
-            var startD = new Date(val.start.dateTime);
-            var day = startD.getDate();
-            var endD = new Date(val.end.dateTime);
-            var description = '<small>' + val.description + '</small>';
+            const startD = new Date(val.start.dateTime);
+            const day = startD.getDate();
+            const endD = new Date(val.end.dateTime);
+            const description = '<small>' + val.description + '</small>';
 
-            var startHour = lpad(startD.getHours(), 2);
-            var endHour = lpad(endD.getHours(), 2);
-            var startMinutes = lpad(startD.getMinutes(), 2);
-            var endMinutes = lpad(endD.getMinutes(), 2);
+            const startHour = lpad(startD.getHours(), 2);
+            const endHour = lpad(endD.getHours(), 2);
+            const startMinutes = lpad(startD.getMinutes(), 2);
+            const endMinutes = lpad(endD.getMinutes(), 2);
 
-            var month = startD.getMonth() + 1;
-            var weekday = wds[startD.getDay()];
-            var dateStr = weekday + ' ' + day + '.' + month + '.';
-            var startTimeStr = startHour + ':' + startMinutes;
-            var endTimeStr = endHour + ':' + endMinutes + '<br>';
-            var timeStr = '<b>' + startTimeStr + '-' + endTimeStr + '</b>';
+            const month = startD.getMonth() + 1;
+            const weekday = wds[startD.getDay()];
+            const dateStr = weekday + ' ' + day + '.' + month + '.';
+            const startTimeStr = startHour + ':' + startMinutes;
+            const endTimeStr = endHour + ':' + endMinutes + '<br>';
+            const timeStr = '<b>' + startTimeStr + '-' + endTimeStr + '</b>';
 
             if (dateStr !== oldDay) {
                 output += '<h3>' + dateStr + '</h3>';
@@ -80,7 +82,7 @@ $(function() {
     }
 
     function parseSheet(params) {
-        var updateStr = '';
+        let updateStr = '';
         if (params[1] !== '') {
             // Kun Ohjelma -kenttä annettu
             if (typeof params[2] !== 'undefined' && params[2] !== '' && typeof params[3] !== 'undefined' && params[3] !== '') {

@@ -24,4 +24,3 @@ def test_2023_site(page_client, site_name: str):
     response = page_client.get(path)
     assert response.status_code == 200
     assert "<body>" in response.content.decode()
-

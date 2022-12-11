@@ -83,13 +83,14 @@
             content: '';
             display: block;
             position: absolute;
-            top: 10px;
-            width: 600px;
+            top: 36px;
+            width: 480px;
             height: 200px;
             max-width: 100%;
             background: url('../images/logoteksti.png') no-repeat;
             background-size: contain;
             background-position: center left;
+            transform: rotate(-5deg);
             @media screen and (max-width: ($screen-xs-max - 1px)) {
                 // tweak logo to align with text
                 margin-left: 0;
@@ -107,9 +108,8 @@
         .tagline, .time {
             margin-bottom: 5px;
             // Make text more readable against a bright background
-            $glow: #000;
-            text-shadow: $glow 0 0 3px;
-            text-shadow: $glow 0 0 3px, $glow 0 0 6px;
+            $glow: #0866a5;
+            text-shadow: $glow 2px 2px 0;
         }
         .tagline {
             font-size: 28px;
@@ -265,7 +265,6 @@
             }
             &:after {
                 max-height: 160px;
-                // top: -10px !important;
             }
             .tagline {
                 font-size: 20px;
@@ -292,7 +291,8 @@
                 left: 48px;
             }
             &:after {
-                top: -20px;
+                top: 0;
+                height: 150px;
             }
         }
         & > .container {
@@ -327,7 +327,9 @@
                 left: 35px;
             }
             &:after {
-                top: -5px;
+                top: 0;
+                height: 100px;
+                transform: none;
             }
         }
         @include position-cubes(0.2, 200px, 25px);

@@ -37,7 +37,7 @@ def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     else:
         form = BlogEntryForm()
 
-    entries = BlogEntry.objects.filter(event_id=selected_event_id)
+    entries = BlogEntry.objects.filter(event_id=selected_event_id).order_by("date")
     return admin_render(
         request,
         "admin_blog/index.html",

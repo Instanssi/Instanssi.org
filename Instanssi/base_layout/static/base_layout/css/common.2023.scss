@@ -16,19 +16,33 @@ h2, h3 {
 }
 
 .base-layout #header h1 {
-    margin-top: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
 
     > .header-main-title {
-        float: left;
-        position: relative;
-        width: 250px;
-        height: 90px;
+        width: 267px;
+        height: 100px;
         margin-right: 20px;
         background-image: url('/static/main2023/images/logoteksti.png');
         background-size: contain;
         background-repeat: no-repeat;
         .main-title-text {
             @include sr-only;
+        }
+    }
+    .section {
+        // Align with logo image's text baseline
+        display: block;
+        padding-top: 16px;
+    }
+
+    @media screen and (max-width: $screen-sm-max) {
+        flex-wrap: wrap;
+        .section {
+            flex: 0 0 100%;
+            padding-top: 0;
+            margin-bottom: 16px;
         }
     }
 }

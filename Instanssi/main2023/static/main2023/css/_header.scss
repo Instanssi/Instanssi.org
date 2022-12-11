@@ -9,17 +9,23 @@
     .dragoncube {
         // spec is to keep these at the same ratio to each other
         // blue: 782x782    (3.0 normalized to the smallest)
-        // purple: 374x374  (2.1-ish)
+        // purple: 374x374  (1.44-ish)
         // pink: 260x260    (1.0)
 
+        $base-size: 90px;
+
+        $blue-size: $base-size * 3.0;
+        $purple-size: $base-size * 1.44;
+        $pink-size: $base-size * 1.0;
+
         &--blue {
-            @include cubebox(512px, 0, 256px, 256px, $scale, $xoffset, $yoffset);
+            @include cubebox(512px, 0, $blue-size, $blue-size, $scale, $xoffset, $yoffset);
         }
         &--purple {
-            @include cubebox(800px, 100px, 180px, 180px, $scale, $xoffset, $yoffset);
+            @include cubebox(820px, 100px, $purple-size, $purple-size, $scale, $xoffset, $yoffset);
         }
         &--pink {
-            @include cubebox(1000px, 20px, 85px, 85px, $scale, $xoffset, $yoffset);
+            @include cubebox(1000px, 20px, $pink-size, $pink-size, $scale, $xoffset, $yoffset);
         }
     }
 }
@@ -303,7 +309,7 @@
             height: auto;
             background-size: cover;
         }
-        @include position-cubes(0.5, 200px);
+        @include position-cubes(0.5, 180px, 10px);
     }
     @media screen and (max-width: $screen-xs-max) {
         & > .container {

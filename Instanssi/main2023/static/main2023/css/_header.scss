@@ -127,9 +127,9 @@
         .time {
             position: absolute;
             font-size: 24px;
-            bottom: 100px;
+            top: 180px;
             left: 64px;
-            transform: rotate(-5.5deg);
+            transform: rotate(-5deg);
         }
 
         h1 {
@@ -266,7 +266,7 @@
         .header-info {
             height: 220px;
             .time {
-                top: 115px;
+                top: 155px;
                 left: 36px;
             }
             &:after {
@@ -292,7 +292,7 @@
         }
         .header-info {
             .time {
-                top: 100px;
+                top: 110px;
                 font-size: 20px;
                 left: 48px;
             }
@@ -323,10 +323,12 @@
         }
         .header-info {
             p.time {
-                top: 70px;
-                font-size: 2.5vw;
+                top: 75px;
+                // vw units because the logo image also scales with view width at this point
+                font-size: 3vw;
                 padding: 0;
                 left: $spacer;
+                transform: none;
             }
             .tagline {
                 top: 65px;

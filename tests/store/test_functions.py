@@ -122,7 +122,7 @@ def test_create_receipt_email_content(receipt, receipt_params):
         "löytyy allaolevasta osoitteesta. Tositteen voi joko tulostaa tai esittää\n"
         "mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.\n"
         "\n"
-        "https://instanssi.org/store/ta/1234abcd/\n"
+        "http://testserver/store/ta/1234abcd/\n"
         "\n"
         "Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen\n"
         "oikeuttavina avaimina äänestysjärjestelmässämme kompomaatissa. Voit\n"

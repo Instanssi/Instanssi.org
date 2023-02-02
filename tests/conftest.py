@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from django.contrib.auth.models import Permission, User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import Client
+from django.test import Client, RequestFactory
 from django.urls import reverse
 from django.utils import timezone
 from faker import Faker
@@ -565,6 +565,7 @@ def new_transaction_item4(new_transaction, hidden_item) -> TransactionItem:
 
 @fixture
 def receipt_params(faker) -> ReceiptParams:
+    request = RequestFactory().get("/")
     p = ReceiptParams()
     p.order_number(20000)
     p.receipt_number(1000)
@@ -580,7 +581,7 @@ def receipt_params(faker) -> ReceiptParams:
     p.city(faker.city())
     p.postal_code(faker.postcode())
     p.country(faker.country_code())
-    p.transaction_url(reverse("store:ta_view", args=("1234abcd",)))
+    p.transaction_url(request.build_absolute_uri(reverse("store:ta_view", args=("1234abcd",))))
     for k in range(3):
         p.add_item(
             item_id=str(1000 + k),

@@ -49,7 +49,7 @@ infotiskiltä. Tuotteiden ja lippujen lunastukseen tarvitaan tosite, joka
 löytyy allaolevasta osoitteesta. Tositteen voi joko tulostaa tai esittää
 mm. kännykän tai tabletin näytöltä tapahtuman infotiskillä.
 
-https://instanssi.org{{ transaction_url }}
+{{ transaction_url }}
 
 Huomaathan että lippujen avainkoodit toimivat myös kompojen äänestykseen
 oikeuttavina avaimina äänestysjärjestelmässämme kompomaatissa. Voit

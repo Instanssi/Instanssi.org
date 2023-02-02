@@ -1,9 +1,6 @@
 import json
-from datetime import datetime, timezone
 from unittest.mock import ANY
-from uuid import UUID
 
-import freezegun
 import pytest
 import requests_mock
 import yarl

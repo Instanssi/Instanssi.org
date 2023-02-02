@@ -1,6 +1,6 @@
 import pytest
 from django.core import mail
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 from django.urls import reverse
 
 from Instanssi.store.handlers import begin_payment_process
@@ -9,6 +9,7 @@ from Instanssi.store.models import Receipt
 
 
 @pytest.mark.django_db
+@override_settings(CELERY_TASK_ALWAYS_EAGER=True)
 def test_no_method_begin_payment_process_good_request(new_transaction):
     """Make sure NO_METHOD works with a good request (we should get a redirect URL)"""
     request = RequestFactory().get("/")

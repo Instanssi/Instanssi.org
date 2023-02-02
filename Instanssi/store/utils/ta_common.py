@@ -4,6 +4,7 @@ from django.http import HttpRequest
 from django.urls import reverse
 from django.utils import timezone
 
+from Instanssi.store import tasks
 from Instanssi.store.models import Receipt, StoreTransaction
 from Instanssi.store.utils.receipt import ReceiptParams
 
@@ -30,7 +31,12 @@ def handle_pending(ta: StoreTransaction) -> None:
         logger.warning("Attempted to mark store transaction %s as pending twice", ta.id)
 
 
-def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
+def handle_payment(request: HttpRequest, ta: StoreTransaction) -> None:
+    # Check if already paid. If so, we don't need to do anything.
+    if ta.is_paid:
+        logger.warning("Transaction is already paid!")
+        return
+
     # If not yet marked as pending, mark it now
     if not ta.time_pending:
         ta.time_pending = timezone.now()
@@ -39,7 +45,7 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
     ta.time_paid = timezone.now()
     ta.save()
 
-    # Deliver email.
+    # Create a receipt template for email
     params = ReceiptParams()
     params.order_number(ta.id)
     params.order_date(ta.time_created)
@@ -56,25 +62,19 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> bool:
     params.country(ta.country)
     params.transaction_url(request.build_absolute_uri(reverse("store:ta_view", args=(ta.key,))))
 
-    # Add items to email
     for item, variant, purchase_price in ta.get_distinct_store_items_and_prices():
         i_amount = ta.get_store_item_count(item, variant=variant, purchase_price=purchase_price)
         i_name = f"{item.name}, {variant.name}" if variant else item.name
         i_id = f"{item.id}:{variant.id}" if variant else item.id
         params.add_item(i_id, i_name, purchase_price, i_amount, "0%")
 
-    # Send mail
-    try:
-        receipt = Receipt.create(
-            mail_to=ta.email,
-            mail_from='"Instanssi" <noreply@instanssi.org>',
-            subject=f"Instanssi.org: Kuitti tilaukselle #{ta.id}",
-            params=params,
-        )
-        receipt.send()
-    except Exception as ex:
-        logger.exception("Store: %s", ex)
-        return False
-
+    receipt = Receipt.create(
+        mail_to=ta.email,
+        mail_from='"Instanssi" <noreply@instanssi.org>',
+        subject=f"Instanssi.org: Kuitti tilaukselle #{ta.id}",
+        params=params,
+        transaction=ta,
+    )
+    tasks.send_receipt.delay(receipt.id)
+    logger.info("Queued receipt %d for sending.", receipt.id)
     logger.info("Store transaction %s confirmed.", ta.id)
-    return True

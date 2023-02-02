@@ -1,6 +1,6 @@
 import os
 from decimal import Decimal
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from auditlog.registry import auditlog
 from django.conf import settings
@@ -294,6 +294,20 @@ class StoreTransaction(models.Model):
         # default_permissions = ('add', 'change', 'delete',)
 
 
+class StoreTransactionEvent(models.Model):
+    """Data log for transaction events (such as when payment events arrive from payment processor)"""
+
+    transaction = models.ForeignKey(StoreTransaction, on_delete=models.CASCADE)
+    message = models.CharField("Tapahtuman viesti", max_length=255, null=False)
+    data = models.JSONField("Tapahtuman data", null=True)
+    created = models.DateTimeField("Luontiaika", null=False, default=timezone.now)
+
+    @classmethod
+    def log(cls, transaction: StoreTransaction, message: str, data: Dict) -> None:
+        obj = cls(transaction=transaction, message=message, data=data)
+        obj.save()
+
+
 class TransactionItem(models.Model):
     key = models.CharField("Avain", max_length=40, unique=True, help_text="Lippuavain")
     item = models.ForeignKey(StoreItem, verbose_name="Tuote", on_delete=models.PROTECT)
@@ -329,6 +343,7 @@ class TransactionItem(models.Model):
 
 
 class Receipt(models.Model):
+    transaction = models.ForeignKey(StoreTransaction, on_delete=models.SET_NULL, null=True, default=None)
     subject = models.CharField("Aihe", max_length=256)
     mail_to = models.CharField("Vastaanottajan osoite", max_length=256)
     mail_from = models.CharField("Lähettäjän osoite", max_length=256)
@@ -339,10 +354,22 @@ class Receipt(models.Model):
     def __str__(self) -> str:
         return "{}: {}".format(self.mail_to, self.subject)
 
+    @property
+    def is_sent(self) -> bool:
+        return self.sent is not None
+
     @classmethod
-    def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams) -> "Receipt":
+    def create(
+        cls,
+        mail_to: str,
+        mail_from: str,
+        subject: str,
+        params: ReceiptParams,
+        transaction: Optional[StoreTransaction] = None,
+    ) -> "Receipt":
         # First, save header information and save so that we get a receipt ID
         r = cls()
+        r.transaction = transaction
         r.subject = subject
         r.mail_to = mail_to
         r.mail_from = mail_from
@@ -370,5 +397,6 @@ class Receipt(models.Model):
 auditlog.register(StoreItem)
 auditlog.register(StoreItemVariant)
 auditlog.register(StoreTransaction)
+auditlog.register(StoreTransactionEvent)
 auditlog.register(TransactionItem)
 auditlog.register(Receipt)

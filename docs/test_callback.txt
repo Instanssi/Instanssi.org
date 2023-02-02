@@ -1,0 +1,9 @@
+GET /test/success/callback/
+?checkout-account=375917
+&checkout-algorithm=sha256
+&checkout-amount=1000
+&checkout-stamp=stamp-676fb6295da54699b06480dd916a4d4e
+&checkout-reference=ref-b62f445cd6214d81b5bdcaa5f9532535
+&checkout-status=ok
+&checkout-provider=osuuspankki
+&checkout-transaction-id=7f17f6d8-7b39-11ed-8278-439349c0f5fa&signature=4734f62d73c5984120b4507adb026c6a6c9bbab9821ac4df9ec08d8b1af30259

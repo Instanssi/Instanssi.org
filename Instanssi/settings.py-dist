@@ -73,10 +73,14 @@ SOCIAL_AUTH_GITHUB_SECRET = ""
 SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
 
 # Paytrail
-# See http://docs.paytrail.com/fi/index-all.html for API specs
 PAYTRAIL_ID = "13466"  # Test ID
 PAYTRAIL_SECRET = "6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ"  # Test secret
 PAYTRAIL_API_URL = "https://payment.paytrail.com/api-payment/create"
+
+# Paytrail APIv2
+PAYTRAIL_V2_ID = "375917"  # Test ID
+PAYTRAIL_V2_SECRET = "SAIPPUAKAUPPIAS"  # Test secret
+PAYTRAIL_V2_API_URL = "https://services.paytrail.com"
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG

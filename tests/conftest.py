@@ -329,7 +329,7 @@ def competition_participation(faker, competition, base_user) -> CompetitionParti
 
 
 @fixture
-def store_transaction(faker, event) -> StoreItem:
+def store_transaction(faker, event) -> StoreTransaction:
     return StoreTransaction.objects.create(
         token=secrets.token_hex(8),
         time_created=timezone.now(),
@@ -357,7 +357,7 @@ def transaction_item_a(faker, store_item, store_transaction) -> StoreItem:
 
 
 @fixture
-def transaction_item_b(faker, store_item, store_transaction) -> StoreItem:
+def transaction_item_b(faker, store_item, store_transaction) -> TransactionItem:
     return TransactionItem.objects.create(
         key=uuid4().hex,
         item=store_item,
@@ -366,6 +366,22 @@ def transaction_item_b(faker, store_item, store_transaction) -> StoreItem:
         purchase_price=Decimal("1.00"),
         original_price=Decimal("1.00"),
     )
+
+
+@fixture
+def transaction_item_generator(store_transaction):
+    def _generator(store_item, price=Decimal("1.00"), variant=None):
+        return TransactionItem.objects.create(
+            key=uuid4().hex,
+            item=store_item,
+            transaction=store_transaction,
+            time_delivered=None,
+            purchase_price=price,
+            original_price=price,
+            variant=variant,
+        )
+
+    return _generator
 
 
 @fixture
@@ -567,7 +583,7 @@ def receipt_params(faker) -> ReceiptParams:
     p.transaction_url(reverse("store:ta_view", args=("1234abcd",)))
     for k in range(3):
         p.add_item(
-            item_id=1000 + k,
+            item_id=str(1000 + k),
             price=Decimal(k),
             name=f"Test product {k}",
             amount=k,

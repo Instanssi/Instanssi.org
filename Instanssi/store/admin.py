@@ -5,6 +5,7 @@ from Instanssi.store.models import (
     StoreItem,
     StoreItemVariant,
     StoreTransaction,
+    StoreTransactionEvent,
     TransactionItem,
 )
 
@@ -23,6 +24,15 @@ class StoreTransactionAdmin(admin.ModelAdmin):
     ]
 
 
+class StoreTransactionEventAdmin(admin.ModelAdmin):
+    list_display = [
+        "transaction",
+        "message",
+        "data",
+        "created",
+    ]
+
+
 class TransactionItemAdmin(admin.ModelAdmin):
     list_display = [
         "key",
@@ -35,6 +45,7 @@ class TransactionItemAdmin(admin.ModelAdmin):
 
 class ReceiptAdmin(admin.ModelAdmin):
     list_display = [
+        "transaction",
         "mail_to",
         "mail_from",
         "subject",
@@ -59,6 +70,7 @@ class StoreItemAdmin(admin.ModelAdmin):
 
 admin.site.register(StoreItem, StoreItemAdmin)
 admin.site.register(StoreTransaction, StoreTransactionAdmin)
+admin.site.register(StoreTransactionEvent, StoreTransactionEventAdmin)
 admin.site.register(TransactionItem, TransactionItemAdmin)
 admin.site.register(StoreItemVariant)
 admin.site.register(Receipt, ReceiptAdmin)

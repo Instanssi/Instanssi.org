@@ -34,6 +34,7 @@ psycopg2-binary = "^2.9.5"
 gunicorn = "^20.1.0"
 uvicorn = "^0.20.0"
 unidecode = "^1.3.6"
+yarl = "^1.8.2"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^15.3.3"

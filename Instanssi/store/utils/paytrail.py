@@ -9,7 +9,7 @@ from enum import Enum
 from typing import Any, Dict, Final, Iterable, List, Literal, Optional, Tuple, Union
 
 import requests
-from django.conf import settings
+from orjson import orjson
 from yarl import URL
 
 logger = logging.getLogger(__name__)
@@ -194,11 +194,9 @@ class PaytrailResponseError(PaytrailError):
     pass
 
 
-def generate_hmac_sha(secret: str, message: str, hash_method: HashMethod) -> str:
+def generate_hmac_sha(secret: str, message: bytes, hash_method: HashMethod) -> str:
     """Generates HMAC hash with SHA-512 or SHA-256"""
-    return hmac.new(
-        key=secret.encode(), msg=message.encode(), digestmod=HASH_METHODS[hash_method]
-    ).hexdigest()
+    return hmac.new(key=secret.encode(), msg=message, digestmod=HASH_METHODS[hash_method]).hexdigest()
 
 
 def generate_payment_headers(
@@ -221,7 +219,7 @@ def generate_payment_headers(
 
 
 def generate_hmac_signature(
-    secret: str, params: Dict[str, str], body: str = "", hash_method: HashMethod = HashMethod.SHA256
+    secret: str, params: Dict[str, str], body: bytes = b"", hash_method: HashMethod = HashMethod.SHA256
 ) -> str:
     """
     Grab all checkout headers from dict, sort them out and generate a valid HMAC signature
@@ -238,12 +236,12 @@ def generate_hmac_signature(
         Signature hex string
     """
     checkout_headers = {k: v for k, v in params.items() if k.startswith("checkout-")}
-    packed = [f"{k}:{v}" for k, v in sorted(checkout_headers.items())]
+    packed = [f"{k}:{v}".encode() for k, v in sorted(checkout_headers.items())]
     packed.append(body)
-    return generate_hmac_sha(secret, "\n".join(packed), hash_method)
+    return generate_hmac_sha(secret, b"\n".join(packed), hash_method)
 
 
-def verify_signature(params: Dict[str, str], body: str, secret: str) -> None:
+def verify_signature(params: Dict[str, str], body: bytes, secret: str) -> None:
     """Verifies paytrail api response signature HMAC hash"""
     signature_header = params.get("signature")
     algorithm_header = params.get("checkout-algorithm")
@@ -316,7 +314,7 @@ def make_request(
     Returns:
         JSON response, content depends on entrypoint.
     """
-    encoded_body = json.dumps(body, ensure_ascii=False) if body is not None else ""
+    encoded_body: bytes = orjson.dumps(body) if body is not None else b""
     payment_headers = generate_payment_headers(account, method, hash_method=hash_method)
     signature_hash = generate_hmac_signature(secret, payment_headers, encoded_body, hash_method)
     headers = {
@@ -329,7 +327,7 @@ def make_request(
     try:
         response = requests.request(method.value, address, headers=headers, params=params, data=encoded_body)
         response.raise_for_status()
-        response_data = response.content.decode()
+        response_data = response.content
     except UnicodeDecodeError as e:
         raise PaytrailRequestError("Error while decoding response data") from e
     except requests.exceptions.RequestException as e:
@@ -338,7 +336,7 @@ def make_request(
     verify_account(params=response.headers, account=account)
     verify_method(params=response.headers, method=method)
     verify_signature(params=response.headers, body=response_data, secret=secret)
-    return _parse_response(response_data), response.headers.get("request-id")
+    return _parse_response(response_data.decode()), response.headers.get("request-id")
 
 
 def create_payment(
@@ -396,6 +394,6 @@ def verify_callback(
     Returns:
         NewPaymentCallback object
     """
-    verify_signature(params=params, body="", secret=secret)
+    verify_signature(params=params, body=b"", secret=secret)
     verify_account(params=params, account=account)
     return NewPaymentCallback.from_dict(params)

@@ -1,6 +1,7 @@
 import json
 from unittest.mock import ANY
 
+import orjson
 import pytest
 import requests_mock
 import yarl
@@ -25,7 +26,7 @@ from Instanssi.store.utils.paytrail import (
 
 
 def test_generate_hmac_sha512():
-    out = generate_hmac_sha("secret", "message", HashMethod.SHA512)
+    out = generate_hmac_sha("secret", b"message", HashMethod.SHA512)
     assert out == (
         "1bba587c730eedba31f53abb0b6ca589"
         "e09de4e894ee455e6140807399759ada"
@@ -35,7 +36,7 @@ def test_generate_hmac_sha512():
 
 
 def test_generate_hmac_sha256():
-    out = generate_hmac_sha("secret", "message", HashMethod.SHA256)
+    out = generate_hmac_sha("secret", b"message", HashMethod.SHA256)
     assert out == "8b5f48702995c1598c573db1e21866a9b825d4a794d169d7060a03605796360b"
 
 
@@ -52,17 +53,17 @@ def test_generate_payment_headers(nonce, timestamp):
 
 
 def test_generate_hmac_signature_no_headers():
-    signature = generate_hmac_signature("secret", dict(), "message")
+    signature = generate_hmac_signature("secret", dict(), b"message")
     assert signature == "8b5f48702995c1598c573db1e21866a9b825d4a794d169d7060a03605796360b"
 
 
 def test_generate_hmac_signature_with_skipped_headers():
-    signature = generate_hmac_signature("secret", {"test": "test"}, "message")
+    signature = generate_hmac_signature("secret", {"test": "test"}, b"message")
     assert signature == "8b5f48702995c1598c573db1e21866a9b825d4a794d169d7060a03605796360b"
 
 
 def test_generate_hmac_signature_with_proper_headers():
-    signature = generate_hmac_signature("secret", {"checkout-test": "test"}, "message")
+    signature = generate_hmac_signature("secret", {"checkout-test": "test"}, b"message")
     assert signature == "d037ddb2a4b602289dab92a62b6f3026faaad2e155108719f6cc07c5fca83b4e"
 
 
@@ -116,13 +117,13 @@ def test_verify_account_fail_account_missing(paytrail_response_headers, account)
 
 
 def test_verify_response_signature_ok(paytrail_response_headers, paytrail_response_body, secret):
-    body = json.dumps(paytrail_response_body)
+    body = orjson.dumps(paytrail_response_body)
     verify_signature(paytrail_response_headers, body, secret)
 
 
 def test_verify_response_signature_fail_mismatching_signature(paytrail_response_headers, secret):
     with pytest.raises(PaytrailResponseError, match="Invalid response; signature mismatch"):
-        verify_signature(paytrail_response_headers, "wrong body", secret)
+        verify_signature(paytrail_response_headers, b"wrong body", secret)
 
 
 def test_verify_response_signature_fail_missing_signature(
@@ -140,7 +141,10 @@ def test_create_payment_response_ok(
     mock_url = test_url.with_path(CREATE_PAYMENT_PATH).with_query({"groups": "bank"})
     with requests_mock.Mocker() as m:
         m.post(
-            str(mock_url), status_code=200, json=paytrail_response_body, headers=paytrail_response_headers
+            str(mock_url),
+            status_code=200,
+            content=orjson.dumps(paytrail_response_body),
+            headers=paytrail_response_headers,
         )
         data = create_payment(test_url, account, secret, payment, groups=[PaymentMethod.BANK])
 
@@ -156,7 +160,10 @@ def test_create_payment_request_ok(
     mock_url = test_url.with_path(CREATE_PAYMENT_PATH).with_query({"groups": "bank"})
     with requests_mock.Mocker() as m:
         m.post(
-            str(mock_url), status_code=200, json=paytrail_response_body, headers=paytrail_response_headers
+            str(mock_url),
+            status_code=200,
+            content=orjson.dumps(paytrail_response_body),
+            headers=paytrail_response_headers,
         )
         create_payment(test_url, account, secret, payment, groups=[PaymentMethod.BANK])
 

@@ -14,7 +14,10 @@ from Instanssi.store.tasks import send_receipt
 @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
 def test_send_receipt_ok(store_transaction, receipt):
     """Make sure the sending about works. We check the email content elsewhere."""
-    send_receipt.delay(store_transaction.id, receipt.id)
+    receipt.transaction = store_transaction
+    receipt.save()
+
+    send_receipt.delay(receipt.id)
 
     # Ensure mail was sent
     assert len(mail.outbox) == 1
@@ -35,9 +38,13 @@ def test_send_receipt_ok(store_transaction, receipt):
 @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
 def test_send_receipt_fatal_error(caplog, store_transaction, receipt):
     caplog.set_level(logging.ERROR)
+
+    receipt.transaction = store_transaction
+    receipt.save()
+
     with mock.patch("Instanssi.store.tasks.Receipt.send") as fn:
         fn.side_effect = Exception("poks")
-        send_receipt.delay(store_transaction.id, receipt.id)
+        send_receipt.delay(receipt.id)
 
     # Make sure we logged
     assert caplog.records[0].message.startswith("Failed to send receipt")
@@ -47,6 +54,7 @@ def test_send_receipt_fatal_error(caplog, store_transaction, receipt):
 
     # Make sure an event log was written
     events = StoreTransactionEvent.objects.all()
+    assert events.count() == 1
     assert events[0].data == {"mail_to": receipt.mail_to, "receipt_id": receipt.id, "exception": "poks"}
     assert events[0].transaction == store_transaction
     assert events[0].message == "Receipt sending failure"
@@ -57,9 +65,13 @@ def test_send_receipt_fatal_error(caplog, store_transaction, receipt):
 @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
 def test_send_receipt_retryable_error(caplog, store_transaction, receipt):
     caplog.set_level(logging.ERROR)
+
+    receipt.transaction = store_transaction
+    receipt.save()
+
     with mock.patch("Instanssi.store.tasks.Receipt.send") as fn:
         fn.side_effect = SMTPServerDisconnected("boom")
-        send_receipt.delay(store_transaction.id, receipt.id)
+        send_receipt.delay(receipt.id)
 
     # Make sure we logged (original attempt + retries)
     logs = filter(lambda x: x.message.startswith("Failed to send receipt"), caplog.records)

@@ -343,6 +343,7 @@ class TransactionItem(models.Model):
 
 
 class Receipt(models.Model):
+    transaction = models.ForeignKey(StoreTransaction, on_delete=models.SET_NULL, null=True, default=None)
     subject = models.CharField("Aihe", max_length=256)
     mail_to = models.CharField("Vastaanottajan osoite", max_length=256)
     mail_from = models.CharField("Lähettäjän osoite", max_length=256)
@@ -358,9 +359,17 @@ class Receipt(models.Model):
         return self.sent is not None
 
     @classmethod
-    def create(cls, mail_to: str, mail_from: str, subject: str, params: ReceiptParams) -> "Receipt":
+    def create(
+        cls,
+        mail_to: str,
+        mail_from: str,
+        subject: str,
+        params: ReceiptParams,
+        transaction: Optional[StoreTransaction] = None,
+    ) -> "Receipt":
         # First, save header information and save so that we get a receipt ID
         r = cls()
+        r.transaction = transaction
         r.subject = subject
         r.mail_to = mail_to
         r.mail_from = mail_from

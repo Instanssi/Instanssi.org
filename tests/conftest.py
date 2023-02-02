@@ -583,7 +583,7 @@ def receipt_params(faker) -> ReceiptParams:
     p.transaction_url(reverse("store:ta_view", args=("1234abcd",)))
     for k in range(3):
         p.add_item(
-            item_id=1000 + k,
+            item_id=str(1000 + k),
             price=Decimal(k),
             name=f"Test product {k}",
             amount=k,

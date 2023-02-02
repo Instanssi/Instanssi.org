@@ -73,7 +73,8 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> None:
         mail_from='"Instanssi" <noreply@instanssi.org>',
         subject=f"Instanssi.org: Kuitti tilaukselle #{ta.id}",
         params=params,
+        transaction=ta,
     )
-    tasks.send_receipt.delay(ta.id, receipt.id)
+    tasks.send_receipt.delay(receipt.id)
     logger.info("Queued receipt %d for sending.", receipt.id)
     logger.info("Store transaction %s confirmed.", ta.id)

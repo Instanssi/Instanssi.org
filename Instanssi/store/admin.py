@@ -45,6 +45,7 @@ class TransactionItemAdmin(admin.ModelAdmin):
 
 class ReceiptAdmin(admin.ModelAdmin):
     list_display = [
+        "transaction",
         "mail_to",
         "mail_from",
         "subject",

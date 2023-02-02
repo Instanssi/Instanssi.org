@@ -111,7 +111,7 @@ def paytrail_response_headers(account):
         "checkout-account": account,
         "checkout-method": "POST",
         "checkout-algorithm": "sha256",
-        "signature": "d6c86a887d1fca31e583834f64f058d8a8d09a50b37059da72ee316b6e90a251",
+        "signature": "ecb2abe33e484b19e8c28928600cff358dbad47ea5e48387560bae06df01a65c",
         "request-id": "b1436eaf-1ef7-4b5b-84c8-28b52c16521a",
     }
 

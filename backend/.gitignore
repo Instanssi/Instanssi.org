@@ -1,0 +1,12 @@
+content/static/*
+content/uploads/*
+!content/static/index.html
+!content/uploads/index.html
+Instanssi/settings.py
+.env
+.venv
+.virtualenv
+env/
+venv/
+virtualenv/
+var/

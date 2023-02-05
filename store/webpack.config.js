@@ -2,24 +2,13 @@
 
 var webpack = require('webpack');
 
-// Django apps that need a JS bundle
-var modules = [
-    'store'
-];
-
-var entryPoints = {};
-modules.forEach(function(name) {
-    // generate entry point mappings like
-    // 'store/static/store/js/bundle.js': './store/static/store/js/src/index.js'
-    let entryName = name + '/static/' + name + '/js/bundle.js';
-    let entryFile = './' + name + '/static/' + name + '/js/src/index.js';
-    entryPoints[entryName] = entryFile;
-});
 
 // webpack configuration
 module.exports = {
     // where to start
-    entry: entryPoints,
+    entry: {
+        "../backend/Instanssi/store/static/store/js/bundle.js": "./src/index.js"
+    },
     // what to output
     output: {
         // [name] is the name of the entry point, so this names output bundles

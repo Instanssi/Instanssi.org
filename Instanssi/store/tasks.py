@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 
 @shared_task(
-    autoretry_for=(SMTPServerDisconnected, SMTPConnectError),
+    autoretry_for=(SMTPServerDisconnected, SMTPConnectError, Receipt.DoesNotExist),
     retry_backoff=60,
     retry_kwargs={"max_retries": 10},
 )

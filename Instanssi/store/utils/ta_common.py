@@ -75,6 +75,6 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> None:
         params=params,
         transaction=ta,
     )
-    tasks.send_receipt.delay(receipt.id)
+    tasks.send_receipt.apply_async(countdown=5, args=[receipt.id])
     logger.info("Queued receipt %d for sending.", receipt.id)
     logger.info("Store transaction %s confirmed.", ta.id)

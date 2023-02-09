@@ -1,10 +1,10 @@
 {% load static twitter_tag cache %}
-<!--<section class="widget widget-store">
+<!--
+<section class="widget widget-store">
     <a class="btn btn-primary" href="{% url 'store:index' %}">
         <span class="fa fa-fw fa-euro"></span> Osta lippu!
     </a>
 </section>
-
 <section class="widget widget-valot">
     <a class="btn btn-primary" href="{% url 'main2023:valot' %}">
         <span class="fa fa-fw fa-lightbulb-o"></span> Valot
@@ -20,12 +20,17 @@
         <h3><span class="fa fa-fw fa-music"></span> Instanssiradio</h3>
     </a>
 </section>
-
+-->
+<section class="widget widget-rules">
+    <a href="{% url 'store:index' %}">
+        <h3><span class="fa fa-euro"></span> Osta lippu!</h3>
+    </a>
+</section>
 <section class="widget widget-rules">
     <a href="{% url 'main2023:saannot' %}">
         <h3><span class="fa fa-info-circle"></span> Tapahtuman säännöt</h3>
     </a>
-</section>-->
+</section>
 {% block widgets %}
 <!--
 <section class="widget widget-rekry">

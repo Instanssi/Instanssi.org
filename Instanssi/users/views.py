@@ -13,7 +13,6 @@ AUTH_METHODS = [
     ("google", "google-oauth2", "Google"),
     ("twitter", "twitter", "Twitter"),
     ("github", "github", "Github"),
-    ("battlenet", "battlenet-oauth2", "Battle.net"),
     ("steam", "steam", "Steam"),
 ]
 

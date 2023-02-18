@@ -95,7 +95,7 @@ def test_create_receipt_email_content(receipt, receipt_params):
         "--------------\n"
         "\n"
         "Linkki Jyväskylä ry (2147178-4)\n"
-        "Agora, Ag C233.2, PL 35\n"
+        "Agora, Ag B437, PL 35\n"
         "40014 Jyväskylän yliopisto\n"
         "\n"
         "Tilauksen tiedot:\n"

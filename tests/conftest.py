@@ -144,6 +144,13 @@ def super_page_client(page_client, super_user, password) -> APIClient:
 
 
 @fixture
+def user_api_client(api_client, normal_user, password) -> APIClient:
+    api_client.login(username=normal_user.username, password=password)
+    yield api_client
+    api_client.logout()
+
+
+@fixture
 def staff_api_client(api_client, staff_user, password) -> APIClient:
     api_client.login(username=staff_user.username, password=password)
     yield api_client
@@ -182,6 +189,11 @@ def create_user(faker, password):
 @fixture
 def base_user(create_user) -> User:
     return create_user()
+
+
+@fixture
+def normal_user(create_user) -> User:
+    return create_user(is_staff=False)
 
 
 @fixture

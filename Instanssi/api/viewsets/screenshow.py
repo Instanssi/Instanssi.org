@@ -1,7 +1,6 @@
 import logging
 
 from django_filters.rest_framework import DjangoFilterBackend
-from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -36,7 +35,7 @@ class SongViewSet(ReadWriteModelViewSet):
 
     queryset = NPSong.objects.get_queryset()
     serializer_class = SongSerializer
-    permission_classes = [IsAuthenticated, CanUpdateScreenData, TokenHasReadWriteScope]
+    permission_classes = [IsAuthenticated, CanUpdateScreenData]
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,

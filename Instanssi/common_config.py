@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 from typing import Tuple
 
@@ -47,18 +48,21 @@ COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
 
-OAUTH2_PROVIDER = {
-    "SCOPES": {"read": "Read scope", "write": "Write scope", "groups": "Access to your groups"}
-}
-
 SENTRY_DSN = ""
+
+REST_KNOX = {
+    "AUTH_TOKEN_CHARACTER_LENGTH": 64,
+    "TOKEN_TTL": timedelta(days=7),
+    "TOKEN_LIMIT_PER_USER": 3,
+    "AUTO_REFRESH": True,
+}
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        "knox.auth.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_RENDERER_CLASSES": [
@@ -146,8 +150,8 @@ INSTALLED_APPS = (
     "Instanssi.infodesk",
     "imagekit",
     "rest_framework",
+    "knox",
     "django_filters",
-    "oauth2_provider",
     "twitter_tag",
     "crispy_forms",
     "social_django",

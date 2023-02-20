@@ -21,15 +21,15 @@
     <h2>Omat applikaatiot</h2>
 
 {% for app in apps %}
-    <h3>{{ app.name }}</h3>
+    <h3>Token: {{ app.token_key }}...</h3>
     <p>
-    <strong>Client ID:</strong><br />
-    {{ app.client_id }}<br/>
-    <strong>Client Secret:</strong><br />
-    {{ app.client_secret }}
+        <strong>Luotu:</strong><br />
+        {{ app.created }} <br/>
+        <strong>Vanhenee:</strong><br />
+        {{ app.expiry }}
     </p>
     <p>
-    <a href="{% url 'manage-users:delete_app' app.id %}">Poista</a>
+    <a href="{% url 'manage-users:delete_app' app.pk %}">Poista</a>
     </p>
 {% endfor %}
 
@@ -41,17 +41,19 @@
      <table class="table table-striped table-condensed">
          <thead>
              <tr>
-                <th>Omistaja</th>
-                <th>Applikaatio</th>
-                 <th>Client ID</th>
+                 <th>Omistaja</th>
+                 <th>Token</th>
+                 <th>Luotu</th>
+                 <th>Vanhenee</th>
              </tr>
          </thead>
          <tbody>
 {% for app in all_apps %}
             <tr>
                 <td>{{ app.user }}</td>
-                <td>{{ app.name }}</td>
-                <td>{{ app.client_id }}</td>
+                <td>{{ app.token_key }}</td>
+                <td>{{ app.created }}</td>
+                <td>{{ app.expiry }}</td>
             </tr>
 {% endfor %}
          </tbody>

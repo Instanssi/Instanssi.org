@@ -1,42 +1,45 @@
+from datetime import datetime, timedelta, timezone
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
 from django import forms
 from django.contrib.auth.models import Group, User
-from oauth2_provider.models import Application
+from django.forms import widgets
+from knox.crypto import create_token_string, hash_token
+from knox.models import AuthToken
+from knox.settings import CONSTANTS
 
 
-class ApiApplicationForm(forms.ModelForm):
+class ApiApplicationForm(forms.Form):
+    token = forms.CharField(
+        max_length=64,
+        min_length=64,
+        initial=create_token_string,
+        widget=widgets.TextInput({"readonly": "readonly"}),
+    )
+    expiry = forms.DateTimeField(initial=datetime.now(timezone.utc) + timedelta(days=30))
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
         super(ApiApplicationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "Lisää applikaatio",
-                "name",
-                "client_id",
-                "client_secret",
-                ButtonHolder(Submit("submit", "Lisää")),
+                "Luo API token",
+                "token",
+                "expiry",
+                ButtonHolder(Submit("submit", "Luo")),
             )
         )
 
-    def clean_name(self):
-        name = self.cleaned_data["name"]
-        if len(name) < 4:
-            raise forms.ValidationError("Nimen tulee olla vähintään 4 merkkiä pitkä!")
-        return name
-
-    def save(self, commit=True):
-        app = Application(**self.cleaned_data)
-        app.authorization_grant_type = Application.GRANT_CLIENT_CREDENTIALS
-        app.user = self.user
-        app.client_type = Application.CLIENT_CONFIDENTIAL
-        app.save(commit)
-        return app
-
-    class Meta:
-        model = Application
-        fields = ("name", "client_id", "client_secret")
+    def save(self, commit: bool = True) -> AuthToken:
+        token = AuthToken()
+        token.user = self.user
+        token.digest = hash_token(self.cleaned_data["token"])
+        token.token_key = self.cleaned_data["token"][: CONSTANTS.TOKEN_KEY_LENGTH]
+        token.expiry = self.cleaned_data["expiry"]
+        token.save(commit)
+        return token
 
 
 class UserCreationForm(forms.ModelForm):

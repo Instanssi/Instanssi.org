@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from oauth2_provider.models import Application
+from knox.models import AuthToken
 
 from Instanssi.admin_base.misc.custom_render import admin_render
 from Instanssi.admin_users.forms import (
@@ -53,13 +53,13 @@ def apps(request: HttpRequest) -> HttpResponse:
         add_form = ApiApplicationForm(request.POST, user=request.user)
         if add_form.is_valid():
             app = add_form.save()
-            logger.info("Application %s created.", app.name, extra={"user": request.user})
+            logger.info("Application %s created.", app.token_key, extra={"user": request.user})
             return HttpResponseRedirect(reverse("manage-users:apps"))
     else:
         add_form = ApiApplicationForm()
 
-    m_apps = Application.objects.filter(user=request.user)
-    all_apps = Application.objects.all() if request.user.is_superuser else None
+    m_apps = AuthToken.objects.filter(user=request.user)
+    all_apps = AuthToken.objects.all() if request.user.is_superuser else None
     return admin_render(
         request,
         "admin_users/api_tokens.html",
@@ -68,17 +68,17 @@ def apps(request: HttpRequest) -> HttpResponse:
 
 
 @staff_access_required
-def delete_app(request: HttpRequest, app_id: int) -> HttpResponse:
+def delete_app(request: HttpRequest, app_id: str) -> HttpResponse:
     try:
-        q = Application.objects.get_queryset()
+        q = AuthToken.objects.get_queryset()
         if not request.user.is_superuser:
             q = q.filter(user=request.user)
-        app = q.get(id=app_id)
-    except Application.DoesNotExist:
+        app = q.get(pk=app_id)
+        app.delete()
+    except AuthToken.DoesNotExist:
         raise Http404
 
-    logger.info("Application %s deleted.", app.name, extra={"user": request.user})
-    app.delete()
+    logger.info("Application %s deleted.", app.pk, extra={"user": request.user})
     return HttpResponseRedirect(reverse("manage-users:apps"))
 
 

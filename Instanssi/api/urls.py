@@ -1,8 +1,12 @@
-import oauth2_provider.views as oauth2_views
 from django.conf.urls import include
 from django.urls import path
 from rest_framework import routers
 
+from .admin.viewsets.kompomaatti import (
+    AdminCompoEntryViewSet,
+    AdminCompoViewSet,
+    AdminEventViewSet,
+)
 from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,
     CompetitionViewSet,
@@ -40,8 +44,9 @@ class CustomRouter(routers.DefaultRouter):
     APIRootView = InstanssiAPIRoot
 
 
-# API Endpoints
 router = CustomRouter()
+
+# Public API
 router.register(r"events", EventViewSet, basename="events")
 router.register(r"songs", SongViewSet, basename="songs")
 router.register(r"competitions", CompetitionViewSet, basename="competitions")
@@ -65,14 +70,11 @@ router.register(r"user_vote_codes", TicketVoteCodeViewSet, basename="user_vote_c
 router.register(r"user_vote_code_requests", VoteCodeRequestViewSet, basename="user_vote_code_requests")
 router.register(r"user_votes", VoteGroupViewSet, basename="user_votes")
 
-
-oauth2_endpoint_views = [
-    path("authorize/", oauth2_views.AuthorizationView.as_view(), name="authorize"),
-    path("token/", oauth2_views.TokenView.as_view(), name="token"),
-    path("revoke-token/", oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
-]
+# Admin API (requires admin privileges)
+router.register("admin/events", AdminEventViewSet, basename="admin_events")
+router.register("admin/compos", AdminCompoViewSet, basename="admin_compos")
+router.register("admin/compo_entries", AdminCompoEntryViewSet, basename="admin_compo_entries")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("oauth2/", include((oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider")),
 ]

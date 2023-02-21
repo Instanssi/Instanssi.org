@@ -1,4 +1,4 @@
-{% load store_tags %}Hei,
+{% load store_tags l10n %}{% localize on %}Hei,
 
 Tilauksenne numerolla {{ order_number }} on nyt käsitelty.
 
@@ -62,3 +62,4 @@ mikäli tietokonettasi käyttää useampi henkilö!
 -- 
 Instanssi
 https://instanssi.org
+{% endlocalize %}

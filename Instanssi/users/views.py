@@ -9,7 +9,6 @@ from Instanssi.users.forms import DjangoLoginForm, ProfileForm
 
 AUTH_METHODS = [
     # Short name, social-auth, friendly name
-    ("facebook", "facebook", "Facebook"),
     ("google", "google-oauth2", "Google"),
     ("twitter", "twitter", "Twitter"),
     ("github", "github", "Github"),

@@ -470,6 +470,26 @@ class Entry(models.Model):
 
         # Continue with normal save
         super(Entry, self).save(*args, **kwargs)
+        self.generate_alternates()
+
+    def generate_alternates(self) -> None:
+        """Trigger generating additional formats"""
+        from Instanssi.kompomaatti import tasks
+
+        for target_format in AlternateEntryFile.FORMAT_CHOICES:
+            tasks.generate_alternate_files.apply_async(countdown=1, args=[self.id, target_format.lower()])
+
+
+class AlternateEntryFile(models.Model):
+    FORMAT_CHOICES = ["aac", "opus"]
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
+    format = models.IntegerField(choices=enumerate(FORMAT_CHOICES))
+    file = models.FileField(upload_to="kompomaatti/alternates/")
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self) -> str:
+        return f"Alternate {self.FORMAT_CHOICES[self.format]} file for {self.entry.name}"
 
 
 # These are packages that contain all entries for a compo
@@ -648,3 +668,4 @@ auditlog.register(EntryCollection)
 auditlog.register(Profile)
 auditlog.register(Event)
 auditlog.register(TicketVoteCode)
+auditlog.register(AlternateEntryFile)

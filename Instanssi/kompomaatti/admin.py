@@ -2,6 +2,7 @@ from django.contrib import admin
 from imagekit.admin import AdminThumbnail
 
 from Instanssi.kompomaatti.models import (
+    AlternateEntryFile,
     Competition,
     CompetitionParticipation,
     Compo,
@@ -66,3 +67,4 @@ admin.site.register(EntryCollection, EntryCollectionAdmin)
 admin.site.register(Profile)
 admin.site.register(Competition)
 admin.site.register(CompetitionParticipation)
+admin.site.register(AlternateEntryFile)

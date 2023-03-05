@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     "Instanssi.kompomaatti",
     "Instanssi.ext_blog",
     "Instanssi.ext_programme",
-    "Instanssi.screenshow",
     "Instanssi.dblog",
     "Instanssi.store",
     "Instanssi.infodesk",

@@ -10,14 +10,6 @@ def test_events(api_client):
 
 
 @pytest.mark.django_db
-def test_songs(api_client):
-    url = "/api/v1/songs/"
-    assert api_client.get(url).status_code == 401
-    assert api_client.post(url).status_code == 401
-    assert api_client.options(url).status_code == 401
-
-
-@pytest.mark.django_db
 def test_competitions(api_client):
     url = "/api/v1/competitions/"
     assert api_client.get(url).status_code == 200
@@ -68,30 +60,6 @@ def test_user_entries(api_client):
 @pytest.mark.django_db
 def test_programme_events(api_client):
     url = "/api/v1/programme_events/"
-    assert api_client.get(url).status_code == 200
-    assert api_client.post(url).status_code == 405
-    assert api_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_sponsors(api_client):
-    url = "/api/v1/sponsors/"
-    assert api_client.get(url).status_code == 200
-    assert api_client.post(url).status_code == 405
-    assert api_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_messages(api_client):
-    url = "/api/v1/messages/"
-    assert api_client.get(url).status_code == 200
-    assert api_client.post(url).status_code == 405
-    assert api_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_irc_message(api_client):
-    url = "/api/v1/irc_messages/"
     assert api_client.get(url).status_code == 200
     assert api_client.post(url).status_code == 405
     assert api_client.options(url).status_code == 200

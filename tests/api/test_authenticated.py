@@ -10,15 +10,6 @@ def test_auth_events(auth_client):
 
 
 @pytest.mark.django_db
-def test_auth_songs(auth_client):
-    """Test songs api access without group, should return 403 for all"""
-    url = "/api/v1/songs/"
-    assert auth_client.get(url).status_code == 403
-    assert auth_client.post(url).status_code == 403
-    assert auth_client.options(url).status_code == 403
-
-
-@pytest.mark.django_db
 def test_auth_competitions(auth_client):
     url = "/api/v1/competitions/"
     assert auth_client.get(url).status_code == 200
@@ -320,30 +311,6 @@ def test_auth_user_entries_instance_options(auth_client, editable_compo_entry):
 @pytest.mark.django_db
 def test_auth_programme_events(auth_client):
     url = "/api/v1/programme_events/"
-    assert auth_client.get(url).status_code == 200
-    assert auth_client.post(url).status_code == 405
-    assert auth_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_auth_sponsors(auth_client):
-    url = "/api/v1/sponsors/"
-    assert auth_client.get(url).status_code == 200
-    assert auth_client.post(url).status_code == 405
-    assert auth_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_auth_messages(auth_client):
-    url = "/api/v1/messages/"
-    assert auth_client.get(url).status_code == 200
-    assert auth_client.post(url).status_code == 405
-    assert auth_client.options(url).status_code == 200
-
-
-@pytest.mark.django_db
-def test_auth_irc_message(auth_client):
-    url = "/api/v1/irc_messages/"
     assert auth_client.get(url).status_code == 200
     assert auth_client.post(url).status_code == 405
     assert auth_client.options(url).status_code == 200

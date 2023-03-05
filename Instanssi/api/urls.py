@@ -20,12 +20,6 @@ from .viewsets.kompomaatti import (
     VoteGroupViewSet,
 )
 from .viewsets.programme import ProgrammeEventViewSet
-from .viewsets.screenshow import (
-    IRCMessageViewSet,
-    MessageViewSet,
-    SongViewSet,
-    SponsorViewSet,
-)
 from .viewsets.store import StoreItemViewSet, StoreTransactionViewSet
 from .viewsets.user import CurrentUserViewSet
 
@@ -48,7 +42,6 @@ router = CustomRouter()
 
 # Public API
 router.register(r"events", EventViewSet, basename="events")
-router.register(r"songs", SongViewSet, basename="songs")
 router.register(r"competitions", CompetitionViewSet, basename="competitions")
 router.register(
     r"competition_participations",
@@ -60,9 +53,6 @@ router.register(r"compos", CompoViewSet, basename="compos")
 router.register(r"compo_entries", CompoEntryViewSet, basename="compo_entries")
 router.register(r"user_entries", UserCompoEntryViewSet, basename="user_entries")
 router.register(r"programme_events", ProgrammeEventViewSet, basename="programme_events")
-router.register(r"sponsors", SponsorViewSet, basename="sponsors")
-router.register(r"messages", MessageViewSet, basename="messages")
-router.register(r"irc_messages", IRCMessageViewSet, basename="irc_messages")
 router.register(r"store_items", StoreItemViewSet, basename="store_items")
 router.register(r"store_transaction", StoreTransactionViewSet, basename="store_transaction")
 router.register(r"current_user", CurrentUserViewSet, basename="current_user")

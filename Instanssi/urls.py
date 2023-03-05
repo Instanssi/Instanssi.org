@@ -33,14 +33,6 @@ urlpatterns = [
         include("Instanssi.admin_arkisto.urls", namespace="manage-arkisto"),
     ),
     path(
-        "manage/<int:selected_event_id>/slides/",
-        include("Instanssi.admin_slides.urls", namespace="manage-slides"),
-    ),
-    path(
-        "manage/<int:selected_event_id>/screenshow/",
-        include("Instanssi.admin_screenshow.urls", namespace="manage-screenshow"),
-    ),
-    path(
         "manage/<int:selected_event_id>/kompomaatti/",
         include("Instanssi.admin_kompomaatti.urls", namespace="manage-kompomaatti"),
     ),
@@ -53,7 +45,6 @@ urlpatterns = [
     path("blog/", include("Instanssi.ext_blog.urls", namespace="ext-blog")),
     path("arkisto/", include("Instanssi.arkisto.urls", namespace="archive")),
     path("kompomaatti/", include("Instanssi.kompomaatti.urls", namespace="km")),
-    path("screen/", include("Instanssi.screenshow.urls", namespace="screen")),
     path("store/", include("Instanssi.store.urls", namespace="store")),
     path("infodesk/", include("Instanssi.infodesk.urls", namespace="infodesk")),
     path("", RedirectView.as_view(url=reverse_lazy("main2023:index")), name="root-index"),

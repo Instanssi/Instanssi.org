@@ -7,57 +7,74 @@ import tempfile
 import uuid
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Dict, Final
 
 import ffmpeg
 from celery import shared_task
 from django.core.files import File
 
+from .enums import AudioCodec, AudioContainer
 from .models import AlternateEntryFile, Compo, Entry, EntryCollection
 
 log = logging.getLogger(__name__)
 
-CONVERTABLE_INPUTS = [
-    ".mp3",
-    ".opus",
-    ".aac",
-    ".ogg",
-    ".oga",
-    ".flac",
-    ".m4a",
-]
 
-BITRATE = {
-    "opus": 128 * 1024,
-    "aac": 256 * 1024,
+# Predefined bit-rates for known formats. Otherwise, use a guess.
+FFMPEG_BITRATE: Final[Dict[AudioCodec, str]] = {
+    AudioCodec.OPUS: "64k",
+    AudioCodec.AAC: "128k",
+}
+
+# Map codec to ffmpeg encoder name
+FFMPEG_ENCODERS: Final[Dict[AudioCodec, str]] = {
+    AudioCodec.AAC: "aac",
+    AudioCodec.OPUS: "libopus",
 }
 
 
 @contextmanager
 def temp_file(output_format: str):
     with tempfile.TemporaryDirectory() as tmp:
-        with Path(tmp).with_name(f"{uuid.uuid4().hex[:6]}.{output_format}") as output_file:
+        tmp_path = Path(tmp)
+        tmp_file = f"tmp_{uuid.uuid4().hex}.{output_format}"
+        with tmp_path.with_name(tmp_file) as output_file:
             yield output_file
+            output_file.unlink()
 
 
-@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=5, retry_kwargs={"max_retries": 3})
-def generate_alternate_files(entry_id: int, output_format: str) -> None:
+@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})
+def generate_alternate_audio_files(entry_id: int, codec_index: int, container_index: int) -> None:
+    output_codec = AudioCodec(codec_index)
+    output_codec_name = output_codec.name.lower()
+    output_container = AudioContainer(container_index)
+    output_container_name = output_container.name.lower()
     entry = Entry.objects.get(pk=entry_id)
     source_file = Path(entry.entryfile.path)
+
+    # Some quick sanity checks for the input.
     if not source_file.is_file():
-        log.info("Unable to convert -- Not a file")
+        log.error("Unable to convert -- Not a file")
         return
-    if source_file.suffix not in CONVERTABLE_INPUTS:
-        log.info("Unable to convert -- input format %s not supported", source_file.suffix)
+    if source_file.suffix not in Entry.CONVERT_AUDIO_FILES:
+        log.error("Unable to convert -- input format %s not supported", source_file.suffix)
         return
 
+    log.info(
+        "Received file %s for processing -- converting to %s/%s",
+        source_file, output_codec_name, output_container_name
+    )
+
     # Create a temporary directory, and write the recoded audio file there.
-    with temp_file(output_format) as output_file:
+    with temp_file(output_container_name) as output_file:
+        log.info("Using temp file %s", output_file)
         try:
             input_file = ffmpeg.input(source_file.resolve())
             pipeline = ffmpeg.output(
                 input_file.audio,
                 filename=output_file,
-                audio_bitrate=BITRATE[output_format],
+                format=output_container_name,
+                acodec=FFMPEG_ENCODERS[output_codec],
+                audio_bitrate=FFMPEG_BITRATE[output_codec],
             )
             pipeline.global_args("-hide_banner", "-nostats", "-loglevel", "warning").run()
         except Exception as e:
@@ -65,17 +82,24 @@ def generate_alternate_files(entry_id: int, output_format: str) -> None:
             raise
 
         # Remove existing file and object, if any.
-        format_index = AlternateEntryFile.FORMAT_CHOICES.index(output_format)
+        params = dict(
+            entry=entry,
+            codec=output_codec,
+            container=output_container
+        )
         try:
-            alt = AlternateEntryFile.objects.get(entry=entry, format=format_index)
-            alt.file.delete()
+            alt = AlternateEntryFile.objects.get(**params)
+            alt.file.delete(save=False)
+            log.info("Updating existing database entry")
         except AlternateEntryFile.DoesNotExist:
-            alt = AlternateEntryFile(entry=entry, format=format_index)
+            alt = AlternateEntryFile(**params)
+            log.info("Creating a new database entry")
 
         # Read in the temporary file, save to django storage and database.
         with open(output_file, "rb") as fd:
-            file_name = f"{entry.name}_{entry.creator}.{output_format}"
+            file_name = f"{entry.name_slug}.{output_container_name}"
             alt.file.save(file_name, File(fd))
+            log.info("Result saved to %s", file_name)
         alt.save()
 
 

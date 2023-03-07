@@ -1,3 +1,4 @@
+from enum import IntEnum
 from pathlib import Path
 from typing import Any, Iterable, List, Optional
 
@@ -5,10 +6,12 @@ from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.misc import parse_youtube_video_id
+from Instanssi.kompomaatti.enums import AudioCodec, AudioContainer, WEB_AUDIO_FORMATS
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
@@ -321,6 +324,16 @@ class Compo(models.Model):
 
 
 class Entry(models.Model):
+    CONVERT_AUDIO_FILES: List[str] = [
+        ".mp3",
+        ".opus",
+        ".aac",
+        ".ogg",
+        ".oga",
+        ".flac",
+        ".m4a",
+    ]
+
     user = models.ForeignKey(
         User,
         verbose_name="käyttäjä",
@@ -400,6 +413,10 @@ class Entry(models.Model):
     def get_format(self) -> str:
         return Path(self.entryfile.url).suffix
 
+    @property
+    def is_audio(self):
+        return self.get_format() in [".mp3", ".ogg", ".oga", ".webm", ".mp4", ".m4a", ".opus"]
+
     def get_score(self) -> float:
         if self.disqualified:  # If disqualified, score will be -1
             return -1.0
@@ -450,46 +467,70 @@ class Entry(models.Model):
 
         return show
 
-    def save(self, *args: Any, **kwargs: Any) -> None:
-        try:
-            this = Entry.objects.get(id=self.id)
+    @property
+    def name_slug(self) -> str:
+        """Generate a normalized entry name (for eg. filenames)"""
+        return "__".join(filter(lambda x: bool(x), [
+            slugify(self.creator) if self.creator else None,
+            slugify(self.name) if self.name else None
+        ]))
 
-            # Check entryfile
-            if this.entryfile != self.entryfile:
-                this.entryfile.delete(save=False)
-
-            # Check sourcefile
-            if this.sourcefile != self.sourcefile:
-                this.sourcefile.delete(save=False)
-
-            # Check imagefile_original
-            if this.imagefile_original != self.imagefile_original:
-                this.imagefile_original.delete(save=False)
-        except Entry.DoesNotExist:
-            pass
-
-        # Continue with normal save
-        super(Entry, self).save(*args, **kwargs)
-        self.generate_alternates()
+    @property
+    def is_convertable_audio(self) -> bool:
+        """Check if this entry can be converted to web quality audio"""
+        file_path = Path(self.entryfile.path)
+        return file_path.suffix in self.CONVERT_AUDIO_FILES
 
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
         from Instanssi.kompomaatti import tasks
+        if self.is_convertable_audio:
+            for codec, container in WEB_AUDIO_FORMATS:
+                tasks.generate_alternate_audio_files.apply_async(
+                    countdown=1, args=[self.id, int(codec), int(container)]
+                )
 
-        for target_format in AlternateEntryFile.FORMAT_CHOICES:
-            tasks.generate_alternate_files.apply_async(countdown=1, args=[self.id, target_format.lower()])
+    @staticmethod
+    def delete_files(entry: "Entry") -> None:
+        if entry.entryfile:
+            entry.entryfile.delete(save=False)
+        if entry.sourcefile:
+            entry.sourcefile.delete(save=False)
+        if entry.imagefile_original:
+            entry.imagefile_original.delete(save=False)
+
+    def save(self, *args, **kwargs) -> None:
+        """ Save and force regeneration of alternate files """
+        if self.pk:
+            old = self.objects.get(pk=self.pk)
+            self.delete_files(old)
+            for alternate in old.alternate_files:
+                alternate.delete()
+        super().save(*args, **kwargs)
+        self.generate_alternates()
 
 
 class AlternateEntryFile(models.Model):
-    FORMAT_CHOICES = ["aac", "opus"]
-
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
-    format = models.IntegerField(choices=enumerate(FORMAT_CHOICES))
+    codec = models.IntegerField(choices=AudioCodec.choices)
+    container = models.IntegerField(choices=AudioContainer.choices)
     file = models.FileField(upload_to="kompomaatti/alternates/")
     created_at = models.DateTimeField(default=timezone.now)
 
+    @property
+    def codec_name(self) -> str:
+        return AudioCodec(self.codec).name.lower()
+
+    @property
+    def container_name(self) -> str:
+        return AudioContainer(self.container).name.lower()
+
+    @property
+    def mime_format(self):
+        return f"audio/{self.container_name};codecs={self.codec_name}"
+
     def __str__(self) -> str:
-        return f"Alternate {self.FORMAT_CHOICES[self.format]} file for {self.entry.name}"
+        return f"Alternate {self.codec_name}/{self.container_name} file for {self.entry.name}"
 
 
 # These are packages that contain all entries for a compo

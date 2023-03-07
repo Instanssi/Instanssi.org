@@ -17,6 +17,7 @@ from rest_framework.serializers import (
 )
 
 from Instanssi.kompomaatti.models import (
+    AlternateEntryFile,
     Competition,
     CompetitionParticipation,
     Compo,
@@ -24,7 +25,7 @@ from Instanssi.kompomaatti.models import (
     Event,
     TicketVoteCode,
     VoteCodeRequest,
-    VoteGroup, AlternateEntryFile,
+    VoteGroup,
 )
 from Instanssi.store.models import TransactionItem
 
@@ -233,7 +234,7 @@ class CompoEntrySerializer(ModelSerializer):
             "disqualified_reason",
             "score",
             "rank",
-            "alternate_files"
+            "alternate_files",
         )
         extra_kwargs = {}
 

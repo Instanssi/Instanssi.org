@@ -11,7 +11,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.misc import parse_youtube_video_id
-from Instanssi.kompomaatti.enums import AudioCodec, AudioContainer, WEB_AUDIO_FORMATS
+from Instanssi.kompomaatti.enums import WEB_AUDIO_FORMATS, AudioCodec, AudioContainer
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
@@ -470,10 +470,12 @@ class Entry(models.Model):
     @property
     def name_slug(self) -> str:
         """Generate a normalized entry name (for eg. filenames)"""
-        return "__".join(filter(lambda x: bool(x), [
-            slugify(self.creator) if self.creator else None,
-            slugify(self.name) if self.name else None
-        ]))
+        return "__".join(
+            filter(
+                lambda x: bool(x),
+                [slugify(self.creator) if self.creator else None, slugify(self.name) if self.name else None],
+            )
+        )
 
     @property
     def is_convertable_audio(self) -> bool:
@@ -484,6 +486,7 @@ class Entry(models.Model):
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
         from Instanssi.kompomaatti import tasks
+
         if self.is_convertable_audio:
             for codec, container in WEB_AUDIO_FORMATS:
                 tasks.generate_alternate_audio_files.apply_async(
@@ -500,11 +503,11 @@ class Entry(models.Model):
             entry.imagefile_original.delete(save=False)
 
     def save(self, *args, **kwargs) -> None:
-        """ Save and force regeneration of alternate files """
+        """Save and force regeneration of alternate files"""
         if self.pk:
-            old = self.objects.get(pk=self.pk)
+            old = Entry.objects.get(pk=self.pk)
             self.delete_files(old)
-            for alternate in old.alternate_files:
+            for alternate in old.alternate_files.all():
                 alternate.delete()
         super().save(*args, **kwargs)
         self.generate_alternates()

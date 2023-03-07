@@ -61,7 +61,9 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
 
     log.info(
         "Received file %s for processing -- converting to %s/%s",
-        source_file, output_codec_name, output_container_name
+        source_file,
+        output_codec_name,
+        output_container_name,
     )
 
     # Create a temporary directory, and write the recoded audio file there.
@@ -82,11 +84,7 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
             raise
 
         # Remove existing file and object, if any.
-        params = dict(
-            entry=entry,
-            codec=output_codec,
-            container=output_container
-        )
+        params = dict(entry=entry, codec=output_codec, container=output_container)
         try:
             alt = AlternateEntryFile.objects.get(**params)
             alt.file.delete(save=False)

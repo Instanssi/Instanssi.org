@@ -11,7 +11,12 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.misc import parse_youtube_video_id
-from Instanssi.kompomaatti.enums import WEB_AUDIO_FORMATS, AudioCodec, AudioContainer
+from Instanssi.kompomaatti.enums import (
+    AUDIO_FILE_EXTENSIONS,
+    WEB_AUDIO_FORMATS,
+    AudioCodec,
+    AudioContainer,
+)
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
@@ -324,16 +329,6 @@ class Compo(models.Model):
 
 
 class Entry(models.Model):
-    CONVERT_AUDIO_FILES: List[str] = [
-        ".mp3",
-        ".opus",
-        ".aac",
-        ".ogg",
-        ".oga",
-        ".flac",
-        ".m4a",
-    ]
-
     user = models.ForeignKey(
         User,
         verbose_name="käyttäjä",
@@ -410,12 +405,13 @@ class Entry(models.Model):
         verbose_name = "tuotos"
         verbose_name_plural = "tuotokset"
 
-    def get_format(self) -> str:
-        return Path(self.entryfile.url).suffix
+    @property
+    def entry_file_ext(self) -> str:
+        return Path(self.entryfile.name).suffix
 
     @property
     def is_audio(self):
-        return self.get_format() in [".mp3", ".ogg", ".oga", ".webm", ".mp4", ".m4a", ".opus"]
+        return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
 
     def get_score(self) -> float:
         if self.disqualified:  # If disqualified, score will be -1
@@ -477,17 +473,11 @@ class Entry(models.Model):
             )
         )
 
-    @property
-    def is_convertable_audio(self) -> bool:
-        """Check if this entry can be converted to web quality audio"""
-        file_path = Path(self.entryfile.path)
-        return file_path.suffix in self.CONVERT_AUDIO_FILES
-
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
         from Instanssi.kompomaatti import tasks
 
-        if self.is_convertable_audio:
+        if self.is_audio:
             for codec, container in WEB_AUDIO_FORMATS:
                 tasks.generate_alternate_audio_files.apply_async(
                     countdown=1, args=[self.id, int(codec), int(container)]

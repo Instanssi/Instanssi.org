@@ -52,11 +52,8 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
     source_file = Path(entry.entryfile.path)
 
     # Some quick sanity checks for the input.
-    if not source_file.is_file():
-        log.error("Unable to convert -- Not a file")
-        return
-    if source_file.suffix not in AUDIO_FILE_EXTENSIONS:
-        log.error("Unable to convert -- input format %s not supported", source_file.suffix)
+    if not entry.is_audio:
+        log.error("Unable to convert -- Input file is not an audio file")
         return
 
     log.info(

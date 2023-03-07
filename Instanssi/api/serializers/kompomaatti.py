@@ -17,6 +17,7 @@ from rest_framework.serializers import (
 )
 
 from Instanssi.kompomaatti.models import (
+    AlternateEntryFile,
     Competition,
     CompetitionParticipation,
     Compo,
@@ -139,6 +140,24 @@ class CompoSerializer(ModelSerializer):
         extra_kwargs = {}
 
 
+class AlternateEntryFileSerializer(ModelSerializer):
+    url = SerializerMethodField()
+    format = SerializerMethodField()
+
+    def get_url(self, obj: AlternateEntryFile) -> str:
+        return self.context["request"].build_absolute_uri(obj.file.url)
+
+    def get_format(self, obj: AlternateEntryFile) -> str:
+        return obj.mime_format
+
+    class Meta:
+        model = AlternateEntryFile
+        fields = (
+            "format",
+            "url",
+        )
+
+
 class CompoEntrySerializer(ModelSerializer):
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
@@ -149,6 +168,7 @@ class CompoEntrySerializer(ModelSerializer):
     score = SerializerMethodField()
     disqualified = SerializerMethodField()
     disqualified_reason = SerializerMethodField()
+    alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
 
     def get_entryfile_url(self, obj: Entry) -> Optional[str]:
         if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started):
@@ -214,6 +234,7 @@ class CompoEntrySerializer(ModelSerializer):
             "disqualified_reason",
             "score",
             "rank",
+            "alternate_files",
         )
         extra_kwargs = {}
 

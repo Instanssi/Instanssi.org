@@ -1,3 +1,4 @@
+from enum import IntEnum
 from pathlib import Path
 from typing import Any, Iterable, List, Optional
 
@@ -5,10 +6,17 @@ from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.misc import parse_youtube_video_id
+from Instanssi.kompomaatti.enums import (
+    AUDIO_FILE_EXTENSIONS,
+    WEB_AUDIO_FORMATS,
+    AudioCodec,
+    AudioContainer,
+)
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
@@ -397,8 +405,13 @@ class Entry(models.Model):
         verbose_name = "tuotos"
         verbose_name_plural = "tuotokset"
 
-    def get_format(self) -> str:
-        return Path(self.entryfile.url).suffix
+    @property
+    def entry_file_ext(self) -> str:
+        return Path(self.entryfile.name).suffix
+
+    @property
+    def is_audio(self):
+        return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
 
     def get_score(self) -> float:
         if self.disqualified:  # If disqualified, score will be -1
@@ -450,26 +463,67 @@ class Entry(models.Model):
 
         return show
 
-    def save(self, *args: Any, **kwargs: Any) -> None:
-        try:
-            this = Entry.objects.get(id=self.id)
+    @property
+    def name_slug(self) -> str:
+        """Generate a normalized entry name (for eg. filenames)"""
+        return "__".join(
+            filter(
+                lambda x: bool(x),
+                [slugify(self.creator) if self.creator else None, slugify(self.name) if self.name else None],
+            )
+        )
 
-            # Check entryfile
-            if this.entryfile != self.entryfile:
-                this.entryfile.delete(save=False)
+    def generate_alternates(self) -> None:
+        """Trigger generating additional formats"""
+        from Instanssi.kompomaatti import tasks
 
-            # Check sourcefile
-            if this.sourcefile != self.sourcefile:
-                this.sourcefile.delete(save=False)
+        if self.is_audio:
+            for codec, container in WEB_AUDIO_FORMATS:
+                tasks.generate_alternate_audio_files.apply_async(
+                    countdown=1, args=[self.id, int(codec), int(container)]
+                )
 
-            # Check imagefile_original
-            if this.imagefile_original != self.imagefile_original:
-                this.imagefile_original.delete(save=False)
-        except Entry.DoesNotExist:
-            pass
+    @staticmethod
+    def delete_files(entry: "Entry") -> None:
+        if entry.entryfile:
+            entry.entryfile.delete(save=False)
+        if entry.sourcefile:
+            entry.sourcefile.delete(save=False)
+        if entry.imagefile_original:
+            entry.imagefile_original.delete(save=False)
 
-        # Continue with normal save
-        super(Entry, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs) -> None:
+        """Save and force regeneration of alternate files"""
+        if self.pk:
+            old = Entry.objects.get(pk=self.pk)
+            self.delete_files(old)
+            for alternate in old.alternate_files.all():
+                alternate.delete()
+        super().save(*args, **kwargs)
+        self.generate_alternates()
+
+
+class AlternateEntryFile(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
+    codec = models.IntegerField(choices=AudioCodec.choices)
+    container = models.IntegerField(choices=AudioContainer.choices)
+    file = models.FileField(upload_to="kompomaatti/alternates/")
+    created_at = models.DateTimeField(default=timezone.now)
+
+    @property
+    def codec_name(self) -> str:
+        return AudioCodec(self.codec).name.lower()
+
+    @property
+    def container_name(self) -> str:
+        return AudioContainer(self.container).name.lower()
+
+    @property
+    def mime_format(self):
+        return f"audio/{self.container_name};codecs={self.codec_name}"
+
+    def __str__(self) -> str:
+        return f"Alternate {self.codec_name}/{self.container_name} file for {self.entry.name}"
 
 
 # These are packages that contain all entries for a compo
@@ -648,3 +702,4 @@ auditlog.register(EntryCollection)
 auditlog.register(Profile)
 auditlog.register(Event)
 auditlog.register(TicketVoteCode)
+auditlog.register(AlternateEntryFile)

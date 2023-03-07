@@ -13,7 +13,7 @@ import ffmpeg
 from celery import shared_task
 from django.core.files import File
 
-from .enums import AudioCodec, AudioContainer
+from .enums import AUDIO_FILE_EXTENSIONS, AudioCodec, AudioContainer
 from .models import AlternateEntryFile, Compo, Entry, EntryCollection
 
 log = logging.getLogger(__name__)
@@ -55,7 +55,7 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
     if not source_file.is_file():
         log.error("Unable to convert -- Not a file")
         return
-    if source_file.suffix not in Entry.CONVERT_AUDIO_FILES:
+    if source_file.suffix not in AUDIO_FILE_EXTENSIONS:
         log.error("Unable to convert -- input format %s not supported", source_file.suffix)
         return
 

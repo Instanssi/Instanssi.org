@@ -353,12 +353,6 @@ def entry_delete(request: HttpRequest, selected_event_id: int, entry_id: int) ->
 
 
 @staff_access_required
-def generate_result_package(request: HttpRequest, selected_event_id: int, compo_id: int) -> HttpResponse:
-    tasks.rebuild_collection.delay(compo_id)
-    return HttpResponseRedirect(reverse("manage-kompomaatti:results", args=(selected_event_id,)))
-
-
-@staff_access_required
 def results(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     compos = Compo.objects.filter(event_id=selected_event_id)
     competitions = Competition.objects.filter(event_id=selected_event_id)

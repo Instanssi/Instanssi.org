@@ -531,13 +531,6 @@ class AlternateEntryFile(models.Model):
         return f"Alternate {self.codec_name}/{self.container_name} file for {self.entry.name}"
 
 
-# These are packages that contain all entries for a compo
-class EntryCollection(models.Model):
-    compo = models.OneToOneField(Compo, on_delete=models.PROTECT, related_name="collection")
-    file = models.FileField(upload_to=settings.MEDIA_COMPO_COLLECTIONS, blank=True, null=True, default=None)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class VoteGroup(models.Model):
     user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
@@ -703,7 +696,6 @@ auditlog.register(CompetitionParticipation)
 auditlog.register(Vote)
 auditlog.register(VoteGroup)
 auditlog.register(VoteCodeRequest)
-auditlog.register(EntryCollection)
 auditlog.register(Profile)
 auditlog.register(Event)
 auditlog.register(TicketVoteCode)

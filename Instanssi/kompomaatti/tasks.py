@@ -1,10 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
-import os
-import tarfile
-import tempfile
-import uuid
 from pathlib import Path
 from typing import Dict, Final
 
@@ -15,7 +11,7 @@ from django.utils import timezone
 
 from ..common.file_handling import temp_file
 from .enums import MediaCodec, MediaContainer
-from .models import AlternateEntryFile, Compo, Entry, EntryCollection
+from .models import AlternateEntryFile, Entry
 
 log = logging.getLogger(__name__)
 
@@ -86,41 +82,3 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
             alt.file.save(output_file, File(fd))
         alt.save()
         log.info("Entry processed; result saved to %s", alt.file.path)
-
-
-@shared_task
-def rebuild_collection(compo_id: int) -> None:
-    log.info("Running for compo id %s", compo_id)
-    compo = Compo.objects.get(id=compo_id)
-    entries = Entry.objects.filter(compo_id=compo_id)
-
-    try:
-        col = EntryCollection.objects.get(compo=compo)
-    except EntryCollection.DoesNotExist:
-        col = EntryCollection(compo=compo)
-
-    with tempfile.TemporaryFile() as fd:
-        with tarfile.open(fileobj=fd, mode="w:gz") as tar:
-            for entry in entries:
-                _, ext = os.path.splitext(entry.entryfile.path)
-                base_name = (
-                    "{}-by-{}{}".format(entry.name, entry.creator, ext)
-                    .replace(" ", "_")
-                    .replace("/", "-")
-                    .replace("\\", "-")
-                    .replace("ä", "a")
-                    .replace("ö", "o")
-                    .encode("ascii", "ignore")
-                    .decode("ascii")
-                )
-                log.info("Compressing to %s", base_name)
-                with open(entry.entryfile.path, "rb") as in_fd:
-                    tar_info = tarfile.TarInfo(base_name)
-                    tar_info.size = entry.entryfile.size
-                    tar.addfile(tarinfo=tar_info, fileobj=in_fd)
-            tar.close()
-
-        col_name = "{}_{}_{}.tar.gz".format(compo.event.name, compo.name, uuid.uuid4().hex[:6])
-        col.file.save(name=col_name.encode("ascii", "ignore").decode("ascii"), content=File(fd))
-        col.save()
-        log.info("'%s' -> '%s'", col.compo, col.file)

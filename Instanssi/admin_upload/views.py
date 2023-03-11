@@ -49,7 +49,6 @@ def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
 @permission_required("admin_upload.delete_uploadedfile", raise_exception=True)
 def delete_file(request: HttpRequest, selected_event_id: int, file_id: int) -> HttpResponse:
     rec = get_object_or_404(UploadedFile, pk=file_id)
-    rec.file.delete()
     rec.delete()
     logger.info(
         "File '%s' deleted.",

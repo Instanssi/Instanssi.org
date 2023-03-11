@@ -7,7 +7,7 @@ import tempfile
 import uuid
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Dict, Final
+from typing import Dict, Final, Generator
 
 import ffmpeg
 from celery import shared_task
@@ -33,7 +33,7 @@ FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
 
 
 @contextmanager
-def temp_file(output_format: str):
+def temp_file(output_format: str) -> Generator[Path, None, None]:
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
         tmp_file = f"tmp_{uuid.uuid4().hex}.{output_format}"
@@ -84,7 +84,6 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
         params = dict(entry=entry, codec=output_codec, container=output_container)
         try:
             alt = AlternateEntryFile.objects.get(**params)
-            alt.file.delete(save=False)
             log.info("Updating existing database entry")
         except AlternateEntryFile.DoesNotExist:
             alt = AlternateEntryFile(**params)
@@ -106,7 +105,6 @@ def rebuild_collection(compo_id: int) -> None:
 
     try:
         col = EntryCollection.objects.get(compo=compo)
-        col.file.delete()
     except EntryCollection.DoesNotExist:
         col = EntryCollection(compo=compo)
 

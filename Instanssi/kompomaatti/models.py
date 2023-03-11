@@ -410,7 +410,7 @@ class Entry(models.Model):
         return Path(self.entryfile.name).suffix
 
     @property
-    def is_audio(self):
+    def is_audio(self) -> bool:
         return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
 
     def get_score(self) -> float:
@@ -483,22 +483,8 @@ class Entry(models.Model):
                     countdown=1, args=[self.id, int(codec), int(container)]
                 )
 
-    @staticmethod
-    def delete_files(entry: "Entry") -> None:
-        if entry.entryfile:
-            entry.entryfile.delete(save=False)
-        if entry.sourcefile:
-            entry.sourcefile.delete(save=False)
-        if entry.imagefile_original:
-            entry.imagefile_original.delete(save=False)
-
     def save(self, *args, **kwargs) -> None:
         """Save and force regeneration of alternate files"""
-        if self.pk:
-            old = Entry.objects.get(pk=self.pk)
-            self.delete_files(old)
-            for alternate in old.alternate_files.all():
-                alternate.delete()
         super().save(*args, **kwargs)
         self.generate_alternates()
 

@@ -1,5 +1,4 @@
 import os.path
-from typing import Any
 
 from auditlog.registry import auditlog
 from django.contrib.auth.models import User
@@ -26,18 +25,6 @@ class UploadedFile(models.Model):
 
     def name(self) -> str:
         return str(os.path.basename(self.file.name))
-
-    def save(self, *args: Any, **kwargs: Any) -> None:
-        # Delete old file when editing
-        try:
-            this = UploadedFile.objects.get(id=self.id)
-            if this.file != self.file:
-                this.file.delete(save=False)
-        except UploadedFile.DoesNotExist:
-            pass
-
-        # Continue with normal save
-        super(UploadedFile, self).save(*args, **kwargs)
 
 
 auditlog.register(UploadedFile)

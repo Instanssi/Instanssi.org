@@ -345,17 +345,10 @@ def entry_edit(request: HttpRequest, selected_event_id: int, entry_id: int) -> H
 @permission_required("kompomaatti.delete_entry", raise_exception=True)
 def entry_delete(request: HttpRequest, selected_event_id: int, entry_id: int) -> HttpResponse:
     entry = get_object_or_404(Entry, pk=entry_id)
-
-    entry.entryfile.delete()
-    if entry.sourcefile:
-        entry.sourcefile.delete()
-    if entry.imagefile_original:
-        entry.imagefile_original.delete()
     entry.delete()
     logger.info(
         "Compo entry '%s' deleted.", entry.name, extra={"user": request.user, "event_id": selected_event_id}
     )
-
     return HttpResponseRedirect(reverse("manage-kompomaatti:entries", args=(selected_event_id,)))
 
 

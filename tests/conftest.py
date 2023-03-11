@@ -1,14 +1,17 @@
 import base64
 import secrets
+import tempfile
 from contextlib import contextmanager
 from datetime import timedelta
 from decimal import Decimal
+from pathlib import Path
+from shutil import rmtree
 from typing import Any, Callable, Dict
 from uuid import uuid4
 
 from django.contrib.auth.models import Permission, User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import Client, RequestFactory
+from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from faker import Faker
@@ -39,6 +42,21 @@ from Instanssi.store.utils.receipt import ReceiptParams
 @fixture
 def faker() -> Faker:
     return Faker("fi_FI")
+
+
+@fixture(scope="session", autouse=True)
+def set_media_root():
+    """
+    Use mkdtemp to generate us a temp path, and feed it in as django MEDIA_ROOT.
+    This way we can put our test uploads to their own special place, and remove
+    them after tests.
+    """
+    tmp_path = Path(tempfile.mkdtemp(prefix="pytest_"))
+    try:
+        with override_settings(MEDIA_ROOT=tmp_path):
+            yield
+    finally:
+        rmtree(tmp_path)
 
 
 @fixture

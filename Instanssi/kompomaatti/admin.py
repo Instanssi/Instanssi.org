@@ -37,6 +37,7 @@ class VoteCodeRequestAdmin(admin.ModelAdmin):
 
 class EntryAdmin(admin.ModelAdmin):
     list_display = [
+        "created_at",
         "name",
         "compo",
         "user",
@@ -56,6 +57,17 @@ class EntryCollectionAdmin(admin.ModelAdmin):
     ]
 
 
+class AlternateEntryFileAdmin(admin.ModelAdmin):
+    list_display = [
+        "entry",
+        "codec",
+        "container",
+        "created_at",
+        "updated_at",
+        "file",
+    ]
+
+
 admin.site.register(Compo)
 admin.site.register(Entry, EntryAdmin)
 admin.site.register(Event)
@@ -67,4 +79,4 @@ admin.site.register(EntryCollection, EntryCollectionAdmin)
 admin.site.register(Profile)
 admin.site.register(Competition)
 admin.site.register(CompetitionParticipation)
-admin.site.register(AlternateEntryFile)
+admin.site.register(AlternateEntryFile, AlternateEntryFileAdmin)

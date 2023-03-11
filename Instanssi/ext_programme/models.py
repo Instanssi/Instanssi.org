@@ -1,3 +1,5 @@
+from datetime import datetime, time
+from pathlib import Path
 from typing import Any
 
 import arrow
@@ -7,6 +9,7 @@ from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+from Instanssi.common.file_handling import clean_filename, generate_upload_path
 from Instanssi.kompomaatti.models import Event
 
 short_days = [
@@ -18,6 +21,17 @@ short_days = [
     "La",
     "Su",
 ]
+
+
+def generate_icon_path(entry: "ProgrammeEvent", filename: str) -> str:
+    slug = clean_filename(Path(filename).stem)
+    dt = datetime.combine(entry.event.date, time(0, 0, 0, 0))
+    return generate_upload_path(
+        original_file=filename,
+        path=settings.MEDIA_PROGRAMME_IMAGES,
+        slug=slug,
+        timestamp=dt,
+    )
 
 
 class ProgrammeEvent(models.Model):
@@ -44,11 +58,11 @@ class ProgrammeEvent(models.Model):
 
     # This is such a hackish solution that it makes me want to throw up. Oh well.
     icon_original = models.ImageField(
-        "Kuva 1", upload_to="programme/images/", help_text="Kuva 1 tapahtumalle.", blank=True
+        "Kuva 1", upload_to=generate_icon_path, help_text="Kuva 1 tapahtumalle.", blank=True
     )
     icon_small = ImageSpecField([ResizeToFill(64, 64)], source="icon_original", format="PNG")
     icon2_original = models.ImageField(
-        "Kuva 2", upload_to="programme/images/", help_text="Kuva 2 tapahtumalle.", blank=True
+        "Kuva 2", upload_to=generate_icon_path, help_text="Kuva 2 tapahtumalle.", blank=True
     )
     icon2_small = ImageSpecField([ResizeToFill(64, 64)], source="icon2_original", format="PNG")
 

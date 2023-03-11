@@ -35,6 +35,16 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
 
+# Specific media directories (under MEDIA_ROOT)
+MEDIA_COMPO_ALTERNATES: str = "kompomaatti/alternates"
+MEDIA_COMPO_ENTRIES: str = "kompomaatti/entries"
+MEDIA_COMPO_SOURCES: str = "kompomaatti/sources"
+MEDIA_COMPO_IMAGES: str = "kompomaatti/images"
+MEDIA_COMPO_COLLECTIONS: str = "kompomaatti/collections"
+MEDIA_PROGRAMME_IMAGES: str = "programme/images"
+MEDIA_STORE_IMAGES: str = "store/images"
+MEDIA_UPLOAD_FILES: str = "uploads/files"
+
 # Admin panel settings
 ADMIN_LOGIN_URL = "/manage/auth/login/"
 LOGIN_URL = "/users/login/"
@@ -99,8 +109,6 @@ TEMPLATES = [
         },
     },
 ]
-
-DEFAULT_FILE_STORAGE = "Instanssi.common.storage.ASCIIFileSystemStorage"
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",

@@ -1,15 +1,15 @@
-from enum import IntEnum
 from pathlib import Path
-from typing import Any, Iterable, List, Optional
+from typing import Iterable, List, Optional
 
 from auditlog.registry import auditlog
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from django.utils.text import slugify
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+from Instanssi.common.file_handling import clean_filename, generate_upload_path
 from Instanssi.common.misc import parse_youtube_video_id
 from Instanssi.kompomaatti.enums import (
     AUDIO_FILE_EXTENSIONS,
@@ -328,6 +328,18 @@ class Compo(models.Model):
         return self.thumbnail_pref == 1
 
 
+def generate_entry_file_path(entry: "Entry", filename: str) -> str:
+    return generate_upload_path(filename, settings.MEDIA_COMPO_ENTRIES, entry.name_slug, entry.created_at)
+
+
+def generate_entry_source_path(entry: "Entry", filename: str) -> str:
+    return generate_upload_path(filename, settings.MEDIA_COMPO_SOURCES, entry.name_slug, entry.created_at)
+
+
+def generate_entry_image_path(entry: "Entry", filename: str) -> str:
+    return generate_upload_path(filename, settings.MEDIA_COMPO_IMAGES, entry.name_slug, entry.created_at)
+
+
 class Entry(models.Model):
     user = models.ForeignKey(
         User,
@@ -338,6 +350,7 @@ class Entry(models.Model):
     compo = models.ForeignKey(
         Compo, verbose_name="kompo", help_text="Kompo johon osallistutaan", on_delete=models.PROTECT
     )
+    created_at = models.DateTimeField("Luontiaika", default=timezone.now)
     name = models.CharField("Nimi", max_length=64, help_text="Nimi tuotokselle")
     description = models.TextField(
         "Kuvaus", help_text="Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa."
@@ -350,16 +363,16 @@ class Entry(models.Model):
         null=True,
         blank=True,
     )
-    entryfile = models.FileField("Tiedosto", upload_to="kompomaatti/entryfiles/", help_text="Tuotospaketti.")
+    entryfile = models.FileField("Tiedosto", upload_to=generate_entry_file_path, help_text="Tuotospaketti.")
     sourcefile = models.FileField(
         "Lähdekoodi",
-        upload_to="kompomaatti/entrysources/",
+        upload_to=generate_entry_source_path,
         help_text="Lähdekoodipaketti.",
         blank=True,
     )
     imagefile_original = models.ImageField(
         "Kuva",
-        upload_to="kompomaatti/entryimages/",
+        upload_to=generate_entry_image_path,
         help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.",
         blank=True,
     )
@@ -466,12 +479,11 @@ class Entry(models.Model):
     @property
     def name_slug(self) -> str:
         """Generate a normalized entry name (for eg. filenames)"""
-        return "__".join(
-            filter(
-                lambda x: bool(x),
-                [slugify(self.creator) if self.creator else None, slugify(self.name) if self.name else None],
-            )
-        )
+        file_pieces = [
+            clean_filename(self.creator) if self.creator else None,
+            clean_filename(self.name),
+        ]
+        return "__".join(filter(lambda x: bool(x), file_pieces))
 
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
@@ -489,12 +501,19 @@ class Entry(models.Model):
         self.generate_alternates()
 
 
+def generate_entry_alternate_file_path(alt: "AlternateEntryFile", filename: str) -> str:
+    return generate_upload_path(
+        filename, settings.MEDIA_COMPO_ALTERNATES, alt.entry.name_slug, alt.entry.created_at
+    )
+
+
 class AlternateEntryFile(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
     codec = models.IntegerField(choices=MediaCodec.choices)
     container = models.IntegerField(choices=MediaContainer.choices)
-    file = models.FileField(upload_to="kompomaatti/alternates/")
+    file = models.FileField(upload_to=generate_entry_alternate_file_path)
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     @property
     def codec_name(self) -> str:
@@ -515,7 +534,7 @@ class AlternateEntryFile(models.Model):
 # These are packages that contain all entries for a compo
 class EntryCollection(models.Model):
     compo = models.OneToOneField(Compo, on_delete=models.PROTECT, related_name="collection")
-    file = models.FileField(upload_to="kompomaatti/collections/", blank=True, null=True, default=None)
+    file = models.FileField(upload_to=settings.MEDIA_COMPO_COLLECTIONS, blank=True, null=True, default=None)
     updated_at = models.DateTimeField(auto_now=True)
 
 

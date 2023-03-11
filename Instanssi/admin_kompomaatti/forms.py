@@ -204,6 +204,7 @@ class AdminEntryAddForm(forms.ModelForm):
     class Meta:
         model = Entry
         exclude = (
+            "created_at",
             "disqualified",
             "disqualified_reason",
             "imagefile_thumbnail",
@@ -267,7 +268,7 @@ class AdminEntryEditForm(forms.ModelForm):
 
     class Meta:
         model = Entry
-        exclude = ("imagefile_thumbnail", "imagefile_medium", "archive_score", "archive_rank")
+        exclude = ("created_at", "imagefile_thumbnail", "imagefile_medium", "archive_score", "archive_rank")
 
 
 class CloneCompoForm(forms.Form):

@@ -1,10 +1,24 @@
 import os.path
+from pathlib import Path
 
 from auditlog.registry import auditlog
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
+from Instanssi.common.file_handling import clean_filename, generate_upload_path
 from Instanssi.kompomaatti.models import Event
+
+
+def generate_file_path(entry: "UploadedFile", filename: str) -> str:
+    slug = clean_filename(Path(filename).stem)
+    return generate_upload_path(
+        original_file=filename,
+        path=settings.MEDIA_UPLOAD_FILES,
+        slug=slug,
+        timestamp=entry.date,
+    )
 
 
 class UploadedFile(models.Model):
@@ -13,8 +27,8 @@ class UploadedFile(models.Model):
     description = models.TextField(
         "Kuvaus", help_text="Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.", blank=True
     )
-    file = models.FileField("Tiedosto", upload_to="files/")
-    date = models.DateTimeField("Aika")
+    file = models.FileField("Tiedosto", upload_to=generate_file_path)
+    date = models.DateTimeField("Aika", default=timezone.now)
 
     def __str__(self) -> str:
         return "{} by {}".format(self.file.name, self.user.username)

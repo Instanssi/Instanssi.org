@@ -13,22 +13,22 @@ import ffmpeg
 from celery import shared_task
 from django.core.files import File
 
-from .enums import AUDIO_FILE_EXTENSIONS, AudioCodec, AudioContainer
+from .enums import MediaCodec, MediaContainer
 from .models import AlternateEntryFile, Compo, Entry, EntryCollection
 
 log = logging.getLogger(__name__)
 
 
 # Predefined bit-rates for known formats. Otherwise, use a guess.
-FFMPEG_BITRATE: Final[Dict[AudioCodec, str]] = {
-    AudioCodec.OPUS: "64k",
-    AudioCodec.AAC: "128k",
+FFMPEG_BITRATE: Final[Dict[MediaCodec, str]] = {
+    MediaCodec.OPUS: "64k",
+    MediaCodec.AAC: "128k",
 }
 
 # Map codec to ffmpeg encoder name
-FFMPEG_ENCODERS: Final[Dict[AudioCodec, str]] = {
-    AudioCodec.AAC: "aac",
-    AudioCodec.OPUS: "libopus",
+FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
+    MediaCodec.AAC: "aac",
+    MediaCodec.OPUS: "libopus",
 }
 
 
@@ -44,9 +44,9 @@ def temp_file(output_format: str):
 
 @shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})
 def generate_alternate_audio_files(entry_id: int, codec_index: int, container_index: int) -> None:
-    output_codec = AudioCodec(codec_index)
+    output_codec = MediaCodec(codec_index)
     output_codec_name = output_codec.name.lower()
-    output_container = AudioContainer(container_index)
+    output_container = MediaContainer(container_index)
     output_container_name = output_container.name.lower()
     entry = Entry.objects.get(pk=entry_id)
     source_file = Path(entry.entryfile.path)
@@ -99,7 +99,7 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
 
 
 @shared_task
-def rebuild_collection(compo_id: int):
+def rebuild_collection(compo_id: int) -> None:
     log.info("Running for compo id %s", compo_id)
     compo = Compo.objects.get(id=compo_id)
     entries = Entry.objects.filter(compo_id=compo_id)

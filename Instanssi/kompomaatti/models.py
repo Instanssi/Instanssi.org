@@ -14,8 +14,8 @@ from Instanssi.common.misc import parse_youtube_video_id
 from Instanssi.kompomaatti.enums import (
     AUDIO_FILE_EXTENSIONS,
     WEB_AUDIO_FORMATS,
-    AudioCodec,
-    AudioContainer,
+    MediaCodec,
+    MediaContainer,
 )
 from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
@@ -505,18 +505,18 @@ class Entry(models.Model):
 
 class AlternateEntryFile(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
-    codec = models.IntegerField(choices=AudioCodec.choices)
-    container = models.IntegerField(choices=AudioContainer.choices)
+    codec = models.IntegerField(choices=MediaCodec.choices)
+    container = models.IntegerField(choices=MediaContainer.choices)
     file = models.FileField(upload_to="kompomaatti/alternates/")
     created_at = models.DateTimeField(default=timezone.now)
 
     @property
     def codec_name(self) -> str:
-        return AudioCodec(self.codec).name.lower()
+        return MediaCodec(self.codec).name.lower()
 
     @property
     def container_name(self) -> str:
-        return AudioContainer(self.container).name.lower()
+        return MediaContainer(self.container).name.lower()
 
     @property
     def mime_format(self):

@@ -14,7 +14,6 @@ urlpatterns = [
     path("manage/events/", include("Instanssi.admin_events.urls", namespace="manage-events")),
     path("manage/users/", include("Instanssi.admin_users.urls", namespace="manage-users")),
     path("manage/profile/", include("Instanssi.admin_profile.urls", namespace="manage-profile")),
-    path("manage/utils/", include("Instanssi.admin_utils.urls", namespace="manage-utils")),
     path("manage/store/", include("Instanssi.admin_store.urls", namespace="manage-store")),
     path(
         "manage/<int:selected_event_id>/",

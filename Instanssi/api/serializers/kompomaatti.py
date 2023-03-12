@@ -395,7 +395,7 @@ class UserCompoEntrySerializer(ModelSerializer):
     def _maybe_copy_entry_to_image(instance: Entry) -> None:
         """If necessary, copy entryfile to imagefile for thumbnail data"""
         if instance.compo.is_imagefile_copied:
-            name = str("th_" + os.path.basename(instance.entryfile.name))
+            name = os.path.basename(instance.entryfile.name)
             instance.imagefile_original.save(name, instance.entryfile)
 
     def create(self, validated_data: dict) -> Entry:

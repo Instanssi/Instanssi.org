@@ -1,52 +1,39 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
-import os
-import tarfile
-import tempfile
-import uuid
-from contextlib import contextmanager
 from pathlib import Path
 from typing import Dict, Final
 
 import ffmpeg
 from celery import shared_task
 from django.core.files import File
+from django.utils import timezone
 
-from .enums import AUDIO_FILE_EXTENSIONS, AudioCodec, AudioContainer
-from .models import AlternateEntryFile, Compo, Entry, EntryCollection
+from ..common.file_handling import temp_file
+from .enums import MediaCodec, MediaContainer
+from .models import AlternateEntryFile, Entry
 
 log = logging.getLogger(__name__)
 
 
 # Predefined bit-rates for known formats. Otherwise, use a guess.
-FFMPEG_BITRATE: Final[Dict[AudioCodec, str]] = {
-    AudioCodec.OPUS: "64k",
-    AudioCodec.AAC: "128k",
+FFMPEG_BITRATE: Final[Dict[MediaCodec, str]] = {
+    MediaCodec.OPUS: "64k",
+    MediaCodec.AAC: "128k",
 }
 
 # Map codec to ffmpeg encoder name
-FFMPEG_ENCODERS: Final[Dict[AudioCodec, str]] = {
-    AudioCodec.AAC: "aac",
-    AudioCodec.OPUS: "libopus",
+FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
+    MediaCodec.AAC: "aac",
+    MediaCodec.OPUS: "libopus",
 }
-
-
-@contextmanager
-def temp_file(output_format: str):
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp_path = Path(tmp)
-        tmp_file = f"tmp_{uuid.uuid4().hex}.{output_format}"
-        with tmp_path.with_name(tmp_file) as output_file:
-            yield output_file
-            output_file.unlink()
 
 
 @shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})
 def generate_alternate_audio_files(entry_id: int, codec_index: int, container_index: int) -> None:
-    output_codec = AudioCodec(codec_index)
+    output_codec = MediaCodec(codec_index)
     output_codec_name = output_codec.name.lower()
-    output_container = AudioContainer(container_index)
+    output_container = MediaContainer(container_index)
     output_container_name = output_container.name.lower()
     entry = Entry.objects.get(pk=entry_id)
     source_file = Path(entry.entryfile.path)
@@ -84,7 +71,7 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
         params = dict(entry=entry, codec=output_codec, container=output_container)
         try:
             alt = AlternateEntryFile.objects.get(**params)
-            alt.file.delete(save=False)
+            alt.updated_at = timezone.now()
             log.info("Updating existing database entry")
         except AlternateEntryFile.DoesNotExist:
             alt = AlternateEntryFile(**params)
@@ -92,46 +79,6 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
 
         # Read in the temporary file, save to django storage and database.
         with open(output_file, "rb") as fd:
-            file_name = f"{entry.name_slug}.{output_container_name}"
-            alt.file.save(file_name, File(fd))
-            log.info("Result saved to %s", file_name)
+            alt.file.save(output_file, File(fd))
         alt.save()
-
-
-@shared_task
-def rebuild_collection(compo_id: int):
-    log.info("Running for compo id %s", compo_id)
-    compo = Compo.objects.get(id=compo_id)
-    entries = Entry.objects.filter(compo_id=compo_id)
-
-    try:
-        col = EntryCollection.objects.get(compo=compo)
-        col.file.delete()
-    except EntryCollection.DoesNotExist:
-        col = EntryCollection(compo=compo)
-
-    with tempfile.TemporaryFile() as fd:
-        with tarfile.open(fileobj=fd, mode="w:gz") as tar:
-            for entry in entries:
-                _, ext = os.path.splitext(entry.entryfile.path)
-                base_name = (
-                    "{}-by-{}{}".format(entry.name, entry.creator, ext)
-                    .replace(" ", "_")
-                    .replace("/", "-")
-                    .replace("\\", "-")
-                    .replace("ä", "a")
-                    .replace("ö", "o")
-                    .encode("ascii", "ignore")
-                    .decode("ascii")
-                )
-                log.info("Compressing to %s", base_name)
-                with open(entry.entryfile.path, "rb") as in_fd:
-                    tar_info = tarfile.TarInfo(base_name)
-                    tar_info.size = entry.entryfile.size
-                    tar.addfile(tarinfo=tar_info, fileobj=in_fd)
-            tar.close()
-
-        col_name = "{}_{}_{}.tar.gz".format(compo.event.name, compo.name, uuid.uuid4().hex[:6])
-        col.file.save(name=col_name.encode("ascii", "ignore").decode("ascii"), content=File(fd))
-        col.save()
-        log.info("'%s' -> '%s'", col.compo, col.file)
+        log.info("Entry processed; result saved to %s", alt.file.path)

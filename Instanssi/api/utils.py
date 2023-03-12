@@ -21,10 +21,6 @@ class GroupBasePermission(BasePermission):
         return True
 
 
-class CanUpdateScreenData(GroupBasePermission):
-    group_name = "screen_update"
-
-
 class ReadUpdateModelViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
     pass
 

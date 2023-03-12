@@ -7,7 +7,6 @@ from Instanssi.kompomaatti.models import (
     CompetitionParticipation,
     Compo,
     Entry,
-    EntryCollection,
     Event,
     Profile,
     TicketVoteCode,
@@ -37,6 +36,7 @@ class VoteCodeRequestAdmin(admin.ModelAdmin):
 
 class EntryAdmin(admin.ModelAdmin):
     list_display = [
+        "created_at",
         "name",
         "compo",
         "user",
@@ -48,11 +48,14 @@ class EntryAdmin(admin.ModelAdmin):
     admin_thumbnail = AdminThumbnail(image_field="imagefile_thumbnail")
 
 
-class EntryCollectionAdmin(admin.ModelAdmin):
+class AlternateEntryFileAdmin(admin.ModelAdmin):
     list_display = [
-        "compo",
-        "file",
+        "entry",
+        "codec",
+        "container",
+        "created_at",
         "updated_at",
+        "file",
     ]
 
 
@@ -63,8 +66,7 @@ admin.site.register(Vote)
 admin.site.register(VoteGroup)
 admin.site.register(TicketVoteCode, TicketVoteCodeAdmin)
 admin.site.register(VoteCodeRequest, VoteCodeRequestAdmin)
-admin.site.register(EntryCollection, EntryCollectionAdmin)
 admin.site.register(Profile)
 admin.site.register(Competition)
 admin.site.register(CompetitionParticipation)
-admin.site.register(AlternateEntryFile)
+admin.site.register(AlternateEntryFile, AlternateEntryFileAdmin)

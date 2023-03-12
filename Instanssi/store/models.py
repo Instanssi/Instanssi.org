@@ -1,5 +1,7 @@
 import os
+from datetime import datetime, time
 from decimal import Decimal
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from auditlog.registry import auditlog
@@ -13,8 +15,20 @@ from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+from Instanssi.common.file_handling import clean_filename, generate_upload_path
 from Instanssi.kompomaatti.models import Event
 from Instanssi.store.utils.receipt import ReceiptParams
+
+
+def generate_image_path(item: "StoreItem", filename: str) -> str:
+    slug = clean_filename(Path(filename).stem)
+    dt = datetime.combine(item.event.date, time(0, 0, 0, 0))
+    return generate_upload_path(
+        original_file=filename,
+        path=settings.MEDIA_STORE_IMAGES,
+        slug=slug,
+        timestamp=dt,
+    )
 
 
 class StoreItem(models.Model):
@@ -40,7 +54,7 @@ class StoreItem(models.Model):
     )
     imagefile_original = models.ImageField(
         "Tuotekuva",
-        upload_to="store/images/",
+        upload_to=generate_image_path,
         help_text="Edustava kuva tuotteelle.",
         blank=True,
         null=True,

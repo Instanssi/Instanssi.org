@@ -42,7 +42,7 @@ MEDIA_COMPO_SOURCES: str = "kompomaatti/sources"
 MEDIA_COMPO_IMAGES: str = "kompomaatti/images"
 MEDIA_PROGRAMME_IMAGES: str = "programme/images"
 MEDIA_STORE_IMAGES: str = "store/images"
-MEDIA_UPLOAD_FILES: str = "uploads/files"
+MEDIA_UPLOAD_FILES: str = "files"
 
 # Admin panel settings
 ADMIN_LOGIN_URL = "/manage/auth/login/"

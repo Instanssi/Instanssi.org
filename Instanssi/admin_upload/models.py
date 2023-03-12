@@ -18,6 +18,7 @@ def generate_file_path(entry: "UploadedFile", filename: str) -> str:
         path=settings.MEDIA_UPLOAD_FILES,
         slug=slug,
         timestamp=entry.date,
+        group_by_year=False,
     )
 
 

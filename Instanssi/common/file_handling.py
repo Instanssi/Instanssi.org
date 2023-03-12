@@ -33,7 +33,7 @@ def generate_upload_path(
     path = path.rstrip("/")
     year = timestamp.year
     guid = token_urlsafe(4)
-    filename = f"{slug}.{year}.{guid}.{ext}"
+    filename = f"{slug[:32]}.{year}.{guid}.{ext}"
     if group_by_year:
         return f"{path}/{year}/{filename}"
     else:

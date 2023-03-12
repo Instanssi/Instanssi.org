@@ -75,15 +75,6 @@
                     <li class="menuitem"><a href="{% url 'manage-users:apps' %}">API</a></li>
                 </ul>
             </li>
-{% if user.is_superuser %}
-            <li class="menuitem menu-down-arrow">
-                <a href="{% url 'manage-utils:index' %}">Työkalut</a>
-                <ul class="sub-level">
-                    <li class="menuitem"><a href="{% url 'manage-utils:diskcleaner' %}">Levynpuhdistus</a></li>
-                    <li class="menuitem"><a href="{% url 'manage-utils:dbchecker' %}">Tietokantatarkastaja</a></li>
-                </ul>
-            </li>
-{% endif %}
             <li class="menuitem menu-down-arrow">
                 <a href="{% url 'manage-store:index' %}">Verkkokauppa</a>
                 <ul class="sub-level">

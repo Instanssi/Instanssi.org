@@ -29,7 +29,7 @@ def temp_file(output_format: str) -> Generator[Path, None, None]:
 def generate_upload_path(
     original_file: str, path: str, slug: str, timestamp: datetime, group_by_year: bool = True
 ) -> str:
-    ext = Path(original_file).suffix.lstrip(".")
+    ext = "".join(Path(original_file).suffixes).lower().lstrip(".")
     path = path.rstrip("/")
     year = timestamp.year
     guid = token_urlsafe(4)

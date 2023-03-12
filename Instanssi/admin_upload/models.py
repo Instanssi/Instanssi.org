@@ -24,7 +24,7 @@ def generate_file_path(entry: "UploadedFile", filename: str) -> str:
 
 class UploadedFile(models.Model):
     event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
     description = models.TextField(
         "Kuvaus", help_text="Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.", blank=True
     )
@@ -32,7 +32,7 @@ class UploadedFile(models.Model):
     date = models.DateTimeField("Aika", default=timezone.now)
 
     def __str__(self) -> str:
-        return "{} by {}".format(self.file.name, self.user.username)
+        return self.file.name
 
     class Meta:
         verbose_name = "tiedosto"

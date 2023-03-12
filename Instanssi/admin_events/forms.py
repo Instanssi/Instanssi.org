@@ -10,9 +10,11 @@ class EventForm(forms.ModelForm):
         super(EventForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Fieldset("Tapahtuma", "name", "date", "mainurl", ButtonHolder(Submit("submit", "Tallenna")))
+            Fieldset(
+                "Tapahtuma", "name", "tag", "date", "mainurl", ButtonHolder(Submit("submit", "Tallenna"))
+            )
         )
 
     class Meta:
         model = Event
-        fields = ("name", "date", "mainurl")
+        fields = ("name", "tag", "date", "mainurl")

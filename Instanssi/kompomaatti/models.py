@@ -36,12 +36,15 @@ class Profile(models.Model):
 
 class Event(models.Model):
     name = models.CharField("Nimi", max_length=64, help_text="Tapahtuman nimi", unique=True)
+    tag = models.CharField(
+        "Lyhyt esitys", max_length=8, help_text="Lyhyt nimi, eg. vuosi", null=True, unique=True
+    )
     date = models.DateField("Päivämäärä", help_text="Tapahtuman päivämäärä (alku)")
     archived = models.BooleanField("Arkistoitu", help_text="Saa näyttää arkistossa", default=False)
     mainurl = models.URLField("Tapahtuman pääsivu", help_text="URL Tapahtuman pääsivustolle", blank=True)
 
     def __str__(self) -> str:
-        return "[{}] {}".format(self.pk, self.name)
+        return self.name
 
     class Meta:
         verbose_name = "tapahtuma"

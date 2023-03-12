@@ -24,6 +24,7 @@
         <thead>
             <tr>
                 <th>Nimi</th>
+                <th>Tag</th>
                 <th>Päivämäärä</th>
                 <th>Arkistoitu</th>
                 {% if perms.kompomaatti.change_event %}<th></th>{% endif %}
@@ -34,6 +35,7 @@
 {% for event in events %}
             <tr>
                 <td><a href="{% url 'manage-overview:index' event.id %}">{{ event.name }}</a></td>
+                <td>{% if event.tag %}{{ event.tag }}{% endif %}</td>
                 <td>{{ event.date|date:"d.m.Y" }}</td>
                 <td>{% if event.archived %}Kyllä{% else %}Ei{% endif %}</td>
 {% if perms.kompomaatti.change_event %}

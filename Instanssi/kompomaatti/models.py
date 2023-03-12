@@ -363,15 +363,19 @@ class Entry(models.Model):
         null=True,
         blank=True,
     )
-    entryfile = models.FileField("Tiedosto", upload_to=generate_entry_file_path, help_text="Tuotospaketti.")
+    entryfile = models.FileField(
+        "Tiedosto", max_length=255, upload_to=generate_entry_file_path, help_text="Tuotospaketti."
+    )
     sourcefile = models.FileField(
         "Lähdekoodi",
+        max_length=255,
         upload_to=generate_entry_source_path,
         help_text="Lähdekoodipaketti.",
         blank=True,
     )
     imagefile_original = models.ImageField(
         "Kuva",
+        max_length=255,
         upload_to=generate_entry_image_path,
         help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.",
         blank=True,
@@ -511,7 +515,7 @@ class AlternateEntryFile(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="alternate_files")
     codec = models.IntegerField(choices=MediaCodec.choices)
     container = models.IntegerField(choices=MediaContainer.choices)
-    file = models.FileField(upload_to=generate_entry_alternate_file_path)
+    file = models.FileField(max_length=255, upload_to=generate_entry_alternate_file_path)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 

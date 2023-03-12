@@ -58,11 +58,11 @@ class ProgrammeEvent(models.Model):
 
     # This is such a hackish solution that it makes me want to throw up. Oh well.
     icon_original = models.ImageField(
-        "Kuva 1", upload_to=generate_icon_path, help_text="Kuva 1 tapahtumalle.", blank=True
+        "Kuva 1", max_length=255, upload_to=generate_icon_path, help_text="Kuva 1 tapahtumalle.", blank=True
     )
     icon_small = ImageSpecField([ResizeToFill(64, 64)], source="icon_original", format="PNG")
     icon2_original = models.ImageField(
-        "Kuva 2", upload_to=generate_icon_path, help_text="Kuva 2 tapahtumalle.", blank=True
+        "Kuva 2", max_length=255, upload_to=generate_icon_path, help_text="Kuva 2 tapahtumalle.", blank=True
     )
     icon2_small = ImageSpecField([ResizeToFill(64, 64)], source="icon2_original", format="PNG")
 

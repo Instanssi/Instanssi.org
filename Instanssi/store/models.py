@@ -54,6 +54,7 @@ class StoreItem(models.Model):
     )
     imagefile_original = models.ImageField(
         "Tuotekuva",
+        max_length=255,
         upload_to=generate_image_path,
         help_text="Edustava kuva tuotteelle.",
         blank=True,

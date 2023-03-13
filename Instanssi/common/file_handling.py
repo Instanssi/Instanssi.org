@@ -3,7 +3,7 @@ import uuid
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
-from secrets import token_urlsafe
+from secrets import token_hex
 from typing import Generator
 
 from django.utils.text import slugify
@@ -29,7 +29,7 @@ def generate_upload_path(
     ext = "".join(Path(original_file).suffixes).lower().lstrip(".")
     path = path.rstrip("/")
     year = timestamp.year
-    guid = token_urlsafe(4)
+    guid = token_hex(4)
     filename = f"{slug[:32]}.{year}.{guid}.{ext}"
     if group_by_year:
         return f"{path}/{year}/{filename}"

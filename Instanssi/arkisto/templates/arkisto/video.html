@@ -19,17 +19,9 @@
                 <p class="title">
                     <span class="name">{{ video.name }}</span>
                 </p>
-                <object width="640" height="385" style="float: left;">
-                    <param name="movie" value="{{ video.youtube_url }}" />
-                    <param name="allowFullScreen" value="true" />
-                    <param name="allowScriptAccess" value="always" />
-                    <embed src="{{ video.youtube_url }}"
-                        type="application/x-shockwave-flash"
-                        allowfullscreen="true"
-                        allowscriptaccess="always"
-                        width="640" height="385">
-                    </embed>
-                </object>
+                <iframe id="ytplayer" style="float: left;"
+                    type="text/html" width="640" height="390" frameborder="0"
+                    src="{{ video.youtube_url.embed_url }}"></iframe>
                 <div class="info">&nbsp;</div>
                 <div class="clearer"></div>
             </div>

@@ -395,7 +395,7 @@ class Entry(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
-    youtube_url = YoutubeVideoField("Youtube URL", help_text="Linkki teoksen Youtube-videoon.", null=True)
+    youtube_url = YoutubeVideoField("Youtube URL", help_text="Linkki teoksen Youtube-videoon.", null=True, blank=True)
     disqualified = models.BooleanField(
         "Diskattu",
         help_text="Entry on diskattu sääntörikon tai teknisten ongelmien takia. "

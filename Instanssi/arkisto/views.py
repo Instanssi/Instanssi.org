@@ -63,7 +63,7 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
                     "entry_source_url": request.build_absolute_uri(e.sourcefile.url)
                     if e.sourcefile
                     else None,
-                    "entry_youtube_url": e.youtube_url.link_url() if e.youtube_url else None,
+                    "entry_youtube_url": e.youtube_url.link_url if e.youtube_url else None,
                     "entry_image_thumbnail": request.build_absolute_uri(e.imagefile_thumbnail.url)
                     if e.imagefile_thumbnail
                     else None,

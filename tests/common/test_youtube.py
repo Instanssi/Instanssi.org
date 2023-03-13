@@ -1,6 +1,6 @@
 import pytest
 
-from Instanssi.common.misc import parse_youtube_video_id
+from Instanssi.common.youtube import YoutubeURL
 
 
 @pytest.mark.parametrize(
@@ -16,5 +16,5 @@ from Instanssi.common.misc import parse_youtube_video_id
         ("http://www.youtube.com/v/egv5yber5yre5?version=3&amp;hl=en_US", "egv5yber5yre5"),
     ],
 )
-def test_parse_youtube_video_id(input_data, expected):
-    assert parse_youtube_video_id(input_data) == expected
+def test_youtube_from_url(input_data, expected):
+    assert YoutubeURL.from_url(input_data).video_id == expected

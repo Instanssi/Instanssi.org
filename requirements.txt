@@ -211,9 +211,6 @@ django-auditlog==2.2.2 ; python_version >= "3.9" and python_version < "4.0" \
 django-classy-tags==4.0.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:199fa4e0fff0b79c3e0c029c6d78a5e345691043332cba678a302705303bfd06 \
     --hash=sha256:db9fc7c5ed08dc2619cc4c19b19514cdac13ddb618278ab07094c626d28eef0d
-django-cleanup==7.0.0 ; python_version >= "3.9" and python_version < "4.0" \
-    --hash=sha256:28a969f889c661eba0d9438978693980f09482c97983bd08ee52955dae8d71e4 \
-    --hash=sha256:f50d54de48527d66ff05d74d2c3aafcdadc6c94ba280ece14a7e4c5b2c591447
 django-compressor==4.3.1 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:2c451174acb6f083054af7c8089376599b22d6380bd60311f78ec3fed79acc8e \
     --hash=sha256:68858c0da6cc099cc29a022d86c3ba8aed114da9d709eeceb0d7b8181b5f8942

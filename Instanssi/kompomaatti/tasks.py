@@ -72,6 +72,7 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
         try:
             alt = AlternateEntryFile.objects.get(**params)
             alt.updated_at = timezone.now()
+            alt.file.delete(save=False)
             log.info("Updating existing database entry")
         except AlternateEntryFile.DoesNotExist:
             alt = AlternateEntryFile(**params)

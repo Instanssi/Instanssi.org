@@ -167,7 +167,6 @@ INSTALLED_APPS = (
     "compressor",
     "qr_code",
     "auditlog",
-    "django_cleanup.apps.CleanupConfig",  # Must be placed LAST.
 )
 
 # Authentication backends

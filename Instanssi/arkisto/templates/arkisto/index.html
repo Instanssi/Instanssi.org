@@ -73,4 +73,5 @@
 
 <p><a href="{% url 'archive:text_event' event.id %}">Näytä tulokset tekstimuodossa / Show results in plaintext</a></p>
 <p><a href="{% url 'archive:json_event' event.id %}">Näytä tulokset JSON-formaatissa / Show results in JSON format</a></p>
+<p><a href="{% url 'archive:entries_m3u8' event.id %}">Tuota m3u8-toistolista / Produce an m3u8 playlist</a></p>
 {% endblock %}

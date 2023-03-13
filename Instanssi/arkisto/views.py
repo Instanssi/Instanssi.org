@@ -3,8 +3,10 @@ from copy import copy
 from django.http import Http404, HttpRequest, HttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.utils.text import slugify
 
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
+from Instanssi.kompomaatti.enums import MediaContainer
 from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.kompomaatti.models import (
     Competition,
@@ -77,6 +79,28 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
             )
 
     return JsonResponse({"entries": entries_out, "compos": compos_out})
+
+
+def entries_m3u8(request, event_id):
+    event = get_object_or_404(Event, pk=event_id, archived=True)
+
+    response = HttpResponse(
+        content_type="text/plain",
+        headers={"Content-Disposition": f'attachment; filename="{slugify(event.name)}.m3u8"'},
+    )
+    response.write("#EXTM3U\r\n".encode())
+    response.write(f"#EXTALB:{event.name}\r\n\r\n".encode())
+
+    entries = Entry.objects.filter(compo__event=event, compo__active=True, compo__hide_from_archive=False)
+    for entry in entries:
+        webm_qs = entry.alternate_files.filter(container=MediaContainer.WEBM).only("file")
+        if webm_qs.exists():
+            url = request.build_absolute_uri(webm_qs.first().file.url)
+            response.write(f"#EXTINF:0,{entry.creator} - {entry.name}\r\n".encode())
+            response.write(url)
+            response.write("\r\n\r\n".encode())
+
+    return response
 
 
 def event_index(request, event_id):

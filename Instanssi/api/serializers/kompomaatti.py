@@ -166,6 +166,7 @@ class CompoEntrySerializer(ModelSerializer):
     imagefile_medium_url = SerializerMethodField()
     rank = SerializerMethodField()
     score = SerializerMethodField()
+    youtube_url = SerializerMethodField()
     disqualified = SerializerMethodField()
     disqualified_reason = SerializerMethodField()
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
@@ -213,6 +214,11 @@ class CompoEntrySerializer(ModelSerializer):
     def get_score(self, obj: Entry) -> Optional[float]:
         if obj.compo.show_voting_results:
             return obj.get_score()
+        return None
+
+    def get_youtube_url(self, obj: Entry) -> Optional[str]:
+        if obj.youtube_url:
+            return obj.youtube_url.link_url
         return None
 
     class Meta:

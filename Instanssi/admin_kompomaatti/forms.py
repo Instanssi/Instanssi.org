@@ -4,7 +4,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 
-from Instanssi.common.misc import parse_youtube_video_id
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,
@@ -186,21 +185,6 @@ class AdminEntryAddForm(forms.ModelForm):
             )
         )
 
-    def clean_youtube_url(self):
-        # Make sure field has content
-        if not self.cleaned_data["youtube_url"]:
-            return self.cleaned_data["youtube_url"]
-
-        # Parse video id
-        video_id = parse_youtube_video_id(self.cleaned_data["youtube_url"])
-
-        # Warn if something is wrong
-        if not video_id:
-            raise ValidationError("Osoitteesta ei löytynyt videotunnusta.")
-
-        # Return a new video url
-        return "https://www.youtube.com/v/{}".format(video_id)
-
     class Meta:
         model = Entry
         exclude = (
@@ -250,21 +234,6 @@ class AdminEntryEditForm(forms.ModelForm):
                 ButtonHolder(Submit("submit", "Tallenna")),
             )
         )
-
-    def clean_youtube_url(self):
-        # Make sure field has content
-        if not self.cleaned_data["youtube_url"]:
-            return self.cleaned_data["youtube_url"]
-
-        # Parse video id
-        video_id = parse_youtube_video_id(self.cleaned_data["youtube_url"])
-
-        # Warn if something is wrong
-        if not video_id:
-            raise ValidationError("Osoitteesta ei löytynyt videotunnusta.")
-
-        # Return a new video url
-        return "https://www.youtube.com/v/{}".format(video_id)
 
     class Meta:
         model = Entry

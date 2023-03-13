@@ -10,7 +10,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.file_handling import clean_filename, generate_upload_path
-from Instanssi.common.misc import parse_youtube_video_id
+from Instanssi.common.youtube.fields import YoutubeVideoField
 from Instanssi.kompomaatti.enums import (
     AUDIO_FILE_EXTENSIONS,
     WEB_AUDIO_FORMATS,
@@ -395,7 +395,7 @@ class Entry(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
-    youtube_url = models.URLField("Youtube URL", help_text="Linkki teoksen Youtube-videoon.", blank=True)
+    youtube_url = YoutubeVideoField("Youtube URL", help_text="Linkki teoksen Youtube-videoon.", null=True)
     disqualified = models.BooleanField(
         "Diskattu",
         help_text="Entry on diskattu sääntörikon tai teknisten ongelmien takia. "
@@ -430,6 +430,10 @@ class Entry(models.Model):
         return Path(self.entryfile.name).suffix
 
     @property
+    def archive_embed_url(self) -> str:
+        return self.youtube_url.embed_obj(autoplay=True)
+
+    @property
     def is_audio(self) -> bool:
         return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
 
@@ -445,11 +449,6 @@ class Entry(models.Model):
                 if vote.rank > 0:
                     score += 1.0 / vote.rank
             return score
-
-    def get_youtube_embed_url(self) -> str:
-        """Get embed URL for this entry's YouTube link."""
-        video_id = parse_youtube_video_id(self.youtube_url)
-        return f"//www.youtube.com/embed/{video_id}/"
 
     def get_rank(self) -> int:
         # If rank has been predefined, then use that

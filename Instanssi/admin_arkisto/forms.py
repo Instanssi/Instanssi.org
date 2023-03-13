@@ -3,7 +3,6 @@ from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
 from django import forms
 
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
-from Instanssi.common.misc import parse_youtube_video_id
 
 
 class VideoForm(forms.ModelForm):
@@ -31,21 +30,6 @@ class VideoForm(forms.ModelForm):
                 ButtonHolder(Submit("submit", "Tallenna")),
             )
         )
-
-    def clean_youtube_url(self):
-        # Make sure field has content
-        if not self.cleaned_data["youtube_url"]:
-            return self.cleaned_data["youtube_url"]
-
-        # Parse video id
-        video_id = parse_youtube_video_id(self.cleaned_data["youtube_url"])
-
-        # Warn if something is wrong
-        if not video_id:
-            raise forms.ValidationError("Osoitteesta ei löytynyt videotunnusta.")
-
-        # Return a new video url
-        return f"https://www.youtube.com/v/{video_id}"
 
     class Meta:
         model = OtherVideo

@@ -1,6 +1,7 @@
 from auditlog.registry import auditlog
 from django.db import models
 
+from Instanssi.common.youtube import YoutubeVideoField
 from Instanssi.kompomaatti.models import Event
 
 
@@ -20,7 +21,7 @@ class OtherVideo(models.Model):
     category = models.ForeignKey(OtherVideoCategory, verbose_name="Kategoria", on_delete=models.CASCADE)
     name = models.CharField("Nimi", max_length=64, help_text="Videon nimi.")
     description = models.TextField("Kuvaus", help_text="Videon kuvaus.")
-    youtube_url = models.URLField("Youtube URL", help_text="Linkki teoksen Youtube-versioon.", blank=True)
+    youtube_url = YoutubeVideoField("Youtube URL", help_text="Linkki teoksen Youtube-versioon.")
 
     def __str__(self) -> str:
         return self.name

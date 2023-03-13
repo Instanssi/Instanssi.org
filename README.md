@@ -69,13 +69,6 @@ To also get coverage, do `pytest --cov=Instanssi`
 
 Also, you can run tests in parallel using `pytest -n 4`.
 
-Production deps
----------------
-
-To install in production, remember to generate a new requirements.txt file.
-
-`poetry export --with=runtime -f requirements.txt -o requirements.txt`.
-
 License
 -------
 MIT. Please refer to `LICENSE` for more information.

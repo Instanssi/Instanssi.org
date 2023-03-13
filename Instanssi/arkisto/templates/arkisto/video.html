@@ -19,9 +19,10 @@
                 <p class="title">
                     <span class="name">{{ video.name }}</span>
                 </p>
-                <iframe id="ytplayer" style="float: left;"
-                    type="text/html" width="640" height="390" frameborder="0"
-                    src="{{ video.youtube_url.embed_url }}"></iframe>
+                <iframe class="video"
+                        frameborder="0"
+                        src="{{ video.youtube_url.embed_url }}"
+                        allowfullscreen></iframe>
                 <div class="info">&nbsp;</div>
                 <div class="clearer"></div>
             </div>

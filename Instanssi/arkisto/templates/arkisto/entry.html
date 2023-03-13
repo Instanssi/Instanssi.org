@@ -20,9 +20,10 @@
                     by <span class="by">{{ entry.creator }}</span>
                 </p>
 {% if entry.get_show_list.youtube %}
-                <iframe id="ytplayer" style="float: left;"
-                    type="text/html" width="640" height="390" frameborder="0"
-                    src="{{ entry.archive_embed_url }}"></iframe>
+                <iframe class="video"
+                        frameborder="0"
+                        src="{{ entry.archive_embed_url }}"
+                        allowfullscreen></iframe>
 {% endif %}
 {% if entry.get_show_list.image or entry.get_show_list.jplayer or entry.get_show_list.noshow %}
                 {% if entry.imagefile_medium %}

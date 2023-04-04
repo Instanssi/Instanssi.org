@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     "django_filters",
     "twitter_tag",
     "crispy_forms",
+    "crispy_bootstrap3",
     "social_django",
     "django.contrib.auth",
     "django.contrib.contenttypes",

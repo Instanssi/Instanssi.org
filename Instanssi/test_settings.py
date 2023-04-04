@@ -53,11 +53,6 @@ SOCIAL_AUTH_GITHUB_KEY = ""
 SOCIAL_AUTH_GITHUB_SECRET = ""
 SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
 
-# Paytrail, mock addresses
-PAYTRAIL_ID = ""
-PAYTRAIL_SECRET = ""
-PAYTRAIL_API_URL = "http://localhost:8000"
-
 # Paytrail APIv2
 PAYTRAIL_V2_ID = ""
 PAYTRAIL_V2_SECRET = ""

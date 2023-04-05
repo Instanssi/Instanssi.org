@@ -229,11 +229,8 @@ def make_cache_conf(debug_mode: bool) -> dict:
     else:
         return {
             "default": {
-                "BACKEND": "django_redis.cache.RedisCache",
+                "BACKEND": "django.core.cache.backends.redis.RedisCache",
                 "LOCATION": "redis://127.0.0.1:6379/2",
-                "OPTIONS": {
-                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                },
             }
         }
 

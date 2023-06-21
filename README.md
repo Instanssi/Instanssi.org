@@ -14,7 +14,7 @@ focus is to provide web site for Instanssi 2023.
 Requirements
 ------------
 
-* Python 3.9.x (`https://www.python.org/`)
+* Python 3.11.x (`https://www.python.org/`)
 * Poetry package manager (`https://python-poetry.org/docs/#installation`)
 * PostgreSQL or SQLite for database. SQLite should be fine for testing
   and development purposes. MariaDB/MySQL is not tested or supported.

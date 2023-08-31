@@ -1,4 +1,4 @@
-{% load static twitter_tag cache %}
+{% load static %}
 <!--
 <section class="widget widget-store">
     <a class="btn btn-primary" href="{% url 'store:index' %}">
@@ -50,23 +50,8 @@
           Ilmoittaudu
       </a>
   </div>
-</section>-->
-<section class="widget widget-twitter">
-    <h2>Twitter</h2>
-    <div id="tweets" class="widget-content">
-        {% cache 600 twitter_bar %} {% get_tweets for "instanssi" as tweets exclude "replies" limit 5 %}
-        <ul>
-            {% for tweet in tweets %}
-            <li>
-                <span class="author">@{{ tweet.user.name }}: </span>
-                <span class="text">{{ tweet.text }}</span><br />
-                <span class="time"><a href="http://twitter.com/instanssi/status/{{ tweet.id }}">{{ tweet.datetime|date:"d.m.Y H:i" }}</a></span>
-            </li>
-            {% endfor %}
-        </ul>
-        {% endcache %}
-    </div>
 </section>
+-->
 <section class="widget widget-socialmedias">
     <h2>Some</h2>
     <div class="widget-content">

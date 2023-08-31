@@ -1,0 +1,9 @@
+{% extends "main2024/base.html" %}
+{% load blog_tags %}
+
+{% block content %}
+{{ block.super }}
+<h1>Blogi</h1>
+
+{% render_blog event_id 10 %}
+{% endblock %}

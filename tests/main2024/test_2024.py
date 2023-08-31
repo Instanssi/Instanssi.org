@@ -19,16 +19,16 @@ from django.urls import reverse
         "radio",
     ],
 )
-def test_2023_site(page_client, site_name: str):
-    path = reverse(f"main2023:{site_name}")
+def test_2024_site(page_client, site_name: str):
+    path = reverse(f"main2024:{site_name}")
     response = page_client.get(path)
     assert response.status_code == 200
     assert "<body>" in response.content.decode()
 
 
 @pytest.mark.django_db
-def test_2023_index_content(page_client):
-    path = reverse(f"main2023:index")
+def test_2024_index_content(page_client):
+    path = reverse(f"main2024:index")
     response = page_client.get(path)
     assert response.status_code == 200
-    assert "Instanssi 2023" in response.content.decode()
+    assert "Instanssi 2024" in response.content.decode()

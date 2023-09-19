@@ -54,6 +54,10 @@ PAYTRAIL_V2_ID = "375917"  # Test ID
 PAYTRAIL_V2_SECRET = "SAIPPUAKAUPPIAS"  # Test secret
 PAYTRAIL_V2_API_URL = "https://services.paytrail.com"
 
+# Mastodon API access
+MASTODON_ACCESS_TOKEN = None
+MASTODON_BASE_URL = None
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"

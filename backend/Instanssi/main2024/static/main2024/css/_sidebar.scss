@@ -27,13 +27,15 @@
 
     .widget { margin-bottom: $spacer; }
 
-    #tweets { margin: 0; }
-    #tweets .link a,
-    #tweets .time a {
+    #toots { margin: 0; }
+    #toots a {
         color: $brand-primary;
-        font-size: 11px;
     }
-    #tweets li {
+    #toots .time a {
+        color: $brand-primary;
+        font-size: 12px;
+    }
+    #toots li {
         margin-bottom: $spacer;
     }
 

@@ -1,0 +1,11 @@
+<ul>
+    {% for toot in timeline %}
+    <li>
+        <span class="text">{{ toot.content }}</span>
+        <span class="time">
+            <a href="{{ toot.user_url }}">@{{ toot.username }}</a>
+            <a href="{{ toot.url }}">{{ toot.created_at|date:"d.m.Y H:i" }}</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>

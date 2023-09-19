@@ -147,6 +147,7 @@ INSTALLED_APPS = (
     "Instanssi.kompomaatti",
     "Instanssi.ext_blog",
     "Instanssi.ext_programme",
+    "Instanssi.ext_mastodon",
     "Instanssi.store",
     "Instanssi.infodesk",
     "imagekit",

@@ -283,9 +283,6 @@ ul#crumbpath a:hover {
 .login-github::before {
     @include awesome-glyph('\f09b');
 }
-.login-twitter::before {
-    @include awesome-glyph('\f099');
-}
 
 
 /* ---------- uniForm tweaks ---------- */

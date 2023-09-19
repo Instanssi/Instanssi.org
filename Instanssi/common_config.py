@@ -131,8 +131,6 @@ ROOT_URLCONF = "Instanssi.urls"
 INSTALLED_APPS = (
     "Instanssi.base_layout",
     "Instanssi.arkisto",
-    "Instanssi.main2022",
-    "Instanssi.main2023",
     "Instanssi.main2024",
     "Instanssi.admin_base",
     "Instanssi.admin_arkisto",

@@ -6,12 +6,12 @@ authors = ["Tuomas Virtanen <katajakasa@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 Django = "^4.2"
 django-countries = "^7.4.2"
 django-crispy-forms = "^2.0"
 crispy-bootstrap3 = "^2022.1"
-django-imagekit = "^4.1.0"
+django-imagekit = "^5.0.0"
 django-classy-tags = "^4.0.0"
 django-filter = "^23.3"
 django-compressor = "^4.1"
@@ -31,10 +31,10 @@ arrow = "^1.2.3"
 gunicorn = "^21.2.0"
 uvicorn = "^0.23.2"
 unidecode = "^1.3.6"
-yarl = "^1.8.2"
+yarl = "^1.9.2"
 orjson = "^3.9.7"
 ffmpeg-python = "^0.2.0"
-psycopg = {extras = ["binary", "pool"], version = "^3.1.8"}
+psycopg = {extras = ["binary", "pool"], version = "^3.1.9"}
 redis = {extras = ["hiredis"], version = "^5.0.0"}
 
 [tool.poetry.group.dev.dependencies]
@@ -57,7 +57,7 @@ profile = "black"
 
 [tool.black]
 line-length = 109
-target-version = ['py39']
+target-version = ['py311']
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "Instanssi.test_settings"
@@ -65,7 +65,7 @@ FAIL_INVALID_TEMPLATE_VARS = true
 minversion = "6.0"
 testpaths = ["tests"]
 filterwarnings = [
-    "ignore::DeprecationWarning"
+    "ignore::DeprecationWarning",
 ]
 
 [tool.coverage.run]

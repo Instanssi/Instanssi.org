@@ -1,5 +1,5 @@
-Instanssi.org website project
-=============================
+Instanssi.org backend
+=====================
 
 This is the backend of the Instanssi.org website.
 

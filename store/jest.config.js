@@ -1,6 +1,6 @@
 module.exports = {
     moduleNameMapper: {
-        "^vue$": "<rootDir>/static/libs/vue/vue.js"
+        "^vue$": "<rootDir>../backend/Instanssi/static/libs/vue/vue.js"
     },
     transform: {
         '\\.html$': '<rootDir>/jest.transform.file.js',

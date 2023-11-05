@@ -1,0 +1,14 @@
+[Unit]
+After = network.target
+Description=Celery backend service
+
+[Service]
+ExecStart=/home/someuser/.local/bin/poetry run celery -A Instanssi worker -l info --pool=solo --logfile=/var/log/backend-celery.log
+Restart=always
+WorkingDirectory=/home/someuser/instanssi.org/backend
+Type=simple
+User=someuser
+Group=somegroup
+
+[Install]
+WantedBy=multi-user.target

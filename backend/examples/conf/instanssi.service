@@ -1,0 +1,17 @@
+[Unit]
+After = network.target
+Description=Backend service
+
+[Service]
+ExecStart=/home/someuser/.local/bin/poetry run gunicorn --pid /var/run/backend-gunicorn.pid --proxy-allow-from=*
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+WorkingDirectory=/home/someuser/instanssi.org/backend
+User=someuser
+Group=somegroup
+PIDFile = /var/run/backend-gunicorn.pid
+PermissionsStartOnly=true
+
+[Install]
+WantedBy=multi-user.target

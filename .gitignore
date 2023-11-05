@@ -4,23 +4,23 @@
 .pydevproject
 .settings
 .coverage
-content/static/*
-content/uploads/*
-!content/static/index.html
-!content/uploads/index.html
-Instanssi/settings.py
-testing/output/*
 *.html~
 *.py~
 *.txt~
 .idea
 .env
+.venv
 .virtualenv
 **/node_modules
 **/.vscode
 **/npm-debug.log
-var/
 venv/
-venv36/
-venv37/
 
+# Backend stuff
+backend/var/
+backend/content/static/*
+backend/content/uploads/*
+backend/!content/static/index.html
+backend/!content/uploads/index.html
+backend/Instanssi/settings.py
+backend/testing/output/*

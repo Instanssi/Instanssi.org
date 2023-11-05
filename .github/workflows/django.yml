@@ -22,16 +22,21 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install poetry
+      working-directory: ./backend
       run: |
         python -m pip install --upgrade pip wheel
         pip install --upgrade poetry
     - name: Install Dependencies
+      working-directory: ./backend
       run: |
         poetry env use ${{ matrix.python-version }}
         poetry install --no-root
     - name: Run isort
+      working-directory: ./backend
       run: poetry run isort --check-only Instanssi
     - name: Run black
+      working-directory: ./backend
       run: poetry run black --check --diff Instanssi
     - name: Run pytest
+      working-directory: ./backend
       run: poetry run pytest

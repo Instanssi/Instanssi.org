@@ -1,0 +1,78 @@
+# Settings file for Instanssi website/management system
+#
+# Some settings you should make sure to set correctly:
+# DATABASES
+# DEBUG
+# TIME_ZONE
+# LANGUAGE_CODE
+# SECRET_KEY
+
+from .common_config import *
+
+# Settings
+DEBUG = True
+ADMIN = True
+
+# Database
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "database.db",
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "",
+        "PORT": "",
+    }
+}
+
+# Google api stuff (the map)
+GOOGLE_API_KEY = ""
+
+# Generic stuff
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+TIME_ZONE = "Europe/Helsinki"
+LANGUAGE_CODE = "fi-FI"
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = "q3vt 2W34T234T3Q4"
+
+# Steam API
+SOCIAL_AUTH_STEAM_API_KEY = ""
+
+# Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
+
+# Github
+SOCIAL_AUTH_GITHUB_KEY = ""
+SOCIAL_AUTH_GITHUB_SECRET = ""
+SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+
+# Paytrail APIv2
+PAYTRAIL_V2_ID = "375917"  # Test ID
+PAYTRAIL_V2_SECRET = "SAIPPUAKAUPPIAS"  # Test secret
+PAYTRAIL_V2_API_URL = "https://services.paytrail.com"
+
+# Mastodon API access
+MASTODON_ACCESS_TOKEN = None
+MASTODON_BASE_URL = None
+
+# Crispy forms stuff
+CRISPY_FAIL_SILENTLY = not DEBUG
+CRISPY_TEMPLATE_PACK = "bootstrap3"
+
+# Initialize email configuration
+EMAIL_BACKEND = make_email_conf(DEBUG)
+
+# Initialize cache configuration
+CACHES = make_cache_conf(DEBUG)
+
+# Initializes celery config
+CELERY_BROKER_URL, CELERY_BROKER_TRANSPORT_OPTIONS = make_celery_conf(DEBUG)
+
+# Internal ip addresses
+INTERNAL_IPS = ("127.0.0.1",)
+
+# Setup sentry
+setup_sentry(locals())

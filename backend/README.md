@@ -31,7 +31,8 @@ Note that some background operations use celery. It can be started with followin
 Running in production
 ---------------------
 
-Either use gunicorn (WSGI) or uvicorn (ASGI). Currently gunicorn is recommended, uvicorn is in testing.
+Either use gunicorn (WSGI) or uvicorn (ASGI). In production, preferably gunicorn
+with uvicorn runner.
 
 * With gunicorn: `gunicorn` (it automatically uses the gunicorn.conf.py config file)
 * With uvicorn: `uvicorn Instanssi.asgi:application` (No other config needed)

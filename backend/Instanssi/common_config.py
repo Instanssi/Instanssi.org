@@ -192,7 +192,7 @@ LOGGING = {
     },
     "loggers": {
         "": {
-            "handlers": ["console", "main_log"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
         },

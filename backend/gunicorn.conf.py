@@ -1,4 +1,5 @@
-wsgi_app = "Instanssi.wsgi:application"
+worker_class = "uvicorn.workers.UvicornWorker"
+wsgi_app = "Instanssi.asgi:application"
 bind = "127.0.0.1:8006"
 workers = 3
 proc_name = "instanssi"

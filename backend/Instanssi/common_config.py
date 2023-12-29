@@ -183,17 +183,7 @@ LOGGING = {
     "formatters": {
         "verbose": {"format": "[%(levelname)s][%(asctime)s] %(module)s: %(message)s"},
     },
-    "filters": {
-        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
-    },
     "handlers": {
-        "main_log": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "var" / "log" / "main.log",
-            "formatter": "verbose",
-            "filters": ["require_debug_false"],
-        },
         "console": {
             "level": "INFO",
             "class": "logging.StreamHandler",

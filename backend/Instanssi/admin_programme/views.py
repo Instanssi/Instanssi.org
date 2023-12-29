@@ -34,7 +34,7 @@ def index(request: HttpRequest, selected_event_id: int) -> HttpResponse:
     else:
         form = ProgrammeEventForm()
 
-    programme_events = ProgrammeEvent.objects.filter(event_id=selected_event_id)
+    programme_events = ProgrammeEvent.objects.filter(event_id=selected_event_id).order_by("start")
     return admin_render(
         request,
         "admin_programme/index.html",

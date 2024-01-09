@@ -1,9 +1,9 @@
-worker_class = "uvicorn.workers.UvicornWorker"
-wsgi_app = "Instanssi.asgi:application"
+wsgi_app = "Instanssi.wsgi:application"
 bind = "127.0.0.1:8006"
-workers = 3
+workers = 2
+threads = 4
 proc_name = "instanssi"
-max_requests = 1000
+max_requests = 4000
 max_requests_jitter = 50
 capture_output = True
 errorlog = "/var/log/instanssi/gunicorn.error.log"

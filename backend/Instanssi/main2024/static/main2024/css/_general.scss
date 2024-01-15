@@ -24,22 +24,43 @@ body * {
 
 body {
     position: relative;
-    background: #000 !important;
+    background: #0054bf !important;
+    background: linear-gradient(#0054bf 0px, #000 1000px) !important;
 
-    &:before {
+
+}
+
+.header-background {
+    // Stop margin collapsing
+    &:after {
         content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: no-repeat top center url(../images/webtausta.jpg);
-        background-size: 1920px auto;
-        background-position-y: 0;
-        @media screen and (max-width: $screen-xs-max) {
-            background-size: 120vw auto;
-            background-position: top -10vw;
-        }
+        display: table;
+    }
+
+    position: relative;
+    z-index: 0;
+
+    background: url(../images/web_lohari.png) bottom right no-repeat;
+    background-size: 1172px auto;
+    background-position-x: auto;
+    background-position-y: -190px;
+    background-image: url(../images/web_lohari.png), url(../images/web_lohari_bg.png);
+    background-image:
+        image-set(url("../images/web_lohari.webp") type("image/webp"), url("../images/web_lohari.png") type("image/png")),
+        image-set(url("../images/web_lohari_bg.webp") type("image/webp"), url("../images/web_lohari_bg.png") type("image/png"));
+    
+    @media screen and (max-width: $screen-md-max) {
+        background-size: 972px auto;
+        background-position-y: -130px;
+    }
+    @media screen and (max-width: $screen-sm-max) {
+        background-size: auto 140%;
+        background-position-x: right 0;
+        background-position-y: bottom 40%;
+    }
+    @media screen and (max-width: $screen-xs-max) {
+        background-size: 100vw auto;
+        background-position-y: top -10vw;
     }
 }
 

@@ -51,13 +51,15 @@
         h1, .tagline, .time {
             margin-left: $spacer;
             font-family: $title-font-family;
-            color: #fff;
+            font-weight: 600;
+            color: #000;
         }
         .tagline, .time {
             margin-bottom: 5px;
+            $glow: #fff;
             // Make text more readable against a bright background
-            $glow: #0866a5;
-            text-shadow: $glow 2px 2px 0;
+            text-shadow: $glow 1px 1px 0;
+            text-shadow: $glow 1px 1px 0, $glow 2px 2px 0, $glow 1.5px 1.5px 0.5px;
         }
         .tagline {
             font-size: 28px;

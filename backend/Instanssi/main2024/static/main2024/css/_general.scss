@@ -24,10 +24,9 @@ body * {
 
 body {
     position: relative;
-    background: #0054bf !important;
-    background: linear-gradient(#0054bf 0px, #000 1000px) !important;
-
-
+    background: #0054c0 !important;
+    // background: linear-gradient(#0054c0 0px, #000 1000px) !important;
+    // background: url(../images/webtausta.jpg) top center no-repeat, #000!important;
 }
 
 .header-background {
@@ -43,7 +42,7 @@ body {
     background: url(../images/web_lohari.png) bottom right no-repeat;
     background-size: 1172px auto;
     background-position-x: auto;
-    background-position-y: -190px;
+    background-position-y: -183px;
     background-image: url(../images/web_lohari.png), url(../images/web_lohari_bg.png);
     background-image:
         image-set(url("../images/web_lohari.webp") type("image/webp"), url("../images/web_lohari.png") type("image/png")),

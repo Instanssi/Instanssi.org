@@ -1,6 +1,5 @@
 #page-header {
     position: relative;
-    overflow: hidden;
 
     > .container {
         height: $main-header-height-lg;
@@ -97,7 +96,7 @@
         // margin: 8px 0 0;
         padding: 8px 8px;
         color: #fff;
-        background: rgba($theme-color-bright, 0.5);
+        background: rgba(#000, 0.5);
         box-shadow: rgba(#000, .25) 1px 1px 4px;
         cursor: pointer;
 
@@ -114,8 +113,10 @@
 
     .main-nav-container {
         position: absolute;
+        z-index: 1;
         left: 0;
         width: 100%;
+        padding: 0 ($spacer * 2) 0;
         bottom: $spacer * 2;
     }
 
@@ -229,8 +230,11 @@
         }
         .main-nav-container {
             width: auto;
-            margin: ($spacer * 2) 0 ($spacer * 2);
-            position: static;
+            padding: ($spacer * 2) 0 0;
+            margin: ($spacer * 2) 0 0;
+            z-index: 1;
+            display: block;
+            position: relative;
         }
         .header-info {
             .time {
@@ -260,8 +264,8 @@
             background: $theme-color-dark;
         }
         .main-nav-container {
-            margin-bottom: 0;
-            margin: 0 ($spacer * -2) 0 ($spacer * -2);
+            padding: ($spacer * 2) 0 0;
+            margin: $spacer (-$spacer * 2) (-$spacer * 2);
         }
         .header-title {
             max-height: 100px;

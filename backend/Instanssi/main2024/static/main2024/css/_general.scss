@@ -35,31 +35,44 @@ body {
         content: '';
         display: table;
     }
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
 
-    position: relative;
-    z-index: 0;
+    img {
+        position: absolute;
+        top: -160px;
+        right: -5px;
+        width: 1920px;
+        height: 1080px;
 
-    background: url(../images/web_lohari.png) bottom right no-repeat;
-    background-size: 1172px auto;
-    background-position-x: auto;
-    background-position-y: -183px;
-    background-image: url(../images/web_lohari.png), url(../images/web_lohari_bg.png);
-    background-image:
-        image-set(url("../images/web_lohari.webp") type("image/webp"), url("../images/web_lohari.png") type("image/png")),
-        image-set(url("../images/web_lohari_bg.webp") type("image/webp"), url("../images/web_lohari_bg.png") type("image/png"));
-    
-    @media screen and (max-width: $screen-md-max) {
-        background-size: 972px auto;
-        background-position-y: -130px;
+        @media screen and (max-width: $screen-md-max) {
+            width: 962px;
+            height: auto;
+            top: -120px;
+            right: 0;
+        }
+        @media screen and (max-width: $screen-sm-max) {
+            width: 100%;
+            height: 100%;
+            margin-top: -25%;
+            top: 120px;
+            min-height: 105%;
+        }
+        @media screen and (max-width: $screen-xs-max) {
+            width: 70vw;
+            height: 200%;
+            margin-top: 0;
+            top: 0;
+            margin-top: 0;
+            min-height: unset;
+        }
     }
-    @media screen and (max-width: $screen-sm-max) {
-        background-size: auto 140%;
-        background-position-x: right 0;
-        background-position-y: bottom 40%;
-    }
-    @media screen and (max-width: $screen-xs-max) {
-        background-size: 100vw auto;
-        background-position-y: top -10vw;
+
+    .header-lohari-glitch1,
+    .header-lohari-glitch2 {
+        display: none;
     }
 }
 

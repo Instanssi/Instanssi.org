@@ -1,38 +1,5 @@
-@mixin cubebox($left, $top, $width, $height, $scale: 1.0, $xoffset: 0px, $yoffset: 0px) {
-    left: $left * $scale + $xoffset;
-    top: $top * $scale + $yoffset;
-    width: $width * $scale;
-    height: $height * $scale;
-}
-
-@mixin position-cubes($scale: 1.0, $xoffset: 0px, $yoffset: 0px) {
-    .dragoncube {
-        // spec is to keep these at the same ratio to each other
-        // blue: 782x782    (3.0 normalized to the smallest)
-        // purple: 374x374  (1.44-ish)
-        // pink: 260x260    (1.0)
-
-        $base-size: 90px;
-
-        $blue-size: $base-size * 3.0;
-        $purple-size: $base-size * 1.44;
-        $pink-size: $base-size * 1.0;
-
-        &--blue {
-            @include cubebox(512px, 0, $blue-size, $blue-size, $scale, $xoffset, $yoffset);
-        }
-        &--purple {
-            @include cubebox(820px, 100px, $purple-size, $purple-size, $scale, $xoffset, $yoffset);
-        }
-        &--pink {
-            @include cubebox(1000px, 20px, $pink-size, $pink-size, $scale, $xoffset, $yoffset);
-        }
-    }
-}
-
 #page-header {
     position: relative;
-    overflow: hidden;
 
     > .container {
         height: $main-header-height-lg;
@@ -46,32 +13,6 @@
     a {
         text-decoration: none; // no underline pls
     }
-
-    .dragoncube {
-        position: absolute;
-
-        opacity: .95;
-        transition-property: opacity;
-        transition-duration: 1s;
-        transition-delay: 0;
-        transition-timing-function: ease-in-out;
-
-        &--blue {
-            background-image: url('../images/instanssiweb_bluedragon.png')
-        }
-        &--purple {
-            background-image: url('../images/instanssiweb_purpledragon.png')
-        }
-        &--pink {
-            background-image: url('../images/instanssiweb_pinkdragon.png')
-        }
-        background-size: contain !important;
-        
-        &:hover {
-            opacity: 1;
-        }
-    }
-    @include position-cubes(1, 0px);
 
     // logo and info
 
@@ -109,13 +50,15 @@
         h1, .tagline, .time {
             margin-left: $spacer;
             font-family: $title-font-family;
+            font-weight: 600;
             color: #fff;
         }
         .tagline, .time {
             margin-bottom: 5px;
+            $shadow: #000;
             // Make text more readable against a bright background
-            $glow: #0866a5;
-            text-shadow: $glow 2px 2px 0;
+            text-shadow: $shadow 1px 1px 0;
+            text-shadow: $shadow 1px 1px 0, $shadow 2px 2px 0, $shadow 1.5px 1.5px 0.5px;
         }
         .tagline {
             font-size: 28px;
@@ -153,7 +96,7 @@
         // margin: 8px 0 0;
         padding: 8px 8px;
         color: #fff;
-        background: rgba($theme-color-bright, 0.5);
+        background: rgba(#000, 0.6);
         box-shadow: rgba(#000, .25) 1px 1px 4px;
         cursor: pointer;
 
@@ -170,15 +113,16 @@
 
     .main-nav-container {
         position: absolute;
+        z-index: 1;
         left: 0;
+        width: 100%;
+        padding: 0 ($spacer * 2) 0;
         bottom: $spacer * 2;
     }
 
     // Navigation menu
     nav.main-nav {
         padding: 0;
-        // margin-bottom: $spacing-large;
-        //background: rgba(darken($theme-color, 10%), 0.9);
         background: rgba($theme-color-dark, 0.9);
         ul {
             border: 0;
@@ -277,7 +221,6 @@
                 top: 72%;
             }
         }
-        @include position-cubes(0.85);
     }
     @media screen and (max-width: $screen-sm-max) {
         height: auto;
@@ -287,8 +230,11 @@
         }
         .main-nav-container {
             width: auto;
-            margin: 0 (-$spacer * 2) ($spacer * 2);
-            position: static;
+            padding: ($spacer * 2) 0 0;
+            margin: ($spacer * 2) 0 0;
+            z-index: 1;
+            display: block;
+            position: relative;
         }
         .header-info {
             .time {
@@ -309,14 +255,17 @@
             height: auto;
             background-size: cover;
         }
-        @include position-cubes(0.5, 180px, 10px);
     }
     @media screen and (max-width: $screen-xs-max) {
         & > .container {
             height: auto;
         }
+        nav.main-nav {
+            background: $theme-color-dark;
+        }
         .main-nav-container {
-            margin-bottom: 0;
+            padding: ($spacer * 2) 0 0;
+            margin: $spacer (-$spacer * 2) (-$spacer * 2);
         }
         .header-title {
             max-height: 100px;
@@ -340,6 +289,5 @@
                 transform: none;
             }
         }
-        @include position-cubes(0.2, 200px, 25px);
     }
 }

@@ -24,22 +24,55 @@ body * {
 
 body {
     position: relative;
-    background: #000 !important;
+    background: #0054c0 !important;
+    // background: linear-gradient(#0054c0 0px, #000 1000px) !important;
+    // background: url(../images/webtausta.jpg) top center no-repeat, #000!important;
+}
 
-    &:before {
+.header-background {
+    // Stop margin collapsing
+    &:after {
         content: '';
+        display: table;
+    }
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+
+    img {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: no-repeat top center url(../images/webtausta.jpg);
-        background-size: 1920px auto;
-        background-position-y: 0;
-        @media screen and (max-width: $screen-xs-max) {
-            background-size: 120vw auto;
-            background-position: top -10vw;
+        top: -160px;
+        right: -5px;
+        width: 1920px;
+        height: 1080px;
+
+        @media screen and (max-width: $screen-md-max) {
+            width: 962px;
+            height: auto;
+            top: -120px;
+            right: 0;
         }
+        @media screen and (max-width: $screen-sm-max) {
+            width: 100%;
+            height: 100%;
+            margin-top: -25%;
+            top: 120px;
+            min-height: 105%;
+        }
+        @media screen and (max-width: $screen-xs-max) {
+            width: 70vw;
+            height: 200%;
+            margin-top: 0;
+            top: 0;
+            margin-top: 0;
+            min-height: unset;
+        }
+    }
+
+    .header-lohari-glitch1,
+    .header-lohari-glitch2 {
+        display: none;
     }
 }
 

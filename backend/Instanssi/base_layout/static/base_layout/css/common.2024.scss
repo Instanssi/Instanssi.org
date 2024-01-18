@@ -1,8 +1,8 @@
 
 
-$theme-color-bright: #1178d0;
-$theme-color: #1178d0;
-$theme-color-secondary: #00ccff;
+$theme-color-bright: #5792d5;
+$theme-color: #0054c0;
+$theme-color-secondary: #7a59e9;
 $title-font-family: 'Exo 2', sans-serif, monospace;
 
 @import './common.2018.scss';
@@ -48,8 +48,5 @@ h2, h3 {
 }
 
 body.base-layout {
-    background: url('/static/main2024/images/webtausta.jpg') no-repeat;
-    background-color: #000 !important;
-    background-position: top center;
-    background-size: 1920px auto;
+    background: $theme-color !important;
 }

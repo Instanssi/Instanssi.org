@@ -1,5 +1,23 @@
 {% load static %}
 <div class="container">
+    <div class="header-background">
+        <picture class="header-lohari-bg">
+            <source type="image/webp" srcset="{% static 'main2024/images/web_lohari_bg.webp' %}">
+            <img src="{% static 'main2024/images/web_lohari_bg.png' %}">
+        </picture>
+        <picture class="header-lohari">
+            <source type="image/webp" srcset="{% static 'main2024/images/web_lohari.webp' %}">
+            <img src="{% static 'main2024/images/web_lohari.png' %}">
+        </picture>
+        <picture class="header-lohari-glitch1">
+            <source type="image/webp" srcset="{% static 'main2024/images/web_loharin-glitch1.webp' %}">
+            <img src="{% static 'main2024/images/web_loharin-glitch1.png' %}">
+        </picture>
+        <picture class="header-lohari-glitch2">
+            <source type="image/webp" srcset="{% static 'main2024/images/web_loharin-glitch2.webp' %}">
+            <img src="{% static 'main2024/images/web_loharin-glitch2.png' %}">
+        </picture>
+    </div>
     <div class="header-title">
         <a href="{% url 'main2024:index' %}" class="logo">
             <div class="header-info">
@@ -8,13 +26,8 @@
                 <p class="time">Jyväskylässä 29.2.-3.3.2024!</p>
             </div>
         </a>
-        
-        <span class="dragoncube dragoncube--blue"></span>
-        <span class="dragoncube dragoncube--purple"></span>
-        <span class="dragoncube dragoncube--pink"></span>
-
     </div>
-    <div class="main-nav-container container">
+    <div class="main-nav-container">
         <nav class="main-nav">
             <div class="clearer"></div>
             <ul class="nav nav-tabs">

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static mastodon_tags %}
 <!--
 <section class="widget widget-store">
     <a class="btn btn-primary" href="{% url 'store:index' %}">
@@ -47,11 +47,18 @@
   </div>
 </section>
 -->
+<section class="mastodon widget-mastodon">
+    <h2>Mastodon</h2>
+    <div id="toots" class="widget-content">
+        {% mastodon_timeline %}
+    </div>
+</section>
 <section class="widget widget-socialmedias">
     <h2>Some</h2>
     <div class="widget-content">
         <div class="social-media-icons">
             <a href="https://www.facebook.com/instanssi"><img src="{% static 'main2024/images/icons/icon-facebook.png' %}" alt="Facebook" ></a>
+            <a href="https://mementomori.social/@instanssi"><img src="{% static 'main2024/images/icons/icon-mastodon.png' %}" alt="Mastodon" ></a>
             <a href="https://twitter.com/instanssi"><img src="{% static 'main2024/images/icons/icon-twitter.png' %}" alt="Twitter" ></a>
             <a href="https://telegram.me/Instanssi"><img src="{% static 'main2024/images/icons/icon-telegram.png' %}" alt="Telegram" ></a>
             <a href="https://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2024/images/icons/icon-youtube.png' %}" alt="YouTube" ></a>

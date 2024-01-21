@@ -48,6 +48,10 @@ PAYTRAIL_V2_ID = ""
 PAYTRAIL_V2_SECRET = ""
 PAYTRAIL_V2_API_URL = "http://localhost:8000"
 
+# Mastodon API access
+MASTODON_ACCESS_TOKEN = None
+MASTODON_BASE_URL = None
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"

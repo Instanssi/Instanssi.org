@@ -1,13 +1,12 @@
 {% load static mastodon_tags %}
-<!--
 <section class="widget widget-store">
     <a class="btn btn-primary" href="{% url 'store:index' %}">
         <span class="fa fa-fw fa-euro"></span> Osta lippu!
     </a>
-</section>-->
-<section class="widget widget-valot">
-    <a class="btn btn-primary" href="{% url 'main2024:valot' %}">
-        <span class="fa fa-fw fa-lightbulb-o"></span> Valot
+</section>
+<section class="widget widget-rules">
+    <a href="{% url 'main2024:valot' %}">
+        <h3><span class="fa fa-fw fa-lightbulb-o"></span> Valot</h3>
     </a>
 </section>
 <!--<section class="widget widget-radio">
@@ -26,32 +25,14 @@
         <h3><span class="fa fa-fw fa-twitch"></span> Stream</h3>
     </a>
 </section>
+
 {% block widgets %}
-<!--
 <section class="widget widget-rekry">
   <h2>Rekrytointi</h2>
-  <div>Haluatko osallistua Instanssin järjestämiseen? Vuoden 2022 tiimissämme on vielä tilaa:</div>
-  <ul>
-    <li>Järjestyksenvalvojille</li>
-    <li>Infotiskin päivystäjille</li>
-    <li>Tapahtuman rakentajille / purkajille</li>
-  </ul>
+  <div>Haluatko osallistua Instanssin järjestämiseen? Vuoden 2024 tiimissämme on vielä tilaa!</div>
   <div>
-      Noin 12 tuntia töitä viikonlopun aikana tekeville Instanssi tarjoaa ilmaisen konepaikan. Lyhyemmän eli kuuden
-      (6) tunnin vuoron tekeville sisäänpääsy on ilmainen. Työt voi koostaa itselleen mielekkäimmistä tehtävistä.
+       <a href="https://instanssi.org/2024/#161">Lisätietoja täältä</a>!
   </div>
-  <div>
-      <a class="btn btn-primary" href="https://forms.gle/zrZS7PtLEkZ1tBmH9">
-          Ilmoittaudu
-      </a>
-  </div>
-</section>
--->
-<section class="mastodon widget-mastodon">
-    <h2>Mastodon</h2>
-    <div id="toots" class="widget-content">
-        {% mastodon_timeline %}
-    </div>
 </section>
 <section class="widget widget-socialmedias">
     <h2>Some</h2>

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from pprint import pprint
 from typing import Final, List, TypedDict
 
 import nh3
@@ -10,7 +9,7 @@ from django import template
 from django.conf import settings
 from django.core.cache import cache
 from django.utils.safestring import mark_safe
-from mastodon import Mastodon, MastodonAPIError
+from mastodon import Mastodon
 
 log = logging.getLogger(__name__)
 
@@ -34,7 +33,10 @@ def filter_toots(toot: dict) -> bool:
         return False
     if toot.get("visibility") != "public":
         return False
-    if not toot.get("account"):
+    account = toot.get("account")
+    if not account:
+        return False
+    if account.get("acct") != "instanssi":
         return False
     return True
 
@@ -60,14 +62,14 @@ def fetch_timeline(limit: int) -> List[dict]:
     if not settings.MASTODON_BASE_URL:
         return []
     try:
-        return init_mastodon().timeline(limit=limit)
-    except MastodonAPIError as e:
+        return init_mastodon().timeline(limit=50)[:limit]
+    except Exception as e:
         log.exception("Mastodon error: %s", e)
     return []
 
 
 @register.inclusion_tag("ext_mastodon/timeline.html", name="mastodon_timeline")
-def render_mastodon_timeline(limit: int = 10, timeout: int = 60 * 15) -> dict:
+def render_mastodon_timeline(limit: int = 10, timeout: int = 60 * 30) -> dict:
     timeline: List[Toot] = cache.get(MASTODON_CACHE_KEY)
     if not timeline:
         timeline = list(map(map_toots, filter(filter_toots, fetch_timeline(limit))))

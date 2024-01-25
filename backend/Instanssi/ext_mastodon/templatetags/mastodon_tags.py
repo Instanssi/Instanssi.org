@@ -33,11 +33,6 @@ def filter_toots(toot: dict) -> bool:
         return False
     if toot.get("visibility") != "public":
         return False
-    account = toot.get("account")
-    if not account:
-        return False
-    if account.get("acct") != "instanssi":
-        return False
     return True
 
 
@@ -62,7 +57,11 @@ def fetch_timeline(limit: int) -> List[dict]:
     if not settings.MASTODON_BASE_URL:
         return []
     try:
-        return init_mastodon().timeline(limit=50)[:limit]
+        mastodon = init_mastodon()
+        account = mastodon.account_lookup(settings.MASTODON_ACCOUNT_NAME)
+        return mastodon.account_statuses(
+            account["id"], exclude_reblogs=True, exclude_replies=True, limit=25
+        )[:limit]
     except Exception as e:
         log.exception("Mastodon error: %s", e)
     return []

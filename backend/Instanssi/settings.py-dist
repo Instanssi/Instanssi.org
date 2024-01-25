@@ -57,6 +57,7 @@ PAYTRAIL_V2_API_URL = "https://services.paytrail.com"
 # Mastodon API access
 MASTODON_ACCESS_TOKEN = None
 MASTODON_BASE_URL = None
+MASTODON_ACCOUNT_NAME = None
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG

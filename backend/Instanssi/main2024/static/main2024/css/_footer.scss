@@ -26,7 +26,8 @@
             }
 
             a {
-                display: block;
+                display: flex;
+                justify-content: center;
                 line-height: 0px;
                 padding: $spacer;
                 background: #fff;
@@ -38,6 +39,8 @@
 
             img {
                 background: #fff;
+                max-width: 103px;
+                max-height: 57px;
             }
         }
     }

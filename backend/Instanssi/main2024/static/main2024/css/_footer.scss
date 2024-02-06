@@ -17,19 +17,25 @@
 
     .sponsors {
         .sponsor {
-            width: 128px;
+            position: relative;
+            max-height: 80px;
             float: left;
-            padding: 0 $spacer $spacer 0;
+            margin-bottom: $spacer;
+            margin-right: $spacer;
 
             &.white {
                 background: #fff;
             }
 
             a {
-                display: block;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 line-height: 0px;
                 padding: $spacer;
                 background: #fff;
+                width: 128px;
+                height: 80px;
             }
 
             a:hover {
@@ -38,6 +44,8 @@
 
             img {
                 background: #fff;
+                max-width: 128px - $spacer * 2;
+                max-height: 80px - $spacer * 2;
             }
         }
     }

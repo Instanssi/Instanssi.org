@@ -402,7 +402,7 @@ def vote_code_requests(request: HttpRequest, selected_event_id: int) -> HttpResp
 
 
 @staff_access_required
-@permission_required("kompomaatti.change_votecode", raise_exception=True)
+@permission_required("kompomaatti.change_votecoderequest", raise_exception=True)
 def accept_vote_code_request(
     request: HttpRequest, selected_event_id: int, vote_code_request_id: int
 ) -> HttpResponse:
@@ -419,7 +419,7 @@ def accept_vote_code_request(
 
 
 @staff_access_required
-@permission_required("kompomaatti.change_votecode", raise_exception=True)
+@permission_required("kompomaatti.change_votecoderequest", raise_exception=True)
 def reject_vote_code_request(
     request: HttpRequest, selected_event_id: int, vote_code_request_id: int
 ) -> HttpResponse:

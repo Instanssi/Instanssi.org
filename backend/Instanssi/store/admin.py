@@ -1,3 +1,4 @@
+from csvexport.actions import csvexport
 from django.contrib import admin
 
 from Instanssi.store.models import (
@@ -11,6 +12,8 @@ from Instanssi.store.models import (
 
 
 class StoreTransactionAdmin(admin.ModelAdmin):
+    actions = [csvexport]
+    list_per_page = 200
     list_display = [
         "firstname",
         "lastname",
@@ -25,6 +28,8 @@ class StoreTransactionAdmin(admin.ModelAdmin):
 
 
 class StoreTransactionEventAdmin(admin.ModelAdmin):
+    actions = [csvexport]
+    list_per_page = 200
     list_display = [
         "transaction",
         "message",
@@ -34,6 +39,8 @@ class StoreTransactionEventAdmin(admin.ModelAdmin):
 
 
 class TransactionItemAdmin(admin.ModelAdmin):
+    actions = [csvexport]
+    list_per_page = 200
     list_display = [
         "key",
         "item",
@@ -44,6 +51,8 @@ class TransactionItemAdmin(admin.ModelAdmin):
 
 
 class ReceiptAdmin(admin.ModelAdmin):
+    actions = [csvexport]
+    list_per_page = 200
     list_display = [
         "transaction",
         "mail_to",
@@ -54,6 +63,7 @@ class ReceiptAdmin(admin.ModelAdmin):
 
 
 class StoreItemAdmin(admin.ModelAdmin):
+    actions = [csvexport]
     list_display = [
         "name",
         "event",

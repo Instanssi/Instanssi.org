@@ -38,6 +38,7 @@ psycopg = {extras = ["binary", "pool"], version = "^3.1.9"}
 redis = {extras = ["hiredis"], version = "^5.0.0"}
 mastodon-py = "^1.8.1"
 nh3 = "^0.2.15"
+django-admin-csvexport = "^2.2"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^15.3.3"

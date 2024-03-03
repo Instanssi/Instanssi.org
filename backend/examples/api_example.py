@@ -1,6 +1,7 @@
-import requests
 import json
 import logging
+
+import requests
 
 # API URL (https for real instanssi site)
 API_ADDR = "http://localhost:8000/api/v1"

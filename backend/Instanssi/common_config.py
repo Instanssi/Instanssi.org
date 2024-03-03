@@ -153,6 +153,7 @@ INSTALLED_APPS = (
     "imagekit",
     "rest_framework",
     "knox",
+    "csvexport",
     "django_filters",
     "crispy_forms",
     "crispy_bootstrap3",

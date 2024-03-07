@@ -10,7 +10,13 @@ export default defineConfig({
             template: { transformAssetUrls },
         }),
         Vuetify(),
-        Components(),
+        Components({
+            dts: true,
+            types: [{
+                from: 'vue-router',
+                names: ['RouterLink', 'RouterView'],
+            }],
+        }),
     ],
     esbuild: {
         pure: ["console.debug", "console.log"],

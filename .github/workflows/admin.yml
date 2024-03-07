@@ -1,4 +1,4 @@
-name: Store CI
+name: Admin CI
 
 on:
   push:

@@ -12,10 +12,12 @@ export default defineConfig({
         Vuetify(),
         Components({
             dts: true,
-            types: [{
-                from: 'vue-router',
-                names: ['RouterLink', 'RouterView'],
-            }],
+            types: [
+                {
+                    from: "vue-router",
+                    names: ["RouterLink", "RouterView"],
+                },
+            ],
         }),
     ],
     esbuild: {

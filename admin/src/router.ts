@@ -7,7 +7,17 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            name: "home",
+            name: "dashboard",
+            component: DashboardView,
+        },
+        {
+            path: "/site/blog",
+            name: "blog",
+            component: DashboardView,
+        },
+        {
+            path: "/logout",
+            name: "logout",
             component: DashboardView,
         },
     ],

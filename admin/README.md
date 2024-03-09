@@ -25,3 +25,9 @@ npm run type-check
 npm run lint
 npm run test
 ```
+
+### Checking bundle size
+
+```sh
+npx vite-bundle-visualizer
+```

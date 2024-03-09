@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
-        <v-main>
+        <v-main class="bg-grey-darken-3">
             <RouterView />
         </v-main>
     </v-app>

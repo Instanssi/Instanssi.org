@@ -29,7 +29,7 @@
                                 color="primary"
                                 variant="elevated"
                                 prepend-icon="fas fa-right-to-bracket"
-                            >Login</v-btn
+                                >Login</v-btn
                             >
                         </v-row>
                     </v-container>
@@ -57,5 +57,4 @@ async function login() {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

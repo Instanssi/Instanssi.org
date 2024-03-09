@@ -76,8 +76,8 @@ class EventFeed(ICalFeed):
             events.append(
                 Event(
                     start_time=program.start,
-                    title=f"Event '{program.name}' begins",
-                    description=f"Event '{program.name}' begins",
+                    title=f"Event '{program.title}' begins",
+                    description=f"Event '{program.title}' begins",
                     url=reverse("km"),
                 )
             )

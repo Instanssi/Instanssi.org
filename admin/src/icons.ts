@@ -3,7 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import type { App } from "vue";
 
 // These are our own imports
-import { faDashboard, faRightFromBracket, faBlog, faSitemap } from "@fortawesome/free-solid-svg-icons";
+import {
+    faDashboard,
+    faRightFromBracket,
+    faRightToBracket,
+    faBlog,
+    faSitemap,
+    faLock,
+} from "@fortawesome/free-solid-svg-icons";
 
 // These are used by vuetify and imported for the standard set
 import {
@@ -46,7 +53,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 // These are our own imports
-library.add(faDashboard, faRightFromBracket, faBlog, faSitemap);
+library.add(faDashboard, faRightFromBracket, faRightToBracket, faBlog, faSitemap, faLock);
 
 // These are used by vuetify and imported for the standard set
 library.add(

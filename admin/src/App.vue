@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Navigation :items="navLinks" />
+        <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
         <v-main>
             <RouterView />
         </v-main>
@@ -9,7 +9,9 @@
 
 <script setup lang="ts">
 import Navigation, { type NavigationLinks } from "@/components/MainNavigation.vue";
+import { useAuth } from "@/services/auth";
 
+const authService = useAuth();
 const navLinks: NavigationLinks = [
     {
         title: "Dashboard",
@@ -35,4 +37,4 @@ const navLinks: NavigationLinks = [
 ];
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

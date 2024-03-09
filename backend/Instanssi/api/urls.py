@@ -7,6 +7,7 @@ from .admin.viewsets.kompomaatti import (
     AdminCompoViewSet,
     AdminEventViewSet,
 )
+from .ical.feed import EventFeed
 from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,
     CompetitionViewSet,
@@ -66,5 +67,6 @@ router.register("admin/compos", AdminCompoViewSet, basename="admin_compos")
 router.register("admin/compo_entries", AdminCompoEntryViewSet, basename="admin_compo_entries")
 
 urlpatterns = [
+    path("ics/instanssi.ics", EventFeed(), name="ics_feed"),
     path("", include(router.urls)),
 ]

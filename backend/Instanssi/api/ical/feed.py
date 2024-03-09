@@ -78,7 +78,7 @@ class EventFeed(ICalFeed):
                     start_time=program.start,
                     title=f"Event '{program.title}' begins",
                     description=f"Event '{program.title}' begins",
-                    url=reverse("km"),
+                    url=reverse("km:index"),
                 )
             )
         return events

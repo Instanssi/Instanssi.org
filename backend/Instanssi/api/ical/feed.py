@@ -18,10 +18,8 @@ class Event:
 
 
 class EventFeed(ICalFeed):
-    """
-    A simple event calender
-    """
-
+    title = "Instanssi"
+    description = "Instanssi event calendar"
     product_id = "-//instanssi.org//Events//EN"
     timezone = "UTC"
     file_name = "instanssi.ics"

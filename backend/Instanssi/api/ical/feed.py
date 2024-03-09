@@ -10,6 +10,7 @@ from Instanssi.kompomaatti.models import Competition, Compo
 
 @dataclass
 class Event:
+    id: str
     start_time: datetime
     title: str
     description: str
@@ -31,6 +32,7 @@ class EventFeed(ICalFeed):
             compo_url = reverse("km:compo", args=(compo.event_id, compo.id))
             events.append(
                 Event(
+                    id=f"compo-{compo.id}-entry-deadline@instanssi.org",
                     start_time=compo.adding_end,
                     title=f"Compo '{compo.name}' deadline",
                     description=f"Compo '{compo.name}' deadline for new entries",
@@ -39,6 +41,7 @@ class EventFeed(ICalFeed):
             )
             events.append(
                 Event(
+                    id=f"compo-{compo.id}-start@instanssi.org",
                     start_time=compo.compo_start,
                     title=f"Compo '{compo.name}' begins",
                     description=f"Compo '{compo.name}' begins",
@@ -47,6 +50,7 @@ class EventFeed(ICalFeed):
             )
             events.append(
                 Event(
+                    id=f"compo-{compo.id}-voting-deadline@instanssi.org",
                     start_time=compo.voting_end,
                     title=f"Compo '{compo.name}' voting ends",
                     description=f"Compo '{compo.name}' voting deadline",
@@ -57,6 +61,7 @@ class EventFeed(ICalFeed):
             competition_url = reverse("km:competition", args=(competition.event_id, competition.id))
             events.append(
                 Event(
+                    id=f"competition-{competition.id}-signup-deadline@instanssi.org",
                     start_time=competition.participation_end,
                     title=f"Competition '{competition.name}' signup deadline",
                     description=f"Competition '{competition.name}' deadline for competition signups",
@@ -65,6 +70,7 @@ class EventFeed(ICalFeed):
             )
             events.append(
                 Event(
+                    id=f"competition-{competition.id}-start@instanssi.org",
                     start_time=competition.start,
                     end_time=competition.end,
                     title=f"Competition '{competition.name}' begins",
@@ -75,6 +81,7 @@ class EventFeed(ICalFeed):
         for program in ProgrammeEvent.objects.filter(start__gt=start):
             events.append(
                 Event(
+                    id=f"event-{program.id}-start@instanssi.org",
                     start_time=program.start,
                     end_time=program.end,
                     title=f"Event '{program.title}' begins",
@@ -83,6 +90,9 @@ class EventFeed(ICalFeed):
                 )
             )
         return sorted(events, key=lambda x: x.start_time)
+
+    def item_guid(self, item: Event) -> str:
+        return item.id
 
     def item_title(self, item: Event) -> str:
         return item.title

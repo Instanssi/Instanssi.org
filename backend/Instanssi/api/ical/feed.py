@@ -28,7 +28,7 @@ class EventFeed(ICalFeed):
     def items(self):
         events: list[Event] = []
         start = datetime.now(timezone.utc) - timedelta(days=365)
-        for compo in Compo.objects.filter(compo_start__gt=start):
+        for compo in Compo.objects.filter(compo_start__gt=start, active=True):
             compo_url = reverse("km:compo", args=(compo.event_id, compo.id))
             events.append(
                 Event(
@@ -57,7 +57,7 @@ class EventFeed(ICalFeed):
                     url=compo_url,
                 )
             )
-        for competition in Competition.objects.filter(start__gt=start):
+        for competition in Competition.objects.filter(start__gt=start, active=True):
             competition_url = reverse("km:competition", args=(competition.event_id, competition.id))
             events.append(
                 Event(
@@ -78,7 +78,7 @@ class EventFeed(ICalFeed):
                     url=competition_url,
                 )
             )
-        for program in ProgrammeEvent.objects.filter(start__gt=start):
+        for program in ProgrammeEvent.objects.filter(start__gt=start, active=True):
             events.append(
                 Event(
                     id=f"event-{program.id}-start@instanssi.org",

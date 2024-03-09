@@ -1,39 +1,40 @@
 <template>
     <div class="d-flex align-center justify-center fill-height bg-grey-darken-3">
-        <v-card min-width="500" color="grey-darken-4">
-            <v-card-title class="ml-4 mr-4 headline text-truncate">
-                <v-icon icon="fas fa-lock" size="x-small" />
-                <span class="ml-3">Login</span>
-            </v-card-title>
-            <v-card-text>
-                <v-container fluid>
-                    <v-row dense no-gutters>
-                        <v-text-field
-                            density="compact"
-                            variant="outlined"
-                            label="Username"
-                            model="username"
-                        />
-                    </v-row>
-                    <v-row dense no-gutters>
-                        <v-text-field
-                            density="compact"
-                            variant="outlined"
-                            label="Password"
-                            model="password"
-                        />
-                    </v-row>
-                    <v-row dense no-gutters class="justify-end">
-                        <v-btn
-                            @click="login"
-                            color="primary"
-                            variant="elevated"
-                            prepend-icon="fas fa-right-to-bracket"
+        <v-card color="grey-darken-4" title="Sign in">
+            <template v-slot:subtitle>
+                Sign in using username and password, or by using one of the SSO methods.
+            </template>
+            <template v-slot:text>
+                <v-form>
+                    <v-container class="ma-0 pa-0">
+                        <v-row dense no-gutters>
+                            <v-text-field
+                                density="compact"
+                                variant="outlined"
+                                label="Username"
+                                model="username"
+                            />
+                        </v-row>
+                        <v-row dense no-gutters>
+                            <v-text-field
+                                density="compact"
+                                variant="outlined"
+                                label="Password"
+                                model="password"
+                            />
+                        </v-row>
+                        <v-row dense no-gutters class="justify-end">
+                            <v-btn
+                                @click="login"
+                                color="primary"
+                                variant="elevated"
+                                prepend-icon="fas fa-right-to-bracket"
                             >Login</v-btn
-                        >
-                    </v-row>
-                </v-container>
-            </v-card-text>
+                            >
+                        </v-row>
+                    </v-container>
+                </v-form>
+            </template>
         </v-card>
     </div>
 </template>
@@ -56,4 +57,5 @@ async function login() {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+</style>

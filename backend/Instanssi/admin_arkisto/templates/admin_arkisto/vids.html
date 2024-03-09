@@ -34,7 +34,7 @@
         <tbody>
 {% for video in videos %}
             <tr>
-                <td><a href="{{ video.youtube_url }}">{{ video.name }}</a></td>
+                <td><a href="{{ video.youtube_url.link_url }}">{{ video.name }}</a></td>
                 <td>{{ video.category.name }}</td>
                 <td>{{ video.description|linebreaksbr }}</td>
 {% if perms.arkisto.change_othervideo %}

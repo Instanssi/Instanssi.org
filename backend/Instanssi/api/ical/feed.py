@@ -14,6 +14,7 @@ class Event:
     title: str
     description: str
     url: str
+    end_time: datetime | None = None
 
 
 class EventFeed(ICalFeed):
@@ -67,6 +68,7 @@ class EventFeed(ICalFeed):
             events.append(
                 Event(
                     start_time=competition.start,
+                    end_time=competition.end,
                     title=f"Competition '{competition.name}' begins",
                     description=f"Competition '{competition.name}' begins",
                     url=competition_url,
@@ -76,12 +78,13 @@ class EventFeed(ICalFeed):
             events.append(
                 Event(
                     start_time=program.start,
+                    end_time=program.end,
                     title=f"Event '{program.title}' begins",
                     description=f"Event '{program.title}' begins",
                     url=reverse("km:index", args=(program.event_id,)),
                 )
             )
-        return events
+        return sorted(events, key=lambda x: x.start_time)
 
     def item_title(self, item: Event) -> str:
         return item.title
@@ -91,6 +94,9 @@ class EventFeed(ICalFeed):
 
     def item_start_datetime(self, item: Event) -> datetime:
         return item.start_time
+
+    def item_end_datetime(self, item: Event) -> datetime:
+        return item.end_time
 
     def item_link(self, item: Event) -> str:
         return item.url

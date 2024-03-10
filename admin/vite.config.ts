@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 
 export default defineConfig({
+    base: "/management/",
     plugins: [
         vue(),
         vuetify(),
@@ -19,6 +20,7 @@ export default defineConfig({
     build: {
         sourcemap: true,
         reportCompressedSize: false,
+        outDir: fileURLToPath(new URL("../backend/Instanssi/management/site/", import.meta.url)),
     },
     resolve: {
         alias: {

@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { api } from "@/apis/api";
 
 const loggedIn = ref(false);
 
@@ -8,13 +9,18 @@ export function useAuth() {
     }
 
     async function login(username: string, password: string) {
-        loggedIn.value = true;
-        return true;
+        const result = await api.postLogin(username, password);
+        loggedIn.value = result;
+        return result;
+    }
+
+    async function getSocialAuthURLs() {
+        return await api.getSocialAuthURLs("/management");
     }
 
     function logout() {
         loggedIn.value = false;
     }
 
-    return { isLoggedIn, login, logout };
+    return { isLoggedIn, login, logout, getSocialAuthURLs };
 }

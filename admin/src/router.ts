@@ -6,7 +6,7 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: "/login",
+            path: "/management/login",
             name: "login",
             meta: {
                 requireAuth: false,
@@ -14,7 +14,7 @@ const router = createRouter({
             component: () => import("@/views/LoginView.vue"),
         },
         {
-            path: "/site/blog",
+            path: "/management/site/blog",
             name: "blog",
             meta: {
                 requireAuth: true,
@@ -22,7 +22,7 @@ const router = createRouter({
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {
-            path: "/logout",
+            path: "/management/logout",
             name: "logout",
             meta: {
                 requireAuth: true,
@@ -30,12 +30,19 @@ const router = createRouter({
             component: () => import("@/views/LogoutView.vue"),
         },
         {
-            path: "/",
+            path: "/management/",
             name: "dashboard",
             meta: {
                 requireAuth: true,
             },
             component: () => import("@/views/MainView.vue"),
+        },
+        {
+            path: "/",
+            redirect: "/management/",
+            meta: {
+                requireAuth: false,
+            },
         },
     ],
 });

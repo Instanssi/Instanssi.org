@@ -51,9 +51,11 @@ import {
     faCircle as farCircle,
     faStar as farStar,
 } from "@fortawesome/free-regular-svg-icons";
+import { faGoogle, faSteam, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 // These are our own imports
 library.add(faDashboard, faRightFromBracket, faRightToBracket, faBlog, faSitemap, faLock);
+library.add(faGoogle, faSteam, faGithub);
 
 // These are used by vuetify and imported for the standard set
 library.add(

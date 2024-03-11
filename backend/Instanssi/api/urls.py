@@ -8,7 +8,12 @@ from .admin.viewsets.kompomaatti import (
     AdminEventViewSet,
 )
 from .ical.feed import EventFeed
-from .auth.user import BeginSocialAuthViewSet, LoginViewSet
+from .auth.user import (
+    BeginSocialAuthViewSet,
+    LoginViewSet,
+    LogoutViewSet,
+    UserDataViewSet,
+)
 from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,
     CompetitionViewSet,
@@ -70,6 +75,8 @@ router.register("admin/compo_entries", AdminCompoEntryViewSet, basename="admin_c
 # User auth APIs
 router.register("auth/social_login/begin", BeginSocialAuthViewSet, basename="begin_social_auth")
 router.register("auth/login", LoginViewSet, basename="login")
+router.register("auth/logout", LogoutViewSet, basename="logout")
+router.register("auth/user_info", UserDataViewSet, basename="user_info")
 
 urlpatterns = [
     path("ics/instanssi.ics", EventFeed(), name="ics_feed"),

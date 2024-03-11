@@ -4,16 +4,36 @@ import yarl
 from django.contrib import auth
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ViewSet
 
-from Instanssi.api.auth.serializers import UserLoginSerializer
+from Instanssi.api.auth.serializers import UserDataSerializer, UserLoginSerializer
 from Instanssi.api.utils import IsAuthenticatedOrWriteOnly
 from Instanssi.users.views import AUTH_METHODS
 
 logger = logging.getLogger(__name__)
+
+
+class UserDataViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserDataSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def list(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+
+class LogoutViewSet(ViewSet):
+    permission_classes = [IsAuthenticatedOrWriteOnly]
+    authentication_classes = []
+
+    def create(self, request: Request) -> Response:
+        auth.logout(request)
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class LoginViewSet(ViewSet):

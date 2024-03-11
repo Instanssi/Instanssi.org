@@ -30,6 +30,7 @@
                             <v-text-field
                                 v-model="password.value.value"
                                 :error-messages="password.errorMessage.value"
+                                type="password"
                                 density="compact"
                                 variant="outlined"
                                 label="Password"

@@ -9,18 +9,22 @@ import { aliases, fa } from "vuetify/iconsets/fa-svg";
 import App from "@/App.vue";
 import router from "@/router";
 import { setupIcons } from "@/icons";
+import { useAuth } from "@/services/auth";
 
-const app = createApp(App);
-const vuetify = createVuetify({
-    icons: {
-        defaultSet: "fa",
-        aliases,
-        sets: { fa },
-    },
-});
+function init() {
+    const app = createApp(App);
+    const vuetify = createVuetify({
+        icons: {
+            defaultSet: "fa",
+            aliases,
+            sets: { fa },
+        },
+    });
 
-setupIcons(app);
-app.use(router);
-app.use(vuetify);
+    setupIcons(app);
+    app.use(router);
+    app.use(vuetify);
+    app.mount("#app");
+}
 
-app.mount("#app");
+useAuth().refreshStatus().then(init);

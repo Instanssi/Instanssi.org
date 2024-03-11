@@ -6,7 +6,7 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: "/management/login",
+            path: "/login",
             name: "login",
             meta: {
                 requireAuth: false,
@@ -14,7 +14,20 @@ const router = createRouter({
             component: () => import("@/views/LoginView.vue"),
         },
         {
-            path: "/management/site/blog",
+            path: "/logout",
+            name: "logout",
+            meta: {
+                requireAuth: true,
+            },
+            component: {
+                async beforeRouteEnter(to, from, next) {
+                    await authService.logout();
+                    next({ name: "login" });
+                },
+            },
+        },
+        {
+            path: "/site/blog",
             name: "blog",
             meta: {
                 requireAuth: true,
@@ -22,37 +35,21 @@ const router = createRouter({
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {
-            path: "/management/logout",
-            name: "logout",
-            meta: {
-                requireAuth: true,
-            },
-            component: () => import("@/views/LogoutView.vue"),
-        },
-        {
-            path: "/management/",
+            path: "/",
             name: "dashboard",
             meta: {
                 requireAuth: true,
             },
             component: () => import("@/views/MainView.vue"),
         },
-        {
-            path: "/",
-            redirect: "/management/",
-            meta: {
-                requireAuth: false,
-            },
-        },
     ],
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.name === "logout") {
-        authService.logout();
+    if (to.meta.requireAuth && !authService.isLoggedIn()) {
         next({ name: "login" });
-    } else if (to.meta.requireAuth && !authService.isLoggedIn()) {
-        next({ name: "login" });
+    } else if (to.name === "login" && authService.isLoggedIn()) {
+        next({ name: "dashboard" });
     } else {
         next();
     }

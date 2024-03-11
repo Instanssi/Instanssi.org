@@ -55,15 +55,14 @@
 import { onMounted, type Ref, ref } from "vue";
 import { object as yupObject, string as yupString } from "yup";
 
-import { useAuth } from "@/services/auth";
+import { type SocialAuthMethod, useAuth } from "@/services/auth";
 import { useRouter } from "vue-router";
-import type { SocialAuthUrls } from "@/apis/types";
 import { useField, useForm } from "vee-validate";
 
 const authService = useAuth();
 const router = useRouter();
 
-const socialLoginUrls: Ref<SocialAuthUrls> = ref([]);
+const socialLoginUrls: Ref<SocialAuthMethod[]> = ref([]);
 
 // Field validation rules
 const validationSchema = yupObject({

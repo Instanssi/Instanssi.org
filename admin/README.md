@@ -18,7 +18,8 @@ npm run build
 ```
 
 Note that the completed build will be put to `backend/Instanssi/management/site/` directory!
-This is so that the django backend can find and offer it in dev builds.
+This is so that the django backend can find and offer it in dev builds. In production, we just
+offer that directory directly via nginx as static content.
 
 ### Running code quality tools
 

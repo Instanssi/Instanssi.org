@@ -8,13 +8,7 @@ from rest_framework.fields import (
 )
 from rest_framework.serializers import ModelSerializer
 
-from Instanssi.kompomaatti.models import Compo, Entry, Event
-
-
-class AdminEventSerializer(ModelSerializer):
-    class Meta:
-        model = Event
-        fields = ("id", "name", "date", "archived", "mainurl")
+from Instanssi.kompomaatti.models import Compo, Entry
 
 
 class AdminCompoSerializer(ModelSerializer):

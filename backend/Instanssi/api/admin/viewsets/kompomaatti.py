@@ -5,22 +5,10 @@ from rest_framework.pagination import LimitOffsetPagination
 from Instanssi.api.admin.serializers.kompomaatti import (
     AdminCompoEntrySerializer,
     AdminCompoSerializer,
-    AdminEventSerializer,
 )
 from Instanssi.api.admin.viewsets.base import AdminReadOnlyViewSet
-from Instanssi.kompomaatti.models import Compo, Entry, Event
+from Instanssi.kompomaatti.models import Compo, Entry
 
-
-class AdminEventViewSet(AdminReadOnlyViewSet):
-    queryset = Event.objects.all()
-    serializer_class = AdminEventSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = (
-        OrderingFilter,
-        DjangoFilterBackend,
-    )
-    ordering_fields = ("id", "name", "date")
-    filterset_fields = ("name", "date")
 
 
 class AdminCompoViewSet(AdminReadOnlyViewSet):

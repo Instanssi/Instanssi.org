@@ -5,9 +5,9 @@ from rest_framework import routers
 from .admin.viewsets.kompomaatti import (
     AdminCompoEntryViewSet,
     AdminCompoViewSet,
-    AdminEventViewSet,
 )
 from .ical.feed import EventFeed
+from .admin.viewsets.events import AdminEventViewSet
 from .auth.user import (
     BeginSocialAuthViewSet,
     LoginViewSet,

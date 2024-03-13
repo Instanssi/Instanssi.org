@@ -20,6 +20,7 @@ export default defineConfig({
     build: {
         sourcemap: true,
         reportCompressedSize: false,
+        emptyOutDir: true,
         outDir: fileURLToPath(new URL("../backend/Instanssi/management/site/", import.meta.url)),
     },
     resolve: {

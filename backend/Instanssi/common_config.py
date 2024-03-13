@@ -48,6 +48,9 @@ MEDIA_UPLOAD_FILES: str = "files"
 ADMIN_LOGIN_URL = "/manage/auth/login/"
 LOGIN_URL = "/users/login/"
 
+# Shorten session expiration (default is 2 weeks)
+SESSION_COOKIE_AGE = 24 * 3600
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMMON_STATIC_DIR = PROJECT_DIR / "static"

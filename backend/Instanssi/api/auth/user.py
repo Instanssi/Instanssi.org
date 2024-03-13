@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ViewSet
 
 from Instanssi.api.auth.serializers import UserDataSerializer, UserLoginSerializer
-from Instanssi.api.utils import IsAuthenticatedOrWriteOnly
+from Instanssi.api.auth.utils import EnforceCSRFViewSet
+from Instanssi.api.utils import IsWriteOnly
 from Instanssi.users.views import AUTH_METHODS
 
 logger = logging.getLogger(__name__)
@@ -27,18 +28,16 @@ class UserDataViewSet(ReadOnlyModelViewSet):
         return self.retrieve(request, *args, **kwargs)
 
 
-class LogoutViewSet(ViewSet):
-    permission_classes = [IsAuthenticatedOrWriteOnly]
-    authentication_classes = []
+class LogoutViewSet(EnforceCSRFViewSet):
+    permission_classes = [IsAuthenticated]
 
     def create(self, request: Request) -> Response:
         auth.logout(request)
         return Response({}, status=status.HTTP_200_OK)
 
 
-class LoginViewSet(ViewSet):
-    permission_classes = [IsAuthenticatedOrWriteOnly]
-    authentication_classes = []
+class LoginViewSet(EnforceCSRFViewSet):
+    permission_classes = [IsWriteOnly]
 
     def create(self, request: Request) -> Response:
         serializer = UserLoginSerializer(data=request.data)
@@ -62,7 +61,7 @@ class BeginSocialAuthViewSet(ViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = []
 
-    def list(self, request: Request, *args, **kwargs):
+    def list(self, request: Request) -> Response:
         methods = []
         default_next = reverse("users:login")
         found_next = request.query_params.get("next", default_next)

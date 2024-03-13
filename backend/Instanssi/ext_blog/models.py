@@ -2,6 +2,7 @@ from auditlog.registry import auditlog
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
+from django.utils import timezone
 
 from Instanssi.kompomaatti.models import Event
 
@@ -11,7 +12,7 @@ class BlogEntry(models.Model):
     user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
     title = models.CharField("Otsikko", help_text="Lyhyt otsikko entrylle.", max_length=128)
     text = models.TextField("Teksti")
-    date = models.DateTimeField("Aika")
+    date = models.DateTimeField("Aika", default=timezone.now)
     public = models.BooleanField(
         "Julkinen",
         help_text="Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.",

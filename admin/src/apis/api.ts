@@ -105,4 +105,14 @@ export class API {
         });
         return { status: response.status, payload: await response.json() };
     }
+
+    protected async delete(path: string): Promise<void> {
+        const response = await fetch(this.makeUrl(path, {}), {
+            method: "DELETE",
+            headers: {
+                "X-CSRFToken": this.cookies.get("csrftoken"),
+            },
+        });
+        return { status: response.status, payload: null };
+    }
 }

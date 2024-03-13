@@ -1,4 +1,8 @@
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import (
+    DjangoModelPermissions,
+    IsAdminUser,
+    IsAuthenticated,
+)
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 

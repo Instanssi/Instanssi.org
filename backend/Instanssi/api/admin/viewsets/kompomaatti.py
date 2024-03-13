@@ -10,7 +10,6 @@ from Instanssi.api.admin.viewsets.base import AdminReadOnlyViewSet
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
-
 class AdminCompoViewSet(AdminReadOnlyViewSet):
     queryset = Compo.objects.all()
     serializer_class = AdminCompoSerializer

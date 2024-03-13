@@ -11,14 +11,28 @@ export type BlogPost = {
 };
 
 export class BlogAPI extends API {
-    public async getBlogEntries(filters: Filters, offset: Offset, limit: Limit, search: Search, orderBy: OrderBy): Promise<Pagination<BlogPost>> {
+    public async getBlogEntries(
+        filters: Filters,
+        offset: Offset,
+        limit: Limit,
+        search: Search,
+        orderBy: OrderBy
+    ): Promise<Pagination<BlogPost>> {
         const query = this.makeQs(limit, offset, search, filters, orderBy);
         const { payload } = await this.getJSON("/admin/blog/", query);
-        payload.results = payload.results.map((item: Record<string, any>) => ({...item, date: new Date(item.date)}));
+        payload.results = payload.results.map((item: Record<string, any>) => ({
+            ...item,
+            date: new Date(item.date),
+        }));
         return payload;
     }
 
-    public async postBlogEntry(event: number, title: string, text: string, isPublic: boolean): Promise<void> {
+    public async postBlogEntry(
+        event: number,
+        title: string,
+        text: string,
+        isPublic: boolean
+    ): Promise<void> {
         await this.postJSON("/admin/blog/", { title, text, event, public: isPublic });
     }
 }

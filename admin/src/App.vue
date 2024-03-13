@@ -1,9 +1,6 @@
 <template>
     <v-app>
-        <Navigation
-            v-if="authService.isLoggedIn()"
-            :items="navLinks"
-        />
+        <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
         <v-main :class="backgroundClass">
             <RouterView />
         </v-main>
@@ -15,9 +12,7 @@ import Navigation, { type NavigationLinks } from "@/components/MainNavigation.vu
 import { useAuth } from "@/services/auth";
 import { computed } from "vue";
 
-const backgroundClass = computed(() =>
-    authService.isLoggedIn() ? undefined : "login-view"
-);
+const backgroundClass = computed(() => (authService.isLoggedIn() ? undefined : "login-view"));
 const authService = useAuth();
 const navLinks: NavigationLinks = [
     {

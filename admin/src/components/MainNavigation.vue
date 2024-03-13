@@ -61,14 +61,16 @@ const router = useRouter();
 const route = useRoute();
 const eventService = useEvents();
 const authService = useAuth();
-const event: Ref<undefined|number> = ref(undefined);
-const events = computed(() => eventService.getEvents().map(item => ({title: item.name, value: item.id})));
+const event: Ref<undefined | number> = ref(undefined);
+const events = computed(() =>
+    eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))
+);
 
 function changeEvent(): void {
     router.push({
         name: route.name!,
         params: {
-            ... route.params,
+            ...route.params,
             eventId: event.value,
         },
         query: route.query,
@@ -83,8 +85,8 @@ function navigateTo(to: string | undefined): void {
 async function tryRefreshEvents() {
     await eventService.refreshEvents();
     const latest = eventService.getLatestEvent();
-    if(!latest) {
-        await router.push({name: "dashboard"});
+    if (!latest) {
+        await router.push({ name: "dashboard" });
     } else {
         event.value = latest.id;
     }

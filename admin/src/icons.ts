@@ -56,7 +56,16 @@ import {
 import { faGoogle, faSteam, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 // These are our own imports
-library.add(faDashboard, faRightFromBracket, faRightToBracket, faBlog, faSitemap, faLock, faXmark, faFloppyDisk);
+library.add(
+    faDashboard,
+    faRightFromBracket,
+    faRightToBracket,
+    faBlog,
+    faSitemap,
+    faLock,
+    faXmark,
+    faFloppyDisk
+);
 library.add(faGoogle, faSteam, faGithub);
 
 // These are used by vuetify and imported for the standard set

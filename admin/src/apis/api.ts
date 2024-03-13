@@ -5,10 +5,10 @@ export type Qs = Record<string, string> | undefined;
 type ResponseObj = { status: number; payload: any };
 export type OrderField = {
     key: string;
-    order: "asc"|"desc";
+    order: "asc" | "desc";
 };
 export type OrderBy = OrderField[] | undefined | null;
-export type Filters = {[key: string]: any} | undefined | null;
+export type Filters = { [key: string]: any } | undefined | null;
 export type Limit = number | undefined | null;
 export type Offset = number | undefined | null;
 export type Search = string | undefined | null;
@@ -45,7 +45,13 @@ export class API {
      * @param orderBy Order by field
      * @protected
      */
-    protected makeQs(limit: Limit, offset: Offset, search: Search, filters: Filters, orderBy: OrderBy): Qs {
+    protected makeQs(
+        limit: Limit,
+        offset: Offset,
+        search: Search,
+        filters: Filters,
+        orderBy: OrderBy
+    ): Qs {
         const output: Qs = {};
         for (const [key, value] of Object.entries(filters ?? {})) {
             if (value === undefined || value == null) continue;
@@ -61,7 +67,7 @@ export class API {
         if (offset !== undefined && offset != null && offset !== 0) {
             output["offset"] = offset.toString();
         }
-        if(search !== undefined && search != null && search !== "") {
+        if (search !== undefined && search != null && search !== "") {
             output["search"] = search.toString();
         }
         if (orderBy !== undefined && orderBy != null && orderBy.length > 0) {
@@ -106,7 +112,7 @@ export class API {
         return { status: response.status, payload: await response.json() };
     }
 
-    protected async delete(path: string): Promise<void> {
+    protected async delete(path: string): Promise<ResponseObj> {
         const response = await fetch(this.makeUrl(path, {}), {
             method: "DELETE",
             headers: {

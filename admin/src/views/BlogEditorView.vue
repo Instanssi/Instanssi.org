@@ -2,12 +2,7 @@
     <LayoutBase title="Blog" :key="`blog-${eventId}`">
         <v-col>
             <v-row>
-                <v-btn
-                    prepend-icon="fas fa-plus"
-                    @click="create"
-                >
-                    New blog post
-                </v-btn>
+                <v-btn prepend-icon="fas fa-plus" @click="create"> New blog post </v-btn>
                 <v-text-field
                     variant="outlined"
                     density="compact"
@@ -33,7 +28,6 @@
                     :page="currentPage"
                     :items-per-page-options="pageSizeOptions"
                     v-model:items-per-page="perPage"
-                    v-model:sort-by="sortBy"
                     @update:options="debouncedLoad"
                 >
                     <template v-slot:item.public="{ item }">
@@ -56,6 +50,15 @@ import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import { useAPI } from "@/apis";
 import type { BlogPost } from "@/apis/blog_api";
 
+// Not exported by vuetify -- use our own.
+type LoadArgs = {
+    page: number;
+    itemsPerPage: number;
+    sortBy: any;
+    groupBy: any;
+    search: string;
+};
+
 const props = defineProps<{ eventId: string }>();
 
 const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefined);
@@ -68,49 +71,46 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const blogPosts: Ref<BlogPost[]> = ref([]);
 const search = ref("");
-const sortBy = ref([{ key: 'id', order: 'asc'}]);
 const refreshKey = ref(0);
 const headers = [
     {
-        title: 'ID',
+        title: "ID",
         sortable: true,
-        key: 'id',
+        key: "id",
     },
     {
-        title: 'Title',
+        title: "Title",
         sortable: false,
-        key: 'title',
+        key: "title",
     },
     {
-        title: 'Created at',
+        title: "Created at",
         sortable: true,
-        key: 'date',
+        key: "date",
     },
     {
-        title: 'Created by',
+        title: "Created by",
         sortable: true,
-        key: 'user',
+        key: "user",
     },
     {
-        title: 'Public',
+        title: "Public",
         sortable: false,
-        key: 'public',
+        key: "public",
     },
 ];
-
-type LoadArgs = {
-    page: number;
-    itemsPerPage: number;
-    sortBy: any;
-    groupBy: any;
-    search: string;
-};
 
 async function load(args: LoadArgs) {
     loading.value = true;
     const limit = args.itemsPerPage;
     const offset = (args.page - 1) * limit;
-    const {count, results} = await api.blog.getBlogEntries({ event: parseInt(props.eventId, 10) }, offset, limit, args.search, args.sortBy);
+    const { count, results } = await api.blog.getBlogEntries(
+        { event: parseInt(props.eventId, 10) },
+        offset,
+        limit,
+        args.search,
+        args.sortBy
+    );
     blogPosts.value = results;
     totalItems.value = count;
     loading.value = false;
@@ -119,7 +119,7 @@ async function load(args: LoadArgs) {
 const debouncedLoad = debounce(load, 500); // Don't murderate the server API
 
 async function create() {
-    const {ok, text, title, isPublic} = await dialog.value!.modal();
+    const { ok, text, title, isPublic } = await dialog.value!.modal();
     const event = parseInt(props.eventId, 10);
     if (ok) {
         await api.blog.postBlogEntry(event, title, text, isPublic);

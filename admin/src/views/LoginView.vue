@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex align-center justify-center fill-height bg-grey-darken-3">
-        <v-card color="grey-darken-4" title="Sign in">
+    <div class="d-flex align-center justify-center fill-height">
+        <v-card color="grey-darken-4" class="opacity-95" title="Sign in">
             <template v-slot:subtitle>
                 Sign in using username and password, or by using one of the SSO methods.
             </template>
@@ -91,4 +91,8 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.opacity-95 {
+    opacity: 0.95;
+}
+</style>

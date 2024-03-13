@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
-        <v-main class="bg-grey-darken-3">
+        <v-main :class="backgroundClass">
             <RouterView />
         </v-main>
     </v-app>
@@ -10,7 +10,11 @@
 <script setup lang="ts">
 import Navigation, { type NavigationLinks } from "@/components/MainNavigation.vue";
 import { useAuth } from "@/services/auth";
+import { computed } from "vue";
 
+const backgroundClass = computed(() =>
+    authService.isLoggedIn() ? undefined : "login-view"
+);
 const authService = useAuth();
 const navLinks: NavigationLinks = [
     {
@@ -37,4 +41,10 @@ const navLinks: NavigationLinks = [
 ];
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.login-view {
+    background-image: url("@/assets/webtausta.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>

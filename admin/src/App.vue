@@ -1,6 +1,9 @@
 <template>
     <v-app>
-        <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
+        <Navigation
+            v-if="authService.isLoggedIn()"
+            :items="navLinks"
+        />
         <v-main :class="backgroundClass">
             <RouterView />
         </v-main>

@@ -27,11 +27,12 @@ const router = createRouter({
             },
         },
         {
-            path: "/site/blog",
+            path: "/:eventId(\\d+)/blog",
             name: "blog",
             meta: {
                 requireAuth: true,
             },
+            props: true,
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {

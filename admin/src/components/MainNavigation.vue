@@ -4,7 +4,16 @@
             <v-img :src="logoImage" />
             <h1 class="pl-2">Instanssi</h1>
         </div>
-        <v-divider></v-divider>
+        <v-divider />
+        <v-select
+            class="ma-1"
+            label="Event"
+            variant="outlined"
+            density="compact"
+            :items="events"
+            v-model="event"
+        />
+        <v-divider />
         <v-list density="compact" open-strategy="multiple" nav>
             <template v-for="item in items">
                 <v-list-group v-if="item.children" :key="`group-${item.title}`">
@@ -33,7 +42,10 @@
 
 <script setup lang="ts">
 import logoImage from "@/assets/icon.png";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { computed, onMounted, type Ref, ref, watch } from "vue";
+import { useEvents } from "@/services/events";
+import { useAuth } from "@/services/auth";
 
 export type NavigationLink = {
     title: string;
@@ -43,14 +55,44 @@ export type NavigationLink = {
 };
 export type NavigationLinks = NavigationLink[];
 
-const router = useRouter();
-
 defineProps<{ items: NavigationLinks }>();
+
+const router = useRouter();
+const route = useRoute();
+const eventService = useEvents();
+const authService = useAuth();
+const event: Ref<undefined|number> = ref(undefined);
+const events = computed(() => eventService.getEvents().map(item => ({title: item.name, value: item.id})));
+
+function changeEvent(): void {
+    router.push({
+        name: route.name!,
+        params: {
+            ... route.params,
+            eventId: event.value,
+        },
+        query: route.query,
+    });
+}
 
 function navigateTo(to: string | undefined): void {
     if (!to) return;
-    router.push({ name: to });
+    router.push({ name: to, params: { eventId: event.value } });
 }
+
+async function tryRefreshEvents() {
+    await eventService.refreshEvents();
+    const latest = eventService.getLatestEvent();
+    if(!latest) {
+        await router.push({name: "dashboard"});
+    } else {
+        event.value = latest.id;
+    }
+}
+
+watch(event, changeEvent);
+watch(authService.isLoggedIn, tryRefreshEvents);
+onMounted(tryRefreshEvents);
 </script>
 
 <style scoped lang="scss">

@@ -2,6 +2,7 @@ from django.conf.urls import include
 from django.urls import path
 from rest_framework import routers
 
+from .admin.viewsets.blog import AdminBlogViewSet
 from .admin.viewsets.kompomaatti import (
     AdminCompoEntryViewSet,
     AdminCompoViewSet,
@@ -71,6 +72,7 @@ router.register(r"user_votes", VoteGroupViewSet, basename="user_votes")
 router.register("admin/events", AdminEventViewSet, basename="admin_events")
 router.register("admin/compos", AdminCompoViewSet, basename="admin_compos")
 router.register("admin/compo_entries", AdminCompoEntryViewSet, basename="admin_compo_entries")
+router.register("admin/blog", AdminBlogViewSet, basename="admin_blog")
 
 # User auth APIs
 router.register("auth/social_login/begin", BeginSocialAuthViewSet, basename="begin_social_auth")

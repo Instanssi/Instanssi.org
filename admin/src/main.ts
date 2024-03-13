@@ -1,4 +1,5 @@
 import "@/assets/main.scss";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 // Libs
 import { createApp } from "vue";

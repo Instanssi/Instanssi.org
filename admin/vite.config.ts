@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import compression from "vite-plugin-compression2";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
+import { configDefaults } from "vitest/config";
 
 export default defineConfig({
     base: "/management/",
@@ -36,5 +37,16 @@ export default defineConfig({
                 secure: false,
             },
         },
+    },
+    test: {
+        environment: "jsdom",
+        exclude: [...configDefaults.exclude],
+        root: fileURLToPath(new URL("./", import.meta.url)),
+        server: {
+            deps: {
+                inline: ["vuetify"],
+            },
+        },
+        setupFiles: ["tests/unit.setup.js"],
     },
 });

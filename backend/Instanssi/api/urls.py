@@ -3,7 +3,6 @@ from django.urls import path
 from rest_framework import routers
 
 from .admin.viewsets.blog import AdminBlogViewSet
-from .ical.feed import EventFeed
 from .admin.viewsets.events import AdminEventViewSet
 from .admin.viewsets.kompomaatti import AdminCompoEntryViewSet, AdminCompoViewSet
 from .auth.user import (
@@ -12,6 +11,7 @@ from .auth.user import (
     LogoutViewSet,
     UserDataViewSet,
 )
+from .ical.feed import EventFeed
 from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,
     CompetitionViewSet,

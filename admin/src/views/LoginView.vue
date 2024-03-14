@@ -1,8 +1,8 @@
 <template>
     <div class="d-flex align-center justify-center fill-height">
-        <v-card color="grey-darken-4" class="opacity-95" title="Sign in">
+        <v-card color="grey-darken-4" class="opacity-95" :title="t('LoginView.title')">
             <template v-slot:subtitle>
-                Sign in using username and password, or by using one of the SSO methods.
+                {{ t("LoginView.subtitle") }}
             </template>
             <template v-slot:text>
                 <div class="d-flex justify-center">
@@ -23,7 +23,7 @@
                                 :error-messages="username.errorMessage.value"
                                 density="compact"
                                 variant="outlined"
-                                label="Username"
+                                :label="t('LoginView.username')"
                             />
                         </v-row>
                         <v-row dense no-gutters class="mb-2 mt-2">
@@ -33,7 +33,7 @@
                                 type="password"
                                 density="compact"
                                 variant="outlined"
-                                label="Password"
+                                :label="t('LoginView.password')"
                             />
                         </v-row>
                         <v-row dense no-gutters class="justify-end">
@@ -42,7 +42,7 @@
                                 color="primary"
                                 variant="elevated"
                                 prepend-icon="fas fa-right-to-bracket"
-                                >Login</v-btn
+                                >{{ t("LoginView.login") }}</v-btn
                             >
                         </v-row>
                     </v-container>
@@ -59,9 +59,11 @@ import { object as yupObject, string as yupString } from "yup";
 import { type SocialAuthMethod, useAuth } from "@/services/auth";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
 
 const authService = useAuth();
 const router = useRouter();
+const { t } = useI18n();
 
 const socialLoginUrls: Ref<SocialAuthMethod[]> = ref([]);
 

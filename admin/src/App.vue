@@ -11,28 +11,30 @@
 import Navigation, { type NavigationLinks } from "@/components/MainNavigation.vue";
 import { useAuth } from "@/services/auth";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const backgroundClass = computed(() => (authService.isLoggedIn() ? undefined : "login-view"));
 const authService = useAuth();
 const navLinks: NavigationLinks = [
     {
-        title: "Dashboard",
+        title: t("App.nav.dashboard"),
         icon: "fas fa-dashboard",
         to: "dashboard",
     },
     {
-        title: "Site",
+        title: t("App.nav.site"),
         icon: "fas fa-sitemap",
         children: [
             {
-                title: "Blog",
+                title: t("App.nav.blog"),
                 icon: "fas fa-blog",
                 to: "blog",
             },
         ],
     },
     {
-        title: "Log out",
+        title: t("App.nav.logout"),
         icon: "fas fa-right-from-bracket",
         to: "logout",
     },

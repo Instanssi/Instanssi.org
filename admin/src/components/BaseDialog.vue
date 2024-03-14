@@ -25,14 +25,14 @@
                         color="secondary"
                         :prepend-icon="cancelIcon"
                         @click="setResult(false)"
-                        >{{ cancelText }}</v-btn
+                        >{{ cancelText ?? t("General.cancel") }}</v-btn
                     >
                     <v-btn
                         variant="elevated"
                         color="primary"
                         :prepend-icon="okIcon"
                         @click="setResult(true)"
-                        >{{ okText }}</v-btn
+                        >{{ okText ?? t("General.ok") }}</v-btn
                     >
                 </slot>
             </v-card-actions>
@@ -42,6 +42,9 @@
 
 <script setup lang="ts">
 import { type Ref, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 interface Props {
     width?: number;
@@ -57,9 +60,9 @@ const emit = defineEmits<{
 }>();
 withDefaults(defineProps<Props>(), {
     width: 600,
-    okText: "OK",
+    okText: undefined,
     okIcon: undefined,
-    cancelText: "Cancel",
+    cancelText: undefined,
     cancelIcon: undefined,
 });
 defineExpose({ modal, setResult });

@@ -2,12 +2,12 @@
     <v-navigation-drawer color="grey-darken-4">
         <div class="d-flex ma-5 align-center">
             <v-img :src="logoImage" />
-            <h1 class="pl-2">Instanssi</h1>
+            <h1 class="pl-2">{{ t("MainNavigation.title") }}</h1>
         </div>
         <v-divider />
         <v-select
             class="ma-1"
-            label="Event"
+            :label="t('MainNavigation.event')"
             variant="outlined"
             density="compact"
             :items="events"
@@ -46,6 +46,7 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, type Ref, ref, watch } from "vue";
 import { useEvents } from "@/services/events";
 import { useAuth } from "@/services/auth";
+import { useI18n } from "vue-i18n";
 
 export type NavigationLink = {
     title: string;
@@ -61,6 +62,7 @@ const router = useRouter();
 const route = useRoute();
 const eventService = useEvents();
 const authService = useAuth();
+const { t } = useI18n();
 const event: Ref<undefined | number> = ref(undefined);
 const events = computed(() =>
     eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))

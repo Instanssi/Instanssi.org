@@ -55,54 +55,55 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faGoogle, faSteam, faGithub } from "@fortawesome/free-brands-svg-icons";
 
-// These are our own imports
-library.add(
-    faDashboard,
-    faRightFromBracket,
-    faRightToBracket,
-    faBlog,
-    faSitemap,
-    faLock,
-    faXmark,
-    faFloppyDisk
-);
-library.add(faGoogle, faSteam, faGithub);
+export function setupIcons(app: App): void {
+    // These are our own imports
+    library.add(
+        faDashboard,
+        faRightFromBracket,
+        faRightToBracket,
+        faBlog,
+        faSitemap,
+        faLock,
+        faXmark,
+        faFloppyDisk
+    );
+    library.add(faGoogle, faSteam, faGithub);
 
-// These are used by vuetify and imported for the standard set
-library.add(
-    faChevronUp,
-    faCheck,
-    faTimesCircle,
-    faTimes,
-    faCheckCircle,
-    faInfoCircle,
-    faExclamation,
-    faExclamationTriangle,
-    faChevronLeft,
-    faChevronRight,
-    faChevronDown,
-    faCheckSquare,
-    faMinusSquare,
-    faCircle,
-    faArrowUp,
-    faArrowDown,
-    faBars,
-    faCaretDown,
-    faEdit,
-    faStar,
-    faStarHalf,
-    faSync,
-    faStepBackward,
-    faStepForward,
-    faArrowsAltV,
-    faPaperclip,
-    faPlus,
-    faMinus,
-    faCalendar,
-    faEyeDropper
-);
-library.add(farSquare, farDotCircle, farCircle, farStar);
+    // These are used by vuetify and imported for the standard set
+    library.add(
+        faChevronUp,
+        faCheck,
+        faTimesCircle,
+        faTimes,
+        faCheckCircle,
+        faInfoCircle,
+        faExclamation,
+        faExclamationTriangle,
+        faChevronLeft,
+        faChevronRight,
+        faChevronDown,
+        faCheckSquare,
+        faMinusSquare,
+        faCircle,
+        faArrowUp,
+        faArrowDown,
+        faBars,
+        faCaretDown,
+        faEdit,
+        faStar,
+        faStarHalf,
+        faSync,
+        faStepBackward,
+        faStepForward,
+        faArrowsAltV,
+        faPaperclip,
+        faPlus,
+        faMinus,
+        faCalendar,
+        faEyeDropper
+    );
+    library.add(farSquare, farDotCircle, farCircle, farStar);
 
-export function setupIcons(app: App) {
+    // This is required by v-icon and other components
     app.component("font-awesome-icon", FontAwesomeIcon);
 }

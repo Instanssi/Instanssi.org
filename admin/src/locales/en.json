@@ -39,13 +39,18 @@
       "newBlogPost": "New blog post",
       "loadingBlogPosts": "Loading blog posts ...",
       "noBlogPostsFound": "No blog posts found.",
+      "confirmDelete": "Do you really want to delete blog post '{title}' ?",
       "headers": {
         "id": "ID",
         "title": "Title",
         "createdAt": "Created at",
         "createdBy": "Created by",
-        "isPublic": "Is public"
+        "isPublic": "Is public",
+        "actions": "Actions"
       }
+    },
+    "ConfirmDialog": {
+      "title": "Confirm"
     },
     "BlogPostDialog": {
       "title": "Blog post",

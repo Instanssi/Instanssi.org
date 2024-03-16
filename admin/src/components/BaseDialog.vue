@@ -20,13 +20,9 @@
             </v-card-text>
             <v-card-actions class="justify-end">
                 <slot name="buttons">
-                    <v-btn
-                        variant="elevated"
-                        color="secondary"
-                        :prepend-icon="cancelIcon"
-                        @click="setResult(false)"
-                        >{{ cancelText ?? t("General.cancel") }}</v-btn
-                    >
+                    <v-btn variant="text" :prepend-icon="cancelIcon" @click="setResult(false)">{{
+                        cancelText ?? t("General.cancel")
+                    }}</v-btn>
                     <v-btn
                         variant="elevated"
                         color="primary"

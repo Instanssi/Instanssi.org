@@ -12,7 +12,12 @@
                 variant="outlined"
                 :label="t('BlogPostDialog.labels.title')"
             />
-            <QuillEditor theme="snow" style="height: 300px" ref="editor" />
+            <QuillEditor
+                theme="snow"
+                style="height: 300px"
+                content-type="html"
+                v-model:content="text"
+            />
             <v-switch v-model="isPublic" :label="switchLabel" />
         </v-form>
     </BaseDialog>
@@ -23,25 +28,31 @@ import BaseDialog from "@/components/BaseDialog.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import { computed, type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import type { BlogPost } from "@/apis/blog_api";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref(undefined);
-const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref(undefined);
 
 const { t } = useI18n();
 const isPublic = ref(false);
 const title = ref("");
+const text = ref("");
 const switchLabel = computed(() =>
     isPublic.value
         ? t("BlogPostDialog.labels.postIsVisible")
         : t("BlogPostDialog.labels.postNotVisible")
 );
 
-async function modal() {
+async function modal(item: undefined | BlogPost = undefined) {
+    if (item) {
+        title.value = item.title;
+        isPublic.value = item.public;
+        text.value = item.text;
+    }
     const ok = (await dialog.value?.modal()) ?? false;
     return {
         ok,
         title: title.value,
-        text: editor.value?.getHTML() ?? "",
+        text: text.value,
         isPublic: isPublic.value,
     };
 }

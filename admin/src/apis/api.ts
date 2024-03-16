@@ -112,6 +112,23 @@ export class API {
         return { status: response.status, payload: await response.json() };
     }
 
+    protected async patchJSON(
+        path: string,
+        payload: object,
+        query: Qs = undefined
+    ): Promise<ResponseObj> {
+        const response = await fetch(this.makeUrl(path, query), {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "X-CSRFToken": this.cookies.get("csrftoken"),
+            },
+            body: JSON.stringify(payload),
+        });
+        return { status: response.status, payload: await response.json() };
+    }
+
     protected async delete(path: string): Promise<ResponseObj> {
         const response = await fetch(this.makeUrl(path, {}), {
             method: "DELETE",

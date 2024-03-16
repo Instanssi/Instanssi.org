@@ -35,4 +35,17 @@ export class BlogAPI extends API {
     ): Promise<void> {
         await this.postJSON("/admin/blog/", { title, text, event, public: isPublic });
     }
+
+    public async deleteBlogEntry(id: number): Promise<void> {
+        await this.delete(`/admin/blog/${id}/`);
+    }
+
+    public async patchBlogEntry(
+        id: number,
+        title: string,
+        text: string,
+        isPublic: boolean
+    ): Promise<void> {
+        await this.patchJSON(`/admin/blog/${id}/`, { title, text, public: isPublic });
+    }
 }

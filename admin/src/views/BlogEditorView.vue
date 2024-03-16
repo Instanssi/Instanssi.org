@@ -2,7 +2,7 @@
     <LayoutBase :title="t('BlogEditorView.title')" :key="`blog-${eventId}`">
         <v-col>
             <v-row>
-                <v-btn prepend-icon="fas fa-plus" @click="create">{{
+                <v-btn prepend-icon="fas fa-plus" @click="createPost">{{
                     t("BlogEditorView.newBlogPost")
                 }}</v-btn>
                 <v-text-field
@@ -21,6 +21,7 @@
                 <v-data-table-server
                     class="elevation-1 primary"
                     item-value="id"
+                    density="compact"
                     :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="blogPosts"
@@ -41,6 +42,23 @@
                     <template v-slot:item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
+                    <template v-slot:item.actions="{ item }">
+                        <v-btn
+                            density="compact"
+                            variant="text"
+                            @click="deletePost(item)"
+                            prepend-icon="fas fa-xmark"
+                            color="red"
+                            >Delete</v-btn
+                        >
+                        <v-btn
+                            density="compact"
+                            variant="text"
+                            @click="editPost(item)"
+                            prepend-icon="fas fa-pen-to-square"
+                            >Edit</v-btn
+                        >
+                    </template>
                 </v-data-table-server>
             </v-row>
         </v-col>
@@ -49,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Ref, ref } from "vue";
+import { inject, type Ref, ref } from "vue";
 import { debounce } from "lodash-es";
 
 import LayoutBase from "@/components/LayoutBase.vue";
@@ -57,6 +75,8 @@ import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import { useAPI } from "@/apis";
 import type { BlogPost } from "@/apis/blog_api";
 import { useI18n } from "vue-i18n";
+import { confirmDialogKey, type ConfirmDialogType } from "@/symbols";
+import type { VDataTableServer } from "vuetify/components";
 
 // Not exported by vuetify -- use our own.
 type LoadArgs = {
@@ -67,10 +87,14 @@ type LoadArgs = {
     search: string;
 };
 
+// Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
+type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
+
 const props = defineProps<{ eventId: string }>();
 const { t, d } = useI18n();
 
 const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefined);
+const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const api = useAPI();
 const loading = ref(false);
@@ -81,7 +105,7 @@ const currentPage = ref(1);
 const blogPosts: Ref<BlogPost[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
-const headers = [
+const headers: ReadonlyHeaders = [
     {
         title: t("BlogEditorView.headers.id"),
         sortable: true,
@@ -107,6 +131,12 @@ const headers = [
         sortable: false,
         key: "public",
     },
+    {
+        title: t("BlogEditorView.headers.actions"),
+        sortable: false,
+        key: "actions",
+        align: "end",
+    },
 ];
 
 async function load(args: LoadArgs) {
@@ -127,7 +157,24 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 500); // Don't murderate the server API
 
-async function create() {
+async function deletePost(item: BlogPost): Promise<void> {
+    const text = t("BlogEditorView.confirmDelete", item);
+    const ok = await confirmDialog.value!.confirm(text);
+    if (ok) {
+        await api.blog.deleteBlogEntry(item.id);
+        refreshKey.value += 1;
+    }
+}
+
+async function editPost(item: BlogPost): Promise<void> {
+    const { ok, text, title, isPublic } = await dialog.value!.modal(item);
+    if (ok) {
+        await api.blog.patchBlogEntry(item.id, title, text, isPublic);
+        refreshKey.value += 1;
+    }
+}
+
+async function createPost() {
     const { ok, text, title, isPublic } = await dialog.value!.modal();
     const event = parseInt(props.eventId, 10);
     if (ok) {

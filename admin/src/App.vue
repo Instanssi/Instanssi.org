@@ -3,6 +3,7 @@
         <Navigation v-if="authService.isLoggedIn()" :items="navLinks" />
         <v-main :class="backgroundClass">
             <RouterView />
+            <ConfirmDialog ref="confirmDialog" />
         </v-main>
     </v-app>
 </template>
@@ -10,12 +11,15 @@
 <script setup lang="ts">
 import Navigation, { type NavigationLinks } from "@/components/MainNavigation.vue";
 import { useAuth } from "@/services/auth";
-import { computed } from "vue";
+import { computed, provide, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import { confirmDialogKey } from "@/symbols";
 
 const { t } = useI18n();
 const backgroundClass = computed(() => (authService.isLoggedIn() ? undefined : "login-view"));
 const authService = useAuth();
+const confirmDialog = ref(undefined);
 const navLinks: NavigationLinks = [
     {
         title: t("App.nav.dashboard"),
@@ -39,6 +43,8 @@ const navLinks: NavigationLinks = [
         to: "logout",
     },
 ];
+
+provide(confirmDialogKey, confirmDialog);
 </script>
 
 <style scoped lang="scss">

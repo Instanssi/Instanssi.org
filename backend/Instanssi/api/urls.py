@@ -2,10 +2,14 @@ from django.conf.urls import include
 from django.urls import path
 from rest_framework import routers
 
-from .admin.viewsets.kompomaatti import (
-    AdminCompoEntryViewSet,
-    AdminCompoViewSet,
-    AdminEventViewSet,
+from .admin.viewsets.blog import AdminBlogViewSet
+from .admin.viewsets.events import AdminEventViewSet
+from .admin.viewsets.kompomaatti import AdminCompoEntryViewSet, AdminCompoViewSet
+from .auth.user import (
+    BeginSocialAuthViewSet,
+    LoginViewSet,
+    LogoutViewSet,
+    UserDataViewSet,
 )
 from .ical.feed import EventFeed
 from .viewsets.kompomaatti import (
@@ -65,6 +69,13 @@ router.register(r"user_votes", VoteGroupViewSet, basename="user_votes")
 router.register("admin/events", AdminEventViewSet, basename="admin_events")
 router.register("admin/compos", AdminCompoViewSet, basename="admin_compos")
 router.register("admin/compo_entries", AdminCompoEntryViewSet, basename="admin_compo_entries")
+router.register("admin/blog", AdminBlogViewSet, basename="admin_blog")
+
+# User auth APIs
+router.register("auth/social_login/begin", BeginSocialAuthViewSet, basename="begin_social_auth")
+router.register("auth/login", LoginViewSet, basename="login")
+router.register("auth/logout", LogoutViewSet, basename="logout")
+router.register("auth/user_info", UserDataViewSet, basename="user_info")
 
 urlpatterns = [
     path("ics/instanssi.ics", EventFeed(), name="ics_feed"),

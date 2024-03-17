@@ -1,0 +1,74 @@
+{
+  "datetimeFormats": {
+    "short": {
+      "year": "numeric",
+      "month": "short",
+      "day": "numeric"
+    },
+    "long": {
+      "year": "numeric",
+      "month": "short",
+      "day": "numeric",
+      "weekday": "short",
+      "hour": "numeric",
+      "minute": "numeric",
+      "hour12": false
+    }
+  },
+  "translations": {
+    "General": {
+      "ok": "OK",
+      "cancel": "Cancel",
+      "search": "Search",
+      "save": "Save"
+    },
+    "App": {
+      "nav": {
+        "dashboard": "Dashboard",
+        "site": "Site",
+        "blog": "Blog",
+        "logout": "Log out"
+      }
+    },
+    "MainNavigation": {
+      "title": "Instanssi",
+      "event": "Event"
+    },
+    "BlogEditorView": {
+      "title": "Blog",
+      "newBlogPost": "New blog post",
+      "loadingBlogPosts": "Loading blog posts ...",
+      "noBlogPostsFound": "No blog posts found.",
+      "confirmDelete": "Do you really want to delete blog post '{title}' ?",
+      "headers": {
+        "id": "ID",
+        "title": "Title",
+        "createdAt": "Created at",
+        "createdBy": "Created by",
+        "isPublic": "Is public",
+        "actions": "Actions"
+      }
+    },
+    "ConfirmDialog": {
+      "title": "Confirm"
+    },
+    "BlogPostDialog": {
+      "title": "Blog post",
+      "labels": {
+        "title": "Title",
+        "postIsVisible": "Post is visible for everyone",
+        "postNotVisible": "Post is private; only admins can see it"
+      }
+    },
+    "MainView": {
+      "title": "Dashboard"
+    },
+    "LoginView": {
+      "title": "Sign in",
+      "subtitle": "Sign in using username and password, or by using one of the SSO methods.",
+      "username": "Username",
+      "password": "Password",
+      "login": "Login"
+    }
+  }
+}

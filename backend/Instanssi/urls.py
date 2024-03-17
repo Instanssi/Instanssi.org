@@ -8,8 +8,8 @@ from django.views.static import serve
 urlpatterns = [
     path("", include("social_django.urls", namespace="social")),
     path("qr/", include("qr_code.urls", namespace="qr_code")),
-    path("api/v1/", include("Instanssi.api.urls", namespace="api")),
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),
+    path("api/v2/", include("Instanssi.api.v2.urls", namespace="api-v2")),
     path("2024/", include("Instanssi.main2024.urls", namespace="main2024")),
     path("manage/events/", include("Instanssi.admin_events.urls", namespace="manage-events")),
     path("manage/users/", include("Instanssi.admin_users.urls", namespace="manage-users")),

@@ -43,11 +43,9 @@ const switchLabel = computed(() =>
 );
 
 async function modal(item: undefined | BlogPost = undefined) {
-    if (item) {
-        title.value = item.title;
-        isPublic.value = item.public;
-        text.value = item.text;
-    }
+    title.value = item ? item.title : "";
+    isPublic.value = item ? item.public : false;
+    text.value = item ? item.text : "";
     const ok = (await dialog.value?.modal()) ?? false;
     return {
         ok,

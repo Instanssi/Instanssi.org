@@ -9,9 +9,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ViewSet
 
-from Instanssi.api.auth.serializers import UserDataSerializer, UserLoginSerializer
-from Instanssi.api.auth.utils import EnforceCSRFViewSet
-from Instanssi.api.utils import IsWriteOnly
+from Instanssi.api.v1.auth.serializers import UserDataSerializer, UserLoginSerializer
+from Instanssi.api.v1.auth.utils import EnforceCSRFViewSet
+from Instanssi.api.v1.utils import IsWriteOnly
 from Instanssi.users.views import AUTH_METHODS
 
 logger = logging.getLogger(__name__)

@@ -3,7 +3,7 @@ import logging
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from Instanssi.api.serializers.user import UserSerializer
+from Instanssi.api.v1.serializers.user import UserSerializer
 
 logger = logging.getLogger(__name__)
 

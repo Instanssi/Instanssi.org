@@ -41,12 +41,12 @@ def test_unauthorized_admin_compos(user_api_client, method, status):
 @pytest.mark.parametrize(
     "method,status",
     [
-        ("GET", 200),
+        ("GET", 403),
         ("POST", 403),
         ("DELETE", 403),
         ("PATCH", 403),
         ("PUT", 403),
-        ("HEAD", 200),
+        ("HEAD", 403),
         ("OPTIONS", 200),
     ],
 )

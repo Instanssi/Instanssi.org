@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
 
-from Instanssi.api.admin.serializers.blog import AdminBlogSerializer
-from Instanssi.api.admin.viewsets.base import AdminViewSet
+from Instanssi.api.v1.admin.serializers.blog import AdminBlogSerializer
+from Instanssi.api.v1.admin.viewsets.base import AdminViewSet
 from Instanssi.ext_blog.models import BlogEntry
 
 

@@ -1,0 +1,19 @@
+from django.contrib.auth.models import User
+from rest_framework.fields import CurrentUserDefault
+from rest_framework.relations import PrimaryKeyRelatedField
+from rest_framework.serializers import ModelSerializer
+
+from Instanssi.ext_blog.models import BlogEntry
+
+
+class AdminBlogSerializer(ModelSerializer):
+    user = PrimaryKeyRelatedField(queryset=User.objects.all(), default=CurrentUserDefault())
+
+    class Meta:
+        model = BlogEntry
+        fields = ("id", "user", "date", "title", "text", "public", "event")
+        read_only_fields = ("id", "user", "date")
+
+    def create(self, validated_data):
+        user = validated_data.pop("user")
+        return BlogEntry.objects.create(user=user, **validated_data)

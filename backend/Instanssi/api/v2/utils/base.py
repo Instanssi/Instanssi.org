@@ -1,3 +1,9 @@
+from rest_framework.permissions import (
+    DjangoModelPermissions,
+    IsAdminUser,
+    IsAuthenticated,
+)
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -12,3 +18,11 @@ class EnforceCSRFViewSet(ViewSet):
     def dispatch(self, request, *args, **kwargs):
         """Enforce CSRF protection in login view."""
         return super().dispatch(request, *args, **kwargs)
+
+
+class AdminReadOnlyViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated, IsAdminUser, DjangoModelPermissions]
+
+
+class AdminViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated, IsAdminUser, DjangoModelPermissions]

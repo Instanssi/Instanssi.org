@@ -10,7 +10,7 @@ export type Event = {
 
 export class EventsAPI extends API {
     public async getAllEvents(): Promise<Event[]> {
-        const { payload } = await this.getJSON("/admin/events/");
+        const { payload } = await this.getJSON("/events/");
         payload.date = new Date(payload.date);
         return payload;
     }

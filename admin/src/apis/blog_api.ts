@@ -19,7 +19,7 @@ export class BlogAPI extends API {
         orderBy: OrderBy
     ): Promise<Pagination<BlogPost>> {
         const query = this.makeQs(limit, offset, search, filters, orderBy);
-        const { payload } = await this.getJSON("/admin/blog/", query);
+        const { payload } = await this.getJSON("/blog/", query);
         payload.results = payload.results.map((item: Record<string, any>) => ({
             ...item,
             date: new Date(item.date),
@@ -33,11 +33,11 @@ export class BlogAPI extends API {
         text: string,
         isPublic: boolean
     ): Promise<void> {
-        await this.postJSON("/admin/blog/", { title, text, event, public: isPublic });
+        await this.postJSON("/blog/", { title, text, event, public: isPublic });
     }
 
     public async deleteBlogEntry(id: number): Promise<void> {
-        await this.delete(`/admin/blog/${id}/`);
+        await this.delete(`/blog/${id}/`);
     }
 
     public async patchBlogEntry(
@@ -46,6 +46,6 @@ export class BlogAPI extends API {
         text: string,
         isPublic: boolean
     ): Promise<void> {
-        await this.patchJSON(`/admin/blog/${id}/`, { title, text, public: isPublic });
+        await this.patchJSON(`/blog/${id}/`, { title, text, public: isPublic });
     }
 }

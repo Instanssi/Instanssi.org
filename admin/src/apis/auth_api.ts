@@ -17,7 +17,7 @@ export type CurrentUserInfoResponse = {
 
 export class AuthAPI extends API {
     public async getSocialAuthURLs(next: string): Promise<SocialAuthMethodsResponse> {
-        const { payload } = await this.getJSON("/auth/social_login/begin/", { next });
+        const { payload } = await this.getJSON("/auth/social/begin/", { next });
         return payload;
     }
 
@@ -27,7 +27,7 @@ export class AuthAPI extends API {
     }
 
     public async getCurrentUserInfo(): Promise<CurrentUserInfoResponse | null> {
-        const { status, payload } = await this.getJSON("/auth/user_info/");
+        const { status, payload } = await this.getJSON("/self/info/");
         return status === 200 ? payload : null;
     }
 

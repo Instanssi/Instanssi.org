@@ -17,7 +17,7 @@ export class API {
     private readonly basePath: string;
     private readonly cookies;
 
-    constructor(basePath: string = "/api/v1") {
+    constructor(basePath: string = "/api/v2") {
         this.basePath = basePath;
         this.cookies = useCookies(["csrftoken"]);
     }

@@ -43,7 +43,7 @@ nh3 = "^0.2.15"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^23.3.0"
-black = "^24.2.0"
+black = "^24.3.0"
 isort = "^5.13.2"
 pytest = "^8.0.2"
 pytest-django = "^4.8.0"

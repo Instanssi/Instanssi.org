@@ -54,7 +54,7 @@
                         <v-btn
                             density="compact"
                             variant="text"
-                            @click="editPost(item)"
+                            @click="editPost(item.id)"
                             prepend-icon="fas fa-pen-to-square"
                             >Edit</v-btn
                         >
@@ -166,7 +166,8 @@ async function deletePost(item: BlogPost): Promise<void> {
     }
 }
 
-async function editPost(item: BlogPost): Promise<void> {
+async function editPost(id: number): Promise<void> {
+    const item = await api.blog.getBlogEntry(id);
     const { ok, text, title, isPublic } = await dialog.value!.modal(item);
     if (ok) {
         await api.blog.patchBlogEntry(item.id, title, text, isPublic);

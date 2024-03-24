@@ -17,6 +17,7 @@
                 style="height: 300px"
                 content-type="html"
                 v-model:content="text"
+                ref="editor"
             />
             <v-switch v-model="isPublic" :label="switchLabel" />
         </v-form>
@@ -30,7 +31,8 @@ import { computed, type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { BlogPost } from "@/apis/blog_api";
 
-const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref(undefined);
+const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
+const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref();
 
 const { t } = useI18n();
 const isPublic = ref(false);
@@ -43,14 +45,20 @@ const switchLabel = computed(() =>
 );
 
 async function modal(item: undefined | BlogPost = undefined) {
-    title.value = item ? item.title : "";
-    isPublic.value = item ? item.public : false;
-    text.value = item ? item.text : "";
+    if (item !== undefined) {
+        title.value = item.title;
+        isPublic.value = item.public;
+        editor.value?.setHTML(item.text);
+    } else {
+        title.value = "";
+        isPublic.value = false;
+        editor.value?.setHTML("");
+    }
     const ok = (await dialog.value?.modal()) ?? false;
     return {
         ok,
         title: title.value,
-        text: text.value,
+        text: editor.value?.getHTML() || "",
         isPublic: isPublic.value,
     };
 }

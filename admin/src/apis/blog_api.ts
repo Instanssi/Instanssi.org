@@ -27,6 +27,12 @@ export class BlogAPI extends API {
         return payload;
     }
 
+    public async getBlogEntry(id: number): Promise<BlogPost> {
+        const { payload } = await this.getJSON(`/blog/${id}/`);
+        payload.date = new Date(payload.date);
+        return payload;
+    }
+
     public async postBlogEntry(
         event: number,
         title: string,

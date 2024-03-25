@@ -12,7 +12,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
     "lint-check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
-    "format-check": "prettier -c *.config.ts env.d.ts src/**/*.ts src/**/*.vue"
+    "format-check": "prettier -c *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
+    "generate-api": "openapi -i openapi/instanssi.yaml --name APIClient -o src/api/ && prettier --write src/api/**/*.ts",
+    "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -46,6 +48,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.22.0",
     "jsdom": "^24.0.0",
+    "openapi-typescript-codegen": "^0.28.0",
     "prettier": "^3.0.3",
     "sass": "^1.71.1",
     "typescript": "~5.3.3",

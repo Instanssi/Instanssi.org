@@ -72,11 +72,11 @@ import { debounce } from "lodash-es";
 
 import LayoutBase from "@/components/LayoutBase.vue";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
-import { useAPI } from "@/apis";
-import type { BlogPost } from "@/apis/blog_api";
 import { useI18n } from "vue-i18n";
 import { confirmDialogKey, type ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
+import { useAPI } from "@/services/api";
+import type { BlogEntry } from "@/api";
 
 // Not exported by vuetify -- use our own.
 type LoadArgs = {
@@ -102,7 +102,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const blogPosts: Ref<BlogPost[]> = ref([]);
+const blogPosts: Ref<BlogEntry[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
@@ -143,43 +143,43 @@ async function load(args: LoadArgs) {
     loading.value = true;
     const limit = args.itemsPerPage;
     const offset = (args.page - 1) * limit;
-    const { count, results } = await api.blog.getBlogEntries(
-        { event: parseInt(props.eventId, 10) },
-        offset,
+    const { count, results } = await api.blogEntries.blogEntriesList(
+        parseInt(props.eventId, 10),
         limit,
-        args.search,
-        args.sortBy
+        offset,
+        args.sortBy,
+        args.search
     );
     blogPosts.value = results;
     totalItems.value = count;
     loading.value = false;
 }
 
-const debouncedLoad = debounce(load, 500); // Don't murderate the server API
+const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deletePost(item: BlogPost): Promise<void> {
+async function deletePost(item: BlogEntry): Promise<void> {
     const text = t("BlogEditorView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
-        await api.blog.deleteBlogEntry(item.id);
+        await api.blogEntries.blogEntriesDestroy(item.id);
         refreshKey.value += 1;
     }
 }
 
 async function editPost(id: number): Promise<void> {
-    const item = await api.blog.getBlogEntry(id);
+    const item = await api.blogEntries.blogEntriesRetrieve(id);
     const { ok, text, title, isPublic } = await dialog.value!.modal(item);
     if (ok) {
-        await api.blog.patchBlogEntry(item.id, title, text, isPublic);
+        await api.blogEntries.blogEntriesPartialUpdate(item.id, { title, text, public: isPublic });
         refreshKey.value += 1;
     }
 }
 
 async function createPost() {
     const { ok, text, title, isPublic } = await dialog.value!.modal();
-    const event = parseInt(props.eventId, 10);
     if (ok) {
-        await api.blog.postBlogEntry(event, title, text, isPublic);
+        const event = parseInt(props.eventId, 10);
+        await api.blogEntries.blogEntriesCreate({ event, title, text, public: isPublic });
         currentPage.value = 1;
         refreshKey.value += 1;
     }

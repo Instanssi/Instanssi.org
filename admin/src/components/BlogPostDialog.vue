@@ -29,7 +29,7 @@ import BaseDialog from "@/components/BaseDialog.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import { computed, type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { BlogPost } from "@/apis/blog_api";
+import type { BlogEntry } from "@/api";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref();
@@ -44,21 +44,21 @@ const switchLabel = computed(() =>
         : t("BlogPostDialog.labels.postNotVisible")
 );
 
-async function modal(item: undefined | BlogPost = undefined) {
+async function modal(item: undefined | BlogEntry = undefined) {
     if (item !== undefined) {
         title.value = item.title;
-        isPublic.value = item.public;
-        editor.value?.setHTML(item.text);
+        isPublic.value = item.public || false;
+        text.value = item.text;
     } else {
         title.value = "";
         isPublic.value = false;
-        editor.value?.setHTML("");
+        text.value = "";
     }
     const ok = (await dialog.value?.modal()) ?? false;
     return {
         ok,
         title: title.value,
-        text: editor.value?.getHTML() || "",
+        text: text.value,
         isPublic: isPublic.value,
     };
 }

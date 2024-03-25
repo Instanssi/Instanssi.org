@@ -5,7 +5,7 @@ from rest_framework import routers
 from Instanssi.api.v2.viewsets.auth.login import LoginViewSet
 from Instanssi.api.v2.viewsets.auth.logout import LogoutViewSet
 from Instanssi.api.v2.viewsets.auth.social_auth import BeginSocialAuthViewSet
-from Instanssi.api.v2.viewsets.blog import BlogViewSet
+from Instanssi.api.v2.viewsets.blog_entries import BlogEntryViewSet
 from Instanssi.api.v2.viewsets.events import EventViewSet
 from Instanssi.api.v2.viewsets.self.user import UserDataViewSet
 from Instanssi.api.v2.viewsets.self.user_compo_entry import UserCompoEntryViewSet
@@ -28,7 +28,7 @@ router = V2CustomRouter()
 # Generic data API
 # This should contain full read-write API for all data along with permission checking
 router.register("events", EventViewSet, basename="events")
-router.register("blog", BlogViewSet, basename="blog")
+router.register("blog_entries", BlogEntryViewSet, basename="blog_entries")
 
 # Authentication API
 router.register("auth/social_urls", BeginSocialAuthViewSet, basename="auth_social_urls")

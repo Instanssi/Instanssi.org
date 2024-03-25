@@ -2,14 +2,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
 
-from Instanssi.api.v2.serializers.blog import BlogSerializer
+from Instanssi.api.v2.serializers.blog_entry import BlogEntrySerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
 from Instanssi.ext_blog.models import BlogEntry
 
 
-class BlogViewSet(PermissionViewSet):
+class BlogEntryViewSet(PermissionViewSet):
     queryset = BlogEntry.objects.all()
-    serializer_class = BlogSerializer
+    serializer_class = BlogEntrySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,

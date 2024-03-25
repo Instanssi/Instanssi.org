@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from django.db.models import QuerySet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -8,8 +10,5 @@ class UserDataViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserDataSerializer
 
-    def get_object(self):
-        return self.request.user
-
-    def list(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    def get_queryset(self) -> QuerySet:
+        return User.objects.filter(pk=self.request.user.pk)

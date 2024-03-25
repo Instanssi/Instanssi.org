@@ -1,13 +1,14 @@
-from django.urls import include, path
 from django.conf import settings
+from django.urls import include, path
 from rest_framework import routers
 
 from Instanssi.api.v2.viewsets.auth.login import LoginViewSet
 from Instanssi.api.v2.viewsets.auth.logout import LogoutViewSet
 from Instanssi.api.v2.viewsets.auth.social_auth import BeginSocialAuthViewSet
-from Instanssi.api.v2.viewsets.self.user import UserDataViewSet
 from Instanssi.api.v2.viewsets.blog import BlogViewSet
 from Instanssi.api.v2.viewsets.events import EventViewSet
+from Instanssi.api.v2.viewsets.self.user import UserDataViewSet
+from Instanssi.api.v2.viewsets.self.user_compo_entry import UserCompoEntryViewSet
 
 app_name = "api-v2"
 
@@ -30,22 +31,30 @@ router.register("events", EventViewSet, basename="events")
 router.register("blog", BlogViewSet, basename="blog")
 
 # Authentication API
-router.register("auth/social/begin", BeginSocialAuthViewSet, basename="auth_begin_social")
+router.register("auth/social_urls", BeginSocialAuthViewSet, basename="auth_social_urls")
 router.register("auth/login", LoginViewSet, basename="auth_login")
 router.register("auth/logout", LogoutViewSet, basename="auth_logout")
 
 # Self data API
 # This should only allow access to data belonging to the current user
-router.register("self/info", UserDataViewSet, basename="self_user")
-
+router.register("user_info", UserDataViewSet, basename="user_info")
+router.register("user_compo_entries", UserCompoEntryViewSet, basename="user_compo_entries")
 
 urlpatterns = []
 if settings.DEBUG:
-    from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+    from drf_spectacular.views import (
+        SpectacularAPIView,
+        SpectacularRedocView,
+        SpectacularSwaggerView,
+    )
 
     urlpatterns += [
         path("openapi/", SpectacularAPIView.as_view(), name="openapi"),
-        path("openapi/swagger-ui/", SpectacularSwaggerView.as_view(url_name="api-v2:openapi"), name="swagger-ui"),
+        path(
+            "openapi/swagger-ui/",
+            SpectacularSwaggerView.as_view(url_name="api-v2:openapi"),
+            name="swagger-ui",
+        ),
         path("openapi/redoc/", SpectacularRedocView.as_view(url_name="api-v2:openapi"), name="redoc"),
     ]
 

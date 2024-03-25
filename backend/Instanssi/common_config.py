@@ -99,7 +99,9 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Instanssi.org APIv2",
     "VERSION": "2.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
     "PREPROCESSING_HOOKS": ["Instanssi.api.openapi.preprocessor_hook"],
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
 }
 
 TEMPLATES = [

@@ -1,14 +1,13 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
 from rest_framework.permissions import (
     DjangoModelPermissions,
     IsAdminUser,
     IsAuthenticated,
 )
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, ViewSet
 
 
 class EnforceCSRFViewSet(ViewSet):
@@ -20,9 +19,9 @@ class EnforceCSRFViewSet(ViewSet):
         return super().dispatch(request, *args, **kwargs)
 
 
-class AdminReadOnlyViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsAuthenticated, IsAdminUser, DjangoModelPermissions]
+class PermissionReadOnlyViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
 
-class AdminViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated, IsAdminUser, DjangoModelPermissions]
+class PermissionViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]

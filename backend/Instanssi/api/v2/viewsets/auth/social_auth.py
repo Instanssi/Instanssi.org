@@ -1,11 +1,13 @@
 import yarl
 from django.urls import reverse
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+from Instanssi.api.v2.serializers.social_auth import SocialAuthURLSerializer
 from Instanssi.users.views import AUTH_METHODS
 
 
@@ -17,6 +19,13 @@ class BeginSocialAuthViewSet(ViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = []
 
+    @extend_schema(
+        operation_id="get_social_auth_urls",
+        parameters=[
+            OpenApiParameter("next"),
+        ],
+        responses={200: SocialAuthURLSerializer},
+    )
     def list(self, request: Request) -> Response:
         methods = []
         default_next = reverse("users:login")
@@ -35,4 +44,5 @@ class BeginSocialAuthViewSet(ViewSet):
                     name=method[2],
                 )
             )
-        return Response(methods, status=status.HTTP_200_OK)
+        data = SocialAuthURLSerializer(methods, many=True).data
+        return Response(data, status=status.HTTP_200_OK)

@@ -6,7 +6,7 @@ from rest_framework.serializers import ModelSerializer
 from Instanssi.ext_blog.models import BlogEntry
 
 
-class AdminBlogSerializer(ModelSerializer):
+class BlogSerializer(ModelSerializer):
     user = PrimaryKeyRelatedField(queryset=User.objects.all(), default=CurrentUserDefault())
 
     class Meta:

@@ -66,6 +66,9 @@ REST_KNOX = {
     "AUTO_REFRESH": True,
 }
 
+# Default for django 6.0
+FORMS_URLFIELD_ASSUME_HTTPS = True
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",

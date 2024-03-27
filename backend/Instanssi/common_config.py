@@ -84,6 +84,18 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.MultiPartParser",
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# OpenAPI
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Instanssi.org",
+    "DESCRIPTION": "Instanssi.org APIv2",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "PREPROCESSING_HOOKS": ["Instanssi.api.openapi.preprocessor_hook"],
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
 }
 
 TEMPLATES = [
@@ -168,6 +180,7 @@ INSTALLED_APPS = (
     "compressor",
     "qr_code",
     "auditlog",
+    "drf_spectacular",
 )
 
 # Authentication backends

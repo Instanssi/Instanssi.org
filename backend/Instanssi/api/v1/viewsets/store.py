@@ -5,11 +5,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from Instanssi.api.serializers.store import (
+from Instanssi.api.v1.serializers.store import (
     StoreItemSerializer,
     StoreTransactionSerializer,
 )
-from Instanssi.api.utils import IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet
+from Instanssi.api.v1.utils import IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet
 from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreItem

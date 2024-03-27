@@ -2,7 +2,7 @@ import base64
 import secrets
 import tempfile
 from contextlib import contextmanager
-from datetime import timedelta
+from datetime import date, timedelta
 from decimal import Decimal
 from pathlib import Path
 from shutil import rmtree
@@ -18,6 +18,7 @@ from faker import Faker
 from pytest import fixture
 from rest_framework.test import APIClient
 
+from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,
@@ -39,7 +40,7 @@ from Instanssi.store.models import (
 from Instanssi.store.utils.receipt import ReceiptParams
 
 
-@fixture
+@fixture(scope="session")
 def faker() -> Faker:
     return Faker("fi_FI")
 
@@ -112,12 +113,6 @@ def image_png2(test_image) -> SimpleUploadedFile:
 
 
 @fixture
-def api_client() -> APIClient:
-    """Use this to test Django rest framework pages"""
-    return APIClient()
-
-
-@fixture
 def page_client() -> Client:
     """Use this to test normal (non-api) Django pages"""
     return Client()
@@ -141,13 +136,6 @@ def password() -> str:
 
 
 @fixture
-def auth_client(api_client, base_user, password) -> APIClient:
-    api_client.login(username=base_user.username, password=password)
-    yield api_client
-    api_client.logout()
-
-
-@fixture
 def staff_page_client(page_client, staff_user, password) -> APIClient:
     page_client.login(username=staff_user.username, password=password)
     yield page_client
@@ -162,30 +150,9 @@ def super_page_client(page_client, super_user, password) -> APIClient:
 
 
 @fixture
-def user_api_client(api_client, normal_user, password) -> APIClient:
-    api_client.login(username=normal_user.username, password=password)
-    yield api_client
-    api_client.logout()
-
-
-@fixture
-def staff_api_client(api_client, staff_user, password) -> APIClient:
-    api_client.login(username=staff_user.username, password=password)
-    yield api_client
-    api_client.logout()
-
-
-@fixture
-def super_api_client(api_client, super_user, password) -> APIClient:
-    api_client.login(username=super_user.username, password=password)
-    yield api_client
-    api_client.logout()
-
-
-@fixture
 def create_user(faker, password):
     def _inner(**kwargs) -> User:
-        permissions = kwargs.pop("permissions", None)
+        permissions = kwargs.pop("permissions", [])
         obj: User = User.objects.create_user(
             username=faker.user_name(),
             email=faker.email(),
@@ -229,9 +196,22 @@ def event(faker) -> Event:
     event_year = faker.year()
     return Event.objects.create(
         name=f"Instanssi {event_year}",
-        date=timezone.now(),
+        tag=str(event_year),
+        date=date.today(),
         archived=False,
         mainurl=f"http://localhost:8000/{event_year}/",
+    )
+
+
+@fixture
+def blog_entry(event, base_user, faker) -> BlogEntry:
+    return BlogEntry.objects.create(
+        event=event,
+        user=base_user,
+        title="Test post",
+        text=faker.text(max_nb_chars=1024),
+        date=timezone.now(),
+        public=False,
     )
 
 
@@ -292,7 +272,7 @@ def closed_compo(faker, event) -> Compo:
 
 
 @fixture
-def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, image_png) -> Compo:
+def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=open_compo,
         user=base_user,
@@ -307,7 +287,7 @@ def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, im
 
 
 @fixture
-def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, image_png) -> Compo:
+def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=closed_compo,
         user=base_user,
@@ -324,7 +304,7 @@ def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, im
 
 
 @fixture
-def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, image_png) -> Compo:
+def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=votable_compo,
         user=base_user,

@@ -5,7 +5,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from Instanssi.api.serializers.programme import ProgrammeEventSerializer
+from Instanssi.api.v1.serializers.programme import ProgrammeEventSerializer
 from Instanssi.ext_programme.models import ProgrammeEvent
 
 logger = logging.getLogger(__name__)

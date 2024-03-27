@@ -46,5 +46,10 @@ class IsAuthenticatedOrWriteOnly(BasePermission):
         return request.method == "POST" or request.method in SAFE_METHODS or request.user.is_authenticated
 
 
+class IsWriteOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method == "POST"
+
+
 class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet):
     pass

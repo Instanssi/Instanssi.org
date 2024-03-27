@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from Instanssi.api.serializers.kompomaatti import (
+from Instanssi.api.v1.serializers.kompomaatti import (
     CompetitionParticipationSerializer,
     CompetitionSerializer,
     CompoEntrySerializer,
@@ -23,7 +23,7 @@ from Instanssi.api.serializers.kompomaatti import (
     VoteCodeRequestSerializer,
     VoteGroupSerializer,
 )
-from Instanssi.api.utils import ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
+from Instanssi.api.v1.utils import ReadWriteModelViewSet, ReadWriteUpdateModelViewSet
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,

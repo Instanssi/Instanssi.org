@@ -2,11 +2,8 @@ from django.conf.urls import include
 from django.urls import path
 from rest_framework import routers
 
-from .admin.viewsets.kompomaatti import (
-    AdminCompoEntryViewSet,
-    AdminCompoViewSet,
-    AdminEventViewSet,
-)
+from .admin.viewsets.events import AdminEventViewSet
+from .admin.viewsets.kompomaatti import AdminCompoEntryViewSet, AdminCompoViewSet
 from .ical.feed import EventFeed
 from .viewsets.kompomaatti import (
     CompetitionParticipationViewSet,

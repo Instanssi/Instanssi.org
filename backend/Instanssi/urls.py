@@ -44,6 +44,7 @@ urlpatterns = [
     path("blog/", include("Instanssi.ext_blog.urls", namespace="ext-blog")),
     path("arkisto/", include("Instanssi.arkisto.urls", namespace="archive")),
     path("kompomaatti/", include("Instanssi.kompomaatti.urls", namespace="km")),
+    path("management/", include("Instanssi.management.urls", namespace="management")),
     path("store/", include("Instanssi.store.urls", namespace="store")),
     path("infodesk/", include("Instanssi.infodesk.urls", namespace="infodesk")),
     path("", RedirectView.as_view(url=reverse_lazy("main2024:index")), name="root-index"),

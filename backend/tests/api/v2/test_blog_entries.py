@@ -56,6 +56,7 @@ def test_blog_get_entries(super_api_client, blog_entry):
     assert item == {
         "id": blog_entry.id,
         "user": blog_entry.user_id,
+        "created_by": blog_entry.user.get_username(),
         "date": ANY,
         "title": blog_entry.title,
         "text": blog_entry.text,

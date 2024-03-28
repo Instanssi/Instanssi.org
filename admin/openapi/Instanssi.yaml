@@ -602,7 +602,11 @@ components:
         event:
           type: integer
           title: Tapahtuma
+        created_by:
+          type: string
+          readOnly: true
       required:
+      - created_by
       - date
       - event
       - id

@@ -1,0 +1,37 @@
+name: Admin CI
+
+on:
+  push:
+    paths:
+      - "admin/**"
+    branches: [ master ]
+  pull_request:
+    paths:
+      - "admin/**"
+    branches: [ master ]
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: ./admin
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Node 20
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+    - name: Install dependencies
+      run: npm ci
+    - name: Run format-check
+      run: npm run format-check
+    - name: Run type-check
+      run: npm run type-check
+    - name: Run lint-check
+      run: npm run lint-check
+    - name: Run unit-tests
+      run: npm run test
+    - name: Run prod test-build
+      run: npm run build

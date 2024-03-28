@@ -48,6 +48,9 @@ MEDIA_UPLOAD_FILES: str = "files"
 ADMIN_LOGIN_URL = "/manage/auth/login/"
 LOGIN_URL = "/users/login/"
 
+# Shorten session expiration (default is 2 weeks)
+SESSION_COOKIE_AGE = 24 * 3600
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMMON_STATIC_DIR = PROJECT_DIR / "static"
@@ -65,6 +68,9 @@ REST_KNOX = {
     "TOKEN_LIMIT_PER_USER": 3,
     "AUTO_REFRESH": True,
 }
+
+# Default for django 6.0
+FORMS_URLFIELD_ASSUME_HTTPS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
@@ -84,6 +90,18 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.MultiPartParser",
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# OpenAPI
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Instanssi.org",
+    "DESCRIPTION": "Instanssi.org APIv2",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "PREPROCESSING_HOOKS": ["Instanssi.api.openapi.preprocessor_hook"],
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
 }
 
 TEMPLATES = [
@@ -150,6 +168,7 @@ INSTALLED_APPS = (
     "Instanssi.ext_mastodon",
     "Instanssi.store",
     "Instanssi.infodesk",
+    "Instanssi.management",
     "imagekit",
     "rest_framework",
     "knox",
@@ -168,6 +187,7 @@ INSTALLED_APPS = (
     "compressor",
     "qr_code",
     "auditlog",
+    "drf_spectacular",
 )
 
 # Authentication backends

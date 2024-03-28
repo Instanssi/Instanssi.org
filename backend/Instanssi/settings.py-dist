@@ -36,6 +36,9 @@ LANGUAGE_CODE = "fi-FI"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ""
 
+# Set this to True in production for https-only cookies
+SESSION_COOKIE_SECURE = False
+
 # Steam API
 SOCIAL_AUTH_STEAM_API_KEY = ""
 

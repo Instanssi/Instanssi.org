@@ -122,7 +122,15 @@ export function useAuth() {
     }
 
     async function logout() {
-        await api.auth.logout();
+        try {
+            await api.auth.logout();
+        } catch (e) {
+            if (e instanceof ApiError && [401, 403].includes(e.status)) {
+                console.log("Already logged out");
+            } else {
+                console.error(e);
+            }
+        }
         loggedIn.value = false;
         userInfo.value = {
             firstName: "",

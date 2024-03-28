@@ -1,42 +1,23 @@
 <template>
     <v-navigation-drawer color="grey-darken-4">
-        <div class="d-flex ma-5 align-center">
-            <v-img :src="logoImage" />
-            <h1 class="pl-2">{{ t("MainNavigation.title") }}</h1>
+        <div class="fill-height d-flex flex-column ma-0 pa-0">
+            <div class="d-flex flex-row ma-5 flex-0-0">
+                <v-img :src="logoImage" />
+                <h1 class="pl-2">{{ t("MainNavigation.title") }}</h1>
+            </div>
+            <v-divider />
+            <v-select
+                class="ma-2 flex-0-0"
+                :label="t('MainNavigation.event')"
+                variant="outlined"
+                density="compact"
+                :items="events"
+                v-model="event"
+            />
+            <v-divider />
+            <NavigationList :items="primary" :event="event" class="mb-auto" />
+            <NavigationList :items="secondary" :event="event" class="mt-auto" />
         </div>
-        <v-divider />
-        <v-select
-            class="ma-1"
-            :label="t('MainNavigation.event')"
-            variant="outlined"
-            density="compact"
-            :items="events"
-            v-model="event"
-        />
-        <v-divider />
-        <v-list density="compact" open-strategy="multiple" nav>
-            <template v-for="item in filterLinks(items)">
-                <v-list-group v-if="item.children" :key="`group-${item.title}`">
-                    <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.title" />
-                    </template>
-                    <v-list-item
-                        v-for="child in filterLinks(item.children)"
-                        :key="`${item.title}-${child.title}`"
-                        :prepend-icon="child.icon"
-                        :title="child.title"
-                        @click="navigateTo(child.to)"
-                    />
-                </v-list-group>
-                <v-list-item
-                    v-else
-                    :key="`root-${item.title}`"
-                    :prepend-icon="item.icon"
-                    :title="item.title"
-                    @click="navigateTo(item.to)"
-                />
-            </template>
-        </v-list>
     </v-navigation-drawer>
 </template>
 
@@ -45,19 +26,11 @@ import logoImage from "@/assets/icon.png";
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, type Ref, ref, watch } from "vue";
 import { useEvents } from "@/services/events";
-import { PermissionTarget, useAuth } from "@/services/auth";
+import { useAuth } from "@/services/auth";
 import { useI18n } from "vue-i18n";
+import NavigationList, { type NavigationLinks } from "@/components/NavigationList.vue";
 
-export type NavigationLink = {
-    title: string;
-    icon: string;
-    to?: string;
-    children?: NavigationLink[];
-    requirePerm?: PermissionTarget;
-};
-export type NavigationLinks = NavigationLink[];
-
-defineProps<{ items: NavigationLinks }>();
+defineProps<{ primary: NavigationLinks; secondary: NavigationLinks }>();
 
 const router = useRouter();
 const route = useRoute();
@@ -69,10 +42,6 @@ const events = computed(() =>
     eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))
 );
 
-function filterLinks(items: NavigationLinks): NavigationLinks {
-    return items.filter((m) => !m.requirePerm || authService.canView(m.requirePerm));
-}
-
 function changeEvent(): void {
     router.push({
         name: route.name!,
@@ -82,11 +51,6 @@ function changeEvent(): void {
         },
         query: route.query,
     });
-}
-
-function navigateTo(to: string | undefined): void {
-    if (!to) return;
-    router.push({ name: to, params: { eventId: event.value } });
 }
 
 async function tryRefreshEvents() {

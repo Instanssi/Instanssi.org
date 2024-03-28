@@ -16,4 +16,5 @@ export type BlogEntry = {
      */
     public?: boolean;
     event: number;
+    readonly created_by: string;
 };

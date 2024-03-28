@@ -132,7 +132,7 @@ const headers: ReadonlyHeaders = [
     {
         title: t("BlogEditorView.headers.createdBy"),
         sortable: true,
-        key: "user",
+        key: "created_by",
     },
     {
         title: t("BlogEditorView.headers.isPublic"),

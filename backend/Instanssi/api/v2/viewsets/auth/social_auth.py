@@ -34,7 +34,7 @@ class SocialAuthUrlsViewSet(ViewSet):
             url = yarl.URL(
                 reverse(
                     viewname="social:begin",
-                    args=(method[0],),
+                    args=(method[1],),
                 )
             ).update_query(next=found_next)
             methods.append(

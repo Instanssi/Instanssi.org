@@ -37,12 +37,35 @@
         "dashboard": "Dashboard",
         "site": "Site",
         "blog": "Blog",
+        "events": "Events",
         "logout": "Log out"
       }
     },
     "MainNavigation": {
       "title": "Instanssi",
       "event": "Event"
+    },
+    "EventView": {
+      "title": "Events",
+      "newEvent": "New event",
+      "loadingEvents": "Loading events ...",
+      "noEventsFound": "No events found.",
+      "confirmDelete": "Do your really want to delete event '{name}' ?",
+      "headers":  {
+        "id": "ID",
+        "name": "Name",
+        "tag": "Tag",
+        "date": "Starting date",
+        "archived": "Archived",
+        "mainUrl": "Main URL",
+        "actions": "Actions"
+      },
+      "errors": {
+        "failedToLoad": "Failed to load events; try again later.",
+        "failedToDelete": "Failed to delete event; try again later.",
+        "failedToEdit": "Failed to edit event; try again later.",
+        "failedToCreate": "Failed to create event; try again later."
+      }
     },
     "BlogEditorView": {
       "title": "Blog",
@@ -74,6 +97,17 @@
         "title": "Title",
         "postIsVisible": "Post is visible for everyone",
         "postNotVisible": "Post is private; only admins can see it"
+      }
+    },
+    "EventDialog": {
+      "title": "Event",
+      "labels": {
+        "name": "Name",
+        "tag": "Tag",
+        "date": "Starting date",
+        "mainUrl": "Main URL",
+        "isArchived": "Event is archived",
+        "isNotArchived": "Event is not archived"
       }
     },
     "MainView": {

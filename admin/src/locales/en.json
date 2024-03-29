@@ -57,6 +57,12 @@
         "createdBy": "Created by",
         "isPublic": "Is public",
         "actions": "Actions"
+      },
+      "errors": {
+        "failedToLoad": "Failed to load blog posts; try again later.",
+        "failedToDelete": "Failed to delete blog post; try again later.",
+        "failedToEdit": "Failed to edit blog post; try again later.",
+        "failedToCreate": "Failed to create blog post; try again later."
       }
     },
     "ConfirmDialog": {

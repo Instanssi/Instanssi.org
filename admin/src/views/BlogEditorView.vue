@@ -76,14 +76,18 @@
 import { inject, type Ref, ref } from "vue";
 import { debounce } from "lodash-es";
 
+import { useI18n } from "vue-i18n";
+import { useAPI } from "@/services/api";
+import { useToast } from "vue-toastification";
+
 import LayoutBase from "@/components/LayoutBase.vue";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
-import { useI18n } from "vue-i18n";
-import { confirmDialogKey, type ConfirmDialogType } from "@/symbols";
-import type { VDataTableServer } from "vuetify/components";
-import { useAPI } from "@/services/api";
-import type { BlogEntry } from "@/api";
+import { confirmDialogKey } from "@/symbols";
 import { PermissionTarget, useAuth } from "@/services/auth";
+
+import type { ConfirmDialogType } from "@/symbols";
+import type { VDataTableServer } from "vuetify/components";
+import type { BlogEntry } from "@/api";
 
 // Not exported by vuetify -- use our own.
 type LoadArgs = {
@@ -103,6 +107,7 @@ const { t, d } = useI18n();
 const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefined);
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
+const toast = useToast();
 const api = useAPI();
 const auth = useAuth();
 const loading = ref(false);
@@ -151,16 +156,22 @@ async function load(args: LoadArgs) {
     loading.value = true;
     const limit = args.itemsPerPage;
     const offset = (args.page - 1) * limit;
-    const { count, results } = await api.blogEntries.blogEntriesList(
-        parseInt(props.eventId, 10),
-        limit,
-        offset,
-        args.sortBy,
-        args.search
-    );
-    blogPosts.value = results;
-    totalItems.value = count;
-    loading.value = false;
+    try {
+        const { count, results } = await api.blogEntries.blogEntriesList(
+            parseInt(props.eventId, 10),
+            limit,
+            offset,
+            args.sortBy,
+            args.search
+        );
+        blogPosts.value = results;
+        totalItems.value = count;
+    } catch (e) {
+        toast.error(t("BlogEditorView.errors.failedToLoad"));
+        console.error(e);
+    } finally {
+        loading.value = false;
+    }
 }
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
@@ -169,7 +180,12 @@ async function deletePost(item: BlogEntry): Promise<void> {
     const text = t("BlogEditorView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
-        await api.blogEntries.blogEntriesDestroy(item.id);
+        try {
+            await api.blogEntries.blogEntriesDestroy(item.id);
+        } catch (e) {
+            toast.error(t("BlogEditorView.errors.failedToDelete"));
+            console.error(e);
+        }
         refreshKey.value += 1;
     }
 }
@@ -178,7 +194,16 @@ async function editPost(id: number): Promise<void> {
     const item = await api.blogEntries.blogEntriesRetrieve(id);
     const { ok, text, title, isPublic } = await dialog.value!.modal(item);
     if (ok) {
-        await api.blogEntries.blogEntriesPartialUpdate(item.id, { title, text, public: isPublic });
+        try {
+            await api.blogEntries.blogEntriesPartialUpdate(item.id, {
+                title,
+                text,
+                public: isPublic,
+            });
+        } catch (e) {
+            toast.error(t("BlogEditorView.errors.failedToEdit"));
+            console.error(e);
+        }
         refreshKey.value += 1;
     }
 }
@@ -187,7 +212,12 @@ async function createPost() {
     const { ok, text, title, isPublic } = await dialog.value!.modal();
     if (ok) {
         const event = parseInt(props.eventId, 10);
-        await api.blogEntries.blogEntriesCreate({ event, title, text, public: isPublic });
+        try {
+            await api.blogEntries.blogEntriesCreate({ event, title, text, public: isPublic });
+        } catch (e) {
+            toast.error(t("BlogEditorView.errors.failedToCreate"));
+            console.error(e);
+        }
         currentPage.value = 1;
         refreshKey.value += 1;
     }

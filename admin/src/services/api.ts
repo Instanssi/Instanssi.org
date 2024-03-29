@@ -1,5 +1,5 @@
-import { APIClient } from "@/api";
 import { useCookies } from "@vueuse/integrations/useCookies";
+import { APIClient } from "@/api";
 
 export function useAPI() {
     const cookies = useCookies(["csrftoken"]);

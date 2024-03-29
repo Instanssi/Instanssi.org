@@ -13,7 +13,7 @@
     "format": "prettier --write *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
     "lint-check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "format-check": "prettier -c *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
-    "generate-api": "openapi -i openapi/instanssi.yaml --name APIClient -o src/api/ && prettier --write src/api/**/*.ts",
+    "generate-api": "openapi -i openapi/instanssi.yaml -c axios --name APIClient -o src/api/ && prettier --write src/api/**/*.ts",
     "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
+    "axios": "^1.6.8",
     "lodash-es": "^4.17.21",
     "universal-cookie": "^6.1.3",
     "vee-validate": "^4.12.6",

@@ -88,15 +88,7 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 import type { ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
 import type { BlogEntry } from "@/api";
-
-// Not exported by vuetify -- use our own.
-type LoadArgs = {
-    page: number;
-    itemsPerPage: number;
-    sortBy: any;
-    groupBy: any;
-    search: string;
-};
+import { getLoadArgs, type LoadArgs } from "@/services/utils/query_tools";
 
 // Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
 type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
@@ -154,14 +146,13 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
-    const limit = args.itemsPerPage;
-    const offset = (args.page - 1) * limit;
+    const { limit, offset, sortBy } = getLoadArgs(args);
     try {
         const { count, results } = await api.blogEntries.blogEntriesList(
             parseInt(props.eventId, 10),
             limit,
             offset,
-            args.sortBy,
+            sortBy,
             args.search
         );
         blogPosts.value = results;

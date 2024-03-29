@@ -78,15 +78,7 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 import type { ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
 import type { Event } from "@/api";
-
-// Not exported by vuetify -- use our own.
-type LoadArgs = {
-    page: number;
-    itemsPerPage: number;
-    sortBy: any;
-    groupBy: any;
-    search: string;
-};
+import { getLoadArgs, type LoadArgs } from "@/services/utils/query_tools";
 
 // For now, just catch eventId. We don't use it for anything, though.
 defineProps<{ eventId: string }>();
@@ -150,15 +142,9 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
-    const limit = args.itemsPerPage;
-    const offset = (args.page - 1) * limit;
+    const { offset, limit, sortBy } = getLoadArgs(args);
     try {
-        const { count, results } = await api.events.eventsList(
-            limit,
-            undefined,
-            offset,
-            args.sortBy
-        );
+        const { count, results } = await api.events.eventsList(limit, undefined, offset, sortBy);
         events.value = results;
         totalItems.value = count;
     } catch (e) {

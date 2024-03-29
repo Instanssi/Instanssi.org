@@ -1,5 +1,6 @@
 import { useCookies } from "@vueuse/integrations/useCookies";
 import { APIClient } from "@/api";
+import { CustomAxiosHttpRequest } from "@/services/utils/axiosRequest";
 
 export function useAPI() {
     const cookies = useCookies(["csrftoken"]);
@@ -7,5 +8,5 @@ export function useAPI() {
         return { "X-CSRFToken": cookies.get("csrftoken") };
     }
 
-    return new APIClient({ HEADERS: getHeaders });
+    return new APIClient({ HEADERS: getHeaders }, CustomAxiosHttpRequest);
 }

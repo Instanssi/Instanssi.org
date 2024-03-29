@@ -13,6 +13,7 @@ import {
     faFloppyDisk,
     faXmark,
     faPenToSquare,
+    faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 
 // These are used by vuetify and imported for the standard set
@@ -67,7 +68,8 @@ export function setupIcons(app: App): void {
         faLock,
         faXmark,
         faFloppyDisk,
-        faPenToSquare
+        faPenToSquare,
+        faCalendarDays
     );
     library.add(faGoogle, faSteam, faGithub);
 

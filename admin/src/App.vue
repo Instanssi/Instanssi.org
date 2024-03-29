@@ -32,6 +32,12 @@ const primaryLinks: NavigationLinks = [
         to: "dashboard",
     },
     {
+        title: t("App.nav.events"),
+        icon: "fas fa-calendar-days",
+        to: "events",
+        requirePerm: PermissionTarget.EVENT,
+    },
+    {
         title: t("App.nav.blog"),
         icon: "fas fa-blog",
         to: "blog",

@@ -5,7 +5,6 @@ import "vue-toastification/dist/index.css";
 // Libs
 import { createApp } from "vue";
 import { createVuetify } from "vuetify";
-import { createI18n } from "vue-i18n";
 import { aliases, fa } from "vuetify/iconsets/fa-svg";
 import toast, { type PluginOptions } from "vue-toastification";
 
@@ -14,7 +13,7 @@ import App from "@/App.vue";
 import router from "@/router";
 import { setupIcons } from "@/icons";
 import { useAuth } from "@/services/auth";
-import enLocale from "@/locales/en.json";
+import { i18n } from "@/i18n";
 
 function init() {
     const app = createApp(App);
@@ -23,18 +22,6 @@ function init() {
             defaultSet: "fa",
             aliases,
             sets: { fa },
-        },
-    });
-    const i18n = createI18n({
-        legacy: false,
-        locale: "en",
-        fallbackLocale: "en",
-        messages: {
-            en: enLocale["translations"],
-        },
-        datetimeFormats: {
-            // @ts-ignore
-            en: enLocale["datetimeFormats"],
         },
     });
     const toastOptions: PluginOptions = {

@@ -6,7 +6,7 @@ This is the administration frontend for the Instanssi event website.
 
 1. Install Node 20.x LTS
 2. Install packages (cleanly), run: `npm ci`
-3. Start up in dev mode, run: `npm run dev``
+3. Start up in dev mode, run: `npm run dev`
 `
 For development, VSCode with Volar + eslint + prettier plugins will do fine.
 

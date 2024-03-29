@@ -1,7 +1,31 @@
 @import "vuetify";
-@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import "@fontsource/open-sans";
+@import "@fontsource/fira-mono";
+@import "@fontsource/exo-2/800.css";
 
 html,
 body {
     font-family: "Open Sans", sans-serif;
+}
+
+pre {
+    font-family: "Fira Mono", monospace;
+}
+
+h1,h2,h3 {
+    font-family: "Exo 2", sans-serif;
+    font-weight: 800;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 1.9em;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.3em;
 }

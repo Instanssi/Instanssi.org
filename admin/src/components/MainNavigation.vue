@@ -67,10 +67,3 @@ watch(event, changeEvent);
 watch(authService.isLoggedIn, tryRefreshEvents);
 onMounted(tryRefreshEvents);
 </script>
-
-<style scoped lang="scss">
-h1 {
-    font-size: 1.9em;
-    text-transform: uppercase;
-}
-</style>

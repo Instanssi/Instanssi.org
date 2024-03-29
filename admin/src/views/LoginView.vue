@@ -80,7 +80,7 @@ const password = useField("password");
 const submit = handleSubmit(async (values) => {
     const loginOk = await authService.login(values.username, values.password);
     if (loginOk) {
-        await router.push({ name: "dashboard" });
+        await router.push({ name: "index" });
     } else {
         setErrors({
             username: "Incorrect username or password!",

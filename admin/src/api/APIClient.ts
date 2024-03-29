@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { BaseHttpRequest } from "./core/BaseHttpRequest";
 import type { OpenAPIConfig } from "./core/OpenAPI";
-import { FetchHttpRequest } from "./core/FetchHttpRequest";
+import { AxiosHttpRequest } from "./core/AxiosHttpRequest";
 import { AuthService } from "./services/AuthService";
 import { BlogEntriesService } from "./services/BlogEntriesService";
 import { EventsService } from "./services/EventsService";
@@ -20,7 +20,7 @@ export class APIClient {
     public readonly request: BaseHttpRequest;
     constructor(
         config?: Partial<OpenAPIConfig>,
-        HttpRequest: HttpRequestConstructor = FetchHttpRequest
+        HttpRequest: HttpRequestConstructor = AxiosHttpRequest
     ) {
         this.request = new HttpRequest({
             BASE: config?.BASE ?? "",

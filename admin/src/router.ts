@@ -36,10 +36,21 @@ const router = createRouter({
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {
-            path: "/",
+            path: "/:eventId(\\d+)/",
             name: "dashboard",
             meta: {
                 requireAuth: true,
+            },
+            component: () => import("@/views/MainView.vue"),
+        },
+        {
+            path: "/",
+            name: "index",
+            meta: {
+                requireAuth: true,
+            },
+            props: {
+                eventId: undefined,
             },
             component: () => import("@/views/MainView.vue"),
         },

@@ -7,13 +7,22 @@
             </div>
             <v-divider />
             <v-select
-                class="ma-2 flex-0-0"
+                class="ma-2 flex-0-0 nav-event-select"
                 :label="t('MainNavigation.event')"
                 variant="outlined"
                 density="compact"
                 :items="events"
                 v-model="event"
-            />
+            >
+                <template #append>
+                    <v-btn
+                        icon="fas fa-calendar-days"
+                        variant="plain"
+                        density="compact"
+                        @click="routeToEvents"
+                    />
+                </template>
+            </v-select>
             <v-divider />
             <NavigationList :items="primary" :event="event" class="mb-auto" />
             <NavigationList :items="secondary" :event="event" class="mt-auto" />
@@ -42,6 +51,11 @@ const events = computed(() =>
     eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))
 );
 
+/**
+ * When new event is selected from the select-box, try to immediately redirect the current view
+ * to that event. Note that this may cause warning, if we are on a page that has no eventId parameter.
+ * This is fine for now and should not break anything.
+ */
 function changeEvent(): void {
     router.push({
         name: route.name!,
@@ -53,17 +67,49 @@ function changeEvent(): void {
     });
 }
 
+function routeToEvents(): void {
+    router.push({ name: "events" });
+}
+
+/**
+ * If there are any events, get and set the latest one.
+ */
+function trySetLatestEvent() {
+    const latest = eventService.getLatestEvent();
+    if (latest) {
+        event.value = latest.id;
+    }
+}
+
+/**
+ * If we get logged in, try to refresh events immediately.
+ */
 async function tryRefreshEvents() {
     await eventService.refreshEvents();
-    const latest = eventService.getLatestEvent();
-    if (!latest) {
-        await router.push({ name: "dashboard" });
+    trySetLatestEvent();
+}
+
+/**
+ * React to events list changes. If we have no event, just set select-box to nothing.
+ * If any events appear, select the first one.
+ */
+async function trySelectEvent() {
+    const events = eventService.getEvents();
+    if (events.length == 0) {
+        event.value = undefined;
     } else {
-        event.value = latest.id;
+        trySetLatestEvent();
     }
 }
 
 watch(event, changeEvent);
 watch(authService.isLoggedIn, tryRefreshEvents);
+watch(eventService.getEvents, trySelectEvent);
 onMounted(tryRefreshEvents);
 </script>
+
+<style lang="scss">
+.nav-event-select .v-input__append {
+    margin-inline-start: 8px !important;
+}
+</style>

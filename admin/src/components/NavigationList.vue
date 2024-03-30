@@ -10,7 +10,7 @@
                     :key="`${item.title}-${child.title}`"
                     :prepend-icon="child.icon"
                     :title="child.title"
-                    @click="navigateTo(child.to)"
+                    @click="navigateTo(child)"
                 />
             </v-list-group>
             <v-list-item
@@ -18,7 +18,7 @@
                 :key="`root-${item.title}`"
                 :prepend-icon="item.icon"
                 :title="item.title"
-                @click="navigateTo(item.to)"
+                @click="navigateTo(item)"
             />
         </template>
     </v-list>
@@ -35,6 +35,7 @@ export type NavigationLink = {
     to?: string;
     children?: NavigationLink[];
     requirePerm?: PermissionTarget;
+    noEventId?: boolean;
 };
 export type NavigationLinks = NavigationLink[];
 
@@ -45,11 +46,14 @@ const authService = useAuth();
 const { event } = toRefs(props);
 
 function filterLinks(items: NavigationLinks): NavigationLinks {
-    return items.filter((m) => !m.requirePerm || authService.canView(m.requirePerm));
+    return items
+        .filter((m) => !m.requirePerm || authService.canView(m.requirePerm))
+        .filter((m) => !!m.noEventId || !!event.value);
 }
 
-function navigateTo(to: string | undefined): void {
-    if (!to) return;
-    router.push({ name: to, params: { eventId: event.value } });
+function navigateTo(item: NavigationLink): void {
+    if (!item.to) return;
+    const params = item.noEventId ? {} : { eventId: event.value };
+    router.push({ name: item.to, params });
 }
 </script>

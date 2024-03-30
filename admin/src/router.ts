@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuth } from "@/services/auth";
+import { PermissionTarget, useAuth } from "@/services/auth";
+import { useEvents } from "@/services/events";
 
 const authService = useAuth();
+const { refreshEvents, getLatestEvent } = useEvents();
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -28,7 +30,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/:eventId(\\d+)/events",
+            path: "/events",
             name: "events",
             meta: {
                 requireAuth: true,
@@ -48,7 +50,7 @@ const router = createRouter({
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {
-            path: "/:eventId(\\d+)/",
+            path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",
             meta: {
                 requireAuth: true,
@@ -61,10 +63,19 @@ const router = createRouter({
             meta: {
                 requireAuth: true,
             },
-            props: {
-                eventId: undefined,
+            component: {
+                async beforeRouteEnter(to, from, next) {
+                    // This is the root page. If we end up here, then event has not been selected. Pick one and redirect.
+                    // If there are no events created at all, then redirect to events page so that user can create one.
+                    await refreshEvents();
+                    const event = getLatestEvent();
+                    if (event) {
+                        next({ name: "dashboard", params: { eventId: event.id } });
+                    } else {
+                        next({ name: "events" });
+                    }
+                },
             },
-            component: () => import("@/views/MainView.vue"),
         },
     ],
 });

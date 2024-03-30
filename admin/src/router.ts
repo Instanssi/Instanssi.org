@@ -21,6 +21,7 @@ const router = createRouter({
             },
             component: {
                 async beforeRouteEnter(to, from, next) {
+                    // We don't really need a component here -- just do logout to backend and then redirect.
                     await authService.logout();
                     next({ name: "login" });
                 },
@@ -31,6 +32,7 @@ const router = createRouter({
             name: "events",
             meta: {
                 requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
             },
             props: true,
             component: () => import("@/views/EventView.vue"),
@@ -40,6 +42,7 @@ const router = createRouter({
             name: "blog",
             meta: {
                 requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
             component: () => import("@/views/BlogEditorView.vue"),
@@ -67,10 +70,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth && !authService.isLoggedIn()) {
+    const requireAuth = (to.meta?.requireAuth ?? false) as boolean;
+    const viewPerm = to.meta?.requireViewPermission as PermissionTarget | undefined;
+    if (requireAuth && !authService.isLoggedIn()) {
         next({ name: "login" });
+    } else if (viewPerm && !authService.canView(viewPerm)) {
+        next({ name: "index" });
     } else if (to.name === "login" && authService.isLoggedIn()) {
-        next({ name: "dashboard" });
+        next({ name: "index" });
     } else {
         next();
     }

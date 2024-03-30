@@ -1,8 +1,12 @@
 /* generated using openapi-typescript-codegen -- do not edit */
+
 /* istanbul ignore file */
+
 /* tslint:disable */
+
 /* eslint-disable */
 import type { AlternateEntryFile } from "./AlternateEntryFile";
+
 export type CompoEntry = {
     readonly id: number;
     /**

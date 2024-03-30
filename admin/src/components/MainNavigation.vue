@@ -31,13 +31,14 @@
 </template>
 
 <script setup lang="ts">
-import logoImage from "@/assets/icon.png";
-import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, type Ref, ref, watch } from "vue";
-import { useEvents } from "@/services/events";
-import { useAuth } from "@/services/auth";
+import { type Ref, computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
+
+import logoImage from "@/assets/icon.png";
 import NavigationList, { type NavigationLinks } from "@/components/NavigationList.vue";
+import { useAuth } from "@/services/auth";
+import { useEvents } from "@/services/events";
 
 defineProps<{ primary: NavigationLinks; secondary: NavigationLinks }>();
 

@@ -1,19 +1,14 @@
-import "@/assets/main.scss";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import "vue-toastification/dist/index.css";
-
-// Libs
 import { createApp } from "vue";
+import toast, { type PluginOptions } from "vue-toastification";
 import { createVuetify } from "vuetify";
 import { aliases, fa } from "vuetify/iconsets/fa-svg";
-import toast, { type PluginOptions } from "vue-toastification";
 
-// Our own stuff
 import App from "@/App.vue";
-import router from "@/router";
-import { setupIcons } from "@/icons";
-import { useAuth } from "@/services/auth";
+import "@/assets/main.scss";
 import { i18n } from "@/i18n";
+import { setupIcons } from "@/icons";
+import router from "@/router";
+import { useAuth } from "@/services/auth";
 
 function init() {
     const app = createApp(App);

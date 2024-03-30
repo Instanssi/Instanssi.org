@@ -11,9 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import BaseDialog from "@/components/BaseDialog.vue";
 import { type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
+import BaseDialog from "@/components/BaseDialog.vue";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref(undefined);
 const { t } = useI18n();

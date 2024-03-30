@@ -26,10 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import BaseDialog from "@/components/BaseDialog.vue";
-import { computed, type Ref, ref } from "vue";
+import { type Ref, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import type { Event } from "@/api";
+import BaseDialog from "@/components/BaseDialog.vue";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 

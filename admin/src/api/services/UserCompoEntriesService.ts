@@ -1,13 +1,17 @@
 /* generated using openapi-typescript-codegen -- do not edit */
+
 /* istanbul ignore file */
+
 /* tslint:disable */
+
 /* eslint-disable */
+import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+import type { CancelablePromise } from "../core/CancelablePromise";
 import type { CompoEntry } from "../models/CompoEntry";
 import type { CompoEntryRequest } from "../models/CompoEntryRequest";
 import type { PaginatedCompoEntryList } from "../models/PaginatedCompoEntryList";
 import type { PatchedCompoEntryRequest } from "../models/PatchedCompoEntryRequest";
-import type { CancelablePromise } from "../core/CancelablePromise";
-import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+
 export class UserCompoEntriesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**

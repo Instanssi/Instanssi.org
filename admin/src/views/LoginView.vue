@@ -53,14 +53,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref } from "vue";
+import { useField, useForm } from "vee-validate";
+import { type Ref, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
-import { useAuth } from "@/services/auth";
-import { useRouter } from "vue-router";
-import { useField, useForm } from "vee-validate";
-import { useI18n } from "vue-i18n";
 import type { SocialAuthURL } from "@/api";
+import { useAuth } from "@/services/auth";
 
 const authService = useAuth();
 const router = useRouter();

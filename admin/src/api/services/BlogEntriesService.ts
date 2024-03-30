@@ -1,13 +1,17 @@
 /* generated using openapi-typescript-codegen -- do not edit */
+
 /* istanbul ignore file */
+
 /* tslint:disable */
+
 /* eslint-disable */
+import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+import type { CancelablePromise } from "../core/CancelablePromise";
 import type { BlogEntry } from "../models/BlogEntry";
 import type { BlogEntryRequest } from "../models/BlogEntryRequest";
 import type { PaginatedBlogEntryList } from "../models/PaginatedBlogEntryList";
 import type { PatchedBlogEntryRequest } from "../models/PatchedBlogEntryRequest";
-import type { CancelablePromise } from "../core/CancelablePromise";
-import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+
 export class BlogEntriesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**

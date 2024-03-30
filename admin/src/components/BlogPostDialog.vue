@@ -25,11 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import BaseDialog from "@/components/BaseDialog.vue";
 import { QuillEditor } from "@vueup/vue-quill";
-import { computed, type Ref, ref } from "vue";
+import { type Ref, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import type { BlogEntry } from "@/api";
+import BaseDialog from "@/components/BaseDialog.vue";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref();

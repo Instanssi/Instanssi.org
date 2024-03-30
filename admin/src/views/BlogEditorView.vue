@@ -73,22 +73,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref, ref } from "vue";
 import { debounce } from "lodash-es";
-
+import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useAPI } from "@/services/api";
 import { useToast } from "vue-toastification";
-
-import LayoutBase from "@/components/LayoutBase.vue";
-import BlogPostDialog from "@/components/BlogPostDialog.vue";
-import { confirmDialogKey } from "@/symbols";
-import { PermissionTarget, useAuth } from "@/services/auth";
-
-import type { ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
+
 import type { BlogEntry } from "@/api";
-import { getLoadArgs, type LoadArgs } from "@/services/utils/query_tools";
+import BlogPostDialog from "@/components/BlogPostDialog.vue";
+import LayoutBase from "@/components/LayoutBase.vue";
+import { useAPI } from "@/services/api";
+import { PermissionTarget, useAuth } from "@/services/auth";
+import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
+import { confirmDialogKey } from "@/symbols";
+import type { ConfirmDialogType } from "@/symbols";
 
 // Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
 type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];

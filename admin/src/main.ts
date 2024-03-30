@@ -25,7 +25,7 @@ function init() {
         },
     });
     const toastOptions: PluginOptions = {
-        maxToasts: 2,
+        maxToasts: 5,
     };
 
     setupIcons(app);

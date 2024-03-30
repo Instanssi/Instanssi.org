@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuth } from "@/services/auth";
+import { PermissionTarget, useAuth } from "@/services/auth";
+import { useEvents } from "@/services/events";
 
 const authService = useAuth();
+const { refreshEvents, getLatestEvent } = useEvents();
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -21,16 +23,18 @@ const router = createRouter({
             },
             component: {
                 async beforeRouteEnter(to, from, next) {
+                    // We don't really need a component here -- just do logout to backend and then redirect.
                     await authService.logout();
                     next({ name: "login" });
                 },
             },
         },
         {
-            path: "/:eventId(\\d+)/events",
+            path: "/events",
             name: "events",
             meta: {
                 requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
             },
             props: true,
             component: () => import("@/views/EventView.vue"),
@@ -40,12 +44,13 @@ const router = createRouter({
             name: "blog",
             meta: {
                 requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
             component: () => import("@/views/BlogEditorView.vue"),
         },
         {
-            path: "/:eventId(\\d+)/",
+            path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",
             meta: {
                 requireAuth: true,
@@ -58,19 +63,32 @@ const router = createRouter({
             meta: {
                 requireAuth: true,
             },
-            props: {
-                eventId: undefined,
+            component: {
+                async beforeRouteEnter(to, from, next) {
+                    // This is the root page. If we end up here, then event has not been selected. Pick one and redirect.
+                    // If there are no events created at all, then redirect to events page so that user can create one.
+                    await refreshEvents();
+                    const event = getLatestEvent();
+                    if (event) {
+                        next({ name: "dashboard", params: { eventId: event.id } });
+                    } else {
+                        next({ name: "events" });
+                    }
+                },
             },
-            component: () => import("@/views/MainView.vue"),
         },
     ],
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth && !authService.isLoggedIn()) {
+    const requireAuth = (to.meta?.requireAuth ?? false) as boolean;
+    const viewPerm = to.meta?.requireViewPermission as PermissionTarget | undefined;
+    if (requireAuth && !authService.isLoggedIn()) {
         next({ name: "login" });
+    } else if (viewPerm && !authService.canView(viewPerm)) {
+        next({ name: "index" });
     } else if (to.name === "login" && authService.isLoggedIn()) {
-        next({ name: "dashboard" });
+        next({ name: "index" });
     } else {
         next();
     }

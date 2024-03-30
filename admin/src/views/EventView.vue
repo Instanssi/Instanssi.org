@@ -79,9 +79,7 @@ import type { ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
 import type { Event } from "@/api";
 import { getLoadArgs, type LoadArgs } from "@/services/utils/query_tools";
-
-// For now, just catch eventId. We don't use it for anything, though.
-defineProps<{ eventId: string }>();
+import { useEvents } from "@/services/events";
 
 // Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
 type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
@@ -92,6 +90,7 @@ const dialog: Ref<InstanceType<typeof EventDialog> | undefined> = ref(undefined)
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
+const eventService = useEvents();
 const api = useAPI();
 const auth = useAuth();
 const loading = ref(false);
@@ -168,6 +167,7 @@ async function deleteEvent(item: Event): Promise<void> {
             console.error(e);
         }
         refreshKey.value += 1;
+        await eventService.refreshEvents();
     }
 }
 
@@ -188,6 +188,7 @@ async function editEvent(id: number): Promise<void> {
             console.error(e);
         }
         refreshKey.value += 1;
+        await eventService.refreshEvents();
     }
 }
 
@@ -208,6 +209,7 @@ async function createEvent() {
         }
         currentPage.value = 1;
         refreshKey.value += 1;
+        await eventService.refreshEvents();
     }
 }
 </script>

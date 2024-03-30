@@ -32,12 +32,6 @@ const primaryLinks: NavigationLinks = [
         to: "dashboard",
     },
     {
-        title: t("App.nav.events"),
-        icon: "fas fa-calendar-days",
-        to: "events",
-        requirePerm: PermissionTarget.EVENT,
-    },
-    {
         title: t("App.nav.blog"),
         icon: "fas fa-blog",
         to: "blog",
@@ -49,6 +43,7 @@ const secondaryLinks: NavigationLinks = [
         title: t("App.nav.logout"),
         icon: "fas fa-right-from-bracket",
         to: "logout",
+        noEventId: true,
     },
 ];
 

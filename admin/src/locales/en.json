@@ -18,6 +18,7 @@
   "translations": {
     "Toasts": {
       "errors": {
+        "conflict": "Operation failed due to data integrity error.",
         "ise": "Server encountered a problem! Please inform the administrator!",
         "gateway": "Server is under heavy load or in maintenance; please try again later!",
         "generic": "Server encountered a problem! Please try again later.",

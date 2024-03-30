@@ -91,6 +91,7 @@ REST_FRAMEWORK = {
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "Instanssi.api.exception_handler.custom_exception_handler",
 }
 
 # OpenAPI

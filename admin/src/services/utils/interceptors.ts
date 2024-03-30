@@ -3,34 +3,31 @@ import { useToast } from "vue-toastification";
 import { i18n } from "@/i18n";
 
 export function errorResponseInterceptor(error: AxiosError) {
-    const status = error.response?.status ?? 0;
-    const path = error.response?.config.url ?? "";
-
     // Don't worry about this path -- we handle its errors in auth service.
+    const path = error.response?.config.url ?? "";
     if (path.endsWith("/user_info/")) {
         return Promise.reject(error);
     }
 
-    // If we receive 401 (not logged in), redirect user to login page.
+    // First, check if the error was due to timeout.
     const toast = useToast();
     const { t } = i18n.global;
-    if (status === 401) {
-        toast.error(t("Toasts.errors.sessionTimedOut"));
-        return Promise.reject(error);
-    }
-
-    // These are application errors, they should be handled in the requester functions.
-    if (status >= 300 && status < 500 && status != 418) {
-        return Promise.reject(error);
-    }
-
-    // This happens if axios timeouts
     if (error.code === "ECONNABORTED") {
         toast.error(t("Toasts.errors.timeout"));
         return Promise.reject(error);
     }
 
+    // Then, see if it was server side error code.
+    const status = error.response?.status ?? 0;
     switch (status) {
+        case 401:
+            toast.error(t("Toasts.errors.sessionTimedOut"));
+            break;
+
+        case 409:
+            toast.error(t("Toasts.errors.conflict"));
+            break;
+
         case 418:
             // Mostly for testing :)
             toast.warning(t("Toasts.errors.teapot"));

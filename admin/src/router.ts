@@ -48,7 +48,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
-            component: () => import("@/views/BlogEditorView.vue"),
+            component: () => import("@/views/BlogView.vue"),
         },
         {
             path: "/:eventId(\\d+)/dashboard",

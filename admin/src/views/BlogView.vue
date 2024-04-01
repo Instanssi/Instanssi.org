@@ -73,8 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { debounce, parseInt } from "lodash-es";
+import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer } from "vuetify/components";
@@ -100,6 +100,7 @@ const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
 const api = useAPI();
 const auth = useAuth();
+const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
@@ -181,32 +182,13 @@ async function deletePost(item: BlogEntry): Promise<void> {
 
 async function editPost(id: number): Promise<void> {
     const item = await api.blogEntries.blogEntriesRetrieve(id);
-    const { ok, text, title, isPublic } = await dialog.value!.modal(item);
-    if (ok) {
-        try {
-            await api.blogEntries.blogEntriesPartialUpdate(item.id, {
-                title,
-                text,
-                public: isPublic,
-            });
-        } catch (e) {
-            toast.error(t("BlogEditorView.errors.failedToEdit"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal(eventId.value, item)) {
         refreshKey.value += 1;
     }
 }
 
 async function createPost() {
-    const { ok, text, title, isPublic } = await dialog.value!.modal();
-    if (ok) {
-        const event = parseInt(props.eventId, 10);
-        try {
-            await api.blogEntries.blogEntriesCreate({ event, title, text, public: isPublic });
-        } catch (e) {
-            toast.error(t("BlogEditorView.errors.failedToCreate"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal(eventId.value)) {
         currentPage.value = 1;
         refreshKey.value += 1;
     }

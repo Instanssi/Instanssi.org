@@ -171,40 +171,14 @@ async function deleteEvent(item: Event): Promise<void> {
 
 async function editEvent(id: number): Promise<void> {
     const item = await api.events.eventsRetrieve(id);
-    const { ok, name, date, archived, tag, mainUrl } = await dialog.value!.modal(item);
-    if (ok) {
-        try {
-            await api.events.eventsPartialUpdate(item.id, {
-                name,
-                date,
-                archived,
-                tag,
-                mainurl: mainUrl,
-            });
-        } catch (e) {
-            toast.error(t("EventView.errors.failedToEdit"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal(item)) {
         refreshKey.value += 1;
         await eventService.refreshEvents();
     }
 }
 
 async function createEvent() {
-    const { ok, name, date, archived, tag, mainUrl } = await dialog.value!.modal();
-    if (ok) {
-        try {
-            await api.events.eventsCreate({
-                name,
-                date,
-                archived,
-                tag,
-                mainurl: mainUrl,
-            });
-        } catch (e) {
-            toast.error(t("EventView.errors.failedToCreate"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal()) {
         currentPage.value = 1;
         refreshKey.value += 1;
         await eventService.refreshEvents();

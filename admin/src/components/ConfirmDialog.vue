@@ -1,5 +1,5 @@
 <template>
-    <BaseDialog
+    <BaseInfoDialog
         :title="t('ConfirmDialog.title')"
         :width="500"
         :ok-text="t('ConfirmDialog.title')"
@@ -7,16 +7,16 @@
         ref="dialog"
     >
         {{ body }}
-    </BaseDialog>
+    </BaseInfoDialog>
 </template>
 
 <script setup lang="ts">
 import { type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import BaseDialog from "@/components/BaseDialog.vue";
+import BaseInfoDialog from "@/components/BaseInfoDialog.vue";
 
-const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref(undefined);
+const dialog: Ref<InstanceType<typeof BaseInfoDialog> | undefined> = ref(undefined);
 const { t } = useI18n();
 const body = ref("");
 

@@ -61,10 +61,9 @@
         "mainUrl": "Main URL",
         "actions": "Actions"
       },
-      "errors": {
-        "failedToLoad": "Failed to load events; try again later.",
-        "failedToDelete": "Failed to delete event; try again later."
-      }
+      "loadFailure": "Failed to load events; try again later.",
+      "deleteFailure": "Failed to delete event; try again later.",
+      "deleteSuccess": "Event deleted!"
     },
     "BlogEditorView": {
       "title": "Blog",
@@ -80,10 +79,9 @@
         "isPublic": "Is public",
         "actions": "Actions"
       },
-      "errors": {
-        "failedToLoad": "Failed to load blog posts; try again later.",
-        "failedToDelete": "Failed to delete blog post; try again later."
-      }
+      "loadFailure": "Failed to load blog posts; try again later.",
+      "deleteFailure": "Failed to delete blog post; try again later.",
+      "deleteSuccess": "Blog post deleted!"
     },
     "ConfirmDialog": {
       "title": "Confirm"

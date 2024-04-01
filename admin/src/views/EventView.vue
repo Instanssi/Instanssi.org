@@ -145,7 +145,7 @@ async function load(args: LoadArgs) {
         events.value = results;
         totalItems.value = count;
     } catch (e) {
-        toast.error(t("EventView.errors.failedToLoad"));
+        toast.error(t("EventView.loadFailure"));
         console.error(e);
     } finally {
         loading.value = false;
@@ -160,8 +160,9 @@ async function deleteEvent(item: Event): Promise<void> {
     if (ok) {
         try {
             await api.events.eventsDestroy(item.id);
+            toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
-            toast.error(t("EventView.errors.failedToDelete"));
+            toast.error(t("EventView.deleteFailure"));
             console.error(e);
         }
         refreshKey.value += 1;

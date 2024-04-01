@@ -157,7 +157,7 @@ async function load(args: LoadArgs) {
         blogPosts.value = results;
         totalItems.value = count;
     } catch (e) {
-        toast.error(t("BlogEditorView.errors.failedToLoad"));
+        toast.error(t("BlogEditorView.loadFailure"));
         console.error(e);
     } finally {
         loading.value = false;
@@ -172,8 +172,9 @@ async function deletePost(item: BlogEntry): Promise<void> {
     if (ok) {
         try {
             await api.blogEntries.blogEntriesDestroy(item.id);
+            toast.success(t("BlogEditorView.deleteSuccess"));
         } catch (e) {
-            toast.error(t("BlogEditorView.errors.failedToDelete"));
+            toast.error(t("BlogEditorView.deleteFailure"));
             console.error(e);
         }
         refreshKey.value += 1;

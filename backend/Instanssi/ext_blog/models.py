@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
 
+from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.kompomaatti.models import Event
 
 
@@ -11,7 +12,7 @@ class BlogEntry(models.Model):
     event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
     user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
     title = models.CharField("Otsikko", help_text="Lyhyt otsikko entrylle.", max_length=128)
-    text = models.TextField("Teksti")
+    text = SanitizedHtmlField("Teksti")
     date = models.DateTimeField("Aika", default=timezone.now)
     public = models.BooleanField(
         "Julkinen",

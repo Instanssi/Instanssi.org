@@ -1,7 +1,7 @@
-import { fileURLToPath, URL } from "node:url";
+import vue from "@vitejs/plugin-vue";
+import { URL, fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import compression from "vite-plugin-compression2";
-import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { configDefaults } from "vitest/config";
 

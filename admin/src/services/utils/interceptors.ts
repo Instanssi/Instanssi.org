@@ -1,5 +1,6 @@
 import type { AxiosError } from "axios";
 import { useToast } from "vue-toastification";
+
 import { i18n } from "@/i18n";
 
 export function errorResponseInterceptor(error: AxiosError) {

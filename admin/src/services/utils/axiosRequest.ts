@@ -2,9 +2,9 @@ import axios from "axios";
 import type { AxiosInstance } from "axios";
 
 import { BaseHttpRequest, CancelablePromise } from "@/api";
-import { request as __request } from "@/api/core/request";
 import type { OpenAPIConfig } from "@/api";
 import type { ApiRequestOptions } from "@/api/core/ApiRequestOptions";
+import { request as __request } from "@/api/core/request";
 import { errorResponseInterceptor } from "@/services/utils/interceptors";
 
 export class CustomAxiosHttpRequest extends BaseHttpRequest {

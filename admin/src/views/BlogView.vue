@@ -73,22 +73,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref, ref } from "vue";
-import { debounce } from "lodash-es";
-
+import { debounce, parseInt } from "lodash-es";
+import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useAPI } from "@/services/api";
 import { useToast } from "vue-toastification";
-
-import LayoutBase from "@/components/LayoutBase.vue";
-import BlogPostDialog from "@/components/BlogPostDialog.vue";
-import { confirmDialogKey } from "@/symbols";
-import { PermissionTarget, useAuth } from "@/services/auth";
-
-import type { ConfirmDialogType } from "@/symbols";
 import type { VDataTableServer } from "vuetify/components";
+
 import type { BlogEntry } from "@/api";
-import { getLoadArgs, type LoadArgs } from "@/services/utils/query_tools";
+import BlogPostDialog from "@/components/BlogPostDialog.vue";
+import LayoutBase from "@/components/LayoutBase.vue";
+import { useAPI } from "@/services/api";
+import { PermissionTarget, useAuth } from "@/services/auth";
+import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
+import { confirmDialogKey } from "@/symbols";
+import type { ConfirmDialogType } from "@/symbols";
 
 // Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
 type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
@@ -102,6 +100,7 @@ const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
 const api = useAPI();
 const auth = useAuth();
+const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
@@ -183,32 +182,13 @@ async function deletePost(item: BlogEntry): Promise<void> {
 
 async function editPost(id: number): Promise<void> {
     const item = await api.blogEntries.blogEntriesRetrieve(id);
-    const { ok, text, title, isPublic } = await dialog.value!.modal(item);
-    if (ok) {
-        try {
-            await api.blogEntries.blogEntriesPartialUpdate(item.id, {
-                title,
-                text,
-                public: isPublic,
-            });
-        } catch (e) {
-            toast.error(t("BlogEditorView.errors.failedToEdit"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal(eventId.value, item)) {
         refreshKey.value += 1;
     }
 }
 
 async function createPost() {
-    const { ok, text, title, isPublic } = await dialog.value!.modal();
-    if (ok) {
-        const event = parseInt(props.eventId, 10);
-        try {
-            await api.blogEntries.blogEntriesCreate({ event, title, text, public: isPublic });
-        } catch (e) {
-            toast.error(t("BlogEditorView.errors.failedToCreate"));
-            console.error(e);
-        }
+    if (await dialog.value!.modal(eventId.value)) {
         currentPage.value = 1;
         refreshKey.value += 1;
     }

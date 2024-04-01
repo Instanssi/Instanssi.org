@@ -1,7 +1,8 @@
 import { type Ref, ref } from "vue";
-import { useAPI } from "@/services/api";
+
 import { ApiError } from "@/api";
 import type { SocialAuthURL, UserInfo } from "@/api";
+import { useAPI } from "@/services/api";
 
 export type CurrentUserInfo = {
     firstName: string;

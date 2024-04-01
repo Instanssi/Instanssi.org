@@ -63,9 +63,7 @@
       },
       "errors": {
         "failedToLoad": "Failed to load events; try again later.",
-        "failedToDelete": "Failed to delete event; try again later.",
-        "failedToEdit": "Failed to edit event; try again later.",
-        "failedToCreate": "Failed to create event; try again later."
+        "failedToDelete": "Failed to delete event; try again later."
       }
     },
     "BlogEditorView": {
@@ -84,9 +82,7 @@
       },
       "errors": {
         "failedToLoad": "Failed to load blog posts; try again later.",
-        "failedToDelete": "Failed to delete blog post; try again later.",
-        "failedToEdit": "Failed to edit blog post; try again later.",
-        "failedToCreate": "Failed to create blog post; try again later."
+        "failedToDelete": "Failed to delete blog post; try again later."
       }
     },
     "ConfirmDialog": {
@@ -98,7 +94,11 @@
         "title": "Title",
         "postIsVisible": "Post is visible for everyone",
         "postNotVisible": "Post is private; only admins can see it"
-      }
+      },
+      "editFailure": "Failed to edit blog post; try again later.",
+      "createFailure": "Failed to create blog post; try again later.",
+      "editSuccess": "Blog post edited!",
+      "createSuccess": "Blog post created!"
     },
     "EventDialog": {
       "title": "Event",
@@ -109,7 +109,11 @@
         "mainUrl": "Main URL",
         "isArchived": "Event is archived",
         "isNotArchived": "Event is not archived"
-      }
+      },
+      "editFailure": "Failed to edit event; try again later.",
+      "createFailure": "Failed to create event; try again later.",
+      "editSuccess": "Event edited!",
+      "createSuccess": "Event created!"
     },
     "MainView": {
       "title": "Dashboard"

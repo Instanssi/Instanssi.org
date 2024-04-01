@@ -1,61 +1,65 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import type { App } from "vue";
-
-// These are our own imports
 import {
-    faDashboard,
-    faRightFromBracket,
-    faRightToBracket,
-    faBlog,
-    faSitemap,
-    faLock,
-    faFloppyDisk,
-    faXmark,
-    faPenToSquare,
-    faCalendarDays,
-} from "@fortawesome/free-solid-svg-icons";
-
-// These are used by vuetify and imported for the standard set
+    // Our own icons
+    faGithub,
+    faGoogle,
+    faSteam,
+} from "@fortawesome/free-brands-svg-icons";
 import {
-    faChevronUp,
-    faCheck,
-    faTimesCircle,
-    faTimes,
-    faCheckCircle,
-    faInfoCircle,
-    faExclamation,
-    faExclamationTriangle,
-    faChevronLeft,
-    faChevronRight,
-    faChevronDown,
-    faCheckSquare,
-    faMinusSquare,
-    faCircle,
-    faArrowUp,
-    faArrowDown,
-    faBars,
-    faCaretDown,
-    faEdit,
-    faStar,
-    faStarHalf,
-    faSync,
-    faStepBackward,
-    faStepForward,
-    faArrowsAltV,
-    faPaperclip,
-    faPlus,
-    faMinus,
-    faCalendar,
-    faEyeDropper,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-    faSquare as farSquare,
-    faDotCircle as farDotCircle,
+    // for vuetify
     faCircle as farCircle,
+    faDotCircle as farDotCircle,
+    faSquare as farSquare,
     faStar as farStar,
 } from "@fortawesome/free-regular-svg-icons";
-import { faGoogle, faSteam, faGithub } from "@fortawesome/free-brands-svg-icons";
+import {
+    // Our own icons
+    faBlog,
+    faCalendarDays,
+    faDashboard,
+    faFloppyDisk,
+    faLock,
+    faPenToSquare,
+    faRightFromBracket,
+    faRightToBracket,
+    faSitemap,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+    // For vuetify
+    faArrowDown,
+    faArrowUp,
+    faArrowsAltV,
+    faBars,
+    faCalendar,
+    faCaretDown,
+    faCheck,
+    faCheckCircle,
+    faCheckSquare,
+    faChevronDown,
+    faChevronLeft,
+    faChevronRight,
+    faChevronUp,
+    faCircle,
+    faEdit,
+    faExclamation,
+    faExclamationTriangle,
+    faEyeDropper,
+    faInfoCircle,
+    faMinus,
+    faMinusSquare,
+    faPaperclip,
+    faPlus,
+    faStar,
+    faStarHalf,
+    faStepBackward,
+    faStepForward,
+    faSync,
+    faTimes,
+    faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import type { App } from "vue";
 
 export function setupIcons(app: App): void {
     // These are our own imports

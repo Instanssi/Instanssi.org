@@ -1,11 +1,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
+
 /* istanbul ignore file */
+
 /* tslint:disable */
+
 /* eslint-disable */
+import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+import type { CancelablePromise } from "../core/CancelablePromise";
 import type { SocialAuthURL } from "../models/SocialAuthURL";
 import type { UserLoginRequest } from "../models/UserLoginRequest";
-import type { CancelablePromise } from "../core/CancelablePromise";
-import type { BaseHttpRequest } from "../core/BaseHttpRequest";
+
 export class AuthService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**

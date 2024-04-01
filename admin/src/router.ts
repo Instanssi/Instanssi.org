@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 
@@ -47,7 +48,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
-            component: () => import("@/views/BlogEditorView.vue"),
+            component: () => import("@/views/BlogView.vue"),
         },
         {
             path: "/:eventId(\\d+)/dashboard",

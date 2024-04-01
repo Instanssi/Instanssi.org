@@ -13,12 +13,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed, provide, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import Navigation from "@/components/MainNavigation.vue";
 import type { NavigationLinks } from "@/components/NavigationList.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
-import { computed, provide, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import { confirmDialogKey } from "@/symbols";
 
 const { t } = useI18n();
@@ -56,4 +57,9 @@ provide(confirmDialogKey, confirmDialog);
     background-repeat: no-repeat;
     background-size: cover;
 }
+</style>
+
+<style>
+@import "@vueup/vue-quill/dist/vue-quill.snow.css";
+@import "vue-toastification/dist/index.css";
 </style>

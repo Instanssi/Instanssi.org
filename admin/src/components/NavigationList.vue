@@ -25,8 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import { toRefs } from "vue";
+import { useRouter } from "vue-router";
+
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 export type NavigationLink = {

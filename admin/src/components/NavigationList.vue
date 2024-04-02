@@ -10,7 +10,7 @@
                     :key="`${item.title}-${child.title}`"
                     :prepend-icon="child.icon"
                     :title="child.title"
-                    @click="navigateTo(child)"
+                    :to="navigateTo(child)"
                 />
             </v-list-group>
             <v-list-item
@@ -18,7 +18,7 @@
                 :key="`root-${item.title}`"
                 :prepend-icon="item.icon"
                 :title="item.title"
-                @click="navigateTo(item)"
+                :to="navigateTo(item)"
             />
         </template>
     </v-list>
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import { useRouter } from "vue-router";
+import { type RouteLocationRaw } from "vue-router";
 
 import { PermissionTarget, useAuth } from "@/services/auth";
 
@@ -42,7 +42,6 @@ export type NavigationLinks = NavigationLink[];
 
 const props = defineProps<{ items: NavigationLinks; event: number | undefined }>();
 
-const router = useRouter();
 const authService = useAuth();
 const { event } = toRefs(props);
 
@@ -52,9 +51,11 @@ function filterLinks(items: NavigationLinks): NavigationLinks {
         .filter((m) => !!m.noEventId || !!event.value);
 }
 
-function navigateTo(item: NavigationLink): void {
+function navigateTo(item: NavigationLink): RouteLocationRaw | undefined {
     if (!item.to) return;
-    const params = item.noEventId ? {} : { eventId: event.value };
-    router.push({ name: item.to, params });
+    return {
+        name: item.to,
+        params: item.noEventId ? {} : { eventId: event.value!.toString() },
+    };
 }
 </script>

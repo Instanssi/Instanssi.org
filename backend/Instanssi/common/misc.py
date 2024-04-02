@@ -1,6 +1,7 @@
-from urllib.parse import urlsplit, urlunsplit
+import yarl
 
 
 def get_url_local_path(url: str) -> str:
-    parsed = urlsplit(url)
-    return urlunsplit(("", "", parsed[2], parsed[3], parsed[4]))
+    src = yarl.URL(url)
+    dst = yarl.URL.build(path=src.path, query_string=src.query_string, fragment=src.fragment)
+    return str(dst)

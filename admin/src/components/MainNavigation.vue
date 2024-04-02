@@ -14,7 +14,7 @@
                 :items="events"
                 v-model="event"
             >
-                <template #append>
+                <template #append v-if="authService.canView(PermissionTarget.EVENT)">
                     <v-btn
                         icon="fas fa-calendar-days"
                         variant="plain"
@@ -37,7 +37,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import logoImage from "@/assets/icon.png";
 import NavigationList, { type NavigationLinks } from "@/components/NavigationList.vue";
-import { useAuth } from "@/services/auth";
+import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 
 defineProps<{ primary: NavigationLinks; secondary: NavigationLinks }>();

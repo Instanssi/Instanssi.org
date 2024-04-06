@@ -24,6 +24,10 @@ import {
     faRightToBracket,
     faSitemap,
     faXmark,
+    faStrikethrough,
+    faBold,
+    faItalic,
+    faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     // For vuetify
@@ -73,7 +77,11 @@ export function setupIcons(app: App): void {
         faXmark,
         faFloppyDisk,
         faPenToSquare,
-        faCalendarDays
+        faCalendarDays,
+        faStrikethrough,
+        faBold,
+        faItalic,
+        faUnderline,
     );
     library.add(faGoogle, faSteam, faGithub);
 

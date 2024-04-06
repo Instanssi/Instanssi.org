@@ -13,13 +13,9 @@
             variant="outlined"
             :label="t('BlogPostDialog.labels.title')"
         />
-        <QuillEditor
-            v-model:content="text.value.value"
+        <TextEditor
+            v-model="text.value.value"
             :error-messages="text.errorMessage.value"
-            theme="snow"
-            style="height: 300px"
-            content-type="html"
-            ref="editor"
         />
         <v-switch
             v-model="isPublic.value.value"
@@ -30,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import { QuillEditor } from "@vueup/vue-quill";
 import { type GenericObject, useField, useForm } from "vee-validate";
 import { type Ref, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -41,9 +36,9 @@ import type { BlogEntry } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
 import { useAPI } from "@/services/api";
+import TextEditor from "@/components/TextEditor.vue";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
-const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref();
 
 const { t } = useI18n();
 const api = useAPI();

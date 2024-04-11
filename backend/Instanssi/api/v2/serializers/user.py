@@ -13,4 +13,15 @@ class UserInfoSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "email", "user_permissions", "is_superuser")
+        fields = (
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "user_permissions",
+            "groups",
+            "is_superuser",
+            "date_joined",
+        )
+        read_only_fields = ("date_joined", "is_superuser", "user_permissions")

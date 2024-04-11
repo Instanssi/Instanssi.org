@@ -61,6 +61,7 @@ def test_users_get_users(super_api_client, super_user):
             "user_permissions": [],
             "groups": [],
             "is_superuser": super_user.is_superuser,
+            "is_active": super_user.is_active,
         }
     ]
 
@@ -90,6 +91,7 @@ def test_users_post_new(super_api_client):
         "is_superuser": False,
         "user_permissions": [],
         "date_joined": ANY,
+        "is_active": True,
         **req,
     }
 
@@ -126,6 +128,7 @@ def test_users_put_old(super_api_client, base_user):
         "is_superuser": base_user.is_superuser,
         "user_permissions": [],
         "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
+        "is_active": base_user.is_active,
         **req,
     }
 

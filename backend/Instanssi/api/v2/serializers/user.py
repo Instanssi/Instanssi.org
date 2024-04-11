@@ -16,7 +16,6 @@ class GroupSerializer(ModelSerializer):
 
 class UserInfoSerializer(ModelSerializer):
     user_permissions = PermissionSerializer(many=True, read_only=True)
-    groups = GroupSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -27,8 +26,17 @@ class UserInfoSerializer(ModelSerializer):
             "last_name",
             "email",
             "user_permissions",
-            "groups",
             "is_superuser",
             "date_joined",
         )
         read_only_fields = ("date_joined", "is_superuser", "user_permissions")
+
+
+class UserSerializer(UserInfoSerializer):
+    groups = GroupSerializer(many=True, read_only=True)
+
+    class Meta(UserInfoSerializer.Meta):
+        fields = UserInfoSerializer.Meta.fields + (
+            "groups",
+            "is_active",
+        )

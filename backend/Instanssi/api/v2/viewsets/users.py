@@ -3,13 +3,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 
-from Instanssi.api.v2.serializers.user import UserInfoSerializer
+from Instanssi.api.v2.serializers.user import UserSerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
 
 
 class UserViewSet(PermissionViewSet):
     queryset = get_user_model().objects.all()
-    serializer_class = UserInfoSerializer
+    serializer_class = UserSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,

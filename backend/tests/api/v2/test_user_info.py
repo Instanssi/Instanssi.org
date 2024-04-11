@@ -23,7 +23,6 @@ def test_authenticated_user_info(auth_client, base_user):
             "last_name": base_user.last_name,
             "email": base_user.email,
             "user_permissions": [],
-            "groups": [],
             "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
             "is_superuser": base_user.is_superuser,
         }

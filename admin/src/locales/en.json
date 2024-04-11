@@ -39,6 +39,7 @@
         "site": "Site",
         "blog": "Blog",
         "events": "Events",
+        "users": "Users",
         "logout": "Log out"
       }
     },
@@ -64,6 +65,25 @@
       "loadFailure": "Failed to load events; try again later.",
       "deleteFailure": "Failed to delete event; try again later.",
       "deleteSuccess": "Event deleted!"
+    },
+    "UsersView": {
+      "title": "Users",
+      "newUser": "New user",
+      "loadingUsers": "Loading users ...",
+      "noUsersFound": "No users found.",
+      "confirmDelete": "Do your really want to delete user '{name}' ?",
+      "headers":  {
+        "id": "ID",
+        "userName": "Username",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email address",
+        "dateJoined": "Date joined",
+        "actions": "Actions"
+      },
+      "loadFailure": "Failed to load users; try again later.",
+      "deleteFailure": "Failed to delete user; try again later.",
+      "deleteSuccess": "User deleted!"
     },
     "BlogEditorView": {
       "title": "Blog",
@@ -97,6 +117,20 @@
       "createFailure": "Failed to create blog post; try again later.",
       "editSuccess": "Blog post edited!",
       "createSuccess": "Blog post created!"
+    },
+    "UserDialog": {
+      "title": "User",
+      "labels": {
+        "userName": "Username",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email address",
+        "dateJoined": "Date joined"
+      },
+      "editFailure": "Failed to edit user; try again later.",
+      "createFailure": "Failed to create user; try again later.",
+      "editSuccess": "User edited!",
+      "createSuccess": "User created!"
     },
     "EventDialog": {
       "title": "Event",

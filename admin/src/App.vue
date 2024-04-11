@@ -41,6 +41,12 @@ const primaryLinks: NavigationLinks = [
 ];
 const secondaryLinks: NavigationLinks = [
     {
+        title: t("App.nav.users"),
+        icon: "fas fa-users",
+        to: "users",
+        noEventId: true,
+    },
+    {
         title: t("App.nav.logout"),
         icon: "fas fa-right-from-bracket",
         to: "logout",

@@ -19,6 +19,7 @@ export class UsersService {
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
+     * @param search A search term.
      * @param username
      * @returns PaginatedUserList
      * @throws ApiError
@@ -28,6 +29,7 @@ export class UsersService {
         limit?: number,
         offset?: number,
         ordering?: string,
+        search?: string,
         username?: string
     ): CancelablePromise<PaginatedUserList> {
         return this.httpRequest.request({
@@ -38,6 +40,7 @@ export class UsersService {
                 limit: limit,
                 offset: offset,
                 ordering: ordering,
+                search: search,
                 username: username,
             },
         });

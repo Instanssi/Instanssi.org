@@ -71,7 +71,7 @@
       "newUser": "New user",
       "loadingUsers": "Loading users ...",
       "noUsersFound": "No users found.",
-      "confirmDelete": "Do your really want to delete user '{name}' ?",
+      "confirmDelete": "Do your really want to delete user '{username}' ?",
       "headers":  {
         "id": "ID",
         "userName": "Username",

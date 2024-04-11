@@ -5,7 +5,6 @@
 /* tslint:disable */
 
 /* eslint-disable */
-import type { Group } from "./Group";
 import type { Permission } from "./Permission";
 
 export type UserInfo = {
@@ -18,7 +17,6 @@ export type UserInfo = {
     last_name?: string;
     email?: string;
     readonly user_permissions: Array<Permission>;
-    readonly groups: Array<Group>;
     /**
      * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
      */

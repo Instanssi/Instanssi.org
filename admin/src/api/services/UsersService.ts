@@ -7,10 +7,10 @@
 /* eslint-disable */
 import type { BaseHttpRequest } from "../core/BaseHttpRequest";
 import type { CancelablePromise } from "../core/CancelablePromise";
-import type { PaginatedUserInfoList } from "../models/PaginatedUserInfoList";
-import type { PatchedUserInfoRequest } from "../models/PatchedUserInfoRequest";
-import type { UserInfo } from "../models/UserInfo";
-import type { UserInfoRequest } from "../models/UserInfoRequest";
+import type { PaginatedUserList } from "../models/PaginatedUserList";
+import type { PatchedUserRequest } from "../models/PatchedUserRequest";
+import type { User } from "../models/User";
+import type { UserRequest } from "../models/UserRequest";
 
 export class UsersService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
@@ -20,7 +20,7 @@ export class UsersService {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      * @param username
-     * @returns PaginatedUserInfoList
+     * @returns PaginatedUserList
      * @throws ApiError
      */
     public usersList(
@@ -29,7 +29,7 @@ export class UsersService {
         offset?: number,
         ordering?: string,
         username?: string
-    ): CancelablePromise<PaginatedUserInfoList> {
+    ): CancelablePromise<PaginatedUserList> {
         return this.httpRequest.request({
             method: "GET",
             url: "/api/v2/users/",
@@ -44,10 +44,10 @@ export class UsersService {
     }
     /**
      * @param requestBody
-     * @returns UserInfo
+     * @returns User
      * @throws ApiError
      */
-    public usersCreate(requestBody: UserInfoRequest): CancelablePromise<UserInfo> {
+    public usersCreate(requestBody: UserRequest): CancelablePromise<User> {
         return this.httpRequest.request({
             method: "POST",
             url: "/api/v2/users/",
@@ -57,10 +57,10 @@ export class UsersService {
     }
     /**
      * @param id A unique integer value identifying this käyttäjä.
-     * @returns UserInfo
+     * @returns User
      * @throws ApiError
      */
-    public usersRetrieve(id: number): CancelablePromise<UserInfo> {
+    public usersRetrieve(id: number): CancelablePromise<User> {
         return this.httpRequest.request({
             method: "GET",
             url: "/api/v2/users/{id}/",
@@ -72,10 +72,10 @@ export class UsersService {
     /**
      * @param id A unique integer value identifying this käyttäjä.
      * @param requestBody
-     * @returns UserInfo
+     * @returns User
      * @throws ApiError
      */
-    public usersUpdate(id: number, requestBody: UserInfoRequest): CancelablePromise<UserInfo> {
+    public usersUpdate(id: number, requestBody: UserRequest): CancelablePromise<User> {
         return this.httpRequest.request({
             method: "PUT",
             url: "/api/v2/users/{id}/",
@@ -89,13 +89,13 @@ export class UsersService {
     /**
      * @param id A unique integer value identifying this käyttäjä.
      * @param requestBody
-     * @returns UserInfo
+     * @returns User
      * @throws ApiError
      */
     public usersPartialUpdate(
         id: number,
-        requestBody?: PatchedUserInfoRequest
-    ): CancelablePromise<UserInfo> {
+        requestBody?: PatchedUserRequest
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: "PATCH",
             url: "/api/v2/users/{id}/",

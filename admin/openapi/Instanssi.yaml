@@ -620,7 +620,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedUserInfoList'
+                $ref: '#/components/schemas/PaginatedUserList'
           description: ''
     post:
       operationId: users_create
@@ -630,13 +630,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -646,7 +646,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/User'
           description: ''
   /api/v2/users/{id}/:
     get:
@@ -668,7 +668,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/User'
           description: ''
     put:
       operationId: users_update
@@ -685,13 +685,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserInfoRequest'
+              $ref: '#/components/schemas/UserRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -701,7 +701,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/User'
           description: ''
     patch:
       operationId: users_partial_update
@@ -718,13 +718,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUserInfoRequest'
+              $ref: '#/components/schemas/PatchedUserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUserInfoRequest'
+              $ref: '#/components/schemas/PatchedUserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUserInfoRequest'
+              $ref: '#/components/schemas/PatchedUserRequest'
       security:
       - knoxApiToken: []
       - cookieAuth: []
@@ -733,7 +733,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/User'
           description: ''
     delete:
       operationId: users_destroy
@@ -1120,7 +1120,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Event'
-    PaginatedUserInfoList:
+    PaginatedUserList:
       type: object
       required:
       - count
@@ -1142,7 +1142,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/UserInfo'
+            $ref: '#/components/schemas/User'
     PatchedBlogEntryRequest:
       type: object
       properties:
@@ -1228,7 +1228,7 @@ components:
           title: Tapahtuman pääsivu
           description: URL Tapahtuman pääsivustolle
           maxLength: 200
-    PatchedUserInfoRequest:
+    PatchedUserRequest:
       type: object
       properties:
         username:
@@ -1252,6 +1252,11 @@ components:
           format: email
           title: Sähköpostiosoite
           maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
     Permission:
       type: object
       properties:
@@ -1295,6 +1300,65 @@ components:
       - method
       - name
       - url
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        user_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Pääkäyttäjä
+          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
+            erikseen luetella.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Liittynyt
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
+      required:
+      - date_joined
+      - groups
+      - id
+      - is_superuser
+      - user_permissions
+      - username
     UserInfo:
       type: object
       properties:
@@ -1326,11 +1390,6 @@ components:
           items:
             $ref: '#/components/schemas/Permission'
           readOnly: true
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-          readOnly: true
         is_superuser:
           type: boolean
           readOnly: true
@@ -1344,12 +1403,25 @@ components:
           title: Liittynyt
       required:
       - date_joined
-      - groups
       - id
       - is_superuser
       - user_permissions
       - username
-    UserInfoRequest:
+    UserLoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - password
+      - username
+    UserRequest:
       type: object
       properties:
         username:
@@ -1373,21 +1445,12 @@ components:
           format: email
           title: Sähköpostiosoite
           maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
       required:
-      - username
-    UserLoginRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          minLength: 1
-          maxLength: 255
-        password:
-          type: string
-          minLength: 1
-          maxLength: 255
-      required:
-      - password
       - username
   securitySchemes:
     cookieAuth:

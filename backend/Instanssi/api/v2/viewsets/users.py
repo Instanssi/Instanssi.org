@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
 
 from Instanssi.api.v2.serializers.user import UserSerializer
@@ -13,6 +13,7 @@ class UserViewSet(PermissionViewSet):
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,
+        SearchFilter,
         DjangoFilterBackend,
     )
     ordering_fields = ("id", "username", "first_name", "last_name", "email")

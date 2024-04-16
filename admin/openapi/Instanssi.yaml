@@ -22,6 +22,7 @@ paths:
               $ref: '#/components/schemas/UserLoginRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       - {}
       responses:
@@ -37,6 +38,7 @@ paths:
       tags:
       - auth
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '204':
@@ -103,6 +105,7 @@ paths:
       tags:
       - blog_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -128,6 +131,7 @@ paths:
               $ref: '#/components/schemas/BlogEntryRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '201':
@@ -149,6 +153,7 @@ paths:
       tags:
       - blog_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -181,6 +186,7 @@ paths:
               $ref: '#/components/schemas/BlogEntryRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -212,6 +218,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedBlogEntryRequest'
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -232,6 +239,7 @@ paths:
       tags:
       - blog_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '204':
@@ -265,6 +273,7 @@ paths:
       tags:
       - events
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -290,6 +299,7 @@ paths:
               $ref: '#/components/schemas/EventRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '201':
@@ -311,6 +321,7 @@ paths:
       tags:
       - events
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -343,6 +354,7 @@ paths:
               $ref: '#/components/schemas/EventRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -374,6 +386,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedEventRequest'
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -394,6 +407,7 @@ paths:
       tags:
       - events
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '204':
@@ -423,6 +437,7 @@ paths:
       tags:
       - user_compo_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -445,6 +460,7 @@ paths:
               $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '201':
@@ -465,6 +481,7 @@ paths:
       tags:
       - user_compo_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -493,6 +510,7 @@ paths:
               $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -520,6 +538,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -539,6 +558,7 @@ paths:
       tags:
       - user_compo_entries
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '204':
@@ -549,6 +569,7 @@ paths:
       tags:
       - user_info
       security:
+      - knoxApiToken: []
       - cookieAuth: []
       responses:
         '200':
@@ -559,6 +580,184 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserInfo'
           description: ''
+  /api/v2/users/:
+    get:
+      operationId: users_list
+      parameters:
+      - in: query
+        name: email
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: username
+        schema:
+          type: string
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v2/users/{id}/:
+    get:
+      operationId: users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
 components:
   schemas:
     AlternateEntryFile:
@@ -839,6 +1038,25 @@ components:
       required:
       - date
       - name
+    Group:
+      type: object
+      properties:
+        name:
+          type: string
+          title: Nimi
+          maxLength: 150
+      required:
+      - name
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          maxLength: 150
+      required:
+      - name
     PaginatedBlogEntryList:
       type: object
       required:
@@ -908,6 +1126,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Event'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     PatchedBlogEntryRequest:
       type: object
       properties:
@@ -993,6 +1234,35 @@ components:
           title: Tapahtuman pääsivu
           description: URL Tapahtuman pääsivustolle
           maxLength: 200
+    PatchedUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
     Permission:
       type: object
       properties:
@@ -1002,6 +1272,22 @@ components:
           maxLength: 255
         codename:
           type: string
+          title: Tunniste
+          maxLength: 100
+      required:
+      - codename
+      - name
+    PermissionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          maxLength: 255
+        codename:
+          type: string
+          minLength: 1
           title: Tunniste
           maxLength: 100
       required:
@@ -1020,12 +1306,19 @@ components:
       - method
       - name
       - url
-    UserInfo:
+    User:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
         first_name:
           type: string
           title: Etunimi
@@ -1046,12 +1339,80 @@ components:
           readOnly: true
         is_superuser:
           type: boolean
+          readOnly: true
           title: Pääkäyttäjä
           description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
             erikseen luetella.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Liittynyt
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
       required:
+      - date_joined
+      - groups
       - id
+      - is_superuser
       - user_permissions
+      - username
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        user_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Pääkäyttäjä
+          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
+            erikseen luetella.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Liittynyt
+      required:
+      - date_joined
+      - id
+      - is_superuser
+      - user_permissions
+      - username
     UserLoginRequest:
       type: object
       properties:
@@ -1066,8 +1427,44 @@ components:
       required:
       - password
       - username
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
+      required:
+      - username
   securitySchemes:
     cookieAuth:
       type: apiKey
       in: cookie
       name: sessionid
+    knoxApiToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

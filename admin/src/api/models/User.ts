@@ -5,9 +5,10 @@
 /* tslint:disable */
 
 /* eslint-disable */
+import type { Group } from "./Group";
 import type { Permission } from "./Permission";
 
-export type UserInfo = {
+export type User = {
     readonly id: number;
     /**
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
@@ -22,4 +23,9 @@ export type UserInfo = {
      */
     readonly is_superuser: boolean;
     readonly date_joined: string;
+    readonly groups: Array<Group>;
+    /**
+     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     */
+    is_active?: boolean;
 };

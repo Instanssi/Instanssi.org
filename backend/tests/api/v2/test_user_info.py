@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 
 BASE_URL = "/api/v2/user_info/"
 
@@ -17,10 +18,12 @@ def test_authenticated_user_info(auth_client, base_user):
     assert response.data == [
         {
             "id": base_user.id,
+            "username": base_user.username,
             "first_name": base_user.first_name,
             "last_name": base_user.last_name,
             "email": base_user.email,
             "user_permissions": [],
+            "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
             "is_superuser": base_user.is_superuser,
         }
     ]

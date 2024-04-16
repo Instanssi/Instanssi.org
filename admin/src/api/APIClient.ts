@@ -13,6 +13,7 @@ import { BlogEntriesService } from "./services/BlogEntriesService";
 import { EventsService } from "./services/EventsService";
 import { UserCompoEntriesService } from "./services/UserCompoEntriesService";
 import { UserInfoService } from "./services/UserInfoService";
+import { UsersService } from "./services/UsersService";
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class APIClient {
@@ -21,6 +22,7 @@ export class APIClient {
     public readonly events: EventsService;
     public readonly userCompoEntries: UserCompoEntriesService;
     public readonly userInfo: UserInfoService;
+    public readonly users: UsersService;
     public readonly request: BaseHttpRequest;
     constructor(
         config?: Partial<OpenAPIConfig>,
@@ -42,5 +44,6 @@ export class APIClient {
         this.events = new EventsService(this.request);
         this.userCompoEntries = new UserCompoEntriesService(this.request);
         this.userInfo = new UserInfoService(this.request);
+        this.users = new UsersService(this.request);
     }
 }

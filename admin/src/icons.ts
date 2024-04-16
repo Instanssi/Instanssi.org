@@ -23,6 +23,7 @@ import {
     faRightFromBracket,
     faRightToBracket,
     faSitemap,
+    faUsers,
     faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -73,7 +74,8 @@ export function setupIcons(app: App): void {
         faXmark,
         faFloppyDisk,
         faPenToSquare,
-        faCalendarDays
+        faCalendarDays,
+        faUsers
     );
     library.add(faGoogle, faSteam, faGithub);
 

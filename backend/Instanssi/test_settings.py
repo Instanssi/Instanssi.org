@@ -1,5 +1,6 @@
 # flake8: noqa
 # NOTE! THIS FILE IS FOR CI AND UNITTEST TESTING ENVIRONMENT!
+from zoneinfo import ZoneInfo
 
 from .common_config import *
 
@@ -25,6 +26,7 @@ GOOGLE_API_KEY = ""
 # Generic stuff
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 TIME_ZONE = "Europe/Helsinki"
+ZONE_INFO = ZoneInfo(TIME_ZONE)
 LANGUAGE_CODE = "fi-FI"
 
 # Make this unique, and don't share it with anybody.

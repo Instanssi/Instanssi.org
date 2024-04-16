@@ -41,6 +41,16 @@ const router = createRouter({
             component: () => import("@/views/EventView.vue"),
         },
         {
+            path: "/users",
+            name: "users",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.USER,
+            },
+            props: true,
+            component: () => import("@/views/UsersView.vue"),
+        },
+        {
             path: "/:eventId(\\d+)/blog",
             name: "blog",
             meta: {

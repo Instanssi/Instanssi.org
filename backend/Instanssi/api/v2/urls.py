@@ -9,6 +9,7 @@ from Instanssi.api.v2.viewsets.blog_entries import BlogEntryViewSet
 from Instanssi.api.v2.viewsets.events import EventViewSet
 from Instanssi.api.v2.viewsets.user.user_compo_entry import UserCompoEntryViewSet
 from Instanssi.api.v2.viewsets.user.user_info import UserInfoViewSet
+from Instanssi.api.v2.viewsets.users import UserViewSet
 
 app_name = "api-v2"
 
@@ -28,6 +29,7 @@ router = V2CustomRouter()
 # Generic data API
 # This should contain full read-write API for all data along with permission checking
 router.register("events", EventViewSet, basename="events")
+router.register("users", UserViewSet, basename="users")
 router.register("blog_entries", BlogEntryViewSet, basename="blog_entries")
 
 # Authentication API

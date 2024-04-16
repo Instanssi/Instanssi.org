@@ -1,14 +1,8 @@
 /* generated using openapi-typescript-codegen -- do not edit */
-
 /* istanbul ignore file */
-
 /* tslint:disable */
-
 /* eslint-disable */
-import type { Permission } from "./Permission";
-
-export type UserInfo = {
-    readonly id: number;
+export type UserRequest = {
     /**
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
@@ -16,10 +10,8 @@ export type UserInfo = {
     first_name?: string;
     last_name?: string;
     email?: string;
-    readonly user_permissions: Array<Permission>;
     /**
-     * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
+     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
-    readonly is_superuser: boolean;
-    readonly date_joined: string;
+    is_active?: boolean;
 };

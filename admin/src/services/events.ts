@@ -21,7 +21,7 @@ export function useEvents() {
     }
 
     async function refreshEvents(): Promise<void> {
-        const pages = await api.events.eventsList(100);
+        const pages = await api.events.eventsList({ limit: 1000 });
         events.value = pages.results;
     }
 

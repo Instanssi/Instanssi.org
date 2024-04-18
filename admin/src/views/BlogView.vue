@@ -145,15 +145,11 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
-    const { limit, offset, sortBy } = getLoadArgs(args);
     try {
-        const { count, results } = await api.blogEntries.blogEntriesList(
-            parseInt(props.eventId, 10),
-            limit,
-            offset,
-            sortBy,
-            args.search
-        );
+        const { count, results } = await api.blogEntries.blogEntriesList({
+            event: parseInt(props.eventId, 10),
+            ...getLoadArgs(args),
+        });
         blogPosts.value = results;
         totalItems.value = count;
     } catch (e) {
@@ -171,7 +167,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.blogEntries.blogEntriesDestroy(item.id);
+            await api.blogEntries.blogEntriesDestroy({ id: item.id });
             toast.success(t("BlogEditorView.deleteSuccess"));
         } catch (e) {
             toast.error(t("BlogEditorView.deleteFailure"));
@@ -182,7 +178,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
 }
 
 async function editPost(id: number): Promise<void> {
-    const item = await api.blogEntries.blogEntriesRetrieve(id);
+    const item = await api.blogEntries.blogEntriesRetrieve({ id });
     if (await dialog.value!.modal(eventId.value, item)) {
         refreshKey.value += 1;
     }

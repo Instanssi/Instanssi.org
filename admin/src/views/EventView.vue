@@ -139,9 +139,8 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
-    const { offset, limit, sortBy } = getLoadArgs(args);
     try {
-        const { count, results } = await api.events.eventsList(limit, undefined, offset, sortBy);
+        const { count, results } = await api.events.eventsList(getLoadArgs(args));
         events.value = results;
         totalItems.value = count;
     } catch (e) {
@@ -159,7 +158,7 @@ async function deleteEvent(item: Event): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.events.eventsDestroy(item.id);
+            await api.events.eventsDestroy({ id: item.id });
             toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
             toast.error(t("EventView.deleteFailure"));
@@ -171,7 +170,7 @@ async function deleteEvent(item: Event): Promise<void> {
 }
 
 async function editEvent(id: number): Promise<void> {
-    const item = await api.events.eventsRetrieve(id);
+    const item = await api.events.eventsRetrieve({ id });
     if (await dialog.value!.modal(item)) {
         refreshKey.value += 1;
         await eventService.refreshEvents();

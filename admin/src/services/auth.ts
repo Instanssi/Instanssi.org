@@ -57,7 +57,7 @@ export function useAuth() {
 
     async function login(username: string, password: string): Promise<boolean> {
         try {
-            await api.auth.login({ username, password });
+            await api.auth.login({ requestBody: { username, password } });
             await refreshStatus();
             return true;
         } catch (e) {
@@ -70,7 +70,7 @@ export function useAuth() {
     }
 
     async function getSocialAuthURLs(): Promise<SocialAuthURL[]> {
-        return api.auth.getSocialAuthUrls("/management");
+        return api.auth.getSocialAuthUrls({ next: "/management" });
     }
 
     async function tryFetchUserData(): Promise<UserInfo | undefined> {

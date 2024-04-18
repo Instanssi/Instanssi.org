@@ -12,6 +12,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  ignorePatterns: ['src/api/**/*'],
   rules: {
     'vue/valid-v-slot': ['error', {
       allowModifiers: true,

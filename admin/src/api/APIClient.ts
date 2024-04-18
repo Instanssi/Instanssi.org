@@ -1,21 +1,16 @@
-/* generated using openapi-typescript-codegen -- do not edit */
-
-/* istanbul ignore file */
-
-/* tslint:disable */
-
-/* eslint-disable */
 import { AxiosHttpRequest } from "./core/AxiosHttpRequest";
 import type { BaseHttpRequest } from "./core/BaseHttpRequest";
 import type { OpenAPIConfig } from "./core/OpenAPI";
-import { AuthService } from "./services/AuthService";
-import { BlogEntriesService } from "./services/BlogEntriesService";
-import { EventsService } from "./services/EventsService";
-import { UserCompoEntriesService } from "./services/UserCompoEntriesService";
-import { UserInfoService } from "./services/UserInfoService";
-import { UsersService } from "./services/UsersService";
+import { Interceptors } from "./core/OpenAPI";
+import { AuthService } from "./services.gen";
+import { BlogEntriesService } from "./services.gen";
+import { EventsService } from "./services.gen";
+import { UserCompoEntriesService } from "./services.gen";
+import { UserInfoService } from "./services.gen";
+import { UsersService } from "./services.gen";
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
+
 export class APIClient {
     public readonly auth: AuthService;
     public readonly blogEntries: BlogEntriesService;
@@ -23,7 +18,9 @@ export class APIClient {
     public readonly userCompoEntries: UserCompoEntriesService;
     public readonly userInfo: UserInfoService;
     public readonly users: UsersService;
+
     public readonly request: BaseHttpRequest;
+
     constructor(
         config?: Partial<OpenAPIConfig>,
         HttpRequest: HttpRequestConstructor = AxiosHttpRequest
@@ -38,7 +35,12 @@ export class APIClient {
             PASSWORD: config?.PASSWORD,
             HEADERS: config?.HEADERS,
             ENCODE_PATH: config?.ENCODE_PATH,
+            interceptors: {
+                request: new Interceptors(),
+                response: new Interceptors(),
+            },
         });
+
         this.auth = new AuthService(this.request);
         this.blogEntries = new BlogEntriesService(this.request);
         this.events = new EventsService(this.request);

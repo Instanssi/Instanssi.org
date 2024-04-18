@@ -16,7 +16,8 @@ export type LoadArgs = {
 export type ApiArgs = {
     offset: number;
     limit: number;
-    sortBy: string | undefined;
+    ordering: string | undefined;
+    search: string;
 };
 
 /**
@@ -26,7 +27,8 @@ export function getLoadArgs(args: LoadArgs): ApiArgs {
     return {
         offset: (args.page - 1) * args.itemsPerPage,
         limit: args.itemsPerPage,
-        sortBy: getSortString(args),
+        ordering: getSortString(args),
+        search: args.search,
     };
 }
 

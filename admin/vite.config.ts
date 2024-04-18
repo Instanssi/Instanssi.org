@@ -47,6 +47,6 @@ export default defineConfig({
                 inline: ["vuetify"],
             },
         },
-        setupFiles: ["tests/unit.setup.js"],
+        setupFiles: ["tests/unit.setup.ts"],
     },
 });

@@ -13,7 +13,7 @@
     "format": "prettier --write *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
     "lint-check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "format-check": "prettier -c *.config.ts env.d.ts src/**/*.ts src/**/*.vue",
-    "generate-api": "openapi -i openapi/instanssi.yaml -c axios --name APIClient -o src/api/ && prettier --write src/api/**/*.ts",
+    "generate-api": "openapi-ts -i openapi/instanssi.yaml -c axios --name APIClient -o src/api/",
     "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
   },
   "dependencies": {
@@ -40,6 +40,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.40.2",
     "@rushstack/eslint-patch": "^1.10.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/node20": "^20.1.4",
@@ -54,7 +55,6 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",
     "jsdom": "^24.0.0",
-    "openapi-typescript-codegen": "^0.29.0",
     "prettier": "^3.2.5",
     "sass": "^1.75.0",
     "typescript": "~5.4.5",

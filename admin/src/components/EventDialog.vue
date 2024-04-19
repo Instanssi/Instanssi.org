@@ -98,11 +98,13 @@ const submit = handleSubmit(async (values) => {
 async function createItem(values: GenericObject) {
     try {
         await api.events.eventsCreate({
-            name: values.name,
-            date: values.date,
-            archived: values.archived,
-            tag: values.tag,
-            mainurl: values.mainUrl,
+            requestBody: {
+                name: values.name,
+                date: values.date,
+                archived: values.archived,
+                tag: values.tag,
+                mainurl: values.mainUrl,
+            },
         });
         toast.success(t("EventDialog.createSuccess"));
         return true;
@@ -115,12 +117,15 @@ async function createItem(values: GenericObject) {
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
-        await api.events.eventsPartialUpdate(itemId, {
-            name: values.name,
-            date: values.date,
-            archived: values.archived,
-            tag: values.tag,
-            mainurl: values.mainUrl,
+        await api.events.eventsPartialUpdate({
+            id: itemId,
+            requestBody: {
+                name: values.name,
+                date: values.date,
+                archived: values.archived,
+                tag: values.tag,
+                mainurl: values.mainUrl,
+            },
         });
         toast.success(t("EventDialog.editSuccess"));
         return true;

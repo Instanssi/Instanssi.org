@@ -144,16 +144,8 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
-    const { offset, limit, sortBy } = getLoadArgs(args);
     try {
-        const { count, results } = await api.users.usersList(
-            undefined,
-            limit,
-            offset,
-            sortBy,
-            args.search,
-            undefined
-        );
+        const { count, results } = await api.users.usersList(getLoadArgs(args));
         users.value = results;
         totalItems.value = count;
     } catch (e) {
@@ -171,7 +163,7 @@ async function deleteUser(item: User): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.users.usersDestroy(item.id);
+            await api.users.usersDestroy({ id: item.id });
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
             toast.error(t("UsersView.deleteFailure"));
@@ -182,7 +174,7 @@ async function deleteUser(item: User): Promise<void> {
 }
 
 async function editUser(id: number): Promise<void> {
-    const item = await api.users.usersRetrieve(id);
+    const item = await api.users.usersRetrieve({ id });
     if (await dialog.value!.modal(item)) {
         refreshKey.value += 1;
     }

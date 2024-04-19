@@ -1,13 +1,5 @@
-/* generated using openapi-typescript-codegen -- do not edit */
-
-/* istanbul ignore file */
-
-/* tslint:disable */
-
-/* eslint-disable */
 import axios from "axios";
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import FormData from "form-data";
 
 import { ApiError } from "./ApiError";
 import type { ApiRequestOptions } from "./ApiRequestOptions";
@@ -16,34 +8,19 @@ import { CancelablePromise } from "./CancelablePromise";
 import type { OnCancel } from "./CancelablePromise";
 import type { OpenAPIConfig } from "./OpenAPI";
 
-export const isDefined = <T>(
-    value: T | null | undefined
-): value is Exclude<T, null | undefined> => {
-    return value !== undefined && value !== null;
-};
-
-export const isString = (value: any): value is string => {
+export const isString = (value: unknown): value is string => {
     return typeof value === "string";
 };
 
-export const isStringWithValue = (value: any): value is string => {
+export const isStringWithValue = (value: unknown): value is string => {
     return isString(value) && value !== "";
 };
 
 export const isBlob = (value: any): value is Blob => {
-    return (
-        typeof value === "object" &&
-        typeof value.type === "string" &&
-        typeof value.stream === "function" &&
-        typeof value.arrayBuffer === "function" &&
-        typeof value.constructor === "function" &&
-        typeof value.constructor.name === "string" &&
-        /^(Blob|File)$/.test(value.constructor.name) &&
-        /^(Blob|File)$/.test(value[Symbol.toStringTag])
-    );
+    return value instanceof Blob;
 };
 
-export const isFormData = (value: any): value is FormData => {
+export const isFormData = (value: unknown): value is FormData => {
     return value instanceof FormData;
 };
 
@@ -60,38 +37,30 @@ export const base64 = (str: string): string => {
     }
 };
 
-export const getQueryString = (params: Record<string, any>): string => {
+export const getQueryString = (params: Record<string, unknown>): string => {
     const qs: string[] = [];
 
-    const append = (key: string, value: any) => {
+    const append = (key: string, value: unknown) => {
         qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
     };
 
-    const process = (key: string, value: any) => {
-        if (isDefined(value)) {
-            if (Array.isArray(value)) {
-                value.forEach((v) => {
-                    process(key, v);
-                });
-            } else if (typeof value === "object") {
-                Object.entries(value).forEach(([k, v]) => {
-                    process(`${key}[${k}]`, v);
-                });
-            } else {
-                append(key, value);
-            }
+    const encodePair = (key: string, value: unknown) => {
+        if (value === undefined || value === null) {
+            return;
+        }
+
+        if (Array.isArray(value)) {
+            value.forEach((v) => encodePair(key, v));
+        } else if (typeof value === "object") {
+            Object.entries(value).forEach(([k, v]) => encodePair(`${key}[${k}]`, v));
+        } else {
+            append(key, value);
         }
     };
 
-    Object.entries(params).forEach(([key, value]) => {
-        process(key, value);
-    });
+    Object.entries(params).forEach(([key, value]) => encodePair(key, value));
 
-    if (qs.length > 0) {
-        return `?${qs.join("&")}`;
-    }
-
-    return "";
+    return qs.length ? `?${qs.join("&")}` : "";
 };
 
 const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
@@ -106,18 +75,15 @@ const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
             return substring;
         });
 
-    const url = `${config.BASE}${path}`;
-    if (options.query) {
-        return `${url}${getQueryString(options.query)}`;
-    }
-    return url;
+    const url = config.BASE + path;
+    return options.query ? url + getQueryString(options.query) : url;
 };
 
 export const getFormData = (options: ApiRequestOptions): FormData | undefined => {
     if (options.formData) {
         const formData = new FormData();
 
-        const process = (key: string, value: any) => {
+        const process = (key: string, value: unknown) => {
             if (isString(value) || isBlob(value)) {
                 formData.append(key, value);
             } else {
@@ -126,7 +92,7 @@ export const getFormData = (options: ApiRequestOptions): FormData | undefined =>
         };
 
         Object.entries(options.formData)
-            .filter(([_, value]) => isDefined(value))
+            .filter(([, value]) => value !== undefined && value !== null)
             .forEach(([key, value]) => {
                 if (Array.isArray(value)) {
                     value.forEach((v) => process(key, v));
@@ -154,8 +120,7 @@ export const resolve = async <T>(
 
 export const getHeaders = async (
     config: OpenAPIConfig,
-    options: ApiRequestOptions,
-    formData?: FormData
+    options: ApiRequestOptions
 ): Promise<Record<string, string>> => {
     const [token, username, password, additionalHeaders] = await Promise.all([
         resolve(options, config.TOKEN),
@@ -164,16 +129,12 @@ export const getHeaders = async (
         resolve(options, config.HEADERS),
     ]);
 
-    const formHeaders =
-        (typeof formData?.getHeaders === "function" && formData?.getHeaders()) || {};
-
     const headers = Object.entries({
         Accept: "application/json",
         ...additionalHeaders,
         ...options.headers,
-        ...formHeaders,
     })
-        .filter(([_, value]) => isDefined(value))
+        .filter(([, value]) => value !== undefined && value !== null)
         .reduce(
             (headers, [key, value]) => ({
                 ...headers,
@@ -201,12 +162,16 @@ export const getHeaders = async (
         } else if (!isFormData(options.body)) {
             headers["Content-Type"] = "application/json";
         }
+    } else if (options.formData !== undefined) {
+        if (options.mediaType) {
+            headers["Content-Type"] = options.mediaType;
+        }
     }
 
     return headers;
 };
 
-export const getRequestBody = (options: ApiRequestOptions): any => {
+export const getRequestBody = (options: ApiRequestOptions): unknown => {
     if (options.body) {
         return options.body;
     }
@@ -217,25 +182,28 @@ export const sendRequest = async <T>(
     config: OpenAPIConfig,
     options: ApiRequestOptions,
     url: string,
-    body: any,
+    body: unknown,
     formData: FormData | undefined,
     headers: Record<string, string>,
     onCancel: OnCancel,
     axiosClient: AxiosInstance
 ): Promise<AxiosResponse<T>> => {
-    const source = axios.CancelToken.source();
+    const controller = new AbortController();
 
-    const requestConfig: AxiosRequestConfig = {
-        url,
-        headers,
+    let requestConfig: AxiosRequestConfig = {
         data: body ?? formData,
+        headers,
         method: options.method,
+        signal: controller.signal,
+        url,
         withCredentials: config.WITH_CREDENTIALS,
-        withXSRFToken: config.CREDENTIALS === "include" ? config.WITH_CREDENTIALS : false,
-        cancelToken: source.token,
     };
 
-    onCancel(() => source.cancel("The user aborted a request."));
+    onCancel(() => controller.abort());
+
+    for (const fn of config.interceptors.request._fns) {
+        requestConfig = await fn(requestConfig);
+    }
 
     try {
         return await axiosClient.request(requestConfig);
@@ -249,7 +217,7 @@ export const sendRequest = async <T>(
 };
 
 export const getResponseHeader = (
-    response: AxiosResponse<any>,
+    response: AxiosResponse<unknown>,
     responseHeader?: string
 ): string | undefined => {
     if (responseHeader) {
@@ -261,7 +229,7 @@ export const getResponseHeader = (
     return undefined;
 };
 
-export const getResponseBody = (response: AxiosResponse<any>): any => {
+export const getResponseBody = (response: AxiosResponse<unknown>): unknown => {
     if (response.status !== 204) {
         return response.data;
     }
@@ -272,11 +240,44 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
     const errors: Record<number, string> = {
         400: "Bad Request",
         401: "Unauthorized",
+        402: "Payment Required",
         403: "Forbidden",
         404: "Not Found",
+        405: "Method Not Allowed",
+        406: "Not Acceptable",
+        407: "Proxy Authentication Required",
+        408: "Request Timeout",
+        409: "Conflict",
+        410: "Gone",
+        411: "Length Required",
+        412: "Precondition Failed",
+        413: "Payload Too Large",
+        414: "URI Too Long",
+        415: "Unsupported Media Type",
+        416: "Range Not Satisfiable",
+        417: "Expectation Failed",
+        418: "Im a teapot",
+        421: "Misdirected Request",
+        422: "Unprocessable Content",
+        423: "Locked",
+        424: "Failed Dependency",
+        425: "Too Early",
+        426: "Upgrade Required",
+        428: "Precondition Required",
+        429: "Too Many Requests",
+        431: "Request Header Fields Too Large",
+        451: "Unavailable For Legal Reasons",
         500: "Internal Server Error",
+        501: "Not Implemented",
         502: "Bad Gateway",
         503: "Service Unavailable",
+        504: "Gateway Timeout",
+        505: "HTTP Version Not Supported",
+        506: "Variant Also Negotiates",
+        507: "Insufficient Storage",
+        508: "Loop Detected",
+        510: "Not Extended",
+        511: "Network Authentication Required",
         ...options.errors,
     };
 
@@ -322,10 +323,10 @@ export const request = <T>(
             const url = getUrl(config, options);
             const formData = getFormData(options);
             const body = getRequestBody(options);
-            const headers = await getHeaders(config, options, formData);
+            const headers = await getHeaders(config, options);
 
             if (!onCancel.isCancelled) {
-                const response = await sendRequest<T>(
+                let response = await sendRequest<T>(
                     config,
                     options,
                     url,
@@ -335,6 +336,11 @@ export const request = <T>(
                     onCancel,
                     axiosClient
                 );
+
+                for (const fn of config.interceptors.response._fns) {
+                    response = await fn(response);
+                }
+
                 const responseBody = getResponseBody(response);
                 const responseHeader = getResponseHeader(response, options.responseHeader);
 

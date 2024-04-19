@@ -19,7 +19,8 @@ describe('getLoadArgs', () => {
         expect(out).toStrictEqual({
             limit: 10,
             offset: 40,
-            sortBy: "-test"
+            ordering: "-test",
+            search: "search",
         });
     });
 });

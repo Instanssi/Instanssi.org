@@ -11,7 +11,7 @@ class BlogEntrySerializer(ModelSerializer):
     created_by = SerializerMethodField()
 
     def get_created_by(self, entry: BlogEntry) -> str:
-        return entry.user.get_username()
+        return entry.user.get_username() if entry.user else ""
 
     class Meta:
         model = BlogEntry

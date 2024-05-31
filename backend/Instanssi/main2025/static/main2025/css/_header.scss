@@ -1,0 +1,293 @@
+#page-header {
+    position: relative;
+
+    > .container {
+        height: $main-header-height-lg;
+        position: relative;
+    }
+
+    .header-title {
+        height: $main-header-height-lg;
+    }
+
+    a {
+        text-decoration: none; // no underline pls
+    }
+
+    // logo and info
+
+    .header-info {
+        height: $main-header-height-lg;
+        // position to prevent the (positioned) art from covering this
+        position: relative;
+
+        color: #fff;
+
+
+        &:after {
+            // The big logo
+            margin-left: -12px; // fix alignment with content
+            content: '';
+            display: block;
+            position: absolute;
+            top: 36px;
+            width: 480px;
+            height: 200px;
+            max-width: 100%;
+            background: url('../images/logoteksti.png') no-repeat;
+            background-size: contain;
+            background-position: center left;
+            transform: rotate(-5deg);
+            @media screen and (max-width: ($screen-xs-max - 1px)) {
+                // tweak logo to align with text
+                margin-left: 0;
+                top: 0px;
+                max-width: 75%;
+                height: 100px;
+            }
+        }
+
+        h1, .tagline, .time {
+            margin-left: $spacer;
+            font-family: $title-font-family;
+            font-weight: 600;
+            color: #fff;
+        }
+        .tagline, .time {
+            margin-bottom: 5px;
+            $shadow: #000;
+            // Make text more readable against a bright background
+            text-shadow: $shadow 1px 1px 0;
+            text-shadow: $shadow 1px 1px 0, $shadow 2px 2px 0, $shadow 1.5px 1.5px 0.5px;
+        }
+        .tagline {
+            font-size: 28px;
+            position: absolute;
+            top: 180px;
+            left: 0;
+            transform: rotate(-5deg);
+        }
+        .time {
+            position: absolute;
+            font-size: 24px;
+            top: 180px;
+            left: 64px;
+            transform: rotate(-5deg);
+        }
+
+        h1 {
+            font-size: 55px;
+            text-transform: uppercase;
+            padding: 0;
+            margin: 0;
+            text-shadow: #124 4px 0 3px, #124 -4px 0 3px;
+            font-weight: 800;
+            font-family: 'Exo 2', sans-serif;
+            position: absolute;
+            top: 90px;
+            transform: rotate(-5deg);
+        }
+
+    }
+
+    // Mobile menu button
+    .nav-btn {
+        display: none;
+        // margin: 8px 0 0;
+        padding: 8px 8px;
+        color: #fff;
+        background: rgba(#000, 0.6);
+        box-shadow: rgba(#000, .25) 1px 1px 4px;
+        cursor: pointer;
+
+        .fa {
+            // mimic logo's styling with text color and shadow
+            color: #fff;
+            text-shadow: rgba($theme-color, .5) 0 0 8px;
+        }
+
+        &:active {
+            background: $theme-color-bright;
+        }
+    }
+
+    .main-nav-container {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        width: 100%;
+        padding: 0 ($spacer * 2) 0;
+        bottom: $spacer * 2;
+    }
+
+    // Navigation menu
+    nav.main-nav {
+        padding: 0;
+        background: rgba($theme-color-dark, 0.9);
+        ul {
+            border: 0;
+            li {
+                // Cancel Bootstrap 3's nav bottom border trick.
+                margin-bottom: 0;
+                a {
+                    font-family: $title-font-family;
+                    text-transform: uppercase;
+                    transition: background-image $transition-large ease;
+                    text-decoration: none;
+
+                    padding: ($spacer * 1.5) ($spacer * 2);
+
+                    color: #fff;
+                    background: rgba(#fff, 0);
+                    // Bootstrap default is 2px
+                    margin-right: 0;
+
+                    @media screen and (max-width: $screen-md-max) {
+                        // tighten navbar layout a bit to fit all links
+                        padding: 12px;
+                    }
+
+                    border: 0;
+
+                    position: relative;
+                    $link-hover-bg: $theme-color-bright;
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: linear-gradient(
+                            rgba($link-hover-bg, 0.0),
+                            rgba($link-hover-bg, 0.33)
+                        );
+                        transition: opacity .3s ease-out;
+                        opacity: 0;
+                    }
+
+                    &:hover {
+                        border: 0;
+
+                        &:after {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+            .menu-item-right {
+                float: right;
+            }
+            li.active {
+                background: $theme-color-bright;
+                a {
+                    color: #fff;
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+            }
+            li a {
+                padding-left: 15px;
+                position: relative;
+            }
+            li a::before {
+                margin-right: 8px;
+                display: inline-block;
+            }
+            .item-store a::before { @include awesome-glyph('\f07a'); }
+            .item-blog a::before { @include awesome-glyph('\f015'); }
+        }
+    }
+}
+
+#page-header {
+    @media screen and (max-width: $screen-md-max) {
+        &, & > .container, .header-info, .header-title {
+            height: $main-header-height-md;
+        }
+        .header-info {
+            height: 220px;
+            .time {
+                top: 155px;
+                left: 36px;
+            }
+            &:after {
+                max-height: 160px;
+            }
+            .tagline {
+                font-size: 20px;
+                top: 72%;
+            }
+        }
+    }
+    @media screen and (max-width: $screen-sm-max) {
+        height: auto;
+
+        & > .container, .header-info, .header-title {
+            height: 155px;
+        }
+        .main-nav-container {
+            width: auto;
+            padding: ($spacer * 2) 0 0;
+            margin: ($spacer * 2) 0 0;
+            z-index: 1;
+            display: block;
+            position: relative;
+        }
+        .header-info {
+            .time {
+                top: 110px;
+                font-size: 20px;
+                left: 48px;
+            }
+            &:after {
+                top: 0;
+                height: 150px;
+            }
+        }
+        & > .container {
+            height: auto;
+            background: none;
+        }
+        .header-title {
+            height: auto;
+            background-size: cover;
+        }
+    }
+    @media screen and (max-width: $screen-xs-max) {
+        & > .container {
+            height: auto;
+        }
+        nav.main-nav {
+            background: $theme-color-dark;
+        }
+        .main-nav-container {
+            padding: ($spacer * 2) 0 0;
+            margin: $spacer (-$spacer * 2) (-$spacer * 2);
+        }
+        .header-title {
+            max-height: 100px;
+        }
+        .header-info {
+            p.time {
+                top: 75px;
+                // vw units because the logo image also scales with view width at this point
+                font-size: 3vw;
+                padding: 0;
+                left: $spacer;
+                transform: none;
+            }
+            .tagline {
+                top: 65px;
+                left: 35px;
+            }
+            &:after {
+                top: 0;
+                height: 100px;
+                transform: none;
+            }
+        }
+    }
+}

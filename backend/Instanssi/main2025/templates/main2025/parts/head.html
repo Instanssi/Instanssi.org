@@ -1,0 +1,28 @@
+{% load static compress %}
+<meta charset="utf-8" />
+<title>Instanssi 2025</title>
+<meta name="description" content="Digitaalisen tekemisen festivaali">
+<meta name="viewport" content="initial-scale=1.0" />
+<link rel="alternate" type="application/rss+xml" title="Instanssi Blog - RSS" href="{% url 'ext-blog:rss' %}" />
+<link rel="shortcut icon" href="{% static 'main2025/images/icons/icon-favicon.png' %}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+{% compress css %}
+<link rel="stylesheet" type="text/x-scss" href="{% static 'main2025/css/style.scss' %}" />
+{% endcompress %}
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'main2025/js/base.js' %}" defer></script>
+
+<meta property="og:locale" content="fi_FI" />
+<meta property="og:url" content="https://instanssi.org/2025/" />
+<meta property="og:image" content="{% static 'main2025/images/logoteksti-og.jpg' %}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:title" content="Instanssi - Digitaalisen tekemisen festivaali" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Instanssi" />

@@ -1,0 +1,52 @@
+
+
+$theme-color-bright: #5792d5;
+$theme-color: #0054c0;
+$theme-color-secondary: #7a59e9;
+$title-font-family: 'Exo 2', sans-serif, monospace;
+
+@import './common.2018.scss';
+
+h2, .base-layout h3 {
+    border-bottom: 1px solid $theme-color-bright;
+}
+h2, h3 {
+    font-family: $title-font-family;
+    font-weight: 400;
+}
+
+.base-layout #header h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+
+    > .header-main-title {
+        width: 267px;
+        height: 100px;
+        margin-right: 20px;
+        background-image: url('/static/main2024/images/logoteksti.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        .main-title-text {
+            @include sr-only;
+        }
+    }
+    .section {
+        // Align with logo image's text baseline
+        display: block;
+        padding-top: 16px;
+    }
+
+    @media screen and (max-width: $screen-sm-max) {
+        flex-wrap: wrap;
+        .section {
+            flex: 0 0 100%;
+            padding-top: 0;
+            margin-bottom: 16px;
+        }
+    }
+}
+
+body.base-layout {
+    background: $theme-color !important;
+}

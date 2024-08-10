@@ -66,6 +66,5 @@ provide(confirmDialogKey, confirmDialog);
 </style>
 
 <style>
-@import "@vueup/vue-quill/dist/vue-quill.snow.css";
 @import "vue-toastification/dist/index.css";
 </style>

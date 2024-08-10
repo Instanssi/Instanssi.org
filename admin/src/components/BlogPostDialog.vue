@@ -13,14 +13,7 @@
             variant="outlined"
             :label="t('BlogPostDialog.labels.title')"
         />
-        <QuillEditor
-            v-model:content="text.value.value"
-            :error-messages="text.errorMessage.value"
-            theme="snow"
-            style="height: 300px"
-            content-type="html"
-            ref="editor"
-        />
+        <VuetifyTiptap v-model="text.value.value" />
         <v-switch
             v-model="isPublic.value.value"
             :error-messages="isPublic.errorMessage.value"
@@ -30,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { QuillEditor } from "@vueup/vue-quill";
 import { type GenericObject, useField, useForm } from "vee-validate";
 import { type Ref, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -43,7 +35,6 @@ import BaseDialog from "@/components/BaseInfoDialog.vue";
 import { useAPI } from "@/services/api";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
-const editor: Ref<InstanceType<typeof QuillEditor> | undefined> = ref();
 
 const { t } = useI18n();
 const api = useAPI();

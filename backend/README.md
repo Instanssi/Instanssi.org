@@ -18,12 +18,15 @@ Installing stuff for development
 1. Install the dependencies and clone this project.
 2. Copy `settings.py-dist` to `settings.py`. Change as needed. `settings.py` should never be added to
    git, as it may contain secrets.
-3. Set up environment with poetry `poetry env use 3.11`.
+3. Set up environment with poetry `poetry env use 3.11` (run inside the `backend/` directory).
 4. Install packages with poetry `poetry install --no-root --sync`.
-5. Make sure your database is set up and configured in settings.py, and then run database
+5. Switch over to a poetry shell by running `poetry shell` to have the virtual
+   environment in use for the rest of the commands. Alternatively you can add
+   `poetry run` before every command.
+6. Make sure your database is set up and configured in settings.py, and then run database
    migrations to set up initial data `python manage.py migrate`.
-6. Create a superuser so that you can access the admin `python manage.py createsuperuser`.
-7. That's all. Now just start local dev server by running `python manage.py runserver`.
+7. Create a superuser so that you can access the admin `python manage.py createsuperuser`.
+8. That's all. Now just start local dev server by running `python manage.py runserver`.
 
 Note that some background operations use celery. It can be started with following:
 `python -m celery -A Instanssi worker -l info --autoscale 2,1`

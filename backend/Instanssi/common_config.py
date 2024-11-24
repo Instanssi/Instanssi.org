@@ -34,6 +34,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 # Celery
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # Specific media directories (under MEDIA_ROOT)
 MEDIA_COMPO_ALTERNATES: str = "kompomaatti/alternates"

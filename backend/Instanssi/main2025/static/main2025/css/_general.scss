@@ -24,9 +24,12 @@ body * {
 
 body {
     position: relative;
-    background: #0054c0 !important;
-    // background: linear-gradient(#0054c0 0px, #000 1000px) !important;
-    // background: url(../images/webtausta.jpg) top center no-repeat, #000!important;
+    background: #262729 !important;
+    background: url(../images/webtausta.jpg) top center no-repeat, #262729 !important;
+}
+
+.kupla {
+    position: absolute;
 }
 
 .header-background {
@@ -40,10 +43,10 @@ body {
     position: absolute;
     pointer-events: none;
 
-    img {
+    .salmonsnek {
         position: absolute;
-        top: -160px;
-        right: -5px;
+        top: -100px;
+        right: -250px;
         width: 1920px;
         height: 1080px;
 

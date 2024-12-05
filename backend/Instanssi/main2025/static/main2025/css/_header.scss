@@ -1,4 +1,7 @@
 #page-header {
+    $nav-text-color: #000;
+    $nav-highlight-color: #fff;
+
     position: relative;
 
     > .container {
@@ -123,7 +126,7 @@
     // Navigation menu
     nav.main-nav {
         padding: 0;
-        background: rgba($theme-color-dark, 0.9);
+        background: rgba($theme-color-bright, 0.9);
         ul {
             border: 0;
             li {
@@ -137,8 +140,8 @@
 
                     padding: ($spacer * 1.5) ($spacer * 2);
 
-                    color: #fff;
-                    background: rgba(#fff, 0);
+                    color: $nav-text-color;
+                    background: rgba($nav-highlight-color, 0);
                     // Bootstrap default is 2px
                     margin-right: 0;
 
@@ -160,8 +163,8 @@
                         right: 0;
                         bottom: 0;
                         background: linear-gradient(
-                            rgba($link-hover-bg, 0.0),
-                            rgba($link-hover-bg, 0.33)
+                            rgba($nav-highlight-color, 0.0),
+                            rgba($nav-highlight-color, 0.44)
                         );
                         transition: opacity .3s ease-out;
                         opacity: 0;
@@ -180,11 +183,11 @@
                 float: right;
             }
             li.active {
-                background: $theme-color-bright;
+                background: #fff;
                 a {
-                    color: #fff;
+                    color: #000;
                     &:hover {
-                        color: #fff;
+                        color: #000;
                     }
                 }
             }

@@ -66,5 +66,5 @@ provide(confirmDialogKey, confirmDialog);
 </style>
 
 <style>
-@import "vue-toastification/dist/index.css";
+@use "vue-toastification/dist/index.css" as *;
 </style>

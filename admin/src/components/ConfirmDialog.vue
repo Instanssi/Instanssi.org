@@ -1,10 +1,10 @@
 <template>
     <BaseInfoDialog
+        ref="dialog"
         :title="t('ConfirmDialog.title')"
         :width="500"
         :ok-text="t('ConfirmDialog.title')"
         ok-icon="fas fa-check"
-        ref="dialog"
     >
         {{ body }}
     </BaseInfoDialog>

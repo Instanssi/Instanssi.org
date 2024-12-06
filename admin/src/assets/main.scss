@@ -1,8 +1,8 @@
-@import "vuetify";
-@import "@fontsource/open-sans/latin-400.css";
-@import "@fontsource/fira-mono/latin-400.css";
-@import "@fontsource/exo-2/latin-900.css";
-@import "@fontsource/exo-2/latin-600.css";
+@use "vuetify" as *;
+@use "@fontsource/open-sans/latin-400.css" as *;
+@use "@fontsource/fira-mono/latin-400.css" as *;
+@use "@fontsource/exo-2/latin-900.css" as *;
+@use "@fontsource/exo-2/latin-600.css" as *;
 
 html,
 body {

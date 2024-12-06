@@ -1,11 +1,11 @@
 <template>
     <BaseFormDialog
+        ref="dialog"
         :title="t('UserDialog.title')"
         :ok-text="t('General.save')"
         ok-icon="fas fa-floppy-disk"
         :width="1000"
         @submit="submit"
-        ref="dialog"
     >
         <v-form>
             <v-text-field
@@ -51,15 +51,14 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { date as YupDate, object as yupObject, string as yupString } from "yup";
 
+import * as api from "@/api";
 import type { User } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
-import { useAPI } from "@/services/api";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 
 const { t } = useI18n();
-const api = useAPI();
 const toast = useToast();
 const existingId: Ref<number | undefined> = ref(0);
 
@@ -91,8 +90,8 @@ const submit = handleSubmit(async (values) => {
 
 async function createItem(values: GenericObject) {
     try {
-        await api.users.usersCreate({
-            requestBody: {
+        await api.usersCreate({
+            body: {
                 first_name: values.first_name,
                 last_name: values.last_name,
                 email: values.email,
@@ -110,9 +109,11 @@ async function createItem(values: GenericObject) {
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
-        await api.users.usersPartialUpdate({
-            id: itemId,
-            requestBody: {
+        await api.usersPartialUpdate({
+            path: {
+                id: itemId,
+            },
+            body: {
                 first_name: values.first_name,
                 last_name: values.last_name,
                 email: values.email,

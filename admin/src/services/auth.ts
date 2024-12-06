@@ -1,8 +1,8 @@
 import { type Ref, ref } from "vue";
 
-import { ApiError } from "@/api";
+import * as api from "@/api";
 import type { SocialAuthURL, UserInfo } from "@/api";
-import { useAPI } from "@/services/api";
+import { AxiosError } from "axios";
 
 export type CurrentUserInfo = {
     firstName: string;
@@ -49,20 +49,18 @@ export enum PermissionTarget {
 }
 
 export function useAuth() {
-    const api = useAPI();
-
     function isLoggedIn(): boolean {
         return loggedIn.value;
     }
 
     async function login(username: string, password: string): Promise<boolean> {
         try {
-            await api.auth.login({ requestBody: { username, password } });
+            await api.login({ body: { username, password } });
             await refreshStatus();
             return true;
         } catch (e) {
             // Log error if we got anything else than 401 error (expected on incorrect username + password
-            if (e instanceof ApiError && e.status !== 401) {
+            if (e instanceof AxiosError && e.response!.status !== 401) {
                 console.error(e);
             }
             return false;
@@ -70,13 +68,16 @@ export function useAuth() {
     }
 
     async function getSocialAuthURLs(): Promise<SocialAuthURL[]> {
-        return api.auth.getSocialAuthUrls({ next: "/management" });
+        const value = await api.getSocialAuthUrls({ query: { next: "/management" } });
+        return value.data ?? [];
     }
 
     async function tryFetchUserData(): Promise<UserInfo | undefined> {
         try {
-            const result = await api.userInfo.userInfo();
-            return result.length > 0 ? result[0] : undefined;
+            const result = await api.userInfo();
+            if (result.data == undefined) return undefined;
+            if (result.data.length == 0) return undefined;
+            return result.data[0];
         } catch (e) {
             return undefined;
         }
@@ -125,9 +126,9 @@ export function useAuth() {
 
     async function logout() {
         try {
-            await api.auth.logout();
+            await api.logout();
         } catch (e) {
-            if (e instanceof ApiError && [401, 403].includes(e.status)) {
+            if (e instanceof AxiosError && [401, 403].includes(e.response!.status)) {
                 console.log("Already logged out");
             } else {
                 console.error(e);

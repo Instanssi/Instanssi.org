@@ -1,9 +1,11 @@
 <template>
-    <v-dialog v-model="show" :width="width" :key="flushKey">
+    <v-dialog :key="flushKey" v-model="show" :width="width">
         <v-card>
             <v-card-title class="d-flex justify-space-between">
                 <slot name="title">
-                    <div class="justify-left">{{ title }}</div>
+                    <div class="justify-left">
+                        {{ title }}
+                    </div>
                     <div class="justify-end">
                         <v-btn
                             density="compact"

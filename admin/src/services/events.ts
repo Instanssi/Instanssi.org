@@ -1,13 +1,11 @@
 import { type Ref, ref } from "vue";
 
 import { type Event } from "@/api";
-import { useAPI } from "@/services/api";
+import * as api from "@/api";
 
 const events: Ref<Event[]> = ref([]);
 
 export function useEvents() {
-    const api = useAPI();
-
     function getEvents(): Event[] {
         return events.value;
     }
@@ -21,8 +19,8 @@ export function useEvents() {
     }
 
     async function refreshEvents(): Promise<void> {
-        const pages = await api.events.eventsList({ limit: 1000 });
-        events.value = pages.results;
+        const pages = await api.eventsList({ query: { limit: 1000 } });
+        events.value = pages.data?.results || [];
     }
 
     return { getEvents, refreshEvents, getLatestEvent };

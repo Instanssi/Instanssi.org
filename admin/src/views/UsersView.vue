@@ -10,12 +10,12 @@
                     {{ t("UsersView.newUser") }}
                 </v-btn>
                 <v-text-field
+                    v-model="search"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
                     style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
-                    v-model="search"
                     clearable
                 />
             </v-row>
@@ -23,10 +23,11 @@
         <v-col>
             <v-row>
                 <v-data-table-server
+                    :key="`blog-table-${refreshKey}`"
+                    v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
-                    :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="users"
                     :items-length="totalItems"
@@ -36,30 +37,31 @@
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('UsersView.noUsersFound')"
                     :loading-text="t('UsersView.loadingUsers')"
-                    v-model:items-per-page="perPage"
                     @update:options="debouncedLoad"
                 >
-                    <template v-slot:item.date_joined="{ item }">
+                    <template #item.date_joined="{ item }">
                         {{ d(item.date_joined, "long") }}
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            @click="deleteUser(item)"
                             prepend-icon="fas fa-xmark"
                             color="red"
-                            >Delete</v-btn
+                            @click="deleteUser(item)"
                         >
+                            Delete
+                        </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            @click="editUser(item.id)"
                             prepend-icon="fas fa-pen-to-square"
-                            >Edit</v-btn
+                            @click="editUser(item.id)"
                         >
+                            Edit
+                        </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -75,10 +77,10 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer } from "vuetify/components";
 
+import * as api from "@/api";
 import type { User } from "@/api";
 import LayoutBase from "@/components/LayoutBase.vue";
 import UserDialog from "@/components/UserDialog.vue";
-import { useAPI } from "@/services/api";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
@@ -93,7 +95,6 @@ const dialog: Ref<InstanceType<typeof UserDialog> | undefined> = ref(undefined);
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
-const api = useAPI();
 const auth = useAuth();
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
@@ -145,9 +146,9 @@ const headers: ReadonlyHeaders = [
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const { count, results } = await api.users.usersList(getLoadArgs(args));
-        users.value = results;
-        totalItems.value = count;
+        const response = await api.usersList({ query: getLoadArgs(args) });
+        users.value = response.data!.results;
+        totalItems.value = response.data!.count;
     } catch (e) {
         toast.error(t("UsersView.loadFailure"));
         console.error(e);
@@ -163,7 +164,7 @@ async function deleteUser(item: User): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.users.usersDestroy({ id: item.id });
+            await api.usersDestroy({ path: { id: item.id } });
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
             toast.error(t("UsersView.deleteFailure"));
@@ -174,8 +175,8 @@ async function deleteUser(item: User): Promise<void> {
 }
 
 async function editUser(id: number): Promise<void> {
-    const item = await api.users.usersRetrieve({ id });
-    if (await dialog.value!.modal(item)) {
+    const response = await api.usersRetrieve({ path: { id } });
+    if (await dialog.value!.modal(response.data!)) {
         refreshKey.value += 1;
     }
 }

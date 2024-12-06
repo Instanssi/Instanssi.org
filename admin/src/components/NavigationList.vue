@@ -2,7 +2,7 @@
     <v-list density="compact" open-strategy="multiple" nav>
         <template v-for="item in filterLinks(items)">
             <v-list-group v-if="item.children" :key="`group-${item.title}`">
-                <template v-slot:activator="{ props }">
+                <template #activator="{ props }">
                     <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.title" />
                 </template>
                 <v-list-item

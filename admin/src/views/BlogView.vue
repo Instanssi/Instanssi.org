@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :title="t('BlogEditorView.title')" :key="`blog-${eventId}`">
+    <LayoutBase :key="`blog-${eventId}`" :title="t('BlogEditorView.title')">
         <v-col>
             <v-row>
                 <v-btn
@@ -10,12 +10,12 @@
                     {{ t("BlogEditorView.newBlogPost") }}
                 </v-btn>
                 <v-text-field
+                    v-model="search"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
                     style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
-                    v-model="search"
                     clearable
                 />
             </v-row>
@@ -23,10 +23,11 @@
         <v-col>
             <v-row>
                 <v-data-table-server
+                    :key="`blog-table-${refreshKey}`"
+                    v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
-                    :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="blogPosts"
                     :items-length="totalItems"
@@ -36,34 +37,35 @@
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('BlogEditorView.noBlogPostsFound')"
                     :loading-text="t('BlogEditorView.loadingBlogPosts')"
-                    v-model:items-per-page="perPage"
                     @update:options="debouncedLoad"
                 >
-                    <template v-slot:item.public="{ item }">
+                    <template #item.public="{ item }">
                         <v-icon v-if="item.public" icon="fas fa-check" color="green" />
                         <v-icon v-else icon="fas fa-xmark" color="red" />
                     </template>
-                    <template v-slot:item.date="{ item }">
+                    <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            @click="deletePost(item)"
                             prepend-icon="fas fa-xmark"
                             color="red"
-                            >Delete</v-btn
+                            @click="deletePost(item)"
                         >
+                            Delete
+                        </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            @click="editPost(item.id)"
                             prepend-icon="fas fa-pen-to-square"
-                            >Edit</v-btn
+                            @click="editPost(item.id)"
                         >
+                            Edit
+                        </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -79,10 +81,10 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer } from "vuetify/components";
 
+import * as api from "@/api";
 import type { BlogEntry } from "@/api";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
-import { useAPI } from "@/services/api";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
@@ -98,7 +100,6 @@ const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefin
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
-const api = useAPI();
 const auth = useAuth();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
@@ -146,12 +147,14 @@ const headers: ReadonlyHeaders = [
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const { count, results } = await api.blogEntries.blogEntriesList({
-            event: parseInt(props.eventId, 10),
-            ...getLoadArgs(args),
+        const response = await api.blogEntriesList({
+            query: {
+                event: parseInt(props.eventId, 10),
+                ...getLoadArgs(args),
+            },
         });
-        blogPosts.value = results;
-        totalItems.value = count;
+        blogPosts.value = response.data!.results;
+        totalItems.value = response.data!.count;
     } catch (e) {
         toast.error(t("BlogEditorView.loadFailure"));
         console.error(e);
@@ -167,7 +170,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.blogEntries.blogEntriesDestroy({ id: item.id });
+            await api.blogEntriesDestroy({ path: { id: item.id } });
             toast.success(t("BlogEditorView.deleteSuccess"));
         } catch (e) {
             toast.error(t("BlogEditorView.deleteFailure"));
@@ -178,8 +181,8 @@ async function deletePost(item: BlogEntry): Promise<void> {
 }
 
 async function editPost(id: number): Promise<void> {
-    const item = await api.blogEntries.blogEntriesRetrieve({ id });
-    if (await dialog.value!.modal(eventId.value, item)) {
+    const item = await api.blogEntriesRetrieve({ path: { id } });
+    if (await dialog.value!.modal(eventId.value, item.data!)) {
         refreshKey.value += 1;
     }
 }

@@ -71,10 +71,10 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer } from "vuetify/components";
 
+import * as api from "@/api";
 import type { Event } from "@/api";
 import EventDialog from "@/components/EventDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
-import { useAPI } from "@/services/api";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -91,7 +91,6 @@ const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
 const eventService = useEvents();
-const api = useAPI();
 const auth = useAuth();
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
@@ -142,9 +141,9 @@ const headers: ReadonlyHeaders = [
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const { count, results } = await api.events.eventsList(getLoadArgs(args));
-        events.value = results;
-        totalItems.value = count;
+        const response = await api.eventsList({ query: getLoadArgs(args) });
+        events.value = response.data!.results;
+        totalItems.value = response.data!.count;
     } catch (e) {
         toast.error(t("EventView.loadFailure"));
         console.error(e);
@@ -160,7 +159,7 @@ async function deleteEvent(item: Event): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.events.eventsDestroy({ id: item.id });
+            await api.eventsDestroy({ path: { id: item.id } });
             toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
             toast.error(t("EventView.deleteFailure"));
@@ -172,8 +171,8 @@ async function deleteEvent(item: Event): Promise<void> {
 }
 
 async function editEvent(id: number): Promise<void> {
-    const item = await api.events.eventsRetrieve({ id });
-    if (await dialog.value!.modal(item)) {
+    const response = await api.eventsRetrieve({ path: { id } });
+    if (await dialog.value!.modal(response.data!)) {
         refreshKey.value += 1;
         await eventService.refreshEvents();
     }

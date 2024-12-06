@@ -81,10 +81,10 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer } from "vuetify/components";
 
+import * as api from "@/api";
 import type { BlogEntry } from "@/api";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
-import { useAPI } from "@/services/api";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
@@ -100,7 +100,6 @@ const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefin
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
-const api = useAPI();
 const auth = useAuth();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
@@ -148,12 +147,14 @@ const headers: ReadonlyHeaders = [
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const { count, results } = await api.blogEntries.blogEntriesList({
-            event: parseInt(props.eventId, 10),
-            ...getLoadArgs(args),
+        const response = await api.blogEntriesList({
+            query: {
+                event: parseInt(props.eventId, 10),
+                ...getLoadArgs(args),
+            },
         });
-        blogPosts.value = results;
-        totalItems.value = count;
+        blogPosts.value = response.data!.results;
+        totalItems.value = response.data!.count;
     } catch (e) {
         toast.error(t("BlogEditorView.loadFailure"));
         console.error(e);
@@ -169,7 +170,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.blogEntries.blogEntriesDestroy({ id: item.id });
+            await api.blogEntriesDestroy({ path: { id: item.id } });
             toast.success(t("BlogEditorView.deleteSuccess"));
         } catch (e) {
             toast.error(t("BlogEditorView.deleteFailure"));
@@ -180,8 +181,8 @@ async function deletePost(item: BlogEntry): Promise<void> {
 }
 
 async function editPost(id: number): Promise<void> {
-    const item = await api.blogEntries.blogEntriesRetrieve({ id });
-    if (await dialog.value!.modal(eventId.value, item)) {
+    const item = await api.blogEntriesRetrieve({ path: { id } });
+    if (await dialog.value!.modal(eventId.value, item.data!)) {
         refreshKey.value += 1;
     }
 }

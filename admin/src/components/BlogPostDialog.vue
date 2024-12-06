@@ -29,15 +29,14 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
+import * as api from "@/api";
 import type { BlogEntry } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
-import { useAPI } from "@/services/api";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 
 const { t } = useI18n();
-const api = useAPI();
 const toast = useToast();
 const existingId: Ref<number | undefined> = ref(undefined);
 const eventId: Ref<number> = ref(0);
@@ -71,8 +70,8 @@ const submit = handleSubmit(async (values) => {
 
 async function createItem(values: GenericObject) {
     try {
-        await api.blogEntries.blogEntriesCreate({
-            requestBody: {
+        await api.blogEntriesCreate({
+            body: {
                 event: eventId.value,
                 title: values.title,
                 text: values.text,
@@ -90,9 +89,11 @@ async function createItem(values: GenericObject) {
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
-        await api.blogEntries.blogEntriesPartialUpdate({
-            id: itemId,
-            requestBody: {
+        await api.blogEntriesPartialUpdate({
+            path: {
+                id: itemId,
+            },
+            body: {
                 title: values.title,
                 text: values.text,
                 public: values.isPublic,

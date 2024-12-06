@@ -325,366 +325,361 @@ export type UserRequest = {
     is_active?: boolean;
 };
 
-export type $OpenApiTs = {
-    "/api/v2/auth/login/": {
-        post: {
-            req: {
-                requestBody: UserLoginRequest;
-            };
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
-    };
-    "/api/v2/auth/logout/": {
-        post: {
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
-    };
-    "/api/v2/auth/social_urls/": {
-        get: {
-            req: {
-                next?: string;
-            };
-            res: {
-                200: Array<SocialAuthURL>;
-            };
-        };
-    };
-    "/api/v2/blog_entries/": {
-        get: {
-            req: {
-                event?: number;
-                /**
-                 * Number of results to return per page.
-                 */
-                limit?: number;
-                /**
-                 * The initial index from which to return the results.
-                 */
-                offset?: number;
-                /**
-                 * Which field to use when ordering the results.
-                 */
-                ordering?: string;
-                /**
-                 * A search term.
-                 */
-                search?: string;
-                user?: number;
-            };
-            res: {
-                200: PaginatedBlogEntryList;
-            };
-        };
-        post: {
-            req: {
-                requestBody: BlogEntryRequest;
-            };
-            res: {
-                201: BlogEntry;
-            };
-        };
-    };
-    "/api/v2/blog_entries/{id}/": {
-        get: {
-            req: {
-                /**
-                 * A unique integer value identifying this entry.
-                 */
-                id: number;
-            };
-            res: {
-                200: BlogEntry;
-            };
-        };
-        put: {
-            req: {
-                /**
-                 * A unique integer value identifying this entry.
-                 */
-                id: number;
-                requestBody: BlogEntryRequest;
-            };
-            res: {
-                200: BlogEntry;
-            };
-        };
-        patch: {
-            req: {
-                /**
-                 * A unique integer value identifying this entry.
-                 */
-                id: number;
-                requestBody?: PatchedBlogEntryRequest;
-            };
-            res: {
-                200: BlogEntry;
-            };
-        };
-        delete: {
-            req: {
-                /**
-                 * A unique integer value identifying this entry.
-                 */
-                id: number;
-            };
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
-    };
-    "/api/v2/events/": {
-        get: {
-            req: {
-                /**
-                 * Number of results to return per page.
-                 */
-                limit?: number;
-                name?: string;
-                /**
-                 * The initial index from which to return the results.
-                 */
-                offset?: number;
-                /**
-                 * Which field to use when ordering the results.
-                 */
-                ordering?: string;
-            };
-            res: {
-                200: PaginatedEventList;
-            };
-        };
-        post: {
-            req: {
-                requestBody: EventRequest;
-            };
-            res: {
-                201: Event;
-            };
-        };
-    };
-    "/api/v2/events/{id}/": {
-        get: {
-            req: {
-                /**
-                 * A unique integer value identifying this tapahtuma.
-                 */
-                id: number;
-            };
-            res: {
-                200: Event;
-            };
-        };
-        put: {
-            req: {
-                /**
-                 * A unique integer value identifying this tapahtuma.
-                 */
-                id: number;
-                requestBody: EventRequest;
-            };
-            res: {
-                200: Event;
-            };
-        };
-        patch: {
-            req: {
-                /**
-                 * A unique integer value identifying this tapahtuma.
-                 */
-                id: number;
-                requestBody?: PatchedEventRequest;
-            };
-            res: {
-                200: Event;
-            };
-        };
-        delete: {
-            req: {
-                /**
-                 * A unique integer value identifying this tapahtuma.
-                 */
-                id: number;
-            };
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
-    };
-    "/api/v2/user_compo_entries/": {
-        get: {
-            req: {
-                /**
-                 * Number of results to return per page.
-                 */
-                limit?: number;
-                /**
-                 * The initial index from which to return the results.
-                 */
-                offset?: number;
-                /**
-                 * Which field to use when ordering the results.
-                 */
-                ordering?: string;
-            };
-            res: {
-                200: PaginatedCompoEntryList;
-            };
-        };
-        post: {
-            req: {
-                formData: CompoEntryRequest;
-            };
-            res: {
-                201: CompoEntry;
-            };
-        };
-    };
-    "/api/v2/user_compo_entries/{id}/": {
-        get: {
-            req: {
-                id: string;
-            };
-            res: {
-                200: CompoEntry;
-            };
-        };
-        put: {
-            req: {
-                formData: CompoEntryRequest;
-                id: string;
-            };
-            res: {
-                200: CompoEntry;
-            };
-        };
-        patch: {
-            req: {
-                formData?: PatchedCompoEntryRequest;
-                id: string;
-            };
-            res: {
-                200: CompoEntry;
-            };
-        };
-        delete: {
-            req: {
-                id: string;
-            };
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
-    };
-    "/api/v2/user_info/": {
-        get: {
-            res: {
-                200: Array<UserInfo>;
-            };
-        };
-    };
-    "/api/v2/users/": {
-        get: {
-            req: {
-                email?: string;
-                /**
-                 * Number of results to return per page.
-                 */
-                limit?: number;
-                /**
-                 * The initial index from which to return the results.
-                 */
-                offset?: number;
-                /**
-                 * Which field to use when ordering the results.
-                 */
-                ordering?: string;
-                /**
-                 * A search term.
-                 */
-                search?: string;
-                username?: string;
-            };
-            res: {
-                200: PaginatedUserList;
-            };
-        };
-        post: {
-            req: {
-                requestBody: UserRequest;
-            };
-            res: {
-                201: User;
-            };
-        };
-    };
-    "/api/v2/users/{id}/": {
-        get: {
-            req: {
-                /**
-                 * A unique integer value identifying this käyttäjä.
-                 */
-                id: number;
-            };
-            res: {
-                200: User;
-            };
-        };
-        put: {
-            req: {
-                /**
-                 * A unique integer value identifying this käyttäjä.
-                 */
-                id: number;
-                requestBody: UserRequest;
-            };
-            res: {
-                200: User;
-            };
-        };
-        patch: {
-            req: {
-                /**
-                 * A unique integer value identifying this käyttäjä.
-                 */
-                id: number;
-                requestBody?: PatchedUserRequest;
-            };
-            res: {
-                200: User;
-            };
-        };
-        delete: {
-            req: {
-                /**
-                 * A unique integer value identifying this käyttäjä.
-                 */
-                id: number;
-            };
-            res: {
-                /**
-                 * No response body
-                 */
-                204: void;
-            };
-        };
+export type LoginData = {
+    body: UserLoginRequest;
+};
+
+export type LoginResponse = void;
+
+export type LoginError = unknown;
+
+export type LogoutResponse = void;
+
+export type LogoutError = unknown;
+
+export type GetSocialAuthUrlsData = {
+    query?: {
+        next?: string;
     };
 };
+
+export type GetSocialAuthUrlsResponse = Array<SocialAuthURL>;
+
+export type GetSocialAuthUrlsError = unknown;
+
+export type BlogEntriesListData = {
+    query?: {
+        event?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        user?: number;
+    };
+};
+
+export type BlogEntriesListResponse = PaginatedBlogEntryList;
+
+export type BlogEntriesListError = unknown;
+
+export type BlogEntriesCreateData = {
+    body: BlogEntryRequest;
+};
+
+export type BlogEntriesCreateResponse = BlogEntry;
+
+export type BlogEntriesCreateError = unknown;
+
+export type BlogEntriesRetrieveData = {
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+};
+
+export type BlogEntriesRetrieveResponse = BlogEntry;
+
+export type BlogEntriesRetrieveError = unknown;
+
+export type BlogEntriesUpdateData = {
+    body: BlogEntryRequest;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+};
+
+export type BlogEntriesUpdateResponse = BlogEntry;
+
+export type BlogEntriesUpdateError = unknown;
+
+export type BlogEntriesPartialUpdateData = {
+    body?: PatchedBlogEntryRequest;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+};
+
+export type BlogEntriesPartialUpdateResponse = BlogEntry;
+
+export type BlogEntriesPartialUpdateError = unknown;
+
+export type BlogEntriesDestroyData = {
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+};
+
+export type BlogEntriesDestroyResponse = void;
+
+export type BlogEntriesDestroyError = unknown;
+
+export type EventsListData = {
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        name?: string;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+};
+
+export type EventsListResponse = PaginatedEventList;
+
+export type EventsListError = unknown;
+
+export type EventsCreateData = {
+    body: EventRequest;
+};
+
+export type EventsCreateResponse = Event;
+
+export type EventsCreateError = unknown;
+
+export type EventsRetrieveData = {
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+};
+
+export type EventsRetrieveResponse = Event;
+
+export type EventsRetrieveError = unknown;
+
+export type EventsUpdateData = {
+    body: EventRequest;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+};
+
+export type EventsUpdateResponse = Event;
+
+export type EventsUpdateError = unknown;
+
+export type EventsPartialUpdateData = {
+    body?: PatchedEventRequest;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+};
+
+export type EventsPartialUpdateResponse = Event;
+
+export type EventsPartialUpdateError = unknown;
+
+export type EventsDestroyData = {
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+};
+
+export type EventsDestroyResponse = void;
+
+export type EventsDestroyError = unknown;
+
+export type UserCompoEntriesListData = {
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+};
+
+export type UserCompoEntriesListResponse = PaginatedCompoEntryList;
+
+export type UserCompoEntriesListError = unknown;
+
+export type UserCompoEntriesCreateData = {
+    body: CompoEntryRequest;
+};
+
+export type UserCompoEntriesCreateResponse = CompoEntry;
+
+export type UserCompoEntriesCreateError = unknown;
+
+export type UserCompoEntriesRetrieveData = {
+    path: {
+        id: string;
+    };
+};
+
+export type UserCompoEntriesRetrieveResponse = CompoEntry;
+
+export type UserCompoEntriesRetrieveError = unknown;
+
+export type UserCompoEntriesUpdateData = {
+    body: CompoEntryRequest;
+    path: {
+        id: string;
+    };
+};
+
+export type UserCompoEntriesUpdateResponse = CompoEntry;
+
+export type UserCompoEntriesUpdateError = unknown;
+
+export type UserCompoEntriesPartialUpdateData = {
+    body?: PatchedCompoEntryRequest;
+    path: {
+        id: string;
+    };
+};
+
+export type UserCompoEntriesPartialUpdateResponse = CompoEntry;
+
+export type UserCompoEntriesPartialUpdateError = unknown;
+
+export type UserCompoEntriesDestroyData = {
+    path: {
+        id: string;
+    };
+};
+
+export type UserCompoEntriesDestroyResponse = void;
+
+export type UserCompoEntriesDestroyError = unknown;
+
+export type UserInfoResponse = Array<UserInfo>;
+
+export type UserInfoError = unknown;
+
+export type UsersListData = {
+    query?: {
+        email?: string;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        username?: string;
+    };
+};
+
+export type UsersListResponse = PaginatedUserList;
+
+export type UsersListError = unknown;
+
+export type UsersCreateData = {
+    body: UserRequest;
+};
+
+export type UsersCreateResponse = User;
+
+export type UsersCreateError = unknown;
+
+export type UsersRetrieveData = {
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+};
+
+export type UsersRetrieveResponse = User;
+
+export type UsersRetrieveError = unknown;
+
+export type UsersUpdateData = {
+    body: UserRequest;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+};
+
+export type UsersUpdateResponse = User;
+
+export type UsersUpdateError = unknown;
+
+export type UsersPartialUpdateData = {
+    body?: PatchedUserRequest;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+};
+
+export type UsersPartialUpdateResponse = User;
+
+export type UsersPartialUpdateError = unknown;
+
+export type UsersDestroyData = {
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+};
+
+export type UsersDestroyResponse = void;
+
+export type UsersDestroyError = unknown;

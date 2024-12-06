@@ -1,10 +1,10 @@
 <template>
     <BaseDialog
+        ref="baseDialog"
         :title="title"
         :width="width"
         @open="emit('open')"
         @close="emit('close')"
-        ref="baseDialog"
     >
         <v-card-text>
             <slot name="default" />

@@ -12,7 +12,10 @@ export class CustomAxiosHttpRequest extends BaseHttpRequest {
 
     constructor(config: OpenAPIConfig) {
         super(config);
-        this.axiosClient = axios.create();
+        this.axiosClient = axios.create({
+            xsrfCookieName: "csrftoken",
+            xsrfHeaderName: "X-CSRFToken",
+        });
         this.axiosClient.defaults.timeout = 5000;
         this.axiosClient.interceptors.response.use(null, errorResponseInterceptor);
     }

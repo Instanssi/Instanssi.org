@@ -3,18 +3,20 @@
         <div class="fill-height d-flex flex-column ma-0 pa-0">
             <div class="d-flex flex-row ma-5 flex-0-0">
                 <v-img :src="logoImage" />
-                <h1 class="pl-2">{{ t("MainNavigation.title") }}</h1>
+                <h1 class="pl-2">
+                    {{ t("MainNavigation.title") }}
+                </h1>
             </div>
             <v-divider />
             <v-select
+                v-model="event"
                 class="ma-2 flex-0-0 nav-event-select"
                 :label="t('MainNavigation.event')"
                 variant="outlined"
                 density="compact"
                 :items="events"
-                v-model="event"
             >
-                <template #append v-if="authService.canView(PermissionTarget.EVENT)">
+                <template v-if="authService.canView(PermissionTarget.EVENT)" #append>
                     <v-btn
                         icon="fas fa-calendar-days"
                         variant="plain"

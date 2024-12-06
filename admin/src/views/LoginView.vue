@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex align-center justify-center fill-height">
         <v-card color="grey-darken-4" class="opacity-95" :title="t('LoginView.title')">
-            <template v-slot:subtitle>
+            <template #subtitle>
                 {{ t("LoginView.subtitle") }}
             </template>
-            <template v-slot:text>
+            <template #text>
                 <div class="d-flex justify-center">
                     <v-btn
                         v-for="method in socialLoginUrls"
@@ -12,8 +12,9 @@
                         variant="plain"
                         :prepend-icon="`fab fa-${method.method}`"
                         :href="method.url"
-                        >{{ method.name }}</v-btn
                     >
+                        {{ method.name }}
+                    </v-btn>
                 </div>
                 <v-form class="mt-4" @submit.prevent="submit">
                     <v-container class="ma-0 pa-0">
@@ -42,8 +43,9 @@
                                 color="primary"
                                 variant="elevated"
                                 prepend-icon="fas fa-right-to-bracket"
-                                >{{ t("LoginView.login") }}</v-btn
                             >
+                                {{ t("LoginView.login") }}
+                            </v-btn>
                         </v-row>
                     </v-container>
                 </v-form>

@@ -1,11 +1,11 @@
 <template>
     <BaseFormDialog
+        ref="dialog"
         :title="t('EventDialog.title')"
         :ok-text="t('General.save')"
         ok-icon="fas fa-floppy-disk"
         :width="1000"
         @submit="submit"
-        ref="dialog"
     >
         <v-form>
             <v-text-field
@@ -21,8 +21,8 @@
                 :label="t('EventDialog.labels.tag')"
             />
             <v-text-field
-                type="date"
                 v-model="date.value.value"
+                type="date"
                 :error-messages="date.errorMessage.value"
                 variant="outlined"
                 :label="t('EventDialog.labels.date')"

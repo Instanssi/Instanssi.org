@@ -1,11 +1,11 @@
 <template>
     <BaseFormDialog
+        ref="dialog"
         :title="t('UserDialog.title')"
         :ok-text="t('General.save')"
         ok-icon="fas fa-floppy-disk"
         :width="1000"
         @submit="submit"
-        ref="dialog"
     >
         <v-form>
             <v-text-field

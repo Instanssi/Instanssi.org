@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :title="t('MainView.title')"></LayoutBase>
+    <LayoutBase :title="t('MainView.title')" />
 </template>
 
 <script setup lang="ts">

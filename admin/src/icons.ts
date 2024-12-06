@@ -115,5 +115,5 @@ export function setupIcons(app: App): void {
     library.add(farSquare, farDotCircle, farCircle, farStar);
 
     // This is required by v-icon and other components
-    app.component("font-awesome-icon", FontAwesomeIcon);
+    app.component("FontAwesomeIcon", FontAwesomeIcon);
 }

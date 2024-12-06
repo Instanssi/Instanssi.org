@@ -10,7 +10,7 @@ export const i18n = createI18n({
         en: enLocale["translations"],
     },
     datetimeFormats: {
-        // @ts-ignore
+        // @ts-expect-error Dunno why
         en: enLocale["datetimeFormats"],
     },
 });

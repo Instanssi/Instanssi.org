@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :title="t('BlogEditorView.title')" :key="`blog-${eventId}`">
+    <LayoutBase :key="`blog-${eventId}`" :title="t('BlogEditorView.title')">
         <v-col>
             <v-row>
                 <v-btn
@@ -10,12 +10,12 @@
                     {{ t("BlogEditorView.newBlogPost") }}
                 </v-btn>
                 <v-text-field
+                    v-model="search"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
                     style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
-                    v-model="search"
                     clearable
                 />
             </v-row>
@@ -23,10 +23,11 @@
         <v-col>
             <v-row>
                 <v-data-table-server
+                    :key="`blog-table-${refreshKey}`"
+                    v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
-                    :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="blogPosts"
                     :items-length="totalItems"
@@ -36,34 +37,35 @@
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('BlogEditorView.noBlogPostsFound')"
                     :loading-text="t('BlogEditorView.loadingBlogPosts')"
-                    v-model:items-per-page="perPage"
                     @update:options="debouncedLoad"
                 >
-                    <template v-slot:item.public="{ item }">
+                    <template #item.public="{ item }">
                         <v-icon v-if="item.public" icon="fas fa-check" color="green" />
                         <v-icon v-else icon="fas fa-xmark" color="red" />
                     </template>
-                    <template v-slot:item.date="{ item }">
+                    <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            @click="deletePost(item)"
                             prepend-icon="fas fa-xmark"
                             color="red"
-                            >Delete</v-btn
+                            @click="deletePost(item)"
                         >
+                            Delete
+                        </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            @click="editPost(item.id)"
                             prepend-icon="fas fa-pen-to-square"
-                            >Edit</v-btn
+                            @click="editPost(item.id)"
                         >
+                            Edit
+                        </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>

@@ -14,10 +14,11 @@
         <v-col>
             <v-row>
                 <v-data-table-server
+                    :key="`blog-table-${refreshKey}`"
+                    v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
-                    :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="events"
                     :items-length="totalItems"
@@ -26,34 +27,35 @@
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('EventView.noEventsFound')"
                     :loading-text="t('EventView.loadingEvents')"
-                    v-model:items-per-page="perPage"
                     @update:options="debouncedLoad"
                 >
-                    <template v-slot:item.archived="{ item }">
+                    <template #item.archived="{ item }">
                         <v-icon v-if="item.archived" icon="fas fa-check" color="green" />
                         <v-icon v-else icon="fas fa-xmark" color="red" />
                     </template>
-                    <template v-slot:item.date="{ item }">
+                    <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.EVENT)"
                             density="compact"
                             variant="text"
-                            @click="deleteEvent(item)"
                             prepend-icon="fas fa-xmark"
                             color="red"
-                            >Delete</v-btn
+                            @click="deleteEvent(item)"
                         >
+                            Delete
+                        </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.EVENT)"
                             density="compact"
                             variant="text"
-                            @click="editEvent(item.id)"
                             prepend-icon="fas fa-pen-to-square"
-                            >Edit</v-btn
+                            @click="editEvent(item.id)"
                         >
+                            Edit
+                        </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>

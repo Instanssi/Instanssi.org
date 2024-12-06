@@ -10,12 +10,12 @@
                     {{ t("UsersView.newUser") }}
                 </v-btn>
                 <v-text-field
+                    v-model="search"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
                     style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
-                    v-model="search"
                     clearable
                 />
             </v-row>
@@ -23,10 +23,11 @@
         <v-col>
             <v-row>
                 <v-data-table-server
+                    :key="`blog-table-${refreshKey}`"
+                    v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
-                    :key="`blog-table-${refreshKey}`"
                     :headers="headers"
                     :items="users"
                     :items-length="totalItems"
@@ -36,30 +37,31 @@
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('UsersView.noUsersFound')"
                     :loading-text="t('UsersView.loadingUsers')"
-                    v-model:items-per-page="perPage"
                     @update:options="debouncedLoad"
                 >
-                    <template v-slot:item.date_joined="{ item }">
+                    <template #item.date_joined="{ item }">
                         {{ d(item.date_joined, "long") }}
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            @click="deleteUser(item)"
                             prepend-icon="fas fa-xmark"
                             color="red"
-                            >Delete</v-btn
+                            @click="deleteUser(item)"
                         >
+                            Delete
+                        </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            @click="editUser(item.id)"
                             prepend-icon="fas fa-pen-to-square"
-                            >Edit</v-btn
+                            @click="editUser(item.id)"
                         >
+                            Edit
+                        </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>

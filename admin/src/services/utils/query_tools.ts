@@ -8,7 +8,7 @@ export type LoadArgs = {
     page: number;
     itemsPerPage: number;
     sortBy: SortArgs[];
-    groupBy: any;
+    groupBy: never;
     search: string;
 };
 

@@ -138,6 +138,11 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
+async function flushData() {
+    refreshKey.value += 1;
+    await eventService.refreshEvents();
+}
+
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
@@ -160,29 +165,27 @@ async function deleteEvent(item: Event): Promise<void> {
     if (ok) {
         try {
             await api.eventsDestroy({ path: { id: item.id } });
+            await flushData();
             toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
             toast.error(t("EventView.deleteFailure"));
             console.error(e);
         }
-        refreshKey.value += 1;
-        await eventService.refreshEvents();
     }
 }
 
 async function editEvent(id: number): Promise<void> {
     const response = await api.eventsRetrieve({ path: { id } });
-    if (await dialog.value!.modal(response.data!)) {
-        refreshKey.value += 1;
-        await eventService.refreshEvents();
+    const ok = await dialog.value!.modal(response.data!);
+    if (ok) {
+        await flushData();
     }
 }
 
 async function createEvent() {
     if (await dialog.value!.modal()) {
         currentPage.value = 1;
-        refreshKey.value += 1;
-        await eventService.refreshEvents();
+        await flushData();
     }
 }
 </script>

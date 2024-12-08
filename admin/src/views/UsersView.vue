@@ -143,6 +143,10 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
+function flushData() {
+    refreshKey.value += 1;
+}
+
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
@@ -165,26 +169,27 @@ async function deleteUser(item: User): Promise<void> {
     if (ok) {
         try {
             await api.usersDestroy({ path: { id: item.id } });
+            flushData();
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
             toast.error(t("UsersView.deleteFailure"));
             console.error(e);
         }
-        refreshKey.value += 1;
     }
 }
 
 async function editUser(id: number): Promise<void> {
     const response = await api.usersRetrieve({ path: { id } });
-    if (await dialog.value!.modal(response.data!)) {
-        refreshKey.value += 1;
+    const ok = await dialog.value!.modal(response.data!);
+    if (ok) {
+        flushData();
     }
 }
 
 async function createUser() {
     if (await dialog.value!.modal()) {
         currentPage.value = 1;
-        refreshKey.value += 1;
+        flushData();
     }
 }
 </script>

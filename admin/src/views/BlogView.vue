@@ -144,6 +144,10 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
+function flushData() {
+    refreshKey.value += 1;
+}
+
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
@@ -172,25 +176,26 @@ async function deletePost(item: BlogEntry): Promise<void> {
         try {
             await api.blogEntriesDestroy({ path: { id: item.id } });
             toast.success(t("BlogEditorView.deleteSuccess"));
+            flushData();
         } catch (e) {
             toast.error(t("BlogEditorView.deleteFailure"));
             console.error(e);
         }
-        refreshKey.value += 1;
     }
 }
 
 async function editPost(id: number): Promise<void> {
     const item = await api.blogEntriesRetrieve({ path: { id } });
-    if (await dialog.value!.modal(eventId.value, item.data!)) {
-        refreshKey.value += 1;
+    const ok = await dialog.value!.modal(eventId.value, item.data!);
+    if (ok) {
+        flushData();
     }
 }
 
 async function createPost() {
     if (await dialog.value!.modal(eventId.value)) {
         currentPage.value = 1;
-        refreshKey.value += 1;
+        flushData();
     }
 }
 </script>

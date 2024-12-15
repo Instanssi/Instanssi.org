@@ -25,6 +25,7 @@ import {
     faSitemap,
     faUsers,
     faXmark,
+    faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     // For vuetify
@@ -75,7 +76,8 @@ export function setupIcons(app: App): void {
         faFloppyDisk,
         faPenToSquare,
         faCalendarDays,
-        faUsers
+        faUsers,
+        faSpinner
     );
     library.add(faGoogle, faSteam, faGithub);
 

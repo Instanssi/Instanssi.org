@@ -54,17 +54,12 @@ export function useAuth() {
     }
 
     async function login(username: string, password: string): Promise<boolean> {
-        try {
-            await api.login({ body: { username, password } });
+        const response = await api.login({ body: { username, password } });
+        if (response.status === 204) {
             await refreshStatus();
             return true;
-        } catch (e) {
-            // Log error if we got anything else than 401 error (expected on incorrect username + password
-            if (e instanceof AxiosError && e.response!.status !== 401) {
-                console.error(e);
-            }
-            return false;
         }
+        return false;
     }
 
     async function getSocialAuthURLs(): Promise<SocialAuthURL[]> {
@@ -125,15 +120,7 @@ export function useAuth() {
     }
 
     async function logout() {
-        try {
-            await api.logout();
-        } catch (e) {
-            if (e instanceof AxiosError && [401, 403].includes(e.response!.status)) {
-                console.log("Already logged out");
-            } else {
-                console.error(e);
-            }
-        }
+        await api.logout();
         loggedIn.value = false;
         userInfo.value = {
             firstName: "",

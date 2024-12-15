@@ -5,6 +5,7 @@
         :ok-text="t('General.save')"
         ok-icon="fas fa-floppy-disk"
         :width="1000"
+        :loading="loading"
         @submit="submit"
     >
         <v-form>
@@ -12,10 +13,11 @@
                 v-model="username.value.value"
                 :error-messages="username.errorMessage.value"
                 variant="outlined"
-                readonly
+                :readonly="!isNew"
                 :label="t('UserDialog.labels.userName')"
             />
             <v-text-field
+                v-if="!isNew"
                 v-model="date_joined.value.value"
                 :error-messages="date_joined.errorMessage.value"
                 variant="outlined"
@@ -46,7 +48,7 @@
 
 <script setup lang="ts">
 import { type GenericObject, useField, useForm } from "vee-validate";
-import { type Ref, ref } from "vue";
+import { computed, type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { date as YupDate, object as yupObject, string as yupString } from "yup";
@@ -55,20 +57,22 @@ import * as api from "@/api";
 import type { User } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
+import { sleep } from "@/utils/sleep.ts";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 
 const { t } = useI18n();
 const toast = useToast();
 const existingId: Ref<number | undefined> = ref(0);
+const loading = ref(false);
 
 // Form validation
 const validationSchema = yupObject({
     first_name: yupString().min(0).max(150),
     last_name: yupString().min(0).max(150),
-    date_joined: YupDate().required(),
+    date_joined: YupDate(),
     username: yupString().required().min(1).max(150),
-    email: yupString().required().min(1).max(254),
+    email: yupString().email().required().min(1).max(254),
 });
 const { handleSubmit, setTouched, resetForm, setValues } = useForm({ validationSchema });
 const first_name = useField<string>("first_name");
@@ -76,13 +80,17 @@ const last_name = useField<string>("last_name");
 const date_joined = useField<string>("date_joined");
 const username = useField<string>("username");
 const email = useField<string>("email");
+const isNew = computed(() => existingId.value === undefined);
 const submit = handleSubmit(async (values) => {
     let ok: boolean;
+    loading.value = true;
     if (existingId.value !== undefined) {
         ok = await editItem(existingId.value, values);
     } else {
         ok = await createItem(values);
     }
+    await sleep(250); // Add some mass to the operation
+    loading.value = false;
     if (ok) {
         dialog.value?.setResult(true);
     }

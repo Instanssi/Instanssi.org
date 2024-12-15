@@ -5,6 +5,10 @@ $theme-color: #0054c0;
 $theme-color-secondary: #7a59e9;
 $title-font-family: 'Exo 2', sans-serif, monospace;
 
+$theme-nav-text: #000;
+$theme-nav-hover: #fff;
+$theme-nav-hover-text: #000;
+
 @import './common.2018.scss';
 
 h2, .base-layout h3 {
@@ -24,7 +28,7 @@ h2, h3 {
         width: 267px;
         height: 100px;
         margin-right: 20px;
-        background-image: url('/static/main2024/images/logoteksti.png');
+        background-image: url('/static/main2025/images/logoteksti.png');
         background-size: contain;
         background-repeat: no-repeat;
         .main-title-text {
@@ -48,5 +52,7 @@ h2, h3 {
 }
 
 body.base-layout {
-    background: $theme-color !important;
+    position: relative;
+    background: #262729 !important;
+    background: url('/static/main2025/images/webtausta.jpg') top center no-repeat, #262729 !important;
 }

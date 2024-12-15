@@ -13,11 +13,12 @@ $theme-color: darken($theme-color-bright, 15%) !default;
 
 $theme-color-dark: #333;
 
-
 // brighter theme color for link text and stuff
 $theme-color-mid: mix($theme-color, $theme-color-bright);
 
-$theme-nav-hover: $theme-color-mid;
+$theme-nav-hover: $theme-color-mid !default;
+$theme-nav-text: #fff !default;
+$theme-nav-hover-text: #fff !default;
 
 $background-color: #1b1b1b;
 

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import logging
 from pathlib import Path
 from typing import Dict, Final

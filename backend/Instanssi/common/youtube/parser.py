@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Optional
 
 from yarl import URL
@@ -47,7 +45,7 @@ class YoutubeURL:
         return None
 
     @classmethod
-    def from_url(cls, url: str) -> YoutubeURL:
+    def from_url(cls, url: str) -> "YoutubeURL":
         url = cls._parse_url(url)
         video_id = cls._find_video_id(url)
         if not video_id:

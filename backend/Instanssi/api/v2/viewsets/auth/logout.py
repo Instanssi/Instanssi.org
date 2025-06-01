@@ -15,9 +15,9 @@ class LogoutViewSet(EnforceCSRFViewSet):
         operation_id="logout",
         parameters=[],
         responses={
-            204: None,
+            200: None,
         },
     )
     def create(self, request: Request) -> Response:
         auth.logout(request)
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_200_OK)

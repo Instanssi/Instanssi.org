@@ -13,7 +13,7 @@ class LoginViewSet(EnforceCSRFViewSet):
         operation_id="login",
         request=UserLoginSerializer,
         responses={
-            204: None,
+            200: None,
             400: None,
             401: None,
         },
@@ -26,7 +26,7 @@ class LoginViewSet(EnforceCSRFViewSet):
             user = auth.authenticate(username=username, password=password)
             if user and user.is_active:
                 auth.login(request, user)
-                return Response({}, status=status.HTTP_204_NO_CONTENT)
+                return Response({}, status=status.HTTP_200_OK)
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

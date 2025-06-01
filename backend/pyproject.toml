@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "instanssi.org"
 version = "1.0.0"
+package-mode = false
 description = "Instanssi website"
 authors = ["Tuomas Virtanen <katajakasa@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-Django = "^5.1"
+Django = "^5.2"
 django-countries = "^7.4.2"
 django-crispy-forms = "^2.0"
 crispy-bootstrap3 = "^2024.1"
@@ -37,7 +38,7 @@ yarl = "^1.12.1"
 orjson = "^3.10.3"
 ffmpeg-python = "^0.2.0"
 psycopg = {extras = ["binary", "pool"], version = "^3.2.2"}
-redis = {extras = ["hiredis"], version = "^5.0.2"}
+redis = {extras = ["hiredis"], version = "^6.2.0"}
 mastodon-py = "^1.8.1"
 nh3 = "^0.2.15"
 drf-spectacular = "^0.28.0"

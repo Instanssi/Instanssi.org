@@ -4,7 +4,7 @@ This is the administration frontend for the Instanssi event website.
 
 ## Development setup
 
-1. Install Node 20.x LTS
+1. Install Node 22.x LTS
 2. Install packages (cleanly), run: `npm ci`
 3. Start up in dev mode, run: `npm run dev`
 `

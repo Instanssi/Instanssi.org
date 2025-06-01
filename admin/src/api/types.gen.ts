@@ -5,56 +5,102 @@ export type AlternateEntryFile = {
     readonly url: string;
 };
 
-export type BlogEntry = {
+export type BlogEntryReadable = {
     readonly id: number;
     user?: number;
+    /**
+     * Aika
+     */
     readonly date: string;
     /**
+     * Otsikko
      * Lyhyt otsikko entrylle.
      */
     title: string;
+    /**
+     * Teksti
+     */
     text: string;
     /**
+     * Julkinen
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
+    /**
+     * Tapahtuma
+     */
     event: number;
     readonly created_by: string;
+};
+
+export type BlogEntryWritable = {
+    user?: number;
+    /**
+     * Otsikko
+     * Lyhyt otsikko entrylle.
+     */
+    title: string;
+    /**
+     * Teksti
+     */
+    text: string;
+    /**
+     * Julkinen
+     * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
+     */
+    public?: boolean;
+    /**
+     * Tapahtuma
+     */
+    event: number;
 };
 
 export type BlogEntryRequest = {
     user?: number;
     /**
+     * Otsikko
      * Lyhyt otsikko entrylle.
      */
     title: string;
+    /**
+     * Teksti
+     */
     text: string;
     /**
+     * Julkinen
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
+    /**
+     * Tapahtuma
+     */
     event: number;
 };
 
-export type CompoEntry = {
+export type CompoEntryReadable = {
     readonly id: number;
     /**
+     * Kompo
      * Kompo johon osallistutaan
      */
     compo: number;
     /**
+     * Nimi
      * Nimi tuotokselle
      */
     name: string;
     /**
+     * Kuvaus
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description: string;
     /**
+     * Tekijä
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator: string;
     /**
+     * Alusta
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
@@ -71,48 +117,114 @@ export type CompoEntry = {
     readonly alternate_files: Array<AlternateEntryFile>;
 };
 
-export type CompoEntryRequest = {
+export type CompoEntryWritable = {
     /**
+     * Kompo
      * Kompo johon osallistutaan
      */
     compo: number;
     /**
+     * Nimi
      * Nimi tuotokselle
      */
     name: string;
     /**
+     * Kuvaus
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description: string;
     /**
+     * Tekijä
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator: string;
     /**
+     * Alusta
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
 };
 
-export type Event = {
+export type CompoEntryRequest = {
+    /**
+     * Kompo
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+};
+
+export type EventReadable = {
     readonly id: number;
     /**
+     * Nimi
      * Tapahtuman nimi
      */
     name: string;
     /**
+     * Lyhyt esitys
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
+     * Päivämäärä
      * Tapahtuman päivämäärä (alku)
      */
     date: string;
     /**
+     * Arkistoitu
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
+     * Tapahtuman pääsivu
+     * URL Tapahtuman pääsivustolle
+     */
+    mainurl?: string;
+};
+
+export type EventWritable = {
+    /**
+     * Nimi
+     * Tapahtuman nimi
+     */
+    name: string;
+    /**
+     * Lyhyt esitys
+     * Lyhyt nimi, eg. vuosi
+     */
+    tag?: string | null;
+    /**
+     * Päivämäärä
+     * Tapahtuman päivämäärä (alku)
+     */
+    date: string;
+    /**
+     * Arkistoitu
+     * Saa näyttää arkistossa
+     */
+    archived?: boolean;
+    /**
+     * Tapahtuman pääsivu
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
@@ -120,95 +232,147 @@ export type Event = {
 
 export type EventRequest = {
     /**
+     * Nimi
      * Tapahtuman nimi
      */
     name: string;
     /**
+     * Lyhyt esitys
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
+     * Päivämäärä
      * Tapahtuman päivämäärä (alku)
      */
     date: string;
     /**
+     * Arkistoitu
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
+     * Tapahtuman pääsivu
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
 };
 
 export type Group = {
+    /**
+     * Nimi
+     */
     name: string;
 };
 
 export type GroupRequest = {
+    /**
+     * Nimi
+     */
     name: string;
 };
 
-export type PaginatedBlogEntryList = {
+export type PaginatedBlogEntryListReadable = {
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<BlogEntry>;
+    results: Array<BlogEntryReadable>;
 };
 
-export type PaginatedCompoEntryList = {
+export type PaginatedBlogEntryListWritable = {
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<CompoEntry>;
+    results: Array<BlogEntryWritable>;
 };
 
-export type PaginatedEventList = {
+export type PaginatedCompoEntryListReadable = {
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<Event>;
+    results: Array<CompoEntryReadable>;
 };
 
-export type PaginatedUserList = {
+export type PaginatedCompoEntryListWritable = {
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<User>;
+    results: Array<CompoEntryWritable>;
+};
+
+export type PaginatedEventListReadable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<EventReadable>;
+};
+
+export type PaginatedEventListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<EventWritable>;
+};
+
+export type PaginatedUserListReadable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserReadable>;
+};
+
+export type PaginatedUserListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserWritable>;
 };
 
 export type PatchedBlogEntryRequest = {
     user?: number;
     /**
+     * Otsikko
      * Lyhyt otsikko entrylle.
      */
     title?: string;
+    /**
+     * Teksti
+     */
     text?: string;
     /**
+     * Julkinen
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
+    /**
+     * Tapahtuma
+     */
     event?: number;
 };
 
 export type PatchedCompoEntryRequest = {
     /**
+     * Kompo
      * Kompo johon osallistutaan
      */
     compo?: number;
     /**
+     * Nimi
      * Nimi tuotokselle
      */
     name?: string;
     /**
+     * Kuvaus
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description?: string;
     /**
+     * Tekijä
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator?: string;
     /**
+     * Alusta
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
@@ -216,22 +380,27 @@ export type PatchedCompoEntryRequest = {
 
 export type PatchedEventRequest = {
     /**
+     * Nimi
      * Tapahtuman nimi
      */
     name?: string;
     /**
+     * Lyhyt esitys
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
+     * Päivämäärä
      * Tapahtuman päivämäärä (alku)
      */
     date?: string;
     /**
+     * Arkistoitu
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
+     * Tapahtuman pääsivu
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
@@ -239,71 +408,168 @@ export type PatchedEventRequest = {
 
 export type PatchedUserRequest = {
     /**
+     * Käyttäjätunnus
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username?: string;
+    /**
+     * Etunimi
+     */
     first_name?: string;
+    /**
+     * Sukunimi
+     */
     last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
     email?: string;
     /**
+     * Voimassa
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
 export type Permission = {
+    /**
+     * Nimi
+     */
     name: string;
+    /**
+     * Tunniste
+     */
     codename: string;
 };
 
 export type PermissionRequest = {
+    /**
+     * Nimi
+     */
     name: string;
+    /**
+     * Tunniste
+     */
     codename: string;
 };
 
-export type SocialAuthURL = {
+export type SocialAuthUrl = {
     method: string;
     url: string;
     name: string;
 };
 
-export type User = {
+export type UserReadable = {
     readonly id: number;
     /**
+     * Käyttäjätunnus
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
+    /**
+     * Etunimi
+     */
     first_name?: string;
+    /**
+     * Sukunimi
+     */
     last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
     email?: string;
     readonly user_permissions: Array<Permission>;
     /**
+     * Pääkäyttäjä
      * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
      */
     readonly is_superuser: boolean;
+    /**
+     * Liittynyt
+     */
     readonly date_joined: string;
     readonly groups: Array<Group>;
     /**
+     * Voimassa
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
-export type UserInfo = {
-    readonly id: number;
+export type UserWritable = {
     /**
+     * Käyttäjätunnus
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
+    /**
+     * Etunimi
+     */
     first_name?: string;
+    /**
+     * Sukunimi
+     */
     last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
+    email?: string;
+    /**
+     * Voimassa
+     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     */
+    is_active?: boolean;
+};
+
+export type UserInfoReadable = {
+    readonly id: number;
+    /**
+     * Käyttäjätunnus
+     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     */
+    username: string;
+    /**
+     * Etunimi
+     */
+    first_name?: string;
+    /**
+     * Sukunimi
+     */
+    last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
     email?: string;
     readonly user_permissions: Array<Permission>;
     /**
+     * Pääkäyttäjä
      * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
      */
     readonly is_superuser: boolean;
+    /**
+     * Liittynyt
+     */
     readonly date_joined: string;
+};
+
+export type UserInfoWritable = {
+    /**
+     * Käyttäjätunnus
+     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     */
+    username: string;
+    /**
+     * Etunimi
+     */
+    first_name?: string;
+    /**
+     * Sukunimi
+     */
+    last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
+    email?: string;
 };
 
 export type UserLoginRequest = {
@@ -313,13 +579,24 @@ export type UserLoginRequest = {
 
 export type UserRequest = {
     /**
+     * Käyttäjätunnus
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
+    /**
+     * Etunimi
+     */
     first_name?: string;
+    /**
+     * Sukunimi
+     */
     last_name?: string;
+    /**
+     * Sähköpostiosoite
+     */
     email?: string;
     /**
+     * Voimassa
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
@@ -327,27 +604,61 @@ export type UserRequest = {
 
 export type LoginData = {
     body: UserLoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v2/auth/login/';
 };
 
-export type LoginResponse = void;
+export type LoginErrors = {
+    /**
+     * No response body
+     */
+    400: unknown;
+    /**
+     * No response body
+     */
+    401: unknown;
+};
 
-export type LoginError = unknown;
+export type LoginResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
 
-export type LogoutResponse = void;
+export type LogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v2/auth/logout/';
+};
 
-export type LogoutError = unknown;
+export type LogoutResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
 
 export type GetSocialAuthUrlsData = {
+    body?: never;
+    path?: never;
     query?: {
         next?: string;
     };
+    url: '/api/v2/auth/social_urls/';
 };
 
-export type GetSocialAuthUrlsResponse = Array<SocialAuthURL>;
+export type GetSocialAuthUrlsResponses = {
+    200: Array<SocialAuthUrl>;
+};
 
-export type GetSocialAuthUrlsError = unknown;
+export type GetSocialAuthUrlsResponse = GetSocialAuthUrlsResponses[keyof GetSocialAuthUrlsResponses];
 
 export type BlogEntriesListData = {
+    body?: never;
+    path?: never;
     query?: {
         event?: number;
         /**
@@ -368,46 +679,66 @@ export type BlogEntriesListData = {
         search?: string;
         user?: number;
     };
+    url: '/api/v2/blog_entries/';
 };
 
-export type BlogEntriesListResponse = PaginatedBlogEntryList;
+export type BlogEntriesListResponses = {
+    200: PaginatedBlogEntryListReadable;
+};
 
-export type BlogEntriesListError = unknown;
+export type BlogEntriesListResponse = BlogEntriesListResponses[keyof BlogEntriesListResponses];
 
 export type BlogEntriesCreateData = {
     body: BlogEntryRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v2/blog_entries/';
 };
 
-export type BlogEntriesCreateResponse = BlogEntry;
+export type BlogEntriesCreateResponses = {
+    201: BlogEntryReadable;
+};
 
-export type BlogEntriesCreateError = unknown;
+export type BlogEntriesCreateResponse = BlogEntriesCreateResponses[keyof BlogEntriesCreateResponses];
+
+export type BlogEntriesDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/v2/blog_entries/{id}/';
+};
+
+export type BlogEntriesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type BlogEntriesDestroyResponse = BlogEntriesDestroyResponses[keyof BlogEntriesDestroyResponses];
 
 export type BlogEntriesRetrieveData = {
+    body?: never;
     path: {
         /**
          * A unique integer value identifying this entry.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/blog_entries/{id}/';
 };
 
-export type BlogEntriesRetrieveResponse = BlogEntry;
-
-export type BlogEntriesRetrieveError = unknown;
-
-export type BlogEntriesUpdateData = {
-    body: BlogEntryRequest;
-    path: {
-        /**
-         * A unique integer value identifying this entry.
-         */
-        id: number;
-    };
+export type BlogEntriesRetrieveResponses = {
+    200: BlogEntryReadable;
 };
 
-export type BlogEntriesUpdateResponse = BlogEntry;
-
-export type BlogEntriesUpdateError = unknown;
+export type BlogEntriesRetrieveResponse = BlogEntriesRetrieveResponses[keyof BlogEntriesRetrieveResponses];
 
 export type BlogEntriesPartialUpdateData = {
     body?: PatchedBlogEntryRequest;
@@ -417,26 +748,37 @@ export type BlogEntriesPartialUpdateData = {
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/blog_entries/{id}/';
 };
 
-export type BlogEntriesPartialUpdateResponse = BlogEntry;
+export type BlogEntriesPartialUpdateResponses = {
+    200: BlogEntryReadable;
+};
 
-export type BlogEntriesPartialUpdateError = unknown;
+export type BlogEntriesPartialUpdateResponse = BlogEntriesPartialUpdateResponses[keyof BlogEntriesPartialUpdateResponses];
 
-export type BlogEntriesDestroyData = {
+export type BlogEntriesUpdateData = {
+    body: BlogEntryRequest;
     path: {
         /**
          * A unique integer value identifying this entry.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/blog_entries/{id}/';
 };
 
-export type BlogEntriesDestroyResponse = void;
+export type BlogEntriesUpdateResponses = {
+    200: BlogEntryReadable;
+};
 
-export type BlogEntriesDestroyError = unknown;
+export type BlogEntriesUpdateResponse = BlogEntriesUpdateResponses[keyof BlogEntriesUpdateResponses];
 
 export type EventsListData = {
+    body?: never;
+    path?: never;
     query?: {
         /**
          * Number of results to return per page.
@@ -452,46 +794,66 @@ export type EventsListData = {
          */
         ordering?: string;
     };
+    url: '/api/v2/events/';
 };
 
-export type EventsListResponse = PaginatedEventList;
+export type EventsListResponses = {
+    200: PaginatedEventListReadable;
+};
 
-export type EventsListError = unknown;
+export type EventsListResponse = EventsListResponses[keyof EventsListResponses];
 
 export type EventsCreateData = {
     body: EventRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v2/events/';
 };
 
-export type EventsCreateResponse = Event;
+export type EventsCreateResponses = {
+    201: EventReadable;
+};
 
-export type EventsCreateError = unknown;
+export type EventsCreateResponse = EventsCreateResponses[keyof EventsCreateResponses];
+
+export type EventsDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/v2/events/{id}/';
+};
+
+export type EventsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsDestroyResponse = EventsDestroyResponses[keyof EventsDestroyResponses];
 
 export type EventsRetrieveData = {
+    body?: never;
     path: {
         /**
          * A unique integer value identifying this tapahtuma.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/events/{id}/';
 };
 
-export type EventsRetrieveResponse = Event;
-
-export type EventsRetrieveError = unknown;
-
-export type EventsUpdateData = {
-    body: EventRequest;
-    path: {
-        /**
-         * A unique integer value identifying this tapahtuma.
-         */
-        id: number;
-    };
+export type EventsRetrieveResponses = {
+    200: EventReadable;
 };
 
-export type EventsUpdateResponse = Event;
-
-export type EventsUpdateError = unknown;
+export type EventsRetrieveResponse = EventsRetrieveResponses[keyof EventsRetrieveResponses];
 
 export type EventsPartialUpdateData = {
     body?: PatchedEventRequest;
@@ -501,26 +863,37 @@ export type EventsPartialUpdateData = {
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/events/{id}/';
 };
 
-export type EventsPartialUpdateResponse = Event;
+export type EventsPartialUpdateResponses = {
+    200: EventReadable;
+};
 
-export type EventsPartialUpdateError = unknown;
+export type EventsPartialUpdateResponse = EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
 
-export type EventsDestroyData = {
+export type EventsUpdateData = {
+    body: EventRequest;
     path: {
         /**
          * A unique integer value identifying this tapahtuma.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/events/{id}/';
 };
 
-export type EventsDestroyResponse = void;
+export type EventsUpdateResponses = {
+    200: EventReadable;
+};
 
-export type EventsDestroyError = unknown;
+export type EventsUpdateResponse = EventsUpdateResponses[keyof EventsUpdateResponses];
 
 export type UserCompoEntriesListData = {
+    body?: never;
+    path?: never;
     query?: {
         /**
          * Number of results to return per page.
@@ -535,67 +908,107 @@ export type UserCompoEntriesListData = {
          */
         ordering?: string;
     };
+    url: '/api/v2/user_compo_entries/';
 };
 
-export type UserCompoEntriesListResponse = PaginatedCompoEntryList;
+export type UserCompoEntriesListResponses = {
+    200: PaginatedCompoEntryListReadable;
+};
 
-export type UserCompoEntriesListError = unknown;
+export type UserCompoEntriesListResponse = UserCompoEntriesListResponses[keyof UserCompoEntriesListResponses];
 
 export type UserCompoEntriesCreateData = {
     body: CompoEntryRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v2/user_compo_entries/';
 };
 
-export type UserCompoEntriesCreateResponse = CompoEntry;
+export type UserCompoEntriesCreateResponses = {
+    201: CompoEntryReadable;
+};
 
-export type UserCompoEntriesCreateError = unknown;
+export type UserCompoEntriesCreateResponse = UserCompoEntriesCreateResponses[keyof UserCompoEntriesCreateResponses];
+
+export type UserCompoEntriesDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v2/user_compo_entries/{id}/';
+};
+
+export type UserCompoEntriesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type UserCompoEntriesDestroyResponse = UserCompoEntriesDestroyResponses[keyof UserCompoEntriesDestroyResponses];
 
 export type UserCompoEntriesRetrieveData = {
+    body?: never;
     path: {
         id: string;
     };
+    query?: never;
+    url: '/api/v2/user_compo_entries/{id}/';
 };
 
-export type UserCompoEntriesRetrieveResponse = CompoEntry;
-
-export type UserCompoEntriesRetrieveError = unknown;
-
-export type UserCompoEntriesUpdateData = {
-    body: CompoEntryRequest;
-    path: {
-        id: string;
-    };
+export type UserCompoEntriesRetrieveResponses = {
+    200: CompoEntryReadable;
 };
 
-export type UserCompoEntriesUpdateResponse = CompoEntry;
-
-export type UserCompoEntriesUpdateError = unknown;
+export type UserCompoEntriesRetrieveResponse = UserCompoEntriesRetrieveResponses[keyof UserCompoEntriesRetrieveResponses];
 
 export type UserCompoEntriesPartialUpdateData = {
     body?: PatchedCompoEntryRequest;
     path: {
         id: string;
     };
+    query?: never;
+    url: '/api/v2/user_compo_entries/{id}/';
 };
 
-export type UserCompoEntriesPartialUpdateResponse = CompoEntry;
+export type UserCompoEntriesPartialUpdateResponses = {
+    200: CompoEntryReadable;
+};
 
-export type UserCompoEntriesPartialUpdateError = unknown;
+export type UserCompoEntriesPartialUpdateResponse = UserCompoEntriesPartialUpdateResponses[keyof UserCompoEntriesPartialUpdateResponses];
 
-export type UserCompoEntriesDestroyData = {
+export type UserCompoEntriesUpdateData = {
+    body: CompoEntryRequest;
     path: {
         id: string;
     };
+    query?: never;
+    url: '/api/v2/user_compo_entries/{id}/';
 };
 
-export type UserCompoEntriesDestroyResponse = void;
+export type UserCompoEntriesUpdateResponses = {
+    200: CompoEntryReadable;
+};
 
-export type UserCompoEntriesDestroyError = unknown;
+export type UserCompoEntriesUpdateResponse = UserCompoEntriesUpdateResponses[keyof UserCompoEntriesUpdateResponses];
 
-export type UserInfoResponse = Array<UserInfo>;
+export type UserInfoData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v2/user_info/';
+};
 
-export type UserInfoError = unknown;
+export type UserInfoResponses = {
+    200: Array<UserInfoReadable>;
+};
+
+export type UserInfoResponse = UserInfoResponses[keyof UserInfoResponses];
 
 export type UsersListData = {
+    body?: never;
+    path?: never;
     query?: {
         email?: string;
         /**
@@ -616,46 +1029,66 @@ export type UsersListData = {
         search?: string;
         username?: string;
     };
+    url: '/api/v2/users/';
 };
 
-export type UsersListResponse = PaginatedUserList;
+export type UsersListResponses = {
+    200: PaginatedUserListReadable;
+};
 
-export type UsersListError = unknown;
+export type UsersListResponse = UsersListResponses[keyof UsersListResponses];
 
 export type UsersCreateData = {
     body: UserRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v2/users/';
 };
 
-export type UsersCreateResponse = User;
+export type UsersCreateResponses = {
+    201: UserReadable;
+};
 
-export type UsersCreateError = unknown;
+export type UsersCreateResponse = UsersCreateResponses[keyof UsersCreateResponses];
+
+export type UsersDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/v2/users/{id}/';
+};
+
+export type UsersDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type UsersDestroyResponse = UsersDestroyResponses[keyof UsersDestroyResponses];
 
 export type UsersRetrieveData = {
+    body?: never;
     path: {
         /**
          * A unique integer value identifying this käyttäjä.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/users/{id}/';
 };
 
-export type UsersRetrieveResponse = User;
-
-export type UsersRetrieveError = unknown;
-
-export type UsersUpdateData = {
-    body: UserRequest;
-    path: {
-        /**
-         * A unique integer value identifying this käyttäjä.
-         */
-        id: number;
-    };
+export type UsersRetrieveResponses = {
+    200: UserReadable;
 };
 
-export type UsersUpdateResponse = User;
-
-export type UsersUpdateError = unknown;
+export type UsersRetrieveResponse = UsersRetrieveResponses[keyof UsersRetrieveResponses];
 
 export type UsersPartialUpdateData = {
     body?: PatchedUserRequest;
@@ -665,21 +1098,34 @@ export type UsersPartialUpdateData = {
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/users/{id}/';
 };
 
-export type UsersPartialUpdateResponse = User;
+export type UsersPartialUpdateResponses = {
+    200: UserReadable;
+};
 
-export type UsersPartialUpdateError = unknown;
+export type UsersPartialUpdateResponse = UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
 
-export type UsersDestroyData = {
+export type UsersUpdateData = {
+    body: UserRequest;
     path: {
         /**
          * A unique integer value identifying this käyttäjä.
          */
         id: number;
     };
+    query?: never;
+    url: '/api/v2/users/{id}/';
 };
 
-export type UsersDestroyResponse = void;
+export type UsersUpdateResponses = {
+    200: UserReadable;
+};
 
-export type UsersDestroyError = unknown;
+export type UsersUpdateResponse = UsersUpdateResponses[keyof UsersUpdateResponses];
+
+export type ClientOptions = {
+    baseURL: `${string}://openapi` | (string & {});
+};

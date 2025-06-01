@@ -1,4 +1,4 @@
-import { client } from "@/api";
+import { client } from "@/api/client.gen.ts";
 import { errorResponseInterceptor } from "@/services/utils/interceptors";
 
 export function setupClient() {

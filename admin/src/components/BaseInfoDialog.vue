@@ -17,9 +17,12 @@
                 <v-btn
                     variant="elevated"
                     color="primary"
-                    :prepend-icon="okIcon"
                     @click="setResult(true)"
                 >
+                    <template #prepend>
+                        <FontAwesomeIcon v-if="loading" icon="spinner" spin />
+                        <v-icon v-else :icon="okIcon" />
+                    </template>
                     {{ okText ?? t("General.ok") }}
                 </v-btn>
             </slot>
@@ -32,6 +35,7 @@ import { type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseDialog from "@/components/BaseDialog.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const { t } = useI18n();
 const baseDialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();

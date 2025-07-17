@@ -75,10 +75,10 @@ import { debounce } from "lodash-es";
 import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer } from "vuetify/components";
+import { type VDataTable, type VDataTableServer } from "vuetify/components";
 
 import * as api from "@/api";
-import type { User } from "@/api";
+import type { UserReadable } from "@/api";
 import LayoutBase from "@/components/LayoutBase.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -86,8 +86,7 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 
-// Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
-type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
+type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t, d } = useI18n();
 
@@ -101,7 +100,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const users: Ref<User[]> = ref([]);
+const users: Ref<UserReadable[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
@@ -143,6 +142,10 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
+function flushData() {
+    refreshKey.value += 1;
+}
+
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
@@ -159,32 +162,34 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deleteUser(item: User): Promise<void> {
+async function deleteUser(item: UserReadable): Promise<void> {
     const text = t("UsersView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
             await api.usersDestroy({ path: { id: item.id } });
+            flushData();
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
             toast.error(t("UsersView.deleteFailure"));
             console.error(e);
         }
-        refreshKey.value += 1;
     }
 }
 
 async function editUser(id: number): Promise<void> {
     const response = await api.usersRetrieve({ path: { id } });
-    if (await dialog.value!.modal(response.data!)) {
-        refreshKey.value += 1;
+    const ok = await dialog.value!.modal(response.data!);
+    if (ok) {
+        flushData();
     }
 }
 
 async function createUser() {
-    if (await dialog.value!.modal()) {
+    const ok = await dialog.value!.modal();
+    if (ok) {
         currentPage.value = 1;
-        refreshKey.value += 1;
+        flushData();
     }
 }
 </script>

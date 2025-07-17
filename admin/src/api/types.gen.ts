@@ -606,7 +606,7 @@ export type LoginData = {
     body: UserLoginRequest;
     path?: never;
     query?: never;
-    url: '/api/v2/auth/login/';
+    url: "/api/v2/auth/login/";
 };
 
 export type LoginErrors = {
@@ -631,7 +631,7 @@ export type LogoutData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/api/v2/auth/logout/';
+    url: "/api/v2/auth/logout/";
 };
 
 export type LogoutResponses = {
@@ -647,14 +647,15 @@ export type GetSocialAuthUrlsData = {
     query?: {
         next?: string;
     };
-    url: '/api/v2/auth/social_urls/';
+    url: "/api/v2/auth/social_urls/";
 };
 
 export type GetSocialAuthUrlsResponses = {
     200: Array<SocialAuthUrl>;
 };
 
-export type GetSocialAuthUrlsResponse = GetSocialAuthUrlsResponses[keyof GetSocialAuthUrlsResponses];
+export type GetSocialAuthUrlsResponse =
+    GetSocialAuthUrlsResponses[keyof GetSocialAuthUrlsResponses];
 
 export type BlogEntriesListData = {
     body?: never;
@@ -679,7 +680,7 @@ export type BlogEntriesListData = {
         search?: string;
         user?: number;
     };
-    url: '/api/v2/blog_entries/';
+    url: "/api/v2/blog_entries/";
 };
 
 export type BlogEntriesListResponses = {
@@ -692,14 +693,15 @@ export type BlogEntriesCreateData = {
     body: BlogEntryRequest;
     path?: never;
     query?: never;
-    url: '/api/v2/blog_entries/';
+    url: "/api/v2/blog_entries/";
 };
 
 export type BlogEntriesCreateResponses = {
     201: BlogEntryReadable;
 };
 
-export type BlogEntriesCreateResponse = BlogEntriesCreateResponses[keyof BlogEntriesCreateResponses];
+export type BlogEntriesCreateResponse =
+    BlogEntriesCreateResponses[keyof BlogEntriesCreateResponses];
 
 export type BlogEntriesDestroyData = {
     body?: never;
@@ -710,7 +712,7 @@ export type BlogEntriesDestroyData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/blog_entries/{id}/';
+    url: "/api/v2/blog_entries/{id}/";
 };
 
 export type BlogEntriesDestroyResponses = {
@@ -720,7 +722,8 @@ export type BlogEntriesDestroyResponses = {
     204: void;
 };
 
-export type BlogEntriesDestroyResponse = BlogEntriesDestroyResponses[keyof BlogEntriesDestroyResponses];
+export type BlogEntriesDestroyResponse =
+    BlogEntriesDestroyResponses[keyof BlogEntriesDestroyResponses];
 
 export type BlogEntriesRetrieveData = {
     body?: never;
@@ -731,14 +734,15 @@ export type BlogEntriesRetrieveData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/blog_entries/{id}/';
+    url: "/api/v2/blog_entries/{id}/";
 };
 
 export type BlogEntriesRetrieveResponses = {
     200: BlogEntryReadable;
 };
 
-export type BlogEntriesRetrieveResponse = BlogEntriesRetrieveResponses[keyof BlogEntriesRetrieveResponses];
+export type BlogEntriesRetrieveResponse =
+    BlogEntriesRetrieveResponses[keyof BlogEntriesRetrieveResponses];
 
 export type BlogEntriesPartialUpdateData = {
     body?: PatchedBlogEntryRequest;
@@ -749,14 +753,15 @@ export type BlogEntriesPartialUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/blog_entries/{id}/';
+    url: "/api/v2/blog_entries/{id}/";
 };
 
 export type BlogEntriesPartialUpdateResponses = {
     200: BlogEntryReadable;
 };
 
-export type BlogEntriesPartialUpdateResponse = BlogEntriesPartialUpdateResponses[keyof BlogEntriesPartialUpdateResponses];
+export type BlogEntriesPartialUpdateResponse =
+    BlogEntriesPartialUpdateResponses[keyof BlogEntriesPartialUpdateResponses];
 
 export type BlogEntriesUpdateData = {
     body: BlogEntryRequest;
@@ -767,14 +772,15 @@ export type BlogEntriesUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/blog_entries/{id}/';
+    url: "/api/v2/blog_entries/{id}/";
 };
 
 export type BlogEntriesUpdateResponses = {
     200: BlogEntryReadable;
 };
 
-export type BlogEntriesUpdateResponse = BlogEntriesUpdateResponses[keyof BlogEntriesUpdateResponses];
+export type BlogEntriesUpdateResponse =
+    BlogEntriesUpdateResponses[keyof BlogEntriesUpdateResponses];
 
 export type EventsListData = {
     body?: never;
@@ -794,7 +800,7 @@ export type EventsListData = {
          */
         ordering?: string;
     };
-    url: '/api/v2/events/';
+    url: "/api/v2/events/";
 };
 
 export type EventsListResponses = {
@@ -807,7 +813,7 @@ export type EventsCreateData = {
     body: EventRequest;
     path?: never;
     query?: never;
-    url: '/api/v2/events/';
+    url: "/api/v2/events/";
 };
 
 export type EventsCreateResponses = {
@@ -825,7 +831,7 @@ export type EventsDestroyData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/events/{id}/';
+    url: "/api/v2/events/{id}/";
 };
 
 export type EventsDestroyResponses = {
@@ -846,7 +852,7 @@ export type EventsRetrieveData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/events/{id}/';
+    url: "/api/v2/events/{id}/";
 };
 
 export type EventsRetrieveResponses = {
@@ -864,14 +870,15 @@ export type EventsPartialUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/events/{id}/';
+    url: "/api/v2/events/{id}/";
 };
 
 export type EventsPartialUpdateResponses = {
     200: EventReadable;
 };
 
-export type EventsPartialUpdateResponse = EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
+export type EventsPartialUpdateResponse =
+    EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
 
 export type EventsUpdateData = {
     body: EventRequest;
@@ -882,7 +889,7 @@ export type EventsUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/events/{id}/';
+    url: "/api/v2/events/{id}/";
 };
 
 export type EventsUpdateResponses = {
@@ -908,27 +915,29 @@ export type UserCompoEntriesListData = {
          */
         ordering?: string;
     };
-    url: '/api/v2/user_compo_entries/';
+    url: "/api/v2/user_compo_entries/";
 };
 
 export type UserCompoEntriesListResponses = {
     200: PaginatedCompoEntryListReadable;
 };
 
-export type UserCompoEntriesListResponse = UserCompoEntriesListResponses[keyof UserCompoEntriesListResponses];
+export type UserCompoEntriesListResponse =
+    UserCompoEntriesListResponses[keyof UserCompoEntriesListResponses];
 
 export type UserCompoEntriesCreateData = {
     body: CompoEntryRequest;
     path?: never;
     query?: never;
-    url: '/api/v2/user_compo_entries/';
+    url: "/api/v2/user_compo_entries/";
 };
 
 export type UserCompoEntriesCreateResponses = {
     201: CompoEntryReadable;
 };
 
-export type UserCompoEntriesCreateResponse = UserCompoEntriesCreateResponses[keyof UserCompoEntriesCreateResponses];
+export type UserCompoEntriesCreateResponse =
+    UserCompoEntriesCreateResponses[keyof UserCompoEntriesCreateResponses];
 
 export type UserCompoEntriesDestroyData = {
     body?: never;
@@ -936,7 +945,7 @@ export type UserCompoEntriesDestroyData = {
         id: string;
     };
     query?: never;
-    url: '/api/v2/user_compo_entries/{id}/';
+    url: "/api/v2/user_compo_entries/{id}/";
 };
 
 export type UserCompoEntriesDestroyResponses = {
@@ -946,7 +955,8 @@ export type UserCompoEntriesDestroyResponses = {
     204: void;
 };
 
-export type UserCompoEntriesDestroyResponse = UserCompoEntriesDestroyResponses[keyof UserCompoEntriesDestroyResponses];
+export type UserCompoEntriesDestroyResponse =
+    UserCompoEntriesDestroyResponses[keyof UserCompoEntriesDestroyResponses];
 
 export type UserCompoEntriesRetrieveData = {
     body?: never;
@@ -954,14 +964,15 @@ export type UserCompoEntriesRetrieveData = {
         id: string;
     };
     query?: never;
-    url: '/api/v2/user_compo_entries/{id}/';
+    url: "/api/v2/user_compo_entries/{id}/";
 };
 
 export type UserCompoEntriesRetrieveResponses = {
     200: CompoEntryReadable;
 };
 
-export type UserCompoEntriesRetrieveResponse = UserCompoEntriesRetrieveResponses[keyof UserCompoEntriesRetrieveResponses];
+export type UserCompoEntriesRetrieveResponse =
+    UserCompoEntriesRetrieveResponses[keyof UserCompoEntriesRetrieveResponses];
 
 export type UserCompoEntriesPartialUpdateData = {
     body?: PatchedCompoEntryRequest;
@@ -969,14 +980,15 @@ export type UserCompoEntriesPartialUpdateData = {
         id: string;
     };
     query?: never;
-    url: '/api/v2/user_compo_entries/{id}/';
+    url: "/api/v2/user_compo_entries/{id}/";
 };
 
 export type UserCompoEntriesPartialUpdateResponses = {
     200: CompoEntryReadable;
 };
 
-export type UserCompoEntriesPartialUpdateResponse = UserCompoEntriesPartialUpdateResponses[keyof UserCompoEntriesPartialUpdateResponses];
+export type UserCompoEntriesPartialUpdateResponse =
+    UserCompoEntriesPartialUpdateResponses[keyof UserCompoEntriesPartialUpdateResponses];
 
 export type UserCompoEntriesUpdateData = {
     body: CompoEntryRequest;
@@ -984,20 +996,21 @@ export type UserCompoEntriesUpdateData = {
         id: string;
     };
     query?: never;
-    url: '/api/v2/user_compo_entries/{id}/';
+    url: "/api/v2/user_compo_entries/{id}/";
 };
 
 export type UserCompoEntriesUpdateResponses = {
     200: CompoEntryReadable;
 };
 
-export type UserCompoEntriesUpdateResponse = UserCompoEntriesUpdateResponses[keyof UserCompoEntriesUpdateResponses];
+export type UserCompoEntriesUpdateResponse =
+    UserCompoEntriesUpdateResponses[keyof UserCompoEntriesUpdateResponses];
 
 export type UserInfoData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/api/v2/user_info/';
+    url: "/api/v2/user_info/";
 };
 
 export type UserInfoResponses = {
@@ -1029,7 +1042,7 @@ export type UsersListData = {
         search?: string;
         username?: string;
     };
-    url: '/api/v2/users/';
+    url: "/api/v2/users/";
 };
 
 export type UsersListResponses = {
@@ -1042,7 +1055,7 @@ export type UsersCreateData = {
     body: UserRequest;
     path?: never;
     query?: never;
-    url: '/api/v2/users/';
+    url: "/api/v2/users/";
 };
 
 export type UsersCreateResponses = {
@@ -1060,7 +1073,7 @@ export type UsersDestroyData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/users/{id}/';
+    url: "/api/v2/users/{id}/";
 };
 
 export type UsersDestroyResponses = {
@@ -1081,7 +1094,7 @@ export type UsersRetrieveData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/users/{id}/';
+    url: "/api/v2/users/{id}/";
 };
 
 export type UsersRetrieveResponses = {
@@ -1099,14 +1112,15 @@ export type UsersPartialUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/users/{id}/';
+    url: "/api/v2/users/{id}/";
 };
 
 export type UsersPartialUpdateResponses = {
     200: UserReadable;
 };
 
-export type UsersPartialUpdateResponse = UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
+export type UsersPartialUpdateResponse =
+    UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
 
 export type UsersUpdateData = {
     body: UserRequest;
@@ -1117,7 +1131,7 @@ export type UsersUpdateData = {
         id: number;
     };
     query?: never;
-    url: '/api/v2/users/{id}/';
+    url: "/api/v2/users/{id}/";
 };
 
 export type UsersUpdateResponses = {

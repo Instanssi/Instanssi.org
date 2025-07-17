@@ -95,10 +95,13 @@ router.beforeEach((to, from, next) => {
     const requireAuth = (to.meta?.requireAuth ?? false) as boolean;
     const viewPerm = to.meta?.requireViewPermission as PermissionTarget | undefined;
     if (requireAuth && !authService.isLoggedIn()) {
+        console.debug("Not logged in, redirecting to login page.");
         next({ name: "login" });
     } else if (viewPerm && !authService.canView(viewPerm)) {
+        console.debug("No permissions to view, redirecting to index page.");
         next({ name: "index" });
     } else if (to.name === "login" && authService.isLoggedIn()) {
+        console.debug("Already logged in, redirecting to index page.");
         next({ name: "index" });
     } else {
         next();

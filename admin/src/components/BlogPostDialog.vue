@@ -5,6 +5,7 @@
         :ok-text="t('General.save')"
         ok-icon="fas fa-floppy-disk"
         :width="1000"
+        :loading="loading"
         @submit="submit"
     >
         <v-text-field
@@ -30,14 +31,16 @@ import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
-import type { BlogEntry } from "@/api";
+import type { BlogEntryReadable } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
+import { sleep } from "@/utils/sleep.ts";
 
 const dialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
 
 const { t } = useI18n();
 const toast = useToast();
+const loading = ref(false);
 const existingId: Ref<number | undefined> = ref(undefined);
 const eventId: Ref<number> = ref(0);
 const switchLabel = computed(() =>
@@ -58,11 +61,14 @@ const text = useField<string>("text");
 const isPublic = useField<boolean>("isPublic");
 const submit = handleSubmit(async (values) => {
     let ok: boolean;
+    loading.value = true;
     if (existingId.value !== undefined) {
         ok = await editItem(existingId.value, values);
     } else {
         ok = await createItem(values);
     }
+    await sleep(250); // Add some mass to the operation
+    loading.value = false;
     if (ok) {
         dialog.value?.setResult(true);
     }
@@ -108,7 +114,7 @@ async function editItem(itemId: number, values: GenericObject) {
     return false;
 }
 
-async function modal(event: number, item: BlogEntry | undefined = undefined) {
+async function modal(event: number, item: BlogEntryReadable | undefined = undefined) {
     eventId.value = event;
     if (item !== undefined) {
         existingId.value = item.id;

@@ -26,7 +26,7 @@ paths:
       - cookieAuth: []
       - {}
       responses:
-        '204':
+        '200':
           description: No response body
         '400':
           description: No response body
@@ -41,7 +41,7 @@ paths:
       - knoxApiToken: []
       - cookieAuth: []
       responses:
-        '204':
+        '200':
           description: No response body
   /api/v2/auth/social_urls/:
     get:

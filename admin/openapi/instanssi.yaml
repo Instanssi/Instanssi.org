@@ -1,0 +1,1470 @@
+openapi: 3.0.3
+info:
+  title: Instanssi.org
+  version: 2.0.0
+  description: Instanssi.org APIv2
+paths:
+  /api/v2/auth/login/:
+    post:
+      operationId: login
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+        '400':
+          description: No response body
+        '401':
+          description: No response body
+  /api/v2/auth/logout/:
+    post:
+      operationId: logout
+      tags:
+      - auth
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v2/auth/social_urls/:
+    get:
+      operationId: get_social_auth_urls
+      description: Returns a list of URLs that can be used to begin a social authentication
+        process.
+      parameters:
+      - in: query
+        name: next
+        schema:
+          type: string
+      tags:
+      - auth
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SocialAuthURL'
+          description: ''
+  /api/v2/blog_entries/:
+    get:
+      operationId: blog_entries_list
+      parameters:
+      - in: query
+        name: event
+        schema:
+          type: integer
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: user
+        schema:
+          type: integer
+      tags:
+      - blog_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBlogEntryList'
+          description: ''
+    post:
+      operationId: blog_entries_create
+      tags:
+      - blog_entries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogEntry'
+          description: ''
+  /api/v2/blog_entries/{id}/:
+    get:
+      operationId: blog_entries_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this entry.
+        required: true
+      tags:
+      - blog_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogEntry'
+          description: ''
+    put:
+      operationId: blog_entries_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this entry.
+        required: true
+      tags:
+      - blog_entries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BlogEntryRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogEntry'
+          description: ''
+    patch:
+      operationId: blog_entries_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this entry.
+        required: true
+      tags:
+      - blog_entries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogEntryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBlogEntryRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogEntry'
+          description: ''
+    delete:
+      operationId: blog_entries_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this entry.
+        required: true
+      tags:
+      - blog_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v2/events/:
+    get:
+      operationId: events_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - events
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
+    post:
+      operationId: events_create
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v2/events/{id}/:
+    get:
+      operationId: events_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tapahtuma.
+        required: true
+      tags:
+      - events
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    put:
+      operationId: events_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tapahtuma.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    patch:
+      operationId: events_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tapahtuma.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    delete:
+      operationId: events_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tapahtuma.
+        required: true
+      tags:
+      - events
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v2/user_compo_entries/:
+    get:
+      operationId: user_compo_entries_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - user_compo_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompoEntryList'
+          description: ''
+    post:
+      operationId: user_compo_entries_create
+      tags:
+      - user_compo_entries
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompoEntry'
+          description: ''
+  /api/v2/user_compo_entries/{id}/:
+    get:
+      operationId: user_compo_entries_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - user_compo_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompoEntry'
+          description: ''
+    put:
+      operationId: user_compo_entries_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - user_compo_entries
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompoEntry'
+          description: ''
+    patch:
+      operationId: user_compo_entries_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - user_compo_entries
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompoEntryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompoEntryRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompoEntry'
+          description: ''
+    delete:
+      operationId: user_compo_entries_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - user_compo_entries
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v2/user_info/:
+    get:
+      operationId: user_info
+      tags:
+      - user_info
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfo'
+          description: ''
+  /api/v2/users/:
+    get:
+      operationId: users_list
+      parameters:
+      - in: query
+        name: email
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: username
+        schema:
+          type: string
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v2/users/{id}/:
+    get:
+      operationId: users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this käyttäjä.
+        required: true
+      tags:
+      - users
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    AlternateEntryFile:
+      type: object
+      properties:
+        format:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - format
+      - url
+    BlogEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Aika
+        title:
+          type: string
+          title: Otsikko
+          description: Lyhyt otsikko entrylle.
+          maxLength: 128
+        text:
+          type: string
+          title: Teksti
+        public:
+          type: boolean
+          title: Julkinen
+          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
+            sivuille että RSS-syötteeseen.
+        event:
+          type: integer
+          title: Tapahtuma
+        created_by:
+          type: string
+          readOnly: true
+      required:
+      - created_by
+      - date
+      - event
+      - id
+      - text
+      - title
+    BlogEntryRequest:
+      type: object
+      properties:
+        user:
+          type: integer
+        title:
+          type: string
+          minLength: 1
+          title: Otsikko
+          description: Lyhyt otsikko entrylle.
+          maxLength: 128
+        text:
+          type: string
+          minLength: 1
+          title: Teksti
+        public:
+          type: boolean
+          title: Julkinen
+          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
+            sivuille että RSS-syötteeseen.
+        event:
+          type: integer
+          title: Tapahtuma
+      required:
+      - event
+      - text
+      - title
+    CompoEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        compo:
+          type: integer
+          title: Kompo
+          description: Kompo johon osallistutaan
+        name:
+          type: string
+          title: Nimi
+          description: Nimi tuotokselle
+          maxLength: 64
+        description:
+          type: string
+          title: Kuvaus
+          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+        creator:
+          type: string
+          title: Tekijä
+          description: Tuotoksen tekijän tai tekijäryhmän nimi
+          maxLength: 64
+        platform:
+          type: string
+          nullable: true
+          title: Alusta
+          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
+            sisällä ajettavaa koodia.
+          maxLength: 128
+        entry_file_url:
+          type: string
+          nullable: true
+          readOnly: true
+        source_file_url:
+          type: string
+          nullable: true
+          readOnly: true
+        image_file_original_url:
+          type: string
+          nullable: true
+          readOnly: true
+        image_file_thumbnail_url:
+          type: string
+          nullable: true
+          readOnly: true
+        image_file_medium_url:
+          type: string
+          nullable: true
+          readOnly: true
+        youtube_url:
+          type: string
+          nullable: true
+          readOnly: true
+        disqualified:
+          type: boolean
+          nullable: true
+          readOnly: true
+        disqualified_reason:
+          type: string
+          nullable: true
+          readOnly: true
+        score:
+          type: number
+          format: double
+          nullable: true
+          readOnly: true
+        rank:
+          type: integer
+          nullable: true
+          readOnly: true
+        alternate_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlternateEntryFile'
+          readOnly: true
+      required:
+      - alternate_files
+      - compo
+      - creator
+      - description
+      - disqualified
+      - disqualified_reason
+      - entry_file_url
+      - id
+      - image_file_medium_url
+      - image_file_original_url
+      - image_file_thumbnail_url
+      - name
+      - rank
+      - score
+      - source_file_url
+      - youtube_url
+    CompoEntryRequest:
+      type: object
+      properties:
+        compo:
+          type: integer
+          title: Kompo
+          description: Kompo johon osallistutaan
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          description: Nimi tuotokselle
+          maxLength: 64
+        description:
+          type: string
+          minLength: 1
+          title: Kuvaus
+          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+        creator:
+          type: string
+          minLength: 1
+          title: Tekijä
+          description: Tuotoksen tekijän tai tekijäryhmän nimi
+          maxLength: 64
+        platform:
+          type: string
+          nullable: true
+          title: Alusta
+          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
+            sisällä ajettavaa koodia.
+          maxLength: 128
+      required:
+      - compo
+      - creator
+      - description
+      - name
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Nimi
+          description: Tapahtuman nimi
+          maxLength: 64
+        tag:
+          type: string
+          nullable: true
+          title: Lyhyt esitys
+          description: Lyhyt nimi, eg. vuosi
+          maxLength: 8
+        date:
+          type: string
+          format: date
+          title: Päivämäärä
+          description: Tapahtuman päivämäärä (alku)
+        archived:
+          type: boolean
+          title: Arkistoitu
+          description: Saa näyttää arkistossa
+        mainurl:
+          type: string
+          format: uri
+          title: Tapahtuman pääsivu
+          description: URL Tapahtuman pääsivustolle
+          maxLength: 200
+      required:
+      - date
+      - id
+      - name
+    EventRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          description: Tapahtuman nimi
+          maxLength: 64
+        tag:
+          type: string
+          nullable: true
+          minLength: 1
+          title: Lyhyt esitys
+          description: Lyhyt nimi, eg. vuosi
+          maxLength: 8
+        date:
+          type: string
+          format: date
+          title: Päivämäärä
+          description: Tapahtuman päivämäärä (alku)
+        archived:
+          type: boolean
+          title: Arkistoitu
+          description: Saa näyttää arkistossa
+        mainurl:
+          type: string
+          format: uri
+          title: Tapahtuman pääsivu
+          description: URL Tapahtuman pääsivustolle
+          maxLength: 200
+      required:
+      - date
+      - name
+    Group:
+      type: object
+      properties:
+        name:
+          type: string
+          title: Nimi
+          maxLength: 150
+      required:
+      - name
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          maxLength: 150
+      required:
+      - name
+    PaginatedBlogEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlogEntry'
+    PaginatedCompoEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompoEntry'
+    PaginatedEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedBlogEntryRequest:
+      type: object
+      properties:
+        user:
+          type: integer
+        title:
+          type: string
+          minLength: 1
+          title: Otsikko
+          description: Lyhyt otsikko entrylle.
+          maxLength: 128
+        text:
+          type: string
+          minLength: 1
+          title: Teksti
+        public:
+          type: boolean
+          title: Julkinen
+          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
+            sivuille että RSS-syötteeseen.
+        event:
+          type: integer
+          title: Tapahtuma
+    PatchedCompoEntryRequest:
+      type: object
+      properties:
+        compo:
+          type: integer
+          title: Kompo
+          description: Kompo johon osallistutaan
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          description: Nimi tuotokselle
+          maxLength: 64
+        description:
+          type: string
+          minLength: 1
+          title: Kuvaus
+          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+        creator:
+          type: string
+          minLength: 1
+          title: Tekijä
+          description: Tuotoksen tekijän tai tekijäryhmän nimi
+          maxLength: 64
+        platform:
+          type: string
+          nullable: true
+          title: Alusta
+          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
+            sisällä ajettavaa koodia.
+          maxLength: 128
+    PatchedEventRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          description: Tapahtuman nimi
+          maxLength: 64
+        tag:
+          type: string
+          nullable: true
+          minLength: 1
+          title: Lyhyt esitys
+          description: Lyhyt nimi, eg. vuosi
+          maxLength: 8
+        date:
+          type: string
+          format: date
+          title: Päivämäärä
+          description: Tapahtuman päivämäärä (alku)
+        archived:
+          type: boolean
+          title: Arkistoitu
+          description: Saa näyttää arkistossa
+        mainurl:
+          type: string
+          format: uri
+          title: Tapahtuman pääsivu
+          description: URL Tapahtuman pääsivustolle
+          maxLength: 200
+    PatchedUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
+    Permission:
+      type: object
+      properties:
+        name:
+          type: string
+          title: Nimi
+          maxLength: 255
+        codename:
+          type: string
+          title: Tunniste
+          maxLength: 100
+      required:
+      - codename
+      - name
+    PermissionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nimi
+          maxLength: 255
+        codename:
+          type: string
+          minLength: 1
+          title: Tunniste
+          maxLength: 100
+      required:
+      - codename
+      - name
+    SocialAuthURL:
+      type: object
+      properties:
+        method:
+          type: string
+        url:
+          type: string
+        name:
+          type: string
+      required:
+      - method
+      - name
+      - url
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        user_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Pääkäyttäjä
+          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
+            erikseen luetella.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Liittynyt
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
+      required:
+      - date_joined
+      - groups
+      - id
+      - is_superuser
+      - user_permissions
+      - username
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        user_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Pääkäyttäjä
+          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
+            erikseen luetella.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Liittynyt
+      required:
+      - date_joined
+      - id
+      - is_superuser
+      - user_permissions
+      - username
+    UserLoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - password
+      - username
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Etunimi
+          maxLength: 150
+        last_name:
+          type: string
+          title: Sukunimi
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Sähköpostiosoite
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Voimassa
+          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
+            käytön poistamatta sitä.
+      required:
+      - username
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    knoxApiToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

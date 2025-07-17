@@ -30,5 +30,5 @@ def test_login_ok(api_client, super_user, password):
             "password": password,
         },
     )
-    assert response.status_code == 204
+    assert response.status_code == 200
     assert response.data == {}

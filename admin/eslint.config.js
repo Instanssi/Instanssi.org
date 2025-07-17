@@ -1,16 +1,16 @@
 import jsDefaults from "@eslint/js";
 import vueDefaults from "eslint-plugin-vue";
 import prettierConfig from "@vue/eslint-config-prettier";
-import typescriptDefaults from "@vue/eslint-config-typescript";
+import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
 
-export default [
+export default defineConfigWithVueTs(
     {
         ignores: ["src/api/", ".vite/", ".gitignore", "env.d.ts"],
     },
     jsDefaults.configs.recommended,
     ...vueDefaults.configs["flat/recommended"],
+    vueTsConfigs.recommended,
     prettierConfig,
-    ...typescriptDefaults(),
     {
         files: ["**/*.mjs", "**/*.cjs", "**/*.js", "**/*.vue", "**/*.mts", "**/*.cts", "**/*.ts"],
         languageOptions: {
@@ -27,5 +27,5 @@ export default [
             "@typescript-eslint/no-explicit-any": ["off"],
             "vue/no-template-shadow": ["off"],
         },
-    },
-];
+    }
+);

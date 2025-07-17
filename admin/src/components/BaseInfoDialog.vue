@@ -47,6 +47,7 @@ interface Props {
     cancelIcon?: string | undefined;
     okText?: string;
     okIcon?: string | undefined;
+    loading?: boolean | undefined;
 }
 const emit = defineEmits<{
     open: [];
@@ -58,6 +59,7 @@ withDefaults(defineProps<Props>(), {
     okIcon: undefined,
     cancelText: undefined,
     cancelIcon: undefined,
+    loading: undefined,
 });
 const setResult = (v: boolean) => baseDialog.value?.setResult(v);
 const modal = () => baseDialog.value?.modal();

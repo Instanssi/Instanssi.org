@@ -69,10 +69,10 @@ import { debounce } from "lodash-es";
 import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer } from "vuetify/components";
+import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { Event } from "@/api";
+import type { EventReadable } from "@/api";
 import EventDialog from "@/components/EventDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -81,8 +81,7 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 
-// Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
-type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
+type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t, d } = useI18n();
 
@@ -97,7 +96,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const events: Ref<Event[]> = ref([]);
+const events: Ref<EventReadable[]> = ref([]);
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
     {
@@ -159,7 +158,7 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deleteEvent(item: Event): Promise<void> {
+async function deleteEvent(item: EventReadable): Promise<void> {
     const text = t("EventView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {

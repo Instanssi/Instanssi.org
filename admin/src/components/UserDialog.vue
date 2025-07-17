@@ -54,7 +54,7 @@ import { useToast } from "vue-toastification";
 import { date as YupDate, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
-import type { User } from "@/api";
+import type { UserReadable } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
 import { sleep } from "@/utils/sleep.ts";
@@ -137,7 +137,7 @@ async function editItem(itemId: number, values: GenericObject) {
     return false;
 }
 
-async function modal(item: User | undefined = undefined) {
+async function modal(item: UserReadable | undefined = undefined) {
     if (item !== undefined) {
         existingId.value = item.id;
         setValues({

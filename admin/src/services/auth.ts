@@ -1,8 +1,7 @@
 import { type Ref, ref } from "vue";
 
 import * as api from "@/api";
-import type { SocialAuthURL, UserInfo } from "@/api";
-import { AxiosError } from "axios";
+import type { SocialAuthUrl, UserInfoReadable } from "@/api";
 
 export type CurrentUserInfo = {
     firstName: string;
@@ -62,12 +61,12 @@ export function useAuth() {
         return false;
     }
 
-    async function getSocialAuthURLs(): Promise<SocialAuthURL[]> {
+    async function getSocialAuthURLs(): Promise<SocialAuthUrl[]> {
         const value = await api.getSocialAuthUrls({ query: { next: "/management" } });
         return value.data ?? [];
     }
 
-    async function tryFetchUserData(): Promise<UserInfo | undefined> {
+    async function tryFetchUserData(): Promise<UserInfoReadable | undefined> {
         try {
             const result = await api.userInfo();
             if (result.data == undefined) return undefined;

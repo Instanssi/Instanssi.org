@@ -79,10 +79,10 @@ import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer } from "vuetify/components";
+import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { BlogEntry } from "@/api";
+import type { BlogEntryReadable } from "@/api";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -91,8 +91,7 @@ import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { sleep } from "@/utils/sleep.ts";
 
-// Get vuetify data-table headers type, It is not currently exported, so just fetch it by hand :)
-type ReadonlyHeaders = InstanceType<typeof VDataTableServer>["headers"];
+type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t, d } = useI18n();
@@ -108,7 +107,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const blogPosts: Ref<BlogEntry[]> = ref([]);
+const blogPosts: Ref<BlogEntryReadable[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
@@ -170,7 +169,7 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deletePost(item: BlogEntry): Promise<void> {
+async function deletePost(item: BlogEntryReadable): Promise<void> {
     const text = t("BlogEditorView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {

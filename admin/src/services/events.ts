@@ -1,16 +1,16 @@
 import { type Ref, ref } from "vue";
 
-import { type Event } from "@/api";
+import { type EventReadable } from "@/api";
 import * as api from "@/api";
 
-const events: Ref<Event[]> = ref([]);
+const events: Ref<EventReadable[]> = ref([]);
 
 export function useEvents() {
-    function getEvents(): Event[] {
+    function getEvents(): EventReadable[] {
         return events.value;
     }
 
-    function getLatestEvent(): Event | null {
+    function getLatestEvent(): EventReadable | null {
         const sorted = events.value.sort((a, b) => b.id - a.id);
         if (sorted.length > 0) {
             return sorted[0];

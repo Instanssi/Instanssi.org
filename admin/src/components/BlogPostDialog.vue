@@ -31,7 +31,7 @@ import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
-import type { BlogEntry } from "@/api";
+import type { BlogEntryReadable } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
 import { sleep } from "@/utils/sleep.ts";
@@ -114,7 +114,7 @@ async function editItem(itemId: number, values: GenericObject) {
     return false;
 }
 
-async function modal(event: number, item: BlogEntry | undefined = undefined) {
+async function modal(event: number, item: BlogEntryReadable | undefined = undefined) {
     eventId.value = event;
     if (item !== undefined) {
         existingId.value = item.id;

@@ -61,14 +61,14 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
-import type { SocialAuthURL } from "@/api";
+import type { SocialAuthUrl } from "@/api";
 import { useAuth } from "@/services/auth";
 
 const authService = useAuth();
 const router = useRouter();
 const { t } = useI18n();
 
-const socialLoginUrls: Ref<SocialAuthURL[]> = ref([]);
+const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);
 
 // Field validation rules
 const validationSchema = yupObject({

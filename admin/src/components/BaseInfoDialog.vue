@@ -14,11 +14,7 @@
                 <v-btn variant="text" :prepend-icon="cancelIcon" @click="setResult(false)">
                     {{ cancelText ?? t("General.cancel") }}
                 </v-btn>
-                <v-btn
-                    variant="elevated"
-                    color="primary"
-                    @click="setResult(true)"
-                >
+                <v-btn variant="elevated" color="primary" @click="setResult(true)">
                     <template #prepend>
                         <FontAwesomeIcon v-if="loading" icon="spinner" spin />
                         <v-icon v-else :icon="okIcon" />

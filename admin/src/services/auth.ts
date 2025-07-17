@@ -55,7 +55,7 @@ export function useAuth() {
 
     async function login(username: string, password: string): Promise<boolean> {
         const response = await api.login({ body: { username, password } });
-        if (response.status === 204) {
+        if (response.status === 200) {
             await refreshStatus();
             return true;
         }

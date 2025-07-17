@@ -193,7 +193,8 @@ async function editPost(id: number): Promise<void> {
 }
 
 async function createPost() {
-    if (await dialog.value!.modal(eventId.value)) {
+    const ok = await dialog.value!.modal(eventId.value);
+    if (ok) {
         currentPage.value = 1;
         flushData();
     }

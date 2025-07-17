@@ -187,7 +187,8 @@ async function editUser(id: number): Promise<void> {
 }
 
 async function createUser() {
-    if (await dialog.value!.modal()) {
+    const ok = await dialog.value!.modal();
+    if (ok) {
         currentPage.value = 1;
         flushData();
     }

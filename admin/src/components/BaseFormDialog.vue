@@ -58,7 +58,14 @@ withDefaults(defineProps<Props>(), {
     cancelText: undefined,
     cancelIcon: undefined,
 });
-const setResult = (v: boolean) => baseDialog.value?.setResult(v);
-const modal = () => baseDialog.value?.modal();
+
+function setResult(v: boolean): void {
+    baseDialog.value?.setResult(v);
+}
+
+async function modal(): Promise<void> {
+    await baseDialog.value?.modal();
+}
+
 defineExpose({ modal, setResult });
 </script>

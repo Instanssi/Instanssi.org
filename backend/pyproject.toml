@@ -7,7 +7,7 @@ authors = ["Tuomas Virtanen <katajakasa@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.13"
 Django = "^5.2"
 django-countries = "^7.4.2"
 django-crispy-forms = "^2.0"
@@ -21,7 +21,7 @@ django-auditlog = "^3.0.0"
 django-admin-csvexport = "^2.2"
 django-ical = "^1.9.2"
 celery = "^5.3.4"
-Pillow = "^10.3.0"
+Pillow = "^11.3.0"
 social-auth-core = "^4.4.1"
 social-auth-app-django = "^5.4.1"
 django-libsass = "^0.9"
@@ -44,14 +44,14 @@ nh3 = "^0.3.0"
 drf-spectacular = "^0.28.0"
 
 [tool.poetry.group.dev.dependencies]
-Faker = "^23.3.0"
-black = "^24.3.0"
-isort = "^5.13.2"
-pytest = "^8.0.2"
-pytest-django = "^4.8.0"
-pytest-cov = "^4.1.0"
-freezegun = "^1.4.0"
-requests-mock = "^1.11.0"
+Faker = "^29.0.0"
+black = "^25.1.0"
+isort = "^6.0.1"
+pytest = "^8.4.1"
+pytest-django = "^4.11.1"
+pytest-cov = "^6.2.1"
+freezegun = "^1.5.5"
+requests-mock = "^1.12.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -62,7 +62,7 @@ profile = "black"
 
 [tool.black]
 line-length = 109
-target-version = ['py311']
+target-version = ['py313']
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "Instanssi.test_settings"

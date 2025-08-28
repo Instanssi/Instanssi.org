@@ -2,11 +2,23 @@
 <div id="blog">
 {% for entry in entries %}
     <div class="message" id="{{ entry.id }}">
+        {# TODO These links won't work if entry is not on currently shown page. Fix by adding a separate view. #}
         <a style="text-decoration: none;" href="#{{ entry.id }}"><h2>{{ entry.title }}</h2></a>
         <time datetime="{{ entry.date|date:"Y-m-d\TH:i" }}" class="date">{{ entry.date|date:"d.m.Y H:i" }}</time>
         <div class="content">{{ entry.text|safe }}</div>
     </div>
 {% endfor %}
+{% if needs_pagination %}
+    <ul class="pagination">
+        {% for i in page_range %}
+            {% if i == page_number %}
+                <li class="active" aria-label="Nykyinen sivu: {{ i }}/{{ num_pages }}"><a>{{ i }}</a></li>
+            {% else %}
+                <li><a href="?p={{ i }}" aria-label="Siirry sivulle: {{ i }}/{{ num_pages }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
 </div>
 {% else %}
 <p>Blogissa ei ole entryjä!</p>

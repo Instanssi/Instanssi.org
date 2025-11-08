@@ -7,13 +7,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from Instanssi.api.v2.serializers.compo_entry_serializer import CompoEntrySerializer
-from Instanssi.kompomaatti.models import Entry
+from Instanssi.api.v2.serializers.kompomaatti import UserCompoEntrySerializer
+from Instanssi.kompomaatti.models import Compo, Entry
 
 
 class UserCompoEntryViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
-    serializer_class = CompoEntrySerializer
+    serializer_class = UserCompoEntrySerializer
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend)
@@ -21,15 +21,41 @@ class UserCompoEntryViewSet(ModelViewSet):
     filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return Entry.objects.filter(compo__active=True, user=self.request.user)
+        event_id = self.kwargs.get("event_pk")
+        queryset = Entry.objects.filter(compo__event_id=event_id, compo__active=True, user=self.request.user)
+        return queryset
 
-    def perform_destroy(self, instance):
-        if not instance.compo.is_editing_open():
+    def perform_create(self, serializer):
+        compo_id = serializer.validated_data.get("compo").id
+        try:
+            compo = Compo.objects.get(id=compo_id, active=True)
+        except Compo.DoesNotExist:
+            raise serializers.ValidationError("Compo not found or not active")
+
+        if not compo.is_adding_open():
+            raise serializers.ValidationError("Compo entry adding time has ended")
+
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        if not serializer.instance.compo.active:
+            raise serializers.ValidationError("Compo is not active")
+
+        if not serializer.instance.compo.is_editing_open():
             raise serializers.ValidationError("Compo edit time has ended")
-        return super(UserCompoEntryViewSet, self).perform_destroy(instance)
+
+        serializer.save()
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
+
+        # Validate compo state before processing
+        if not instance.compo.active:
+            raise serializers.ValidationError("Compo is not active")
+
+        if not instance.compo.is_editing_open():
+            raise serializers.ValidationError("Compo edit time has ended")
+
         delete_image_file = False
         delete_source_file = False
 
@@ -66,5 +92,11 @@ class UserCompoEntryViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def perform_destroy(self, instance):
+        if not instance.compo.active:
+            raise serializers.ValidationError("Compo is not active")
+
+        if not instance.compo.is_editing_open():
+            raise serializers.ValidationError("Compo edit time has ended")
+
+        return super(UserCompoEntryViewSet, self).perform_destroy(instance)

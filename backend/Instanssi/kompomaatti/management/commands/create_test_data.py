@@ -1,4 +1,5 @@
 from pathlib import Path
+from secrets import token_hex
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -14,9 +15,16 @@ from Instanssi.kompomaatti.models import (
     Entry,
     Event,
     Profile,
+    TicketVoteCode,
     Vote,
     VoteCodeRequest,
     VoteGroup,
+)
+from Instanssi.store.models import (
+    StoreItem,
+    StoreItemVariant,
+    StoreTransaction,
+    TransactionItem,
 )
 
 from .fixtures.blog_entries import blog_entries
@@ -27,9 +35,17 @@ from .fixtures.events import events
 from .fixtures.files import (
     get_random_archive_filename,
     get_random_image_filename,
+    get_random_ticket_product_image_filename,
+    get_random_tshirt_product_image_filename,
     get_random_video_filename,
 )
 from .fixtures.profiles import profiles
+from .fixtures.store_items import store_item_variants, store_items
+from .fixtures.store_transactions import (
+    store_transactions,
+    ticket_vote_codes,
+    transaction_items,
+)
 from .fixtures.users import users
 from .fixtures.votecodes import vote_code_requests
 from .fixtures.votes import vote_groups, votes
@@ -50,6 +66,9 @@ class Command(BaseCommand):
         self.created_entries = {}
         self.created_vote_groups = []
         self.created_competitions = {}
+        self.created_store_items = {}
+        self.created_transactions = {}
+        self.created_transaction_items = {}
 
     def setup_users(self) -> None:
         """Create test users - password is same as username"""
@@ -132,6 +151,10 @@ class Command(BaseCommand):
             filepath = get_random_video_filename()
         elif file_type == "archive":
             filepath = get_random_archive_filename()
+        elif file_type == "ticket":
+            filepath = get_random_ticket_product_image_filename()
+        elif file_type == "tshirt":
+            filepath = get_random_tshirt_product_image_filename()
         else:
             raise ValueError(f"Unknown file type: {file_type}")
 
@@ -329,6 +352,202 @@ class Command(BaseCommand):
             visibility = "public" if blog_data["public"] else "draft"
             self.stdout.write(f"  Created blog entry: {title} ({visibility})")
 
+    def setup_store_items(self) -> None:
+        """Create store items"""
+        self.stdout.write("Creating store items...")
+        for item_data in store_items:
+            event_pk = item_data.pop("event_pk")
+            imagefile_type = item_data.pop("imagefile_type", None)
+            event = self.created_events.get(event_pk)
+
+            if not event:
+                self.stderr.write(f"  Event {event_pk} not found, skipping store item...")
+                continue
+
+            item_name = item_data["name"]
+            if StoreItem.objects.filter(event=event, name=item_name).exists():
+                self.stdout.write(f"  Store item '{item_name}' already exists, skipping...")
+                self.created_store_items[(event_pk, item_name)] = StoreItem.objects.get(
+                    event=event, name=item_name
+                )
+                continue
+
+            # Create the store item
+            store_item = StoreItem(event=event, **item_data)
+
+            # Attach image file if specified
+            if imagefile_type:
+                store_item.imagefile_original = self.get_test_file(imagefile_type)
+
+            store_item.save()
+            self.created_store_items[(event_pk, item_name)] = store_item
+            item_type = "ticket" if store_item.is_ticket else "merchandise"
+            secret = " (secret)" if store_item.is_secret else ""
+            image_status = " with image" if imagefile_type else ""
+            self.stdout.write(f"  Created store item: {item_name} ({item_type}){secret}{image_status}")
+
+    def setup_store_item_variants(self) -> None:
+        """Create store item variants"""
+        self.stdout.write("Creating store item variants...")
+        for variant_data in store_item_variants:
+            item_event_pk = variant_data["item_event_pk"]
+            item_name = variant_data["item_name"]
+            variant_name = variant_data["variant_name"]
+
+            store_item = self.created_store_items.get((item_event_pk, item_name))
+            if not store_item:
+                self.stderr.write(f"  Store item {item_name} not found, skipping variant...")
+                continue
+
+            if StoreItemVariant.objects.filter(item=store_item, name=variant_name).exists():
+                self.stdout.write(f"  Variant '{variant_name}' for {item_name} already exists, skipping...")
+                continue
+
+            StoreItemVariant.objects.create(item=store_item, name=variant_name)
+            self.stdout.write(f"  Created variant: {item_name} - {variant_name}")
+
+    def setup_store_transactions(self) -> None:
+        """Create store transactions"""
+        self.stdout.write("Creating store transactions...")
+        for trans_data in store_transactions:
+            transaction_id = trans_data.pop("transaction_id")
+            event_pk = trans_data.pop("event_pk")
+            user_username = trans_data.pop("user_username")
+
+            event = self.created_events.get(event_pk)
+            if not event:
+                self.stderr.write(f"  Event {event_pk} not found, skipping transaction...")
+                continue
+
+            user = self.created_users.get(user_username) if user_username else None
+
+            # Generate unique key and token
+            key = token_hex(20)  # 40 character hex string
+            token = f"test_{transaction_id}"
+
+            # Check if transaction already exists by email and event
+            existing = StoreTransaction.objects.filter(
+                email=trans_data["email"], time_created=trans_data["time_created"]
+            ).first()
+            if existing:
+                self.stdout.write(
+                    f"  Transaction for {trans_data['email']} at {trans_data['time_created']} already exists, skipping..."
+                )
+                self.created_transactions[transaction_id] = existing
+                continue
+
+            transaction = StoreTransaction.objects.create(key=key, token=token, **trans_data)
+            self.created_transactions[transaction_id] = transaction
+            status = "paid" if transaction.is_paid else "pending" if transaction.is_pending else "cancelled"
+            self.stdout.write(f"  Created transaction: {transaction.full_name} ({status})")
+
+    def setup_transaction_items(self) -> None:
+        """Create transaction items"""
+        self.stdout.write("Creating transaction items...")
+        for item_data in transaction_items:
+            transaction_id = item_data["transaction_id"]
+            item_event_pk = item_data["item_event_pk"]
+            item_name = item_data["item_name"]
+            variant_name = item_data.get("variant_name")
+            quantity = item_data["quantity"]
+            original_price = item_data["original_price"]
+            purchase_price = item_data["purchase_price"]
+            time_delivered = item_data.get("time_delivered")
+
+            transaction = self.created_transactions.get(transaction_id)
+            store_item = self.created_store_items.get((item_event_pk, item_name))
+
+            if not transaction or not store_item:
+                self.stderr.write(f"  Transaction or store item not found, skipping transaction item...")
+                continue
+
+            variant = None
+            if variant_name:
+                variant = StoreItemVariant.objects.filter(item=store_item, name=variant_name).first()
+                if not variant:
+                    self.stderr.write(f"  Variant {variant_name} not found, skipping transaction item...")
+                    continue
+
+            # Create the specified quantity of items
+            created_items = []
+            for i in range(quantity):
+                # Generate unique key for each item
+                item_key = token_hex(20)
+
+                # Check if item already exists
+                if TransactionItem.objects.filter(key=item_key).exists():
+                    # Regenerate key if collision (very unlikely)
+                    item_key = token_hex(20)
+
+                t_item = TransactionItem.objects.create(
+                    key=item_key,
+                    item=store_item,
+                    variant=variant,
+                    transaction=transaction,
+                    purchase_price=purchase_price,
+                    original_price=original_price,
+                    time_delivered=time_delivered,
+                )
+                created_items.append(t_item)
+
+            # Store items for later reference in ticket vote codes
+            if transaction_id not in self.created_transaction_items:
+                self.created_transaction_items[transaction_id] = {}
+            if (item_event_pk, item_name) not in self.created_transaction_items[transaction_id]:
+                self.created_transaction_items[transaction_id][(item_event_pk, item_name)] = []
+            self.created_transaction_items[transaction_id][(item_event_pk, item_name)].extend(created_items)
+
+            variant_str = f" ({variant_name})" if variant_name else ""
+            self.stdout.write(
+                f"  Created {quantity}x {item_name}{variant_str} for transaction {transaction.full_name}"
+            )
+
+    def setup_ticket_vote_codes(self) -> None:
+        """Create ticket vote codes linking tickets to voting rights"""
+        self.stdout.write("Creating ticket vote codes...")
+        for vote_code_data in ticket_vote_codes:
+            transaction_id = vote_code_data["transaction_id"]
+            item_event_pk = vote_code_data["item_event_pk"]
+            item_name = vote_code_data["item_name"]
+            item_index = vote_code_data["item_index"]
+            user_username = vote_code_data["user_username"]
+            time = vote_code_data["time"]
+
+            user = self.created_users.get(user_username)
+            event = self.created_events.get(item_event_pk)
+
+            if not user or not event:
+                self.stderr.write(f"  User or event not found, skipping ticket vote code...")
+                continue
+
+            # Get the specific transaction item
+            items_list = self.created_transaction_items.get(transaction_id, {}).get(
+                (item_event_pk, item_name), []
+            )
+            if item_index >= len(items_list):
+                self.stderr.write(
+                    f"  Transaction item index {item_index} out of range, skipping ticket vote code..."
+                )
+                continue
+
+            ticket_item = items_list[item_index]
+
+            # Check if vote code already exists for this ticket or user+event combination
+            if TicketVoteCode.objects.filter(ticket=ticket_item).exists():
+                self.stdout.write(
+                    f"  Ticket vote code for ticket {ticket_item.key} already exists, skipping..."
+                )
+                continue
+
+            if TicketVoteCode.objects.filter(event=event, associated_to=user).exists():
+                self.stdout.write(
+                    f"  Ticket vote code for {user_username} at {event.name} already exists, skipping..."
+                )
+                continue
+
+            TicketVoteCode.objects.create(event=event, associated_to=user, ticket=ticket_item, time=time)
+            self.stdout.write(f"  Created ticket vote code: {item_name} for {user_username} at {event.name}")
+
     def handle(self, *args, **options) -> None:
         if not settings.DEBUG:
             self.stderr.write("Command disabled in production! settings.DEBUG must be True.")
@@ -346,6 +565,11 @@ class Command(BaseCommand):
                 self.setup_competition_participations()
                 self.setup_vote_code_requests()
                 self.setup_blog_entries()
+                self.setup_store_items()
+                self.setup_store_item_variants()
+                self.setup_store_transactions()
+                self.setup_transaction_items()
+                self.setup_ticket_vote_codes()
 
                 self.stdout.write(self.style.SUCCESS("\nData loading complete!"))
                 self.stdout.write("\nTest user credentials (password = username):")

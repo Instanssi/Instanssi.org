@@ -1,6 +1,6 @@
 {% extends "base_layout/base.html" %}
 {% load render_base_events_nav from admin_base_tags %}
-{% load static %}
+{% load static compress %}
 
 {% block title %}Hallinta{% endblock %}
 {% block headername %}<a href="{% url 'manage-base:index' %}">Hallinta</a>{% endblock %}
@@ -24,7 +24,9 @@
     <script type="text/javascript" src="{% static "libs/bootstrap-table/locale/bootstrap-table-fi-FI.js" %}"></script>
 
     <!-- Management custom fluff -->
-    <link rel="stylesheet" type="text/css" href="{% static "admin_base/css/style.css" %}" />
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "admin_base/css/style.scss" %}" />
+    {% endcompress %}
 {% endblock %}
 
 {% block jquery %}

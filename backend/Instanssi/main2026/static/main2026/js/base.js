@@ -27,8 +27,8 @@ $(function () {
         function resetBubble(element) {
             element._state = {
                 x: Math.random() * 200,
-                y: Math.random() * 20 + 200,
-                vx: Math.random() - 0.5,
+                y: Math.random() * 20 + 300,
+                vx: (Math.random() - 0.5) * 30,
                 vy: -9 - Math.random() * 8,
                 opacity: 0.8 + Math.random() * 0.2,
             };
@@ -38,6 +38,11 @@ $(function () {
             var state = element._state;
             state.x += state.vx * dt;
             state.y += state.vy * dt;
+
+            state.vx += -state.vx * 0.01 * dt;
+
+            state.vy += (-5) * dt;
+            state.vy += -state.vy * 0.01 * dt;
             
             if (state.y < -200) {
                 resetBubble(element);
@@ -50,6 +55,7 @@ $(function () {
         var lastTime = 0;
         function run(time) {
             var dt = (lastTime ? time - lastTime : 0) / 1000;
+            //dt *= 10;
             lastTime = time;
             // const time = new Date();
             bubbles.forEach(function (element) {

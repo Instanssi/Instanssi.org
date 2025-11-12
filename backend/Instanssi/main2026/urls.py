@@ -1,8 +1,8 @@
 from django.urls import path
 
-from Instanssi.main2025.views import page_loader
+from Instanssi.main2026.views import page_loader
 
-app_name = "main2025"
+app_name = "main2026"
 
 urlpatterns = [
     path("", page_loader, {"template_name": "index"}, name="index"),

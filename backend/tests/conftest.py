@@ -48,8 +48,8 @@ def faker() -> Faker:
 @fixture(scope="session", autouse=True)
 def set_media_root():
     """
-    Use mkdtemp to generate us a temp path, and feed it in as django MEDIA_ROOT.
-    This way we can put our test uploads to their own special place, and remove
+    Use mkdtemp to generate us a temp path and feed it in as django MEDIA_ROOT.
+    This way we can put our test uploads to their own special place and remove
     them after tests.
     """
     tmp_path = Path(tempfile.mkdtemp(prefix="pytest_"))
@@ -183,7 +183,38 @@ def normal_user(create_user) -> User:
 
 @fixture
 def staff_user(create_user) -> User:
-    return create_user(is_staff=True)
+    # Grant all kompomaatti permissions to staff users for testing
+    permissions = [
+        "kompomaatti.view_event",
+        "kompomaatti.add_event",
+        "kompomaatti.change_event",
+        "kompomaatti.delete_event",
+        "kompomaatti.view_compo",
+        "kompomaatti.add_compo",
+        "kompomaatti.change_compo",
+        "kompomaatti.delete_compo",
+        "kompomaatti.view_entry",
+        "kompomaatti.add_entry",
+        "kompomaatti.change_entry",
+        "kompomaatti.delete_entry",
+        "kompomaatti.view_competition",
+        "kompomaatti.add_competition",
+        "kompomaatti.change_competition",
+        "kompomaatti.delete_competition",
+        "kompomaatti.view_competitionparticipation",
+        "kompomaatti.add_competitionparticipation",
+        "kompomaatti.change_competitionparticipation",
+        "kompomaatti.delete_competitionparticipation",
+        "kompomaatti.view_votecoderequest",
+        "kompomaatti.add_votecoderequest",
+        "kompomaatti.change_votecoderequest",
+        "kompomaatti.delete_votecoderequest",
+        "kompomaatti.view_ticketvotecode",
+        "kompomaatti.add_ticketvotecode",
+        "kompomaatti.change_ticketvotecode",
+        "kompomaatti.delete_ticketvotecode",
+    ]
+    return create_user(is_staff=True, permissions=permissions)
 
 
 @fixture

@@ -7,7 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from Instanssi.api.v2.serializers.social_auth import SocialAuthURLSerializer
+from Instanssi.api.v2.serializers.auth import SocialAuthURLSerializer
 from Instanssi.users.views import AUTH_METHODS
 
 

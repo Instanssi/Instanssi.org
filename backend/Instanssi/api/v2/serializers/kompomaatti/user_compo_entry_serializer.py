@@ -3,11 +3,12 @@ from typing import Optional
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from Instanssi.api.v1.serializers.kompomaatti import AlternateEntryFileSerializer
 from Instanssi.kompomaatti.models import Entry
 
+from .alternate_entry_file_serializer import AlternateEntryFileSerializer
 
-class CompoEntrySerializer(ModelSerializer):
+
+class UserCompoEntrySerializer(ModelSerializer):
     entry_file_url = SerializerMethodField()
     source_file_url = SerializerMethodField()
     image_file_original_url = SerializerMethodField()

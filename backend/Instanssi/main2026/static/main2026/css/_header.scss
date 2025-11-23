@@ -228,6 +228,9 @@
     @media screen and (max-width: $screen-sm-max) {
         height: auto;
 
+        overflow-x: hidden;
+        max-width: 100vw;
+
         & > .container, .header-info, .header-title {
             height: 155px;
         }

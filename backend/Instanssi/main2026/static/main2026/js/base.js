@@ -20,7 +20,7 @@ $(function () {
             var baseScale = Math.min(0.5, state.t);
             var scaleX = baseScale + Math.sin(state.phase + state.t * 2.0) * 0.05;
             var scaleY = baseScale + Math.cos(state.phase + state.t * 2.0) * 0.05;
-            element.style.right = `${state.x}px`;
+            element.style.right = `${state.x + Math.sin(state.t + state.phase) * 30}px`;
             element.style.top = `${state.y}px`;
             element.style.opacity = `${state.opacity * Math.min(1.0, state.t)}`;
             element.style.transform = `scale(${scaleX}, ${scaleY})`;
@@ -80,11 +80,11 @@ $(function () {
                 Object.assign(bubble, bubbleType);
                 bg.appendChild(bubble);
                 resetState(bubble);
-                tickBubble(bubble, Math.random() * 20 * Math.random());
+                tickBubble(bubble, 1 + Math.random() * 30 * Math.random());
                 bubbles.push(bubble);
             }
         }
-        addBubbles(5);
+        addBubbles(2);
         requestAnimationFrame(run);
     }
     bubbles();

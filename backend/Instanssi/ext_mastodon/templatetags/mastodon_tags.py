@@ -39,7 +39,7 @@ def map_toots(obj: dict) -> Toot:
         username=obj["account"]["display_name"],
         user_url=obj["account"]["url"],
         url=obj["url"],
-        content=mark_safe(nh3.clean(obj["content"], tags={"a", "p"})),
+        content=mark_safe(nh3.clean(obj["content"], tags={"a", "p", "br"})),
         created_at=obj["created_at"],
     )
 

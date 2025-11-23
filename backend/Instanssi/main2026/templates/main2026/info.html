@@ -1,0 +1,92 @@
+{% extends "main2026/base.html" %}
+
+{% block content %}
+{{ block.super }}
+    <h1>Info</h1>
+
+    <h2>Mikä on Instanssi?</h2>
+    <p>
+      Instanssi on vuosittain järjestettävä digitaalisen tekemisen
+      festivaali Jyväskylässä. Tapahtuman
+      järjestävät <a href="https://jkl.hacklab.fi/">Hacklab Jyväskylä
+      ry</a> ja <a href="https://linkkijkl.fi/">Linkki Jyväskylä
+      ry</a>. Ensimmäinen Instanssi järjestettiin syksyllä 2010.
+    </p>
+    <p>
+        Instanssi on aloittelijaystävällinen tapahtuma, joka on tarkoitettu kaikille digitaalisesta kulttuurista kiinnostuneille.
+        Tapahtuman ohjelma koostuu demoskene-aiheisista kompoista (eli kilpailuista), pelaamisesta, ohjelmoimisesta, esitelmistä ja työpajoista.
+    </p>
+
+    <h2>Aika ja paikka</h2>
+    <p>
+      Instanssi 2026 järjestetään 26.2.–1.3.2026. Tapahtumapaikkana on Jyväskylän Normaalikoulun yläaste ja lukio.
+    </p>
+    <iframe width="600"
+            height="450"
+            id="instanssi-location-map"
+            frameborder="0"
+            style="border:0; max-width:100%"
+            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJXSTopCJ0hUYRrwo8vASBh48&language=fi&key={{ settings.GOOGLE_API_KEY }}" allowfullscreen></iframe>
+
+    <h3>Palvelut tapahtumapaikan lähellä</h3>
+    <ul>
+      <li>Lähettyviltä (~300m) löytyy K-Market Kymppi (Kauppakatu 10) ja S-market Mäki-Matti (Ahdinkatu 22)</li>
+      <li>Parin kilometrin päässä (Vehkakatu 5) on S-market Savela, joka on auki 24/7 ja toimittaa myös perille</li>
+      <li>Ruokaa metsästäville lähistöltä löytyy mm. Grilli 21, Ravintola Sohwi ja Kauppakadun Kebab Pizzeria</li>
+      <li>Lähimmät bussipysäkit ovat tapahtumapaikan lähettyvillä</li>
+    </ul>
+
+    <h2>Mitä mukaan?</h2>
+    <p>
+        Instanssiin tullessaan on hyvä varautua samaan malliin kuin laneille tai muille demopartyille tullessa.
+        Tässäpä lista, huomaa kahvikuppi:
+    </p>
+    <ul>
+      <li>
+          Tietokone tarvikkeineen, 10 metrin verkkojohto on hyvä idea, samoin jatkojohto jossa riittää reikiä kaikille
+          tuomillesi laitteille. Merkitse etenkin johtosi, mutta mielellään muutkin tuomasi tavarat, jotta löydät omasi
+          helposti lähtiessäsi.
+      </li>
+      <li>Makuupussi ja -alusta tai vastaavat yöpymisvälineet</li>
+      <li>Vaihtovaatteita viikonlopun tarpeiksi</li>
+      <li>Henkilökohtaiset hygieniavälineet: pyyhe, hammasharja ja sitä rataa. Tapahtumapaikalta löytyy suihkut ja pihalta peräkärrysauna, joten voit ottaa mukaan myös sandaalit, laudeliinan ja kylpytakin.</li>
+      <li>Maksuvälineeksi joko pankkikortti, käteistä rahaa tai MobilePay mm. ovelta ostettavia lippuja tai t-paitoja varten</li>
+      <li>Oma kahvikuppi tai termosmuki ilmaista kahvia ja teetä varten</li>
+      <li>Pientä purtavaa, ruokailuvälineet ja juotavaa kannattaa olla omastakin takaa. Tapahtumapaikalla on ainakin yksi yleisön käytössä oleva mikroaaltouuni, kahvinkeitin sekä vedenkeitin. Jääkaappitilaa on rajallisesti, joten tuo oma kylmälaukkusi.
+        <ul><li>Konepaikkojen sähköverkko ei kestä kävijöiden omia kodinkoneita, kuten kahvinkeittimiä, jääkaappeja tai mikroaaltouuneja. Saat tuoda oman peltier-elementillä varustetun matkakylmälaukun.</li></ul>
+      </li>
+      <li>Hilpeää partyfiilistä!</li>
+    </ul>
+
+    <h2>Mitä EI mukaan!</h2>
+    <p>Kiellettyjen asioiden &amp; aineiden lista.</p>
+    <ul>
+        <li>Reseptilääkkeet ilman reseptiä ja henkilöllisyystodistusta</li>
+        <li>Alkoholi</li>
+        <li>Huumausaineet</li>
+        <li>Ampuma- ja teräaseet sekä muut vahingoittamiseen tarkoitetut esineet</li>
+        <li>Monitoimityökalut</li>
+        <li>Ilotulitteet ja muut räjähteet</li>
+        <li>Laserosoittimet ja muut vastaavat esineet</li>
+        <li>Omat kodinkoneet (kahvinkeittimet, jääkaapit, pyykinpesukoneet, jne.)</li>
+    </ul>
+
+    <h2>Keskustelu</h2>
+    <p>
+        Matrix: <a href="https://matrix.to/#/#instanssi:hacklab.fi">#instanssi:hacklab.fi</a><br />
+        Telegram: <a href="https://telegram.me/Instanssi">https://telegram.me/Instanssi</a><br /><br />
+	    Ylläolevat viestikanavat ovat sillattu toisiinsa, eli riittää kun pääset yhdelle niistä!
+    </p>
+    
+    <h2>Some</h2>
+    <p>
+        Mastodon: <a href="https://mementomori.social/@instanssi">https://mementomori.social/@instanssi</a><br />  
+        Youtube: <a href="https://www.youtube.com/user/InstanssiOrg">https://www.youtube.com/user/InstanssiOrg</a>
+    </p>
+
+    <h2>Yhteystiedot</h2>
+    <p>
+      Puhelin: <a href="tel:+358931576902">09 3157 6902</a><br />
+      Email: Koko työryhmän tavoitat osoitteesta <span class="meili">info</span>.
+    </p>
+{% endblock %}

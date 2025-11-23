@@ -1,0 +1,16 @@
+{% extends "main2026/base.html" %}
+
+{% block content %}
+{{ block.super }}
+<h1>Stream</h1>
+<div id="live">
+    <iframe
+        src="https://player.twitch.tv/?channel=instanssi"
+        height="338"
+        width="600"
+        frameborder="0"
+        scrolling="no"
+        allowfullscreen="true">
+    </iframe>
+</div>
+{% endblock %}

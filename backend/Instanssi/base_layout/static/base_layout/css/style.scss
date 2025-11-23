@@ -99,8 +99,8 @@ a:hover {
 
 #header_nav {
     min-height: 32px;
-    background: $theme-color-dark;
-    color: #fff;
+    background: $theme-color-bright;
+    color: #000;
 }
 #header_nav:after {
     display: table;
@@ -115,7 +115,7 @@ a:hover {
 #header_nav ul.sub-level { display: none; }
 
 #header_nav li:hover .sub-level {
-    background-color: $theme-color;
+    background-color: $theme-color-bright;
     display: block;
     position: absolute;
     left: 0px;
@@ -145,7 +145,7 @@ a:hover {
 
 .menuitem a,
 .menuitem span {
-    color: #fff;
+    color: $theme-nav-text;
     text-decoration: none;
     display: block;
     transition: background-color $transition-small;
@@ -153,7 +153,7 @@ a:hover {
 
 .menuitem a:hover {
     background-color: $theme-nav-hover;
-    color: #fff;
+    color: $theme-nav-hover-text;
     text-decoration: none;
 }
 .menuitem:hover { position: relative; }

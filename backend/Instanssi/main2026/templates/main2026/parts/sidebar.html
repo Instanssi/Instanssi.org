@@ -1,0 +1,66 @@
+{% load static mastodon_tags %}
+<!--<section class="widget widget-store">
+    <a class="btn btn-primary" href="{% url 'store:index' %}">
+        <span class="fa fa-fw fa-euro"></span> Osta lippu!
+    </a>
+</section>
+<section class="widget widget-rules">
+    <a href="{% url 'main2026:valot' %}">
+        <h3><span class="fa fa-fw fa-lightbulb-o"></span> Valot</h3>
+    </a>
+</section>
+<section class="widget widget-radio">
+    <a href="{% url 'main2026:radio' %}">
+        <h3><span class="fa fa-fw fa-music"></span> Instanssiradio</h3>
+    </a>
+</section>
+-->
+<section class="widget widget-rules">
+    <a href="{% url 'main2026:saannot' %}">
+        <h3><span class="fa fa-fw fa-info-circle"></span> Tapahtuman säännöt</h3>
+    </a>
+</section>
+<!--
+<section class="widget widget-rules">
+    <a href="{% url 'main2026:index' %}#165">
+        <h3><span class="fa fa-fw fa-info-circle"></span> Saapumisohjeet</h3>
+    </a>
+</section>
+<section class="widget widget-stream">
+    <a href="https://www.twitch.tv/instanssi" target="_blank">
+        <h3><span class="fa fa-fw fa-twitch"></span> Stream</h3>
+    </a>
+</section>
+-->
+
+{% block widgets %}
+<!--
+<section class="widget widget-rekry">
+  <h2>Rekrytointi</h2>
+  <div>Haluatko osallistua Instanssin järjestämiseen? Vuoden 2024 tiimissämme on vielä tilaa!</div>
+  <div>
+       <a href="https://instanssi.org/2024/#161">Lisätietoja täältä</a>!
+  </div>
+</section>
+-->
+<section class="mastodon widget-mastodon">
+    <h2>Mastodon</h2>
+    <div id="toots" class="widget-content">
+        {% mastodon_timeline %}
+    </div>
+</section>
+<section class="widget widget-socialmedias">
+    <h2>Some</h2>
+    <div class="widget-content">
+        <div class="social-media-icons">
+            <a href="https://mementomori.social/@instanssi"><img src="{% static 'main2026/images/icons/icon-mastodon.png' %}" alt="Mastodon" ></a>
+            <a href="https://t.me/+QBYvoC2HQvBdjGNO"><img src="{% static 'main2026/images/icons/icon-telegram.png' %}" alt="Telegram" ></a>
+            <a href="https://www.youtube.com/user/InstanssiOrg"><img src="{% static 'main2026/images/icons/icon-youtube.png' %}" alt="YouTube" ></a>
+            <a href="https://matrix.to/#/#instanssi:hacklab.fi"><img src="{% static 'main2026/images/icons/icon-matrix.png' %}" alt="Matrix"></a>
+            <a href="{% url 'ext-blog:rss' %}"><img src="{% static 'main2026/images/icons/icon-rss.png' %}" alt="RSS" ></a>
+            <div class="clearer"></div>
+        </div>
+        <!--<p class="instanssi-radio"><a href="http://radio.instanssi.org">Tapahtumaradio</a> @ 105,4 MHz</p>-->
+    </div>
+</section>
+{% endblock %}

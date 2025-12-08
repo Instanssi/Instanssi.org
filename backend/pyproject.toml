@@ -8,7 +8,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-Django = "^5.2"
+Django = "^6.0"
 django-countries = "^8.0.0"
 django-crispy-forms = "^2.0"
 crispy-bootstrap3 = "^2024.1"

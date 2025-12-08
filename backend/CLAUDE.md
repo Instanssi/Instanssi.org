@@ -10,4 +10,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Important patterns and conventions
 - URL structure
 
-See [AGENTS.md](./AGENTS.md) for all details.
+See @./AGENTS.md for all details.

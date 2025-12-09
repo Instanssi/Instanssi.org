@@ -8,11 +8,13 @@ import {
     getDiscountedPrice,
 } from './store_common.js';
 
+import storeProductTemplate from "./store_product.html?minify";
+
 /**
  * Displays a single store product with cart counts and "add" button.
  */
 Vue.component('store-product', {
-    template: require('./store_product.html'),
+    template: storeProductTemplate,
     props: {
         product: Object,
         cart: Array,

@@ -1,10 +1,5 @@
 /* global $ */
 
-// IE11 support
-import 'core-js/es6/array';
-import 'core-js/es6/object';
-import 'core-js/es6/promise';
-
 import Vue from 'vue';
 
 import {
@@ -56,6 +51,8 @@ function scrollToTop() {
 Vue.filter('formatPrice', formatPrice);
 
 
+import storeTemplate from "./store.html?minify";
+
 /**
  * Instanssi.org store frontend application.
  */
@@ -99,7 +96,7 @@ const app = new Vue({
         /** Set when transaction is being submitted (prevent accidental spam) */
         submitting: false,
     },
-    template: require('./store.html'),
+    template: storeTemplate,
     created() {
         // fetch products list
         fetchItems().then((items) => {

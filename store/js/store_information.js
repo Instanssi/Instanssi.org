@@ -1,10 +1,12 @@
 import Vue from 'vue';
 
+import storeInformationTemplate from "./store_information.html?minify";
+
 /**
  * Customer info form for a store order.
  */
 Vue.component('store-information-form', {
-    template: require('./store_information.html'),
+    template: storeInformationTemplate,
     props: {
         /** Field error messages, maps field name -> array */
         messages: Object,
@@ -58,11 +60,13 @@ Vue.component('store-summary-field', {
     </div>`
 });
 
+import storeSummaryTemplate from "./store_summary.html?minify";
+
 /**
  * Immutable listing of an order's contents and customer info.
  */
 Vue.component('store-order-summary', {
-    template: require('./store_summary.html'),
+    template: storeSummaryTemplate,
     props: {
         /** Field error messages, maps field name -> array */
         messages: Object,

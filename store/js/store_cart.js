@@ -1,14 +1,12 @@
-/**
- * Cart listing and item components.
- */
-
 import Vue from 'vue';
 
+import storeCartItemTemplate from "./store_cart_item.html?minify";
+
 /**
- * Customer info form for a store order.
+ * Single item in the cart.
  */
 Vue.component('store-cart-item', {
-    template: require('./store_cart_item.html'),
+    template: storeCartItemTemplate,
     props: {
         item: Object,
         readOnly: Boolean,

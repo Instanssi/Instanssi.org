@@ -1,6 +1,7 @@
-import { resolve } from "node:path";
+/// <reference types="vitest/config" />
 import { defineConfig } from "vite";
-import { minifyTemplatePlugin } from "./minifyTemplatePlugin.js";
+import { resolve } from "node:path";
+import { minifyHtmlTemplatePlugin } from "./minifyHtmlTemplatePlugin.js";
 
 export default defineConfig({
     build: {
@@ -24,5 +25,9 @@ export default defineConfig({
             },
         },
     },
-    plugins: [minifyTemplatePlugin()],
+    plugins: [minifyHtmlTemplatePlugin()],
+    test: {
+        environment: "jsdom",
+        clearMocks: true,
+    }
 });

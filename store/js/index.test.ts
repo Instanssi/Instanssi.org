@@ -1,9 +1,12 @@
-import Vue from 'vue';
+import { vi, expect, test, describe, beforeEach } from 'vitest';
 
-jest.mock('./store_api', () => ({
-    storeXHR: jest.fn((method, path, data) => {
+// Load the runtime-included build when Vue is imported
+vi.mock('vue', () => import('vue/dist/vue.js'));
+
+vi.mock('./store_api', () => ({
+    storeXHR: (method: string, path: string, data: unknown) => {
         return Promise.resolve([]);
-    }),
+    },
 }));
 
 describe('Instanssi Store', () => {
@@ -14,11 +17,10 @@ describe('Instanssi Store', () => {
         element = document.createElement('div');
         element.id = 'store';
         document.body.appendChild(element);
-
-        require('./');
     });
-
-    it('initializes', () => {
+    
+    test('initializes', async () => {
+        await import('./index.js');
         const store = element.firstChild;
         expect(store).toBeDefined();
     });

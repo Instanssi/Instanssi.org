@@ -5,7 +5,7 @@
 
 import Vue from 'vue';
 
-export { storeXHR } from './store_api';
+export { storeXHR } from './store_api.js';
 
 // Support for this was still a bit patchy last I checked.
 let toLocaleStringSupportsOptions = !!(typeof Intl === 'object'

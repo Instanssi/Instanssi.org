@@ -16,8 +16,20 @@ from Instanssi.api.v2.viewsets.kompomaatti.compos import CompoViewSet
 from Instanssi.api.v2.viewsets.kompomaatti.ticket_vote_codes import (
     TicketVoteCodeViewSet,
 )
+from Instanssi.api.v2.viewsets.kompomaatti.user_competition_participations import (
+    UserCompetitionParticipationViewSet,
+)
 from Instanssi.api.v2.viewsets.kompomaatti.user_compo_entries import (
     UserCompoEntryViewSet,
+)
+from Instanssi.api.v2.viewsets.kompomaatti.user_ticket_vote_codes import (
+    UserTicketVoteCodeViewSet,
+)
+from Instanssi.api.v2.viewsets.kompomaatti.user_vote_code_requests import (
+    UserVoteCodeRequestViewSet,
+)
+from Instanssi.api.v2.viewsets.kompomaatti.user_vote_groups import (
+    UserVoteGroupViewSet,
 )
 from Instanssi.api.v2.viewsets.kompomaatti.vote_code_requests import (
     VoteCodeRequestViewSet,
@@ -79,6 +91,16 @@ kompomaatti_router.register(
 # Nested routers: /api/v2/event/<event_pk>/user/kompomaatti/...
 user_kompomaatti_router = routers.SimpleRouter()
 user_kompomaatti_router.register("entries", UserCompoEntryViewSet, basename="event_user_kompomaatti_entries")
+user_kompomaatti_router.register(
+    "participations", UserCompetitionParticipationViewSet, basename="event_user_kompomaatti_participations"
+)
+user_kompomaatti_router.register(
+    "vote_code_requests", UserVoteCodeRequestViewSet, basename="event_user_kompomaatti_vote_code_requests"
+)
+user_kompomaatti_router.register(
+    "ticket_vote_codes", UserTicketVoteCodeViewSet, basename="event_user_kompomaatti_ticket_vote_codes"
+)
+user_kompomaatti_router.register("votes", UserVoteGroupViewSet, basename="event_user_kompomaatti_votes")
 
 urlpatterns = []
 if settings.DEBUG:

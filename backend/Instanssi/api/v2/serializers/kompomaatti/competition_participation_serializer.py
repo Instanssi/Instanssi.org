@@ -12,8 +12,10 @@ class CompetitionParticipationSerializer(ModelSerializer):
     def get_rank(self, obj: CompetitionParticipation) -> Optional[int]:
         # Show rank only if user has permissions or show_results is enabled
         request = self.context.get("request")
-        if request and request.user.is_authenticated and request.user.has_perm(
-            "kompomaatti.view_competitionparticipation"
+        if (
+            request
+            and request.user.is_authenticated
+            and request.user.has_perm("kompomaatti.view_competitionparticipation")
         ):
             return obj.get_rank()
         if obj.competition.show_results:
@@ -23,8 +25,10 @@ class CompetitionParticipationSerializer(ModelSerializer):
     def get_score(self, obj: CompetitionParticipation) -> Optional[float]:
         # Show score only if user has permissions or show_results is enabled
         request = self.context.get("request")
-        if request and request.user.is_authenticated and request.user.has_perm(
-            "kompomaatti.view_competitionparticipation"
+        if (
+            request
+            and request.user.is_authenticated
+            and request.user.has_perm("kompomaatti.view_competitionparticipation")
         ):
             return obj.score
         if obj.competition.show_results:

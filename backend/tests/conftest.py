@@ -415,9 +415,7 @@ def competition_participation(faker, competition, base_user) -> CompetitionParti
 
 
 @fixture
-def started_competition_participation(
-    faker, started_competition, base_user
-) -> CompetitionParticipation:
+def started_competition_participation(faker, started_competition, base_user) -> CompetitionParticipation:
     return CompetitionParticipation.objects.create(
         competition=started_competition, user=base_user, participant_name=faker.name(), score=150.0
     )

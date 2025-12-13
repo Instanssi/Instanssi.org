@@ -48,8 +48,8 @@ def faker() -> Faker:
 @fixture(scope="session", autouse=True)
 def set_media_root():
     """
-    Use mkdtemp to generate us a temp path, and feed it in as django MEDIA_ROOT.
-    This way we can put our test uploads to their own special place, and remove
+    Use mkdtemp to generate us a temp path and feed it in as django MEDIA_ROOT.
+    This way we can put our test uploads to their own special place and remove
     them after tests.
     """
     tmp_path = Path(tempfile.mkdtemp(prefix="pytest_"))
@@ -183,7 +183,38 @@ def normal_user(create_user) -> User:
 
 @fixture
 def staff_user(create_user) -> User:
-    return create_user(is_staff=True)
+    # Grant all kompomaatti permissions to staff users for testing
+    permissions = [
+        "kompomaatti.view_event",
+        "kompomaatti.add_event",
+        "kompomaatti.change_event",
+        "kompomaatti.delete_event",
+        "kompomaatti.view_compo",
+        "kompomaatti.add_compo",
+        "kompomaatti.change_compo",
+        "kompomaatti.delete_compo",
+        "kompomaatti.view_entry",
+        "kompomaatti.add_entry",
+        "kompomaatti.change_entry",
+        "kompomaatti.delete_entry",
+        "kompomaatti.view_competition",
+        "kompomaatti.add_competition",
+        "kompomaatti.change_competition",
+        "kompomaatti.delete_competition",
+        "kompomaatti.view_competitionparticipation",
+        "kompomaatti.add_competitionparticipation",
+        "kompomaatti.change_competitionparticipation",
+        "kompomaatti.delete_competitionparticipation",
+        "kompomaatti.view_votecoderequest",
+        "kompomaatti.add_votecoderequest",
+        "kompomaatti.change_votecoderequest",
+        "kompomaatti.delete_votecoderequest",
+        "kompomaatti.view_ticketvotecode",
+        "kompomaatti.add_ticketvotecode",
+        "kompomaatti.change_ticketvotecode",
+        "kompomaatti.delete_ticketvotecode",
+    ]
+    return create_user(is_staff=True, permissions=permissions)
 
 
 @fixture
@@ -272,6 +303,21 @@ def closed_compo(faker, event) -> Compo:
 
 
 @fixture
+def inactive_compo(faker, event) -> Compo:
+    return Compo.objects.create(
+        event=event,
+        name="Inactive Compo",
+        description="Test Compo is not active!",
+        active=False,
+        adding_end=timezone.now() + timedelta(hours=1),
+        editing_end=timezone.now() + timedelta(hours=2),
+        compo_start=timezone.now() + timedelta(hours=3),
+        voting_start=timezone.now() + timedelta(hours=4),
+        voting_end=timezone.now() + timedelta(hours=8),
+    )
+
+
+@fixture
 def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=open_compo,
@@ -320,6 +366,7 @@ def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, 
 
 @fixture
 def competition(event) -> Competition:
+    """Competition that hasn't started yet"""
     return Competition.objects.create(
         event=event,
         name="Test competition",
@@ -332,9 +379,45 @@ def competition(event) -> Competition:
 
 
 @fixture
+def started_competition(event) -> Competition:
+    """Competition that has already started"""
+    return Competition.objects.create(
+        event=event,
+        name="Started Competition",
+        description="Test competition that has started",
+        participation_end=timezone.now() + timedelta(hours=-1),
+        start=timezone.now() + timedelta(hours=-30, minutes=-30),
+        end=timezone.now() + timedelta(hours=8),
+        score_type="p",
+    )
+
+
+@fixture
+def inactive_competition(event) -> Competition:
+    """Inactive competition (not shown to public)"""
+    return Competition.objects.create(
+        event=event,
+        name="Inactive Competition",
+        description="Test competition that is inactive",
+        active=False,
+        participation_end=timezone.now() + timedelta(hours=-1),
+        start=timezone.now() + timedelta(hours=-30, minutes=-30),
+        end=timezone.now() + timedelta(hours=8),
+        score_type="p",
+    )
+
+
+@fixture
 def competition_participation(faker, competition, base_user) -> CompetitionParticipation:
     return CompetitionParticipation.objects.create(
-        competition=competition, user=base_user, participant_name=faker.name()
+        competition=competition, user=base_user, participant_name=faker.name(), score=100.0
+    )
+
+
+@fixture
+def started_competition_participation(faker, started_competition, base_user) -> CompetitionParticipation:
+    return CompetitionParticipation.objects.create(
+        competition=started_competition, user=base_user, participant_name=faker.name(), score=150.0
     )
 
 
@@ -355,7 +438,7 @@ def store_transaction(faker, event) -> StoreTransaction:
 
 
 @fixture
-def transaction_item_a(faker, store_item, store_transaction) -> StoreItem:
+def transaction_item_a(faker, store_item, store_transaction) -> TransactionItem:
     return TransactionItem.objects.create(
         key=uuid4().hex,
         item=store_item,

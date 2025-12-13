@@ -8,6 +8,7 @@ from django.db import models
 from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from yarl import URL
 
 from Instanssi.common.file_handling import clean_filename, generate_upload_path
 from Instanssi.common.youtube.fields import YoutubeVideoField
@@ -432,7 +433,7 @@ class Entry(models.Model):
         return Path(self.entryfile.name).suffix
 
     @property
-    def archive_embed_url(self) -> str:
+    def archive_embed_url(self) -> URL:
         return self.youtube_url.embed_obj(autoplay=True)
 
     @property

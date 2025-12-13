@@ -1,13 +1,16 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents when working with code in this repository.
 
-**Note:** The main documentation for AI coding agents is in [AGENTS.md](./AGENTS.md). Please refer to that file for comprehensive information about this codebase, including:
+## Project Overview
 
-- Development commands (setup, testing, deployment)
-- Architecture overview
-- Key models and relationships
-- Important patterns and conventions
-- URL structure
+This is the Django backend for Instanssi.org, a Finnish demoparty event management system. The codebase manages:
+- **Kompomaatti**: Compo (competition) submissions, voting, and results
+- **Store**: Event ticket and merchandise sales with Paytrail payment integration
+- **Archive**: Historical event and entry data
+- **Programme**: Event schedules and programme management
+- **Admin panels**: Event management interfaces for organizers
+- **APIs**: REST APIs (v1 and v2) with DRF Spectacular for OpenAPI docs
+
 
 See @./AGENTS.md for all details.

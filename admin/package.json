@@ -27,7 +27,7 @@
     "@vueuse/core": "^13.9.0",
     "@vueuse/integrations": "^13.9.0",
     "axios": "^1.12.2",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "universal-cookie": "^8.0.1",
     "vee-validate": "^4.15.1",
     "vue": "^3.5.22",

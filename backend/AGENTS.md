@@ -14,81 +14,53 @@ This is the Django backend for Instanssi.org, a Finnish demoparty event manageme
 
 ## Development Commands
 
+### ⚠️ REQUIRED: After Adding or Modifying Code
+
+**You MUST run these tools after making any code changes:**
+
+```bash
+make check
+```
+
+This will run pytest in parallel, black, isort and django-manage checks.
+
+These checks are mandatory before considering any task complete. Do not skip them.
+
 ### Setup
 ```bash
-# Install dependencies (requires Poetry and Python 3.13)
-poetry env use 3.13
-poetry install --no-root --sync
+# Install dependencies (requires Poetry and Python 3.13+)
+make env
 
 # Copy settings template and configure
 cp settings.py-dist settings.py
 # Edit settings.py with your configuration (never commit this file)
 
 # Run migrations
-python manage.py migrate
+make migrate
 
 # Create superuser
-python manage.py createsuperuser
+make create-admin
 
 # Start development server
-python manage.py runserver
+make start-server
 
 # Start celery worker (for background tasks)
-python -m celery -A Instanssi worker -l info --autoscale 2,1
+make start-celery
 ```
 
 ### Testing
 ```bash
 # Run all tests
-pytest
+make pytest
 
 # Run with coverage
-pytest --cov=Instanssi
+make coverage
 
-# Run tests in parallel
-pytest -n 4
+# Run tests in parallel (auto-detects CPU cores)
+make pytest-parallel
 
 # Run specific test file
-pytest tests/store/test_models.py
-
-# Run with specific settings
-DJANGO_SETTINGS_MODULE=Instanssi.test_settings pytest
-```
-
-### Code Quality
-```bash
-# Format code with black
-black .
-
-# Sort imports
-isort .
-
-# Linting configuration is in pyproject.toml:
-# - Black: line-length 109, target Python 3.13
-# - isort: uses black profile
-```
-
-### Deployment
-```bash
-# Collect static files (ignore SCSS source files)
-python manage.py collectstatic --noinput --ignore **/*.scss
-
-# Compress static assets
-python manage.py compress
-
-# Run migrations
-python manage.py migrate
-
-# Restart ASGI/WSGI server after deployment
-```
-
-### Production Server
-```bash
-# With gunicorn (uses gunicorn.conf.py automatically)
-gunicorn
-
-# With uvicorn
-uvicorn Instanssi.asgi:application
+poetry run pytest tests/store/test_models.py
 ```
 
 ## Architecture
@@ -216,6 +188,15 @@ Tests use pytest-django with:
 - Temporary media root for file uploads
 - Faker for realistic test data
 - freezegun for time-based testing
+
+**API Testing Requirements:**
+
+When writing tests for API endpoints, you MUST test all three authorization scenarios:
+1. **Unauthenticated users** - No credentials provided
+2. **Authenticated but unauthorized users** - Valid credentials but lacking required permissions
+3. **Authorized users** - Valid credentials with appropriate permissions
+
+Use `pytest.mark.parametrize` when feasible to reduce code duplication and ensure consistent coverage across these scenarios.
 
 ## Important Patterns
 

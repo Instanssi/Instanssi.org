@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer
 from Instanssi.kompomaatti.models import Event
 
 
-class EventSerializer(ModelSerializer):
+class EventSerializer(ModelSerializer[Event]):
     class Meta:
         model = Event
         fields = ("id", "name", "tag", "date", "archived", "mainurl")

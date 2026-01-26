@@ -9,7 +9,7 @@ from Instanssi.kompomaatti.models import Event
 
 class EventViewSet(PermissionViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = EventSerializer  # type: ignore[assignment]
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,

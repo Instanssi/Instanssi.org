@@ -9,7 +9,7 @@ from Instanssi.api.v2.utils.base import PermissionViewSet
 
 class UserViewSet(PermissionViewSet):
     queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserSerializer  # type: ignore[assignment]
     pagination_class = LimitOffsetPagination
     filter_backends = (
         OrderingFilter,

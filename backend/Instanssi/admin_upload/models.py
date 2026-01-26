@@ -32,7 +32,7 @@ class UploadedFile(models.Model):
     date = models.DateTimeField("Aika", default=timezone.now)
 
     def __str__(self) -> str:
-        return self.file.name
+        return str(self.file.name)
 
     class Meta:
         verbose_name = "tiedosto"

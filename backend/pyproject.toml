@@ -42,7 +42,6 @@ redis = {extras = ["hiredis"], version = "^7.0.1"}
 mastodon-py = "^2.1.4"
 nh3 = "^0.3.0"
 drf-spectacular = "^0.29.0"
-djangorestframework-stubs = "^3.16.7"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^40.1.2"

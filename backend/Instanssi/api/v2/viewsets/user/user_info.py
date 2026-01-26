@@ -20,6 +20,7 @@ class UserInfoViewSet(ViewSet):
         },
     )
     def list(self, request: Request) -> Response:
-        obj = User.objects.filter(pk=request.user.pk)
+        user: User = request.user  # type: ignore[assignment]
+        obj = User.objects.filter(pk=user.pk)
         data = UserInfoSerializer(obj, many=True).data
         return Response(data, status=status.HTTP_200_OK)

@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from Instanssi.api.v2.serializers.login import UserLoginSerializer
+from Instanssi.api.v2.serializers.auth import UserLoginSerializer
 from Instanssi.api.v2.utils.base import EnforceCSRFViewSet
 
 

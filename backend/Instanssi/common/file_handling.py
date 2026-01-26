@@ -18,9 +18,9 @@ def temp_file(output_format: str) -> Generator[Path, None, None]:
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
         tmp_file = f"tmp_{uuid.uuid4().hex}.{output_format}"
-        with tmp_path.with_name(tmp_file) as output_file:
-            yield output_file
-            output_file.unlink()
+        output_file = tmp_path.with_name(tmp_file)
+        yield output_file
+        output_file.unlink()
 
 
 def generate_upload_path(

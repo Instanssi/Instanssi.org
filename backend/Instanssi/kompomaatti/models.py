@@ -433,7 +433,7 @@ class Entry(models.Model):
 
     @property
     def archive_embed_url(self) -> str:
-        return self.youtube_url.embed_obj(autoplay=True)
+        return str(self.youtube_url.embed_obj(autoplay=True))
 
     @property
     def is_audio(self) -> bool:

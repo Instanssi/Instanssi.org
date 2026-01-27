@@ -4,11 +4,17 @@ export type ClientOptions = {
     baseURL: `${string}://${string}` | (string & {});
 };
 
+/**
+ * Staff serializer for alternate entry files (transcoded media).
+ */
 export type AlternateEntryFile = {
     readonly format: string;
     readonly url: string;
 };
 
+/**
+ * Serializer for staff - includes all fields
+ */
 export type BlogEntry = {
     readonly id: number;
     user?: number;
@@ -18,6 +24,7 @@ export type BlogEntry = {
     readonly date: string;
     /**
      * Otsikko
+     *
      * Lyhyt otsikko entrylle.
      */
     title: string;
@@ -27,6 +34,7 @@ export type BlogEntry = {
     text: string;
     /**
      * Julkinen
+     *
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
@@ -37,10 +45,14 @@ export type BlogEntry = {
     readonly created_by: string;
 };
 
+/**
+ * Serializer for staff - includes all fields
+ */
 export type BlogEntryRequest = {
     user?: number;
     /**
      * Otsikko
+     *
      * Lyhyt otsikko entrylle.
      */
     title: string;
@@ -50,6 +62,7 @@ export type BlogEntryRequest = {
     text: string;
     /**
      * Julkinen
+     *
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
@@ -59,131 +72,1274 @@ export type BlogEntryRequest = {
     event: number;
 };
 
+/**
+ * Staff serializer for competitions.
+ */
+export type Competition = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kilpailu kuuluu
+     */
+    readonly event: number;
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+    /**
+     * Aktiivinen
+     *
+     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
+     */
+    hide_from_archive?: boolean;
+};
+
+/**
+ * Staff serializer for competition participations.
+ */
+export type CompetitionParticipation = {
+    readonly id: number;
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition: number;
+    /**
+     * Käyttäjä
+     *
+     * Osallistuja
+     */
+    user: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+    /**
+     * Pisteet
+     *
+     * Kilpailijan saavuttamat pisteet
+     */
+    score?: number;
+    /**
+     * Diskattu
+     *
+     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
+     */
+    disqualified?: boolean;
+    /**
+     * Diskauksen syy
+     */
+    disqualified_reason?: string;
+    readonly rank: number | null;
+};
+
+/**
+ * Staff serializer for competition participations.
+ */
+export type CompetitionParticipationRequest = {
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition: number;
+    /**
+     * Käyttäjä
+     *
+     * Osallistuja
+     */
+    user: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+    /**
+     * Pisteet
+     *
+     * Kilpailijan saavuttamat pisteet
+     */
+    score?: number;
+    /**
+     * Diskattu
+     *
+     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
+     */
+    disqualified?: boolean;
+    /**
+     * Diskauksen syy
+     */
+    disqualified_reason?: string;
+};
+
+/**
+ * Staff serializer for competitions.
+ */
+export type CompetitionRequest = {
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+    /**
+     * Aktiivinen
+     *
+     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
+     */
+    hide_from_archive?: boolean;
+};
+
+/**
+ * Staff serializer for compos.
+ */
+export type Compo = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kompo kuuluu
+     */
+    readonly event: number;
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end: string;
+    /**
+     * Kokoraja entryille
+     *
+     * Kokoraja entrytiedostoille (tavua).
+     */
+    entry_sizelimit?: number;
+    /**
+     * Kokoraja sorsille
+     *
+     * Kokoraja sorsatiedostoille (tavua).
+     */
+    source_sizelimit?: number;
+    /**
+     * Sallitut tiedostopäätteet
+     *
+     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     */
+    formats?: string;
+    /**
+     * Sallitut lähdekoodipaketin päätteet
+     *
+     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    source_formats?: string;
+    /**
+     * Sallitut kuvatiedoston päätteet
+     *
+     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    image_formats?: string;
+    readonly max_source_size: number;
+    readonly max_entry_size: number;
+    readonly source_format_list: Array<string>;
+    readonly entry_format_list: Array<string>;
+    readonly image_format_list: Array<string>;
+    /**
+     * Aktiivinen
+     *
+     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä äänestustulokset.
+     */
+    show_voting_results?: boolean;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
+     */
+    hide_from_archive?: boolean;
+    /**
+     * Piilotus etusivulta
+     *
+     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     */
+    hide_from_frontpage?: boolean;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+    /**
+     * Pikkukuvan asetukset
+     *
+     * Pikkukuvan luonti ja asettaminen.
+     *
+     * * `0` - Vaadi erillinen pikkukuva.
+     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
+     * * `2` - Salli pikkukuva (ei vaadittu).
+     * * `3` - Älä salli pikkukuvaa.
+     */
+    thumbnail_pref?: ThumbnailPrefEnum;
+};
+
+/**
+ * Staff serializer for compo entries.
+ */
 export type CompoEntry = {
     readonly id: number;
     /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle entry kuuluu
+     */
+    user: number;
+    /**
      * Kompo
+     *
      * Kompo johon osallistutaan
      */
     compo: number;
     /**
      * Nimi
+     *
      * Nimi tuotokselle
      */
     name: string;
     /**
      * Kuvaus
+     *
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description: string;
     /**
      * Tekijä
+     *
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator: string;
     /**
      * Alusta
+     *
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    readonly entry_file_url: string | null;
-    readonly source_file_url: string | null;
-    readonly image_file_original_url: string | null;
-    readonly image_file_thumbnail_url: string | null;
-    readonly image_file_medium_url: string | null;
-    readonly youtube_url: string | null;
-    readonly disqualified: boolean | null;
-    readonly disqualified_reason: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile: string;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: string;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: string;
+    readonly entryfile_url: string | null;
+    readonly sourcefile_url: string | null;
+    readonly imagefile_original_url: string | null;
+    readonly imagefile_thumbnail_url: string | null;
+    readonly imagefile_medium_url: string | null;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+    /**
+     * Diskattu
+     *
+     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
+     */
+    disqualified?: boolean;
+    /**
+     * Syy diskaukseen
+     *
+     * Diskauksen syy.
+     */
+    disqualified_reason?: string;
+    /**
+     * Pisteet
+     *
+     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     */
+    archive_score?: number | null;
+    /**
+     * Sijoitus
+     *
+     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     */
+    archive_rank?: number | null;
     readonly score: number | null;
     readonly rank: number | null;
     readonly alternate_files: Array<AlternateEntryFile>;
 };
 
+/**
+ * Staff serializer for compo entries.
+ */
 export type CompoEntryRequest = {
     /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle entry kuuluu
+     */
+    user: number;
+    /**
      * Kompo
+     *
      * Kompo johon osallistutaan
      */
     compo: number;
     /**
      * Nimi
+     *
      * Nimi tuotokselle
      */
     name: string;
     /**
      * Kuvaus
+     *
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description: string;
     /**
      * Tekijä
+     *
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator: string;
     /**
      * Alusta
+     *
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile: Blob | File;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: Blob | File;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: Blob | File;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+    /**
+     * Diskattu
+     *
+     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
+     */
+    disqualified?: boolean;
+    /**
+     * Syy diskaukseen
+     *
+     * Diskauksen syy.
+     */
+    disqualified_reason?: string;
+    /**
+     * Pisteet
+     *
+     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     */
+    archive_score?: number | null;
+    /**
+     * Sijoitus
+     *
+     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     */
+    archive_rank?: number | null;
 };
 
+/**
+ * Staff serializer for compos.
+ */
+export type CompoRequest = {
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end: string;
+    /**
+     * Kokoraja entryille
+     *
+     * Kokoraja entrytiedostoille (tavua).
+     */
+    entry_sizelimit?: number;
+    /**
+     * Kokoraja sorsille
+     *
+     * Kokoraja sorsatiedostoille (tavua).
+     */
+    source_sizelimit?: number;
+    /**
+     * Sallitut tiedostopäätteet
+     *
+     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     */
+    formats?: string;
+    /**
+     * Sallitut lähdekoodipaketin päätteet
+     *
+     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    source_formats?: string;
+    /**
+     * Sallitut kuvatiedoston päätteet
+     *
+     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    image_formats?: string;
+    /**
+     * Aktiivinen
+     *
+     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä äänestustulokset.
+     */
+    show_voting_results?: boolean;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
+     */
+    hide_from_archive?: boolean;
+    /**
+     * Piilotus etusivulta
+     *
+     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     */
+    hide_from_frontpage?: boolean;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+    /**
+     * Pikkukuvan asetukset
+     *
+     * Pikkukuvan luonti ja asettaminen.
+     *
+     * * `0` - Vaadi erillinen pikkukuva.
+     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
+     * * `2` - Salli pikkukuva (ei vaadittu).
+     * * `3` - Älä salli pikkukuvaa.
+     */
+    thumbnail_pref?: ThumbnailPrefEnum;
+};
+
+/**
+ * * `AF` - Afghanistan
+ * * `AX` - Åland Islands
+ * * `AL` - Albania
+ * * `DZ` - Algeria
+ * * `AS` - American Samoa
+ * * `AD` - Andorra
+ * * `AO` - Angola
+ * * `AI` - Anguilla
+ * * `AQ` - Antarctica
+ * * `AG` - Antigua and Barbuda
+ * * `AR` - Argentina
+ * * `AM` - Armenia
+ * * `AW` - Aruba
+ * * `AU` - Australia
+ * * `AT` - Austria
+ * * `AZ` - Azerbaijan
+ * * `BS` - Bahamas (The)
+ * * `BH` - Bahrain
+ * * `BD` - Bangladesh
+ * * `BB` - Barbados
+ * * `BY` - Belarus
+ * * `BE` - Belgium
+ * * `BZ` - Belize
+ * * `BJ` - Benin
+ * * `BM` - Bermuda
+ * * `BT` - Bhutan
+ * * `BO` - Bolivia
+ * * `BQ` - Bonaire, Sint Eustatius and Saba
+ * * `BA` - Bosnia and Herzegovina
+ * * `BW` - Botswana
+ * * `BV` - Bouvet Island
+ * * `BR` - Brazil
+ * * `IO` - British Indian Ocean Territory
+ * * `BN` - Brunei
+ * * `BG` - Bulgaria
+ * * `BF` - Burkina Faso
+ * * `BI` - Burundi
+ * * `CV` - Cabo Verde
+ * * `KH` - Cambodia
+ * * `CM` - Cameroon
+ * * `CA` - Canada
+ * * `KY` - Cayman Islands
+ * * `CF` - Central African Republic
+ * * `TD` - Chad
+ * * `CL` - Chile
+ * * `CN` - China
+ * * `CX` - Christmas Island
+ * * `CC` - Cocos (Keeling) Islands
+ * * `CO` - Colombia
+ * * `KM` - Comoros
+ * * `CG` - Congo
+ * * `CK` - Cook Islands
+ * * `CR` - Costa Rica
+ * * `CI` - Côte d'Ivoire
+ * * `HR` - Croatia
+ * * `CU` - Cuba
+ * * `CW` - Curaçao
+ * * `CY` - Cyprus
+ * * `CZ` - Czechia
+ * * `CD` - Democratic Republic of the Congo
+ * * `DK` - Denmark
+ * * `DJ` - Djibouti
+ * * `DM` - Dominica
+ * * `DO` - Dominican Republic
+ * * `EC` - Ecuador
+ * * `EG` - Egypt
+ * * `SV` - El Salvador
+ * * `GQ` - Equatorial Guinea
+ * * `ER` - Eritrea
+ * * `EE` - Estonia
+ * * `SZ` - Eswatini
+ * * `ET` - Ethiopia
+ * * `FK` - Falkland Islands (Malvinas)
+ * * `FO` - Faroe Islands
+ * * `FJ` - Fiji
+ * * `FI` - Finland
+ * * `FR` - France
+ * * `GF` - French Guiana
+ * * `PF` - French Polynesia
+ * * `TF` - French Southern Territories
+ * * `GA` - Gabon
+ * * `GM` - Gambia
+ * * `GE` - Georgia
+ * * `DE` - Germany
+ * * `GH` - Ghana
+ * * `GI` - Gibraltar
+ * * `GR` - Greece
+ * * `GL` - Greenland
+ * * `GD` - Grenada
+ * * `GP` - Guadeloupe
+ * * `GU` - Guam
+ * * `GT` - Guatemala
+ * * `GG` - Guernsey
+ * * `GN` - Guinea
+ * * `GW` - Guinea-Bissau
+ * * `GY` - Guyana
+ * * `HT` - Haiti
+ * * `HM` - Heard Island and McDonald Islands
+ * * `HN` - Honduras
+ * * `HK` - Hong Kong
+ * * `HU` - Hungary
+ * * `IS` - Iceland
+ * * `IN` - India
+ * * `ID` - Indonesia
+ * * `IR` - Iran
+ * * `IQ` - Iraq
+ * * `IE` - Ireland
+ * * `IM` - Isle of Man
+ * * `IL` - Israel
+ * * `IT` - Italy
+ * * `JM` - Jamaica
+ * * `JP` - Japan
+ * * `JE` - Jersey
+ * * `JO` - Jordan
+ * * `KZ` - Kazakhstan
+ * * `KE` - Kenya
+ * * `KI` - Kiribati
+ * * `KW` - Kuwait
+ * * `KG` - Kyrgyzstan
+ * * `LA` - Laos
+ * * `LV` - Latvia
+ * * `LB` - Lebanon
+ * * `LS` - Lesotho
+ * * `LR` - Liberia
+ * * `LY` - Libya
+ * * `LI` - Liechtenstein
+ * * `LT` - Lithuania
+ * * `LU` - Luxembourg
+ * * `MO` - Macao
+ * * `MG` - Madagascar
+ * * `MW` - Malawi
+ * * `MY` - Malaysia
+ * * `MV` - Maldives
+ * * `ML` - Mali
+ * * `MT` - Malta
+ * * `MH` - Marshall Islands
+ * * `MQ` - Martinique
+ * * `MR` - Mauritania
+ * * `MU` - Mauritius
+ * * `YT` - Mayotte
+ * * `MX` - Mexico
+ * * `FM` - Micronesia
+ * * `MD` - Moldova
+ * * `MC` - Monaco
+ * * `MN` - Mongolia
+ * * `ME` - Montenegro
+ * * `MS` - Montserrat
+ * * `MA` - Morocco
+ * * `MZ` - Mozambique
+ * * `MM` - Myanmar
+ * * `NA` - Namibia
+ * * `NR` - Nauru
+ * * `NP` - Nepal
+ * * `NL` - Netherlands
+ * * `NC` - New Caledonia
+ * * `NZ` - New Zealand
+ * * `NI` - Nicaragua
+ * * `NE` - Niger
+ * * `NG` - Nigeria
+ * * `NU` - Niue
+ * * `NF` - Norfolk Island
+ * * `KP` - North Korea
+ * * `MK` - North Macedonia
+ * * `MP` - Northern Mariana Islands
+ * * `NO` - Norway
+ * * `OM` - Oman
+ * * `PK` - Pakistan
+ * * `PW` - Palau
+ * * `PS` - Palestine
+ * * `PA` - Panama
+ * * `PG` - Papua New Guinea
+ * * `PY` - Paraguay
+ * * `PE` - Peru
+ * * `PH` - Philippines
+ * * `PN` - Pitcairn
+ * * `PL` - Poland
+ * * `PT` - Portugal
+ * * `PR` - Puerto Rico
+ * * `QA` - Qatar
+ * * `RE` - Réunion
+ * * `RO` - Romania
+ * * `RU` - Russia
+ * * `RW` - Rwanda
+ * * `BL` - Saint Barthélemy
+ * * `SH` - Saint Helena
+ * * `KN` - Saint Kitts and Nevis
+ * * `LC` - Saint Lucia
+ * * `MF` - Saint Martin (French part)
+ * * `PM` - Saint Pierre and Miquelon
+ * * `VC` - Saint Vincent and the Grenadines
+ * * `WS` - Samoa
+ * * `SM` - San Marino
+ * * `ST` - Sao Tome and Principe
+ * * `SA` - Saudi Arabia
+ * * `SN` - Senegal
+ * * `RS` - Serbia
+ * * `SC` - Seychelles
+ * * `SL` - Sierra Leone
+ * * `SG` - Singapore
+ * * `SX` - Sint Maarten (Dutch part)
+ * * `SK` - Slovakia
+ * * `SI` - Slovenia
+ * * `SB` - Solomon Islands
+ * * `SO` - Somalia
+ * * `ZA` - South Africa
+ * * `GS` - South Georgia
+ * * `KR` - South Korea
+ * * `SS` - South Sudan
+ * * `ES` - Spain
+ * * `LK` - Sri Lanka
+ * * `SD` - Sudan
+ * * `SR` - Suriname
+ * * `SJ` - Svalbard and Jan Mayen
+ * * `SE` - Sweden
+ * * `CH` - Switzerland
+ * * `SY` - Syria
+ * * `TW` - Taiwan
+ * * `TJ` - Tajikistan
+ * * `TZ` - Tanzania
+ * * `TH` - Thailand
+ * * `TL` - Timor-Leste
+ * * `TG` - Togo
+ * * `TK` - Tokelau
+ * * `TO` - Tonga
+ * * `TT` - Trinidad and Tobago
+ * * `TN` - Tunisia
+ * * `TR` - Türkiye
+ * * `TM` - Turkmenistan
+ * * `TC` - Turks and Caicos Islands
+ * * `TV` - Tuvalu
+ * * `UG` - Uganda
+ * * `UA` - Ukraine
+ * * `AE` - United Arab Emirates
+ * * `GB` - United Kingdom
+ * * `UM` - United States Minor Outlying Islands
+ * * `US` - United States of America
+ * * `UY` - Uruguay
+ * * `UZ` - Uzbekistan
+ * * `VU` - Vanuatu
+ * * `VA` - Vatican City
+ * * `VE` - Venezuela
+ * * `VN` - Vietnam
+ * * `VG` - Virgin Islands (British)
+ * * `VI` - Virgin Islands (U.S.)
+ * * `WF` - Wallis and Futuna
+ * * `EH` - Western Sahara
+ * * `YE` - Yemen
+ * * `ZM` - Zambia
+ * * `ZW` - Zimbabwe
+ */
+export type CountryEnum =
+    | "AF"
+    | "AX"
+    | "AL"
+    | "DZ"
+    | "AS"
+    | "AD"
+    | "AO"
+    | "AI"
+    | "AQ"
+    | "AG"
+    | "AR"
+    | "AM"
+    | "AW"
+    | "AU"
+    | "AT"
+    | "AZ"
+    | "BS"
+    | "BH"
+    | "BD"
+    | "BB"
+    | "BY"
+    | "BE"
+    | "BZ"
+    | "BJ"
+    | "BM"
+    | "BT"
+    | "BO"
+    | "BQ"
+    | "BA"
+    | "BW"
+    | "BV"
+    | "BR"
+    | "IO"
+    | "BN"
+    | "BG"
+    | "BF"
+    | "BI"
+    | "CV"
+    | "KH"
+    | "CM"
+    | "CA"
+    | "KY"
+    | "CF"
+    | "TD"
+    | "CL"
+    | "CN"
+    | "CX"
+    | "CC"
+    | "CO"
+    | "KM"
+    | "CG"
+    | "CK"
+    | "CR"
+    | "CI"
+    | "HR"
+    | "CU"
+    | "CW"
+    | "CY"
+    | "CZ"
+    | "CD"
+    | "DK"
+    | "DJ"
+    | "DM"
+    | "DO"
+    | "EC"
+    | "EG"
+    | "SV"
+    | "GQ"
+    | "ER"
+    | "EE"
+    | "SZ"
+    | "ET"
+    | "FK"
+    | "FO"
+    | "FJ"
+    | "FI"
+    | "FR"
+    | "GF"
+    | "PF"
+    | "TF"
+    | "GA"
+    | "GM"
+    | "GE"
+    | "DE"
+    | "GH"
+    | "GI"
+    | "GR"
+    | "GL"
+    | "GD"
+    | "GP"
+    | "GU"
+    | "GT"
+    | "GG"
+    | "GN"
+    | "GW"
+    | "GY"
+    | "HT"
+    | "HM"
+    | "HN"
+    | "HK"
+    | "HU"
+    | "IS"
+    | "IN"
+    | "ID"
+    | "IR"
+    | "IQ"
+    | "IE"
+    | "IM"
+    | "IL"
+    | "IT"
+    | "JM"
+    | "JP"
+    | "JE"
+    | "JO"
+    | "KZ"
+    | "KE"
+    | "KI"
+    | "KW"
+    | "KG"
+    | "LA"
+    | "LV"
+    | "LB"
+    | "LS"
+    | "LR"
+    | "LY"
+    | "LI"
+    | "LT"
+    | "LU"
+    | "MO"
+    | "MG"
+    | "MW"
+    | "MY"
+    | "MV"
+    | "ML"
+    | "MT"
+    | "MH"
+    | "MQ"
+    | "MR"
+    | "MU"
+    | "YT"
+    | "MX"
+    | "FM"
+    | "MD"
+    | "MC"
+    | "MN"
+    | "ME"
+    | "MS"
+    | "MA"
+    | "MZ"
+    | "MM"
+    | "NA"
+    | "NR"
+    | "NP"
+    | "NL"
+    | "NC"
+    | "NZ"
+    | "NI"
+    | "NE"
+    | "NG"
+    | "NU"
+    | "NF"
+    | "KP"
+    | "MK"
+    | "MP"
+    | "NO"
+    | "OM"
+    | "PK"
+    | "PW"
+    | "PS"
+    | "PA"
+    | "PG"
+    | "PY"
+    | "PE"
+    | "PH"
+    | "PN"
+    | "PL"
+    | "PT"
+    | "PR"
+    | "QA"
+    | "RE"
+    | "RO"
+    | "RU"
+    | "RW"
+    | "BL"
+    | "SH"
+    | "KN"
+    | "LC"
+    | "MF"
+    | "PM"
+    | "VC"
+    | "WS"
+    | "SM"
+    | "ST"
+    | "SA"
+    | "SN"
+    | "RS"
+    | "SC"
+    | "SL"
+    | "SG"
+    | "SX"
+    | "SK"
+    | "SI"
+    | "SB"
+    | "SO"
+    | "ZA"
+    | "GS"
+    | "KR"
+    | "SS"
+    | "ES"
+    | "LK"
+    | "SD"
+    | "SR"
+    | "SJ"
+    | "SE"
+    | "CH"
+    | "SY"
+    | "TW"
+    | "TJ"
+    | "TZ"
+    | "TH"
+    | "TL"
+    | "TG"
+    | "TK"
+    | "TO"
+    | "TT"
+    | "TN"
+    | "TR"
+    | "TM"
+    | "TC"
+    | "TV"
+    | "UG"
+    | "UA"
+    | "AE"
+    | "GB"
+    | "UM"
+    | "US"
+    | "UY"
+    | "UZ"
+    | "VU"
+    | "VA"
+    | "VE"
+    | "VN"
+    | "VG"
+    | "VI"
+    | "WF"
+    | "EH"
+    | "YE"
+    | "ZM"
+    | "ZW";
+
+/**
+ * * `0` - Ei mitään
+ * * `1` - Youtube ensin, sitten kuva
+ * * `2` - Vain kuva
+ * * `3` - (deprecated)
+ */
+export type EntryViewTypeEnum = 0 | 1 | 2 | 3;
+
+/**
+ * Staff serializer for events.
+ */
 export type Event = {
     readonly id: number;
     /**
      * Nimi
+     *
      * Tapahtuman nimi
      */
     name: string;
     /**
      * Lyhyt esitys
+     *
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
      * Päivämäärä
+     *
      * Tapahtuman päivämäärä (alku)
      */
     date: string;
     /**
      * Arkistoitu
+     *
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
      * Tapahtuman pääsivu
+     *
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
 };
 
+/**
+ * Staff serializer for events.
+ */
 export type EventRequest = {
     /**
      * Nimi
+     *
      * Tapahtuman nimi
      */
     name: string;
     /**
      * Lyhyt esitys
+     *
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
      * Päivämäärä
+     *
      * Tapahtuman päivämäärä (alku)
      */
     date: string;
     /**
      * Arkistoitu
+     *
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
      * Tapahtuman pääsivu
+     *
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
 };
 
+/**
+ * * `0` - Yksinkertainen
+ * * `1` - Yksityiskohtainen
+ */
+export type EventTypeEnum = 0 | 1;
+
+/**
+ * Serializer for user groups (used in user info responses).
+ */
 export type Group = {
     /**
      * Nimi
@@ -191,11 +1347,114 @@ export type Group = {
     name: string;
 };
 
+/**
+ * Serializer for user groups (used in user info responses).
+ */
 export type GroupRequest = {
     /**
      * Nimi
      */
     name: string;
+};
+
+/**
+ * Serializer for Receipt model (nested in transaction response).
+ */
+export type NestedReceipt = {
+    readonly id: number;
+    /**
+     * Aihe
+     */
+    readonly subject: string;
+    /**
+     * Vastaanottajan osoite
+     */
+    readonly mail_to: string;
+    /**
+     * Lähettäjän osoite
+     */
+    readonly mail_from: string;
+    /**
+     * Lähetysaika
+     */
+    readonly sent: string | null;
+    readonly is_sent: boolean;
+};
+
+/**
+ * Staff serializer for archive videos.
+ */
+export type OtherVideo = {
+    readonly id: number;
+    /**
+     * Kategoria
+     */
+    category: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description: string;
+    youtube_url: string;
+};
+
+/**
+ * Staff serializer for archive video categories.
+ */
+export type OtherVideoCategory = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     */
+    readonly event: number;
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name: string;
+};
+
+/**
+ * Staff serializer for archive video categories.
+ */
+export type OtherVideoCategoryRequest = {
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name: string;
+};
+
+/**
+ * Staff serializer for archive videos.
+ */
+export type OtherVideoRequest = {
+    /**
+     * Kategoria
+     */
+    category: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description: string;
+    youtube_url: string;
 };
 
 export type PaginatedBlogEntryList = {
@@ -205,11 +1464,32 @@ export type PaginatedBlogEntryList = {
     results: Array<BlogEntry>;
 };
 
+export type PaginatedCompetitionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Competition>;
+};
+
+export type PaginatedCompetitionParticipationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CompetitionParticipation>;
+};
+
 export type PaginatedCompoEntryList = {
     count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<CompoEntry>;
+};
+
+export type PaginatedCompoList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Compo>;
 };
 
 export type PaginatedEventList = {
@@ -219,6 +1499,160 @@ export type PaginatedEventList = {
     results: Array<Event>;
 };
 
+export type PaginatedOtherVideoCategoryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OtherVideoCategory>;
+};
+
+export type PaginatedOtherVideoList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OtherVideo>;
+};
+
+export type PaginatedProgramEventList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<ProgramEvent>;
+};
+
+export type PaginatedPublicBlogEntryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicBlogEntry>;
+};
+
+export type PaginatedPublicCompetitionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompetition>;
+};
+
+export type PaginatedPublicCompetitionParticipationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompetitionParticipation>;
+};
+
+export type PaginatedPublicCompoEntryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompoEntry>;
+};
+
+export type PaginatedPublicCompoList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompo>;
+};
+
+export type PaginatedPublicEventList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicEvent>;
+};
+
+export type PaginatedPublicOtherVideoCategoryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicOtherVideoCategory>;
+};
+
+export type PaginatedPublicOtherVideoList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicOtherVideo>;
+};
+
+export type PaginatedPublicProgramEventList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicProgramEvent>;
+};
+
+export type PaginatedPublicStoreItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicStoreItem>;
+};
+
+export type PaginatedReceiptList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Receipt>;
+};
+
+export type PaginatedStoreItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreItem>;
+};
+
+export type PaginatedStoreItemVariantList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreItemVariant>;
+};
+
+export type PaginatedStoreTransactionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreTransaction>;
+};
+
+export type PaginatedTicketVoteCodeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<TicketVoteCode>;
+};
+
+export type PaginatedTransactionItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<TransactionItem>;
+};
+
+export type PaginatedUploadedFileList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UploadedFile>;
+};
+
+export type PaginatedUserCompetitionParticipationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserCompetitionParticipation>;
+};
+
+export type PaginatedUserCompoEntryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserCompoEntry>;
+};
+
 export type PaginatedUserList = {
     count: number;
     next?: string | null;
@@ -226,10 +1660,42 @@ export type PaginatedUserList = {
     results: Array<User>;
 };
 
+export type PaginatedUserTicketVoteCodeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserTicketVoteCode>;
+};
+
+export type PaginatedUserVoteCodeRequestList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserVoteCodeRequest>;
+};
+
+export type PaginatedUserVoteGroupList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserVoteGroup>;
+};
+
+export type PaginatedVoteCodeRequestList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<VoteCodeRequest>;
+};
+
+/**
+ * Serializer for staff - includes all fields
+ */
 export type PatchedBlogEntryRequest = {
     user?: number;
     /**
      * Otsikko
+     *
      * Lyhyt otsikko entrylle.
      */
     title?: string;
@@ -239,6 +1705,7 @@ export type PatchedBlogEntryRequest = {
     text?: string;
     /**
      * Julkinen
+     *
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
@@ -248,65 +1715,849 @@ export type PatchedBlogEntryRequest = {
     event?: number;
 };
 
+/**
+ * Staff serializer for competition participations.
+ */
+export type PatchedCompetitionParticipationRequest = {
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition?: number;
+    /**
+     * Käyttäjä
+     *
+     * Osallistuja
+     */
+    user?: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+    /**
+     * Pisteet
+     *
+     * Kilpailijan saavuttamat pisteet
+     */
+    score?: number;
+    /**
+     * Diskattu
+     *
+     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
+     */
+    disqualified?: boolean;
+    /**
+     * Diskauksen syy
+     */
+    disqualified_reason?: string;
+};
+
+/**
+ * Staff serializer for competitions.
+ */
+export type PatchedCompetitionRequest = {
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name?: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end?: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start?: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type?: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+    /**
+     * Aktiivinen
+     *
+     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
+     */
+    hide_from_archive?: boolean;
+};
+
+/**
+ * Staff serializer for compo entries.
+ */
 export type PatchedCompoEntryRequest = {
     /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle entry kuuluu
+     */
+    user?: number;
+    /**
      * Kompo
+     *
      * Kompo johon osallistutaan
      */
     compo?: number;
     /**
      * Nimi
+     *
      * Nimi tuotokselle
      */
     name?: string;
     /**
      * Kuvaus
+     *
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description?: string;
     /**
      * Tekijä
+     *
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator?: string;
     /**
      * Alusta
+     *
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile?: Blob | File;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: Blob | File;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: Blob | File;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+    /**
+     * Diskattu
+     *
+     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
+     */
+    disqualified?: boolean;
+    /**
+     * Syy diskaukseen
+     *
+     * Diskauksen syy.
+     */
+    disqualified_reason?: string;
+    /**
+     * Pisteet
+     *
+     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     */
+    archive_score?: number | null;
+    /**
+     * Sijoitus
+     *
+     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     */
+    archive_rank?: number | null;
 };
 
+/**
+ * Staff serializer for compos.
+ */
+export type PatchedCompoRequest = {
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name?: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end?: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end?: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start?: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start?: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end?: string;
+    /**
+     * Kokoraja entryille
+     *
+     * Kokoraja entrytiedostoille (tavua).
+     */
+    entry_sizelimit?: number;
+    /**
+     * Kokoraja sorsille
+     *
+     * Kokoraja sorsatiedostoille (tavua).
+     */
+    source_sizelimit?: number;
+    /**
+     * Sallitut tiedostopäätteet
+     *
+     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     */
+    formats?: string;
+    /**
+     * Sallitut lähdekoodipaketin päätteet
+     *
+     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    source_formats?: string;
+    /**
+     * Sallitut kuvatiedoston päätteet
+     *
+     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    image_formats?: string;
+    /**
+     * Aktiivinen
+     *
+     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä äänestustulokset.
+     */
+    show_voting_results?: boolean;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
+     */
+    hide_from_archive?: boolean;
+    /**
+     * Piilotus etusivulta
+     *
+     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     */
+    hide_from_frontpage?: boolean;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+    /**
+     * Pikkukuvan asetukset
+     *
+     * Pikkukuvan luonti ja asettaminen.
+     *
+     * * `0` - Vaadi erillinen pikkukuva.
+     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
+     * * `2` - Salli pikkukuva (ei vaadittu).
+     * * `3` - Älä salli pikkukuvaa.
+     */
+    thumbnail_pref?: ThumbnailPrefEnum;
+};
+
+/**
+ * Staff serializer for events.
+ */
 export type PatchedEventRequest = {
     /**
      * Nimi
+     *
      * Tapahtuman nimi
      */
     name?: string;
     /**
      * Lyhyt esitys
+     *
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
      * Päivämäärä
+     *
      * Tapahtuman päivämäärä (alku)
      */
     date?: string;
     /**
      * Arkistoitu
+     *
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
      * Tapahtuman pääsivu
+     *
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
 };
 
+/**
+ * Staff serializer for archive video categories.
+ */
+export type PatchedOtherVideoCategoryRequest = {
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name?: string;
+};
+
+/**
+ * Staff serializer for archive videos.
+ */
+export type PatchedOtherVideoRequest = {
+    /**
+     * Kategoria
+     */
+    category?: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name?: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description?: string;
+    youtube_url?: string;
+};
+
+/**
+ * Staff serializer for programme events.
+ */
+export type PatchedProgramEventRequest = {
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start?: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title?: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    /**
+     * Kuva 1
+     *
+     * Kuva 1 tapahtumalle.
+     */
+    icon_original?: Blob | File;
+    /**
+     * Kuva 2
+     *
+     * Kuva 2 tapahtumalle.
+     */
+    icon2_original?: Blob | File;
+    /**
+     * Sähköposti
+     *
+     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
+     */
+    email?: string;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+    /**
+     * Aktiivinen
+     *
+     * Deaktivoidut piilotetaan.
+     */
+    active?: boolean;
+};
+
+/**
+ * Serializer for Receipt model (staff access).
+ */
+export type PatchedReceiptRequest = {
+    transaction?: number | null;
+    /**
+     * Aihe
+     */
+    subject?: string;
+    /**
+     * Vastaanottajan osoite
+     */
+    mail_to?: string;
+    /**
+     * Lähettäjän osoite
+     */
+    mail_from?: string;
+    /**
+     * Lähetysparametrit
+     */
+    params?: string | null;
+    /**
+     * Kuitin sisältö
+     */
+    content?: string | null;
+};
+
+/**
+ * Staff serializer for StoreItem model.
+ */
+export type PatchedStoreItemRequest = {
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name?: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description?: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price?: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max?: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    /**
+     * Tuotekuva
+     *
+     * Edustava kuva tuotteelle.
+     */
+    imagefile_original?: Blob | File | null;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+    /**
+     * Tuote on lipputuote
+     *
+     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     */
+    is_ticket?: boolean;
+    /**
+     * Tuote on salainen
+     *
+     * Tuote näkyy kaupassa vain salaisella linkillä
+     */
+    is_secret?: boolean;
+    /**
+     * Salasana
+     *
+     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
+     */
+    secret_key?: string;
+};
+
+/**
+ * Staff serializer for store item variants.
+ */
+export type PatchedStoreItemVariantRequest = {
+    item?: number;
+    /**
+     * Tuotevariantin nimi
+     */
+    name?: string;
+};
+
+/**
+ * Serializer for StoreTransaction model (staff access).
+ */
+export type PatchedStoreTransactionRequest = {
+    /**
+     * Luontiaika
+     */
+    time_created?: string | null;
+    /**
+     * Maksun varmistumisaika
+     */
+    time_paid?: string | null;
+    /**
+     * Maksun maksuaika
+     */
+    time_pending?: string | null;
+    /**
+     * Peruutusaika
+     */
+    time_cancelled?: string | null;
+    /**
+     * Maksutapa
+     *
+     * Tapa jolla tilaus maksettiin
+     */
+    payment_method_name?: string;
+    /**
+     * Etunimi
+     */
+    firstname?: string;
+    /**
+     * Sukunimi
+     */
+    lastname?: string;
+    /**
+     * Yritys
+     */
+    company?: string;
+    /**
+     * Sähköposti
+     *
+     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
+     */
+    email?: string;
+    /**
+     * Puhelinnumero
+     */
+    telephone?: string;
+    /**
+     * Matkapuhelin
+     */
+    mobile?: string;
+    /**
+     * Katuosoite
+     *
+     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     */
+    street?: string;
+    /**
+     * Postinumero
+     */
+    postalcode?: string;
+    /**
+     * Postitoimipaikka
+     */
+    city?: string;
+    /**
+     * Maa
+     */
+    country?: CountryEnum;
+    /**
+     * Lisätiedot
+     *
+     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     */
+    information?: string;
+};
+
+/**
+ * Staff serializer for ticket vote codes.
+ */
+export type PatchedTicketVoteCodeRequest = {
+    /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle avain on assosioitu
+     */
+    associated_to?: number | null;
+    /**
+     * Lipputuote
+     *
+     * Lipputuote jonka avainta käytetään äänestysavaimena
+     */
+    ticket?: number | null;
+    /**
+     * Aikaleima
+     *
+     * Aika jolloin avain assosioitiin käyttäjälle.
+     */
+    time?: string | null;
+};
+
+/**
+ * Serializer for TransactionItem model (staff access).
+ */
+export type PatchedTransactionItemRequest = {
+    /**
+     * Tuote
+     */
+    item?: number;
+    /**
+     * Tuotevariantti
+     */
+    variant?: number | null;
+    /**
+     * Ostotapahtuma
+     */
+    transaction?: number;
+    /**
+     * Toimitusaika
+     */
+    time_delivered?: string | null;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta ostoshetkellä
+     */
+    purchase_price?: string;
+    /**
+     * Tuotteen alkuperäinen hinta
+     *
+     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     */
+    original_price?: string;
+};
+
+/**
+ * Staff serializer for uploaded files.
+ */
+export type PatchedUploadedFileRequest = {
+    /**
+     * Käyttäjä
+     */
+    user?: number | null;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
+     */
+    description?: string;
+    /**
+     * Tiedosto
+     */
+    file?: Blob | File;
+};
+
+/**
+ * User serializer for managing own competition participations.
+ */
+export type PatchedUserCompetitionParticipationRequest = {
+    competition?: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type PatchedUserCompoEntryRequest = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo?: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name?: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description?: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator?: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+};
+
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
 export type PatchedUserRequest = {
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username?: string;
@@ -324,11 +2575,64 @@ export type PatchedUserRequest = {
     email?: string;
     /**
      * Voimassa
+     *
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
+/**
+ * Serializer for user's own vote code requests.
+ *
+ * Users can create and read their own vote code requests.
+ * The status field is read-only for users (only staff can change it).
+ * Event and user are set by the viewset, not from the request body.
+ *
+ * Status values:
+ * - 0: Pending
+ * - 1: Accepted (voting right granted)
+ * - 2: Rejected (no voting right)
+ */
+export type PatchedUserVoteCodeRequestRequest = {
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text?: string;
+};
+
+/**
+ * Staff serializer for vote code requests.
+ */
+export type PatchedVoteCodeRequestRequest = {
+    /**
+     * Käyttäjä
+     *
+     * Pyynnön esittänyt käyttäjä
+     */
+    user?: number;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text?: string;
+    /**
+     * Tila
+     */
+    status?: StatusEnum;
+};
+
+/**
+ * * `-1` - -1
+ * * `1` - 1
+ */
+export type PaymentMethodEnum = -1 | 1;
+
+/**
+ * Serializer for user permissions (used in user info responses).
+ */
 export type Permission = {
     /**
      * Nimi
@@ -340,6 +2644,9 @@ export type Permission = {
     codename: string;
 };
 
+/**
+ * Serializer for user permissions (used in user info responses).
+ */
 export type PermissionRequest = {
     /**
      * Nimi
@@ -351,16 +2658,1520 @@ export type PermissionRequest = {
     codename: string;
 };
 
+/**
+ * Staff serializer for programme events.
+ */
+export type ProgramEvent = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     */
+    readonly event: number;
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    /**
+     * Kuva 1
+     *
+     * Kuva 1 tapahtumalle.
+     */
+    icon_original?: string;
+    /**
+     * Return URL for small icon thumbnail, or None if no icon exists.
+     */
+    readonly icon_small_url: string | null;
+    /**
+     * Kuva 2
+     *
+     * Kuva 2 tapahtumalle.
+     */
+    icon2_original?: string;
+    /**
+     * Return URL for small icon2 thumbnail, or None if no icon2 exists.
+     */
+    readonly icon2_small_url: string | null;
+    /**
+     * Sähköposti
+     *
+     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
+     */
+    email?: string;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+    /**
+     * Aktiivinen
+     *
+     * Deaktivoidut piilotetaan.
+     */
+    active?: boolean;
+};
+
+/**
+ * Staff serializer for programme events.
+ */
+export type ProgramEventRequest = {
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    /**
+     * Kuva 1
+     *
+     * Kuva 1 tapahtumalle.
+     */
+    icon_original?: Blob | File;
+    /**
+     * Kuva 2
+     *
+     * Kuva 2 tapahtumalle.
+     */
+    icon2_original?: Blob | File;
+    /**
+     * Sähköposti
+     *
+     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
+     */
+    email?: string;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+    /**
+     * Aktiivinen
+     *
+     * Deaktivoidut piilotetaan.
+     */
+    active?: boolean;
+};
+
+/**
+ * Public read-only serializer for alternate entry files (transcoded media).
+ */
+export type PublicAlternateEntryFile = {
+    readonly format: string;
+    readonly url: string;
+};
+
+/**
+ * Serializer for public blog entries - excludes user, public, and created_by fields
+ */
+export type PublicBlogEntry = {
+    readonly id: number;
+    /**
+     * Aika
+     */
+    date?: string;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko entrylle.
+     */
+    title: string;
+    /**
+     * Teksti
+     */
+    text: string;
+    /**
+     * Tapahtuma
+     */
+    event: number;
+};
+
+/**
+ * Public read-only serializer for competitions.
+ */
+export type PublicCompetition = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kilpailu kuuluu
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+};
+
+/**
+ * Public serializer for competition participations.
+ *
+ * Drops sensitive/staff-only fields: user FK, disqualified_reason.
+ * Rank/score/disqualified are shown only when competition.show_results is True.
+ */
+export type PublicCompetitionParticipation = {
+    readonly id: number;
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+    readonly score: number | null;
+    readonly disqualified: boolean | null;
+    readonly disqualified_reason: string | null;
+    readonly rank: number | null;
+};
+
+/**
+ * Public read-only serializer for compos.
+ */
+export type PublicCompo = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kompo kuuluu
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end: string;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+};
+
+/**
+ * Public serializer for compo entries.
+ *
+ * Drops sensitive/staff-only fields: user FK, file upload fields (entryfile, sourcefile,
+ * imagefile_original), file URL fields (entryfile_url, sourcefile_url),
+ * disqualified_reason, archive_score, archive_rank.
+ *
+ * Rank/score are shown only when compo.show_voting_results is True.
+ */
+export type PublicCompoEntry = {
+    readonly id: number;
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+    readonly imagefile_original_url: string | null;
+    readonly imagefile_thumbnail_url: string | null;
+    readonly imagefile_medium_url: string | null;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+    readonly disqualified: boolean | null;
+    readonly disqualified_reason: string | null;
+    readonly score: number | null;
+    readonly rank: number | null;
+    readonly alternate_files: Array<PublicAlternateEntryFile>;
+};
+
+/**
+ * Public read-only serializer for events.
+ */
+export type PublicEvent = {
+    readonly id: number;
+    /**
+     * Nimi
+     *
+     * Tapahtuman nimi
+     */
+    name: string;
+    /**
+     * Lyhyt esitys
+     *
+     * Lyhyt nimi, eg. vuosi
+     */
+    tag?: string | null;
+    /**
+     * Päivämäärä
+     *
+     * Tapahtuman päivämäärä (alku)
+     */
+    date: string;
+    /**
+     * Arkistoitu
+     *
+     * Saa näyttää arkistossa
+     */
+    archived?: boolean;
+    /**
+     * Tapahtuman pääsivu
+     *
+     * URL Tapahtuman pääsivustolle
+     */
+    mainurl?: string;
+};
+
+/**
+ * Public read-only serializer for archive videos.
+ */
+export type PublicOtherVideo = {
+    readonly id: number;
+    /**
+     * Kategoria
+     */
+    category: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description: string;
+    readonly youtube_url: string;
+};
+
+/**
+ * Public read-only serializer for archive video categories.
+ */
+export type PublicOtherVideoCategory = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name: string;
+};
+
+/**
+ * Public read-only serializer for programme events.
+ */
+export type PublicProgramEvent = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     */
+    event: number;
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    readonly icon_small_url: string | null;
+    readonly icon2_small_url: string | null;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+};
+
+/**
+ * Public read-only serializer for StoreItem model.
+ *
+ * This serializer is used for the public store endpoint (/api/v2/store/items/).
+ * It does NOT expose sensitive fields like is_secret, secret_key, or is_ticket.
+ */
+export type PublicStoreItem = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon tuote liittyy.
+     */
+    event?: number | null;
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    readonly imagefile_original_url: string | null;
+    readonly imagefile_thumbnail_url: string | null;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+    /**
+     * Returns True if a discount exists for this item.
+     */
+    readonly is_discount_available: boolean;
+    readonly discount_factor: number;
+    readonly num_available: number;
+    readonly variants: Array<PublicStoreItemVariant>;
+};
+
+/**
+ * Public serializer for StoreItemVariant - nested in store items.
+ *
+ * Only exposes id and name, not the item reference.
+ */
+export type PublicStoreItemVariant = {
+    readonly id: number;
+    /**
+     * Tuotevariantin nimi
+     */
+    name: string;
+};
+
+/**
+ * Public serializer for creating a new store transaction (checkout).
+ *
+ * This is a write-only serializer for anonymous checkout.
+ * No authentication is required.
+ */
+export type PublicStoreTransactionCheckout = {
+    first_name: string;
+    last_name: string;
+    company?: string;
+    email: string;
+    telephone?: string;
+    mobile?: string;
+    street: string;
+    postal_code: string;
+    city: string;
+    country: string;
+    information?: string;
+    payment_method: PaymentMethodEnum;
+    read_terms: boolean;
+    items: Array<PublicStoreTransactionCheckoutItem>;
+    confirm?: boolean;
+};
+
+/**
+ * Serializer for individual items in a public checkout request.
+ */
+export type PublicStoreTransactionCheckoutItem = {
+    item_id: number;
+    variant_id: number | null;
+    amount: number;
+};
+
+/**
+ * Serializer for individual items in a public checkout request.
+ */
+export type PublicStoreTransactionCheckoutItemRequest = {
+    item_id: number;
+    variant_id: number | null;
+    amount: number;
+};
+
+/**
+ * Public serializer for creating a new store transaction (checkout).
+ *
+ * This is a write-only serializer for anonymous checkout.
+ * No authentication is required.
+ */
+export type PublicStoreTransactionCheckoutRequest = {
+    first_name: string;
+    last_name: string;
+    company?: string;
+    email: string;
+    telephone?: string;
+    mobile?: string;
+    street: string;
+    postal_code: string;
+    city: string;
+    country: string;
+    information?: string;
+    payment_method: PaymentMethodEnum;
+    read_terms: boolean;
+    items: Array<PublicStoreTransactionCheckoutItemRequest>;
+    confirm?: boolean;
+};
+
+/**
+ * Serializer for Receipt model (staff access).
+ */
+export type Receipt = {
+    readonly id: number;
+    transaction?: number | null;
+    /**
+     * Aihe
+     */
+    subject: string;
+    /**
+     * Vastaanottajan osoite
+     */
+    mail_to: string;
+    /**
+     * Lähettäjän osoite
+     */
+    mail_from: string;
+    /**
+     * Lähetysaika
+     */
+    readonly sent: string | null;
+    /**
+     * Lähetysparametrit
+     */
+    params?: string | null;
+    /**
+     * Kuitin sisältö
+     */
+    content?: string | null;
+    readonly is_sent: boolean;
+};
+
+/**
+ * Serializer for Receipt model (staff access).
+ */
+export type ReceiptRequest = {
+    transaction?: number | null;
+    /**
+     * Aihe
+     */
+    subject: string;
+    /**
+     * Vastaanottajan osoite
+     */
+    mail_to: string;
+    /**
+     * Lähettäjän osoite
+     */
+    mail_from: string;
+    /**
+     * Lähetysparametrit
+     */
+    params?: string | null;
+    /**
+     * Kuitin sisältö
+     */
+    content?: string | null;
+};
+
+/**
+ * * `0` - Korkein tulos ensin
+ * * `1` - Matalin tulos ensin
+ */
+export type ScoreSortEnum = 0 | 1;
+
+/**
+ * Serializer for social authentication provider URLs.
+ */
 export type SocialAuthUrl = {
     method: string;
     url: string;
     name: string;
 };
 
+/**
+ * * `0` - Odottaa hyväksyntää
+ * * `1` - Hyväksytty
+ * * `2` - Hylätty
+ */
+export type StatusEnum = 0 | 1 | 2;
+
+/**
+ * Staff serializer for StoreItem model.
+ */
+export type StoreItem = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon tuote liittyy.
+     */
+    readonly event: number | null;
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    /**
+     * Tuotekuva
+     *
+     * Edustava kuva tuotteelle.
+     */
+    imagefile_original?: string | null;
+    readonly imagefile_original_url: string | null;
+    readonly imagefile_thumbnail_url: string | null;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+    /**
+     * Returns True if a discount exists for this item.
+     */
+    readonly is_discount_available: boolean;
+    readonly discount_factor: number;
+    readonly num_available: number;
+    /**
+     * Tuote on lipputuote
+     *
+     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     */
+    is_ticket?: boolean;
+    /**
+     * Tuote on salainen
+     *
+     * Tuote näkyy kaupassa vain salaisella linkillä
+     */
+    is_secret?: boolean;
+    /**
+     * Salasana
+     *
+     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
+     */
+    secret_key?: string;
+    readonly variants: Array<StoreItemVariant>;
+};
+
+/**
+ * Staff serializer for StoreItem model.
+ */
+export type StoreItemRequest = {
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    /**
+     * Tuotekuva
+     *
+     * Edustava kuva tuotteelle.
+     */
+    imagefile_original?: Blob | File | null;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+    /**
+     * Tuote on lipputuote
+     *
+     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     */
+    is_ticket?: boolean;
+    /**
+     * Tuote on salainen
+     *
+     * Tuote näkyy kaupassa vain salaisella linkillä
+     */
+    is_secret?: boolean;
+    /**
+     * Salasana
+     *
+     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
+     */
+    secret_key?: string;
+};
+
+/**
+ * Staff serializer for store item variants.
+ */
+export type StoreItemVariant = {
+    readonly id: number;
+    item: number;
+    /**
+     * Tuotevariantin nimi
+     */
+    name: string;
+};
+
+/**
+ * Staff serializer for store item variants.
+ */
+export type StoreItemVariantRequest = {
+    item: number;
+    /**
+     * Tuotevariantin nimi
+     */
+    name: string;
+};
+
+/**
+ * Serializer for StoreTransaction model (staff access).
+ */
+export type StoreTransaction = {
+    readonly id: number;
+    /**
+     * Palvelutunniste
+     *
+     * Maksupalvelun maksukohtainen tunniste
+     */
+    readonly token: string;
+    /**
+     * Luontiaika
+     */
+    time_created?: string | null;
+    /**
+     * Maksun varmistumisaika
+     */
+    time_paid?: string | null;
+    /**
+     * Maksun maksuaika
+     */
+    time_pending?: string | null;
+    /**
+     * Peruutusaika
+     */
+    time_cancelled?: string | null;
+    /**
+     * Maksutapa
+     *
+     * Tapa jolla tilaus maksettiin
+     */
+    payment_method_name?: string;
+    /**
+     * Avain
+     *
+     * Paikallinen maksukohtainen tunniste
+     */
+    readonly key: string;
+    /**
+     * Etunimi
+     */
+    firstname: string;
+    /**
+     * Sukunimi
+     */
+    lastname: string;
+    /**
+     * Yritys
+     */
+    company?: string;
+    /**
+     * Sähköposti
+     *
+     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
+     */
+    email: string;
+    /**
+     * Puhelinnumero
+     */
+    telephone?: string;
+    /**
+     * Matkapuhelin
+     */
+    mobile?: string;
+    /**
+     * Katuosoite
+     *
+     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     */
+    street: string;
+    /**
+     * Postinumero
+     */
+    postalcode: string;
+    /**
+     * Postitoimipaikka
+     */
+    city: string;
+    /**
+     * Maa
+     */
+    country?: CountryEnum;
+    /**
+     * Lisätiedot
+     *
+     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     */
+    information?: string;
+    readonly is_paid: boolean;
+    readonly is_cancelled: boolean;
+    readonly is_pending: boolean;
+    readonly is_delivered: boolean;
+    readonly full_name: string;
+    readonly status_text: string;
+    readonly total_price: string;
+    readonly events: Array<StoreTransactionEvent>;
+    readonly receipts: Array<NestedReceipt>;
+};
+
+/**
+ * Serializer for StoreTransactionEvent model (nested in transaction).
+ */
+export type StoreTransactionEvent = {
+    readonly id: number;
+    /**
+     * Tapahtuman viesti
+     */
+    readonly message: string;
+    /**
+     * Tapahtuman data
+     */
+    readonly data: unknown;
+    /**
+     * Luontiaika
+     */
+    readonly created: string;
+};
+
+/**
+ * Serializer for StoreTransaction model (staff access).
+ */
+export type StoreTransactionRequest = {
+    /**
+     * Luontiaika
+     */
+    time_created?: string | null;
+    /**
+     * Maksun varmistumisaika
+     */
+    time_paid?: string | null;
+    /**
+     * Maksun maksuaika
+     */
+    time_pending?: string | null;
+    /**
+     * Peruutusaika
+     */
+    time_cancelled?: string | null;
+    /**
+     * Maksutapa
+     *
+     * Tapa jolla tilaus maksettiin
+     */
+    payment_method_name?: string;
+    /**
+     * Etunimi
+     */
+    firstname: string;
+    /**
+     * Sukunimi
+     */
+    lastname: string;
+    /**
+     * Yritys
+     */
+    company?: string;
+    /**
+     * Sähköposti
+     *
+     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
+     */
+    email: string;
+    /**
+     * Puhelinnumero
+     */
+    telephone?: string;
+    /**
+     * Matkapuhelin
+     */
+    mobile?: string;
+    /**
+     * Katuosoite
+     *
+     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     */
+    street: string;
+    /**
+     * Postinumero
+     */
+    postalcode: string;
+    /**
+     * Postitoimipaikka
+     */
+    city: string;
+    /**
+     * Maa
+     */
+    country?: CountryEnum;
+    /**
+     * Lisätiedot
+     *
+     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     */
+    information?: string;
+};
+
+/**
+ * * `0` - Vaadi erillinen pikkukuva.
+ * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
+ * * `2` - Salli pikkukuva (ei vaadittu).
+ * * `3` - Älä salli pikkukuvaa.
+ */
+export type ThumbnailPrefEnum = 0 | 1 | 2 | 3;
+
+/**
+ * Staff serializer for ticket vote codes.
+ */
+export type TicketVoteCode = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma, johon äänestysavain on assosioitu
+     */
+    readonly event: number | null;
+    /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle avain on assosioitu
+     */
+    associated_to?: number | null;
+    /**
+     * Lipputuote
+     *
+     * Lipputuote jonka avainta käytetään äänestysavaimena
+     */
+    ticket?: number | null;
+    /**
+     * Aikaleima
+     *
+     * Aika jolloin avain assosioitiin käyttäjälle.
+     */
+    time?: string | null;
+    readonly associated_username: string | null;
+};
+
+/**
+ * Staff serializer for ticket vote codes.
+ */
+export type TicketVoteCodeRequest = {
+    /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle avain on assosioitu
+     */
+    associated_to?: number | null;
+    /**
+     * Lipputuote
+     *
+     * Lipputuote jonka avainta käytetään äänestysavaimena
+     */
+    ticket?: number | null;
+    /**
+     * Aikaleima
+     *
+     * Aika jolloin avain assosioitiin käyttäjälle.
+     */
+    time?: string | null;
+};
+
+/**
+ * Serializer for TransactionItem model (staff access).
+ */
+export type TransactionItem = {
+    readonly id: number;
+    /**
+     * Avain
+     *
+     * Lippuavain
+     */
+    readonly key: string;
+    /**
+     * Tuote
+     */
+    item: number;
+    /**
+     * Tuotevariantti
+     */
+    variant?: number | null;
+    /**
+     * Ostotapahtuma
+     */
+    transaction: number;
+    /**
+     * Toimitusaika
+     */
+    time_delivered?: string | null;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta ostoshetkellä
+     */
+    purchase_price: string;
+    /**
+     * Tuotteen alkuperäinen hinta
+     *
+     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     */
+    original_price: string;
+    readonly is_delivered: boolean;
+};
+
+/**
+ * Serializer for TransactionItem model (staff access).
+ */
+export type TransactionItemRequest = {
+    /**
+     * Tuote
+     */
+    item: number;
+    /**
+     * Tuotevariantti
+     */
+    variant?: number | null;
+    /**
+     * Ostotapahtuma
+     */
+    transaction: number;
+    /**
+     * Toimitusaika
+     */
+    time_delivered?: string | null;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta ostoshetkellä
+     */
+    purchase_price: string;
+    /**
+     * Tuotteen alkuperäinen hinta
+     *
+     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     */
+    original_price: string;
+};
+
+/**
+ * Staff serializer for uploaded files.
+ */
+export type UploadedFile = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     */
+    readonly event: number;
+    /**
+     * Käyttäjä
+     */
+    user?: number | null;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
+     */
+    description?: string;
+    /**
+     * Tiedosto
+     */
+    file: string;
+    /**
+     * Return absolute URL for the file.
+     */
+    readonly file_url: string | null;
+    /**
+     * Return just the filename without path.
+     */
+    readonly filename: string;
+    /**
+     * Aika
+     */
+    readonly date: string;
+};
+
+/**
+ * Staff serializer for uploaded files.
+ */
+export type UploadedFileRequest = {
+    /**
+     * Käyttäjä
+     */
+    user?: number | null;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
+     */
+    description?: string;
+    /**
+     * Tiedosto
+     */
+    file: Blob | File;
+};
+
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
 export type User = {
     readonly id: number;
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
@@ -379,6 +4190,7 @@ export type User = {
     readonly user_permissions: Array<Permission>;
     /**
      * Pääkäyttäjä
+     *
      * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
      */
     readonly is_superuser: boolean;
@@ -389,15 +4201,131 @@ export type User = {
     readonly groups: Array<Group>;
     /**
      * Voimassa
+     *
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
+/**
+ * User serializer for managing own competition participations.
+ */
+export type UserCompetitionParticipation = {
+    readonly id: number;
+    competition: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+};
+
+/**
+ * User serializer for managing own competition participations.
+ */
+export type UserCompetitionParticipationRequest = {
+    competition: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type UserCompoEntry = {
+    readonly id: number;
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+    readonly entryfile_url: string | null;
+    readonly sourcefile_url: string | null;
+    readonly imagefile_original_url: string | null;
+    readonly imagefile_thumbnail_url: string | null;
+    readonly imagefile_medium_url: string | null;
+    readonly youtube_url: string | null;
+    readonly disqualified: boolean | null;
+    readonly disqualified_reason: string | null;
+    readonly score: number | null;
+    readonly rank: number | null;
+    readonly alternate_files: Array<AlternateEntryFile>;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type UserCompoEntryRequest = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+};
+
+/**
+ * Serializer for the authenticated user's own profile and permissions.
+ */
 export type UserInfo = {
     readonly id: number;
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
@@ -416,6 +4344,7 @@ export type UserInfo = {
     readonly user_permissions: Array<Permission>;
     /**
      * Pääkäyttäjä
+     *
      * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
      */
     readonly is_superuser: boolean;
@@ -425,14 +4354,21 @@ export type UserInfo = {
     readonly date_joined: string;
 };
 
+/**
+ * Serializer for username/password login credentials.
+ */
 export type UserLoginRequest = {
     username: string;
     password: string;
 };
 
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
 export type UserRequest = {
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
@@ -450,15 +4386,191 @@ export type UserRequest = {
     email?: string;
     /**
      * Voimassa
+     *
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
+/**
+ * Serializer for user's own ticket vote codes.
+ *
+ * Users associate a ticket key (from their purchase) to their account to gain voting rights.
+ * The ticket_key field accepts a partial key (at least 8 characters) to find the matching ticket.
+ * Event, ticket, and associated_to are set by the viewset, not from the request body.
+ */
+export type UserTicketVoteCode = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma, johon äänestysavain on assosioitu
+     */
+    readonly event: number | null;
+    /**
+     * Aikaleima
+     *
+     * Aika jolloin avain assosioitiin käyttäjälle.
+     */
+    readonly time: string | null;
+};
+
+/**
+ * Serializer for user's own ticket vote codes.
+ *
+ * Users associate a ticket key (from their purchase) to their account to gain voting rights.
+ * The ticket_key field accepts a partial key (at least 8 characters) to find the matching ticket.
+ * Event, ticket, and associated_to are set by the viewset, not from the request body.
+ */
+export type UserTicketVoteCodeRequest = {
+    ticket_key: string;
+};
+
+/**
+ * Serializer for user's own vote code requests.
+ *
+ * Users can create and read their own vote code requests.
+ * The status field is read-only for users (only staff can change it).
+ * Event and user are set by the viewset, not from the request body.
+ *
+ * Status values:
+ * - 0: Pending
+ * - 1: Accepted (voting right granted)
+ * - 2: Rejected (no voting right)
+ */
+export type UserVoteCodeRequest = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma, johon äänestysoikeutta pyydetään
+     */
+    readonly event: number | null;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+    /**
+     * Tila
+     */
+    status: StatusEnum;
+};
+
+/**
+ * Serializer for user's own vote code requests.
+ *
+ * Users can create and read their own vote code requests.
+ * The status field is read-only for users (only staff can change it).
+ * Event and user are set by the viewset, not from the request body.
+ *
+ * Status values:
+ * - 0: Pending
+ * - 1: Accepted (voting right granted)
+ * - 2: Rejected (no voting right)
+ */
+export type UserVoteCodeRequestRequest = {
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+};
+
+/**
+ * Serializer for user's votes in a compo.
+ *
+ * Users submit a ranked list of entries to vote for.
+ * The order of entries in the list determines the ranking (first = highest rank).
+ * Re-submitting votes replaces previous votes for the same compo.
+ */
+export type UserVoteGroup = {
+    readonly id: number;
+    /**
+     * Kompo
+     */
+    compo: number;
+    /**
+     * Return the list of entry IDs in ranked order.
+     */
+    readonly voted_entries: Array<number>;
+};
+
+/**
+ * Serializer for user's votes in a compo.
+ *
+ * Users submit a ranked list of entries to vote for.
+ * The order of entries in the list determines the ranking (first = highest rank).
+ * Re-submitting votes replaces previous votes for the same compo.
+ */
+export type UserVoteGroupRequest = {
+    /**
+     * Kompo
+     */
+    compo: number;
+};
+
+/**
+ * Staff serializer for vote code requests.
+ */
+export type VoteCodeRequest = {
+    readonly id: number;
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma, johon äänestysoikeutta pyydetään
+     */
+    readonly event: number | null;
+    /**
+     * Käyttäjä
+     *
+     * Pyynnön esittänyt käyttäjä
+     */
+    user: number;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+    /**
+     * Tila
+     */
+    status?: StatusEnum;
+};
+
+/**
+ * Staff serializer for vote code requests.
+ */
+export type VoteCodeRequestRequest = {
+    /**
+     * Käyttäjä
+     *
+     * Pyynnön esittänyt käyttäjä
+     */
+    user: number;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+    /**
+     * Tila
+     */
+    status?: StatusEnum;
+};
+
+/**
+ * Serializer for staff - includes all fields
+ */
 export type BlogEntryWritable = {
     user?: number;
     /**
      * Otsikko
+     *
      * Lyhyt otsikko entrylle.
      */
     title: string;
@@ -468,6 +4580,7 @@ export type BlogEntryWritable = {
     text: string;
     /**
      * Julkinen
+     *
      * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
      */
     public?: boolean;
@@ -477,65 +4590,1332 @@ export type BlogEntryWritable = {
     event: number;
 };
 
+/**
+ * Staff serializer for competitions.
+ */
+export type CompetitionWritable = {
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+    /**
+     * Aktiivinen
+     *
+     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
+     */
+    hide_from_archive?: boolean;
+};
+
+/**
+ * Staff serializer for competition participations.
+ */
+export type CompetitionParticipationWritable = {
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition: number;
+    /**
+     * Käyttäjä
+     *
+     * Osallistuja
+     */
+    user: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+    /**
+     * Pisteet
+     *
+     * Kilpailijan saavuttamat pisteet
+     */
+    score?: number;
+    /**
+     * Diskattu
+     *
+     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
+     */
+    disqualified?: boolean;
+    /**
+     * Diskauksen syy
+     */
+    disqualified_reason?: string;
+};
+
+/**
+ * Staff serializer for compos.
+ */
+export type CompoWritable = {
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end: string;
+    /**
+     * Kokoraja entryille
+     *
+     * Kokoraja entrytiedostoille (tavua).
+     */
+    entry_sizelimit?: number;
+    /**
+     * Kokoraja sorsille
+     *
+     * Kokoraja sorsatiedostoille (tavua).
+     */
+    source_sizelimit?: number;
+    /**
+     * Sallitut tiedostopäätteet
+     *
+     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     */
+    formats?: string;
+    /**
+     * Sallitut lähdekoodipaketin päätteet
+     *
+     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    source_formats?: string;
+    /**
+     * Sallitut kuvatiedoston päätteet
+     *
+     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     */
+    image_formats?: string;
+    /**
+     * Aktiivinen
+     *
+     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
+     */
+    active?: boolean;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä äänestustulokset.
+     */
+    show_voting_results?: boolean;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Piilotus arkistosta
+     *
+     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
+     */
+    hide_from_archive?: boolean;
+    /**
+     * Piilotus etusivulta
+     *
+     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     */
+    hide_from_frontpage?: boolean;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+    /**
+     * Pikkukuvan asetukset
+     *
+     * Pikkukuvan luonti ja asettaminen.
+     *
+     * * `0` - Vaadi erillinen pikkukuva.
+     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
+     * * `2` - Salli pikkukuva (ei vaadittu).
+     * * `3` - Älä salli pikkukuvaa.
+     */
+    thumbnail_pref?: ThumbnailPrefEnum;
+};
+
+/**
+ * Staff serializer for compo entries.
+ */
 export type CompoEntryWritable = {
     /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle entry kuuluu
+     */
+    user: number;
+    /**
      * Kompo
+     *
      * Kompo johon osallistutaan
      */
     compo: number;
     /**
      * Nimi
+     *
      * Nimi tuotokselle
      */
     name: string;
     /**
      * Kuvaus
+     *
      * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
      */
     description: string;
     /**
      * Tekijä
+     *
      * Tuotoksen tekijän tai tekijäryhmän nimi
      */
     creator: string;
     /**
      * Alusta
+     *
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile: string;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: string;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: string;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+    /**
+     * Diskattu
+     *
+     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
+     */
+    disqualified?: boolean;
+    /**
+     * Syy diskaukseen
+     *
+     * Diskauksen syy.
+     */
+    disqualified_reason?: string;
+    /**
+     * Pisteet
+     *
+     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     */
+    archive_score?: number | null;
+    /**
+     * Sijoitus
+     *
+     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     */
+    archive_rank?: number | null;
 };
 
+/**
+ * Staff serializer for events.
+ */
 export type EventWritable = {
     /**
      * Nimi
+     *
      * Tapahtuman nimi
      */
     name: string;
     /**
      * Lyhyt esitys
+     *
      * Lyhyt nimi, eg. vuosi
      */
     tag?: string | null;
     /**
      * Päivämäärä
+     *
      * Tapahtuman päivämäärä (alku)
      */
     date: string;
     /**
      * Arkistoitu
+     *
      * Saa näyttää arkistossa
      */
     archived?: boolean;
     /**
      * Tapahtuman pääsivu
+     *
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
 };
 
+/**
+ * Staff serializer for archive videos.
+ */
+export type OtherVideoWritable = {
+    /**
+     * Kategoria
+     */
+    category: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description: string;
+    youtube_url: string;
+};
+
+/**
+ * Staff serializer for archive video categories.
+ */
+export type OtherVideoCategoryWritable = {
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name: string;
+};
+
+export type PaginatedUserTicketVoteCodeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type PatchedUserCompoEntryRequestWritable = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo?: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name?: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description?: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator?: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile?: Blob | File;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: Blob | File;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: Blob | File;
+};
+
+/**
+ * Staff serializer for programme events.
+ */
+export type ProgramEventWritable = {
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    /**
+     * Kuva 1
+     *
+     * Kuva 1 tapahtumalle.
+     */
+    icon_original?: string;
+    /**
+     * Kuva 2
+     *
+     * Kuva 2 tapahtumalle.
+     */
+    icon2_original?: string;
+    /**
+     * Sähköposti
+     *
+     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
+     */
+    email?: string;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+    /**
+     * Aktiivinen
+     *
+     * Deaktivoidut piilotetaan.
+     */
+    active?: boolean;
+};
+
+/**
+ * Serializer for public blog entries - excludes user, public, and created_by fields
+ */
+export type PublicBlogEntryWritable = {
+    /**
+     * Aika
+     */
+    date?: string;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko entrylle.
+     */
+    title: string;
+    /**
+     * Teksti
+     */
+    text: string;
+    /**
+     * Tapahtuma
+     */
+    event: number;
+};
+
+/**
+ * Public read-only serializer for competitions.
+ */
+export type PublicCompetitionWritable = {
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kilpailu kuuluu
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kilpailun nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline osallistumiselle.
+     *
+     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     */
+    participation_end: string;
+    /**
+     * Kilpailun alku
+     *
+     * Kilpailun aloitusaika.
+     */
+    start: string;
+    /**
+     * Kilpailun loppu
+     *
+     * Kilpailun päättymisaika.
+     */
+    end?: string | null;
+    /**
+     * Pisteiden tyyppi
+     *
+     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
+     */
+    score_type: string;
+    /**
+     * Pisteiden järjestely
+     *
+     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
+     *
+     * * `0` - Korkein tulos ensin
+     * * `1` - Matalin tulos ensin
+     */
+    score_sort?: ScoreSortEnum;
+    /**
+     * Näytä tulokset
+     *
+     * Näytä kilpailun tulokset.
+     */
+    show_results?: boolean;
+};
+
+/**
+ * Public serializer for competition participations.
+ *
+ * Drops sensitive/staff-only fields: user FK, disqualified_reason.
+ * Rank/score/disqualified are shown only when competition.show_results is True.
+ */
+export type PublicCompetitionParticipationWritable = {
+    /**
+     * Kilpailu
+     *
+     * Kilpailu johon osallistuttu
+     */
+    competition: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+};
+
+/**
+ * Public read-only serializer for compos.
+ */
+export type PublicCompoWritable = {
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon kompo kuuluu
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kompon nimi (max 32 merkkiä).
+     */
+    name: string;
+    /**
+     * Kuvaus
+     */
+    description: string;
+    /**
+     * Deadline entryjen lisäyksille
+     *
+     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     */
+    adding_end: string;
+    /**
+     * Deadline entryjen muokkauksille
+     *
+     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     */
+    editing_end: string;
+    /**
+     * Kompon aloitusaika
+     *
+     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     */
+    compo_start: string;
+    /**
+     * Äänestyksen alkamisaika
+     *
+     * Alkamisaika entryjen äänestykselle.
+     */
+    voting_start: string;
+    /**
+     * Äänestyksen päättymisaika
+     *
+     * Päättymisaika entryjen äänestykselle.
+     */
+    voting_end: string;
+    /**
+     * Entryesittely
+     *
+     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
+     *
+     * * `0` - Ei mitään
+     * * `1` - Youtube ensin, sitten kuva
+     * * `2` - Vain kuva
+     * * `3` - (deprecated)
+     */
+    entry_view_type?: EntryViewTypeEnum;
+    /**
+     * Äänestettävissä
+     *
+     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     */
+    is_votable?: boolean;
+};
+
+/**
+ * Public serializer for compo entries.
+ *
+ * Drops sensitive/staff-only fields: user FK, file upload fields (entryfile, sourcefile,
+ * imagefile_original), file URL fields (entryfile_url, sourcefile_url),
+ * disqualified_reason, archive_score, archive_rank.
+ *
+ * Rank/score are shown only when compo.show_voting_results is True.
+ */
+export type PublicCompoEntryWritable = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+    /**
+     * Linkki teoksen Youtube-videoon.
+     */
+    youtube_url?: unknown;
+};
+
+/**
+ * Public read-only serializer for events.
+ */
+export type PublicEventWritable = {
+    /**
+     * Nimi
+     *
+     * Tapahtuman nimi
+     */
+    name: string;
+    /**
+     * Lyhyt esitys
+     *
+     * Lyhyt nimi, eg. vuosi
+     */
+    tag?: string | null;
+    /**
+     * Päivämäärä
+     *
+     * Tapahtuman päivämäärä (alku)
+     */
+    date: string;
+    /**
+     * Arkistoitu
+     *
+     * Saa näyttää arkistossa
+     */
+    archived?: boolean;
+    /**
+     * Tapahtuman pääsivu
+     *
+     * URL Tapahtuman pääsivustolle
+     */
+    mainurl?: string;
+};
+
+/**
+ * Public read-only serializer for archive videos.
+ */
+export type PublicOtherVideoWritable = {
+    /**
+     * Kategoria
+     */
+    category: number;
+    /**
+     * Nimi
+     *
+     * Videon nimi.
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Videon kuvaus.
+     */
+    description: string;
+};
+
+/**
+ * Public read-only serializer for archive video categories.
+ */
+export type PublicOtherVideoCategoryWritable = {
+    /**
+     * Tapahtuma
+     */
+    event: number;
+    /**
+     * Nimi
+     *
+     * Kategorian nimi
+     */
+    name: string;
+};
+
+/**
+ * Public read-only serializer for programme events.
+ */
+export type PublicProgramEventWritable = {
+    /**
+     * Tapahtuma
+     */
+    event: number;
+    /**
+     * Alku
+     *
+     * Tapahtuman alkamisaika.
+     */
+    start: string;
+    /**
+     * Loppu
+     *
+     * Tapahtuman loppumisaika.
+     */
+    end?: string | null;
+    /**
+     * Otsikko
+     *
+     * Lyhyt otsikko.
+     */
+    title: string;
+    /**
+     * Kuvaus
+     */
+    description?: string;
+    /**
+     * Henkilöt
+     *
+     * Esityksen pitäjät tms.
+     */
+    presenters?: string;
+    /**
+     * Nimikkeet
+     *
+     * Henkilön arvo-, ammatti- tai virkanimike.
+     */
+    presenters_titles?: string;
+    /**
+     * Paikka
+     *
+     * Tarkka paikka tapahtuma-areenalla
+     */
+    place?: string;
+    /**
+     * Kotiurli
+     *
+     * Tapahtumaan liittyvä URL.
+     */
+    home_url?: string;
+    /**
+     * Twitter
+     *
+     * Tapahtumaan liittyvä Twitter-url.
+     */
+    twitter_url?: string;
+    /**
+     * Github
+     *
+     * Tapahtumaan liittyvä Github-url
+     */
+    github_url?: string;
+    /**
+     * Facebook
+     *
+     * Tapahtumaan liittyvä facebook-url.
+     */
+    facebook_url?: string;
+    /**
+     * LinkedIn
+     *
+     * Tapahtumaan liittyvä LinkedIn-url.
+     */
+    linkedin_url?: string;
+    /**
+     * Wikipedia
+     *
+     * Tapahtumaan liittyvä Wikipedia-url.
+     */
+    wiki_url?: string;
+    /**
+     * Tapahtuman tyyppi
+     *
+     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+     *
+     * * `0` - Yksinkertainen
+     * * `1` - Yksityiskohtainen
+     */
+    event_type?: EventTypeEnum;
+};
+
+/**
+ * Public read-only serializer for StoreItem model.
+ *
+ * This serializer is used for the public store endpoint (/api/v2/store/items/).
+ * It does NOT expose sensitive fields like is_secret, secret_key, or is_ticket.
+ */
+export type PublicStoreItemWritable = {
+    /**
+     * Tapahtuma
+     *
+     * Tapahtuma johon tuote liittyy.
+     */
+    event?: number | null;
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+};
+
+/**
+ * Public serializer for StoreItemVariant - nested in store items.
+ *
+ * Only exposes id and name, not the item reference.
+ */
+export type PublicStoreItemVariantWritable = {
+    /**
+     * Tuotevariantin nimi
+     */
+    name: string;
+};
+
+/**
+ * Serializer for Receipt model (staff access).
+ */
+export type ReceiptWritable = {
+    transaction?: number | null;
+    /**
+     * Aihe
+     */
+    subject: string;
+    /**
+     * Vastaanottajan osoite
+     */
+    mail_to: string;
+    /**
+     * Lähettäjän osoite
+     */
+    mail_from: string;
+    /**
+     * Lähetysparametrit
+     */
+    params?: string | null;
+    /**
+     * Kuitin sisältö
+     */
+    content?: string | null;
+};
+
+/**
+ * Staff serializer for StoreItem model.
+ */
+export type StoreItemWritable = {
+    /**
+     * Tuotteen nimi
+     *
+     * Tuotteen lyhyt nimi.
+     */
+    name: string;
+    /**
+     * Tuotteen kuvaus
+     *
+     * Tuotteen pitkä kuvaus.
+     */
+    description: string;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta.
+     */
+    price: string;
+    /**
+     * Kappaletta saatavilla
+     *
+     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     */
+    max: number;
+    /**
+     * Ostettavissa
+     *
+     * Ilmoittaa, näkyykö tuote kaupassa.
+     */
+    available?: boolean;
+    /**
+     * Tuotekuva
+     *
+     * Edustava kuva tuotteelle.
+     */
+    imagefile_original?: string | null;
+    /**
+     * Maksimi per tilaus
+     *
+     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     */
+    max_per_order?: number;
+    /**
+     * Järjestysarvo
+     *
+     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     */
+    sort_index?: number;
+    /**
+     * Alennusmäärä
+     *
+     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     */
+    discount_amount?: number;
+    /**
+     * Alennusprosentti
+     *
+     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
+     */
+    discount_percentage?: number;
+    /**
+     * Tuote on lipputuote
+     *
+     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     */
+    is_ticket?: boolean;
+    /**
+     * Tuote on salainen
+     *
+     * Tuote näkyy kaupassa vain salaisella linkillä
+     */
+    is_secret?: boolean;
+    /**
+     * Salasana
+     *
+     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
+     */
+    secret_key?: string;
+};
+
+/**
+ * Staff serializer for store item variants.
+ */
+export type StoreItemVariantWritable = {
+    item: number;
+    /**
+     * Tuotevariantin nimi
+     */
+    name: string;
+};
+
+/**
+ * Serializer for StoreTransaction model (staff access).
+ */
+export type StoreTransactionWritable = {
+    /**
+     * Luontiaika
+     */
+    time_created?: string | null;
+    /**
+     * Maksun varmistumisaika
+     */
+    time_paid?: string | null;
+    /**
+     * Maksun maksuaika
+     */
+    time_pending?: string | null;
+    /**
+     * Peruutusaika
+     */
+    time_cancelled?: string | null;
+    /**
+     * Maksutapa
+     *
+     * Tapa jolla tilaus maksettiin
+     */
+    payment_method_name?: string;
+    /**
+     * Etunimi
+     */
+    firstname: string;
+    /**
+     * Sukunimi
+     */
+    lastname: string;
+    /**
+     * Yritys
+     */
+    company?: string;
+    /**
+     * Sähköposti
+     *
+     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
+     */
+    email: string;
+    /**
+     * Puhelinnumero
+     */
+    telephone?: string;
+    /**
+     * Matkapuhelin
+     */
+    mobile?: string;
+    /**
+     * Katuosoite
+     *
+     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     */
+    street: string;
+    /**
+     * Postinumero
+     */
+    postalcode: string;
+    /**
+     * Postitoimipaikka
+     */
+    city: string;
+    /**
+     * Maa
+     */
+    country?: CountryEnum;
+    /**
+     * Lisätiedot
+     *
+     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     */
+    information?: string;
+};
+
+/**
+ * Staff serializer for ticket vote codes.
+ */
+export type TicketVoteCodeWritable = {
+    /**
+     * Käyttäjä
+     *
+     * Käyttäjä jolle avain on assosioitu
+     */
+    associated_to?: number | null;
+    /**
+     * Lipputuote
+     *
+     * Lipputuote jonka avainta käytetään äänestysavaimena
+     */
+    ticket?: number | null;
+    /**
+     * Aikaleima
+     *
+     * Aika jolloin avain assosioitiin käyttäjälle.
+     */
+    time?: string | null;
+};
+
+/**
+ * Serializer for TransactionItem model (staff access).
+ */
+export type TransactionItemWritable = {
+    /**
+     * Tuote
+     */
+    item: number;
+    /**
+     * Tuotevariantti
+     */
+    variant?: number | null;
+    /**
+     * Ostotapahtuma
+     */
+    transaction: number;
+    /**
+     * Toimitusaika
+     */
+    time_delivered?: string | null;
+    /**
+     * Tuotteen hinta
+     *
+     * Tuotteen hinta ostoshetkellä
+     */
+    purchase_price: string;
+    /**
+     * Tuotteen alkuperäinen hinta
+     *
+     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     */
+    original_price: string;
+};
+
+/**
+ * Staff serializer for uploaded files.
+ */
+export type UploadedFileWritable = {
+    /**
+     * Käyttäjä
+     */
+    user?: number | null;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
+     */
+    description?: string;
+    /**
+     * Tiedosto
+     */
+    file: string;
+};
+
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
 export type UserWritable = {
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
@@ -553,14 +5933,122 @@ export type UserWritable = {
     email?: string;
     /**
      * Voimassa
+     *
      * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
      */
     is_active?: boolean;
 };
 
+/**
+ * User serializer for managing own competition participations.
+ */
+export type UserCompetitionParticipationWritable = {
+    competition: number;
+    /**
+     * Osallistujan nimi
+     *
+     * Nimimerkki jolla haluat osallistua.
+     */
+    participant_name?: string;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type UserCompoEntryWritable = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+};
+
+/**
+ * User serializer for managing own compo entries.
+ */
+export type UserCompoEntryRequestWritable = {
+    /**
+     * Kompo
+     *
+     * Kompo johon osallistutaan
+     */
+    compo: number;
+    /**
+     * Nimi
+     *
+     * Nimi tuotokselle
+     */
+    name: string;
+    /**
+     * Kuvaus
+     *
+     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
+     */
+    description: string;
+    /**
+     * Tekijä
+     *
+     * Tuotoksen tekijän tai tekijäryhmän nimi
+     */
+    creator: string;
+    /**
+     * Alusta
+     *
+     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
+     */
+    platform?: string | null;
+    /**
+     * Tiedosto
+     *
+     * Tuotospaketti.
+     */
+    entryfile: Blob | File;
+    /**
+     * Lähdekoodi
+     *
+     * Lähdekoodipaketti.
+     */
+    sourcefile?: Blob | File;
+    /**
+     * Kuva
+     *
+     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     */
+    imagefile_original?: Blob | File;
+};
+
+/**
+ * Serializer for the authenticated user's own profile and permissions.
+ */
 export type UserInfoWritable = {
     /**
      * Käyttäjätunnus
+     *
      * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
      */
     username: string;
@@ -577,6 +6065,2486 @@ export type UserInfoWritable = {
      */
     email?: string;
 };
+
+/**
+ * Serializer for user's own vote code requests.
+ *
+ * Users can create and read their own vote code requests.
+ * The status field is read-only for users (only staff can change it).
+ * Event and user are set by the viewset, not from the request body.
+ *
+ * Status values:
+ * - 0: Pending
+ * - 1: Accepted (voting right granted)
+ * - 2: Rejected (no voting right)
+ */
+export type UserVoteCodeRequestWritable = {
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+};
+
+/**
+ * Serializer for user's votes in a compo.
+ *
+ * Users submit a ranked list of entries to vote for.
+ * The order of entries in the list determines the ranking (first = highest rank).
+ * Re-submitting votes replaces previous votes for the same compo.
+ */
+export type UserVoteGroupWritable = {
+    /**
+     * Kompo
+     */
+    compo: number;
+};
+
+/**
+ * Serializer for user's votes in a compo.
+ *
+ * Users submit a ranked list of entries to vote for.
+ * The order of entries in the list determines the ranking (first = highest rank).
+ * Re-submitting votes replaces previous votes for the same compo.
+ */
+export type UserVoteGroupRequestWritable = {
+    /**
+     * Kompo
+     */
+    compo: number;
+    /**
+     * List of entry IDs in order of preference (first = highest rank)
+     */
+    entries: Array<number>;
+};
+
+/**
+ * Staff serializer for vote code requests.
+ */
+export type VoteCodeRequestWritable = {
+    /**
+     * Käyttäjä
+     *
+     * Pyynnön esittänyt käyttäjä
+     */
+    user: number;
+    /**
+     * Kuvaus
+     *
+     * Lyhyt aneluteksti admineille :)
+     */
+    text: string;
+    /**
+     * Tila
+     */
+    status?: StatusEnum;
+};
+
+export type AdminBlogListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        event?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        user?: number;
+    };
+    url: "/api/v2/admin/blog/";
+};
+
+export type AdminBlogListResponses = {
+    200: PaginatedBlogEntryList;
+};
+
+export type AdminBlogListResponse = AdminBlogListResponses[keyof AdminBlogListResponses];
+
+export type AdminBlogCreateData = {
+    body: BlogEntryRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/blog/";
+};
+
+export type AdminBlogCreateResponses = {
+    201: BlogEntry;
+};
+
+export type AdminBlogCreateResponse = AdminBlogCreateResponses[keyof AdminBlogCreateResponses];
+
+export type AdminBlogDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/blog/{id}/";
+};
+
+export type AdminBlogDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminBlogDestroyResponse = AdminBlogDestroyResponses[keyof AdminBlogDestroyResponses];
+
+export type AdminBlogRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/blog/{id}/";
+};
+
+export type AdminBlogRetrieveResponses = {
+    200: BlogEntry;
+};
+
+export type AdminBlogRetrieveResponse =
+    AdminBlogRetrieveResponses[keyof AdminBlogRetrieveResponses];
+
+export type AdminBlogPartialUpdateData = {
+    body?: PatchedBlogEntryRequest;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/blog/{id}/";
+};
+
+export type AdminBlogPartialUpdateResponses = {
+    200: BlogEntry;
+};
+
+export type AdminBlogPartialUpdateResponse =
+    AdminBlogPartialUpdateResponses[keyof AdminBlogPartialUpdateResponses];
+
+export type AdminBlogUpdateData = {
+    body: BlogEntryRequest;
+    path: {
+        /**
+         * A unique integer value identifying this entry.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/blog/{id}/";
+};
+
+export type AdminBlogUpdateResponses = {
+    200: BlogEntry;
+};
+
+export type AdminBlogUpdateResponse = AdminBlogUpdateResponses[keyof AdminBlogUpdateResponses];
+
+export type AdminEventArkistoVideoCategoriesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/";
+};
+
+export type AdminEventArkistoVideoCategoriesListResponses = {
+    200: PaginatedOtherVideoCategoryList;
+};
+
+export type AdminEventArkistoVideoCategoriesListResponse =
+    AdminEventArkistoVideoCategoriesListResponses[keyof AdminEventArkistoVideoCategoriesListResponses];
+
+export type AdminEventArkistoVideoCategoriesCreateData = {
+    body: OtherVideoCategoryRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/";
+};
+
+export type AdminEventArkistoVideoCategoriesCreateResponses = {
+    201: OtherVideoCategory;
+};
+
+export type AdminEventArkistoVideoCategoriesCreateResponse =
+    AdminEventArkistoVideoCategoriesCreateResponses[keyof AdminEventArkistoVideoCategoriesCreateResponses];
+
+export type AdminEventArkistoVideoCategoriesDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this videokategoria.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/";
+};
+
+export type AdminEventArkistoVideoCategoriesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventArkistoVideoCategoriesDestroyResponse =
+    AdminEventArkistoVideoCategoriesDestroyResponses[keyof AdminEventArkistoVideoCategoriesDestroyResponses];
+
+export type AdminEventArkistoVideoCategoriesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this videokategoria.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/";
+};
+
+export type AdminEventArkistoVideoCategoriesRetrieveResponses = {
+    200: OtherVideoCategory;
+};
+
+export type AdminEventArkistoVideoCategoriesRetrieveResponse =
+    AdminEventArkistoVideoCategoriesRetrieveResponses[keyof AdminEventArkistoVideoCategoriesRetrieveResponses];
+
+export type AdminEventArkistoVideoCategoriesPartialUpdateData = {
+    body?: PatchedOtherVideoCategoryRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this videokategoria.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/";
+};
+
+export type AdminEventArkistoVideoCategoriesPartialUpdateResponses = {
+    200: OtherVideoCategory;
+};
+
+export type AdminEventArkistoVideoCategoriesPartialUpdateResponse =
+    AdminEventArkistoVideoCategoriesPartialUpdateResponses[keyof AdminEventArkistoVideoCategoriesPartialUpdateResponses];
+
+export type AdminEventArkistoVideoCategoriesUpdateData = {
+    body: OtherVideoCategoryRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this videokategoria.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/";
+};
+
+export type AdminEventArkistoVideoCategoriesUpdateResponses = {
+    200: OtherVideoCategory;
+};
+
+export type AdminEventArkistoVideoCategoriesUpdateResponse =
+    AdminEventArkistoVideoCategoriesUpdateResponses[keyof AdminEventArkistoVideoCategoriesUpdateResponses];
+
+export type AdminEventArkistoVideosListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        category?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/";
+};
+
+export type AdminEventArkistoVideosListResponses = {
+    200: PaginatedOtherVideoList;
+};
+
+export type AdminEventArkistoVideosListResponse =
+    AdminEventArkistoVideosListResponses[keyof AdminEventArkistoVideosListResponses];
+
+export type AdminEventArkistoVideosCreateData = {
+    body: OtherVideoRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/";
+};
+
+export type AdminEventArkistoVideosCreateResponses = {
+    201: OtherVideo;
+};
+
+export type AdminEventArkistoVideosCreateResponse =
+    AdminEventArkistoVideosCreateResponses[keyof AdminEventArkistoVideosCreateResponses];
+
+export type AdminEventArkistoVideosDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this muu video.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/";
+};
+
+export type AdminEventArkistoVideosDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventArkistoVideosDestroyResponse =
+    AdminEventArkistoVideosDestroyResponses[keyof AdminEventArkistoVideosDestroyResponses];
+
+export type AdminEventArkistoVideosRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this muu video.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/";
+};
+
+export type AdminEventArkistoVideosRetrieveResponses = {
+    200: OtherVideo;
+};
+
+export type AdminEventArkistoVideosRetrieveResponse =
+    AdminEventArkistoVideosRetrieveResponses[keyof AdminEventArkistoVideosRetrieveResponses];
+
+export type AdminEventArkistoVideosPartialUpdateData = {
+    body?: PatchedOtherVideoRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this muu video.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/";
+};
+
+export type AdminEventArkistoVideosPartialUpdateResponses = {
+    200: OtherVideo;
+};
+
+export type AdminEventArkistoVideosPartialUpdateResponse =
+    AdminEventArkistoVideosPartialUpdateResponses[keyof AdminEventArkistoVideosPartialUpdateResponses];
+
+export type AdminEventArkistoVideosUpdateData = {
+    body: OtherVideoRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this muu video.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/";
+};
+
+export type AdminEventArkistoVideosUpdateResponses = {
+    200: OtherVideo;
+};
+
+export type AdminEventArkistoVideosUpdateResponse =
+    AdminEventArkistoVideosUpdateResponses[keyof AdminEventArkistoVideosUpdateResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        competition?: number;
+        disqualified?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        user?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsListResponses = {
+    200: PaginatedCompetitionParticipationList;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsListResponse =
+    AdminEventKompomaattiCompetitionParticipationsListResponses[keyof AdminEventKompomaattiCompetitionParticipationsListResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsCreateData = {
+    body: CompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsCreateResponses = {
+    201: CompetitionParticipation;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsCreateResponse =
+    AdminEventKompomaattiCompetitionParticipationsCreateResponses[keyof AdminEventKompomaattiCompetitionParticipationsCreateResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsDestroyResponse =
+    AdminEventKompomaattiCompetitionParticipationsDestroyResponses[keyof AdminEventKompomaattiCompetitionParticipationsDestroyResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsRetrieveResponses = {
+    200: CompetitionParticipation;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsRetrieveResponse =
+    AdminEventKompomaattiCompetitionParticipationsRetrieveResponses[keyof AdminEventKompomaattiCompetitionParticipationsRetrieveResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsPartialUpdateData = {
+    body?: PatchedCompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponses = {
+    200: CompetitionParticipation;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponse =
+    AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponses[keyof AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponses];
+
+export type AdminEventKompomaattiCompetitionParticipationsUpdateData = {
+    body: CompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsUpdateResponses = {
+    200: CompetitionParticipation;
+};
+
+export type AdminEventKompomaattiCompetitionParticipationsUpdateResponse =
+    AdminEventKompomaattiCompetitionParticipationsUpdateResponses[keyof AdminEventKompomaattiCompetitionParticipationsUpdateResponses];
+
+export type AdminEventKompomaattiCompetitionsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        active?: boolean;
+        hide_from_archive?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        show_results?: boolean;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/";
+};
+
+export type AdminEventKompomaattiCompetitionsListResponses = {
+    200: PaginatedCompetitionList;
+};
+
+export type AdminEventKompomaattiCompetitionsListResponse =
+    AdminEventKompomaattiCompetitionsListResponses[keyof AdminEventKompomaattiCompetitionsListResponses];
+
+export type AdminEventKompomaattiCompetitionsCreateData = {
+    body: CompetitionRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/";
+};
+
+export type AdminEventKompomaattiCompetitionsCreateResponses = {
+    201: Competition;
+};
+
+export type AdminEventKompomaattiCompetitionsCreateResponse =
+    AdminEventKompomaattiCompetitionsCreateResponses[keyof AdminEventKompomaattiCompetitionsCreateResponses];
+
+export type AdminEventKompomaattiCompetitionsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kilpailu.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiCompetitionsDestroyResponse =
+    AdminEventKompomaattiCompetitionsDestroyResponses[keyof AdminEventKompomaattiCompetitionsDestroyResponses];
+
+export type AdminEventKompomaattiCompetitionsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kilpailu.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionsRetrieveResponses = {
+    200: Competition;
+};
+
+export type AdminEventKompomaattiCompetitionsRetrieveResponse =
+    AdminEventKompomaattiCompetitionsRetrieveResponses[keyof AdminEventKompomaattiCompetitionsRetrieveResponses];
+
+export type AdminEventKompomaattiCompetitionsPartialUpdateData = {
+    body?: PatchedCompetitionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kilpailu.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionsPartialUpdateResponses = {
+    200: Competition;
+};
+
+export type AdminEventKompomaattiCompetitionsPartialUpdateResponse =
+    AdminEventKompomaattiCompetitionsPartialUpdateResponses[keyof AdminEventKompomaattiCompetitionsPartialUpdateResponses];
+
+export type AdminEventKompomaattiCompetitionsUpdateData = {
+    body: CompetitionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kilpailu.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/";
+};
+
+export type AdminEventKompomaattiCompetitionsUpdateResponses = {
+    200: Competition;
+};
+
+export type AdminEventKompomaattiCompetitionsUpdateResponse =
+    AdminEventKompomaattiCompetitionsUpdateResponses[keyof AdminEventKompomaattiCompetitionsUpdateResponses];
+
+export type AdminEventKompomaattiComposListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        active?: boolean;
+        hide_from_archive?: boolean;
+        hide_from_frontpage?: boolean;
+        is_votable?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        show_voting_results?: boolean;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/";
+};
+
+export type AdminEventKompomaattiComposListResponses = {
+    200: PaginatedCompoList;
+};
+
+export type AdminEventKompomaattiComposListResponse =
+    AdminEventKompomaattiComposListResponses[keyof AdminEventKompomaattiComposListResponses];
+
+export type AdminEventKompomaattiComposCreateData = {
+    body: CompoRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/";
+};
+
+export type AdminEventKompomaattiComposCreateResponses = {
+    201: Compo;
+};
+
+export type AdminEventKompomaattiComposCreateResponse =
+    AdminEventKompomaattiComposCreateResponses[keyof AdminEventKompomaattiComposCreateResponses];
+
+export type AdminEventKompomaattiComposDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kompo.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/";
+};
+
+export type AdminEventKompomaattiComposDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiComposDestroyResponse =
+    AdminEventKompomaattiComposDestroyResponses[keyof AdminEventKompomaattiComposDestroyResponses];
+
+export type AdminEventKompomaattiComposRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kompo.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/";
+};
+
+export type AdminEventKompomaattiComposRetrieveResponses = {
+    200: Compo;
+};
+
+export type AdminEventKompomaattiComposRetrieveResponse =
+    AdminEventKompomaattiComposRetrieveResponses[keyof AdminEventKompomaattiComposRetrieveResponses];
+
+export type AdminEventKompomaattiComposPartialUpdateData = {
+    body?: PatchedCompoRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kompo.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/";
+};
+
+export type AdminEventKompomaattiComposPartialUpdateResponses = {
+    200: Compo;
+};
+
+export type AdminEventKompomaattiComposPartialUpdateResponse =
+    AdminEventKompomaattiComposPartialUpdateResponses[keyof AdminEventKompomaattiComposPartialUpdateResponses];
+
+export type AdminEventKompomaattiComposUpdateData = {
+    body: CompoRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kompo.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/";
+};
+
+export type AdminEventKompomaattiComposUpdateResponses = {
+    200: Compo;
+};
+
+export type AdminEventKompomaattiComposUpdateResponse =
+    AdminEventKompomaattiComposUpdateResponses[keyof AdminEventKompomaattiComposUpdateResponses];
+
+export type AdminEventKompomaattiEntriesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        compo?: number;
+        disqualified?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        user?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/";
+};
+
+export type AdminEventKompomaattiEntriesListResponses = {
+    200: PaginatedCompoEntryList;
+};
+
+export type AdminEventKompomaattiEntriesListResponse =
+    AdminEventKompomaattiEntriesListResponses[keyof AdminEventKompomaattiEntriesListResponses];
+
+export type AdminEventKompomaattiEntriesCreateData = {
+    body: CompoEntryRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/";
+};
+
+export type AdminEventKompomaattiEntriesCreateResponses = {
+    201: CompoEntry;
+};
+
+export type AdminEventKompomaattiEntriesCreateResponse =
+    AdminEventKompomaattiEntriesCreateResponses[keyof AdminEventKompomaattiEntriesCreateResponses];
+
+export type AdminEventKompomaattiEntriesDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/";
+};
+
+export type AdminEventKompomaattiEntriesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiEntriesDestroyResponse =
+    AdminEventKompomaattiEntriesDestroyResponses[keyof AdminEventKompomaattiEntriesDestroyResponses];
+
+export type AdminEventKompomaattiEntriesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/";
+};
+
+export type AdminEventKompomaattiEntriesRetrieveResponses = {
+    200: CompoEntry;
+};
+
+export type AdminEventKompomaattiEntriesRetrieveResponse =
+    AdminEventKompomaattiEntriesRetrieveResponses[keyof AdminEventKompomaattiEntriesRetrieveResponses];
+
+export type AdminEventKompomaattiEntriesPartialUpdateData = {
+    body?: PatchedCompoEntryRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/";
+};
+
+export type AdminEventKompomaattiEntriesPartialUpdateResponses = {
+    200: CompoEntry;
+};
+
+export type AdminEventKompomaattiEntriesPartialUpdateResponse =
+    AdminEventKompomaattiEntriesPartialUpdateResponses[keyof AdminEventKompomaattiEntriesPartialUpdateResponses];
+
+export type AdminEventKompomaattiEntriesUpdateData = {
+    body: CompoEntryRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/";
+};
+
+export type AdminEventKompomaattiEntriesUpdateResponses = {
+    200: CompoEntry;
+};
+
+export type AdminEventKompomaattiEntriesUpdateResponse =
+    AdminEventKompomaattiEntriesUpdateResponses[keyof AdminEventKompomaattiEntriesUpdateResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        associated_to?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        ticket?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesListResponses = {
+    200: PaginatedTicketVoteCodeList;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesListResponse =
+    AdminEventKompomaattiTicketVoteCodesListResponses[keyof AdminEventKompomaattiTicketVoteCodesListResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesCreateData = {
+    body?: TicketVoteCodeRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesCreateResponses = {
+    201: TicketVoteCode;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesCreateResponse =
+    AdminEventKompomaattiTicketVoteCodesCreateResponses[keyof AdminEventKompomaattiTicketVoteCodesCreateResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this lippuäänestusavain.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesDestroyResponse =
+    AdminEventKompomaattiTicketVoteCodesDestroyResponses[keyof AdminEventKompomaattiTicketVoteCodesDestroyResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this lippuäänestusavain.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesRetrieveResponses = {
+    200: TicketVoteCode;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesRetrieveResponse =
+    AdminEventKompomaattiTicketVoteCodesRetrieveResponses[keyof AdminEventKompomaattiTicketVoteCodesRetrieveResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesPartialUpdateData = {
+    body?: PatchedTicketVoteCodeRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this lippuäänestusavain.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses = {
+    200: TicketVoteCode;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesPartialUpdateResponse =
+    AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses[keyof AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses];
+
+export type AdminEventKompomaattiTicketVoteCodesUpdateData = {
+    body?: TicketVoteCodeRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this lippuäänestusavain.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
+};
+
+export type AdminEventKompomaattiTicketVoteCodesUpdateResponses = {
+    200: TicketVoteCode;
+};
+
+export type AdminEventKompomaattiTicketVoteCodesUpdateResponse =
+    AdminEventKompomaattiTicketVoteCodesUpdateResponses[keyof AdminEventKompomaattiTicketVoteCodesUpdateResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * Tila
+         *
+         * * `0` - Odottaa hyväksyntää
+         * * `1` - Hyväksytty
+         * * `2` - Hylätty
+         */
+        status?: 0 | 1 | 2;
+        user?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsListResponses = {
+    200: PaginatedVoteCodeRequestList;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsListResponse =
+    AdminEventKompomaattiVoteCodeRequestsListResponses[keyof AdminEventKompomaattiVoteCodeRequestsListResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsCreateData = {
+    body: VoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsCreateResponses = {
+    201: VoteCodeRequest;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsCreateResponse =
+    AdminEventKompomaattiVoteCodeRequestsCreateResponses[keyof AdminEventKompomaattiVoteCodeRequestsCreateResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsDestroyResponse =
+    AdminEventKompomaattiVoteCodeRequestsDestroyResponses[keyof AdminEventKompomaattiVoteCodeRequestsDestroyResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsRetrieveResponses = {
+    200: VoteCodeRequest;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsRetrieveResponse =
+    AdminEventKompomaattiVoteCodeRequestsRetrieveResponses[keyof AdminEventKompomaattiVoteCodeRequestsRetrieveResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsPartialUpdateData = {
+    body?: PatchedVoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponses = {
+    200: VoteCodeRequest;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponse =
+    AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponses[keyof AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponses];
+
+export type AdminEventKompomaattiVoteCodeRequestsUpdateData = {
+    body: VoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsUpdateResponses = {
+    200: VoteCodeRequest;
+};
+
+export type AdminEventKompomaattiVoteCodeRequestsUpdateResponse =
+    AdminEventKompomaattiVoteCodeRequestsUpdateResponses[keyof AdminEventKompomaattiVoteCodeRequestsUpdateResponses];
+
+export type AdminEventProgramEventsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        active?: boolean;
+        /**
+         * Tapahtuman tyyppi
+         *
+         * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
+         *
+         * * `0` - Yksinkertainen
+         * * `1` - Yksityiskohtainen
+         */
+        event_type?: 0 | 1;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/program/events/";
+};
+
+export type AdminEventProgramEventsListResponses = {
+    200: PaginatedProgramEventList;
+};
+
+export type AdminEventProgramEventsListResponse =
+    AdminEventProgramEventsListResponses[keyof AdminEventProgramEventsListResponses];
+
+export type AdminEventProgramEventsCreateData = {
+    body: ProgramEventRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/program/events/";
+};
+
+export type AdminEventProgramEventsCreateResponses = {
+    201: ProgramEvent;
+};
+
+export type AdminEventProgramEventsCreateResponse =
+    AdminEventProgramEventsCreateResponses[keyof AdminEventProgramEventsCreateResponses];
+
+export type AdminEventProgramEventsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ohjelmatapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/program/events/{id}/";
+};
+
+export type AdminEventProgramEventsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventProgramEventsDestroyResponse =
+    AdminEventProgramEventsDestroyResponses[keyof AdminEventProgramEventsDestroyResponses];
+
+export type AdminEventProgramEventsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ohjelmatapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/program/events/{id}/";
+};
+
+export type AdminEventProgramEventsRetrieveResponses = {
+    200: ProgramEvent;
+};
+
+export type AdminEventProgramEventsRetrieveResponse =
+    AdminEventProgramEventsRetrieveResponses[keyof AdminEventProgramEventsRetrieveResponses];
+
+export type AdminEventProgramEventsPartialUpdateData = {
+    body?: PatchedProgramEventRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ohjelmatapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/program/events/{id}/";
+};
+
+export type AdminEventProgramEventsPartialUpdateResponses = {
+    200: ProgramEvent;
+};
+
+export type AdminEventProgramEventsPartialUpdateResponse =
+    AdminEventProgramEventsPartialUpdateResponses[keyof AdminEventProgramEventsPartialUpdateResponses];
+
+export type AdminEventProgramEventsUpdateData = {
+    body: ProgramEventRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this ohjelmatapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/program/events/{id}/";
+};
+
+export type AdminEventProgramEventsUpdateResponses = {
+    200: ProgramEvent;
+};
+
+export type AdminEventProgramEventsUpdateResponse =
+    AdminEventProgramEventsUpdateResponses[keyof AdminEventProgramEventsUpdateResponses];
+
+export type AdminEventStoreItemVariantsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        item?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/";
+};
+
+export type AdminEventStoreItemVariantsListResponses = {
+    200: PaginatedStoreItemVariantList;
+};
+
+export type AdminEventStoreItemVariantsListResponse =
+    AdminEventStoreItemVariantsListResponses[keyof AdminEventStoreItemVariantsListResponses];
+
+export type AdminEventStoreItemVariantsCreateData = {
+    body: StoreItemVariantRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/";
+};
+
+export type AdminEventStoreItemVariantsCreateResponses = {
+    201: StoreItemVariant;
+};
+
+export type AdminEventStoreItemVariantsCreateResponse =
+    AdminEventStoreItemVariantsCreateResponses[keyof AdminEventStoreItemVariantsCreateResponses];
+
+export type AdminEventStoreItemVariantsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotevariantti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/";
+};
+
+export type AdminEventStoreItemVariantsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventStoreItemVariantsDestroyResponse =
+    AdminEventStoreItemVariantsDestroyResponses[keyof AdminEventStoreItemVariantsDestroyResponses];
+
+export type AdminEventStoreItemVariantsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotevariantti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/";
+};
+
+export type AdminEventStoreItemVariantsRetrieveResponses = {
+    200: StoreItemVariant;
+};
+
+export type AdminEventStoreItemVariantsRetrieveResponse =
+    AdminEventStoreItemVariantsRetrieveResponses[keyof AdminEventStoreItemVariantsRetrieveResponses];
+
+export type AdminEventStoreItemVariantsPartialUpdateData = {
+    body?: PatchedStoreItemVariantRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotevariantti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/";
+};
+
+export type AdminEventStoreItemVariantsPartialUpdateResponses = {
+    200: StoreItemVariant;
+};
+
+export type AdminEventStoreItemVariantsPartialUpdateResponse =
+    AdminEventStoreItemVariantsPartialUpdateResponses[keyof AdminEventStoreItemVariantsPartialUpdateResponses];
+
+export type AdminEventStoreItemVariantsUpdateData = {
+    body: StoreItemVariantRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuotevariantti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/";
+};
+
+export type AdminEventStoreItemVariantsUpdateResponses = {
+    200: StoreItemVariant;
+};
+
+export type AdminEventStoreItemVariantsUpdateResponse =
+    AdminEventStoreItemVariantsUpdateResponses[keyof AdminEventStoreItemVariantsUpdateResponses];
+
+export type AdminEventStoreItemsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        available?: boolean;
+        event?: number;
+        is_secret?: boolean;
+        is_ticket?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/store/items/";
+};
+
+export type AdminEventStoreItemsListResponses = {
+    200: PaginatedStoreItemList;
+};
+
+export type AdminEventStoreItemsListResponse =
+    AdminEventStoreItemsListResponses[keyof AdminEventStoreItemsListResponses];
+
+export type AdminEventStoreItemsCreateData = {
+    body: StoreItemRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/items/";
+};
+
+export type AdminEventStoreItemsCreateResponses = {
+    201: StoreItem;
+};
+
+export type AdminEventStoreItemsCreateResponse =
+    AdminEventStoreItemsCreateResponses[keyof AdminEventStoreItemsCreateResponses];
+
+export type AdminEventStoreItemsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/items/{id}/";
+};
+
+export type AdminEventStoreItemsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventStoreItemsDestroyResponse =
+    AdminEventStoreItemsDestroyResponses[keyof AdminEventStoreItemsDestroyResponses];
+
+export type AdminEventStoreItemsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/items/{id}/";
+};
+
+export type AdminEventStoreItemsRetrieveResponses = {
+    200: StoreItem;
+};
+
+export type AdminEventStoreItemsRetrieveResponse =
+    AdminEventStoreItemsRetrieveResponses[keyof AdminEventStoreItemsRetrieveResponses];
+
+export type AdminEventStoreItemsPartialUpdateData = {
+    body?: PatchedStoreItemRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/items/{id}/";
+};
+
+export type AdminEventStoreItemsPartialUpdateResponses = {
+    200: StoreItem;
+};
+
+export type AdminEventStoreItemsPartialUpdateResponse =
+    AdminEventStoreItemsPartialUpdateResponses[keyof AdminEventStoreItemsPartialUpdateResponses];
+
+export type AdminEventStoreItemsUpdateData = {
+    body: StoreItemRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/items/{id}/";
+};
+
+export type AdminEventStoreItemsUpdateResponses = {
+    200: StoreItem;
+};
+
+export type AdminEventStoreItemsUpdateResponse =
+    AdminEventStoreItemsUpdateResponses[keyof AdminEventStoreItemsUpdateResponses];
+
+export type AdminEventStoreReceiptsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        sent?: string;
+        transaction?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/";
+};
+
+export type AdminEventStoreReceiptsListResponses = {
+    200: PaginatedReceiptList;
+};
+
+export type AdminEventStoreReceiptsListResponse =
+    AdminEventStoreReceiptsListResponses[keyof AdminEventStoreReceiptsListResponses];
+
+export type AdminEventStoreReceiptsCreateData = {
+    body: ReceiptRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/";
+};
+
+export type AdminEventStoreReceiptsCreateResponses = {
+    201: Receipt;
+};
+
+export type AdminEventStoreReceiptsCreateResponse =
+    AdminEventStoreReceiptsCreateResponses[keyof AdminEventStoreReceiptsCreateResponses];
+
+export type AdminEventStoreReceiptsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kuitti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/";
+};
+
+export type AdminEventStoreReceiptsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventStoreReceiptsDestroyResponse =
+    AdminEventStoreReceiptsDestroyResponses[keyof AdminEventStoreReceiptsDestroyResponses];
+
+export type AdminEventStoreReceiptsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kuitti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/";
+};
+
+export type AdminEventStoreReceiptsRetrieveResponses = {
+    200: Receipt;
+};
+
+export type AdminEventStoreReceiptsRetrieveResponse =
+    AdminEventStoreReceiptsRetrieveResponses[keyof AdminEventStoreReceiptsRetrieveResponses];
+
+export type AdminEventStoreReceiptsPartialUpdateData = {
+    body?: PatchedReceiptRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kuitti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/";
+};
+
+export type AdminEventStoreReceiptsPartialUpdateResponses = {
+    200: Receipt;
+};
+
+export type AdminEventStoreReceiptsPartialUpdateResponse =
+    AdminEventStoreReceiptsPartialUpdateResponses[keyof AdminEventStoreReceiptsPartialUpdateResponses];
+
+export type AdminEventStoreReceiptsUpdateData = {
+    body: ReceiptRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kuitti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/";
+};
+
+export type AdminEventStoreReceiptsUpdateResponses = {
+    200: Receipt;
+};
+
+export type AdminEventStoreReceiptsUpdateResponse =
+    AdminEventStoreReceiptsUpdateResponses[keyof AdminEventStoreReceiptsUpdateResponses];
+
+export type AdminEventStoreReceiptsResendCreateData = {
+    body: ReceiptRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this kuitti.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/resend/";
+};
+
+export type AdminEventStoreReceiptsResendCreateResponses = {
+    200: Receipt;
+};
+
+export type AdminEventStoreReceiptsResendCreateResponse =
+    AdminEventStoreReceiptsResendCreateResponses[keyof AdminEventStoreReceiptsResendCreateResponses];
+
+export type AdminEventStoreTransactionItemsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        item?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        transaction?: number;
+        variant?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/";
+};
+
+export type AdminEventStoreTransactionItemsListResponses = {
+    200: PaginatedTransactionItemList;
+};
+
+export type AdminEventStoreTransactionItemsListResponse =
+    AdminEventStoreTransactionItemsListResponses[keyof AdminEventStoreTransactionItemsListResponses];
+
+export type AdminEventStoreTransactionItemsCreateData = {
+    body: TransactionItemRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/";
+};
+
+export type AdminEventStoreTransactionItemsCreateResponses = {
+    201: TransactionItem;
+};
+
+export type AdminEventStoreTransactionItemsCreateResponse =
+    AdminEventStoreTransactionItemsCreateResponses[keyof AdminEventStoreTransactionItemsCreateResponses];
+
+export type AdminEventStoreTransactionItemsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktiotuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/";
+};
+
+export type AdminEventStoreTransactionItemsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventStoreTransactionItemsDestroyResponse =
+    AdminEventStoreTransactionItemsDestroyResponses[keyof AdminEventStoreTransactionItemsDestroyResponses];
+
+export type AdminEventStoreTransactionItemsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktiotuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/";
+};
+
+export type AdminEventStoreTransactionItemsRetrieveResponses = {
+    200: TransactionItem;
+};
+
+export type AdminEventStoreTransactionItemsRetrieveResponse =
+    AdminEventStoreTransactionItemsRetrieveResponses[keyof AdminEventStoreTransactionItemsRetrieveResponses];
+
+export type AdminEventStoreTransactionItemsPartialUpdateData = {
+    body?: PatchedTransactionItemRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktiotuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/";
+};
+
+export type AdminEventStoreTransactionItemsPartialUpdateResponses = {
+    200: TransactionItem;
+};
+
+export type AdminEventStoreTransactionItemsPartialUpdateResponse =
+    AdminEventStoreTransactionItemsPartialUpdateResponses[keyof AdminEventStoreTransactionItemsPartialUpdateResponses];
+
+export type AdminEventStoreTransactionItemsUpdateData = {
+    body: TransactionItemRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktiotuote.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/";
+};
+
+export type AdminEventStoreTransactionItemsUpdateResponses = {
+    200: TransactionItem;
+};
+
+export type AdminEventStoreTransactionItemsUpdateResponse =
+    AdminEventStoreTransactionItemsUpdateResponses[keyof AdminEventStoreTransactionItemsUpdateResponses];
+
+export type AdminEventStoreTransactionsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        time_cancelled?: string;
+        time_paid?: string;
+    };
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/";
+};
+
+export type AdminEventStoreTransactionsListResponses = {
+    200: PaginatedStoreTransactionList;
+};
+
+export type AdminEventStoreTransactionsListResponse =
+    AdminEventStoreTransactionsListResponses[keyof AdminEventStoreTransactionsListResponses];
+
+export type AdminEventStoreTransactionsCreateData = {
+    body: StoreTransactionRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/";
+};
+
+export type AdminEventStoreTransactionsCreateResponses = {
+    201: StoreTransaction;
+};
+
+export type AdminEventStoreTransactionsCreateResponse =
+    AdminEventStoreTransactionsCreateResponses[keyof AdminEventStoreTransactionsCreateResponses];
+
+export type AdminEventStoreTransactionsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktio.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/";
+};
+
+export type AdminEventStoreTransactionsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventStoreTransactionsDestroyResponse =
+    AdminEventStoreTransactionsDestroyResponses[keyof AdminEventStoreTransactionsDestroyResponses];
+
+export type AdminEventStoreTransactionsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktio.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/";
+};
+
+export type AdminEventStoreTransactionsRetrieveResponses = {
+    200: StoreTransaction;
+};
+
+export type AdminEventStoreTransactionsRetrieveResponse =
+    AdminEventStoreTransactionsRetrieveResponses[keyof AdminEventStoreTransactionsRetrieveResponses];
+
+export type AdminEventStoreTransactionsPartialUpdateData = {
+    body?: PatchedStoreTransactionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktio.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/";
+};
+
+export type AdminEventStoreTransactionsPartialUpdateResponses = {
+    200: StoreTransaction;
+};
+
+export type AdminEventStoreTransactionsPartialUpdateResponse =
+    AdminEventStoreTransactionsPartialUpdateResponses[keyof AdminEventStoreTransactionsPartialUpdateResponses];
+
+export type AdminEventStoreTransactionsUpdateData = {
+    body: StoreTransactionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaktio.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/";
+};
+
+export type AdminEventStoreTransactionsUpdateResponses = {
+    200: StoreTransaction;
+};
+
+export type AdminEventStoreTransactionsUpdateResponse =
+    AdminEventStoreTransactionsUpdateResponses[keyof AdminEventStoreTransactionsUpdateResponses];
+
+export type AdminEventUploadsFilesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        user?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/";
+};
+
+export type AdminEventUploadsFilesListResponses = {
+    200: PaginatedUploadedFileList;
+};
+
+export type AdminEventUploadsFilesListResponse =
+    AdminEventUploadsFilesListResponses[keyof AdminEventUploadsFilesListResponses];
+
+export type AdminEventUploadsFilesCreateData = {
+    body: UploadedFileRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/";
+};
+
+export type AdminEventUploadsFilesCreateResponses = {
+    201: UploadedFile;
+};
+
+export type AdminEventUploadsFilesCreateResponse =
+    AdminEventUploadsFilesCreateResponses[keyof AdminEventUploadsFilesCreateResponses];
+
+export type AdminEventUploadsFilesDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tiedosto.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/";
+};
+
+export type AdminEventUploadsFilesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventUploadsFilesDestroyResponse =
+    AdminEventUploadsFilesDestroyResponses[keyof AdminEventUploadsFilesDestroyResponses];
+
+export type AdminEventUploadsFilesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tiedosto.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/";
+};
+
+export type AdminEventUploadsFilesRetrieveResponses = {
+    200: UploadedFile;
+};
+
+export type AdminEventUploadsFilesRetrieveResponse =
+    AdminEventUploadsFilesRetrieveResponses[keyof AdminEventUploadsFilesRetrieveResponses];
+
+export type AdminEventUploadsFilesPartialUpdateData = {
+    body?: PatchedUploadedFileRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tiedosto.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/";
+};
+
+export type AdminEventUploadsFilesPartialUpdateResponses = {
+    200: UploadedFile;
+};
+
+export type AdminEventUploadsFilesPartialUpdateResponse =
+    AdminEventUploadsFilesPartialUpdateResponses[keyof AdminEventUploadsFilesPartialUpdateResponses];
+
+export type AdminEventUploadsFilesUpdateData = {
+    body: UploadedFileRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this tiedosto.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/";
+};
+
+export type AdminEventUploadsFilesUpdateResponses = {
+    200: UploadedFile;
+};
+
+export type AdminEventUploadsFilesUpdateResponse =
+    AdminEventUploadsFilesUpdateResponses[keyof AdminEventUploadsFilesUpdateResponses];
+
+export type AdminEventsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/events/";
+};
+
+export type AdminEventsListResponses = {
+    200: PaginatedEventList;
+};
+
+export type AdminEventsListResponse = AdminEventsListResponses[keyof AdminEventsListResponses];
+
+export type AdminEventsCreateData = {
+    body: EventRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/events/";
+};
+
+export type AdminEventsCreateResponses = {
+    201: Event;
+};
+
+export type AdminEventsCreateResponse =
+    AdminEventsCreateResponses[keyof AdminEventsCreateResponses];
+
+export type AdminEventsDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/events/{id}/";
+};
+
+export type AdminEventsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminEventsDestroyResponse =
+    AdminEventsDestroyResponses[keyof AdminEventsDestroyResponses];
+
+export type AdminEventsRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/events/{id}/";
+};
+
+export type AdminEventsRetrieveResponses = {
+    200: Event;
+};
+
+export type AdminEventsRetrieveResponse =
+    AdminEventsRetrieveResponses[keyof AdminEventsRetrieveResponses];
+
+export type AdminEventsPartialUpdateData = {
+    body?: PatchedEventRequest;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/events/{id}/";
+};
+
+export type AdminEventsPartialUpdateResponses = {
+    200: Event;
+};
+
+export type AdminEventsPartialUpdateResponse =
+    AdminEventsPartialUpdateResponses[keyof AdminEventsPartialUpdateResponses];
+
+export type AdminEventsUpdateData = {
+    body: EventRequest;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/events/{id}/";
+};
+
+export type AdminEventsUpdateResponses = {
+    200: Event;
+};
+
+export type AdminEventsUpdateResponse =
+    AdminEventsUpdateResponses[keyof AdminEventsUpdateResponses];
+
+export type AdminUsersListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        email?: string;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        username?: string;
+    };
+    url: "/api/v2/admin/users/";
+};
+
+export type AdminUsersListResponses = {
+    200: PaginatedUserList;
+};
+
+export type AdminUsersListResponse = AdminUsersListResponses[keyof AdminUsersListResponses];
+
+export type AdminUsersCreateData = {
+    body: UserRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/users/";
+};
+
+export type AdminUsersCreateResponses = {
+    201: User;
+};
+
+export type AdminUsersCreateResponse = AdminUsersCreateResponses[keyof AdminUsersCreateResponses];
+
+export type AdminUsersDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/users/{id}/";
+};
+
+export type AdminUsersDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminUsersDestroyResponse =
+    AdminUsersDestroyResponses[keyof AdminUsersDestroyResponses];
+
+export type AdminUsersRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/users/{id}/";
+};
+
+export type AdminUsersRetrieveResponses = {
+    200: User;
+};
+
+export type AdminUsersRetrieveResponse =
+    AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
+
+export type AdminUsersPartialUpdateData = {
+    body?: PatchedUserRequest;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/users/{id}/";
+};
+
+export type AdminUsersPartialUpdateResponses = {
+    200: User;
+};
+
+export type AdminUsersPartialUpdateResponse =
+    AdminUsersPartialUpdateResponses[keyof AdminUsersPartialUpdateResponses];
+
+export type AdminUsersUpdateData = {
+    body: UserRequest;
+    path: {
+        /**
+         * A unique integer value identifying this käyttäjä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/users/{id}/";
+};
+
+export type AdminUsersUpdateResponses = {
+    200: User;
+};
+
+export type AdminUsersUpdateResponse = AdminUsersUpdateResponses[keyof AdminUsersUpdateResponses];
 
 export type LoginData = {
     body: UserLoginRequest;
@@ -633,7 +8601,459 @@ export type GetSocialAuthUrlsResponses = {
 export type GetSocialAuthUrlsResponse =
     GetSocialAuthUrlsResponses[keyof GetSocialAuthUrlsResponses];
 
-export type BlogEntriesListData = {
+export type EventUserKompomaattiEntriesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/";
+};
+
+export type EventUserKompomaattiEntriesListResponses = {
+    200: PaginatedUserCompoEntryList;
+};
+
+export type EventUserKompomaattiEntriesListResponse =
+    EventUserKompomaattiEntriesListResponses[keyof EventUserKompomaattiEntriesListResponses];
+
+export type EventUserKompomaattiEntriesCreateData = {
+    body: UserCompoEntryRequestWritable;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/";
+};
+
+export type EventUserKompomaattiEntriesCreateResponses = {
+    201: UserCompoEntry;
+};
+
+export type EventUserKompomaattiEntriesCreateResponse =
+    EventUserKompomaattiEntriesCreateResponses[keyof EventUserKompomaattiEntriesCreateResponses];
+
+export type EventUserKompomaattiEntriesDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
+};
+
+export type EventUserKompomaattiEntriesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventUserKompomaattiEntriesDestroyResponse =
+    EventUserKompomaattiEntriesDestroyResponses[keyof EventUserKompomaattiEntriesDestroyResponses];
+
+export type EventUserKompomaattiEntriesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
+};
+
+export type EventUserKompomaattiEntriesRetrieveResponses = {
+    200: UserCompoEntry;
+};
+
+export type EventUserKompomaattiEntriesRetrieveResponse =
+    EventUserKompomaattiEntriesRetrieveResponses[keyof EventUserKompomaattiEntriesRetrieveResponses];
+
+export type EventUserKompomaattiEntriesPartialUpdateData = {
+    body?: PatchedUserCompoEntryRequestWritable;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
+};
+
+export type EventUserKompomaattiEntriesPartialUpdateResponses = {
+    200: UserCompoEntry;
+};
+
+export type EventUserKompomaattiEntriesPartialUpdateResponse =
+    EventUserKompomaattiEntriesPartialUpdateResponses[keyof EventUserKompomaattiEntriesPartialUpdateResponses];
+
+export type EventUserKompomaattiEntriesUpdateData = {
+    body: UserCompoEntryRequestWritable;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
+};
+
+export type EventUserKompomaattiEntriesUpdateResponses = {
+    200: UserCompoEntry;
+};
+
+export type EventUserKompomaattiEntriesUpdateResponse =
+    EventUserKompomaattiEntriesUpdateResponses[keyof EventUserKompomaattiEntriesUpdateResponses];
+
+export type EventUserKompomaattiParticipationsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/";
+};
+
+export type EventUserKompomaattiParticipationsListResponses = {
+    200: PaginatedUserCompetitionParticipationList;
+};
+
+export type EventUserKompomaattiParticipationsListResponse =
+    EventUserKompomaattiParticipationsListResponses[keyof EventUserKompomaattiParticipationsListResponses];
+
+export type EventUserKompomaattiParticipationsCreateData = {
+    body: UserCompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/";
+};
+
+export type EventUserKompomaattiParticipationsCreateResponses = {
+    201: UserCompetitionParticipation;
+};
+
+export type EventUserKompomaattiParticipationsCreateResponse =
+    EventUserKompomaattiParticipationsCreateResponses[keyof EventUserKompomaattiParticipationsCreateResponses];
+
+export type EventUserKompomaattiParticipationsDestroyData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
+};
+
+export type EventUserKompomaattiParticipationsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventUserKompomaattiParticipationsDestroyResponse =
+    EventUserKompomaattiParticipationsDestroyResponses[keyof EventUserKompomaattiParticipationsDestroyResponses];
+
+export type EventUserKompomaattiParticipationsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
+};
+
+export type EventUserKompomaattiParticipationsRetrieveResponses = {
+    200: UserCompetitionParticipation;
+};
+
+export type EventUserKompomaattiParticipationsRetrieveResponse =
+    EventUserKompomaattiParticipationsRetrieveResponses[keyof EventUserKompomaattiParticipationsRetrieveResponses];
+
+export type EventUserKompomaattiParticipationsPartialUpdateData = {
+    body?: PatchedUserCompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
+};
+
+export type EventUserKompomaattiParticipationsPartialUpdateResponses = {
+    200: UserCompetitionParticipation;
+};
+
+export type EventUserKompomaattiParticipationsPartialUpdateResponse =
+    EventUserKompomaattiParticipationsPartialUpdateResponses[keyof EventUserKompomaattiParticipationsPartialUpdateResponses];
+
+export type EventUserKompomaattiParticipationsUpdateData = {
+    body: UserCompetitionParticipationRequest;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
+};
+
+export type EventUserKompomaattiParticipationsUpdateResponses = {
+    200: UserCompetitionParticipation;
+};
+
+export type EventUserKompomaattiParticipationsUpdateResponse =
+    EventUserKompomaattiParticipationsUpdateResponses[keyof EventUserKompomaattiParticipationsUpdateResponses];
+
+export type EventUserKompomaattiTicketVoteCodesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/";
+};
+
+export type EventUserKompomaattiTicketVoteCodesListResponses = {
+    200: PaginatedUserTicketVoteCodeList;
+};
+
+export type EventUserKompomaattiTicketVoteCodesListResponse =
+    EventUserKompomaattiTicketVoteCodesListResponses[keyof EventUserKompomaattiTicketVoteCodesListResponses];
+
+export type EventUserKompomaattiTicketVoteCodesCreateData = {
+    body: UserTicketVoteCodeRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/";
+};
+
+export type EventUserKompomaattiTicketVoteCodesCreateResponses = {
+    201: UserTicketVoteCode;
+};
+
+export type EventUserKompomaattiTicketVoteCodesCreateResponse =
+    EventUserKompomaattiTicketVoteCodesCreateResponses[keyof EventUserKompomaattiTicketVoteCodesCreateResponses];
+
+export type EventUserKompomaattiTicketVoteCodesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/{id}/";
+};
+
+export type EventUserKompomaattiTicketVoteCodesRetrieveResponses = {
+    200: UserTicketVoteCode;
+};
+
+export type EventUserKompomaattiTicketVoteCodesRetrieveResponse =
+    EventUserKompomaattiTicketVoteCodesRetrieveResponses[keyof EventUserKompomaattiTicketVoteCodesRetrieveResponses];
+
+export type EventUserKompomaattiVoteCodeRequestsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/";
+};
+
+export type EventUserKompomaattiVoteCodeRequestsListResponses = {
+    200: PaginatedUserVoteCodeRequestList;
+};
+
+export type EventUserKompomaattiVoteCodeRequestsListResponse =
+    EventUserKompomaattiVoteCodeRequestsListResponses[keyof EventUserKompomaattiVoteCodeRequestsListResponses];
+
+export type EventUserKompomaattiVoteCodeRequestsCreateData = {
+    body: UserVoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/";
+};
+
+export type EventUserKompomaattiVoteCodeRequestsCreateResponses = {
+    201: UserVoteCodeRequest;
+};
+
+export type EventUserKompomaattiVoteCodeRequestsCreateResponse =
+    EventUserKompomaattiVoteCodeRequestsCreateResponses[keyof EventUserKompomaattiVoteCodeRequestsCreateResponses];
+
+export type EventUserKompomaattiVoteCodeRequestsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type EventUserKompomaattiVoteCodeRequestsRetrieveResponses = {
+    200: UserVoteCodeRequest;
+};
+
+export type EventUserKompomaattiVoteCodeRequestsRetrieveResponse =
+    EventUserKompomaattiVoteCodeRequestsRetrieveResponses[keyof EventUserKompomaattiVoteCodeRequestsRetrieveResponses];
+
+export type EventUserKompomaattiVoteCodeRequestsPartialUpdateData = {
+    body?: PatchedUserVoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type EventUserKompomaattiVoteCodeRequestsPartialUpdateResponses = {
+    200: UserVoteCodeRequest;
+};
+
+export type EventUserKompomaattiVoteCodeRequestsPartialUpdateResponse =
+    EventUserKompomaattiVoteCodeRequestsPartialUpdateResponses[keyof EventUserKompomaattiVoteCodeRequestsPartialUpdateResponses];
+
+export type EventUserKompomaattiVoteCodeRequestsUpdateData = {
+    body: UserVoteCodeRequestRequest;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
+};
+
+export type EventUserKompomaattiVoteCodeRequestsUpdateResponses = {
+    200: UserVoteCodeRequest;
+};
+
+export type EventUserKompomaattiVoteCodeRequestsUpdateResponse =
+    EventUserKompomaattiVoteCodeRequestsUpdateResponses[keyof EventUserKompomaattiVoteCodeRequestsUpdateResponses];
+
+export type EventUserKompomaattiVotesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/";
+};
+
+export type EventUserKompomaattiVotesListResponses = {
+    200: PaginatedUserVoteGroupList;
+};
+
+export type EventUserKompomaattiVotesListResponse =
+    EventUserKompomaattiVotesListResponses[keyof EventUserKompomaattiVotesListResponses];
+
+export type EventUserKompomaattiVotesCreateData = {
+    body: UserVoteGroupRequestWritable;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/";
+};
+
+export type EventUserKompomaattiVotesCreateResponses = {
+    201: UserVoteGroup;
+};
+
+export type EventUserKompomaattiVotesCreateResponse =
+    EventUserKompomaattiVotesCreateResponses[keyof EventUserKompomaattiVotesCreateResponses];
+
+export type EventUserKompomaattiVotesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/{id}/";
+};
+
+export type EventUserKompomaattiVotesRetrieveResponses = {
+    200: UserVoteGroup;
+};
+
+export type EventUserKompomaattiVotesRetrieveResponse =
+    EventUserKompomaattiVotesRetrieveResponses[keyof EventUserKompomaattiVotesRetrieveResponses];
+
+export type PublicBlogEntriesListData = {
     body?: never;
     path?: never;
     query?: {
@@ -654,32 +9074,18 @@ export type BlogEntriesListData = {
          * A search term.
          */
         search?: string;
-        user?: number;
     };
-    url: "/api/v2/blog_entries/";
+    url: "/api/v2/public/blog_entries/";
 };
 
-export type BlogEntriesListResponses = {
-    200: PaginatedBlogEntryList;
+export type PublicBlogEntriesListResponses = {
+    200: PaginatedPublicBlogEntryList;
 };
 
-export type BlogEntriesListResponse = BlogEntriesListResponses[keyof BlogEntriesListResponses];
+export type PublicBlogEntriesListResponse =
+    PublicBlogEntriesListResponses[keyof PublicBlogEntriesListResponses];
 
-export type BlogEntriesCreateData = {
-    body: BlogEntryRequest;
-    path?: never;
-    query?: never;
-    url: "/api/v2/blog_entries/";
-};
-
-export type BlogEntriesCreateResponses = {
-    201: BlogEntry;
-};
-
-export type BlogEntriesCreateResponse =
-    BlogEntriesCreateResponses[keyof BlogEntriesCreateResponses];
-
-export type BlogEntriesDestroyData = {
+export type PublicBlogEntriesRetrieveData = {
     body?: never;
     path: {
         /**
@@ -688,195 +9094,21 @@ export type BlogEntriesDestroyData = {
         id: number;
     };
     query?: never;
-    url: "/api/v2/blog_entries/{id}/";
+    url: "/api/v2/public/blog_entries/{id}/";
 };
 
-export type BlogEntriesDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
+export type PublicBlogEntriesRetrieveResponses = {
+    200: PublicBlogEntry;
 };
 
-export type BlogEntriesDestroyResponse =
-    BlogEntriesDestroyResponses[keyof BlogEntriesDestroyResponses];
+export type PublicBlogEntriesRetrieveResponse =
+    PublicBlogEntriesRetrieveResponses[keyof PublicBlogEntriesRetrieveResponses];
 
-export type BlogEntriesRetrieveData = {
+export type PublicEventArchiveVideoCategoriesListData = {
     body?: never;
     path: {
-        /**
-         * A unique integer value identifying this entry.
-         */
-        id: number;
+        event_pk: number;
     };
-    query?: never;
-    url: "/api/v2/blog_entries/{id}/";
-};
-
-export type BlogEntriesRetrieveResponses = {
-    200: BlogEntry;
-};
-
-export type BlogEntriesRetrieveResponse =
-    BlogEntriesRetrieveResponses[keyof BlogEntriesRetrieveResponses];
-
-export type BlogEntriesPartialUpdateData = {
-    body?: PatchedBlogEntryRequest;
-    path: {
-        /**
-         * A unique integer value identifying this entry.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/blog_entries/{id}/";
-};
-
-export type BlogEntriesPartialUpdateResponses = {
-    200: BlogEntry;
-};
-
-export type BlogEntriesPartialUpdateResponse =
-    BlogEntriesPartialUpdateResponses[keyof BlogEntriesPartialUpdateResponses];
-
-export type BlogEntriesUpdateData = {
-    body: BlogEntryRequest;
-    path: {
-        /**
-         * A unique integer value identifying this entry.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/blog_entries/{id}/";
-};
-
-export type BlogEntriesUpdateResponses = {
-    200: BlogEntry;
-};
-
-export type BlogEntriesUpdateResponse =
-    BlogEntriesUpdateResponses[keyof BlogEntriesUpdateResponses];
-
-export type EventsListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * Number of results to return per page.
-         */
-        limit?: number;
-        name?: string;
-        /**
-         * The initial index from which to return the results.
-         */
-        offset?: number;
-        /**
-         * Which field to use when ordering the results.
-         */
-        ordering?: string;
-    };
-    url: "/api/v2/events/";
-};
-
-export type EventsListResponses = {
-    200: PaginatedEventList;
-};
-
-export type EventsListResponse = EventsListResponses[keyof EventsListResponses];
-
-export type EventsCreateData = {
-    body: EventRequest;
-    path?: never;
-    query?: never;
-    url: "/api/v2/events/";
-};
-
-export type EventsCreateResponses = {
-    201: Event;
-};
-
-export type EventsCreateResponse = EventsCreateResponses[keyof EventsCreateResponses];
-
-export type EventsDestroyData = {
-    body?: never;
-    path: {
-        /**
-         * A unique integer value identifying this tapahtuma.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/events/{id}/";
-};
-
-export type EventsDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
-};
-
-export type EventsDestroyResponse = EventsDestroyResponses[keyof EventsDestroyResponses];
-
-export type EventsRetrieveData = {
-    body?: never;
-    path: {
-        /**
-         * A unique integer value identifying this tapahtuma.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/events/{id}/";
-};
-
-export type EventsRetrieveResponses = {
-    200: Event;
-};
-
-export type EventsRetrieveResponse = EventsRetrieveResponses[keyof EventsRetrieveResponses];
-
-export type EventsPartialUpdateData = {
-    body?: PatchedEventRequest;
-    path: {
-        /**
-         * A unique integer value identifying this tapahtuma.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/events/{id}/";
-};
-
-export type EventsPartialUpdateResponses = {
-    200: Event;
-};
-
-export type EventsPartialUpdateResponse =
-    EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
-
-export type EventsUpdateData = {
-    body: EventRequest;
-    path: {
-        /**
-         * A unique integer value identifying this tapahtuma.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/events/{id}/";
-};
-
-export type EventsUpdateResponses = {
-    200: Event;
-};
-
-export type EventsUpdateResponse = EventsUpdateResponses[keyof EventsUpdateResponses];
-
-export type UserCompoEntriesListData = {
-    body?: never;
-    path?: never;
     query?: {
         /**
          * Number of results to return per page.
@@ -886,120 +9118,291 @@ export type UserCompoEntriesListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+    };
+    url: "/api/v2/public/event/{event_pk}/archive/video_categories/";
+};
+
+export type PublicEventArchiveVideoCategoriesListResponses = {
+    200: PaginatedPublicOtherVideoCategoryList;
+};
+
+export type PublicEventArchiveVideoCategoriesListResponse =
+    PublicEventArchiveVideoCategoriesListResponses[keyof PublicEventArchiveVideoCategoriesListResponses];
+
+export type PublicEventArchiveVideoCategoriesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/archive/video_categories/{id}/";
+};
+
+export type PublicEventArchiveVideoCategoriesRetrieveResponses = {
+    200: PublicOtherVideoCategory;
+};
+
+export type PublicEventArchiveVideoCategoriesRetrieveResponse =
+    PublicEventArchiveVideoCategoriesRetrieveResponses[keyof PublicEventArchiveVideoCategoriesRetrieveResponses];
+
+export type PublicEventArchiveVideosListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
         /**
-         * Which field to use when ordering the results.
+         * Number of results to return per page.
          */
-        ordering?: string;
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
     };
-    url: "/api/v2/user_compo_entries/";
+    url: "/api/v2/public/event/{event_pk}/archive/videos/";
 };
 
-export type UserCompoEntriesListResponses = {
-    200: PaginatedCompoEntryList;
+export type PublicEventArchiveVideosListResponses = {
+    200: PaginatedPublicOtherVideoList;
 };
 
-export type UserCompoEntriesListResponse =
-    UserCompoEntriesListResponses[keyof UserCompoEntriesListResponses];
+export type PublicEventArchiveVideosListResponse =
+    PublicEventArchiveVideosListResponses[keyof PublicEventArchiveVideosListResponses];
 
-export type UserCompoEntriesCreateData = {
-    body: CompoEntryRequest;
-    path?: never;
-    query?: never;
-    url: "/api/v2/user_compo_entries/";
-};
-
-export type UserCompoEntriesCreateResponses = {
-    201: CompoEntry;
-};
-
-export type UserCompoEntriesCreateResponse =
-    UserCompoEntriesCreateResponses[keyof UserCompoEntriesCreateResponses];
-
-export type UserCompoEntriesDestroyData = {
+export type PublicEventArchiveVideosRetrieveData = {
     body?: never;
     path: {
+        event_pk: number;
         id: string;
     };
     query?: never;
-    url: "/api/v2/user_compo_entries/{id}/";
+    url: "/api/v2/public/event/{event_pk}/archive/videos/{id}/";
 };
 
-export type UserCompoEntriesDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
+export type PublicEventArchiveVideosRetrieveResponses = {
+    200: PublicOtherVideo;
 };
 
-export type UserCompoEntriesDestroyResponse =
-    UserCompoEntriesDestroyResponses[keyof UserCompoEntriesDestroyResponses];
+export type PublicEventArchiveVideosRetrieveResponse =
+    PublicEventArchiveVideosRetrieveResponses[keyof PublicEventArchiveVideosRetrieveResponses];
 
-export type UserCompoEntriesRetrieveData = {
+export type PublicEventKompomaattiCompetitionParticipationsListData = {
     body?: never;
     path: {
-        id: string;
+        event_pk: number;
     };
-    query?: never;
-    url: "/api/v2/user_compo_entries/{id}/";
-};
-
-export type UserCompoEntriesRetrieveResponses = {
-    200: CompoEntry;
-};
-
-export type UserCompoEntriesRetrieveResponse =
-    UserCompoEntriesRetrieveResponses[keyof UserCompoEntriesRetrieveResponses];
-
-export type UserCompoEntriesPartialUpdateData = {
-    body?: PatchedCompoEntryRequest;
-    path: {
-        id: string;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
     };
-    query?: never;
-    url: "/api/v2/user_compo_entries/{id}/";
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/";
 };
 
-export type UserCompoEntriesPartialUpdateResponses = {
-    200: CompoEntry;
+export type PublicEventKompomaattiCompetitionParticipationsListResponses = {
+    200: PaginatedPublicCompetitionParticipationList;
 };
 
-export type UserCompoEntriesPartialUpdateResponse =
-    UserCompoEntriesPartialUpdateResponses[keyof UserCompoEntriesPartialUpdateResponses];
+export type PublicEventKompomaattiCompetitionParticipationsListResponse =
+    PublicEventKompomaattiCompetitionParticipationsListResponses[keyof PublicEventKompomaattiCompetitionParticipationsListResponses];
 
-export type UserCompoEntriesUpdateData = {
-    body: CompoEntryRequest;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: "/api/v2/user_compo_entries/{id}/";
-};
-
-export type UserCompoEntriesUpdateResponses = {
-    200: CompoEntry;
-};
-
-export type UserCompoEntriesUpdateResponse =
-    UserCompoEntriesUpdateResponses[keyof UserCompoEntriesUpdateResponses];
-
-export type UserInfoData = {
+export type PublicEventKompomaattiCompetitionParticipationsRetrieveData = {
     body?: never;
-    path?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
     query?: never;
-    url: "/api/v2/user_info/";
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/{id}/";
 };
 
-export type UserInfoResponses = {
-    200: Array<UserInfo>;
+export type PublicEventKompomaattiCompetitionParticipationsRetrieveResponses = {
+    200: PublicCompetitionParticipation;
 };
 
-export type UserInfoResponse = UserInfoResponses[keyof UserInfoResponses];
+export type PublicEventKompomaattiCompetitionParticipationsRetrieveResponse =
+    PublicEventKompomaattiCompetitionParticipationsRetrieveResponses[keyof PublicEventKompomaattiCompetitionParticipationsRetrieveResponses];
 
-export type UsersListData = {
+export type PublicEventKompomaattiCompetitionsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+    };
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/";
+};
+
+export type PublicEventKompomaattiCompetitionsListResponses = {
+    200: PaginatedPublicCompetitionList;
+};
+
+export type PublicEventKompomaattiCompetitionsListResponse =
+    PublicEventKompomaattiCompetitionsListResponses[keyof PublicEventKompomaattiCompetitionsListResponses];
+
+export type PublicEventKompomaattiCompetitionsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/{id}/";
+};
+
+export type PublicEventKompomaattiCompetitionsRetrieveResponses = {
+    200: PublicCompetition;
+};
+
+export type PublicEventKompomaattiCompetitionsRetrieveResponse =
+    PublicEventKompomaattiCompetitionsRetrieveResponses[keyof PublicEventKompomaattiCompetitionsRetrieveResponses];
+
+export type PublicEventKompomaattiComposListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+    };
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/";
+};
+
+export type PublicEventKompomaattiComposListResponses = {
+    200: PaginatedPublicCompoList;
+};
+
+export type PublicEventKompomaattiComposListResponse =
+    PublicEventKompomaattiComposListResponses[keyof PublicEventKompomaattiComposListResponses];
+
+export type PublicEventKompomaattiComposRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/{id}/";
+};
+
+export type PublicEventKompomaattiComposRetrieveResponses = {
+    200: PublicCompo;
+};
+
+export type PublicEventKompomaattiComposRetrieveResponse =
+    PublicEventKompomaattiComposRetrieveResponses[keyof PublicEventKompomaattiComposRetrieveResponses];
+
+export type PublicEventKompomaattiEntriesListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+    };
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/";
+};
+
+export type PublicEventKompomaattiEntriesListResponses = {
+    200: PaginatedPublicCompoEntryList;
+};
+
+export type PublicEventKompomaattiEntriesListResponse =
+    PublicEventKompomaattiEntriesListResponses[keyof PublicEventKompomaattiEntriesListResponses];
+
+export type PublicEventKompomaattiEntriesRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/";
+};
+
+export type PublicEventKompomaattiEntriesRetrieveResponses = {
+    200: PublicCompoEntry;
+};
+
+export type PublicEventKompomaattiEntriesRetrieveResponse =
+    PublicEventKompomaattiEntriesRetrieveResponses[keyof PublicEventKompomaattiEntriesRetrieveResponses];
+
+export type PublicEventProgramEventsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+    };
+    url: "/api/v2/public/event/{event_pk}/program/events/";
+};
+
+export type PublicEventProgramEventsListResponses = {
+    200: PaginatedPublicProgramEventList;
+};
+
+export type PublicEventProgramEventsListResponse =
+    PublicEventProgramEventsListResponses[keyof PublicEventProgramEventsListResponses];
+
+export type PublicEventProgramEventsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        id: string;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/program/events/{id}/";
+};
+
+export type PublicEventProgramEventsRetrieveResponses = {
+    200: PublicProgramEvent;
+};
+
+export type PublicEventProgramEventsRetrieveResponse =
+    PublicEventProgramEventsRetrieveResponses[keyof PublicEventProgramEventsRetrieveResponses];
+
+export type PublicEventsListData = {
     body?: never;
     path?: never;
     query?: {
-        email?: string;
+        archived?: boolean;
         /**
          * Number of results to return per page.
          */
@@ -1016,102 +9419,105 @@ export type UsersListData = {
          * A search term.
          */
         search?: string;
-        username?: string;
     };
-    url: "/api/v2/users/";
+    url: "/api/v2/public/events/";
 };
 
-export type UsersListResponses = {
-    200: PaginatedUserList;
+export type PublicEventsListResponses = {
+    200: PaginatedPublicEventList;
 };
 
-export type UsersListResponse = UsersListResponses[keyof UsersListResponses];
+export type PublicEventsListResponse = PublicEventsListResponses[keyof PublicEventsListResponses];
 
-export type UsersCreateData = {
-    body: UserRequest;
+export type PublicEventsRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this tapahtuma.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/public/events/{id}/";
+};
+
+export type PublicEventsRetrieveResponses = {
+    200: PublicEvent;
+};
+
+export type PublicEventsRetrieveResponse =
+    PublicEventsRetrieveResponses[keyof PublicEventsRetrieveResponses];
+
+export type PublicStoreCheckoutCreateData = {
+    body: PublicStoreTransactionCheckoutRequest;
     path?: never;
     query?: never;
-    url: "/api/v2/users/";
+    url: "/api/v2/public/store/checkout/";
 };
 
-export type UsersCreateResponses = {
-    201: User;
+export type PublicStoreCheckoutCreateResponses = {
+    201: PublicStoreTransactionCheckout;
 };
 
-export type UsersCreateResponse = UsersCreateResponses[keyof UsersCreateResponses];
+export type PublicStoreCheckoutCreateResponse =
+    PublicStoreCheckoutCreateResponses[keyof PublicStoreCheckoutCreateResponses];
 
-export type UsersDestroyData = {
+export type PublicStoreItemsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        event?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/public/store/items/";
+};
+
+export type PublicStoreItemsListResponses = {
+    200: PaginatedPublicStoreItemList;
+};
+
+export type PublicStoreItemsListResponse =
+    PublicStoreItemsListResponses[keyof PublicStoreItemsListResponses];
+
+export type PublicStoreItemsRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this käyttäjä.
+         * A unique integer value identifying this tuote.
          */
         id: number;
     };
     query?: never;
-    url: "/api/v2/users/{id}/";
+    url: "/api/v2/public/store/items/{id}/";
 };
 
-export type UsersDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
+export type PublicStoreItemsRetrieveResponses = {
+    200: PublicStoreItem;
 };
 
-export type UsersDestroyResponse = UsersDestroyResponses[keyof UsersDestroyResponses];
+export type PublicStoreItemsRetrieveResponse =
+    PublicStoreItemsRetrieveResponses[keyof PublicStoreItemsRetrieveResponses];
 
-export type UsersRetrieveData = {
+export type UserInfoData = {
     body?: never;
-    path: {
-        /**
-         * A unique integer value identifying this käyttäjä.
-         */
-        id: number;
-    };
+    path?: never;
     query?: never;
-    url: "/api/v2/users/{id}/";
+    url: "/api/v2/user_info/";
 };
 
-export type UsersRetrieveResponses = {
-    200: User;
+export type UserInfoResponses = {
+    200: Array<UserInfo>;
 };
 
-export type UsersRetrieveResponse = UsersRetrieveResponses[keyof UsersRetrieveResponses];
-
-export type UsersPartialUpdateData = {
-    body?: PatchedUserRequest;
-    path: {
-        /**
-         * A unique integer value identifying this käyttäjä.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/users/{id}/";
-};
-
-export type UsersPartialUpdateResponses = {
-    200: User;
-};
-
-export type UsersPartialUpdateResponse =
-    UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
-
-export type UsersUpdateData = {
-    body: UserRequest;
-    path: {
-        /**
-         * A unique integer value identifying this käyttäjä.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/users/{id}/";
-};
-
-export type UsersUpdateResponses = {
-    200: User;
-};
-
-export type UsersUpdateResponse = UsersUpdateResponses[keyof UsersUpdateResponses];
+export type UserInfoResponse = UserInfoResponses[keyof UserInfoResponses];

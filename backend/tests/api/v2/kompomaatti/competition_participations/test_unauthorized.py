@@ -74,7 +74,9 @@ def test_unauthorized_cannot_see_participation_score_rank_before_results_shown(
 
 
 @pytest.mark.django_db
-def test_unauthorized_can_see_participation_score_rank_after_results_shown(auth_client, started_competition_participation):
+def test_unauthorized_can_see_participation_score_rank_after_results_shown(
+    auth_client, started_competition_participation
+):
     """Test that unauthorized users can see score/rank when show_results is enabled"""
     started_competition_participation.competition.show_results = True
     started_competition_participation.competition.save()

@@ -21,7 +21,7 @@ class UserCompoEntryViewSet(EntryViewSetMixin, ModelViewSet[Entry]):
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend)
-    ordering_fields = ("id",)
+    ordering_fields = ("id", "compo", "name")
     filterset_fields = ("compo",)
 
     def get_queryset(self) -> QuerySet[Entry]:

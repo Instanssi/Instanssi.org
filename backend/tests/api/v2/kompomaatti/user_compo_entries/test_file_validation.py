@@ -134,7 +134,9 @@ def test_user_image_required_but_missing_rejected(auth_client, open_compo, entry
 
 
 @pytest.mark.django_db
-def test_user_image_not_allowed_but_provided_rejected(auth_client, open_compo, entry_zip, source_zip, image_png):
+def test_user_image_not_allowed_but_provided_rejected(
+    auth_client, open_compo, entry_zip, source_zip, image_png
+):
     """Test that entries with image are rejected when image is not allowed"""
     # Set compo to not allow images (thumbnail_pref=3)
     open_compo.thumbnail_pref = 3

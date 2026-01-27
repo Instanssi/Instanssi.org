@@ -59,7 +59,9 @@ def test_unauthenticated_can_see_started_participations(api_client, started_comp
 
 
 @pytest.mark.django_db
-def test_public_cannot_see_participation_score_rank_before_results_shown(api_client, started_competition_participation):
+def test_public_cannot_see_participation_score_rank_before_results_shown(
+    api_client, started_competition_participation
+):
     """Test that public users cannot see score/rank before show_results is enabled"""
     started_competition_participation.competition.show_results = False
     started_competition_participation.competition.save()
@@ -72,7 +74,9 @@ def test_public_cannot_see_participation_score_rank_before_results_shown(api_cli
 
 
 @pytest.mark.django_db
-def test_public_can_see_participation_score_rank_after_results_shown(api_client, started_competition_participation):
+def test_public_can_see_participation_score_rank_after_results_shown(
+    api_client, started_competition_participation
+):
     """Test that public users can see score/rank when show_results is enabled"""
     started_competition_participation.competition.show_results = True
     started_competition_participation.competition.save()

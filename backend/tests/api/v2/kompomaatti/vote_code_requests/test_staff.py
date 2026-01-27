@@ -89,7 +89,9 @@ def test_filter_vote_code_requests_by_user(staff_api_client, base_user, vote_cod
 
 
 @pytest.mark.django_db
-def test_vote_code_request_event_from_url_overrides_request_body_on_create(staff_api_client, event, other_event, base_user):
+def test_vote_code_request_event_from_url_overrides_request_body_on_create(
+    staff_api_client, event, other_event, base_user
+):
     """Test that event is set from URL, ignoring any value in request body."""
     base_url = get_base_url(event.id)
     req = staff_api_client.post(

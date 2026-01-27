@@ -2,7 +2,7 @@ from django.db.models import QuerySet
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import SAFE_METHODS
 from rest_framework.request import Request
@@ -29,8 +29,9 @@ class CompetitionParticipationViewSet(PermissionViewSet):
     queryset = CompetitionParticipation.objects.all()
     serializer_class = CompetitionParticipationSerializer  # type: ignore[assignment]
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "competition", "user", "score")
+    search_fields = ("participant_name",)
     filterset_fields = ("competition", "user", "disqualified")
     permission_classes = [CompetitionParticipationPermissions]
 

@@ -7,7 +7,9 @@ def get_base_url(event_id):
 
 
 @pytest.mark.django_db
-def test_staff_invalid_entry_file_format_rejected(staff_api_client, open_compo, base_user, source_zip, image_png):
+def test_staff_invalid_entry_file_format_rejected(
+    staff_api_client, open_compo, base_user, source_zip, image_png
+):
     """Test that entry files with invalid extensions are rejected"""
     invalid_file = SimpleUploadedFile("entry.exe", b"fake content", content_type="application/octet-stream")
     base_url = get_base_url(open_compo.event_id)
@@ -32,7 +34,9 @@ def test_staff_invalid_entry_file_format_rejected(staff_api_client, open_compo, 
 
 
 @pytest.mark.django_db
-def test_staff_invalid_source_file_format_rejected(staff_api_client, open_compo, base_user, entry_zip, image_png):
+def test_staff_invalid_source_file_format_rejected(
+    staff_api_client, open_compo, base_user, entry_zip, image_png
+):
     """Test that source files with invalid extensions are rejected"""
     invalid_file = SimpleUploadedFile("source.exe", b"fake content", content_type="application/octet-stream")
     base_url = get_base_url(open_compo.event_id)
@@ -114,7 +118,9 @@ def test_staff_entry_file_too_large_rejected(staff_api_client, open_compo, base_
 
 
 @pytest.mark.django_db
-def test_staff_image_required_but_missing_rejected(staff_api_client, open_compo, base_user, entry_zip, source_zip):
+def test_staff_image_required_but_missing_rejected(
+    staff_api_client, open_compo, base_user, entry_zip, source_zip
+):
     """Test that entries without image are rejected when image is required"""
     # Set compo to require image (thumbnail_pref=0)
     open_compo.thumbnail_pref = 0

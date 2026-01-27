@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import SAFE_METHODS
@@ -41,8 +41,9 @@ class CompoEntryViewSet(EntryViewSetMixin, PermissionViewSet):  # type: ignore[m
     serializer_class = CompoEntrySerializer  # type: ignore[assignment]
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "compo", "name", "creator", "user")
+    search_fields = ("name", "creator", "description")
     filterset_fields = ("compo", "disqualified", "user")
     permission_classes = [CompoEntryPermissions]
 

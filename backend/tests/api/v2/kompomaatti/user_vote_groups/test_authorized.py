@@ -220,7 +220,9 @@ def test_cannot_see_other_users_votes(auth_client, other_user_vote_group):
 
 
 @pytest.mark.django_db
-def test_user_votes_filter_by_compo(auth_client, ticket_vote_code, votable_compo, entry_vote_group, entry_vote):
+def test_user_votes_filter_by_compo(
+    auth_client, ticket_vote_code, votable_compo, entry_vote_group, entry_vote
+):
     """Test filtering vote groups by compo."""
     base_url = get_base_url(votable_compo.event_id)
     req = auth_client.get(f"{base_url}?compo={votable_compo.id}")

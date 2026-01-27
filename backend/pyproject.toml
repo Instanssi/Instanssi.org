@@ -17,41 +17,45 @@ django-classy-tags = "^4.0.0"
 django-filter = "^25.1"
 django-compressor = "^4.1"
 django-qr-code = "^4.0.1"
-django-auditlog = "^3.0.0"
-django-admin-csvexport = "^2.2"
+django-auditlog = "^3.4.1"
+django-admin-csvexport = "^2.4.1"
 django-ical = "^1.9.2"
-celery = "^5.3.4"
-Pillow = "^12.0.0"
-social-auth-core = "^4.4.1"
-social-auth-app-django = "^5.6.0"
+celery = "^5.6.2"
+Pillow = "^12.1.0"
+social-auth-core = "^4.8.3"
+social-auth-app-django = "^5.7.0"
 django-libsass = "^0.9"
 requests = "^2.32.0"
-sentry-sdk = "^2.14.0"
+sentry-sdk = "^2.50.0"
 djangorestframework = "^3.15.2"
 django-rest-knox = "^5.0.1"
 tabulate = "^0.9.0"
 arrow = "^1.2.3"
-gunicorn = "^23.0.0"
-uvicorn = {extras = ["standard"], version = "^0.38.0"}
+gunicorn = "^24.0.0"
+uvicorn = {extras = ["standard"], version = "^0.40.0"}
 unidecode = "^1.3.6"
 yarl = "^1.12.1"
 orjson = "^3.11.0"
 ffmpeg-python = "^0.2.0"
 psycopg = {extras = ["binary", "pool"], version = "^3.2.2"}
 redis = {extras = ["hiredis"], version = "^7.0.1"}
-mastodon-py = "^2.0.1"
+mastodon-py = "^2.1.4"
 nh3 = "^0.3.0"
 drf-spectacular = "^0.29.0"
 
 [tool.poetry.group.dev.dependencies]
-Faker = "^29.0.0"
-black = "^25.9.0"
+Faker = "^40.1.2"
+black = "^26.1.0"
 isort = "^7.0.0"
-pytest = "^8.4.2"
+pytest = "^9.0.2"
 pytest-django = "^4.11.1"
 pytest-cov = "^7.0.0"
 freezegun = "^1.5.2"
 requests-mock = "^1.12.1"
+pytest-xdist = "^3.8.0"
+mypy = "^1.19.1"
+django-stubs = "^5.2.9"
+djangorestframework-stubs = "^3.16.7"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -77,3 +81,44 @@ filterwarnings = [
 omit = [
     "**/migrations/*",
 ]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+strict = false
+
+[[tool.mypy.overrides]]
+module = ["Instanssi.api.v2.*"]
+strict = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "social_core.*",
+    "social_django.*",
+    "knox.*",
+    "django_filters.*",
+    "imagekit.*",
+    "auditlog.*",
+    "celery.*",
+    "ffmpeg.*",
+    "crispy_forms.*",
+    "Instanssi.common.*",
+    "Instanssi.kompomaatti.*",
+    "Instanssi.store.*",
+    "Instanssi.arkisto.*",
+    "Instanssi.ext_blog.*",
+    "Instanssi.ext_programme.*",
+    "Instanssi.users.*",
+    "Instanssi.common_config",
+    "Instanssi.celery",
+]
+ignore_missing_imports = true
+ignore_errors = true
+
+[tool.django-stubs]
+django_settings_module = "Instanssi.test_settings"

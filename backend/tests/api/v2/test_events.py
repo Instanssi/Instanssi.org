@@ -66,7 +66,14 @@ def test_events_get_entry_by_id(super_api_client, event):
     """Test GET for specific ID"""
     result = super_api_client.get(f"{BASE_URL}{event.id}/")
     assert result.status_code == 200
-    assert "name" in result.data
+    assert result.data == {
+        "id": event.id,
+        "name": event.name,
+        "tag": event.tag,
+        "date": event.date.isoformat(),
+        "archived": event.archived,
+        "mainurl": event.mainurl,
+    }
 
 
 @pytest.mark.django_db
@@ -84,7 +91,14 @@ def test_events_post_new(super_api_client):
         ),
     )
     assert result.status_code == 201
-    assert "name" in result.data
+    assert result.data == {
+        "id": result.data["id"],
+        "name": "NAME",
+        "tag": "2024",
+        "date": dt,
+        "archived": False,
+        "mainurl": "https://localhost/2024",
+    }
 
 
 @pytest.mark.django_db
@@ -98,7 +112,14 @@ def test_events_patch_old(super_api_client, event):
         ),
     )
     assert result.status_code == 200
-    assert "name" in result.data
+    assert result.data == {
+        "id": event.id,
+        "name": "NEW NAME",
+        "tag": "2030",
+        "date": event.date.isoformat(),
+        "archived": event.archived,
+        "mainurl": event.mainurl,
+    }
 
 
 @pytest.mark.django_db
@@ -116,7 +137,14 @@ def test_events_put_old(super_api_client, event):
         ),
     )
     assert result.status_code == 200
-    assert "name" in result.data
+    assert result.data == {
+        "id": event.id,
+        "name": "NEW NAME",
+        "tag": "2030",
+        "date": dt,
+        "archived": True,
+        "mainurl": "https://localhost/2030",
+    }
 
 
 @pytest.mark.django_db

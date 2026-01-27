@@ -6,7 +6,18 @@ from rest_framework.serializers import ModelSerializer
 from Instanssi.ext_blog.models import BlogEntry
 
 
-class BlogEntrySerializer(ModelSerializer):
+class PublicBlogEntrySerializer(ModelSerializer[BlogEntry]):
+    """Serializer for public blog entries - excludes user, public, and created_by fields"""
+
+    class Meta:
+        model = BlogEntry
+        fields = ("id", "date", "title", "text", "event")
+        read_only_fields = ("id", "date")
+
+
+class BlogEntrySerializer(ModelSerializer[BlogEntry]):
+    """Serializer for staff - includes all fields"""
+
     user = PrimaryKeyRelatedField(queryset=User.objects.all(), default=CurrentUserDefault())
     created_by = SerializerMethodField()
 

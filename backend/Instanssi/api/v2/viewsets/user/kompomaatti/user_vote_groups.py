@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
@@ -12,7 +13,13 @@ from rest_framework.viewsets import GenericViewSet
 from Instanssi.api.v2.serializers.user.kompomaatti.user_vote_group_serializer import (
     UserVoteGroupSerializer,
 )
-from Instanssi.kompomaatti.models import Compo, VoteGroup
+from Instanssi.kompomaatti.models import (
+    Compo,
+    Entry,
+    TicketVoteCode,
+    VoteCodeRequest,
+    VoteGroup,
+)
 
 
 class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet[VoteGroup]):
@@ -52,8 +59,55 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
         if compo.event_id != event_id:
             raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
 
+    def validate_entries(self, entries: list[Entry], compo: Compo) -> None:
+        """Validate that entries are unique, belong to the compo, and are not disqualified."""
+        ids = [entry.id for entry in entries]
+        if len(ids) > len(set(ids)):
+            raise serializers.ValidationError({"entries": ["You can only vote for each entry once"]})
+
+        for entry in entries:
+            if entry.compo_id != compo.id:
+                raise serializers.ValidationError(
+                    {"entries": [f"Entry '{entry.name}' does not belong to compo '{compo.name}'"]}
+                )
+            if entry.disqualified:
+                raise serializers.ValidationError({"entries": [f"Entry '{entry.name}' is disqualified"]})
+
+    def validate_voting_rights(self, user: User, compo: Compo) -> None:
+        """Validate that the user has voting rights for the compo's event."""
+        has_ticket_code = TicketVoteCode.objects.filter(associated_to=user, event=compo.event).exists()
+        has_approved_request = VoteCodeRequest.objects.filter(
+            user=user, event=compo.event, status=1
+        ).exists()
+        if not has_ticket_code and not has_approved_request:
+            raise serializers.ValidationError(
+                {"non_field_errors": ["You do not have voting rights for this event"]}
+            )
+
+    @transaction.atomic
     def perform_create(self, serializer: BaseSerializer[VoteGroup]) -> None:
-        """Create vote group with the current user."""
-        if compo := serializer.validated_data.get("compo"):
-            self.validate_compo_belongs_to_event(compo)
-        serializer.save(user=self.request.user)
+        """Validate and create/replace votes for a compo."""
+        compo: Compo = serializer.validated_data["compo"]
+        entries: list[Entry] = serializer.validated_data["entries"]
+        user: User = self.request.user  # type: ignore[assignment]
+
+        self.validate_compo_belongs_to_event(compo)
+
+        if not compo.active:
+            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+
+        if not compo.is_voting_open():
+            raise serializers.ValidationError({"compo": ["Voting is not open for this compo"]})
+
+        self.validate_voting_rights(user, compo)
+        self.validate_entries(entries, compo)
+
+        # Upsert: delete old votes and create new ones
+        group = VoteGroup.objects.filter(compo=compo, user=user).first()
+        if group:
+            group.delete_votes()
+        else:
+            group = VoteGroup.objects.create(compo=compo, user=user)
+
+        group.create_votes(entries)
+        serializer.instance = group

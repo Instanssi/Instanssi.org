@@ -1,13 +1,14 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import CompoEntrySerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
+from Instanssi.api.v2.utils.entry_file_validation import (
+    maybe_copy_entry_to_image,
+    validate_entry_files,
+)
 from Instanssi.kompomaatti.models import Compo, Entry
 
 from .entry_viewset_mixin import EntryViewSetMixin
@@ -23,8 +24,6 @@ class CompoEntryViewSet(EntryViewSetMixin, PermissionViewSet):  # type: ignore[m
     queryset = Entry.objects.all()
     serializer_class = CompoEntrySerializer  # type: ignore[assignment]
     parser_classes = (MultiPartParser, FormParser)
-    pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "compo", "name", "creator", "user")
     search_fields = ("name", "creator", "description")
     filterset_fields = ("compo", "disqualified", "user")
@@ -47,9 +46,13 @@ class CompoEntryViewSet(EntryViewSetMixin, PermissionViewSet):  # type: ignore[m
     def perform_create(self, serializer: BaseSerializer[Entry]) -> None:  # type: ignore[override]
         if compo := serializer.validated_data.get("compo"):
             self.validate_compo_belongs_to_event(compo)
-        serializer.save()
+            validate_entry_files(serializer.validated_data, compo)
+        instance = serializer.save()
+        maybe_copy_entry_to_image(instance)
 
     def perform_update(self, serializer: BaseSerializer[Entry]) -> None:  # type: ignore[override]
-        if compo := serializer.validated_data.get("compo"):
-            self.validate_compo_belongs_to_event(compo)
-        serializer.save()
+        serializer.validated_data.pop("compo", None)
+        assert serializer.instance is not None
+        validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
+        instance = serializer.save()
+        maybe_copy_entry_to_image(instance)

@@ -1,8 +1,5 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import (
@@ -13,10 +10,10 @@ from Instanssi.kompomaatti.models import Competition, CompetitionParticipation
 
 
 class CompetitionParticipationViewSet(PermissionViewSet):
+    """Staff viewset for managing competition participations."""
+
     queryset = CompetitionParticipation.objects.all()
     serializer_class = CompetitionParticipationSerializer  # type: ignore[assignment]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "competition", "user", "score")
     search_fields = ("participant_name",)
     filterset_fields = ("competition", "user", "disqualified")
@@ -39,7 +36,5 @@ class CompetitionParticipationViewSet(PermissionViewSet):
         super().perform_create(serializer)  # type: ignore[arg-type]
 
     def perform_update(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:  # type: ignore[override]
-        """Validate competition belongs to event if being changed."""
-        if competition := serializer.validated_data.get("competition"):
-            self.validate_competition_belongs_to_event(competition)
+        serializer.validated_data.pop("competition", None)
         super().perform_update(serializer)  # type: ignore[arg-type]

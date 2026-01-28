@@ -43,22 +43,36 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
         if competition.event_id != event_id:
             raise serializers.ValidationError({"competition": ["Competition does not belong to this event"]})
 
-    def perform_create(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
-        """Create participation with the current user."""
-        if competition := serializer.validated_data.get("competition"):
-            self.validate_competition_belongs_to_event(competition)
-        serializer.save(user=self.request.user)
-
-    def perform_update(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
-        """Validate that participation can still be modified."""
-        instance = serializer.instance
-        assert instance is not None  # Always exists in update context
-        if not instance.competition.active:
+    def validate_competition(self, competition: Competition) -> None:
+        """Validate that competition is active and open for participation."""
+        if not competition.active:
             raise serializers.ValidationError({"competition": ["Competition is not active"]})
 
-        if not instance.competition.is_participating_open():
+        if not competition.is_participating_open():
             raise serializers.ValidationError({"competition": ["Competition participation time has ended"]})
 
+    def validate_no_duplicate_participation(self, competition: Competition, user: User) -> None:
+        """Validate that the user hasn't already participated in this competition."""
+        if CompetitionParticipation.objects.filter(competition=competition, user=user).exists():
+            raise serializers.ValidationError(
+                {"competition": ["You have already participated in this competition"]}
+            )
+
+    def perform_create(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
+        """Create participation with the current user."""
+        competition: Competition = serializer.validated_data["competition"]
+        user: User = self.request.user  # type: ignore[assignment]
+
+        self.validate_competition_belongs_to_event(competition)
+        self.validate_competition(competition)
+        self.validate_no_duplicate_participation(competition, user)
+
+        serializer.save(user=user)
+
+    def perform_update(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
+        serializer.validated_data.pop("competition", None)
+        assert serializer.instance is not None
+        self.validate_competition(serializer.instance.competition)
         serializer.save()
 
     def perform_destroy(self, instance: CompetitionParticipation) -> None:

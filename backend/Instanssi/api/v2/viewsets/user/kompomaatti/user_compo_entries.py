@@ -10,6 +10,10 @@ from rest_framework.serializers import BaseSerializer
 from rest_framework.viewsets import ModelViewSet
 
 from Instanssi.api.v2.serializers.user.kompomaatti import UserCompoEntrySerializer
+from Instanssi.api.v2.utils.entry_file_validation import (
+    maybe_copy_entry_to_image,
+    validate_entry_files,
+)
 from Instanssi.api.v2.viewsets.admin.kompomaatti.entry_viewset_mixin import (
     EntryViewSetMixin,
 )
@@ -17,6 +21,8 @@ from Instanssi.kompomaatti.models import Compo, Entry
 
 
 class UserCompoEntryViewSet(EntryViewSetMixin, ModelViewSet[Entry]):
+    """Manage the current user's own compo entries."""
+
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
     parser_classes = (MultiPartParser, FormParser)
@@ -40,44 +46,41 @@ class UserCompoEntryViewSet(EntryViewSetMixin, ModelViewSet[Entry]):
         if compo.event_id != event_id:
             raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
 
+    def _validate_editing_allowed(self, compo: Compo) -> None:
+        """Validate that the compo is active and editing is still open."""
+        if not compo.active:
+            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+        if not compo.is_editing_open():
+            raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
+
     def perform_create(self, serializer: BaseSerializer[Entry]) -> None:
         if compo := serializer.validated_data.get("compo"):
             self.validate_compo_belongs_to_event(compo)
 
-            # Check compo is active and open for adding
             if not compo.active:
                 raise serializers.ValidationError({"compo": ["Compo not found or not active"]})
 
             if not compo.is_adding_open():
                 raise serializers.ValidationError({"compo": ["Compo entry adding time has ended"]})
 
-        serializer.save(user=self.request.user)
+            validate_entry_files(serializer.validated_data, compo)
+
+        instance = serializer.save(user=self.request.user)
+        maybe_copy_entry_to_image(instance)
 
     def perform_update(self, serializer: BaseSerializer[Entry]) -> None:
-        # Check deadline
         instance = serializer.instance
-        assert instance is not None  # Always exists in update context
-        if not instance.compo.active:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+        assert instance is not None
 
-        if not instance.compo.is_editing_open():
-            raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
-
-        serializer.save()
+        serializer.validated_data.pop("compo", None)
+        self._validate_editing_allowed(instance.compo)
+        validate_entry_files(serializer.validated_data, instance.compo, instance)
+        instance = serializer.save()
+        maybe_copy_entry_to_image(instance)
 
     def validate_partial_update(self, instance: Entry) -> None:
-        """Check compo is active and editing is open before partial update."""
-        if not instance.compo.active:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
-
-        if not instance.compo.is_editing_open():
-            raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
+        self._validate_editing_allowed(instance.compo)
 
     def perform_destroy(self, instance: Entry) -> None:
-        if not instance.compo.active:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
-
-        if not instance.compo.is_editing_open():
-            raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
-
+        self._validate_editing_allowed(instance.compo)
         super().perform_destroy(instance)

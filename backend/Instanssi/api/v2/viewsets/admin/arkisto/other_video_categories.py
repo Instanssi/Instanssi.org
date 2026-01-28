@@ -1,7 +1,4 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.arkisto import OtherVideoCategorySerializer
@@ -14,8 +11,6 @@ class OtherVideoCategoryViewSet(PermissionViewSet):
 
     queryset = OtherVideoCategory.objects.all()
     serializer_class = OtherVideoCategorySerializer  # type: ignore[assignment]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "name")
     search_fields = ("name",)
 

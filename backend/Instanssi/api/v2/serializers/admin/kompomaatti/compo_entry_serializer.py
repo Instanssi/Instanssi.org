@@ -1,16 +1,14 @@
-from typing import Any
-
-from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from Instanssi.kompomaatti.models import Compo, Entry
+from Instanssi.kompomaatti.models import Entry
 
 from .alternate_entry_file_serializer import AlternateEntryFileSerializer
-from .entry_file_validation_mixin import EntryFileValidationMixin
 
 
-class CompoEntrySerializer(EntryFileValidationMixin, ModelSerializer[Entry]):
+class CompoEntrySerializer(ModelSerializer[Entry]):
+    """Staff serializer for compo entries."""
+
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -46,48 +44,10 @@ class CompoEntrySerializer(EntryFileValidationMixin, ModelSerializer[Entry]):
         return None
 
     def get_rank(self, obj: Entry) -> int | None:
-        # Show rank only if user has permissions or show_voting_results is enabled
-        request = self.context.get("request")
-        if request and request.user.is_authenticated and request.user.has_perm("kompomaatti.view_entry"):
-            return obj.get_rank()
-        if obj.compo.show_voting_results:
-            return obj.get_rank()
-        return None
+        return obj.get_rank()
 
     def get_score(self, obj: Entry) -> float | None:
-        # Show score only if user has permissions or show_voting_results is enabled
-        request = self.context.get("request")
-        if request and request.user.is_authenticated and request.user.has_perm("kompomaatti.view_entry"):
-            return obj.get_score()
-        if obj.compo.show_voting_results:
-            return obj.get_score()
-        return None
-
-    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
-        data = super().validate(data)
-
-        # Get compo from data or instance
-        compo: Compo | None = data.get("compo")
-        if not compo and self.instance:
-            compo = self.instance.compo
-
-        if not compo:
-            raise ValidationError({"compo": ["Compo is required"]})
-
-        # Validate entry files using mixin
-        self.validate_entry_files(data, compo)
-
-        return data
-
-    def create(self, validated_data: dict[str, Any]) -> Entry:
-        instance: Entry = super().create(validated_data)
-        self._maybe_copy_entry_to_image(instance)
-        return instance
-
-    def update(self, instance: Entry, validated_data: dict[str, Any]) -> Entry:
-        instance = super().update(instance, validated_data)
-        self._maybe_copy_entry_to_image(instance)
-        return instance
+        return obj.get_score()
 
     class Meta:
         model = Entry

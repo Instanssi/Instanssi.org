@@ -2,7 +2,6 @@ from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import TicketVoteCodeSerializer
@@ -12,9 +11,10 @@ from Instanssi.store.models import TransactionItem
 
 
 class TicketVoteCodeViewSet(PermissionViewSet):
+    """Staff viewset for managing ticket vote codes."""
+
     queryset = TicketVoteCode.objects.all()
     serializer_class = TicketVoteCodeSerializer  # type: ignore[assignment]
-    pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event", "associated_to", "time")
     filterset_fields = ("associated_to", "ticket")

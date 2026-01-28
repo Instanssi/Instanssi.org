@@ -1,19 +1,15 @@
-from typing import Any
-
-from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti.alternate_entry_file_serializer import (
     AlternateEntryFileSerializer,
 )
-from Instanssi.api.v2.serializers.admin.kompomaatti.entry_file_validation_mixin import (
-    EntryFileValidationMixin,
-)
-from Instanssi.kompomaatti.models import Compo, Entry
+from Instanssi.kompomaatti.models import Entry
 
 
-class UserCompoEntrySerializer(EntryFileValidationMixin, ModelSerializer[Entry]):
+class UserCompoEntrySerializer(ModelSerializer[Entry]):
+    """User serializer for managing own compo entries."""
+
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -77,32 +73,6 @@ class UserCompoEntrySerializer(EntryFileValidationMixin, ModelSerializer[Entry])
         if obj.youtube_url:
             return str(obj.youtube_url.link_url)
         return None
-
-    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
-        data = super().validate(data)
-
-        # Get compo from data or instance
-        compo: Compo | None = data.get("compo")
-        if not compo and self.instance:
-            compo = self.instance.compo
-
-        if not compo:
-            raise ValidationError({"compo": ["Compo is required"]})
-
-        # Validate entry files using mixin
-        self.validate_entry_files(data, compo)
-
-        return data
-
-    def create(self, validated_data: dict[str, Any]) -> Entry:
-        instance: Entry = super().create(validated_data)
-        self._maybe_copy_entry_to_image(instance)
-        return instance
-
-    def update(self, instance: Entry, validated_data: dict[str, Any]) -> Entry:
-        instance = super().update(instance, validated_data)
-        self._maybe_copy_entry_to_image(instance)
-        return instance
 
     class Meta:
         model = Entry

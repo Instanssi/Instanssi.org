@@ -1,7 +1,4 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import CompetitionSerializer
@@ -10,10 +7,10 @@ from Instanssi.kompomaatti.models import Competition
 
 
 class CompetitionViewSet(PermissionViewSet):
+    """Staff viewset for managing competitions."""
+
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer  # type: ignore[assignment]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event", "name", "start")
     search_fields = ("name", "description")
     filterset_fields = ("active", "show_results", "hide_from_archive")

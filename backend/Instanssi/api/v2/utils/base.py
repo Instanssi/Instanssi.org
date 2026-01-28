@@ -1,4 +1,4 @@
-from typing import Any, TypeVar
+from typing import Any, Sequence, TypeVar
 
 from django.db.models import Model
 from django.http import HttpRequest, HttpResponseBase
@@ -6,6 +6,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny, DjangoModelPermissions
@@ -87,9 +89,13 @@ class PermissionViewSet(ModelViewSet[Model]):
     Each action requires the corresponding Django model permission.
 
     This is the standard base class for staff-only API endpoints.
+    Includes LimitOffsetPagination and standard filter backends by default.
+    Viewsets that don't need SearchFilter can override filter_backends.
     """
 
     permission_classes = [FullDjangoModelPermissions]
+    pagination_class = LimitOffsetPagination
+    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
 
 
 class PublicReadOnlyViewSet(ReadOnlyModelViewSet[_ModelT]):

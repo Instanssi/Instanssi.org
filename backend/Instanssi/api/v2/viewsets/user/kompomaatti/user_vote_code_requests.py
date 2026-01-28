@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.mixins import (
     CreateModelMixin,
@@ -51,4 +52,12 @@ class UserVoteCodeRequestViewSet(
 
     def perform_create(self, serializer: BaseSerializer[VoteCodeRequest]) -> None:
         """Create vote code request with the current user and event from URL."""
-        serializer.save(user=self.request.user, event_id=int(self.kwargs["event_pk"]))
+        event_id = int(self.kwargs["event_pk"])
+        user: User = self.request.user  # type: ignore[assignment]
+
+        if VoteCodeRequest.objects.filter(event_id=event_id, user=user).exists():
+            raise serializers.ValidationError(
+                {"non_field_errors": ["You have already requested a vote code for this event"]}
+            )
+
+        serializer.save(user=user, event_id=event_id)

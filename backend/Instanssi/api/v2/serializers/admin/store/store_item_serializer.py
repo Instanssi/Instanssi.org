@@ -4,6 +4,8 @@ from Instanssi.store.models import StoreItem, StoreItemVariant
 
 
 class StoreItemVariantSerializer(ModelSerializer[StoreItemVariant]):
+    """Staff serializer for store item variants."""
+
     class Meta:
         model = StoreItemVariant
         fields = ("id", "item", "name")
@@ -11,11 +13,7 @@ class StoreItemVariantSerializer(ModelSerializer[StoreItemVariant]):
 
 
 class StoreItemSerializer(ModelSerializer[StoreItem]):
-    """Serializer for StoreItem model.
-
-    Used for both public read access and staff CRUD operations.
-    For public access, includes computed fields like num_available and discount_factor.
-    """
+    """Staff serializer for StoreItem model."""
 
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()

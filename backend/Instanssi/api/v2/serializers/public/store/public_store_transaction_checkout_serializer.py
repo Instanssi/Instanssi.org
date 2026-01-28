@@ -7,16 +7,8 @@ from rest_framework.serializers import (
     EmailField,
     IntegerField,
     Serializer,
-    ValidationError,
 )
 
-from Instanssi.store.handlers import (
-    TransactionException,
-    create_store_transaction,
-    validate_item,
-    validate_items,
-    validate_payment_method,
-)
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreTransaction
 
@@ -27,14 +19,6 @@ class PublicStoreTransactionCheckoutItemSerializer(Serializer[dict[str, Any]]):
     item_id = IntegerField()
     variant_id = IntegerField(allow_null=True)
     amount = IntegerField(min_value=1)
-
-    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
-        data = super().validate(data)
-        try:
-            validate_item(data)
-        except TransactionException as e:
-            raise ValidationError(str(e))
-        return data
 
 
 class PublicStoreTransactionCheckoutSerializer(Serializer[StoreTransaction]):
@@ -59,28 +43,3 @@ class PublicStoreTransactionCheckoutSerializer(Serializer[StoreTransaction]):
     read_terms = BooleanField()
     items = PublicStoreTransactionCheckoutItemSerializer(many=True, required=True)
     confirm = BooleanField(default=False)
-
-    def validate_read_terms(self, value: bool | None) -> bool | None:
-        if not value:
-            raise ValidationError("Terms and conditions must be accepted before proceeding with the order")
-        return value
-
-    def validate_items(self, value: list[dict[str, Any]] | None) -> list[dict[str, Any]]:
-        if not value:
-            raise ValidationError("Shopping cart must contain at least one item")
-        try:
-            validate_items(value)
-        except TransactionException as e:
-            raise ValidationError(str(e))
-        return value
-
-    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
-        data = super().validate(data)
-        try:
-            validate_payment_method(data["items"], PaymentMethod(data["payment_method"]))
-        except TransactionException as e:
-            raise ValidationError(str(e))
-        return data
-
-    def create(self, validated_data: dict[str, Any]) -> StoreTransaction:
-        return create_store_transaction(validated_data)

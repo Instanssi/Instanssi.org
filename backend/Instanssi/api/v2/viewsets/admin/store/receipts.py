@@ -1,11 +1,8 @@
 from typing import Any
 
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -17,13 +14,7 @@ from Instanssi.store.models import Receipt
 
 
 class ReceiptViewSet(PermissionViewSet):
-    """ViewSet for Receipt model (staff access).
-
-    Staff access (requires store.view/add/change/delete_receipt permissions):
-    - GET: List/retrieve all receipts
-    - POST: Create new receipts
-    - PUT/PATCH: Update receipts (e.g., change mail_to)
-    - DELETE: Delete receipts
+    """Staff viewset for managing receipts.
 
     Custom actions:
     - POST /receipts/<id>/resend/: Resend the receipt email
@@ -31,8 +22,6 @@ class ReceiptViewSet(PermissionViewSet):
 
     queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer  # type: ignore[assignment]
-    pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "sent", "mail_to", "subject")
     search_fields = ("mail_to", "subject")
     filterset_fields = ("transaction", "sent")

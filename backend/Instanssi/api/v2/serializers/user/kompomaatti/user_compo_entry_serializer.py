@@ -100,7 +100,7 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "entryfile": {"write_only": True, "required": False},
+            "entryfile": {"write_only": True},
             "sourcefile": {"write_only": True, "required": False},
             "imagefile_original": {"write_only": True, "required": False},
         }

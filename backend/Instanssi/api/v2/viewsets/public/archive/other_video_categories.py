@@ -14,10 +14,11 @@ class PublicOtherVideoCategoryViewSet(PublicReadOnlyViewSet[OtherVideoCategory])
     """
 
     serializer_class = PublicOtherVideoCategorySerializer
+    queryset = OtherVideoCategory.objects.all()
 
     def get_queryset(self) -> QuerySet[OtherVideoCategory]:
         event_id = int(self.kwargs["event_pk"])
-        return OtherVideoCategory.objects.filter(
+        return self.queryset.filter(
             event_id=event_id,
             event__archived=True,
         ).order_by("name")

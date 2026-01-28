@@ -9,7 +9,8 @@ class PublicCompetitionViewSet(PublicReadOnlyViewSet[Competition]):
     """Public read-only endpoint for competitions. Only active competitions are shown."""
 
     serializer_class = PublicCompetitionSerializer
+    queryset = Competition.objects.all()
 
     def get_queryset(self) -> QuerySet[Competition]:
         event_id = int(self.kwargs["event_pk"])
-        return Competition.objects.filter(event_id=event_id, active=True)
+        return self.queryset.filter(event_id=event_id, active=True)

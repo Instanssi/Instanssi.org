@@ -41,12 +41,13 @@ class UserTicketVoteCodeViewSet(
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event", "time")
     filterset_fields = ("event",)
+    queryset = TicketVoteCode.objects.all()
 
     def get_queryset(self) -> QuerySet[TicketVoteCode]:
         """Return only the current user's vote codes for this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return TicketVoteCode.objects.filter(event_id=event_id, associated_to=user)
+        return self.queryset.filter(event_id=event_id, associated_to=user)
 
     @transaction.atomic
     def perform_create(self, serializer: BaseSerializer[TicketVoteCode]) -> None:

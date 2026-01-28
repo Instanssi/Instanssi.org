@@ -43,12 +43,13 @@ class UserVoteCodeRequestViewSet(
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event")
     filterset_fields = ("event", "status")
+    queryset = VoteCodeRequest.objects.all()
 
     def get_queryset(self) -> QuerySet[VoteCodeRequest]:
         """Return only the current user's vote code requests for this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return VoteCodeRequest.objects.filter(event_id=event_id, user=user)
+        return self.queryset.filter(event_id=event_id, user=user)
 
     def perform_create(self, serializer: BaseSerializer[VoteCodeRequest]) -> None:
         """Create vote code request with the current user and event from URL."""

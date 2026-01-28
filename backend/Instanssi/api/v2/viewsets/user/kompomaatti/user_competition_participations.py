@@ -28,12 +28,13 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "competition")
     filterset_fields = ("competition",)
+    queryset = CompetitionParticipation.objects.all()
 
     def get_queryset(self) -> QuerySet[CompetitionParticipation]:
         """Return only the current user's participations for active competitions in this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return CompetitionParticipation.objects.filter(
+        return self.queryset.filter(
             competition__event_id=event_id, competition__active=True, user=user
         ).select_related("competition")
 

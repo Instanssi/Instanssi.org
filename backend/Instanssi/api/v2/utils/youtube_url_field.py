@@ -1,10 +1,22 @@
 from typing import Any
 
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from Instanssi.common.youtube import YoutubeURL
 
 
+@extend_schema_field(
+    {
+        "type": "object",
+        "nullable": True,
+        "properties": {
+            "video_id": {"type": "string"},
+            "start": {"type": "integer", "nullable": True},
+        },
+        "required": ["video_id"],
+    }
+)
 class YoutubeUrlField(serializers.Field):  # type: ignore[type-arg]
     """Custom field to handle YoutubeVideoField serialization/deserialization."""
 

@@ -1,5 +1,6 @@
 import pytest
 from django.conf import settings
+from django.contrib.auth.models import Group, Permission
 
 BASE_URL = "/api/v2/user_info/"
 
@@ -27,3 +28,20 @@ def test_authenticated_user_info(auth_client, base_user):
             "is_superuser": base_user.is_superuser,
         }
     ]
+
+
+@pytest.mark.django_db
+def test_user_info_includes_group_permissions(auth_client, base_user):
+    """Test that permissions from groups are included in user_permissions."""
+    # Create a group with a permission
+    group = Group.objects.create(name="Test Group")
+    permission = Permission.objects.get(codename="add_event")
+    group.permissions.add(permission)
+
+    # Add user to the group
+    base_user.groups.add(group)
+
+    response = auth_client.get(BASE_URL)
+    assert response.status_code == 200
+    permissions = response.data[0]["user_permissions"]
+    assert permissions == ["add_event"]

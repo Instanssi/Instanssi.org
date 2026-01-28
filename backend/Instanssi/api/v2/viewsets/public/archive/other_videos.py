@@ -9,11 +9,12 @@ class PublicOtherVideoViewSet(PublicReadOnlyViewSet[OtherVideo]):
     """Public read-only endpoint for archive videos. Only videos from archived events are shown."""
 
     serializer_class = PublicOtherVideoSerializer
+    queryset = OtherVideo.objects.all()
 
     def get_queryset(self) -> QuerySet[OtherVideo]:
         event_id = int(self.kwargs["event_pk"])
         return (
-            OtherVideo.objects.filter(
+            self.queryset.filter(
                 category__event_id=event_id,
                 category__event__archived=True,
             )

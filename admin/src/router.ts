@@ -25,7 +25,11 @@ const router = createRouter({
             component: {
                 async beforeRouteEnter(to, from, next) {
                     // We don't really need a component here -- just do logout to backend and then redirect.
-                    await authService.logout();
+                    try {
+                        await authService.logout();
+                    } catch (e) {
+                        console.error("Logout failed:", e);
+                    }
                     next({ name: "login" });
                 },
             },
@@ -78,7 +82,11 @@ const router = createRouter({
                 async beforeRouteEnter(to, from, next) {
                     // This is the root page. If we end up here, then event has not been selected. Pick one and redirect.
                     // If there are no events created at all, then redirect to events page so that user can create one.
-                    await refreshEvents();
+                    try {
+                        await refreshEvents();
+                    } catch (e) {
+                        console.error("Failed to refresh events:", e);
+                    }
                     const event = getLatestEvent();
                     if (event) {
                         next({ name: "dashboard", params: { eventId: event.id } });

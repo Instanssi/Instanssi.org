@@ -3,6 +3,8 @@ from rest_framework.serializers import ModelSerializer
 
 
 class GroupSerializer(ModelSerializer[Group]):
+    """Serializer for user groups (used in user info responses)."""
+
     class Meta:
         model = Group
         fields = ("name",)

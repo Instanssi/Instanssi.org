@@ -296,8 +296,8 @@ def public_blog_entry(event, base_user) -> BlogEntry:
 
 
 @fixture
-def programme_event(event, faker) -> ProgrammeEvent:
-    """Active programme event for testing."""
+def program_event(event, faker) -> ProgrammeEvent:
+    """Active program event for testing."""
     return ProgrammeEvent.objects.create(
         event=event,
         start=timezone.now() + timedelta(hours=1),
@@ -311,8 +311,8 @@ def programme_event(event, faker) -> ProgrammeEvent:
 
 
 @fixture
-def inactive_programme_event(event, faker) -> ProgrammeEvent:
-    """Inactive programme event for testing visibility."""
+def inactive_program_event(event, faker) -> ProgrammeEvent:
+    """Inactive program event for testing visibility."""
     return ProgrammeEvent.objects.create(
         event=event,
         start=timezone.now() + timedelta(hours=3),

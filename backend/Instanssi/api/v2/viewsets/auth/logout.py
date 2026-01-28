@@ -9,6 +9,8 @@ from Instanssi.api.v2.utils.base import EnforceCSRFViewSet
 
 
 class LogoutViewSet(EnforceCSRFViewSet):
+    """End the current user session."""
+
     permission_classes = [IsAuthenticated]
 
     @extend_schema(

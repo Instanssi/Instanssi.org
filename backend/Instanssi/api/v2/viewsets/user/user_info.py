@@ -10,6 +10,8 @@ from Instanssi.api.v2.serializers.user import UserInfoSerializer
 
 
 class UserInfoViewSet(ViewSet):
+    """Retrieve the current authenticated user's profile and permissions."""
+
     permission_classes = [IsAuthenticated]
 
     @extend_schema(

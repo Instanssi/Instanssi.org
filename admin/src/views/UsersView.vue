@@ -2,11 +2,10 @@
     <LayoutBase :title="t('UsersView.title')">
         <v-col>
             <v-row>
-                <v-btn
-                    v-if="auth.canAdd(PermissionTarget.USER)"
-                    prepend-icon="fas fa-plus"
-                    @click="createUser"
-                >
+                <v-btn v-if="auth.canAdd(PermissionTarget.USER)" @click="createUser">
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faPlus" />
+                    </template>
                     {{ t("UsersView.newUser") }}
                 </v-btn>
                 <v-text-field
@@ -47,19 +46,23 @@
                             v-if="auth.canDelete(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-xmark"
                             color="red"
                             @click="deleteUser(item)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faXmark" />
+                            </template>
                             Delete
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-pen-to-square"
                             @click="editUser(item.id)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faPenToSquare" />
+                            </template>
                             Edit
                         </v-btn>
                     </template>
@@ -71,6 +74,8 @@
 </template>
 
 <script setup lang="ts">
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";

@@ -2,11 +2,10 @@
     <LayoutBase :title="t('EventView.title')">
         <v-col>
             <v-row>
-                <v-btn
-                    v-if="auth.canAdd(PermissionTarget.EVENT)"
-                    prepend-icon="fas fa-plus"
-                    @click="createEvent"
-                >
+                <v-btn v-if="auth.canAdd(PermissionTarget.EVENT)" @click="createEvent">
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faPlus" />
+                    </template>
                     {{ t("EventView.newEvent") }}
                 </v-btn>
             </v-row>
@@ -30,8 +29,8 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.archived="{ item }">
-                        <v-icon v-if="item.archived" icon="fas fa-check" color="green" />
-                        <v-icon v-else icon="fas fa-xmark" color="red" />
+                        <FontAwesomeIcon v-if="item.archived" :icon="faCheck" class="text-green" />
+                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
                     </template>
                     <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
@@ -41,19 +40,23 @@
                             v-if="auth.canDelete(PermissionTarget.EVENT)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-xmark"
                             color="red"
                             @click="deleteEvent(item)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faXmark" />
+                            </template>
                             Delete
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.EVENT)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-pen-to-square"
                             @click="editEvent(item.id)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faPenToSquare" />
+                            </template>
                             Edit
                         </v-btn>
                     </template>
@@ -65,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";

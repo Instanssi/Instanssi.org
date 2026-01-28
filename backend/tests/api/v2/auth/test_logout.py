@@ -10,6 +10,6 @@ def test_logout_not_authenticated(api_client):
 
 
 @pytest.mark.django_db
-def test_logout_bad_request(auth_client):
+def test_logout_ok(auth_client):
     response = auth_client.post(BASE_URL)
     assert response.status_code == 200

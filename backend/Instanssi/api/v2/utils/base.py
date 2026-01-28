@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, TypeVar
 
 from django.db.models import Model
 from django.http import HttpRequest, HttpResponseBase
@@ -7,15 +7,16 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import SAFE_METHODS, DjangoModelPermissions
-from rest_framework.request import Request
-from rest_framework.views import APIView
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny, DjangoModelPermissions
 from rest_framework.viewsets import (
     GenericViewSet,
     ModelViewSet,
     ReadOnlyModelViewSet,
     ViewSet,
 )
+
+_ModelT = TypeVar("_ModelT", bound=Model)
 
 
 class EnforceCSRFViewSet(ViewSet):
@@ -67,32 +68,6 @@ class FullDjangoModelPermissions(DjangoModelPermissions):
     }
 
 
-class PublicReadPermission(FullDjangoModelPermissions):
-    """Permission class allowing public read access with authenticated writes.
-
-    Allows anonymous users to perform safe operations (GET, HEAD, OPTIONS)
-    while requiring Django model permissions for write operations (POST, PUT,
-    PATCH, DELETE).
-
-    Use this for endpoints where data should be publicly readable but only
-    staff can modify it (e.g., compo listings, program events).
-
-    For object-level restrictions (e.g., only show active items to public),
-    subclass this and override has_object_permission:
-
-        class ActiveItemPermission(PublicReadPermission):
-            def has_object_permission(self, request, view, obj):
-                if request.method in SAFE_METHODS and obj.active:
-                    return True
-                return super().has_permission(request, view)
-    """
-
-    def has_permission(self, request: Request, view: APIView) -> bool:
-        if request.method in SAFE_METHODS:
-            return True
-        return super().has_permission(request, view)
-
-
 class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
     """Read-only viewset that requires Django model view permissions.
 
@@ -115,6 +90,19 @@ class PermissionViewSet(ModelViewSet[Model]):
     """
 
     permission_classes = [FullDjangoModelPermissions]
+
+
+class PublicReadOnlyViewSet(ReadOnlyModelViewSet[_ModelT]):
+    """Read-only viewset for public endpoints requiring no authentication.
+
+    Sets AllowAny permissions, disables authentication, and uses
+    LimitOffsetPagination. All public read-only viewsets should inherit
+    from this instead of ReadOnlyModelViewSet.
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
+    pagination_class = LimitOffsetPagination
 
 
 class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet[Model]):

@@ -506,6 +506,7 @@ def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, 
         entryfile=entry_zip,
         sourcefile=source_zip,
         imagefile_original=image_png,
+        youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     )
 
 

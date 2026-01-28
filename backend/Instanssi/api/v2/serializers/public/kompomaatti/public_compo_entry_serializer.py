@@ -1,6 +1,7 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
+from Instanssi.api.v2.utils.youtube_url_field import YoutubeUrlField
 from Instanssi.kompomaatti.models import Entry
 
 from .alternate_entry_file_serializer import PublicAlternateEntryFileSerializer
@@ -16,6 +17,7 @@ class PublicCompoEntrySerializer(ModelSerializer[Entry]):
     Rank/score are shown only when compo.show_voting_results is True.
     """
 
+    youtube_url = YoutubeUrlField(required=False, allow_null=True)
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     imagefile_medium_url = SerializerMethodField()

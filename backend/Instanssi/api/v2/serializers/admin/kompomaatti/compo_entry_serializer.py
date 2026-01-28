@@ -1,6 +1,7 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
+from Instanssi.api.v2.utils.youtube_url_field import YoutubeUrlField
 from Instanssi.kompomaatti.models import Entry
 
 from .alternate_entry_file_serializer import AlternateEntryFileSerializer
@@ -9,6 +10,7 @@ from .alternate_entry_file_serializer import AlternateEntryFileSerializer
 class CompoEntrySerializer(ModelSerializer[Entry]):
     """Staff serializer for compo entries."""
 
+    youtube_url = YoutubeUrlField(required=False, allow_null=True)
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()

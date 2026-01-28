@@ -1,0 +1,1 @@
+{"version":3,"file":"sleep-mAKpSMLY.js","sources":["../../../../../admin/src/utils/sleep.ts"],"sourcesContent":["// Sleep utility function.\n\nexport function sleep(millis: number): Promise<void> {\n    return new Promise((r) => setTimeout(r, millis));\n}\n"],"names":["sleep","millis","r"],"mappings":"AAEO,SAASA,EAAMC,EAA+B,CACjD,OAAO,IAAI,QAASC,GAAM,WAAWA,EAAGD,CAAM,CAAC,CACnD"}

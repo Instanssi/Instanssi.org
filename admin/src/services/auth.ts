@@ -72,7 +72,7 @@ export function useAuth() {
             if (result.data === undefined) return undefined;
             if (result.data.length === 0) return undefined;
             return result.data[0];
-        } catch (e) {
+        } catch {
             return undefined;
         }
     }

@@ -1,9 +1,14 @@
+from typing import Any
+
 from django.db.models import QuerySet
+from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import CompoSerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
 from Instanssi.kompomaatti.models import Compo
+
+IMAGE_FORMATS = {"png", "jpg", "jpeg"}
 
 
 class CompoViewSet(PermissionViewSet):
@@ -26,6 +31,30 @@ class CompoViewSet(PermissionViewSet):
         event_id = int(self.kwargs["event_pk"])
         return self.queryset.filter(event_id=event_id)
 
+    @staticmethod
+    def _validate_thumbnail_pref(data: dict[str, Any]) -> None:
+        """Validate that automatic thumbnails are only used with image-only formats."""
+        thumbnail_pref = data.get("thumbnail_pref")
+        formats = data.get("formats")
+        if thumbnail_pref == 1 and formats is not None:
+            format_list = [f.strip().lower() for f in formats.split("|") if f.strip()]
+            if not all(f in IMAGE_FORMATS for f in format_list):
+                raise serializers.ValidationError(
+                    {"thumbnail_pref": ["Automatic thumbnails require image-only entry formats (png, jpg)."]}
+                )
+
     def perform_create(self, serializer: BaseSerializer[Compo]) -> None:  # type: ignore[override]
         """Set event from URL when creating."""
+        self._validate_thumbnail_pref(serializer.validated_data)
         serializer.save(event_id=int(self.kwargs["event_pk"]))
+
+    def perform_update(self, serializer: BaseSerializer[Compo]) -> None:  # type: ignore[override]
+        """Validate thumbnail settings on update."""
+        assert serializer.instance is not None
+        merged = {
+            "thumbnail_pref": serializer.instance.thumbnail_pref,
+            "formats": serializer.instance.formats,
+        }
+        merged.update(serializer.validated_data)
+        self._validate_thumbnail_pref(merged)
+        serializer.save()

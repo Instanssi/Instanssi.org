@@ -98,7 +98,7 @@ async function tryRefreshEvents() {
  */
 async function trySelectEvent() {
     const events = eventService.getEvents();
-    if (events.length == 0) {
+    if (events.length === 0) {
         event.value = undefined;
     } else {
         trySetLatestEvent();

@@ -69,8 +69,8 @@ export function useAuth() {
     async function tryFetchUserData(): Promise<UserInfo | undefined> {
         try {
             const result = await api.userInfo();
-            if (result.data == undefined) return undefined;
-            if (result.data.length == 0) return undefined;
+            if (result.data === undefined) return undefined;
+            if (result.data.length === 0) return undefined;
             return result.data[0];
         } catch (e) {
             return undefined;

@@ -9,6 +9,8 @@ from Instanssi.api.v2.utils.base import EnforceCSRFViewSet
 
 
 class LoginViewSet(EnforceCSRFViewSet):
+    """Authenticate a user with username and password."""
+
     @extend_schema(
         operation_id="login",
         request=UserLoginSerializer,

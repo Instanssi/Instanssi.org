@@ -5,6 +5,8 @@ from Instanssi.kompomaatti.models import Compo
 
 
 class CompoSerializer(ModelSerializer[Compo]):
+    """Staff serializer for compos."""
+
     max_entry_size = IntegerField(read_only=True)
     max_source_size = IntegerField(read_only=True)
     source_format_list = ListField(child=CharField(), read_only=True)

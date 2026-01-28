@@ -4,6 +4,8 @@ from Instanssi.kompomaatti.models import Competition
 
 
 class CompetitionSerializer(ModelSerializer[Competition]):
+    """Staff serializer for competitions."""
+
     class Meta:
         model = Competition
         fields = (

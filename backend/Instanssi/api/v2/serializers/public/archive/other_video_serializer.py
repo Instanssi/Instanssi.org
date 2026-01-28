@@ -5,6 +5,8 @@ from Instanssi.arkisto.models import OtherVideo
 
 
 class PublicOtherVideoSerializer(ModelSerializer[OtherVideo]):
+    """Public read-only serializer for archive videos."""
+
     youtube_url = YoutubeUrlField(read_only=True)
 
     class Meta:

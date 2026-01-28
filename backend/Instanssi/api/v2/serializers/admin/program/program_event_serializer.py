@@ -4,6 +4,8 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 
 
 class ProgramEventSerializer(ModelSerializer[ProgrammeEvent]):
+    """Staff serializer for programme events."""
+
     icon_small_url = SerializerMethodField()
     icon2_small_url = SerializerMethodField()
 

@@ -4,6 +4,8 @@ from Instanssi.arkisto.models import OtherVideoCategory
 
 
 class OtherVideoCategorySerializer(ModelSerializer[OtherVideoCategory]):
+    """Staff serializer for archive video categories."""
+
     class Meta:
         model = OtherVideoCategory
         fields = (

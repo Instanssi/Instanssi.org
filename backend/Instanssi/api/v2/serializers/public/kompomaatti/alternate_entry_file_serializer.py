@@ -5,6 +5,8 @@ from Instanssi.kompomaatti.models import AlternateEntryFile
 
 
 class PublicAlternateEntryFileSerializer(ModelSerializer[AlternateEntryFile]):
+    """Public read-only serializer for alternate entry files (transcoded media)."""
+
     url = SerializerMethodField()
     format = SerializerMethodField()
 

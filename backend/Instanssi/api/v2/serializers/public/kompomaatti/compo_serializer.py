@@ -4,6 +4,8 @@ from Instanssi.kompomaatti.models import Compo
 
 
 class PublicCompoSerializer(ModelSerializer[Compo]):
+    """Public read-only serializer for compos."""
+
     class Meta:
         model = Compo
         fields = (

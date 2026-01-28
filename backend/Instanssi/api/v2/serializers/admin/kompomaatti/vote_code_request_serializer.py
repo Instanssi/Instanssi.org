@@ -4,6 +4,8 @@ from Instanssi.kompomaatti.models import VoteCodeRequest
 
 
 class VoteCodeRequestSerializer(ModelSerializer[VoteCodeRequest]):
+    """Staff serializer for vote code requests."""
+
     class Meta:
         model = VoteCodeRequest
         fields = (

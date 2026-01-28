@@ -4,6 +4,8 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 
 
 class PublicProgramEventSerializer(ModelSerializer[ProgrammeEvent]):
+    """Public read-only serializer for programme events."""
+
     icon_small_url = SerializerMethodField()
     icon2_small_url = SerializerMethodField()
 

@@ -4,6 +4,8 @@ from Instanssi.kompomaatti.models import Competition
 
 
 class PublicCompetitionSerializer(ModelSerializer[Competition]):
+    """Public read-only serializer for competitions."""
+
     class Meta:
         model = Competition
         fields = (

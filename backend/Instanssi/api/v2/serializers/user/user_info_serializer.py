@@ -5,6 +5,8 @@ from .permission_serializer import PermissionSerializer
 
 
 class UserInfoSerializer(ModelSerializer[User]):
+    """Serializer for the authenticated user's own profile and permissions."""
+
     user_permissions = PermissionSerializer(many=True, read_only=True)
 
     class Meta:

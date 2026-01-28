@@ -4,6 +4,8 @@ from Instanssi.admin_upload.models import UploadedFile
 
 
 class UploadedFileSerializer(ModelSerializer[UploadedFile]):
+    """Staff serializer for uploaded files."""
+
     file_url = SerializerMethodField()
     filename = SerializerMethodField()
 

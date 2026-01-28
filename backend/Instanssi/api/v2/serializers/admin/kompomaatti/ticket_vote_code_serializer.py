@@ -5,6 +5,8 @@ from Instanssi.kompomaatti.models import TicketVoteCode
 
 
 class TicketVoteCodeSerializer(ModelSerializer[TicketVoteCode]):
+    """Staff serializer for ticket vote codes."""
+
     associated_username = SerializerMethodField()
 
     def get_associated_username(self, obj: TicketVoteCode) -> str | None:

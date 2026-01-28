@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir --outDir ./dist",
+    "build-final": "vite build --emptyOutDir",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",

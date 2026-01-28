@@ -47,7 +47,6 @@ def test_public_entry_does_not_expose_sensitive_fields(api_client, started_compe
     req = api_client.get(f"{base_url}{started_competition_participation.id}/")
     assert req.status_code == 200
     assert "user" not in req.data
-    assert "disqualified_reason" not in req.data
 
 
 @pytest.mark.django_db
@@ -74,6 +73,38 @@ def test_public_can_see_score_rank_after_results_shown(api_client, started_compe
     assert req.status_code == 200
     assert req.data["score"] is not None
     assert req.data["rank"] is not None
+
+
+@pytest.mark.django_db
+def test_public_cannot_see_disqualified_before_results_shown(api_client, started_competition_participation):
+    """Test that disqualified/disqualified_reason are hidden when show_results is False."""
+    started_competition_participation.disqualified = True
+    started_competition_participation.disqualified_reason = "Test reason"
+    started_competition_participation.save()
+    started_competition_participation.competition.show_results = False
+    started_competition_participation.competition.save()
+
+    base_url = get_base_url(started_competition_participation.competition.event_id)
+    req = api_client.get(f"{base_url}{started_competition_participation.id}/")
+    assert req.status_code == 200
+    assert req.data["disqualified"] is None
+    assert req.data["disqualified_reason"] is None
+
+
+@pytest.mark.django_db
+def test_public_can_see_disqualified_after_results_shown(api_client, started_competition_participation):
+    """Test that disqualified/disqualified_reason are visible when show_results is True."""
+    started_competition_participation.disqualified = True
+    started_competition_participation.disqualified_reason = "Test reason"
+    started_competition_participation.save()
+    started_competition_participation.competition.show_results = True
+    started_competition_participation.competition.save()
+
+    base_url = get_base_url(started_competition_participation.competition.event_id)
+    req = api_client.get(f"{base_url}{started_competition_participation.id}/")
+    assert req.status_code == 200
+    assert req.data["disqualified"] is True
+    assert req.data["disqualified_reason"] == "Test reason"
 
 
 @pytest.mark.django_db

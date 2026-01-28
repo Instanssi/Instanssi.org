@@ -21,6 +21,8 @@ class PublicCompoEntrySerializer(ModelSerializer[Entry]):
     imagefile_medium_url = SerializerMethodField()
     rank = SerializerMethodField()
     score = SerializerMethodField()
+    disqualified = SerializerMethodField()
+    disqualified_reason = SerializerMethodField()
     alternate_files = PublicAlternateEntryFileSerializer(many=True, read_only=True)
 
     def get_imagefile_original_url(self, obj: Entry) -> str | None:
@@ -48,6 +50,16 @@ class PublicCompoEntrySerializer(ModelSerializer[Entry]):
             return obj.get_score()
         return None
 
+    def get_disqualified(self, obj: Entry) -> bool | None:
+        if obj.compo.show_voting_results:
+            return obj.disqualified
+        return None
+
+    def get_disqualified_reason(self, obj: Entry) -> str | None:
+        if obj.compo.show_voting_results:
+            return obj.disqualified_reason
+        return None
+
     class Meta:
         model = Entry
         fields = (
@@ -62,6 +74,7 @@ class PublicCompoEntrySerializer(ModelSerializer[Entry]):
             "imagefile_medium_url",
             "youtube_url",
             "disqualified",
+            "disqualified_reason",
             "score",
             "rank",
             "alternate_files",

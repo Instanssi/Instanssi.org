@@ -52,7 +52,6 @@ def test_public_entry_does_not_expose_sensitive_fields(api_client, votable_compo
     assert "imagefile_original" not in req.data
     assert "entryfile_url" not in req.data
     assert "sourcefile_url" not in req.data
-    assert "disqualified_reason" not in req.data
     assert "archive_score" not in req.data
     assert "archive_rank" not in req.data
 
@@ -81,6 +80,38 @@ def test_public_can_see_score_rank_after_results_shown(api_client, votable_compo
     assert req.status_code == 200
     assert req.data["score"] is not None
     assert req.data["rank"] is not None
+
+
+@pytest.mark.django_db
+def test_public_cannot_see_disqualified_before_results_shown(api_client, votable_compo_entry):
+    """Test that disqualified/disqualified_reason are hidden when show_voting_results is False."""
+    votable_compo_entry.disqualified = True
+    votable_compo_entry.disqualified_reason = "Test reason"
+    votable_compo_entry.save()
+    votable_compo_entry.compo.show_voting_results = False
+    votable_compo_entry.compo.save()
+
+    base_url = get_base_url(votable_compo_entry.compo.event_id)
+    req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
+    assert req.status_code == 200
+    assert req.data["disqualified"] is None
+    assert req.data["disqualified_reason"] is None
+
+
+@pytest.mark.django_db
+def test_public_can_see_disqualified_after_results_shown(api_client, votable_compo_entry):
+    """Test that disqualified/disqualified_reason are visible when show_voting_results is True."""
+    votable_compo_entry.disqualified = True
+    votable_compo_entry.disqualified_reason = "Test reason"
+    votable_compo_entry.save()
+    votable_compo_entry.compo.show_voting_results = True
+    votable_compo_entry.compo.save()
+
+    base_url = get_base_url(votable_compo_entry.compo.event_id)
+    req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
+    assert req.status_code == 200
+    assert req.data["disqualified"] is True
+    assert req.data["disqualified_reason"] == "Test reason"
 
 
 @pytest.mark.django_db

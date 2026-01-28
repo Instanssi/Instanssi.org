@@ -8,11 +8,13 @@ class PublicCompetitionParticipationSerializer(ModelSerializer[CompetitionPartic
     """Public serializer for competition participations.
 
     Drops sensitive/staff-only fields: user FK, disqualified_reason.
-    Rank/score are shown only when competition.show_results is True.
+    Rank/score/disqualified are shown only when competition.show_results is True.
     """
 
     rank = SerializerMethodField()
     score = SerializerMethodField()
+    disqualified = SerializerMethodField()
+    disqualified_reason = SerializerMethodField()
 
     def get_rank(self, obj: CompetitionParticipation) -> int | None:
         if obj.competition.show_results:
@@ -24,6 +26,16 @@ class PublicCompetitionParticipationSerializer(ModelSerializer[CompetitionPartic
             return obj.score
         return None
 
+    def get_disqualified(self, obj: CompetitionParticipation) -> bool | None:
+        if obj.competition.show_results:
+            return obj.disqualified
+        return None
+
+    def get_disqualified_reason(self, obj: CompetitionParticipation) -> str | None:
+        if obj.competition.show_results:
+            return obj.disqualified_reason
+        return None
+
     class Meta:
         model = CompetitionParticipation
         fields = (
@@ -32,5 +44,6 @@ class PublicCompetitionParticipationSerializer(ModelSerializer[CompetitionPartic
             "participant_name",
             "score",
             "disqualified",
+            "disqualified_reason",
             "rank",
         )

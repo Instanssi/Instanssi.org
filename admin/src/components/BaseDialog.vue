@@ -59,7 +59,10 @@ function open() {
 
 function wait(): Promise<boolean | undefined> {
     return new Promise((resolve) => {
-        watch([result, show], () => resolve(result.value ?? false));
+        const stop = watch([result, show], () => {
+            stop();
+            resolve(result.value ?? false);
+        });
     });
 }
 

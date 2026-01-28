@@ -2,11 +2,10 @@
     <LayoutBase :title="t('UsersView.title')">
         <v-col>
             <v-row>
-                <v-btn
-                    v-if="auth.canAdd(PermissionTarget.USER)"
-                    prepend-icon="fas fa-plus"
-                    @click="createUser"
-                >
+                <v-btn v-if="auth.canAdd(PermissionTarget.USER)" @click="createUser">
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faPlus" />
+                    </template>
                     {{ t("UsersView.newUser") }}
                 </v-btn>
                 <v-text-field
@@ -47,19 +46,23 @@
                             v-if="auth.canDelete(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-xmark"
                             color="red"
                             @click="deleteUser(item)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faXmark" />
+                            </template>
                             Delete
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.USER)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-pen-to-square"
                             @click="editUser(item.id)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faPenToSquare" />
+                            </template>
                             Edit
                         </v-btn>
                     </template>
@@ -71,6 +74,8 @@
 </template>
 
 <script setup lang="ts">
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -78,7 +83,7 @@ import { useToast } from "vue-toastification";
 import { type VDataTable, type VDataTableServer } from "vuetify/components";
 
 import * as api from "@/api";
-import type { UserReadable } from "@/api";
+import type { User } from "@/api";
 import LayoutBase from "@/components/LayoutBase.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -100,7 +105,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const users: Ref<UserReadable[]> = ref([]);
+const users: Ref<User[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
@@ -149,7 +154,7 @@ function flushData() {
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const response = await api.usersList({ query: getLoadArgs(args) });
+        const response = await api.adminUsersList({ query: getLoadArgs(args) });
         users.value = response.data!.results;
         totalItems.value = response.data!.count;
     } catch (e) {
@@ -162,12 +167,12 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deleteUser(item: UserReadable): Promise<void> {
+async function deleteUser(item: User): Promise<void> {
     const text = t("UsersView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.usersDestroy({ path: { id: item.id } });
+            await api.adminUsersDestroy({ path: { id: item.id } });
             flushData();
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
@@ -178,7 +183,7 @@ async function deleteUser(item: UserReadable): Promise<void> {
 }
 
 async function editUser(id: number): Promise<void> {
-    const response = await api.usersRetrieve({ path: { id } });
+    const response = await api.adminUsersRetrieve({ path: { id } });
     const ok = await dialog.value!.modal(response.data!);
     if (ok) {
         flushData();

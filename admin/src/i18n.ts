@@ -2,6 +2,8 @@ import { createI18n } from "vue-i18n";
 
 import enLocale from "@/locales/en.json";
 
+type DateTimeFormatOptions = Record<string, Intl.DateTimeFormatOptions>;
+
 export const i18n = createI18n({
     legacy: false,
     locale: "en",
@@ -10,7 +12,6 @@ export const i18n = createI18n({
         en: enLocale["translations"],
     },
     datetimeFormats: {
-        // @ts-expect-error Dunno why
-        en: enLocale["datetimeFormats"],
+        en: enLocale["datetimeFormats"] as DateTimeFormatOptions,
     },
 });

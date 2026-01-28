@@ -16,16 +16,14 @@ import {
     // Our own icons
     faBlog,
     faCalendarDays,
+    faCheck,
     faDashboard,
     faFloppyDisk,
-    faLock,
-    faPenToSquare,
     faRightFromBracket,
     faRightToBracket,
-    faSitemap,
+    faSpinner,
     faUsers,
     faXmark,
-    faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     // For vuetify
@@ -35,7 +33,6 @@ import {
     faBars,
     faCalendar,
     faCaretDown,
-    faCheck,
     faCheckCircle,
     faCheckSquare,
     faChevronDown,
@@ -66,25 +63,22 @@ import type { App } from "vue";
 export function setupIcons(app: App): void {
     // These are our own imports
     library.add(
+        faBlog,
+        faCalendarDays,
+        faCheck,
         faDashboard,
+        faFloppyDisk,
         faRightFromBracket,
         faRightToBracket,
-        faBlog,
-        faSitemap,
-        faLock,
-        faXmark,
-        faFloppyDisk,
-        faPenToSquare,
-        faCalendarDays,
+        faSpinner,
         faUsers,
-        faSpinner
+        faXmark
     );
     library.add(faGoogle, faSteam, faGithub);
 
     // These are used by vuetify and imported for the standard set
     library.add(
         faChevronUp,
-        faCheck,
         faTimesCircle,
         faTimes,
         faCheckCircle,

@@ -2,11 +2,10 @@
     <LayoutBase :key="`blog-${eventId}`" :title="t('BlogEditorView.title')">
         <v-col>
             <v-row>
-                <v-btn
-                    v-if="auth.canAdd(PermissionTarget.BLOG_ENTRY)"
-                    prepend-icon="fas fa-plus"
-                    @click="createPost"
-                >
+                <v-btn v-if="auth.canAdd(PermissionTarget.BLOG_ENTRY)" @click="createPost">
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faPlus" />
+                    </template>
                     {{ t("BlogEditorView.newBlogPost") }}
                 </v-btn>
                 <v-text-field
@@ -40,8 +39,8 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.public="{ item }">
-                        <v-icon v-if="item.public" icon="fas fa-check" color="green" />
-                        <v-icon v-else icon="fas fa-xmark" color="red" />
+                        <FontAwesomeIcon v-if="item.public" :icon="faCheck" class="text-green" />
+                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
                     </template>
                     <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
@@ -51,19 +50,23 @@
                             v-if="auth.canDelete(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-xmark"
                             color="red"
                             @click="deletePost(item)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faXmark" />
+                            </template>
                             Delete
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.BLOG_ENTRY)"
                             density="compact"
                             variant="text"
-                            prepend-icon="fas fa-pen-to-square"
                             @click="editPost(item.id)"
                         >
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faPenToSquare" />
+                            </template>
                             Edit
                         </v-btn>
                     </template>
@@ -75,6 +78,8 @@
 </template>
 
 <script setup lang="ts">
+import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -82,7 +87,7 @@ import { useToast } from "vue-toastification";
 import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { BlogEntryReadable } from "@/api";
+import type { BlogEntry } from "@/api";
 import BlogPostDialog from "@/components/BlogPostDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -107,7 +112,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const blogPosts: Ref<BlogEntryReadable[]> = ref([]);
+const blogPosts: Ref<BlogEntry[]> = ref([]);
 const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
@@ -151,7 +156,7 @@ function flushData() {
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const response = await api.blogEntriesList({
+        const response = await api.adminBlogList({
             query: {
                 event: parseInt(props.eventId, 10),
                 ...getLoadArgs(args),
@@ -169,12 +174,12 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deletePost(item: BlogEntryReadable): Promise<void> {
+async function deletePost(item: BlogEntry): Promise<void> {
     const text = t("BlogEditorView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {
             await sleep(250);
-            await api.blogEntriesDestroy({ path: { id: item.id } });
+            await api.adminBlogDestroy({ path: { id: item.id } });
             toast.success(t("BlogEditorView.deleteSuccess"));
             flushData();
         } catch (e) {
@@ -185,7 +190,7 @@ async function deletePost(item: BlogEntryReadable): Promise<void> {
 }
 
 async function editPost(id: number): Promise<void> {
-    const item = await api.blogEntriesRetrieve({ path: { id } });
+    const item = await api.adminBlogRetrieve({ path: { id } });
     const ok = await dialog.value!.modal(eventId.value, item.data!);
     if (ok) {
         flushData();

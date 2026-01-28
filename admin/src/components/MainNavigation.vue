@@ -98,7 +98,7 @@ async function tryRefreshEvents() {
  */
 async function trySelectEvent() {
     const events = eventService.getEvents();
-    if (events.length == 0) {
+    if (events.length === 0) {
         event.value = undefined;
     } else {
         trySetLatestEvent();
@@ -106,8 +106,8 @@ async function trySelectEvent() {
 }
 
 watch(event, changeEvent);
-watch(authService.isLoggedIn, tryRefreshEvents);
-watch(eventService.getEvents, trySelectEvent);
+watch(() => authService.isLoggedIn(), tryRefreshEvents);
+watch(() => eventService.getEvents(), trySelectEvent);
 onMounted(tryRefreshEvents);
 </script>
 

@@ -4,12 +4,14 @@ from rest_framework.serializers import ModelSerializer
 from Instanssi.api.v2.serializers.admin.kompomaatti.alternate_entry_file_serializer import (
     AlternateEntryFileSerializer,
 )
+from Instanssi.api.v2.utils.youtube_url_field import YoutubeUrlField
 from Instanssi.kompomaatti.models import Entry
 
 
 class UserCompoEntrySerializer(ModelSerializer[Entry]):
     """User serializer for managing own compo entries."""
 
+    youtube_url = YoutubeUrlField(required=False, allow_null=True)
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -17,7 +19,6 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
     imagefile_medium_url = SerializerMethodField()
     rank = SerializerMethodField()
     score = SerializerMethodField()
-    youtube_url = SerializerMethodField()
     disqualified = SerializerMethodField()
     disqualified_reason = SerializerMethodField()
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
@@ -67,11 +68,6 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
     def get_score(self, obj: Entry) -> float | None:
         if obj.compo.show_voting_results:
             return obj.get_score()
-        return None
-
-    def get_youtube_url(self, obj: Entry) -> str | None:
-        if obj.youtube_url:
-            return str(obj.youtube_url.link_url)
         return None
 
     class Meta:

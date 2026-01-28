@@ -146,6 +146,18 @@ npm run dev              # Start dev server (http://localhost:5173)
 
 Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
 
+### ⚠️ REQUIRED: After Making Code Changes
+
+**You MUST run these commands after making any code changes:**
+
+```bash
+npm run lint             # Lint and auto-fix with ESLint
+npm run type-check       # TypeScript type checking
+npm run format           # Format code with Prettier
+```
+
+These checks are mandatory before considering any task complete. Do not skip them.
+
 ### Code Quality
 
 ```bash

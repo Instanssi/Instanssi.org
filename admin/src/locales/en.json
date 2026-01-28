@@ -148,7 +148,61 @@
       "createSuccess": "Event created!"
     },
     "MainView": {
-      "title": "Dashboard"
+      "title": "Dashboard",
+      "noEvent": "No event selected",
+      "archived": "Archived",
+      "eventDate": "Event date",
+      "countdown": "Countdown",
+      "daysUntil": "{days} days until event",
+      "daysAgo": "{days} days ago",
+      "today": "Today!",
+      "visitSite": "Visit site",
+      "unknown": "Unknown",
+      "quickActions": "Quick Actions",
+      "actions": {
+        "newBlogPost": "New blog post",
+        "manageEvents": "Manage events",
+        "manageUsers": "Manage users"
+      },
+      "stats": {
+        "blogPosts": "Blog posts",
+        "public": "public",
+        "draft": "draft",
+        "compoEntries": "Compo entries",
+        "compos": "compos",
+        "competitionParticipants": "Competition participants",
+        "competitions": "competitions",
+        "programEvents": "Program events",
+        "transactions": "Transactions",
+        "paid": "paid",
+        "storeItems": "Store items",
+        "pendingVoteRequests": "Pending vote requests",
+        "totalRequests": "total requests",
+        "participants": "Participants"
+      },
+      "charts": {
+        "entriesPerCompo": "Entries per compo",
+        "competitionParticipants": "Competition participants",
+        "noData": "No data available"
+      },
+      "recentActivity": {
+        "blogPosts": "Recent blog posts",
+        "compoEntries": "Recent compo entries",
+        "transactions": "Recent transactions",
+        "noRecentPosts": "No recent blog posts",
+        "noRecentEntries": "No recent compo entries",
+        "noRecentTransactions": "No recent transactions"
+      },
+      "transactions": {
+        "id": "ID",
+        "created": "Created",
+        "paid": "Paid",
+        "status": "Status",
+        "cancelled": "Cancelled",
+        "paidStatus": "Paid",
+        "pending": "Pending",
+        "createdStatus": "Created"
+      }
     },
     "LoginView": {
       "title": "Sign in",

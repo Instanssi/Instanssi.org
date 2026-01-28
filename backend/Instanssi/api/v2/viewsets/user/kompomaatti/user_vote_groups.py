@@ -46,12 +46,13 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "compo")
     filterset_fields = ("compo",)
+    queryset = VoteGroup.objects.all()
 
     def get_queryset(self) -> QuerySet[VoteGroup]:
         """Return only the current user's vote groups for compos in this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return VoteGroup.objects.filter(compo__event_id=event_id, user=user)
+        return self.queryset.filter(compo__event_id=event_id, user=user)
 
     def validate_compo_belongs_to_event(self, compo: Compo) -> None:
         """Validate that compo belongs to the event in the URL."""

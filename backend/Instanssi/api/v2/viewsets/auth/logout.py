@@ -15,7 +15,7 @@ class LogoutViewSet(EnforceCSRFViewSet):
 
     @extend_schema(
         operation_id="logout",
-        parameters=[],
+        request=None,
         responses={
             200: None,
         },

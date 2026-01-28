@@ -9,7 +9,8 @@ class PublicProgramEventViewSet(PublicReadOnlyViewSet[ProgrammeEvent]):
     """Public read-only endpoint for program events. Only active events are shown."""
 
     serializer_class = PublicProgramEventSerializer
+    queryset = ProgrammeEvent.objects.all()
 
     def get_queryset(self) -> QuerySet[ProgrammeEvent]:
         event_id = int(self.kwargs["event_pk"])
-        return ProgrammeEvent.objects.filter(event_id=event_id, active=True).order_by("start")
+        return self.queryset.filter(event_id=event_id, active=True).order_by("start")

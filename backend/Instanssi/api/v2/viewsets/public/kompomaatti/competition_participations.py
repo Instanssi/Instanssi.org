@@ -15,10 +15,11 @@ class PublicCompetitionParticipationViewSet(PublicReadOnlyViewSet[CompetitionPar
     """
 
     serializer_class = PublicCompetitionParticipationSerializer
+    queryset = CompetitionParticipation.objects.all()
 
     def get_queryset(self) -> QuerySet[CompetitionParticipation]:
         event_id = int(self.kwargs["event_pk"])
-        return CompetitionParticipation.objects.filter(
+        return self.queryset.filter(
             competition__event_id=event_id,
             competition__active=True,
             competition__start__lte=timezone.now(),

@@ -14,11 +14,12 @@ class PublicCompoEntryViewSet(PublicReadOnlyViewSet[Entry]):
     """
 
     serializer_class = PublicCompoEntrySerializer
+    queryset = Entry.objects.all()
 
     def get_queryset(self) -> QuerySet[Entry]:
         event_id = int(self.kwargs["event_pk"])
         return (
-            Entry.objects.filter(
+            self.queryset.filter(
                 compo__event_id=event_id,
                 compo__active=True,
             )

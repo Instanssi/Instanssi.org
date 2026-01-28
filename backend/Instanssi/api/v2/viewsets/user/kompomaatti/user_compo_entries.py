@@ -30,12 +30,13 @@ class UserCompoEntryViewSet(EntryViewSetMixin, ModelViewSet[Entry]):
     filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "compo", "name")
     filterset_fields = ("compo",)
+    queryset = Entry.objects.all()
 
     def get_queryset(self) -> QuerySet[Entry]:
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
         return (
-            Entry.objects.filter(compo__event_id=event_id, compo__active=True, user=user)
+            self.queryset.filter(compo__event_id=event_id, compo__active=True, user=user)
             .select_related("compo")
             .prefetch_related("alternate_files")
         )

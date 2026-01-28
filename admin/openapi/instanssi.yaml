@@ -3956,6 +3956,10 @@ paths:
       operationId: event_user_kompomaatti_entries_list
       description: Manage the current user's own compo entries.
       parameters:
+      - in: query
+        name: compo
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -4034,7 +4038,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this tuotos.
         required: true
       tags:
       - event
@@ -4060,7 +4065,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this tuotos.
         required: true
       tags:
       - event
@@ -4099,7 +4105,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this tuotos.
         required: true
       tags:
       - event
@@ -4133,7 +4140,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this tuotos.
         required: true
       tags:
       - event
@@ -4152,6 +4160,10 @@ paths:
         Users can create, read, update and delete their own participations
         within the allowed time window (before participation_end).
       parameters:
+      - in: query
+        name: competition
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -4241,7 +4253,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ilmoittautuminen.
         required: true
       tags:
       - event
@@ -4271,7 +4284,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ilmoittautuminen.
         required: true
       tags:
       - event
@@ -4313,7 +4327,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ilmoittautuminen.
         required: true
       tags:
       - event
@@ -4354,7 +4369,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ilmoittautuminen.
         required: true
       tags:
       - event
@@ -4380,6 +4396,10 @@ paths:
         - Match a paid ticket for the specified event
         - Not already be associated with another user
       parameters:
+      - in: query
+        name: event
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -4483,7 +4503,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this lippuäänestusavain.
         required: true
       tags:
       - event
@@ -4513,6 +4534,10 @@ paths:
 
         Note: The status field is read-only for users. Only staff can change it.
       parameters:
+      - in: query
+        name: event
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -4536,6 +4561,19 @@ paths:
         description: Which field to use when ordering the results.
         schema:
           type: string
+      - in: query
+        name: status
+        schema:
+          type: integer
+          title: Tila
+          enum:
+          - 0
+          - 1
+          - 2
+        description: |-
+          * `0` - Odottaa hyväksyntää
+          * `1` - Hyväksytty
+          * `2` - Hylätty
       tags:
       - event
       security:
@@ -4616,7 +4654,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this äänestyskoodipyyntö.
         required: true
       tags:
       - event
@@ -4653,7 +4692,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this äänestyskoodipyyntö.
         required: true
       tags:
       - event
@@ -4702,7 +4742,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this äänestyskoodipyyntö.
         required: true
       tags:
       - event
@@ -4746,6 +4787,10 @@ paths:
 
         Note: Update and delete are not supported. To change votes, simply POST again.
       parameters:
+      - in: query
+        name: compo
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -4855,7 +4900,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ääniryhmä.
         required: true
       tags:
       - event
@@ -4989,7 +5035,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this videokategoria.
         required: true
       tags:
       - public
@@ -5050,7 +5097,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this muu video.
         required: true
       tags:
       - public
@@ -5115,7 +5163,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ilmoittautuminen.
         required: true
       tags:
       - public
@@ -5176,7 +5225,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this kilpailu.
         required: true
       tags:
       - public
@@ -5235,7 +5285,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this kompo.
         required: true
       tags:
       - public
@@ -5302,7 +5353,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this tuotos.
         required: true
       tags:
       - public
@@ -5363,7 +5415,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ohjelmatapahtuma.
         required: true
       tags:
       - public
@@ -6094,8 +6147,16 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -6203,8 +6264,16 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -7039,7 +7108,16 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: string
+          type: object
+          nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
       required:
       - category
       - description
@@ -7097,7 +7175,16 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: string
+          type: object
+          nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
       required:
       - category
       - description
@@ -8029,8 +8116,16 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -8241,7 +8336,16 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: string
+          type: object
+          nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
     PatchedProgramEventRequest:
       type: object
       description: Staff serializer for programme events.
@@ -8688,8 +8792,16 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
     PatchedUserRequest:
       type: object
       description: Staff serializer for users, extends UserInfoSerializer with groups
@@ -9279,8 +9391,16 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
         disqualified:
           type: boolean
           nullable: true
@@ -9374,7 +9494,16 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: string
+          type: object
+          nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
           readOnly: true
       required:
       - category
@@ -10787,8 +10916,16 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
         disqualified:
           type: boolean
           nullable: true
@@ -10878,8 +11015,16 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: string
+          type: object
           nullable: true
+          properties:
+            video_id:
+              type: string
+            start:
+              type: integer
+              nullable: true
+          required:
+          - video_id
       required:
       - compo
       - creator

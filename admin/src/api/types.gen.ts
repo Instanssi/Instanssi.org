@@ -499,7 +499,10 @@ export type CompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     /**
      * Diskattu
      *
@@ -587,7 +590,10 @@ export type CompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     /**
      * Diskattu
      *
@@ -1396,7 +1402,10 @@ export type OtherVideo = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: string;
+    youtube_url: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -1448,7 +1457,10 @@ export type OtherVideoRequest = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: string;
+    youtube_url: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 export type PaginatedBlogEntryList = {
@@ -1874,7 +1886,10 @@ export type PatchedCompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     /**
      * Diskattu
      *
@@ -2097,7 +2112,10 @@ export type PatchedOtherVideoRequest = {
      * Videon kuvaus.
      */
     description?: string;
-    youtube_url?: string;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -2540,7 +2558,10 @@ export type PatchedUserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -3100,7 +3121,10 @@ export type PublicCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -3166,7 +3190,10 @@ export type PublicOtherVideo = {
      * Videon kuvaus.
      */
     description: string;
-    readonly youtube_url: string;
+    readonly youtube_url: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -4235,7 +4262,10 @@ export type UserCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -4277,7 +4307,10 @@ export type UserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -4845,7 +4878,10 @@ export type CompoEntryWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: string;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
     /**
      * Diskattu
      *
@@ -4928,7 +4964,10 @@ export type OtherVideoWritable = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: string;
+    youtube_url: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -5002,7 +5041,10 @@ export type PatchedUserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -5335,7 +5377,10 @@ export type PublicCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -5943,7 +5988,10 @@ export type UserCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -5998,7 +6046,10 @@ export type UserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: string | null;
+    youtube_url?: {
+        video_id: string;
+        start?: number | null;
+    } | null;
 };
 
 /**
@@ -8566,6 +8617,7 @@ export type EventUserKompomaattiEntriesListData = {
         event_pk: number;
     };
     query?: {
+        compo?: number;
         /**
          * Number of results to return per page.
          */
@@ -8609,7 +8661,10 @@ export type EventUserKompomaattiEntriesDestroyData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
@@ -8629,7 +8684,10 @@ export type EventUserKompomaattiEntriesRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
@@ -8646,7 +8704,10 @@ export type EventUserKompomaattiEntriesPartialUpdateData = {
     body?: PatchedUserCompoEntryRequestWritable;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
@@ -8663,7 +8724,10 @@ export type EventUserKompomaattiEntriesUpdateData = {
     body: UserCompoEntryRequestWritable;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/";
@@ -8682,6 +8746,7 @@ export type EventUserKompomaattiParticipationsListData = {
         event_pk: number;
     };
     query?: {
+        competition?: number;
         /**
          * Number of results to return per page.
          */
@@ -8725,7 +8790,10 @@ export type EventUserKompomaattiParticipationsDestroyData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
@@ -8745,7 +8813,10 @@ export type EventUserKompomaattiParticipationsRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
@@ -8762,7 +8833,10 @@ export type EventUserKompomaattiParticipationsPartialUpdateData = {
     body?: PatchedUserCompetitionParticipationRequest;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
@@ -8779,7 +8853,10 @@ export type EventUserKompomaattiParticipationsUpdateData = {
     body: UserCompetitionParticipationRequest;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/";
@@ -8798,6 +8875,7 @@ export type EventUserKompomaattiTicketVoteCodesListData = {
         event_pk: number;
     };
     query?: {
+        event?: number;
         /**
          * Number of results to return per page.
          */
@@ -8841,7 +8919,10 @@ export type EventUserKompomaattiTicketVoteCodesRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this lippuäänestusavain.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/{id}/";
@@ -8860,6 +8941,7 @@ export type EventUserKompomaattiVoteCodeRequestsListData = {
         event_pk: number;
     };
     query?: {
+        event?: number;
         /**
          * Number of results to return per page.
          */
@@ -8872,6 +8954,14 @@ export type EventUserKompomaattiVoteCodeRequestsListData = {
          * Which field to use when ordering the results.
          */
         ordering?: string;
+        /**
+         * Tila
+         *
+         * * `0` - Odottaa hyväksyntää
+         * * `1` - Hyväksytty
+         * * `2` - Hylätty
+         */
+        status?: 0 | 1 | 2;
     };
     url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/";
 };
@@ -8903,7 +8993,10 @@ export type EventUserKompomaattiVoteCodeRequestsRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
@@ -8920,7 +9013,10 @@ export type EventUserKompomaattiVoteCodeRequestsPartialUpdateData = {
     body?: PatchedUserVoteCodeRequestRequest;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
@@ -8937,7 +9033,10 @@ export type EventUserKompomaattiVoteCodeRequestsUpdateData = {
     body: UserVoteCodeRequestRequest;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this äänestyskoodipyyntö.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/";
@@ -8956,6 +9055,7 @@ export type EventUserKompomaattiVotesListData = {
         event_pk: number;
     };
     query?: {
+        compo?: number;
         /**
          * Number of results to return per page.
          */
@@ -8999,7 +9099,10 @@ export type EventUserKompomaattiVotesRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ääniryhmä.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/{id}/";
@@ -9092,7 +9195,10 @@ export type PublicEventArchiveVideoCategoriesRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this videokategoria.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/archive/video_categories/{id}/";
@@ -9134,7 +9240,10 @@ export type PublicEventArchiveVideosRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this muu video.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/archive/videos/{id}/";
@@ -9176,7 +9285,10 @@ export type PublicEventKompomaattiCompetitionParticipationsRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ilmoittautuminen.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/{id}/";
@@ -9218,7 +9330,10 @@ export type PublicEventKompomaattiCompetitionsRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this kilpailu.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/{id}/";
@@ -9260,7 +9375,10 @@ export type PublicEventKompomaattiComposRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this kompo.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/{id}/";
@@ -9302,7 +9420,10 @@ export type PublicEventKompomaattiEntriesRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this tuotos.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/";
@@ -9344,7 +9465,10 @@ export type PublicEventProgramEventsRetrieveData = {
     body?: never;
     path: {
         event_pk: number;
-        id: string;
+        /**
+         * A unique integer value identifying this ohjelmatapahtuma.
+         */
+        id: number;
     };
     query?: never;
     url: "/api/v2/public/event/{event_pk}/program/events/{id}/";

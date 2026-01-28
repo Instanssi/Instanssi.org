@@ -328,26 +328,26 @@ def inactive_program_event(event, faker) -> ProgrammeEvent:
 @fixture
 def archived_event(faker) -> Event:
     """Archived event for testing archive visibility."""
-    event_year = faker.year()
+    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Instanssi {event_year}",
-        tag=str(event_year),
+        name=f"Instanssi Archive {unique_id}",
+        tag=f"archive-{unique_id}",
         date=date.today() - timedelta(days=365),
         archived=True,
-        mainurl=f"http://localhost:8000/{event_year}/",
+        mainurl=f"http://localhost:8000/archive-{unique_id}/",
     )
 
 
 @fixture
 def non_archived_event(faker) -> Event:
     """Non-archived event for testing archive visibility."""
-    event_year = faker.year()
+    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Instanssi {event_year}",
-        tag=str(event_year),
+        name=f"Instanssi Current {unique_id}",
+        tag=f"current-{unique_id}",
         date=date.today(),
         archived=False,
-        mainurl=f"http://localhost:8000/{event_year}/",
+        mainurl=f"http://localhost:8000/current-{unique_id}/",
     )
 
 

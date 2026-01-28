@@ -106,8 +106,8 @@ async function trySelectEvent() {
 }
 
 watch(event, changeEvent);
-watch(authService.isLoggedIn, tryRefreshEvents);
-watch(eventService.getEvents, trySelectEvent);
+watch(() => authService.isLoggedIn(), tryRefreshEvents);
+watch(() => eventService.getEvents(), trySelectEvent);
 onMounted(tryRefreshEvents);
 </script>
 

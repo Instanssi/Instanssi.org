@@ -5,6 +5,7 @@ import { aliases, fa } from "vuetify/iconsets/fa-svg";
 
 import App from "@/App.vue";
 import "@/assets/main.scss";
+import "vue-toastification/dist/index.css";
 import { i18n } from "@/i18n";
 import { setupIcons } from "@/icons";
 import router from "@/router";

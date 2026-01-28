@@ -64,7 +64,3 @@ provide(confirmDialogKey, confirmDialog);
     background-size: cover;
 }
 </style>
-
-<style>
-@use "vue-toastification/dist/index.css" as *;
-</style>

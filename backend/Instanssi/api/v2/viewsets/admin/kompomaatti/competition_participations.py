@@ -36,5 +36,10 @@ class CompetitionParticipationViewSet(PermissionViewSet):
         super().perform_create(serializer)  # type: ignore[arg-type]
 
     def perform_update(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:  # type: ignore[override]
-        serializer.validated_data.pop("competition", None)
+        assert serializer.instance is not None
+        if new_competition := serializer.validated_data.get("competition"):
+            if new_competition.id != serializer.instance.competition_id:
+                raise serializers.ValidationError(
+                    {"competition": ["Cannot change competition after creation"]}
+                )
         super().perform_update(serializer)  # type: ignore[arg-type]

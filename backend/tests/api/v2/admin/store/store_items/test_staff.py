@@ -147,3 +147,14 @@ def test_store_item_includes_nested_variants(store_staff_api_client, variant_ite
     assert "name" in variant
     assert "item" in variant  # Staff serializer includes item reference
     assert variant["item"] == variant_item.id
+
+
+@pytest.mark.django_db
+def test_staff_cannot_delete_store_item_with_sold_units(
+    store_staff_api_client, store_item, transaction_item_a
+):
+    """Test that staff cannot delete a store item that has been sold."""
+    base_url = get_base_url(store_item.event_id)
+    req = store_staff_api_client.delete(f"{base_url}{store_item.id}/")
+    assert req.status_code == 400
+    assert "sold" in str(req.data).lower()

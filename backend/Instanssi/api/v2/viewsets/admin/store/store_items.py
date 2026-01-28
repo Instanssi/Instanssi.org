@@ -1,5 +1,6 @@
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.serializers import BaseSerializer
 
@@ -25,3 +26,9 @@ class StoreItemViewSet(PermissionViewSet):
     def perform_create(self, serializer: BaseSerializer[StoreItem]) -> None:  # type: ignore[override]
         """Set event from URL when creating."""
         serializer.save(event_id=int(self.kwargs["event_pk"]))
+
+    def perform_destroy(self, instance: StoreItem) -> None:  # type: ignore[override]
+        """Prevent deletion of store items that have been sold."""
+        if instance.num_sold() > 0:
+            raise serializers.ValidationError({"detail": "Cannot delete a store item that has sold units."})
+        super().perform_destroy(instance)

@@ -39,7 +39,7 @@ export function getSortString(args: LoadArgs): string | undefined {
     if (args.sortBy.length <= 0) {
         return undefined;
     }
-    const sortBy: SortArgs = args.sortBy[0];
+    const sortBy = args.sortBy[0]!;
     if (sortBy.order === "asc") {
         return `${sortBy.key}`;
     } else {

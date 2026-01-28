@@ -1,7 +1,7 @@
 import { type Ref, ref } from "vue";
 
 import * as api from "@/api";
-import type { SocialAuthUrl, UserInfoReadable } from "@/api";
+import type { SocialAuthUrl, UserInfo } from "@/api";
 
 export type CurrentUserInfo = {
     firstName: string;
@@ -66,7 +66,7 @@ export function useAuth() {
         return value.data ?? [];
     }
 
-    async function tryFetchUserData(): Promise<UserInfoReadable | undefined> {
+    async function tryFetchUserData(): Promise<UserInfo | undefined> {
         try {
             const result = await api.userInfo();
             if (result.data == undefined) return undefined;
@@ -79,7 +79,7 @@ export function useAuth() {
 
     async function refreshStatus(): Promise<boolean> {
         const info = await tryFetchUserData();
-        const perms = info?.user_permissions.map((p) => p.codename);
+        const perms = info?.user_permissions.map((p: { codename: string }) => p.codename);
         loggedIn.value = info !== undefined;
         userInfo.value = {
             firstName: info?.first_name || "",

@@ -72,7 +72,7 @@ import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { EventReadable } from "@/api";
+import type { Event } from "@/api";
 import EventDialog from "@/components/EventDialog.vue";
 import LayoutBase from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -96,7 +96,7 @@ const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const events: Ref<EventReadable[]> = ref([]);
+const events: Ref<Event[]> = ref([]);
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
     {
@@ -145,7 +145,7 @@ async function flushData() {
 async function load(args: LoadArgs) {
     loading.value = true;
     try {
-        const response = await api.eventsList({ query: getLoadArgs(args) });
+        const response = await api.adminEventsList({ query: getLoadArgs(args) });
         events.value = response.data!.results;
         totalItems.value = response.data!.count;
     } catch (e) {
@@ -158,12 +158,12 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250); // Don't murderate the server API
 
-async function deleteEvent(item: EventReadable): Promise<void> {
+async function deleteEvent(item: Event): Promise<void> {
     const text = t("EventView.confirmDelete", item);
     const ok = await confirmDialog.value!.confirm(text);
     if (ok) {
         try {
-            await api.eventsDestroy({ path: { id: item.id } });
+            await api.adminEventsDestroy({ path: { id: item.id } });
             await flushData();
             toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
@@ -174,7 +174,7 @@ async function deleteEvent(item: EventReadable): Promise<void> {
 }
 
 async function editEvent(id: number): Promise<void> {
-    const response = await api.eventsRetrieve({ path: { id } });
+    const response = await api.adminEventsRetrieve({ path: { id } });
     const ok = await dialog.value!.modal(response.data!);
     if (ok) {
         await flushData();

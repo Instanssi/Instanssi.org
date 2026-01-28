@@ -56,7 +56,7 @@ import {
 } from "yup";
 
 import * as api from "@/api";
-import type { EventReadable } from "@/api";
+import type { Event } from "@/api";
 import BaseFormDialog from "@/components/BaseFormDialog.vue";
 import BaseDialog from "@/components/BaseInfoDialog.vue";
 import { sleep } from "@/utils/sleep.ts";
@@ -102,7 +102,7 @@ const submit = handleSubmit(async (values) => {
 
 async function createItem(values: GenericObject) {
     try {
-        await api.eventsCreate({
+        await api.adminEventsCreate({
             body: {
                 name: values.name,
                 date: values.date,
@@ -122,7 +122,7 @@ async function createItem(values: GenericObject) {
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
-        await api.eventsPartialUpdate({
+        await api.adminEventsPartialUpdate({
             path: {
                 id: itemId,
             },
@@ -143,7 +143,7 @@ async function editItem(itemId: number, values: GenericObject) {
     return false;
 }
 
-async function modal(item: EventReadable | undefined = undefined) {
+async function modal(item: Event | undefined = undefined) {
     if (item !== undefined) {
         existingId.value = item.id;
         setValues({

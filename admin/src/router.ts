@@ -70,6 +70,7 @@ const router = createRouter({
             meta: {
                 requireAuth: true,
             },
+            props: true,
             component: () => import("@/views/MainView.vue"),
         },
         {

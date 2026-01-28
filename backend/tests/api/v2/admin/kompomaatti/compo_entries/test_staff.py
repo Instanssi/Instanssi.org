@@ -236,3 +236,16 @@ def test_entry_without_alternate_files_returns_empty_list(staff_api_client, vota
     assert req.status_code == 200
     assert "alternate_files" in req.data
     assert req.data["alternate_files"] == []
+
+
+@pytest.mark.django_db
+def test_cannot_update_entry_to_other_compo(staff_api_client, editable_compo_entry, votable_compo):
+    """Test that staff cannot change compo after creation."""
+    base_url = get_base_url(editable_compo_entry.compo.event_id)
+    req = staff_api_client.patch(
+        f"{base_url}{editable_compo_entry.id}/",
+        format="multipart",
+        data={"compo": votable_compo.id},
+    )
+    assert req.status_code == 400
+    assert "compo" in req.data

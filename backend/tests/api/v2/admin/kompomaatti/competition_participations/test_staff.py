@@ -126,15 +126,14 @@ def test_staff_cannot_create_participation_for_other_event_competition(
 
 
 @pytest.mark.django_db
-def test_cannot_update_participation_to_other_event_competition(
+def test_cannot_update_participation_to_other_competition(
     staff_api_client, competition_participation, other_competition
 ):
-    """Test that staff cannot change competition -- the field is silently ignored on update."""
+    """Test that staff cannot change competition after creation."""
     base_url = get_base_url(competition_participation.competition.event_id)
-    original_competition_id = competition_participation.competition_id
     req = staff_api_client.patch(
         f"{base_url}{competition_participation.id}/",
         {"competition": other_competition.id},
     )
-    assert req.status_code == 200
-    assert req.data["competition"] == original_competition_id
+    assert req.status_code == 400
+    assert "competition" in req.data

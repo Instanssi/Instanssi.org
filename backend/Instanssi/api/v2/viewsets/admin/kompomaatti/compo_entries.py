@@ -51,8 +51,10 @@ class CompoEntryViewSet(EntryViewSetMixin, PermissionViewSet):  # type: ignore[m
         maybe_copy_entry_to_image(instance)
 
     def perform_update(self, serializer: BaseSerializer[Entry]) -> None:  # type: ignore[override]
-        serializer.validated_data.pop("compo", None)
         assert serializer.instance is not None
+        if new_compo := serializer.validated_data.get("compo"):
+            if new_compo.id != serializer.instance.compo_id:
+                raise serializers.ValidationError({"compo": ["Cannot change compo after creation"]})
         validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)

@@ -1,13 +1,23 @@
 from django.contrib.auth.models import User
-from rest_framework.serializers import ModelSerializer
-
-from .permission_serializer import PermissionSerializer
+from drf_spectacular.utils import extend_schema_field
+from rest_framework.serializers import (
+    CharField,
+    ListField,
+    ModelSerializer,
+    SerializerMethodField,
+)
 
 
 class UserInfoSerializer(ModelSerializer[User]):
     """Serializer for the authenticated user's own profile and permissions."""
 
-    user_permissions = PermissionSerializer(many=True, read_only=True)
+    user_permissions = SerializerMethodField()
+
+    @extend_schema_field(ListField(child=CharField()))
+    def get_user_permissions(self, user: User) -> list[str]:
+        if user.is_superuser:
+            return []
+        return [perm.split(".")[1] for perm in user.get_all_permissions()]
 
     class Meta:
         model = User
@@ -21,4 +31,4 @@ class UserInfoSerializer(ModelSerializer[User]):
             "is_superuser",
             "date_joined",
         )
-        read_only_fields = ("date_joined", "is_superuser", "user_permissions")
+        read_only_fields = ("date_joined", "is_superuser")

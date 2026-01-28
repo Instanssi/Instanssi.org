@@ -499,10 +499,7 @@ export type CompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -590,10 +587,7 @@ export type CompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -1880,10 +1874,7 @@ export type PatchedCompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -2549,6 +2540,7 @@ export type PatchedUserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -2629,34 +2621,6 @@ export type PatchedVoteCodeRequestRequest = {
  * * `1` - 1
  */
 export type PaymentMethodEnum = -1 | 1;
-
-/**
- * Serializer for user permissions (used in user info responses).
- */
-export type Permission = {
-    /**
-     * Nimi
-     */
-    name: string;
-    /**
-     * Tunniste
-     */
-    codename: string;
-};
-
-/**
- * Serializer for user permissions (used in user info responses).
- */
-export type PermissionRequest = {
-    /**
-     * Nimi
-     */
-    name: string;
-    /**
-     * Tunniste
-     */
-    codename: string;
-};
 
 /**
  * Staff serializer for programme events.
@@ -3136,10 +3100,7 @@ export type PublicCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -4187,7 +4148,7 @@ export type User = {
      * Sähköpostiosoite
      */
     email?: string;
-    readonly user_permissions: Array<Permission>;
+    readonly user_permissions: Array<string>;
     /**
      * Pääkäyttäjä
      *
@@ -4274,7 +4235,7 @@ export type UserCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    readonly youtube_url: string | null;
+    youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -4316,6 +4277,7 @@ export type UserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -4341,7 +4303,7 @@ export type UserInfo = {
      * Sähköpostiosoite
      */
     email?: string;
-    readonly user_permissions: Array<Permission>;
+    readonly user_permissions: Array<string>;
     /**
      * Pääkäyttäjä
      *
@@ -4883,10 +4845,7 @@ export type CompoEntryWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: string;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -5043,6 +5002,7 @@ export type PatchedUserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
+    youtube_url?: string | null;
 };
 
 /**
@@ -5375,10 +5335,7 @@ export type PublicCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    /**
-     * Linkki teoksen Youtube-videoon.
-     */
-    youtube_url?: unknown;
+    youtube_url?: string | null;
 };
 
 /**
@@ -5986,6 +5943,7 @@ export type UserCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -6040,6 +5998,7 @@ export type UserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
+    youtube_url?: string | null;
 };
 
 /**

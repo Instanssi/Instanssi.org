@@ -79,13 +79,12 @@ export function useAuth() {
 
     async function refreshStatus(): Promise<boolean> {
         const info = await tryFetchUserData();
-        const perms = info?.user_permissions.map((p: { codename: string }) => p.codename);
         loggedIn.value = info !== undefined;
         userInfo.value = {
             firstName: info?.first_name || "",
             lastName: info?.last_name || "",
             email: info?.email || "",
-            permissions: new Set(perms || []),
+            permissions: new Set(info?.user_permissions || []),
             isSuperUser: info?.is_superuser || false,
         };
         return loggedIn.value;

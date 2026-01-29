@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
+import { HttpStatus, isHttpError } from "@/utils/http";
 
 const authService = useAuth();
 const { refreshEvents, getLatestEvent } = useEvents();
@@ -86,6 +87,12 @@ const router = createRouter({
                     try {
                         await refreshEvents();
                     } catch (e) {
+                        if (isHttpError(e, HttpStatus.FORBIDDEN)) {
+                            console.error("Permission denied, logging out");
+                            await authService.logout();
+                            next({ name: "login" });
+                            return;
+                        }
                         console.error("Failed to refresh events:", e);
                     }
                     const event = getLatestEvent();

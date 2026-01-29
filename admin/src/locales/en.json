@@ -209,7 +209,9 @@
       "subtitle": "Sign in using username and password, or by using one of the SSO methods.",
       "username": "Username",
       "password": "Password",
-      "login": "Login"
+      "login": "Login",
+      "auth_failed": "Incorrect username or password!",
+      "insufficient_permissions": "You do not have the required permissions to access this panel."
     }
   }
 }

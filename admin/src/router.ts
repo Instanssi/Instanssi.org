@@ -334,6 +334,17 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/TransactionItemsView.vue"),
         },
+        // Store Summary
+        {
+            path: "/:eventId(\\d+)/store/summary",
+            name: "store-summary",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.TRANSACTION_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/StoreSummaryView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",

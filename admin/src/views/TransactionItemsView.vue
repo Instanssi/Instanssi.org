@@ -2,6 +2,30 @@
     <LayoutBase :key="`transaction-items-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
+                <v-menu>
+                    <template #activator="{ props: menuProps }">
+                        <v-btn :loading="exportLoading" v-bind="menuProps">
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faDownload" />
+                            </template>
+                            {{ t("TransactionItemsView.export") }}
+                            <template #append>
+                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
+                            </template>
+                        </v-btn>
+                    </template>
+                    <v-list density="compact">
+                        <v-list-item @click="exportData('csv')">
+                            <v-list-item-title>CSV (.csv)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="exportData('xlsx')">
+                            <v-list-item-title>Excel (.xlsx)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="exportData('ods')">
+                            <v-list-item-title>LibreOffice (.ods)</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 <v-select
                     v-model="selectedItem"
                     :items="itemOptions"
@@ -9,7 +33,7 @@
                     density="compact"
                     :label="t('TransactionItemsView.filterByItem')"
                     style="max-width: 300px"
-                    class="ma-0 pa-0"
+                    class="ma-0 pa-0 ml-4"
                     clearable
                 />
                 <v-text-field
@@ -66,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faChevronDown, faDownload, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, onMounted, ref, watch } from "vue";
@@ -75,10 +99,11 @@ import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { TransactionItem, StoreItem } from "@/api";
+import type { TransactionItem, StoreItem, StoreTransaction } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
+import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -88,6 +113,7 @@ const toast = useToast();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
+const exportLoading = ref(false);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -204,6 +230,125 @@ watch(selectedItem, () => {
         debouncedLoad(lastLoadArgs.value);
     }
 });
+
+async function exportData(format: SpreadsheetFormat): Promise<void> {
+    exportLoading.value = true;
+    try {
+        // Fetch all data for export
+        const [itemsResponse, transactionsResponse, txItemsResponse] = await Promise.all([
+            api.adminEventStoreItemsList({
+                path: { event_pk: eventId.value },
+                query: { limit: 1000 },
+            }),
+            api.adminEventStoreTransactionsList({
+                path: { event_pk: eventId.value },
+                query: { limit: 10000 },
+            }),
+            api.adminEventStoreTransactionItemsList({
+                path: { event_pk: eventId.value },
+                query: { limit: 10000 },
+            }),
+        ]);
+
+        const allStoreItems = itemsResponse.data!.results;
+        const transactions = transactionsResponse.data!.results;
+        const txItems = txItemsResponse.data!.results;
+
+        // Build transaction lookup map
+        const transactionMap = new Map<number, StoreTransaction>();
+        for (const tx of transactions) {
+            transactionMap.set(tx.id, tx);
+        }
+
+        // Helper to get item/variant names
+        const getExportItemName = (itemId: number): string => {
+            const item = allStoreItems.find((i) => i.id === itemId);
+            return item?.name ?? `#${itemId}`;
+        };
+        const getExportVariantName = (
+            itemId: number,
+            variantId: number | null | undefined
+        ): string => {
+            if (!variantId) return "";
+            const item = allStoreItems.find((i) => i.id === itemId);
+            if (!item) return `#${variantId}`;
+            const variant = item.variants?.find((v) => v.id === variantId);
+            return variant?.name ?? `#${variantId}`;
+        };
+
+        // Build export data with headers
+        const data: Array<Array<string | number>> = [
+            [
+                "Item ID",
+                "Product",
+                "Variant",
+                "Purchase Price",
+                "Original Price",
+                "Delivered",
+                "Delivery Time",
+                "Transaction ID",
+                "First Name",
+                "Last Name",
+                "Company",
+                "Email",
+                "Telephone",
+                "Mobile",
+                "Street",
+                "Postal Code",
+                "City",
+                "Country",
+                "Status",
+                "Created",
+                "Paid",
+                "Total Price",
+            ],
+        ];
+
+        for (const txItem of txItems) {
+            const tx = transactionMap.get(txItem.transaction);
+            const status = tx?.is_paid
+                ? "Paid"
+                : tx?.is_cancelled
+                  ? "Cancelled"
+                  : tx?.is_pending
+                    ? "Pending"
+                    : "Created";
+
+            data.push([
+                txItem.id,
+                getExportItemName(txItem.item),
+                getExportVariantName(txItem.item, txItem.variant),
+                txItem.purchase_price,
+                txItem.original_price,
+                txItem.is_delivered ? "Yes" : "No",
+                txItem.time_delivered ?? "",
+                tx?.id ?? "",
+                tx?.firstname ?? "",
+                tx?.lastname ?? "",
+                tx?.company ?? "",
+                tx?.email ?? "",
+                tx?.telephone ?? "",
+                tx?.mobile ?? "",
+                tx?.street ?? "",
+                tx?.postalcode ?? "",
+                tx?.city ?? "",
+                tx?.country ?? "",
+                status,
+                tx?.time_created ?? "",
+                tx?.time_paid ?? "",
+                tx?.total_price ?? "",
+            ]);
+        }
+
+        downloadSpreadsheet(data, "instanssi_transaction_items", format, "Transaction Items");
+        toast.success(t("TransactionItemsView.exportSuccess"));
+    } catch (e) {
+        toast.error(t("TransactionItemsView.exportFailure"));
+        console.error(e);
+    } finally {
+        exportLoading.value = false;
+    }
+}
 
 onMounted(() => {
     loadStoreItems();

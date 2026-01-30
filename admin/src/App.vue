@@ -16,6 +16,7 @@
 import {
     faBlog,
     faBoxOpen,
+    faChartPie,
     faCreditCard,
     faDashboard,
     faEnvelope,
@@ -101,6 +102,12 @@ const primaryLinks: NavigationLinks = [
         title: t("App.nav.store"),
         icon: faStore,
         children: [
+            {
+                title: t("App.nav.storeSummary"),
+                icon: faChartPie,
+                to: "store-summary",
+                requirePerm: PermissionTarget.TRANSACTION_ITEM,
+            },
             {
                 title: t("App.nav.storeItems"),
                 icon: faBoxOpen,

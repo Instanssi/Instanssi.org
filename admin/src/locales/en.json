@@ -65,7 +65,8 @@
         "store": "Store",
         "storeItems": "Products",
         "transactions": "Transactions",
-        "transactionItems": "Transaction Items"
+        "transactionItems": "Transaction Items",
+        "storeSummary": "Sales Summary"
       }
     },
     "MainNavigation": {
@@ -737,6 +738,32 @@
         "price": "Price",
         "key": "Key",
         "delivered": "Delivered"
+      }
+    },
+    "StoreSummaryView": {
+      "title": "Sales Summary",
+      "loadFailure": "Failed to load sales summary; try again later.",
+      "noSalesFound": "No sales found for this event.",
+      "loading": "Loading sales summary ...",
+      "export": "Export",
+      "exportSuccess": "Sales summary exported!",
+      "exportFailure": "Failed to export sales summary; try again later.",
+      "headers": {
+        "item": "Item",
+        "variant": "Variant",
+        "quantity": "Quantity Sold",
+        "revenue": "Revenue"
+      },
+      "totals": {
+        "title": "Totals",
+        "totalItems": "Total Items Sold",
+        "totalRevenue": "Total Revenue"
+      },
+      "charts": {
+        "salesPerDay": "Sales per Day",
+        "salesByHour": "Sales by Hour of Day",
+        "salesCount": "Sales",
+        "noData": "No data available"
       }
     },
     "LoginView": {

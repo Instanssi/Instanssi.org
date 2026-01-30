@@ -17,8 +17,8 @@
                 :items="events"
             >
                 <template v-if="authService.canView(PermissionTarget.EVENT)" #append>
-                    <v-btn variant="plain" density="compact" @click="routeToEvents">
-                        <FontAwesomeIcon :icon="faCalendarDays" />
+                    <v-btn variant="plain" density="compact" @click="routeToEvents" class="event-btn">
+                        <FontAwesomeIcon :icon="faCalendarDays" class="ma-0 pa-0" />
                     </v-btn>
                 </template>
             </v-select>
@@ -113,5 +113,9 @@ onMounted(tryRefreshEvents);
 <style lang="scss">
 .nav-event-select .v-input__append {
     margin-inline-start: 8px !important;
+}
+.event-btn {
+    min-width: 0;
+    margin: 0.2rem;
 }
 </style>

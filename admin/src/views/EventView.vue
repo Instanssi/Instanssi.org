@@ -45,6 +45,11 @@
                     <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
+                    <template #item.mainurl="{ item }">
+                        <a v-if="item.mainurl" :href="item.mainurl" target="_blank">
+                            {{ item.mainurl }}
+                        </a>
+                    </template>
                     <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.EVENT)"
@@ -56,7 +61,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faXmark" />
                             </template>
-                            Delete
+                            {{ t("General.delete") }}
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.EVENT)"
@@ -67,7 +72,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </template>
-                            Edit
+                            {{ t("General.edit") }}
                         </v-btn>
                     </template>
                 </v-data-table-server>

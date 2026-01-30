@@ -38,6 +38,18 @@
                     :loading-text="t('UsersView.loadingUsers')"
                     @update:options="debouncedLoad"
                 >
+                    <template #item.is_superuser="{ item }">
+                        <FontAwesomeIcon
+                            v-if="item.is_superuser"
+                            :icon="faCheck"
+                            class="text-green"
+                        />
+                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                    </template>
+                    <template #item.is_active="{ item }">
+                        <FontAwesomeIcon v-if="item.is_active" :icon="faCheck" class="text-green" />
+                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                    </template>
                     <template #item.date_joined="{ item }">
                         {{ d(item.date_joined, "long") }}
                     </template>
@@ -52,7 +64,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faXmark" />
                             </template>
-                            Delete
+                            {{ t("General.delete") }}
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.USER)"
@@ -63,7 +75,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </template>
-                            Edit
+                            {{ t("General.edit") }}
                         </v-btn>
                     </template>
                 </v-data-table-server>
@@ -73,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -144,6 +156,16 @@ const headers: ReadonlyHeaders = [
         title: t("UsersView.headers.email"),
         sortable: true,
         key: "email",
+    },
+    {
+        title: t("UsersView.headers.superuser"),
+        sortable: false,
+        key: "is_superuser",
+    },
+    {
+        title: t("UsersView.headers.active"),
+        sortable: false,
+        key: "is_active",
     },
     {
         title: t("UsersView.headers.dateJoined"),

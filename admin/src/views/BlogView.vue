@@ -56,7 +56,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faXmark" />
                             </template>
-                            Delete
+                            {{ t("General.delete") }}
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.BLOG_ENTRY)"
@@ -67,7 +67,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </template>
-                            Edit
+                            {{ t("General.edit") }}
                         </v-btn>
                     </template>
                 </v-data-table-server>

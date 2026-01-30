@@ -366,6 +366,13 @@ Modern browsers with ES6+ support required. No IE11 support needed.
 - **Composition API**: Always use Vue 3 Composition API with `<script setup>`, never Options API
 - **TypeScript**: Maintain strict typing, avoid `any` types
 - **Vuetify**: Use Vuetify 3 components (not Vuetify 2 syntax)
+- **Icons**: Use `FontAwesomeIcon` component with directly imported icons from `@fortawesome/free-solid-svg-icons` (or other icon sets). Do not use string-based icon references like `prepend-icon="fas fa-something"`. Example:
+  ```typescript
+  import { faDownload } from "@fortawesome/free-solid-svg-icons";
+  ```
+  ```vue
+  <FontAwesomeIcon :icon="faDownload" />
+  ```
 - **Code style**: Follow existing patterns in the codebase
 - **Imports**: Use `@/` alias for src imports
 - **Reactivity**: Use `ref()` and `reactive()` appropriately

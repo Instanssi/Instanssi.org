@@ -197,8 +197,11 @@
                                     target="_blank"
                                     :title="file.format"
                                     :subtitle="file.url"
-                                    prepend-icon="fas fa-file-download"
-                                />
+                                >
+                                    <template #prepend>
+                                        <FontAwesomeIcon :icon="faDownload" class="mr-4" />
+                                    </template>
+                                </v-list-item>
                             </v-list>
                         </template>
                     </v-form>
@@ -226,7 +229,7 @@
 </template>
 
 <script setup lang="ts">
-import { faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";

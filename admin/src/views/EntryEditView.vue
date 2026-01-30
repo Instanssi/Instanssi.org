@@ -333,8 +333,8 @@ const validationSchema = yupObject({
     entryFile: yupMixed()
         .nullable()
         .test("entry-file-required", t("EntryEditView.entryFileRequired"), (value) => {
-            // Entry file is required only in create mode and if no existing file
-            if (isEditMode.value) return true;
+            // Entry file is always required; in edit mode, existing file is also OK
+            if (existingFiles.value?.entryfile_url) return true;
             return !!getFile(value as FileValue);
         }),
     sourceFile: yupMixed().nullable(),
@@ -417,17 +417,8 @@ const allowsImageFile = computed(() => {
 // Image file is required when thumbnail_pref is 0
 const requiresImageFile = computed(() => selectedCompo.value?.thumbnail_pref === 0);
 
-// Entry file is required in create mode
-const requiresEntryFile = computed(() => !isEditMode.value);
-
-// Dynamic label for entry file field
-const entryFileLabel = computed(() => {
-    const base = t("EntryEditView.labels.entryfile");
-    if (requiresEntryFile.value) {
-        return `${base} *`;
-    }
-    return base;
-});
+// Entry file label (always required)
+const entryFileLabel = computed(() => `${t("EntryEditView.labels.entryfile")} *`);
 
 // Dynamic label for image file field
 const imageFileLabel = computed(() => {

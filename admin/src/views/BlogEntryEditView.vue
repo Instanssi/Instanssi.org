@@ -61,6 +61,7 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
+import { handleApiError } from "@/utils/http";
 
 const props = defineProps<{
     eventId: string;
@@ -109,19 +110,19 @@ const switchLabel = computed(() =>
 const validationSchema = yupObject({
     title: yupString().required().min(1).max(128),
     text: yupString().required().min(1),
-    isPublic: yupBoolean(),
+    public: yupBoolean(),
 });
-const { handleSubmit, setValues, meta } = useForm({
+const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
     initialValues: {
         title: "",
         text: "",
-        isPublic: false,
+        public: false,
     },
 });
 const title = useField<string>("title");
 const text = useField<string>("text");
-const isPublic = useField<boolean>("isPublic");
+const isPublic = useField<boolean>("public");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -144,14 +145,13 @@ async function createItem(values: GenericObject) {
                 event: parseInt(props.eventId, 10),
                 title: values.title,
                 text: values.text,
-                public: values.isPublic,
+                public: values.public,
             },
         });
         toast.success(t("BlogPostDialog.createSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("BlogPostDialog.createFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("BlogPostDialog.createFailure"));
     }
     return false;
 }
@@ -163,14 +163,13 @@ async function editItem(itemId: number, values: GenericObject) {
             body: {
                 title: values.title,
                 text: values.text,
-                public: values.isPublic,
+                public: values.public,
             },
         });
         toast.success(t("BlogPostDialog.editSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("BlogPostDialog.editFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("BlogPostDialog.editFailure"));
     }
     return false;
 }
@@ -190,7 +189,7 @@ onMounted(async () => {
             setValues({
                 title: item.title,
                 text: item.text,
-                isPublic: item.public ?? false,
+                public: item.public ?? false,
             });
         } catch (e) {
             toast.error(t("BlogEntryEditView.loadFailure"));

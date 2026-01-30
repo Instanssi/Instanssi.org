@@ -1,16 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { PermissionTarget, useAuth } from "@/services/auth";
-
-// Only mock the API layer
-vi.mock("@/api", () => ({
-    login: vi.fn(),
-    logout: vi.fn(),
-    userInfo: vi.fn(),
-    getSocialAuthUrls: vi.fn(),
-}));
+// Unmock auth service since we're testing it directly
+vi.unmock("@/services/auth");
 
 import * as api from "@/api";
+import { PermissionTarget, useAuth } from "@/services/auth";
 
 describe("LoginView - auth service integration", () => {
     const authService = useAuth();

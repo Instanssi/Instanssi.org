@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
-import { HttpStatus, isHttpError } from "@/utils/http";
+import { HttpStatus, isHttpError } from "@/utils/http_status";
 
 const authService = useAuth();
 const { refreshEvents, getLatestEvent } = useEvents();

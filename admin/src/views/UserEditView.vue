@@ -77,6 +77,7 @@ import { object as yupObject, string as yupString } from "yup";
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
+import { handleApiError } from "@/utils/http";
 
 const props = defineProps<{
     id?: string;
@@ -117,7 +118,7 @@ const validationSchema = yupObject({
     username: yupString().required().min(1).max(150),
     email: yupString().email().required().min(1).max(254),
 });
-const { handleSubmit, setValues, meta } = useForm({
+const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
     initialValues: {
         firstName: "",
@@ -158,8 +159,7 @@ async function createItem(values: GenericObject) {
         toast.success(t("UserDialog.createSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("UserDialog.createFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"));
     }
     return false;
 }
@@ -178,8 +178,7 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("UserDialog.editSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("UserDialog.editFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"));
     }
     return false;
 }

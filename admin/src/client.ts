@@ -2,8 +2,11 @@ import { client } from "@/api/client.gen.ts";
 import { errorResponseInterceptor } from "@/services/utils/interceptors";
 
 export function setupClient() {
-    client.instance.defaults.xsrfCookieName = "csrftoken";
-    client.instance.defaults.xsrfHeaderName = "X-CSRFToken";
-    client.instance.defaults.timeout = 5000;
-    client.instance.interceptors.request.use(null, errorResponseInterceptor);
+    client.setConfig({
+        throwOnError: true,
+        xsrfCookieName: "csrftoken",
+        xsrfHeaderName: "X-CSRFToken",
+        timeout: 5000,
+    });
+    client.instance.interceptors.response.use(null, errorResponseInterceptor);
 }

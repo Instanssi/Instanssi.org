@@ -27,8 +27,8 @@
                             :label="t('EventDialog.labels.date')"
                         />
                         <v-text-field
-                            v-model="mainUrl.value.value"
-                            :error-messages="mainUrl.errorMessage.value"
+                            v-model="mainurl.value.value"
+                            :error-messages="mainurl.errorMessage.value"
                             variant="outlined"
                             :label="t('EventDialog.labels.mainUrl')"
                         />
@@ -80,6 +80,7 @@ import {
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
+import { handleApiError } from "@/utils/http";
 
 const props = defineProps<{
     id?: string;
@@ -124,23 +125,23 @@ const validationSchema = yupObject({
     tag: yupString().required().min(1).max(8),
     date: yupDate().required(),
     archived: yupBoolean(),
-    mainUrl: yupString().required().url().max(200),
+    mainurl: yupString().required().url().max(200),
 });
-const { handleSubmit, setValues, meta } = useForm({
+const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
     initialValues: {
         name: "",
         tag: "",
         date: "",
         archived: false,
-        mainUrl: "",
+        mainurl: "",
     },
 });
 const name = useField<string>("name");
 const tag = useField<string>("tag");
 const date = useField<string>("date");
 const archived = useField<boolean>("archived");
-const mainUrl = useField<string>("mainUrl");
+const mainurl = useField<string>("mainurl");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -165,14 +166,13 @@ async function createItem(values: GenericObject) {
                 date: values.date,
                 archived: values.archived,
                 tag: values.tag,
-                mainurl: values.mainUrl,
+                mainurl: values.mainurl,
             },
         });
         toast.success(t("EventDialog.createSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("EventDialog.createFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("EventDialog.createFailure"));
     }
     return false;
 }
@@ -186,14 +186,13 @@ async function editItem(itemId: number, values: GenericObject) {
                 date: values.date,
                 archived: values.archived,
                 tag: values.tag,
-                mainurl: values.mainUrl,
+                mainurl: values.mainurl,
             },
         });
         toast.success(t("EventDialog.editSuccess"));
         return true;
     } catch (e) {
-        toast.error(t("EventDialog.editFailure"));
-        console.error(e);
+        handleApiError(e, setErrors, toast, t("EventDialog.editFailure"));
     }
     return false;
 }
@@ -216,7 +215,7 @@ onMounted(async () => {
                 tag: item.tag ?? "",
                 date: item.date,
                 archived: item.archived ?? false,
-                mainUrl: item.mainurl ?? "",
+                mainurl: item.mainurl ?? "",
             });
         } catch (e) {
             toast.error(t("EventEditView.loadFailure"));

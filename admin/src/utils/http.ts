@@ -1,24 +1,64 @@
 import type { AxiosError } from "axios";
+import { camelCase } from "lodash-es";
 
-export const HttpStatus = {
-    OK: 200,
-    CREATED: 201,
-    NO_CONTENT: 204,
-    BAD_REQUEST: 400,
-    UNAUTHORIZED: 401,
-    FORBIDDEN: 403,
-    NOT_FOUND: 404,
-    CONFLICT: 409,
-    TEAPOT: 418,
-    INTERNAL_SERVER_ERROR: 500,
-    BAD_GATEWAY: 502,
-    SERVICE_UNAVAILABLE: 503,
-    GATEWAY_TIMEOUT: 504,
-} as const;
+import { HttpStatus } from "@/utils/http_status";
 
-export type HttpStatusCode = (typeof HttpStatus)[keyof typeof HttpStatus];
+type FieldErrors = Record<string, string>;
+type SetErrorsFn = (errors: FieldErrors) => void;
+type ToastInterface = { error: (message: string) => void };
+type FieldMapping = Record<string, string>;
 
-export function isHttpError(error: unknown, status: HttpStatusCode): boolean {
+/**
+ * Handle API errors by mapping field-level validation errors to form fields
+ * and showing appropriate toast messages.
+ *
+ * @param error - The caught error (typically AxiosError)
+ * @param setErrors - vee-validate's setErrors function
+ * @param toast - Toast interface with error() method
+ * @param fallbackMessage - Message to show if no specific error can be extracted
+ * @param fieldMapping - Optional mapping from API field names to form field names
+ */
+export function handleApiError(
+    error: unknown,
+    setErrors: SetErrorsFn,
+    toast: ToastInterface,
+    fallbackMessage: string,
+    fieldMapping: FieldMapping = {}
+): void {
     const axiosError = error as AxiosError;
-    return axiosError?.response?.status === status;
+
+    if (axiosError?.response) {
+        const status = axiosError.response.status;
+        const data = axiosError.response.data as Record<string, unknown>;
+
+        // Handle field-level validation errors (400 Bad Request)
+        if (status === HttpStatus.BAD_REQUEST && typeof data === "object" && data !== null) {
+            const fieldErrors: FieldErrors = {};
+            let hasFieldErrors = false;
+
+            for (const [key, value] of Object.entries(data)) {
+                if (key !== "detail" && Array.isArray(value)) {
+                    // Apply custom mapping first, then snake_case conversion
+                    const fieldName = fieldMapping[key] ?? camelCase(key);
+                    fieldErrors[fieldName] = value.join(", ");
+                    hasFieldErrors = true;
+                }
+            }
+
+            if (hasFieldErrors) {
+                setErrors(fieldErrors);
+                return;
+            }
+        }
+
+        // Check for detail message
+        if (data && typeof data.detail === "string") {
+            toast.error(data.detail);
+            return;
+        }
+    }
+
+    // Fallback to generic message
+    toast.error(fallbackMessage);
+    console.error(error);
 }

@@ -138,7 +138,9 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
-        "dateJoined": "Date joined"
+        "dateJoined": "Date joined",
+        "isActive": "User account is active",
+        "isNotActive": "User account is disabled"
       },
       "editFailure": "Failed to edit user; try again later.",
       "createFailure": "Failed to create user; try again later.",

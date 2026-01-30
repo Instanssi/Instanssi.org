@@ -39,6 +39,11 @@
                             variant="outlined"
                             :label="t('UserDialog.labels.lastName')"
                         />
+                        <v-switch
+                            v-model="isActive.value.value"
+                            :error-messages="isActive.errorMessage.value"
+                            :label="isActiveLabel"
+                        />
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
@@ -72,7 +77,7 @@ import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import { object as yupObject, string as yupString } from "yup";
+import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
@@ -93,6 +98,10 @@ const saving = ref(false);
 const userName = ref<string>("");
 const dateJoined = ref<string>("");
 const isEditMode = computed(() => props.id !== undefined);
+
+const isActiveLabel = computed(() =>
+    isActive.value.value ? t("UserDialog.labels.isActive") : t("UserDialog.labels.isNotActive")
+);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const event = getLatestEvent();
@@ -117,6 +126,7 @@ const validationSchema = yupObject({
     lastName: yupString().min(0).max(150),
     username: yupString().required().min(1).max(150),
     email: yupString().email().required().min(1).max(254),
+    isActive: yupBoolean(),
 });
 const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
@@ -125,12 +135,14 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         lastName: "",
         username: "",
         email: "",
+        isActive: true,
     },
 });
 const firstName = useField<string>("firstName");
 const lastName = useField<string>("lastName");
 const username = useField<string>("username");
 const email = useField<string>("email");
+const isActive = useField<boolean>("isActive");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -154,6 +166,7 @@ async function createItem(values: GenericObject) {
                 last_name: values.lastName,
                 email: values.email,
                 username: values.username,
+                is_active: values.isActive,
             },
         });
         toast.success(t("UserDialog.createSuccess"));
@@ -173,6 +186,7 @@ async function editItem(itemId: number, values: GenericObject) {
                 last_name: values.lastName,
                 email: values.email,
                 username: values.username,
+                is_active: values.isActive,
             },
         });
         toast.success(t("UserDialog.editSuccess"));
@@ -200,8 +214,9 @@ onMounted(async () => {
             setValues({
                 firstName: item.first_name ?? "",
                 lastName: item.last_name ?? "",
-                email: item.email,
+                email: item.email ?? "",
                 username: item.username,
+                isActive: item.is_active ?? true,
             });
         } catch (e) {
             toast.error(t("UserEditView.loadFailure"));

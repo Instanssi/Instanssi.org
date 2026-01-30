@@ -261,10 +261,13 @@
     "EntriesView": {
       "title": "Entries",
       "newEntry": "New Entry",
+      "exportResults": "Export Results",
       "confirmDelete": "Do you really want to delete entry '{name}'?",
       "loadFailure": "Failed to load entries; try again later.",
       "deleteSuccess": "Entry deleted!",
       "deleteFailure": "Failed to delete entry; try again later.",
+      "exportSuccess": "Results exported!",
+      "exportFailure": "Failed to export results; try again later.",
       "noEntriesFound": "No entries found.",
       "loadingEntries": "Loading entries ...",
       "filterByCompo": "Filter by compo",

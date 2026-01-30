@@ -8,6 +8,30 @@
                     </template>
                     {{ t("EntriesView.newEntry") }}
                 </v-btn>
+                <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
+                    <template #activator="{ props: menuProps }">
+                        <v-btn class="ml-2" :loading="exportLoading" v-bind="menuProps">
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faDownload" />
+                            </template>
+                            {{ t("EntriesView.exportResults") }}
+                            <template #append>
+                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
+                            </template>
+                        </v-btn>
+                    </template>
+                    <v-list density="compact">
+                        <v-list-item @click="downloadResults('csv')">
+                            <v-list-item-title>CSV (.csv)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="downloadResults('xlsx')">
+                            <v-list-item-title>Excel (.xlsx)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="downloadResults('ods')">
+                            <v-list-item-title>LibreOffice (.ods)</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 <v-select
                     v-model="selectedCompo"
                     :items="compoOptions"
@@ -94,7 +118,14 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faChevronDown,
+    faDownload,
+    faPenToSquare,
+    faPlus,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -111,6 +142,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import { sleep } from "@/utils/sleep.ts";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
@@ -124,6 +156,7 @@ const auth = useAuth();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
+const exportLoading = ref(false);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -261,6 +294,72 @@ function editEntry(id: number): void {
 
 function createEntry(): void {
     router.push({ name: "entries-new", params: { eventId: eventId.value } });
+}
+
+/**
+ * Convert a rank number to Roman numerals (1 = I, 2 = II, 3 = III, etc.)
+ */
+function toRomanNumeral(rank: number): string {
+    return "I".repeat(rank);
+}
+
+/**
+ * Generate spreadsheet data with top 3 entries per compo for diploma generation.
+ * Returns array of rows: [Entry Name, Creator, Placement, Compo Name]
+ */
+function generateResultsData(allEntries: CompoEntry[]): Array<[string, string, string, string]> {
+    // Group entries by compo
+    const entriesByCompo = new Map<number, CompoEntry[]>();
+    for (const entry of allEntries) {
+        const compoEntries = entriesByCompo.get(entry.compo) ?? [];
+        compoEntries.push(entry);
+        entriesByCompo.set(entry.compo, compoEntries);
+    }
+
+    // Build rows: top 3 entries per compo, sorted by rank
+    const rows: Array<[string, string, string, string]> = [];
+    for (const compo of compos.value) {
+        const compoEntries = entriesByCompo.get(compo.id) ?? [];
+
+        // Sort by rank (entries without rank go to the end)
+        const sorted = [...compoEntries].sort((a, b) => {
+            if (a.rank === null && b.rank === null) return 0;
+            if (a.rank === null) return 1;
+            if (b.rank === null) return -1;
+            return a.rank - b.rank;
+        });
+
+        // Take top 3
+        const top3 = sorted.slice(0, 3);
+
+        for (const entry of top3) {
+            if (entry.rank === null) continue; // Skip unranked entries
+            rows.push([entry.name, entry.creator, toRomanNumeral(entry.rank), compo.name]);
+        }
+    }
+
+    return rows;
+}
+
+/**
+ * Generate and download spreadsheet with top 3 entries per compo for diploma generation
+ */
+async function downloadResults(format: SpreadsheetFormat): Promise<void> {
+    exportLoading.value = true;
+    try {
+        const response = await api.adminEventKompomaattiEntriesList({
+            path: { event_pk: eventId.value },
+            query: { limit: 10000 },
+        });
+        const data = generateResultsData(response.data!.results);
+        downloadSpreadsheet(data, "instanssi_entries", format, "Results");
+        toast.success(t("EntriesView.exportSuccess"));
+    } catch (e) {
+        toast.error(t("EntriesView.exportFailure"));
+        console.error(e);
+    } finally {
+        exportLoading.value = false;
+    }
 }
 
 onMounted(() => {

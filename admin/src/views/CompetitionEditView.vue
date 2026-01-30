@@ -86,21 +86,24 @@
                             :error-message="active.errorMessage.value"
                             :label-on="t('CompetitionEditView.labels.activeOn')"
                             :label-off="t('CompetitionEditView.labels.activeOff')"
-                            class-name="mb-2"
+                            :hint-on="t('CompetitionEditView.labels.activeHintOn')"
+                            :hint-off="t('CompetitionEditView.labels.activeHintOff')"
                         />
                         <ToggleSwitch
                             v-model="showResults.value.value"
                             :error-message="showResults.errorMessage.value"
                             :label-on="t('CompetitionEditView.labels.showResultsOn')"
                             :label-off="t('CompetitionEditView.labels.showResultsOff')"
-                            class-name="mb-2"
+                            :hint-on="t('CompetitionEditView.labels.showResultsHintOn')"
+                            :hint-off="t('CompetitionEditView.labels.showResultsHintOff')"
                         />
                         <ToggleSwitch
                             v-model="showInArchive"
                             :error-message="hideFromArchive.errorMessage.value"
                             :label-on="t('CompetitionEditView.labels.hideFromArchiveOff')"
                             :label-off="t('CompetitionEditView.labels.hideFromArchiveOn')"
-                            class-name="mb-2"
+                            :hint-on="t('CompetitionEditView.labels.hideFromArchiveHintOn')"
+                            :hint-off="t('CompetitionEditView.labels.hideFromArchiveHintOff')"
                         />
                     </v-form>
                 </v-card-text>

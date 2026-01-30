@@ -5,15 +5,17 @@
         </v-col>
         <v-col v-else>
             <v-card>
-                <v-card-title>{{ pageTitle }}</v-card-title>
                 <v-card-text>
                     <v-form @submit.prevent="submit">
                         <v-text-field
                             v-model="title.value.value"
                             :error-messages="title.errorMessage.value"
                             variant="outlined"
-                            :label="t('BlogPostDialog.labels.title')"
+                            :label="t('BlogPostDialog.labels.title') + ' *'"
                         />
+                        <div class="text-subtitle-2 mb-1">
+                            {{ t("BlogPostDialog.labels.text") }} *
+                        </div>
                         <VuetifyTiptap v-model="text.value.value" />
                         <div v-if="text.errorMessage.value" class="text-error text-caption">
                             {{ text.errorMessage.value }}
@@ -22,6 +24,7 @@
                             v-model="isPublic.value.value"
                             :error-messages="isPublic.errorMessage.value"
                             :label="switchLabel"
+                            :class="{ 'text-green-darken-3': isPublic.value.value }"
                         />
                     </v-form>
                 </v-card-text>
@@ -78,9 +81,6 @@ const saving = ref(false);
 const entryTitle = ref<string>("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const isEditMode = computed(() => props.id !== undefined);
-const pageTitle = computed(() =>
-    isEditMode.value ? t("BlogEntryEditView.editTitle") : t("BlogEntryEditView.newTitle")
-);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const items: BreadcrumbItem[] = [

@@ -92,18 +92,10 @@ import type {
     AdminEventKompomaattiEntriesRetrieveResponses,
     AdminEventKompomaattiEntriesUpdateData,
     AdminEventKompomaattiEntriesUpdateResponses,
-    AdminEventKompomaattiTicketVoteCodesCreateData,
-    AdminEventKompomaattiTicketVoteCodesCreateResponses,
-    AdminEventKompomaattiTicketVoteCodesDestroyData,
-    AdminEventKompomaattiTicketVoteCodesDestroyResponses,
     AdminEventKompomaattiTicketVoteCodesListData,
     AdminEventKompomaattiTicketVoteCodesListResponses,
-    AdminEventKompomaattiTicketVoteCodesPartialUpdateData,
-    AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses,
     AdminEventKompomaattiTicketVoteCodesRetrieveData,
     AdminEventKompomaattiTicketVoteCodesRetrieveResponses,
-    AdminEventKompomaattiTicketVoteCodesUpdateData,
-    AdminEventKompomaattiTicketVoteCodesUpdateResponses,
     AdminEventKompomaattiVoteCodeRequestsCreateData,
     AdminEventKompomaattiVoteCodeRequestsCreateResponses,
     AdminEventKompomaattiVoteCodeRequestsDestroyData,
@@ -1609,7 +1601,7 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
 };
 
 /**
- * Staff viewset for managing ticket vote codes.
+ * Staff viewset for viewing ticket vote codes (read-only).
  */
 export const adminEventKompomaattiTicketVoteCodesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiTicketVoteCodesListData, ThrowOnError>
@@ -1637,66 +1629,7 @@ export const adminEventKompomaattiTicketVoteCodesList = <ThrowOnError extends bo
 };
 
 /**
- * Staff viewset for managing ticket vote codes.
- */
-export const adminEventKompomaattiTicketVoteCodesCreate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventKompomaattiTicketVoteCodesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventKompomaattiTicketVoteCodesCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing ticket vote codes.
- */
-export const adminEventKompomaattiTicketVoteCodesDestroy = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventKompomaattiTicketVoteCodesDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
-        AdminEventKompomaattiTicketVoteCodesDestroyResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/",
-        ...options,
-    });
-};
-
-/**
- * Staff viewset for managing ticket vote codes.
+ * Staff viewset for viewing ticket vote codes (read-only).
  */
 export const adminEventKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiTicketVoteCodesRetrieveData, ThrowOnError>
@@ -1720,72 +1653,6 @@ export const adminEventKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extend
         ],
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/",
         ...options,
-    });
-};
-
-/**
- * Staff viewset for managing ticket vote codes.
- */
-export const adminEventKompomaattiTicketVoteCodesPartialUpdate = <
-    ThrowOnError extends boolean = false,
->(
-    options: Options<AdminEventKompomaattiTicketVoteCodesPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
-        AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing ticket vote codes.
- */
-export const adminEventKompomaattiTicketVoteCodesUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventKompomaattiTicketVoteCodesUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventKompomaattiTicketVoteCodesUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
     });
 };
 

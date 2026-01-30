@@ -33,11 +33,17 @@
       "search": "Search",
       "save": "Save",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "disqualifiedOn": "Disqualified",
+      "disqualifiedOff": "Not disqualified"
     },
     "Breadcrumbs": {
       "newPost": "New Post",
-      "newEvent": "New Event"
+      "newEvent": "New Event",
+      "newCompo": "New Compo",
+      "newEntry": "New Entry",
+      "newCompetition": "New Competition",
+      "newParticipation": "New Participation"
     },
     "App": {
       "nav": {
@@ -46,7 +52,14 @@
         "blog": "Blog",
         "events": "Events",
         "users": "Users",
-        "logout": "Log out"
+        "logout": "Log out",
+        "kompomaatti": "Kompomaatti",
+        "compos": "Compos",
+        "entries": "Entries",
+        "competitions": "Competitions",
+        "competitionParticipations": "Participations",
+        "voteCodes": "Ticket Vote Codes",
+        "voteCodeRequests": "Vote Requests"
       }
     },
     "MainNavigation": {
@@ -118,6 +131,7 @@
       "title": "Blog post",
       "labels": {
         "title": "Title",
+        "text": "Content",
         "postIsVisible": "Post is visible for everyone",
         "postNotVisible": "Post is private; only admins can see it"
       },
@@ -130,6 +144,318 @@
       "newTitle": "New Blog Post",
       "editTitle": "Edit Blog Post",
       "loadFailure": "Failed to load blog post; try again later."
+    },
+    "ComposView": {
+      "title": "Compos",
+      "newCompo": "New Compo",
+      "confirmDelete": "Do you really want to delete compo '{name}'?",
+      "loadFailure": "Failed to load compos; try again later.",
+      "deleteSuccess": "Compo deleted!",
+      "deleteFailure": "Failed to delete compo; try again later.",
+      "noComposFound": "No compos found.",
+      "loadingCompos": "Loading compos ...",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "addingEnd": "Entry deadline",
+        "votingStart": "Voting start",
+        "votingEnd": "Voting end",
+        "active": "Active",
+        "actions": "Actions"
+      }
+    },
+    "CompoEditView": {
+      "newTitle": "New Compo",
+      "editTitle": "Edit Compo",
+      "loadFailure": "Failed to load compo; try again later.",
+      "createSuccess": "Compo created!",
+      "createFailure": "Failed to create compo; try again later.",
+      "editSuccess": "Compo updated!",
+      "editFailure": "Failed to update compo; try again later.",
+      "sections": {
+        "schedule": "Schedule",
+        "fileSettings": "File Settings",
+        "displaySettings": "Display Settings",
+        "visibility": "Visibility & Status"
+      },
+      "labels": {
+        "name": "Name",
+        "description": "Description",
+        "addingEnd": "Entry deadline",
+        "editingEnd": "Edit deadline",
+        "compoStart": "Compo start",
+        "votingStart": "Voting start",
+        "votingEnd": "Voting end",
+        "entrySizelimit": "Max entry size (bytes)",
+        "sourceSizelimit": "Max source size (bytes)",
+        "formats": "Entry formats (e.g. png|jpg)",
+        "sourceFormats": "Source formats",
+        "imageFormats": "Image formats",
+        "activeOn": "Compo is active",
+        "activeOff": "Compo is inactive",
+        "activeHintOn": "The compo is visible to everyone in the public interface",
+        "activeHintOff": "The compo is hidden from the public interface",
+        "showVotingResultsOn": "Voting results are visible",
+        "showVotingResultsOff": "Voting results are hidden",
+        "showVotingResultsHintOn": "Rankings and scores are publicly visible",
+        "showVotingResultsHintOff": "Enable after the award ceremony to reveal rankings",
+        "isVotableOn": "Voting is enabled",
+        "isVotableOff": "Voting is disabled",
+        "isVotableHintOn": "Users can vote on entries during the voting period",
+        "isVotableHintOff": "No voting - use for competitions with external scoring (e.g. Robocode)",
+        "entryViewType": "Entry view type",
+        "thumbnailPref": "Thumbnail preference",
+        "hideFromArchiveOn": "Hidden from archive",
+        "hideFromArchiveOff": "Visible in archive",
+        "hideFromArchiveHintOn": "This compo appears in the public archive after the event",
+        "hideFromArchiveHintOff": "This compo is hidden from the public archive",
+        "hideFromFrontpageOn": "Hidden from frontpage",
+        "hideFromFrontpageOff": "Visible on frontpage",
+        "hideFromFrontpageHintOn": "Compo name and description are shown on the event frontpage",
+        "hideFromFrontpageHintOff": "Compo is hidden from the event frontpage"
+      },
+      "entryViewTypes": {
+        "0": {
+          "title": "Normal",
+          "description": "Show entries with previews and details"
+        },
+        "1": {
+          "title": "No previews",
+          "description": "Hide preview images and media"
+        },
+        "2": {
+          "title": "Voting only",
+          "description": "Show only voting interface, no details"
+        },
+        "3": {
+          "title": "Fullscreen",
+          "description": "Display entries in fullscreen mode"
+        }
+      },
+      "thumbnailPrefs": {
+        "0": {
+          "title": "Default",
+          "description": "Use automatically generated thumbnail"
+        },
+        "1": {
+          "title": "Original",
+          "description": "Use uploaded original image"
+        },
+        "2": {
+          "title": "Static",
+          "description": "Use static placeholder image"
+        },
+        "3": {
+          "title": "YouTube",
+          "description": "Fetch thumbnail from YouTube video"
+        }
+      },
+      "sizeUnits": {
+        "B": "B",
+        "KB": "KB",
+        "MB": "MB",
+        "GB": "GB"
+      },
+      "commonFormats": {
+        "entry": ["zip", "7z", "rar", "tar.gz", "exe", "com", "prg", "d64"],
+        "source": ["zip", "7z", "rar", "tar.gz"],
+        "image": ["png", "jpg", "jpeg", "gif", "webp"]
+      }
+    },
+    "EntriesView": {
+      "title": "Entries",
+      "newEntry": "New Entry",
+      "confirmDelete": "Do you really want to delete entry '{name}'?",
+      "loadFailure": "Failed to load entries; try again later.",
+      "deleteSuccess": "Entry deleted!",
+      "deleteFailure": "Failed to delete entry; try again later.",
+      "noEntriesFound": "No entries found.",
+      "loadingEntries": "Loading entries ...",
+      "filterByCompo": "Filter by compo",
+      "allCompos": "All compos",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "creator": "Creator",
+        "compo": "Compo",
+        "disqualified": "Disqualified",
+        "rank": "Rank",
+        "actions": "Actions"
+      }
+    },
+    "EntryEditView": {
+      "newTitle": "New Entry",
+      "editTitle": "Edit Entry",
+      "loadFailure": "Failed to load entry; try again later.",
+      "createSuccess": "Entry created!",
+      "createFailure": "Failed to create entry; try again later.",
+      "editSuccess": "Entry updated!",
+      "editFailure": "Failed to update entry; try again later.",
+      "entryFileRequired": "Please select an entry file.",
+      "imageFileRequired": "Please select an image file (required for this compo).",
+      "sections": {
+        "files": "Files",
+        "uploadFiles": "Upload Files",
+        "media": "Media",
+        "ranking": "Ranking",
+        "disqualification": "Disqualification",
+        "alternateFiles": "Alternate Files"
+      },
+      "labels": {
+        "name": "Name",
+        "description": "Description",
+        "creator": "Creator",
+        "platform": "Platform",
+        "compo": "Compo",
+        "user": "User",
+        "entryfile": "Entry file",
+        "sourcefile": "Source file",
+        "imagefile": "Image file",
+        "youtubeVideoId": "YouTube Video ID",
+        "youtubeStart": "Start time (seconds)",
+        "score": "Score",
+        "rank": "Rank",
+        "disqualifiedOn": "Entry is disqualified",
+        "disqualifiedOff": "Entry is not disqualified",
+        "disqualifiedReason": "Reason"
+      },
+      "noAlternateFiles": "No alternate files available."
+    },
+    "CompetitionsView": {
+      "title": "Competitions",
+      "newCompetition": "New Competition",
+      "confirmDelete": "Do you really want to delete competition '{name}'?",
+      "loadFailure": "Failed to load competitions; try again later.",
+      "deleteSuccess": "Competition deleted!",
+      "deleteFailure": "Failed to delete competition; try again later.",
+      "noCompetitionsFound": "No competitions found.",
+      "loadingCompetitions": "Loading competitions ...",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "participationEnd": "Participation deadline",
+        "start": "Start",
+        "end": "End",
+        "active": "Active",
+        "actions": "Actions"
+      }
+    },
+    "CompetitionEditView": {
+      "newTitle": "New Competition",
+      "editTitle": "Edit Competition",
+      "loadFailure": "Failed to load competition; try again later.",
+      "createSuccess": "Competition created!",
+      "createFailure": "Failed to create competition; try again later.",
+      "editSuccess": "Competition updated!",
+      "editFailure": "Failed to update competition; try again later.",
+      "sections": {
+        "schedule": "Schedule",
+        "scoring": "Scoring",
+        "settings": "Settings"
+      },
+      "labels": {
+        "name": "Name",
+        "description": "Description",
+        "participationEnd": "Participation deadline",
+        "start": "Start time",
+        "end": "End time",
+        "scoreType": "Score type (e.g. km, sec)",
+        "scoreSort": "Score sorting",
+        "showResults": "Show results",
+        "activeOn": "Competition is active",
+        "activeOff": "Competition is inactive",
+        "showResultsOn": "Results are visible",
+        "showResultsOff": "Results are hidden",
+        "hideFromArchiveOn": "Hidden from archive",
+        "hideFromArchiveOff": "Visible in archive"
+      },
+      "scoreSortOptions": {
+        "highestFirst": "Highest first",
+        "lowestFirst": "Lowest first"
+      },
+      "commonScoreTypes": ["pts", "sec", "min", "m", "km", "kg", "pcs"]
+    },
+    "CompetitionParticipationsView": {
+      "title": "Competition Participations",
+      "newParticipation": "New Participation",
+      "confirmDelete": "Do you really want to delete participation '{name}'?",
+      "loadFailure": "Failed to load participations; try again later.",
+      "deleteSuccess": "Participation deleted!",
+      "deleteFailure": "Failed to delete participation; try again later.",
+      "noParticipationsFound": "No participations found.",
+      "loadingParticipations": "Loading participations ...",
+      "filterByCompetition": "Filter by competition",
+      "allCompetitions": "All competitions",
+      "headers": {
+        "id": "ID",
+        "participantName": "Participant name",
+        "user": "User",
+        "competition": "Competition",
+        "score": "Score",
+        "disqualified": "Disqualified",
+        "rank": "Rank",
+        "actions": "Actions"
+      }
+    },
+    "CompetitionParticipationEditView": {
+      "newTitle": "New Participation",
+      "editTitle": "Edit Participation",
+      "loadFailure": "Failed to load participation; try again later.",
+      "createSuccess": "Participation created!",
+      "createFailure": "Failed to create participation; try again later.",
+      "editSuccess": "Participation updated!",
+      "editFailure": "Failed to update participation; try again later.",
+      "sections": {
+        "scoring": "Scoring",
+        "disqualification": "Disqualification"
+      },
+      "labels": {
+        "competition": "Competition",
+        "user": "User",
+        "participantName": "Participant name",
+        "overrideScoreOn": "Override score",
+        "overrideScoreOff": "Use calculated score",
+        "score": "Score",
+        "rank": "Rank",
+        "disqualifiedOn": "Participant is disqualified",
+        "disqualifiedOff": "Participant is not disqualified",
+        "disqualifiedReason": "Reason"
+      }
+    },
+    "VoteCodesView": {
+      "title": "Ticket Vote Codes",
+      "loadFailure": "Failed to load vote codes; try again later.",
+      "noVoteCodesFound": "No vote codes found.",
+      "loadingVoteCodes": "Loading vote codes ...",
+      "headers": {
+        "id": "ID",
+        "associatedTo": "Associated to",
+        "ticket": "Ticket",
+        "time": "Time"
+      }
+    },
+    "VoteCodeRequestsView": {
+      "title": "Vote Code Requests",
+      "loadFailure": "Failed to load vote code requests; try again later.",
+      "noRequestsFound": "No vote code requests found.",
+      "loadingRequests": "Loading vote code requests ...",
+      "confirmDelete": "Do you really want to delete this vote code request?",
+      "deleteSuccess": "Vote code request deleted!",
+      "deleteFailure": "Failed to delete vote code request; try again later.",
+      "updateSuccess": "Vote code request updated!",
+      "updateFailure": "Failed to update vote code request; try again later.",
+      "headers": {
+        "id": "ID",
+        "user": "User",
+        "text": "Request text",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      }
     },
     "UserDialog": {
       "title": "User",

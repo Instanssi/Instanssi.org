@@ -77,9 +77,12 @@ class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
     {app}.view_{model} permission to access any endpoint.
 
     Use for data that should only be readable by staff with explicit permissions.
+    Includes LimitOffsetPagination and standard filter backends by default.
     """
 
     permission_classes = [FullDjangoModelPermissions]
+    pagination_class = LimitOffsetPagination
+    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
 
 
 class PermissionViewSet(ModelViewSet[Model]):

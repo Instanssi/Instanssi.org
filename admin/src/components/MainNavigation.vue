@@ -17,12 +17,9 @@
                 :items="events"
             >
                 <template v-if="authService.canView(PermissionTarget.EVENT)" #append>
-                    <v-btn
-                        icon="fas fa-calendar-days"
-                        variant="plain"
-                        density="compact"
-                        @click="routeToEvents"
-                    />
+                    <v-btn variant="plain" density="compact" @click="routeToEvents">
+                        <FontAwesomeIcon :icon="faCalendarDays" />
+                    </v-btn>
                 </template>
             </v-select>
             <v-divider />
@@ -33,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";

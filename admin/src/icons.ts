@@ -1,32 +1,30 @@
+/**
+ * FontAwesome icon library setup for Vuetify integration.
+ *
+ * This file registers icons in the FontAwesome library for use with Vuetify's
+ * string-based icon system (e.g., prepend-icon="fas fa-check").
+ *
+ * PREFERRED APPROACH: When using icons in your own components, prefer importing
+ * icons directly and using the FontAwesomeIcon component:
+ *
+ *   import { faCheck } from "@fortawesome/free-solid-svg-icons";
+ *   import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+ *
+ *   <FontAwesomeIcon :icon="faCheck" />
+ *
+ * This approach provides better tree-shaking and type safety.
+ * Only add icons to this file if they're needed by Vuetify components.
+ */
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-    // Our own icons
-    faGithub,
-    faGoogle,
-    faSteam,
-} from "@fortawesome/free-brands-svg-icons";
-import {
-    // for vuetify
+    // For Vuetify
     faCircle as farCircle,
     faDotCircle as farDotCircle,
     faSquare as farSquare,
     faStar as farStar,
 } from "@fortawesome/free-regular-svg-icons";
 import {
-    // Our own icons
-    faBlog,
-    faCalendarDays,
-    faCheck,
-    faDashboard,
-    faFloppyDisk,
-    faRightFromBracket,
-    faRightToBracket,
-    faSpinner,
-    faUsers,
-    faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-    // For vuetify
+    // For Vuetify
     faArrowDown,
     faArrowUp,
     faArrowsAltV,
@@ -61,22 +59,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import type { App } from "vue";
 
 export function setupIcons(app: App): void {
-    // These are our own imports
-    library.add(
-        faBlog,
-        faCalendarDays,
-        faCheck,
-        faDashboard,
-        faFloppyDisk,
-        faRightFromBracket,
-        faRightToBracket,
-        faSpinner,
-        faUsers,
-        faXmark
-    );
-    library.add(faGoogle, faSteam, faGithub);
-
-    // These are used by vuetify and imported for the standard set
+    // Icons used by Vuetify components
     library.add(
         faChevronUp,
         faTimesCircle,

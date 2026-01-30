@@ -2441,30 +2441,6 @@ export type PatchedStoreTransactionRequest = {
 };
 
 /**
- * Staff serializer for ticket vote codes.
- */
-export type PatchedTicketVoteCodeRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle avain on assosioitu
-     */
-    associated_to?: number | null;
-    /**
-     * Lipputuote
-     *
-     * Lipputuote jonka avainta käytetään äänestysavaimena
-     */
-    ticket?: number | null;
-    /**
-     * Aikaleima
-     *
-     * Aika jolloin avain assosioitiin käyttäjälle.
-     */
-    time?: string | null;
-};
-
-/**
  * Serializer for TransactionItem model (staff access).
  */
 export type PatchedTransactionItemRequest = {
@@ -4000,30 +3976,6 @@ export type TicketVoteCode = {
      */
     time?: string | null;
     readonly associated_username: string | null;
-};
-
-/**
- * Staff serializer for ticket vote codes.
- */
-export type TicketVoteCodeRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle avain on assosioitu
-     */
-    associated_to?: number | null;
-    /**
-     * Lipputuote
-     *
-     * Lipputuote jonka avainta käytetään äänestysavaimena
-     */
-    ticket?: number | null;
-    /**
-     * Aikaleima
-     *
-     * Aika jolloin avain assosioitiin käyttäjälle.
-     */
-    time?: string | null;
 };
 
 /**
@@ -7119,45 +7071,6 @@ export type AdminEventKompomaattiTicketVoteCodesListResponses = {
 export type AdminEventKompomaattiTicketVoteCodesListResponse =
     AdminEventKompomaattiTicketVoteCodesListResponses[keyof AdminEventKompomaattiTicketVoteCodesListResponses];
 
-export type AdminEventKompomaattiTicketVoteCodesCreateData = {
-    body?: TicketVoteCodeRequest;
-    path: {
-        event_pk: number;
-    };
-    query?: never;
-    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/";
-};
-
-export type AdminEventKompomaattiTicketVoteCodesCreateResponses = {
-    201: TicketVoteCode;
-};
-
-export type AdminEventKompomaattiTicketVoteCodesCreateResponse =
-    AdminEventKompomaattiTicketVoteCodesCreateResponses[keyof AdminEventKompomaattiTicketVoteCodesCreateResponses];
-
-export type AdminEventKompomaattiTicketVoteCodesDestroyData = {
-    body?: never;
-    path: {
-        event_pk: number;
-        /**
-         * A unique integer value identifying this lippuäänestusavain.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
-};
-
-export type AdminEventKompomaattiTicketVoteCodesDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
-};
-
-export type AdminEventKompomaattiTicketVoteCodesDestroyResponse =
-    AdminEventKompomaattiTicketVoteCodesDestroyResponses[keyof AdminEventKompomaattiTicketVoteCodesDestroyResponses];
-
 export type AdminEventKompomaattiTicketVoteCodesRetrieveData = {
     body?: never;
     path: {
@@ -7178,46 +7091,6 @@ export type AdminEventKompomaattiTicketVoteCodesRetrieveResponses = {
 export type AdminEventKompomaattiTicketVoteCodesRetrieveResponse =
     AdminEventKompomaattiTicketVoteCodesRetrieveResponses[keyof AdminEventKompomaattiTicketVoteCodesRetrieveResponses];
 
-export type AdminEventKompomaattiTicketVoteCodesPartialUpdateData = {
-    body?: PatchedTicketVoteCodeRequest;
-    path: {
-        event_pk: number;
-        /**
-         * A unique integer value identifying this lippuäänestusavain.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
-};
-
-export type AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses = {
-    200: TicketVoteCode;
-};
-
-export type AdminEventKompomaattiTicketVoteCodesPartialUpdateResponse =
-    AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses[keyof AdminEventKompomaattiTicketVoteCodesPartialUpdateResponses];
-
-export type AdminEventKompomaattiTicketVoteCodesUpdateData = {
-    body?: TicketVoteCodeRequest;
-    path: {
-        event_pk: number;
-        /**
-         * A unique integer value identifying this lippuäänestusavain.
-         */
-        id: number;
-    };
-    query?: never;
-    url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/";
-};
-
-export type AdminEventKompomaattiTicketVoteCodesUpdateResponses = {
-    200: TicketVoteCode;
-};
-
-export type AdminEventKompomaattiTicketVoteCodesUpdateResponse =
-    AdminEventKompomaattiTicketVoteCodesUpdateResponses[keyof AdminEventKompomaattiTicketVoteCodesUpdateResponses];
-
 export type AdminEventKompomaattiVoteCodeRequestsListData = {
     body?: never;
     path: {
@@ -7236,6 +7109,10 @@ export type AdminEventKompomaattiVoteCodeRequestsListData = {
          * Which field to use when ordering the results.
          */
         ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
         /**
          * Tila
          *

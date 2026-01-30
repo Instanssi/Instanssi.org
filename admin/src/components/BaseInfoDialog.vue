@@ -11,13 +11,16 @@
         </v-card-text>
         <v-card-actions class="justify-end">
             <slot name="buttons">
-                <v-btn variant="text" :prepend-icon="cancelIcon" @click="setResult(false)">
+                <v-btn variant="text" @click="setResult(false)">
+                    <template v-if="cancelIcon" #prepend>
+                        <FontAwesomeIcon :icon="cancelIcon" />
+                    </template>
                     {{ cancelText ?? t("General.cancel") }}
                 </v-btn>
                 <v-btn variant="elevated" color="primary" @click="setResult(true)">
                     <template #prepend>
-                        <FontAwesomeIcon v-if="loading" icon="spinner" spin />
-                        <v-icon v-else :icon="okIcon" />
+                        <FontAwesomeIcon v-if="loading" :icon="faSpinner" spin />
+                        <FontAwesomeIcon v-else-if="okIcon" :icon="okIcon" />
                     </template>
                     {{ okText ?? t("General.ok") }}
                 </v-btn>
@@ -27,11 +30,13 @@
 </template>
 
 <script setup lang="ts">
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseDialog from "@/components/BaseDialog.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const { t } = useI18n();
 const baseDialog: Ref<InstanceType<typeof BaseDialog> | undefined> = ref();
@@ -40,9 +45,9 @@ interface Props {
     width?: number;
     title: string;
     cancelText?: string;
-    cancelIcon?: string | undefined;
+    cancelIcon?: IconDefinition | undefined;
     okText?: string;
-    okIcon?: string | undefined;
+    okIcon?: IconDefinition | undefined;
     loading?: boolean | undefined;
 }
 const emit = defineEmits<{

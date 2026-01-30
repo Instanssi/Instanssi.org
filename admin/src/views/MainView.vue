@@ -35,7 +35,12 @@
             <!-- Statistics Cards -->
             <v-row class="mb-4">
                 <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" sm="6" lg>
-                    <v-card color="blue" variant="tonal">
+                    <v-card
+                        color="blue"
+                        variant="tonal"
+                        class="cursor-pointer"
+                        @click="router.push({ name: 'blog', params: { eventId } })"
+                    >
                         <v-card-text class="d-flex align-center">
                             <FontAwesomeIcon :icon="faNewspaper" size="2x" class="mr-4" />
                             <div>
@@ -50,7 +55,12 @@
                     </v-card>
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" sm="6" lg>
-                    <v-card color="green" variant="tonal">
+                    <v-card
+                        color="green"
+                        variant="tonal"
+                        class="cursor-pointer"
+                        @click="router.push({ name: 'entries', params: { eventId } })"
+                    >
                         <v-card-text class="d-flex align-center">
                             <FontAwesomeIcon :icon="faFilm" size="2x" class="mr-4" />
                             <div>
@@ -71,7 +81,14 @@
                     sm="6"
                     lg
                 >
-                    <v-card color="orange" variant="tonal">
+                    <v-card
+                        color="orange"
+                        variant="tonal"
+                        class="cursor-pointer"
+                        @click="
+                            router.push({ name: 'competition-participations', params: { eventId } })
+                        "
+                    >
                         <v-card-text class="d-flex align-center">
                             <FontAwesomeIcon :icon="faMedal" size="2x" class="mr-4" />
                             <div>
@@ -103,7 +120,12 @@
                     </v-card>
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.VOTE_CODE_REQUEST)" cols="12" sm="6" lg>
-                    <v-card color="pink" variant="tonal">
+                    <v-card
+                        color="pink"
+                        variant="tonal"
+                        class="cursor-pointer"
+                        @click="router.push({ name: 'vote-code-requests', params: { eventId } })"
+                    >
                         <v-card-text class="d-flex align-center">
                             <FontAwesomeIcon :icon="faCheckToSlot" size="2x" class="mr-4" />
                             <div>
@@ -255,10 +277,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+import { useRouter } from "vue-router";
+
 import * as api from "@/api";
 import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
+
+const router = useRouter();
 
 // Register Chart.js components
 ChartJS.register(ArcElement, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip);

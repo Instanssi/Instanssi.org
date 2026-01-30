@@ -33,6 +33,10 @@
       "search": "Search",
       "save": "Save"
     },
+    "Breadcrumbs": {
+      "newPost": "New Post",
+      "newEvent": "New Event"
+    },
     "App": {
       "nav": {
         "dashboard": "Dashboard",
@@ -118,6 +122,11 @@
       "editSuccess": "Blog post edited!",
       "createSuccess": "Blog post created!"
     },
+    "BlogEntryEditView": {
+      "newTitle": "New Blog Post",
+      "editTitle": "Edit Blog Post",
+      "loadFailure": "Failed to load blog post; try again later."
+    },
     "UserDialog": {
       "title": "User",
       "labels": {
@@ -131,6 +140,10 @@
       "createFailure": "Failed to create user; try again later.",
       "editSuccess": "User edited!",
       "createSuccess": "User created!"
+    },
+    "UserEditView": {
+      "newTitle": "New User",
+      "loadFailure": "Failed to load user; try again later."
     },
     "EventDialog": {
       "title": "Event",
@@ -146,6 +159,9 @@
       "createFailure": "Failed to create event; try again later.",
       "editSuccess": "Event edited!",
       "createSuccess": "Event created!"
+    },
+    "EventEditView": {
+      "loadFailure": "Failed to load event; try again later."
     },
     "MainView": {
       "title": "Dashboard",

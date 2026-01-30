@@ -36,6 +36,26 @@ const router = createRouter({
             },
         },
         {
+            path: "/events/new",
+            name: "events-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
+            },
+            props: true,
+            component: () => import("@/views/EventEditView.vue"),
+        },
+        {
+            path: "/events/:id(\\d+)/edit",
+            name: "events-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
+            },
+            props: true,
+            component: () => import("@/views/EventEditView.vue"),
+        },
+        {
             path: "/events",
             name: "events",
             meta: {
@@ -46,6 +66,26 @@ const router = createRouter({
             component: () => import("@/views/EventView.vue"),
         },
         {
+            path: "/users/new",
+            name: "users-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.USER,
+            },
+            props: true,
+            component: () => import("@/views/UserEditView.vue"),
+        },
+        {
+            path: "/users/:id(\\d+)/edit",
+            name: "users-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.USER,
+            },
+            props: true,
+            component: () => import("@/views/UserEditView.vue"),
+        },
+        {
             path: "/users",
             name: "users",
             meta: {
@@ -54,6 +94,26 @@ const router = createRouter({
             },
             props: true,
             component: () => import("@/views/UsersView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/blog/new",
+            name: "blog-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/BlogEntryEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/blog/:id(\\d+)/edit",
+            name: "blog-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/BlogEntryEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/blog",

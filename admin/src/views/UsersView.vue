@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :title="t('UsersView.title')">
+    <LayoutBase :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
                 <v-btn v-if="auth.canAdd(PermissionTarget.USER)" @click="createUser">
@@ -70,23 +70,23 @@
             </v-row>
         </v-col>
     </LayoutBase>
-    <UserDialog ref="dialog" />
 </template>
 
 <script setup lang="ts">
 import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { type VDataTable, type VDataTableServer } from "vuetify/components";
 
 import * as api from "@/api";
 import type { User } from "@/api";
-import LayoutBase from "@/components/LayoutBase.vue";
-import UserDialog from "@/components/UserDialog.vue";
+import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
+import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
@@ -94,12 +94,23 @@ import type { ConfirmDialogType } from "@/symbols";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t, d } = useI18n();
-
-const dialog: Ref<InstanceType<typeof UserDialog> | undefined> = ref(undefined);
+const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
-
 const toast = useToast();
 const auth = useAuth();
+const { getLatestEvent } = useEvents();
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => {
+    const event = getLatestEvent();
+    return [
+        {
+            title: event?.name ?? "...",
+            to: event ? { name: "dashboard", params: { eventId: event.id } } : undefined,
+        },
+        { title: t("UsersView.title"), disabled: true },
+    ];
+});
+
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
@@ -182,19 +193,11 @@ async function deleteUser(item: User): Promise<void> {
     }
 }
 
-async function editUser(id: number): Promise<void> {
-    const response = await api.adminUsersRetrieve({ path: { id } });
-    const ok = await dialog.value!.modal(response.data!);
-    if (ok) {
-        flushData();
-    }
+function editUser(id: number): void {
+    router.push({ name: "users-edit", params: { id } });
 }
 
-async function createUser() {
-    const ok = await dialog.value!.modal();
-    if (ok) {
-        currentPage.value = 1;
-        flushData();
-    }
+function createUser(): void {
+    router.push({ name: "users-new" });
 }
 </script>

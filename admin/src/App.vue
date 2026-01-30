@@ -15,13 +15,17 @@
 <script setup lang="ts">
 import {
     faBlog,
+    faBoxOpen,
+    faCreditCard,
     faDashboard,
     faEnvelope,
     faFileAudio,
     faGamepad,
     faMusic,
     faPeopleGroup,
+    faReceipt,
     faRightFromBracket,
+    faStore,
     faTicket,
     faTrophy,
     faUsers,
@@ -90,6 +94,30 @@ const primaryLinks: NavigationLinks = [
                 icon: faEnvelope,
                 to: "vote-code-requests",
                 requirePerm: PermissionTarget.VOTE_CODE_REQUEST,
+            },
+        ],
+    },
+    {
+        title: t("App.nav.store"),
+        icon: faStore,
+        children: [
+            {
+                title: t("App.nav.storeItems"),
+                icon: faBoxOpen,
+                to: "store-items",
+                requirePerm: PermissionTarget.STORE_ITEM,
+            },
+            {
+                title: t("App.nav.transactions"),
+                icon: faCreditCard,
+                to: "store-transactions",
+                requirePerm: PermissionTarget.STORE_TRANSACTION,
+            },
+            {
+                title: t("App.nav.transactionItems"),
+                icon: faReceipt,
+                to: "store-transaction-items",
+                requirePerm: PermissionTarget.TRANSACTION_ITEM,
             },
         ],
     },

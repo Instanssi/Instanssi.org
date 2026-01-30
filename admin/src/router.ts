@@ -271,6 +271,69 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/VoteCodeRequestsView.vue"),
         },
+        // Store Items
+        {
+            path: "/:eventId(\\d+)/store/items",
+            name: "store-items",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/StoreItemsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/items/new",
+            name: "store-items-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/StoreItemEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/items/:id(\\d+)/edit",
+            name: "store-items-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/StoreItemEditView.vue"),
+        },
+        // Transactions
+        {
+            path: "/:eventId(\\d+)/store/transactions",
+            name: "store-transactions",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_TRANSACTION,
+            },
+            props: true,
+            component: () => import("@/views/TransactionsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/transactions/:id(\\d+)",
+            name: "store-transaction-detail",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_TRANSACTION,
+            },
+            props: true,
+            component: () => import("@/views/TransactionDetailView.vue"),
+        },
+        // Transaction Items
+        {
+            path: "/:eventId(\\d+)/store/transaction-items",
+            name: "store-transaction-items",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.TRANSACTION_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/TransactionItemsView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",

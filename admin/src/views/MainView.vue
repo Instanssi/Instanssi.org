@@ -104,7 +104,12 @@
                     </v-card>
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)" cols="12" sm="6" lg>
-                    <v-card color="teal" variant="tonal">
+                    <v-card
+                        color="teal"
+                        variant="tonal"
+                        class="cursor-pointer"
+                        @click="router.push({ name: 'store-transactions', params: { eventId } })"
+                    >
                         <v-card-text class="d-flex align-center">
                             <FontAwesomeIcon :icon="faCreditCard" size="2x" class="mr-4" />
                             <div>

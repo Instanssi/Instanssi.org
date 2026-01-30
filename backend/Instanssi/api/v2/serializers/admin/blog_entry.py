@@ -1,15 +1,15 @@
-from django.contrib.auth.models import User
-from rest_framework.fields import CurrentUserDefault, SerializerMethodField
-from rest_framework.relations import PrimaryKeyRelatedField
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from Instanssi.ext_blog.models import BlogEntry
 
 
 class BlogEntrySerializer(ModelSerializer[BlogEntry]):
-    """Serializer for staff - includes all fields"""
+    """Serializer for staff - includes all fields.
 
-    user = PrimaryKeyRelatedField(queryset=User.objects.all(), default=CurrentUserDefault())
+    The user field is read-only and set automatically to the current user on create.
+    """
+
     created_by = SerializerMethodField()
 
     def get_created_by(self, entry: BlogEntry) -> str:

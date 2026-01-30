@@ -21,6 +21,10 @@ export function errorResponseInterceptor(error: AxiosError) {
     // Then, see if it was server side error code.
     const status = error.response?.status ?? 0;
     switch (status) {
+        case 400:
+            // Validation errors - let the caller handle these via handleApiError
+            break;
+
         case 401:
             toast.error(t("Toasts.errors.sessionTimedOut"));
             break;

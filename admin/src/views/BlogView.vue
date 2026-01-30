@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :key="`blog-${eventId}`" :title="t('BlogEditorView.title')">
+    <LayoutBase :key="`blog-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
                 <v-btn v-if="auth.canAdd(PermissionTarget.BLOG_ENTRY)" @click="createPost">
@@ -56,7 +56,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faXmark" />
                             </template>
-                            Delete
+                            {{ t("General.delete") }}
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.BLOG_ENTRY)"
@@ -67,14 +67,13 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </template>
-                            Edit
+                            {{ t("General.edit") }}
                         </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>
         </v-col>
     </LayoutBase>
-    <BlogPostDialog ref="dialog" />
 </template>
 
 <script setup lang="ts">
@@ -83,14 +82,15 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { BlogEntry } from "@/api";
-import BlogPostDialog from "@/components/BlogPostDialog.vue";
-import LayoutBase from "@/components/LayoutBase.vue";
+import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
+import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
@@ -100,14 +100,21 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t, d } = useI18n();
-
-const dialog: Ref<InstanceType<typeof BlogPostDialog> | undefined> = ref(undefined);
+const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
-
 const toast = useToast();
 const auth = useAuth();
+const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    {
+        title: getEventById(eventId.value)?.name ?? "...",
+        to: { name: "dashboard", params: { eventId: props.eventId } },
+    },
+    { title: t("BlogEditorView.title"), disabled: true },
+]);
 const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
@@ -189,19 +196,11 @@ async function deletePost(item: BlogEntry): Promise<void> {
     });
 }
 
-async function editPost(id: number): Promise<void> {
-    const item = await api.adminBlogRetrieve({ path: { id } });
-    const ok = await dialog.value!.modal(eventId.value, item.data!);
-    if (ok) {
-        flushData();
-    }
+function editPost(id: number): void {
+    router.push({ name: "blog-edit", params: { eventId: eventId.value, id } });
 }
 
-async function createPost() {
-    const ok = await dialog.value!.modal(eventId.value);
-    if (ok) {
-        currentPage.value = 1;
-        flushData();
-    }
+function createPost(): void {
+    router.push({ name: "blog-new", params: { eventId: eventId.value } });
 }
 </script>

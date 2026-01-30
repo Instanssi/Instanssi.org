@@ -11,17 +11,17 @@ export function useEvents() {
     }
 
     function getLatestEvent(): Event | null {
-        const sorted = events.value.sort((a, b) => b.id - a.id);
-        if (sorted.length > 0) {
-            return sorted[0]!;
-        }
-        return null;
+        return events.value[0] ?? null;
     }
 
     async function refreshEvents(): Promise<void> {
-        const pages = await api.adminEventsList({ query: { limit: 1000 } });
+        const pages = await api.adminEventsList({ query: { limit: 1000, ordering: "-id" } });
         events.value = pages.data?.results || [];
     }
 
-    return { getEvents, refreshEvents, getLatestEvent };
+    function getEventById(id: number): Event | null {
+        return events.value.find((e) => e.id === id) ?? null;
+    }
+
+    return { getEvents, refreshEvents, getLatestEvent, getEventById };
 }

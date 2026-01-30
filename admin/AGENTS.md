@@ -151,9 +151,10 @@ Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
 **You MUST run these commands after making any code changes:**
 
 ```bash
-npm run lint             # Lint and auto-fix with ESLint
 npm run type-check       # TypeScript type checking
+npm run lint             # Lint and auto-fix with ESLint
 npm run format           # Format code with Prettier
+npm run test             # Run unit tests
 ```
 
 These checks are mandatory before considering any task complete. Do not skip them.
@@ -171,8 +172,9 @@ npm run lint-check       # Check linting
 ### Building for Production
 
 ```bash
-npm run build            # Build and output to ../backend/Instanssi/management/site/
-npm run preview          # Preview production build
+npm run build            # Build to ./dist for local testing
+npm run build-final      # Build to ../backend/Instanssi/management/site/ for deployment
+npm run preview          # Preview production build (from ./dist)
 ```
 
 ### Analyzing Bundle Size
@@ -248,11 +250,14 @@ const onSubmit = handleSubmit(async (values) => {
 
 ### package.json Scripts
 - `dev` - Development server
-- `build` - Production build
-- `preview` - Preview production build
+- `build` - Production build to `./dist`
+- `build-final` - Production build to Django's static directory
+- `preview` - Preview production build from `./dist`
 - `type-check` - TypeScript checking
 - `lint` / `lint-check` - ESLint
 - `format` / `format-check` - Prettier
+- `test` - Run unit tests once
+- `test:watch` - Run unit tests in watch mode
 - `generate-api` - Generate API client
 - `fetch-apidoc` - Fetch OpenAPI spec
 
@@ -317,7 +322,16 @@ Backend runs on `http://localhost:8000` during development.
 
 ## Testing
 
-Currently no frontend tests are configured. When adding tests, consider:
+Unit tests are configured using Vitest with Vue Test Utils:
+
+```bash
+npm run test             # Run tests once
+npm run test:watch       # Run tests in watch mode
+```
+
+Test files are located alongside source files with `.test.ts` suffix (e.g., `LoginView.test.ts`).
+
+When adding tests, consider:
 - Vue Test Utils for component testing
 - Vitest for unit testing (Vite-native)
 - Testing auth flows and permission checks
@@ -342,7 +356,7 @@ Modern browsers with ES6+ support required. No IE11 support needed.
 
 ## Deployment
 
-1. Build frontend: `npm run build`
+1. Build frontend: `npm run build-final`
 2. Files are output to `../backend/Instanssi/management/site/`
 3. Django serves these static files
 4. In production, typically served directly via nginx

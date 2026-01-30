@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :key="`dashboard-${eventId}`" :title="t('MainView.title')">
+    <LayoutBase :key="`dashboard-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-row v-if="loading" class="justify-center my-8">
             <v-progress-circular indeterminate size="64" />
         </v-row>
@@ -257,7 +257,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import * as api from "@/api";
 import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
-import LayoutBase from "@/components/LayoutBase.vue";
+import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 // Register Chart.js components
@@ -270,6 +270,14 @@ const auth = useAuth();
 const loading = ref(true);
 const event = ref<Event | null>(null);
 const eventIdNum = computed(() => parseInt(props.eventId, 10));
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    {
+        title: event.value?.name ?? "...",
+        to: { name: "dashboard", params: { eventId: props.eventId } },
+    },
+    { title: t("MainView.title"), disabled: true },
+]);
 
 // Statistics
 const stats = ref({

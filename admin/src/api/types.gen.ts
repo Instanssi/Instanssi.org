@@ -13,11 +13,16 @@ export type AlternateEntryFile = {
 };
 
 /**
- * Serializer for staff - includes all fields
+ * Serializer for staff - includes all fields.
+ *
+ * The user field is read-only and set automatically to the current user on create.
  */
 export type BlogEntry = {
     readonly id: number;
-    user?: number;
+    /**
+     * Käyttäjä
+     */
+    readonly user: number | null;
     /**
      * Aika
      */
@@ -46,10 +51,11 @@ export type BlogEntry = {
 };
 
 /**
- * Serializer for staff - includes all fields
+ * Serializer for staff - includes all fields.
+ *
+ * The user field is read-only and set automatically to the current user on create.
  */
 export type BlogEntryRequest = {
-    user?: number;
     /**
      * Otsikko
      *
@@ -1695,10 +1701,11 @@ export type PaginatedVoteCodeRequestList = {
 };
 
 /**
- * Serializer for staff - includes all fields
+ * Serializer for staff - includes all fields.
+ *
+ * The user field is read-only and set automatically to the current user on create.
  */
 export type PatchedBlogEntryRequest = {
-    user?: number;
     /**
      * Otsikko
      *
@@ -4559,10 +4566,11 @@ export type VoteCodeRequestRequest = {
 };
 
 /**
- * Serializer for staff - includes all fields
+ * Serializer for staff - includes all fields.
+ *
+ * The user field is read-only and set automatically to the current user on create.
  */
 export type BlogEntryWritable = {
-    user?: number;
     /**
      * Otsikko
      *

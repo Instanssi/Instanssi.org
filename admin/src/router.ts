@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
+import { HttpStatus, isHttpError } from "@/utils/http_status";
 
 const authService = useAuth();
 const { refreshEvents, getLatestEvent } = useEvents();
@@ -35,6 +36,26 @@ const router = createRouter({
             },
         },
         {
+            path: "/events/new",
+            name: "events-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
+            },
+            props: true,
+            component: () => import("@/views/EventEditView.vue"),
+        },
+        {
+            path: "/events/:id(\\d+)/edit",
+            name: "events-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.EVENT,
+            },
+            props: true,
+            component: () => import("@/views/EventEditView.vue"),
+        },
+        {
             path: "/events",
             name: "events",
             meta: {
@@ -45,6 +66,26 @@ const router = createRouter({
             component: () => import("@/views/EventView.vue"),
         },
         {
+            path: "/users/new",
+            name: "users-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.USER,
+            },
+            props: true,
+            component: () => import("@/views/UserEditView.vue"),
+        },
+        {
+            path: "/users/:id(\\d+)/edit",
+            name: "users-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.USER,
+            },
+            props: true,
+            component: () => import("@/views/UserEditView.vue"),
+        },
+        {
             path: "/users",
             name: "users",
             meta: {
@@ -53,6 +94,26 @@ const router = createRouter({
             },
             props: true,
             component: () => import("@/views/UsersView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/blog/new",
+            name: "blog-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/BlogEntryEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/blog/:id(\\d+)/edit",
+            name: "blog-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.BLOG_ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/BlogEntryEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/blog",
@@ -86,6 +147,12 @@ const router = createRouter({
                     try {
                         await refreshEvents();
                     } catch (e) {
+                        if (isHttpError(e, HttpStatus.FORBIDDEN)) {
+                            console.error("Permission denied, logging out");
+                            await authService.logout();
+                            next({ name: "login" });
+                            return;
+                        }
                         console.error("Failed to refresh events:", e);
                     }
                     const event = getLatestEvent();

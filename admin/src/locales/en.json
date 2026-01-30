@@ -31,7 +31,13 @@
       "ok": "OK",
       "cancel": "Cancel",
       "search": "Search",
-      "save": "Save"
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "Breadcrumbs": {
+      "newPost": "New Post",
+      "newEvent": "New Event"
     },
     "App": {
       "nav": {
@@ -78,6 +84,8 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
+        "superuser": "Superuser",
+        "active": "Active",
         "dateJoined": "Date joined",
         "actions": "Actions"
       },
@@ -118,6 +126,11 @@
       "editSuccess": "Blog post edited!",
       "createSuccess": "Blog post created!"
     },
+    "BlogEntryEditView": {
+      "newTitle": "New Blog Post",
+      "editTitle": "Edit Blog Post",
+      "loadFailure": "Failed to load blog post; try again later."
+    },
     "UserDialog": {
       "title": "User",
       "labels": {
@@ -125,12 +138,18 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
-        "dateJoined": "Date joined"
+        "dateJoined": "Date joined",
+        "isActive": "User account is active",
+        "isNotActive": "User account is disabled"
       },
       "editFailure": "Failed to edit user; try again later.",
       "createFailure": "Failed to create user; try again later.",
       "editSuccess": "User edited!",
       "createSuccess": "User created!"
+    },
+    "UserEditView": {
+      "newTitle": "New User",
+      "loadFailure": "Failed to load user; try again later."
     },
     "EventDialog": {
       "title": "Event",
@@ -146,6 +165,9 @@
       "createFailure": "Failed to create event; try again later.",
       "editSuccess": "Event edited!",
       "createSuccess": "Event created!"
+    },
+    "EventEditView": {
+      "loadFailure": "Failed to load event; try again later."
     },
     "MainView": {
       "title": "Dashboard",
@@ -209,7 +231,9 @@
       "subtitle": "Sign in using username and password, or by using one of the SSO methods.",
       "username": "Username",
       "password": "Password",
-      "login": "Login"
+      "login": "Login",
+      "auth_failed": "Incorrect username or password!",
+      "insufficient_permissions": "You do not have the required permissions to access this panel."
     }
   }
 }

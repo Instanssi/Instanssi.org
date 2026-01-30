@@ -5631,13 +5631,19 @@ components:
       - url
     BlogEntry:
       type: object
-      description: Serializer for staff - includes all fields
+      description: |-
+        Serializer for staff - includes all fields.
+
+        The user field is read-only and set automatically to the current user on create.
       properties:
         id:
           type: integer
           readOnly: true
         user:
           type: integer
+          readOnly: true
+          nullable: true
+          title: Käyttäjä
         date:
           type: string
           format: date-time
@@ -5669,12 +5675,14 @@ components:
       - id
       - text
       - title
+      - user
     BlogEntryRequest:
       type: object
-      description: Serializer for staff - includes all fields
+      description: |-
+        Serializer for staff - includes all fields.
+
+        The user field is read-only and set automatically to the current user on create.
       properties:
-        user:
-          type: integer
         title:
           type: string
           minLength: 1
@@ -7951,10 +7959,11 @@ components:
             $ref: '#/components/schemas/VoteCodeRequest'
     PatchedBlogEntryRequest:
       type: object
-      description: Serializer for staff - includes all fields
+      description: |-
+        Serializer for staff - includes all fields.
+
+        The user field is read-only and set automatically to the current user on create.
       properties:
-        user:
-          type: integer
         title:
           type: string
           minLength: 1

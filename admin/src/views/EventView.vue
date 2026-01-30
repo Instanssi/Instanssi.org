@@ -1,5 +1,5 @@
 <template>
-    <LayoutBase :title="t('EventView.title')">
+    <LayoutBase :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
                 <v-btn v-if="auth.canAdd(PermissionTarget.EVENT)" @click="createEvent">
@@ -8,6 +8,15 @@
                     </template>
                     {{ t("EventView.newEvent") }}
                 </v-btn>
+                <v-text-field
+                    v-model="search"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('General.search')"
+                    style="max-width: 400px"
+                    class="ma-0 pa-0 ml-4"
+                    clearable
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -23,6 +32,7 @@
                     :items-length="totalItems"
                     :loading="loading"
                     :page="currentPage"
+                    :search="search"
                     :items-per-page-options="pageSizeOptions"
                     :no-data-text="t('EventView.noEventsFound')"
                     :loading-text="t('EventView.loadingEvents')"
@@ -35,6 +45,11 @@
                     <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
                     </template>
+                    <template #item.mainurl="{ item }">
+                        <a v-if="item.mainurl" :href="item.mainurl" target="_blank">
+                            {{ item.mainurl }}
+                        </a>
+                    </template>
                     <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canDelete(PermissionTarget.EVENT)"
@@ -46,7 +61,7 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faXmark" />
                             </template>
-                            Delete
+                            {{ t("General.delete") }}
                         </v-btn>
                         <v-btn
                             v-if="auth.canChange(PermissionTarget.EVENT)"
@@ -57,29 +72,28 @@
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faPenToSquare" />
                             </template>
-                            Edit
+                            {{ t("General.edit") }}
                         </v-btn>
                     </template>
                 </v-data-table-server>
             </v-row>
         </v-col>
     </LayoutBase>
-    <EventDialog ref="dialog" />
 </template>
 
 <script setup lang="ts">
 import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Event } from "@/api";
-import EventDialog from "@/components/EventDialog.vue";
-import LayoutBase from "@/components/LayoutBase.vue";
+import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -89,19 +103,32 @@ import type { ConfirmDialogType } from "@/symbols";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t, d } = useI18n();
+const router = useRouter();
 
-const dialog: Ref<InstanceType<typeof EventDialog> | undefined> = ref(undefined);
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 
 const toast = useToast();
 const eventService = useEvents();
 const auth = useAuth();
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => {
+    const event = eventService.getLatestEvent();
+    return [
+        {
+            title: event?.name ?? "...",
+            to: event ? { name: "dashboard", params: { eventId: event.id } } : undefined,
+        },
+        { title: t("EventView.title"), disabled: true },
+    ];
+});
+
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];
 const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
 const events: Ref<Event[]> = ref([]);
+const search = ref("");
 const refreshKey = ref(0);
 const headers: ReadonlyHeaders = [
     {
@@ -178,19 +205,11 @@ async function deleteEvent(item: Event): Promise<void> {
     }
 }
 
-async function editEvent(id: number): Promise<void> {
-    const response = await api.adminEventsRetrieve({ path: { id } });
-    const ok = await dialog.value!.modal(response.data!);
-    if (ok) {
-        await flushData();
-    }
+function editEvent(id: number): void {
+    router.push({ name: "events-edit", params: { id } });
 }
 
-async function createEvent() {
-    const ok = await dialog.value!.modal();
-    if (ok) {
-        currentPage.value = 1;
-        await flushData();
-    }
+function createEvent(): void {
+    router.push({ name: "events-new" });
 }
 </script>

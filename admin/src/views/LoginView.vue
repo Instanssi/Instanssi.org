@@ -62,7 +62,7 @@ import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
 import type { SocialAuthUrl } from "@/api";
-import { useAuth } from "@/services/auth";
+import { PermissionTarget, useAuth } from "@/services/auth";
 
 const authService = useAuth();
 const router = useRouter();
@@ -81,14 +81,22 @@ const password = useField("password");
 
 const submit = handleSubmit(async (values) => {
     const loginOk = await authService.login(values.username, values.password);
-    if (loginOk) {
-        await router.push({ name: "index" });
-    } else {
+    if (!loginOk) {
         setErrors({
-            username: "Incorrect username or password!",
-            password: "Incorrect username or password!",
+            username: t("LoginView.auth_failed"),
+            password: t("LoginView.auth_failed"),
         });
+        return;
     }
+    if (!authService.canView(PermissionTarget.EVENT)) {
+        await authService.logout();
+        setErrors({
+            username: t("LoginView.insufficient_permissions"),
+            password: t("LoginView.insufficient_permissions"),
+        });
+        return;
+    }
+    await router.push({ name: "index" });
 });
 
 onMounted(async () => {

@@ -45,15 +45,7 @@
                         <FormSection>
                             {{ t("CompetitionParticipationEditView.sections.scoring") }}
                         </FormSection>
-                        <ToggleSwitch
-                            v-model="overrideScore"
-                            :label-on="t('CompetitionParticipationEditView.labels.overrideScoreOn')"
-                            :label-off="
-                                t('CompetitionParticipationEditView.labels.overrideScoreOff')
-                            "
-                            active-class=""
-                        />
-                        <v-row v-if="overrideScore">
+                        <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field
                                     v-model.number="score.value.value"
@@ -134,7 +126,6 @@ import type { Competition, User } from "@/api";
 import DisqualificationField from "@/components/DisqualificationField.vue";
 import FormSection from "@/components/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
-import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { handleApiError } from "@/utils/http";
 
@@ -157,9 +148,6 @@ const isEditMode = computed(() => props.id !== undefined);
 const competitions: Ref<Competition[]> = ref([]);
 const users: Ref<User[]> = ref([]);
 const rankDisplay = ref<string>("-");
-
-// Toggle for overriding score
-const overrideScore = ref(false);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const items: BreadcrumbItem[] = [
@@ -236,7 +224,7 @@ async function createItem(values: GenericObject) {
                 competition: values.competition,
                 user: values.user,
                 participant_name: values.participantName || undefined,
-                score: overrideScore.value ? values.score : undefined,
+                score: values.score ?? undefined,
                 disqualified: values.disqualified,
                 disqualified_reason: values.disqualifiedReason || "",
             },
@@ -255,7 +243,7 @@ async function editItem(itemId: number, values: GenericObject) {
             path: { event_pk: eventId.value, id: itemId },
             body: {
                 participant_name: values.participantName || undefined,
-                score: overrideScore.value ? values.score : undefined,
+                score: values.score ?? undefined,
                 disqualified: values.disqualified,
                 disqualified_reason: values.disqualifiedReason || "",
             },
@@ -307,9 +295,6 @@ onMounted(async () => {
             const item = response.data!;
             participationName.value = item.participant_name || `#${item.id}`;
             rankDisplay.value = item.rank?.toString() ?? "-";
-
-            // Enable override toggle if score is set
-            overrideScore.value = item.score != null;
 
             setValues({
                 competition: item.competition,

@@ -216,38 +216,34 @@
       },
       "entryViewTypes": {
         "0": {
-          "title": "Normal",
-          "description": "Show entries with previews and details"
+          "title": "No preview",
+          "description": "Don't show any media preview (YouTube or image) on the public entry page"
         },
         "1": {
-          "title": "No previews",
-          "description": "Hide preview images and media"
+          "title": "YouTube, then image",
+          "description": "Show YouTube video if available, otherwise fall back to the uploaded image"
         },
         "2": {
-          "title": "Voting only",
-          "description": "Show only voting interface, no details"
-        },
-        "3": {
-          "title": "Fullscreen",
-          "description": "Display entries in fullscreen mode"
+          "title": "Image only",
+          "description": "Show only the uploaded image preview, ignore any YouTube URL"
         }
       },
       "thumbnailPrefs": {
         "0": {
-          "title": "Default",
-          "description": "Use automatically generated thumbnail"
+          "title": "Required",
+          "description": "Entrants must upload a separate image file (resized to 160x100 and 640x400 for thumbnails)"
         },
         "1": {
-          "title": "Original",
-          "description": "Use uploaded original image"
+          "title": "From entry file",
+          "description": "Entry file itself is the image; entry formats must be png/jpg only"
         },
         "2": {
-          "title": "Static",
-          "description": "Use static placeholder image"
+          "title": "Optional",
+          "description": "Entrants may upload an image file for thumbnails, but it's not required"
         },
         "3": {
-          "title": "YouTube",
-          "description": "Fetch thumbnail from YouTube video"
+          "title": "Not allowed",
+          "description": "No image file uploads allowed; entries will have no thumbnails"
         }
       },
       "sizeUnits": {
@@ -413,8 +409,6 @@
         "competition": "Competition",
         "user": "User",
         "participantName": "Participant name",
-        "overrideScoreOn": "Override score",
-        "overrideScoreOff": "Use calculated score",
         "score": "Score",
         "rank": "Rank",
         "disqualifiedOn": "Participant is disqualified",

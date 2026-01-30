@@ -338,11 +338,6 @@ const entryViewTypeOptions = [
         description: t("CompoEditView.entryViewTypes.2.description"),
         value: 2,
     },
-    {
-        title: t("CompoEditView.entryViewTypes.3.title"),
-        description: t("CompoEditView.entryViewTypes.3.description"),
-        value: 3,
-    },
 ];
 
 const thumbnailPrefOptions = [

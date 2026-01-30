@@ -1,6 +1,6 @@
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import VoteCodeRequestSerializer
@@ -13,8 +13,9 @@ class VoteCodeRequestViewSet(PermissionViewSet):
 
     queryset = VoteCodeRequest.objects.all()
     serializer_class = VoteCodeRequestSerializer  # type: ignore[assignment]
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event", "user", "status")
+    search_fields = ("user__username", "text")
     filterset_fields = ("user", "status")
 
     def get_queryset(self) -> QuerySet[VoteCodeRequest]:

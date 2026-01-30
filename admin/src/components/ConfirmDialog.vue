@@ -5,13 +5,14 @@
         :width="500"
         :ok-text="t('ConfirmDialog.title')"
         :loading="loading"
-        ok-icon="fas fa-check"
+        :ok-icon="faCheck"
     >
         {{ body }}
     </BaseInfoDialog>
 </template>
 
 <script setup lang="ts">
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 

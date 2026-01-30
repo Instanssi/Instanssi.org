@@ -1508,7 +1508,7 @@ paths:
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/:
     get:
       operationId: admin_event_kompomaatti_ticket_vote_codes_list
-      description: Staff viewset for managing ticket vote codes.
+      description: Staff viewset for viewing ticket vote codes (read-only).
       parameters:
       - in: query
         name: associated_to
@@ -1553,42 +1553,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedTicketVoteCodeList'
           description: ''
-    post:
-      operationId: admin_event_kompomaatti_ticket_vote_codes_create
-      description: Staff viewset for managing ticket vote codes.
-      parameters:
-      - in: path
-        name: event_pk
-        schema:
-          type: integer
-        required: true
-      tags:
-      - admin
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketVoteCode'
-          description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/:
     get:
       operationId: admin_event_kompomaatti_ticket_vote_codes_retrieve
-      description: Staff viewset for managing ticket vote codes.
+      description: Staff viewset for viewing ticket vote codes (read-only).
       parameters:
       - in: path
         name: event_pk
@@ -1613,105 +1581,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/TicketVoteCode'
           description: ''
-    put:
-      operationId: admin_event_kompomaatti_ticket_vote_codes_update
-      description: Staff viewset for managing ticket vote codes.
-      parameters:
-      - in: path
-        name: event_pk
-        schema:
-          type: integer
-        required: true
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this lippuäänestusavain.
-        required: true
-      tags:
-      - admin
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TicketVoteCodeRequest'
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketVoteCode'
-          description: ''
-    patch:
-      operationId: admin_event_kompomaatti_ticket_vote_codes_partial_update
-      description: Staff viewset for managing ticket vote codes.
-      parameters:
-      - in: path
-        name: event_pk
-        schema:
-          type: integer
-        required: true
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this lippuäänestusavain.
-        required: true
-      tags:
-      - admin
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedTicketVoteCodeRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedTicketVoteCodeRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedTicketVoteCodeRequest'
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketVoteCode'
-          description: ''
-    delete:
-      operationId: admin_event_kompomaatti_ticket_vote_codes_destroy
-      description: Staff viewset for managing ticket vote codes.
-      parameters:
-      - in: path
-        name: event_pk
-        schema:
-          type: integer
-        required: true
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this lippuäänestusavain.
-        required: true
-      tags:
-      - admin
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      responses:
-        '204':
-          description: No response body
   /api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/:
     get:
       operationId: admin_event_kompomaatti_vote_code_requests_list
@@ -1738,6 +1607,12 @@ paths:
         required: false
         in: query
         description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
         schema:
           type: string
       - in: query
@@ -8671,26 +8546,6 @@ components:
           type: string
           title: Lisätiedot
           description: Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
-    PatchedTicketVoteCodeRequest:
-      type: object
-      description: Staff serializer for ticket vote codes.
-      properties:
-        associated_to:
-          type: integer
-          nullable: true
-          title: Käyttäjä
-          description: Käyttäjä jolle avain on assosioitu
-        ticket:
-          type: integer
-          nullable: true
-          title: Lipputuote
-          description: Lipputuote jonka avainta käytetään äänestysavaimena
-        time:
-          type: string
-          format: date-time
-          nullable: true
-          title: Aikaleima
-          description: Aika jolloin avain assosioitiin käyttäjälle.
     PatchedTransactionItemRequest:
       type: object
       description: Serializer for TransactionItem model (staff access).
@@ -10612,26 +10467,6 @@ components:
       - associated_username
       - event
       - id
-    TicketVoteCodeRequest:
-      type: object
-      description: Staff serializer for ticket vote codes.
-      properties:
-        associated_to:
-          type: integer
-          nullable: true
-          title: Käyttäjä
-          description: Käyttäjä jolle avain on assosioitu
-        ticket:
-          type: integer
-          nullable: true
-          title: Lipputuote
-          description: Lipputuote jonka avainta käytetään äänestysavaimena
-        time:
-          type: string
-          format: date-time
-          nullable: true
-          title: Aikaleima
-          description: Aika jolloin avain assosioitiin käyttäjälle.
     TransactionItem:
       type: object
       description: Serializer for TransactionItem model (staff access).

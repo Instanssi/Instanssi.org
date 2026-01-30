@@ -11,26 +11,26 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('EventDialog.labels.name')"
+                            :label="t('EventDialog.labels.name') + ' *'"
                         />
                         <v-text-field
                             v-model="tag.value.value"
                             :error-messages="tag.errorMessage.value"
                             variant="outlined"
-                            :label="t('EventDialog.labels.tag')"
+                            :label="t('EventDialog.labels.tag') + ' *'"
                         />
                         <v-text-field
                             v-model="date.value.value"
                             type="date"
                             :error-messages="date.errorMessage.value"
                             variant="outlined"
-                            :label="t('EventDialog.labels.date')"
+                            :label="t('EventDialog.labels.date') + ' *'"
                         />
                         <v-text-field
                             v-model="mainurl.value.value"
                             :error-messages="mainurl.errorMessage.value"
                             variant="outlined"
-                            :label="t('EventDialog.labels.mainUrl')"
+                            :label="t('EventDialog.labels.mainUrl') + ' *'"
                         />
                         <v-switch
                             v-model="archived.value.value"

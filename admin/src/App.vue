@@ -13,6 +13,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+    faBlog,
+    faDashboard,
+    faEnvelope,
+    faFileAudio,
+    faGamepad,
+    faMusic,
+    faPeopleGroup,
+    faRightFromBracket,
+    faTicket,
+    faTrophy,
+    faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 import { computed, provide, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -29,26 +42,68 @@ const confirmDialog = ref(undefined);
 const primaryLinks: NavigationLinks = [
     {
         title: t("App.nav.dashboard"),
-        icon: "fas fa-dashboard",
+        icon: faDashboard,
         to: "dashboard",
     },
     {
         title: t("App.nav.blog"),
-        icon: "fas fa-blog",
+        icon: faBlog,
         to: "blog",
         requirePerm: PermissionTarget.BLOG_ENTRY,
+    },
+    {
+        title: t("App.nav.kompomaatti"),
+        icon: faTrophy,
+        children: [
+            {
+                title: t("App.nav.compos"),
+                icon: faMusic,
+                to: "compos",
+                requirePerm: PermissionTarget.COMPO,
+            },
+            {
+                title: t("App.nav.entries"),
+                icon: faFileAudio,
+                to: "entries",
+                requirePerm: PermissionTarget.ENTRY,
+            },
+            {
+                title: t("App.nav.competitions"),
+                icon: faGamepad,
+                to: "competitions",
+                requirePerm: PermissionTarget.COMPETITION,
+            },
+            {
+                title: t("App.nav.competitionParticipations"),
+                icon: faPeopleGroup,
+                to: "competition-participations",
+                requirePerm: PermissionTarget.COMPETITION_PARTICIPATION,
+            },
+            {
+                title: t("App.nav.voteCodes"),
+                icon: faTicket,
+                to: "vote-codes",
+                requirePerm: PermissionTarget.TICKET_VOTE_CODE,
+            },
+            {
+                title: t("App.nav.voteCodeRequests"),
+                icon: faEnvelope,
+                to: "vote-code-requests",
+                requirePerm: PermissionTarget.VOTE_CODE_REQUEST,
+            },
+        ],
     },
 ];
 const secondaryLinks: NavigationLinks = [
     {
         title: t("App.nav.users"),
-        icon: "fas fa-users",
+        icon: faUsers,
         to: "users",
         noEventId: true,
     },
     {
         title: t("App.nav.logout"),
-        icon: "fas fa-right-from-bracket",
+        icon: faRightFromBracket,
         to: "logout",
         noEventId: true,
     },

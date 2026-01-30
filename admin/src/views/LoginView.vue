@@ -10,9 +10,11 @@
                         v-for="method in socialLoginUrls"
                         :key="method.method"
                         variant="plain"
-                        :prepend-icon="`fab fa-${method.method}`"
                         :href="method.url"
                     >
+                        <template v-if="socialIcons[method.method]" #prepend>
+                            <FontAwesomeIcon :icon="socialIcons[method.method]!" />
+                        </template>
                         {{ method.name }}
                     </v-btn>
                 </div>
@@ -38,12 +40,10 @@
                             />
                         </v-row>
                         <v-row dense no-gutters class="justify-end">
-                            <v-btn
-                                type="submit"
-                                color="primary"
-                                variant="elevated"
-                                prepend-icon="fas fa-right-to-bracket"
-                            >
+                            <v-btn type="submit" color="primary" variant="elevated">
+                                <template #prepend>
+                                    <FontAwesomeIcon :icon="faRightToBracket" />
+                                </template>
                                 {{ t("LoginView.login") }}
                             </v-btn>
                         </v-row>
@@ -55,6 +55,10 @@
 </template>
 
 <script setup lang="ts">
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
 import { type Ref, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -67,6 +71,12 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 const authService = useAuth();
 const router = useRouter();
 const { t } = useI18n();
+
+const socialIcons: Record<string, IconDefinition> = {
+    google: faGoogle,
+    steam: faSteam,
+    github: faGithub,
+};
 
 const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);
 

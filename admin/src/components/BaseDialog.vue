@@ -7,12 +7,9 @@
                         {{ title }}
                     </div>
                     <div class="justify-end">
-                        <v-btn
-                            density="compact"
-                            variant="text"
-                            icon="fas fa-xmark"
-                            @click="setResult(false)"
-                        />
+                        <v-btn density="compact" variant="text" @click="setResult(false)">
+                            <FontAwesomeIcon :icon="faXmark" />
+                        </v-btn>
                     </div>
                 </slot>
             </v-card-title>
@@ -23,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, ref, watch } from "vue";
 
 interface Props {

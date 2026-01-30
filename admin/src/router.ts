@@ -125,6 +125,152 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/BlogView.vue"),
         },
+        // Compos
+        {
+            path: "/:eventId(\\d+)/compos",
+            name: "compos",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPO,
+            },
+            props: true,
+            component: () => import("@/views/ComposView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/compos/new",
+            name: "compos-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPO,
+            },
+            props: true,
+            component: () => import("@/views/CompoEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/compos/:id(\\d+)/edit",
+            name: "compos-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPO,
+            },
+            props: true,
+            component: () => import("@/views/CompoEditView.vue"),
+        },
+        // Entries
+        {
+            path: "/:eventId(\\d+)/entries",
+            name: "entries",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/EntriesView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/entries/new",
+            name: "entries-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/EntryEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/entries/:id(\\d+)/edit",
+            name: "entries-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/EntryEditView.vue"),
+        },
+        // Competitions
+        {
+            path: "/:eventId(\\d+)/competitions",
+            name: "competitions",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/competitions/new",
+            name: "competitions-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/competitions/:id(\\d+)/edit",
+            name: "competitions-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionEditView.vue"),
+        },
+        // Competition Participations
+        {
+            path: "/:eventId(\\d+)/competition-participations",
+            name: "competition-participations",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionParticipationsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/competition-participations/new",
+            name: "competition-participations-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionParticipationEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/competition-participations/:id(\\d+)/edit",
+            name: "competition-participations-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
+            },
+            props: true,
+            component: () => import("@/views/CompetitionParticipationEditView.vue"),
+        },
+        // Vote Codes
+        {
+            path: "/:eventId(\\d+)/vote-codes",
+            name: "vote-codes",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.TICKET_VOTE_CODE,
+            },
+            props: true,
+            component: () => import("@/views/VoteCodesView.vue"),
+        },
+        // Vote Code Requests
+        {
+            path: "/:eventId(\\d+)/vote-code-requests",
+            name: "vote-code-requests",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.VOTE_CODE_REQUEST,
+            },
+            props: true,
+            component: () => import("@/views/VoteCodeRequestsView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",

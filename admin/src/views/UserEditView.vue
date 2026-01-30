@@ -12,7 +12,7 @@
                             :error-messages="username.errorMessage.value"
                             variant="outlined"
                             :readonly="isEditMode"
-                            :label="t('UserDialog.labels.userName')"
+                            :label="t('UserDialog.labels.userName') + ' *'"
                         />
                         <v-text-field
                             v-if="isEditMode"
@@ -25,7 +25,7 @@
                             v-model="email.value.value"
                             :error-messages="email.errorMessage.value"
                             variant="outlined"
-                            :label="t('UserDialog.labels.email')"
+                            :label="t('UserDialog.labels.email') + ' *'"
                         />
                         <v-text-field
                             v-model="firstName.value.value"

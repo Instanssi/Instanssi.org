@@ -71,7 +71,8 @@
     },
     "MainNavigation": {
       "title": "Instanssi",
-      "event": "Event"
+      "event": "Event",
+      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost."
     },
     "EventView": {
       "title": "Events",

@@ -9,15 +9,21 @@
             </div>
             <v-divider />
             <v-select
-                v-model="event"
+                :model-value="event"
                 class="ma-2 flex-0-0 nav-event-select"
                 :label="t('MainNavigation.event')"
                 variant="outlined"
                 density="compact"
                 :items="events"
+                @update:model-value="onEventChange"
             >
                 <template v-if="authService.canView(PermissionTarget.EVENT)" #append>
-                    <v-btn variant="plain" density="compact" @click="routeToEvents" class="event-btn">
+                    <v-btn
+                        variant="plain"
+                        density="compact"
+                        class="event-btn"
+                        @click="routeToEvents"
+                    >
                         <FontAwesomeIcon :icon="faCalendarDays" class="ma-0 pa-0" />
                     </v-btn>
                 </template>
@@ -32,7 +38,7 @@
 <script setup lang="ts">
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { type Ref, computed, onMounted, ref, watch } from "vue";
+import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
@@ -40,6 +46,7 @@ import logoImage from "@/assets/icon.png";
 import NavigationList, { type NavigationLinks } from "@/components/NavigationList.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
+import { confirmDialogKey, type ConfirmDialogType } from "@/symbols";
 
 defineProps<{ primary: NavigationLinks; secondary: NavigationLinks }>();
 
@@ -47,6 +54,7 @@ const router = useRouter();
 const route = useRoute();
 const eventService = useEvents();
 const authService = useAuth();
+const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const { t } = useI18n();
 const event: Ref<undefined | number> = ref(undefined);
 const events = computed(() =>
@@ -54,19 +62,35 @@ const events = computed(() =>
 );
 
 /**
- * When new event is selected from the select-box, try to immediately redirect the current view
- * to that event. Note that this may cause warning, if we are on a page that has no eventId parameter.
- * This is fine for now and should not break anything.
+ * Check if the current route is an edit or create page.
  */
-function changeEvent(): void {
-    router.push({
-        name: route.name!,
-        params: {
-            ...route.params,
-            eventId: event.value,
-        },
-        query: route.query,
-    });
+function isOnEditOrCreatePage(): boolean {
+    const routeName = route.name?.toString() ?? "";
+    return routeName.endsWith("-edit") || routeName.endsWith("-new");
+}
+
+/**
+ * Handle event selection from dropdown. Ask for confirmation if on edit/create page
+ * and redirect to dashboard. Otherwise, stay on the same page with the new event.
+ */
+async function onEventChange(newEvent: number | undefined): Promise<void> {
+    if (newEvent === event.value) return;
+
+    if (isOnEditOrCreatePage()) {
+        const confirmed = await confirmDialog.value?.confirm(
+            t("MainNavigation.confirmEventChange")
+        );
+        if (!confirmed) return;
+        event.value = newEvent;
+        router.push({ name: "dashboard", params: { eventId: newEvent } });
+    } else {
+        event.value = newEvent;
+        router.push({
+            name: route.name!,
+            params: { ...route.params, eventId: newEvent },
+            query: route.query,
+        });
+    }
 }
 
 function routeToEvents(): void {
@@ -74,9 +98,10 @@ function routeToEvents(): void {
 }
 
 /**
- * If there are any events, get and set the latest one.
+ * Initialize event selection from the latest event.
  */
-function trySetLatestEvent() {
+async function initEvents() {
+    await eventService.refreshEvents();
     const latest = eventService.getLatestEvent();
     if (latest) {
         event.value = latest.id;
@@ -84,30 +109,23 @@ function trySetLatestEvent() {
 }
 
 /**
- * If we get logged in, try to refresh events immediately.
+ * React to events list changes.
  */
-async function tryRefreshEvents() {
-    await eventService.refreshEvents();
-    trySetLatestEvent();
-}
-
-/**
- * React to events list changes. If we have no event, just set select-box to nothing.
- * If any events appear, select the first one.
- */
-async function trySelectEvent() {
-    const events = eventService.getEvents();
-    if (events.length === 0) {
+function onEventsChange() {
+    const allEvents = eventService.getEvents();
+    if (allEvents.length === 0) {
         event.value = undefined;
-    } else {
-        trySetLatestEvent();
+    } else if (!event.value) {
+        const latest = eventService.getLatestEvent();
+        if (latest) {
+            event.value = latest.id;
+        }
     }
 }
 
-watch(event, changeEvent);
-watch(() => authService.isLoggedIn(), tryRefreshEvents);
-watch(() => eventService.getEvents(), trySelectEvent);
-onMounted(tryRefreshEvents);
+watch(() => authService.isLoggedIn(), initEvents);
+watch(() => eventService.getEvents(), onEventsChange);
+onMounted(initEvents);
 </script>
 
 <style lang="scss">

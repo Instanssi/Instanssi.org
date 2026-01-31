@@ -26,7 +26,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`participations-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -135,7 +134,6 @@ const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
 const users: Ref<User[]> = ref([]);
 const selectedCompetition: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -198,7 +196,9 @@ function getUserName(userId: number): string {
 }
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function loadCompetitions() {

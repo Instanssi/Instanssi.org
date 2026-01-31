@@ -22,7 +22,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`blog-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -110,7 +109,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const users: Ref<User[]> = ref([]);
 const search = ref("");
-const refreshKey = ref(0);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("UsersView.headers.id"),
@@ -161,11 +160,14 @@ const headers: ReadonlyHeaders = [
 ];
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminUsersList({ query: getLoadArgs(args) });
         users.value = response.data!.results;

@@ -32,7 +32,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`videos-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -123,7 +122,6 @@ const items: Ref<OtherVideo[]> = ref([]);
 const categories: Ref<OtherVideoCategory[]> = ref([]);
 const search = ref("");
 const selectedCategory: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -181,7 +179,9 @@ function formatYoutubeUrl(youtube_url: { video_id: string; start?: number | null
 }
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function loadCategories() {

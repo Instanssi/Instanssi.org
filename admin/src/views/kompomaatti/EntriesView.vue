@@ -39,7 +39,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`entries-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -133,7 +132,6 @@ const entries: Ref<CompoEntry[]> = ref([]);
 const compos: Ref<Compo[]> = ref([]);
 const search = ref("");
 const selectedCompo: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -186,7 +184,9 @@ function getCompoName(compoId: number): string {
 }
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function loadCompos() {

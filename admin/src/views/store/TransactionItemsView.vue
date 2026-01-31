@@ -31,7 +31,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`transaction-items-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -107,7 +106,6 @@ const items: Ref<TransactionItem[]> = ref([]);
 const storeItems: Ref<StoreItem[]> = ref([]);
 const search = ref("");
 const selectedItem: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [

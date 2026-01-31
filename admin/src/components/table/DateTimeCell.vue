@@ -36,8 +36,8 @@ const formattedDateTime = computed(() => {
 
     const options: Intl.DateTimeFormatOptions =
         props.format === "short"
-            ? { dateStyle: "short", timeStyle: "short", timeZone: ADMIN_TIMEZONE }
-            : { dateStyle: "long", timeStyle: "short", timeZone: ADMIN_TIMEZONE };
+            ? { dateStyle: "short", timeStyle: "short", timeZone: ADMIN_TIMEZONE, hour12: false }
+            : { dateStyle: "long", timeStyle: "short", timeZone: ADMIN_TIMEZONE, hour12: false };
 
     return new Intl.DateTimeFormat(locale.value, options).format(new Date(zoned.epochMilliseconds));
 });

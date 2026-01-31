@@ -51,15 +51,7 @@
                         {{ getCategoryName(item.category) }}
                     </template>
                     <template #item.youtube_url="{ item }">
-                        <a
-                            v-if="item.youtube_url"
-                            :href="getYoutubeUrl(item.youtube_url)"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {{ formatYoutubeUrl(item.youtube_url) }}
-                        </a>
-                        <span v-else>-</span>
+                        <YoutubeCell :value="item.youtube_url" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -89,6 +81,7 @@ import * as api from "@/api";
 import type { OtherVideo, OtherVideoCategory } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import YoutubeCell from "@/components/table/YoutubeCell.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -162,21 +155,6 @@ const categoryOptions = computed(() => [
 function getCategoryName(categoryId: number): string {
     const category = categories.value.find((c) => c.id === categoryId);
     return category?.name ?? `#${categoryId}`;
-}
-
-function getYoutubeUrl(youtube_url: { video_id: string; start?: number | null }): string {
-    let url = `https://www.youtube.com/watch?v=${youtube_url.video_id}`;
-    if (youtube_url.start) {
-        url += `&t=${youtube_url.start}`;
-    }
-    return url;
-}
-
-function formatYoutubeUrl(youtube_url: { video_id: string; start?: number | null }): string {
-    if (youtube_url.start) {
-        return `${youtube_url.video_id} (t=${youtube_url.start}s)`;
-    }
-    return youtube_url.video_id;
 }
 
 function flushData() {

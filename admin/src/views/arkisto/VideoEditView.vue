@@ -35,20 +35,13 @@
                             {{ t("VideoEditView.sections.youtube") }}
                         </FormSection>
                         <v-text-field
-                            v-model="youtubeUrl"
+                            v-model="youtubeUrl.value.value"
+                            :error-messages="youtubeUrl.errorMessage.value"
                             variant="outlined"
-                            :label="t('VideoEditView.labels.youtubeUrl')"
+                            :label="t('VideoEditView.labels.youtubeUrl') + ' *'"
                             :hint="t('VideoEditView.labels.youtubeUrlHint')"
                             persistent-hint
                             class="mb-4"
-                        />
-                        <v-text-field
-                            v-model.number="youtubeStart.value.value"
-                            :error-messages="youtubeStart.errorMessage.value"
-                            variant="outlined"
-                            :label="t('VideoEditView.labels.youtubeStart')"
-                            type="number"
-                            min="0"
                         />
                     </v-form>
                 </v-card-text>
@@ -79,7 +72,7 @@ import { faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
-import { type Ref, computed, onMounted, ref, watch } from "vue";
+import { type Ref, computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -108,7 +101,6 @@ const videoName = ref<string>("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const isEditMode = computed(() => props.id !== undefined);
 const categories: Ref<OtherVideoCategory[]> = ref([]);
-const youtubeUrl = ref<string>("");
 
 const categoryOptions = computed(() =>
     categories.value.map((c) => ({ title: c.name, value: c.id }))
@@ -133,13 +125,29 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     return items;
 });
 
+/**
+ * Check if value looks like a YouTube URL or video ID
+ */
+function isValidYoutubeInput(value: string): boolean {
+    if (!value) return false;
+    // Accept YouTube URLs or direct 11-char video IDs
+    const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)[a-zA-Z0-9_-]{11}/,
+        /^[a-zA-Z0-9_-]{11}$/,
+    ];
+    return patterns.some((pattern) => pattern.test(value));
+}
+
 // Form validation
 const validationSchema = yupObject({
     category: yupNumber().required().min(1),
     name: yupString().required().min(1).max(64),
     description: yupString(),
-    youtubeVideoId: yupString(),
-    youtubeStart: yupNumber().nullable().min(0),
+    youtubeUrl: yupString()
+        .required()
+        .test("youtube-url", "Invalid YouTube URL or video ID", (value) =>
+            isValidYoutubeInput(value ?? "")
+        ),
 });
 
 const { handleSubmit, setValues, setErrors, meta } = useForm({
@@ -148,51 +156,14 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         category: null as number | null,
         name: "",
         description: "",
-        youtubeVideoId: "",
-        youtubeStart: null as number | null,
+        youtubeUrl: "",
     },
 });
 
 const category = useField<number | null>("category");
 const name = useField<string>("name");
 const description = useField<string>("description");
-const youtubeVideoId = useField<string>("youtubeVideoId");
-const youtubeStart = useField<number | null>("youtubeStart");
-
-/**
- * Extract YouTube video ID from various URL formats
- */
-function extractYoutubeVideoId(url: string): string | null {
-    if (!url) return null;
-
-    // Handle various YouTube URL formats
-    const patterns = [
-        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
-        /^([a-zA-Z0-9_-]{11})$/, // Direct video ID
-    ];
-
-    for (const pattern of patterns) {
-        const match = url.match(pattern);
-        if (match && match[1]) {
-            return match[1];
-        }
-    }
-    return null;
-}
-
-/**
- * Build YouTube URL from video ID
- */
-function buildYoutubeUrl(videoId: string | null): string {
-    if (!videoId) return "";
-    return `https://www.youtube.com/watch?v=${videoId}`;
-}
-
-// Update video ID when URL changes
-watch(youtubeUrl, (newUrl) => {
-    const videoId = extractYoutubeVideoId(newUrl);
-    youtubeVideoId.value.value = videoId ?? "";
-});
+const youtubeUrl = useField<string>("youtubeUrl");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -208,16 +179,6 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
-function buildYoutubePayload(values: GenericObject) {
-    if (!values.youtubeVideoId) {
-        return null;
-    }
-    return {
-        video_id: values.youtubeVideoId,
-        start: values.youtubeStart ?? null,
-    };
-}
-
 async function createVideo(values: GenericObject) {
     try {
         await api.adminEventArkistoVideosCreate({
@@ -226,7 +187,7 @@ async function createVideo(values: GenericObject) {
                 category: values.category,
                 name: values.name,
                 description: values.description || "",
-                youtube_url: buildYoutubePayload(values),
+                youtube_url: values.youtubeUrl,
             },
         });
         toast.success(t("VideoEditView.createSuccess"));
@@ -245,7 +206,7 @@ async function editVideo(videoId: number, values: GenericObject) {
                 category: values.category,
                 name: values.name,
                 description: values.description || "",
-                youtube_url: buildYoutubePayload(values),
+                youtube_url: values.youtubeUrl,
             },
         });
         toast.success(t("VideoEditView.editSuccess"));
@@ -283,14 +244,11 @@ onMounted(async () => {
             });
             const video = response.data!;
             videoName.value = video.name;
-            const videoId = video.youtube_url?.video_id ?? "";
-            youtubeUrl.value = buildYoutubeUrl(videoId);
             setValues({
                 category: video.category,
                 name: video.name,
                 description: video.description ?? "",
-                youtubeVideoId: videoId,
-                youtubeStart: video.youtube_url?.start ?? null,
+                youtubeUrl: video.youtube_url ?? "",
             });
         } catch (e) {
             toast.error(t("VideoEditView.loadFailure"));

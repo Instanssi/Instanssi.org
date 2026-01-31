@@ -132,27 +132,13 @@
                         <FormSection>
                             {{ t("EntryEditView.sections.media") }}
                         </FormSection>
-                        <v-row>
-                            <v-col cols="12" md="8">
-                                <v-text-field
-                                    v-model="youtubeVideoId.value.value"
-                                    :error-messages="youtubeVideoId.errorMessage.value"
-                                    variant="outlined"
-                                    :label="t('EntryEditView.labels.youtubeVideoId')"
-                                    placeholder="e.g. dQw4w9WgXcQ"
-                                />
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model.number="youtubeStart.value.value"
-                                    type="number"
-                                    :error-messages="youtubeStart.errorMessage.value"
-                                    variant="outlined"
-                                    :label="t('EntryEditView.labels.youtubeStart')"
-                                    :min="0"
-                                />
-                            </v-col>
-                        </v-row>
+                        <v-text-field
+                            v-model="youtubeUrl.value.value"
+                            :error-messages="youtubeUrl.errorMessage.value"
+                            variant="outlined"
+                            :label="t('EntryEditView.labels.youtubeUrl')"
+                            placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        />
 
                         <FormSection v-if="isEditMode">
                             {{ t("EntryEditView.sections.ranking") }}
@@ -326,8 +312,7 @@ const validationSchema = yupObject({
     compo: yupNumber().nullable().required(),
     user: yupNumber().nullable().required(),
     platform: yupString().nullable(),
-    youtubeVideoId: yupString().nullable().max(32),
-    youtubeStart: yupNumber().nullable().min(0),
+    youtubeUrl: yupString().nullable(),
     disqualified: yupBoolean(),
     disqualifiedReason: yupString(),
     entryFile: yupMixed()
@@ -361,8 +346,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         compo: null as number | null,
         user: null as number | null,
         platform: "",
-        youtubeVideoId: "",
-        youtubeStart: null as number | null,
+        youtubeUrl: "",
         disqualified: false,
         disqualifiedReason: "",
         entryFile: null as FileValue,
@@ -377,8 +361,7 @@ const description = useField<string>("description");
 const compo = useField<number | null>("compo");
 const user = useField<number | null>("user");
 const platform = useField<string>("platform");
-const youtubeVideoId = useField<string>("youtubeVideoId");
-const youtubeStart = useField<number | null>("youtubeStart");
+const youtubeUrl = useField<string>("youtubeUrl");
 const disqualified = useField<boolean>("disqualified");
 const disqualifiedReason = useField<string>("disqualifiedReason");
 const entryFile = useField<FileValue>("entryFile");
@@ -449,18 +432,6 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
-// Build youtube_url object from form values
-function buildYoutubeUrl(
-    videoId: string | null | undefined,
-    start: number | null | undefined
-): { video_id: string; start?: number | null } | null {
-    if (!videoId) return null;
-    return {
-        video_id: videoId,
-        start: start ?? null,
-    };
-}
-
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiEntriesCreate({
@@ -475,7 +446,7 @@ async function createItem(values: GenericObject) {
                 entryfile: getFile(values.entryFile)!,
                 sourcefile: getFile(values.sourceFile),
                 imagefile_original: allowsImageFile.value ? getFile(values.imageFile) : undefined,
-                youtube_url: buildYoutubeUrl(values.youtubeVideoId, values.youtubeStart),
+                youtube_url: values.youtubeUrl || null,
                 disqualified: values.disqualified,
                 disqualified_reason: values.disqualifiedReason || "",
             },
@@ -491,8 +462,7 @@ async function createItem(values: GenericObject) {
                 if (body.sourcefile) formData.append("sourcefile", body.sourcefile);
                 if (body.imagefile_original)
                     formData.append("imagefile_original", body.imagefile_original);
-                if (body.youtube_url)
-                    formData.append("youtube_url", JSON.stringify(body.youtube_url));
+                if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
                 if (body.disqualified) formData.append("disqualified", "true");
                 if (body.disqualified_reason)
                     formData.append("disqualified_reason", body.disqualified_reason);
@@ -510,7 +480,7 @@ async function createItem(values: GenericObject) {
 async function editItem(itemId: number, values: GenericObject) {
     const hasImageFile = allowsImageFile.value && !!getFile(values.imageFile);
     const hasFiles = !!getFile(values.entryFile) || !!getFile(values.sourceFile) || hasImageFile;
-    const youtubeUrl = buildYoutubeUrl(values.youtubeVideoId, values.youtubeStart);
+    const youtubeUrlValue = values.youtubeUrl || null;
 
     try {
         if (hasFiles) {
@@ -522,7 +492,7 @@ async function editItem(itemId: number, values: GenericObject) {
                     creator: values.creator,
                     description: values.description || "",
                     platform: values.platform || null,
-                    youtube_url: youtubeUrl,
+                    youtube_url: youtubeUrlValue,
                     disqualified: values.disqualified,
                     disqualified_reason: values.disqualifiedReason || "",
                     entryfile: getFile(values.entryFile),
@@ -535,8 +505,7 @@ async function editItem(itemId: number, values: GenericObject) {
                     formData.append("creator", body.creator);
                     formData.append("description", body.description || "");
                     if (body.platform) formData.append("platform", body.platform);
-                    if (body.youtube_url)
-                        formData.append("youtube_url", JSON.stringify(body.youtube_url));
+                    if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
                     if (body.disqualified) formData.append("disqualified", "true");
                     if (body.disqualified_reason)
                         formData.append("disqualified_reason", body.disqualified_reason);
@@ -556,7 +525,7 @@ async function editItem(itemId: number, values: GenericObject) {
                     creator: values.creator,
                     description: values.description || "",
                     platform: values.platform || null,
-                    youtube_url: youtubeUrl,
+                    youtube_url: youtubeUrlValue,
                     disqualified: values.disqualified,
                     disqualified_reason: values.disqualifiedReason || "",
                 },
@@ -626,8 +595,7 @@ onMounted(async () => {
                 compo: item.compo,
                 user: item.user,
                 platform: item.platform ?? "",
-                youtubeVideoId: item.youtube_url?.video_id ?? "",
-                youtubeStart: item.youtube_url?.start ?? null,
+                youtubeUrl: item.youtube_url ?? "",
                 disqualified: item.disqualified ?? false,
                 disqualifiedReason: item.disqualified_reason ?? "",
             });

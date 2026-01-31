@@ -6198,16 +6198,8 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -6315,16 +6307,8 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -7159,16 +7143,8 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
       required:
       - category
       - description
@@ -7226,16 +7202,8 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
       required:
       - category
       - description
@@ -8168,16 +8136,8 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
         disqualified:
           type: boolean
           title: Diskattu
@@ -8388,16 +8348,8 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
     PatchedProgramEventRequest:
       type: object
       description: Staff serializer for programme events.
@@ -8824,16 +8776,8 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
     PatchedUserRequest:
       type: object
       description: Staff serializer for users, extends UserInfoSerializer with groups
@@ -9423,16 +9367,8 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
         disqualified:
           type: boolean
           nullable: true
@@ -9526,16 +9462,8 @@ components:
           title: Kuvaus
           description: Videon kuvaus.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
           readOnly: true
       required:
       - category
@@ -10928,16 +10856,8 @@ components:
           nullable: true
           readOnly: true
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
         disqualified:
           type: boolean
           nullable: true
@@ -11027,16 +10947,8 @@ components:
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
-          type: object
+          type: string
           nullable: true
-          properties:
-            video_id:
-              type: string
-            start:
-              type: integer
-              nullable: true
-          required:
-          - video_id
       required:
       - compo
       - creator

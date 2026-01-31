@@ -2,30 +2,11 @@
     <LayoutBase :key="`transaction-items-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-menu>
-                    <template #activator="{ props: menuProps }">
-                        <v-btn :loading="exportLoading" v-bind="menuProps">
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faDownload" />
-                            </template>
-                            {{ t("TransactionItemsView.export") }}
-                            <template #append>
-                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
-                            </template>
-                        </v-btn>
-                    </template>
-                    <v-list density="compact">
-                        <v-list-item @click="exportData('csv')">
-                            <v-list-item-title>CSV (.csv)</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="exportData('xlsx')">
-                            <v-list-item-title>Excel (.xlsx)</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="exportData('ods')">
-                            <v-list-item-title>LibreOffice (.ods)</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                <ExportButton
+                    :label="t('TransactionItemsView.export')"
+                    :loading="exportLoading"
+                    @export="exportData"
+                />
                 <v-select
                     v-model="selectedItem"
                     :items="itemOptions"
@@ -90,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faChevronDown, faDownload, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, onMounted, ref, watch } from "vue";
@@ -100,6 +81,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { TransactionItem, StoreItem, StoreTransaction } from "@/api";
+import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

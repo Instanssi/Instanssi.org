@@ -75,30 +75,12 @@
                         <v-card-title class="d-flex align-center">
                             {{ t("StoreSummaryView.title") }}
                             <v-spacer />
-                            <v-menu>
-                                <template #activator="{ props: menuProps }">
-                                    <v-btn size="small" :loading="exportLoading" v-bind="menuProps">
-                                        <template #prepend>
-                                            <FontAwesomeIcon :icon="faDownload" />
-                                        </template>
-                                        {{ t("StoreSummaryView.export") }}
-                                        <template #append>
-                                            <FontAwesomeIcon :icon="faChevronDown" size="sm" />
-                                        </template>
-                                    </v-btn>
-                                </template>
-                                <v-list density="compact">
-                                    <v-list-item @click="exportData('csv')">
-                                        <v-list-item-title>CSV (.csv)</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item @click="exportData('xlsx')">
-                                        <v-list-item-title>Excel (.xlsx)</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item @click="exportData('ods')">
-                                        <v-list-item-title>LibreOffice (.ods)</v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
+                            <ExportButton
+                                :label="t('StoreSummaryView.export')"
+                                :loading="exportLoading"
+                                size="small"
+                                @export="exportData"
+                            />
                         </v-card-title>
                         <v-card-text>
                             <v-data-table
@@ -135,12 +117,7 @@ import {
     Title,
     Tooltip,
 } from "chart.js";
-import {
-    faBoxOpen,
-    faChevronDown,
-    faDownload,
-    faEuroSign,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBoxOpen, faEuroSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
@@ -151,6 +128,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { StoreItem, StoreTransaction, TransactionItem } from "@/api";
+import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";

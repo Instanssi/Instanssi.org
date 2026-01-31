@@ -8,30 +8,13 @@
                     </template>
                     {{ t("EntriesView.newEntry") }}
                 </v-btn>
-                <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
-                    <template #activator="{ props: menuProps }">
-                        <v-btn class="ml-2" :loading="exportLoading" v-bind="menuProps">
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faDownload" />
-                            </template>
-                            {{ t("EntriesView.exportResults") }}
-                            <template #append>
-                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
-                            </template>
-                        </v-btn>
-                    </template>
-                    <v-list density="compact">
-                        <v-list-item @click="downloadResults('csv')">
-                            <v-list-item-title>CSV (.csv)</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="downloadResults('xlsx')">
-                            <v-list-item-title>Excel (.xlsx)</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="downloadResults('ods')">
-                            <v-list-item-title>LibreOffice (.ods)</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                <ExportButton
+                    v-if="auth.canView(PermissionTarget.ENTRY)"
+                    class="ml-2"
+                    :label="t('EntriesView.exportResults')"
+                    :loading="exportLoading"
+                    @export="downloadResults"
+                />
                 <v-select
                     v-model="selectedCompo"
                     :items="compoOptions"
@@ -118,14 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-    faCheck,
-    faChevronDown,
-    faDownload,
-    faPenToSquare,
-    faPlus,
-    faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -136,6 +112,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
+import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

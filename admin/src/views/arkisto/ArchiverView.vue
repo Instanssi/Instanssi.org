@@ -218,7 +218,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
-import { computed, inject, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
@@ -349,4 +349,9 @@ async function confirmTransferRights() {
 }
 
 onMounted(loadStatus);
+
+watch(eventId, () => {
+    status.value = null;
+    loadStatus();
+});
 </script>

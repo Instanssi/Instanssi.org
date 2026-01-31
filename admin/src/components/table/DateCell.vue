@@ -33,7 +33,7 @@ const formattedDate = computed(() => {
     const options: Intl.DateTimeFormatOptions =
         props.format === "short" ? { dateStyle: "short" } : { dateStyle: "long" };
     return new Intl.DateTimeFormat(locale.value, options).format(
-        new Date(plainDate.year, plainDate.month - 1, plainDate.day)
+        new Date(Date.UTC(plainDate.year, plainDate.month - 1, plainDate.day))
     );
 });
 </script>

@@ -2068,6 +2068,7 @@ export const adminEventProgramEventsCreate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2083,7 +2084,7 @@ export const adminEventProgramEventsCreate = <ThrowOnError extends boolean = fal
         url: "/api/v2/admin/event/{event_pk}/program/events/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -2155,6 +2156,7 @@ export const adminEventProgramEventsPartialUpdate = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2170,7 +2172,7 @@ export const adminEventProgramEventsPartialUpdate = <ThrowOnError extends boolea
         url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -2187,6 +2189,7 @@ export const adminEventProgramEventsUpdate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2202,7 +2205,7 @@ export const adminEventProgramEventsUpdate = <ThrowOnError extends boolean = fal
         url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -2424,6 +2427,7 @@ export const adminEventStoreItemsCreate = <ThrowOnError extends boolean = false>
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2439,7 +2443,7 @@ export const adminEventStoreItemsCreate = <ThrowOnError extends boolean = false>
         url: "/api/v2/admin/event/{event_pk}/store/items/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -2511,6 +2515,7 @@ export const adminEventStoreItemsPartialUpdate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2526,7 +2531,7 @@ export const adminEventStoreItemsPartialUpdate = <ThrowOnError extends boolean =
         url: "/api/v2/admin/event/{event_pk}/store/items/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -2543,6 +2548,7 @@ export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -2558,7 +2564,7 @@ export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>
         url: "/api/v2/admin/event/{event_pk}/store/items/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -3194,6 +3200,7 @@ export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = fals
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -3209,7 +3216,7 @@ export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = fals
         url: "/api/v2/admin/event/{event_pk}/uploads/files/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -3287,6 +3294,7 @@ export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -3302,7 +3310,7 @@ export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -3321,6 +3329,7 @@ export const adminEventUploadsFilesUpdate = <ThrowOnError extends boolean = fals
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -3336,7 +3345,7 @@ export const adminEventUploadsFilesUpdate = <ThrowOnError extends boolean = fals
         url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });

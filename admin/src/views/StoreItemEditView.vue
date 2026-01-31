@@ -281,7 +281,6 @@ import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { handleApiError } from "@/utils/http";
-import { sleep } from "@/utils/sleep";
 
 const props = defineProps<{
     eventId: string;
@@ -467,7 +466,6 @@ async function deleteVariant(variant: StoreItemVariant) {
     const text = t("StoreItemEditView.variants.deleteConfirm", variant);
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {
-            await sleep(250);
             await api.adminEventStoreItemVariantsDestroy({
                 path: { event_pk: eventId.value, id: variant.id },
             });

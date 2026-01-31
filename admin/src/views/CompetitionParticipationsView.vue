@@ -107,7 +107,6 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
-import { sleep } from "@/utils/sleep.ts";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -261,7 +260,6 @@ async function deleteParticipation(item: CompetitionParticipation): Promise<void
     });
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {
-            await sleep(250);
             await api.adminEventKompomaattiCompetitionParticipationsDestroy({
                 path: { event_pk: eventId.value, id: item.id },
             });

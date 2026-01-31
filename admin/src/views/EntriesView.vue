@@ -143,7 +143,6 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
-import { sleep } from "@/utils/sleep.ts";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -275,7 +274,6 @@ async function deleteEntry(item: CompoEntry): Promise<void> {
     const text = t("EntriesView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {
-            await sleep(250);
             await api.adminEventKompomaattiEntriesDestroy({
                 path: { event_pk: eventId.value, id: item.id },
             });

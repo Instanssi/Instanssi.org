@@ -1,6 +1,3 @@
-import type { AxiosError } from "axios";
-import { camelCase } from "lodash-es";
-
 import { HttpStatus } from "@/utils/http_status";
 
 type FieldErrors = Record<string, string>;
@@ -8,17 +5,30 @@ type SetErrorsFn = (errors: FieldErrors) => void;
 type ToastInterface = { error: (message: string) => void };
 type FieldMapping = Record<string, string>;
 
+interface ErrorResponse {
+    status: number;
+    data: unknown;
+}
+
+function getErrorResponse(error: unknown): ErrorResponse | null {
+    const err = error as { response?: ErrorResponse };
+    return err?.response ?? null;
+}
+
+function getResponseData(response: ErrorResponse): Record<string, unknown> | null {
+    const { data } = response;
+    return typeof data === "object" && data !== null ? (data as Record<string, unknown>) : null;
+}
+
 /**
  * Extract error message from API error response.
  * Returns the detail message if available, otherwise the fallback.
  */
 export function getApiErrorMessage(error: unknown, fallbackMessage: string): string {
-    const axiosError = error as AxiosError;
-    if (axiosError?.response?.data) {
-        const data = axiosError.response.data as Record<string, unknown>;
-        if (typeof data.detail === "string") {
-            return data.detail;
-        }
+    const response = getErrorResponse(error);
+    const data = response && getResponseData(response);
+    if (data && typeof data.detail === "string") {
+        return data.detail;
     }
     return fallbackMessage;
 }
@@ -31,7 +41,9 @@ export function getApiErrorMessage(error: unknown, fallbackMessage: string): str
  * @param setErrors - vee-validate's setErrors function
  * @param toast - Toast interface with error() method
  * @param fallbackMessage - Message to show if no specific error can be extracted
- * @param fieldMapping - Optional mapping from API field names to form field names
+ * @param fieldMapping - Mapping from API field names to form field names.
+ *        Only explicitly mapped fields will show errors on form fields.
+ *        Unmapped field errors are shown in a toast.
  */
 export function handleApiError(
     error: unknown,
@@ -40,40 +52,49 @@ export function handleApiError(
     fallbackMessage: string,
     fieldMapping: FieldMapping = {}
 ): void {
-    const axiosError = error as AxiosError;
+    const response = getErrorResponse(error);
+    if (!response) {
+        toast.error(fallbackMessage);
+        console.error(error);
+        return;
+    }
 
-    if (axiosError?.response) {
-        const status = axiosError.response.status;
-        const data = axiosError.response.data as Record<string, unknown>;
+    const data = getResponseData(response);
 
-        // Handle field-level validation errors (400 Bad Request)
-        if (status === HttpStatus.BAD_REQUEST && typeof data === "object" && data !== null) {
-            const fieldErrors: FieldErrors = {};
-            let hasFieldErrors = false;
+    // Handle field-level validation errors (400 Bad Request)
+    if (response.status === HttpStatus.BAD_REQUEST && data) {
+        const fieldErrors: FieldErrors = {};
+        const toastMessages: string[] = [];
 
-            for (const [key, value] of Object.entries(data)) {
-                if (key !== "detail" && Array.isArray(value)) {
-                    // Apply custom mapping first, then snake_case conversion
-                    const fieldName = fieldMapping[key] ?? camelCase(key);
-                    fieldErrors[fieldName] = value.join(", ");
-                    hasFieldErrors = true;
-                }
-            }
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "detail" || !Array.isArray(value)) continue;
 
-            if (hasFieldErrors) {
-                setErrors(fieldErrors);
-                return;
+            const message = value.join(", ");
+            const mappedField = fieldMapping[key];
+
+            if (mappedField) {
+                fieldErrors[mappedField] = message;
+            } else {
+                toastMessages.push(`${key}: ${message}`);
             }
         }
 
-        // Check for detail message
-        if (data && typeof data.detail === "string") {
-            toast.error(data.detail);
+        const hasFieldErrors = Object.keys(fieldErrors).length > 0;
+        const hasToastMessages = toastMessages.length > 0;
+
+        if (hasFieldErrors || hasToastMessages) {
+            if (hasFieldErrors) setErrors(fieldErrors);
+            if (hasToastMessages) toast.error(toastMessages.join("\n"));
             return;
         }
     }
 
-    // Fallback to generic message
+    // Check for detail message
+    if (data && typeof data.detail === "string") {
+        toast.error(data.detail);
+        return;
+    }
+
     toast.error(fallbackMessage);
     console.error(error);
 }

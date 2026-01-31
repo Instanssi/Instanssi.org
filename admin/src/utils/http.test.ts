@@ -1,7 +1,7 @@
 import type { AxiosError } from "axios";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { handleApiError } from "./http";
+import { getApiErrorMessage, handleApiError } from "./http";
 
 describe("handleApiError", () => {
     const mockSetErrors = vi.fn();
@@ -13,7 +13,7 @@ describe("handleApiError", () => {
     });
 
     describe("field validation errors (400)", () => {
-        it("should map field errors to form fields", () => {
+        it("should map field errors to form fields using explicit mapping", () => {
             const error = {
                 response: {
                     status: 400,
@@ -24,7 +24,10 @@ describe("handleApiError", () => {
                 },
             } as AxiosError;
 
-            handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
+            handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
+                username: "username",
+                email: "email",
+            });
 
             expect(mockSetErrors).toHaveBeenCalledWith({
                 username: "This field is required.",
@@ -33,7 +36,7 @@ describe("handleApiError", () => {
             expect(mockToast.error).not.toHaveBeenCalled();
         });
 
-        it("should convert snake_case field names to camelCase", () => {
+        it("should show unmapped field errors in toast", () => {
             const error = {
                 response: {
                     status: 400,
@@ -46,29 +49,33 @@ describe("handleApiError", () => {
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
-            expect(mockSetErrors).toHaveBeenCalledWith({
-                firstName: "Too long.",
-                lastName: "Required.",
-            });
+            expect(mockSetErrors).not.toHaveBeenCalled();
+            expect(mockToast.error).toHaveBeenCalledWith(
+                "first_name: Too long.\nlast_name: Required."
+            );
         });
 
-        it("should use custom field mapping when provided", () => {
+        it("should use custom field mapping", () => {
             const error = {
                 response: {
                     status: 400,
                     data: {
-                        mainurl: ["Enter a valid URL."],
+                        first_name: ["Too long."],
+                        last_name: ["Required."],
                     },
                 },
             } as AxiosError;
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
-                mainurl: "mainUrl",
+                first_name: "firstName",
+                last_name: "lastName",
             });
 
             expect(mockSetErrors).toHaveBeenCalledWith({
-                mainUrl: "Enter a valid URL.",
+                firstName: "Too long.",
+                lastName: "Required.",
             });
+            expect(mockToast.error).not.toHaveBeenCalled();
         });
 
         it("should join multiple error messages for a field", () => {
@@ -81,26 +88,34 @@ describe("handleApiError", () => {
                 },
             } as AxiosError;
 
-            handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
+            handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
+                password: "password",
+            });
 
             expect(mockSetErrors).toHaveBeenCalledWith({
                 password: "Too short., Must contain a number.",
             });
         });
 
-        it("should not show toast when field errors are present", () => {
+        it("should show both field errors and toast for mixed mapped/unmapped", () => {
             const error = {
                 response: {
                     status: 400,
                     data: {
                         name: ["Required."],
+                        unknown_field: ["Some error."],
                     },
                 },
             } as AxiosError;
 
-            handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
+            handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
+                name: "name",
+            });
 
-            expect(mockToast.error).not.toHaveBeenCalled();
+            expect(mockSetErrors).toHaveBeenCalledWith({
+                name: "Required.",
+            });
+            expect(mockToast.error).toHaveBeenCalledWith("unknown_field: Some error.");
         });
     });
 
@@ -134,7 +149,9 @@ describe("handleApiError", () => {
                 },
             } as AxiosError;
 
-            handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
+            handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
+                name: "name",
+            });
 
             expect(mockSetErrors).toHaveBeenCalledWith({
                 name: "Required.",
@@ -176,6 +193,73 @@ describe("handleApiError", () => {
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
             expect(mockToast.error).toHaveBeenCalledWith(fallbackMessage);
+        });
+    });
+});
+
+describe("getApiErrorMessage", () => {
+    const fallbackMessage = "Default error message";
+
+    describe("with detail message present", () => {
+        it("should return detail message from response", () => {
+            const error = {
+                response: {
+                    status: 400,
+                    data: { detail: "Custom error from server" },
+                },
+            };
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe("Custom error from server");
+        });
+
+        it("should return detail for any status code", () => {
+            const error = {
+                response: {
+                    status: 500,
+                    data: { detail: "Internal server error details" },
+                },
+            };
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe("Internal server error details");
+        });
+    });
+
+    describe("fallback behavior", () => {
+        it("should return fallback when no detail present", () => {
+            const error = {
+                response: {
+                    status: 400,
+                    data: { name: ["Required"] },
+                },
+            };
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
+        });
+
+        it("should return fallback when response data is not an object", () => {
+            const error = {
+                response: {
+                    status: 400,
+                    data: "Plain text error",
+                },
+            };
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
+        });
+
+        it("should return fallback when no response", () => {
+            const error = {};
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
+        });
+
+        it("should return fallback for null error", () => {
+            expect(getApiErrorMessage(null, fallbackMessage)).toBe(fallbackMessage);
+        });
+
+        it("should return fallback when detail is not a string", () => {
+            const error = {
+                response: {
+                    status: 400,
+                    data: { detail: 123 },
+                },
+            };
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
         });
     });
 });

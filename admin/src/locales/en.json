@@ -47,13 +47,18 @@
       "newParticipation": "New Participation",
       "newStoreItem": "New Product",
       "newVideoCategory": "New Category",
-      "newVideo": "New Video"
+      "newVideo": "New Video",
+      "newProgramEvent": "New Program Event",
+      "newUpload": "New Upload"
     },
     "App": {
       "nav": {
         "dashboard": "Dashboard",
         "site": "Site",
         "blog": "Blog",
+        "content": "Content",
+        "program": "Program events",
+        "uploads": "Uploads",
         "events": "Events",
         "users": "Users",
         "logout": "Log out",
@@ -890,6 +895,111 @@
         "transferSuccess": "Rights transferred successfully!",
         "transferFailure": "Failed to transfer rights; try again later."
       }
+    },
+    "ProgramEventsView": {
+      "title": "Program events",
+      "newProgramEvent": "New program event",
+      "confirmDelete": "Do you really want to delete program event '{title}'?",
+      "loadFailure": "Failed to load program events; try again later.",
+      "deleteSuccess": "Program event deleted!",
+      "deleteFailure": "Failed to delete program event; try again later.",
+      "noProgramEventsFound": "No program events found.",
+      "loadingProgramEvents": "Loading program events ...",
+      "headers": {
+        "id": "ID",
+        "title": "Title",
+        "start": "Start",
+        "end": "End",
+        "place": "Place",
+        "eventType": "Type",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "eventTypes": {
+        "0": "Simple",
+        "1": "Detailed"
+      },
+      "filterActive": "Filter by status",
+      "filterEventType": "Filter by type",
+      "allStatuses": "All statuses",
+      "allTypes": "All types",
+      "activeOnly": "Active only",
+      "inactiveOnly": "Inactive only"
+    },
+    "ProgramEventEditView": {
+      "newTitle": "New Program Event",
+      "editTitle": "Edit Program Event",
+      "loadFailure": "Failed to load program event; try again later.",
+      "createSuccess": "Program event created!",
+      "createFailure": "Failed to create program event; try again later.",
+      "editSuccess": "Program event updated!",
+      "editFailure": "Failed to update program event; try again later.",
+      "sections": {
+        "basic": "Basic Information",
+        "presenters": "Presenters",
+        "images": "Images",
+        "links": "Links",
+        "settings": "Settings"
+      },
+      "labels": {
+        "title": "Title",
+        "description": "Description",
+        "start": "Start time",
+        "end": "End time",
+        "place": "Place",
+        "presenters": "Presenters",
+        "presentersTitles": "Presenter titles",
+        "icon1": "Image 1",
+        "icon2": "Image 2",
+        "homeUrl": "Home URL",
+        "email": "Email",
+        "twitterUrl": "Twitter URL",
+        "githubUrl": "GitHub URL",
+        "facebookUrl": "Facebook URL",
+        "linkedinUrl": "LinkedIn URL",
+        "wikiUrl": "Wiki URL",
+        "eventTypeDetailedOn": "Detailed event",
+        "eventTypeDetailedOff": "Simple event",
+        "eventTypeDetailedHintOn": "Shows presenter info, images, and links",
+        "eventTypeDetailedHintOff": "Basic event with title, time, and place only",
+        "activeOn": "Event is active",
+        "activeOff": "Event is inactive",
+        "activeHintOn": "Event is visible in the program",
+        "activeHintOff": "Event is hidden from the program"
+      }
+    },
+    "UploadsView": {
+      "title": "Uploads",
+      "newUpload": "New upload",
+      "confirmDelete": "Do you really want to delete file '{description}'?",
+      "loadFailure": "Failed to load uploads; try again later.",
+      "deleteSuccess": "File deleted!",
+      "deleteFailure": "Failed to delete file; try again later.",
+      "noUploadsFound": "No uploads found.",
+      "loadingUploads": "Loading uploads ...",
+      "copySuccess": "URL copied to clipboard!",
+      "copyFailure": "Failed to copy URL to clipboard.",
+      "headers": {
+        "id": "ID",
+        "file": "Filename",
+        "description": "Description",
+        "actions": "Actions"
+      }
+    },
+    "UploadEditView": {
+      "newTitle": "New Upload",
+      "editTitle": "Edit Upload",
+      "loadFailure": "Failed to load upload; try again later.",
+      "createSuccess": "File uploaded!",
+      "createFailure": "Failed to upload file; try again later.",
+      "editSuccess": "Upload updated!",
+      "editFailure": "Failed to update upload; try again later.",
+      "labels": {
+        "file": "File",
+        "description": "Description",
+        "fileUrl": "File URL"
+      },
+      "fileRequired": "Please select a file to upload."
     }
   }
 }

@@ -188,6 +188,147 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/hide/:
+    post:
+      operationId: admin_event_arkisto_archiver_hide_create
+      description: Hides the event from the public archive.
+      summary: Hide event from archive
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/optimize-scores/:
+    post:
+      operationId: admin_event_arkisto_archiver_optimize_scores_create
+      description: Pre-calculates and stores entry ranks and scores. Cannot be run
+        while event is ongoing.
+      summary: Optimize voting scores
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/remove-old-votes/:
+    post:
+      operationId: admin_event_arkisto_archiver_remove_old_votes_create
+      description: Deletes vote records after scores have been optimized. Cannot be
+        run while event is ongoing or if scores are not optimized.
+      summary: Remove old votes
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/show/:
+    post:
+      operationId: admin_event_arkisto_archiver_show_create
+      description: Makes the event visible in the public archive.
+      summary: Show event in archive
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/status/:
+    get:
+      operationId: admin_event_arkisto_archiver_status_retrieve
+      description: Returns the current archiving status for the event.
+      summary: Get archiver status
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
+  /api/v2/admin/event/{event_pk}/arkisto/archiver/transfer-rights/:
+    post:
+      operationId: admin_event_arkisto_archiver_transfer_rights_create
+      description: Transfers entry and competition participation ownership to the
+        'arkisto' user. Cannot be run while event is ongoing.
+      summary: Transfer rights to archive user
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiverStatus'
+          description: ''
   /api/v2/admin/event/{event_pk}/arkisto/video_categories/:
     get:
       operationId: admin_event_arkisto_video_categories_list
@@ -5504,6 +5645,33 @@ components:
       required:
       - format
       - url
+    ArchiverStatus:
+      type: object
+      description: Serializer for archiver status response.
+      properties:
+        is_archived:
+          type: boolean
+          description: Whether the event is visible in the public archive
+        has_non_archived_items:
+          type: boolean
+          description: Whether there are entries/participations not owned by archive
+            user
+        ongoing_activity:
+          type: boolean
+          description: Whether the event is still ongoing
+        votes_unoptimized:
+          type: boolean
+          description: Whether voting results need to be pre-calculated (archive_score/archive_rank
+            not set)
+        old_votes_found:
+          type: boolean
+          description: Whether there are old vote records to clean up
+      required:
+      - has_non_archived_items
+      - is_archived
+      - old_votes_found
+      - ongoing_activity
+      - votes_unoptimized
     BlogEntry:
       type: object
       description: |-

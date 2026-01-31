@@ -407,6 +407,17 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/arkisto/VideoEditView.vue"),
         },
+        // Arkisto (Archive) - Archiver
+        {
+            path: "/:eventId(\\d+)/arkisto/archiver",
+            name: "arkisto-archiver",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.ENTRY,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/ArchiverView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",

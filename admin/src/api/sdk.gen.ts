@@ -20,6 +20,18 @@ import type {
     AdminBlogRetrieveResponses,
     AdminBlogUpdateData,
     AdminBlogUpdateResponses,
+    AdminEventArkistoArchiverHideCreateData,
+    AdminEventArkistoArchiverHideCreateResponses,
+    AdminEventArkistoArchiverOptimizeScoresCreateData,
+    AdminEventArkistoArchiverOptimizeScoresCreateResponses,
+    AdminEventArkistoArchiverRemoveOldVotesCreateData,
+    AdminEventArkistoArchiverRemoveOldVotesCreateResponses,
+    AdminEventArkistoArchiverShowCreateData,
+    AdminEventArkistoArchiverShowCreateResponses,
+    AdminEventArkistoArchiverStatusRetrieveData,
+    AdminEventArkistoArchiverStatusRetrieveResponses,
+    AdminEventArkistoArchiverTransferRightsCreateData,
+    AdminEventArkistoArchiverTransferRightsCreateResponses,
     AdminEventArkistoVideoCategoriesCreateData,
     AdminEventArkistoVideoCategoriesCreateResponses,
     AdminEventArkistoVideoCategoriesDestroyData,
@@ -488,6 +500,186 @@ export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
             "Content-Type": "application/json",
             ...options.headers,
         },
+    });
+};
+
+/**
+ * Hide event from archive
+ *
+ * Hides the event from the public archive.
+ */
+export const adminEventArkistoArchiverHideCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverHideCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventArkistoArchiverHideCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/hide/",
+        ...options,
+    });
+};
+
+/**
+ * Optimize voting scores
+ *
+ * Pre-calculates and stores entry ranks and scores. Cannot be run while event is ongoing.
+ */
+export const adminEventArkistoArchiverOptimizeScoresCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverOptimizeScoresCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventArkistoArchiverOptimizeScoresCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/optimize-scores/",
+        ...options,
+    });
+};
+
+/**
+ * Remove old votes
+ *
+ * Deletes vote records after scores have been optimized. Cannot be run while event is ongoing or if scores are not optimized.
+ */
+export const adminEventArkistoArchiverRemoveOldVotesCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverRemoveOldVotesCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventArkistoArchiverRemoveOldVotesCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/remove-old-votes/",
+        ...options,
+    });
+};
+
+/**
+ * Show event in archive
+ *
+ * Makes the event visible in the public archive.
+ */
+export const adminEventArkistoArchiverShowCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverShowCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventArkistoArchiverShowCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/show/",
+        ...options,
+    });
+};
+
+/**
+ * Get archiver status
+ *
+ * Returns the current archiving status for the event.
+ */
+export const adminEventArkistoArchiverStatusRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverStatusRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventArkistoArchiverStatusRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/status/",
+        ...options,
+    });
+};
+
+/**
+ * Transfer rights to archive user
+ *
+ * Transfers entry and competition participation ownership to the 'arkisto' user. Cannot be run while event is ongoing.
+ */
+export const adminEventArkistoArchiverTransferRightsCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventArkistoArchiverTransferRightsCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventArkistoArchiverTransferRightsCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/transfer-rights/",
+        ...options,
     });
 };
 

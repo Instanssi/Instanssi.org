@@ -13,6 +13,32 @@ export type AlternateEntryFile = {
 };
 
 /**
+ * Serializer for archiver status response.
+ */
+export type ArchiverStatus = {
+    /**
+     * Whether the event is visible in the public archive
+     */
+    is_archived: boolean;
+    /**
+     * Whether there are entries/participations not owned by archive user
+     */
+    has_non_archived_items: boolean;
+    /**
+     * Whether the event is still ongoing
+     */
+    ongoing_activity: boolean;
+    /**
+     * Whether voting results need to be pre-calculated (archive_score/archive_rank not set)
+     */
+    votes_unoptimized: boolean;
+    /**
+     * Whether there are old vote records to clean up
+     */
+    old_votes_found: boolean;
+};
+
+/**
  * Serializer for staff - includes all fields.
  *
  * The user field is read-only and set automatically to the current user on create.
@@ -6232,6 +6258,102 @@ export type AdminBlogUpdateResponses = {
 };
 
 export type AdminBlogUpdateResponse = AdminBlogUpdateResponses[keyof AdminBlogUpdateResponses];
+
+export type AdminEventArkistoArchiverHideCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/hide/";
+};
+
+export type AdminEventArkistoArchiverHideCreateResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverHideCreateResponse =
+    AdminEventArkistoArchiverHideCreateResponses[keyof AdminEventArkistoArchiverHideCreateResponses];
+
+export type AdminEventArkistoArchiverOptimizeScoresCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/optimize-scores/";
+};
+
+export type AdminEventArkistoArchiverOptimizeScoresCreateResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverOptimizeScoresCreateResponse =
+    AdminEventArkistoArchiverOptimizeScoresCreateResponses[keyof AdminEventArkistoArchiverOptimizeScoresCreateResponses];
+
+export type AdminEventArkistoArchiverRemoveOldVotesCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/remove-old-votes/";
+};
+
+export type AdminEventArkistoArchiverRemoveOldVotesCreateResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverRemoveOldVotesCreateResponse =
+    AdminEventArkistoArchiverRemoveOldVotesCreateResponses[keyof AdminEventArkistoArchiverRemoveOldVotesCreateResponses];
+
+export type AdminEventArkistoArchiverShowCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/show/";
+};
+
+export type AdminEventArkistoArchiverShowCreateResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverShowCreateResponse =
+    AdminEventArkistoArchiverShowCreateResponses[keyof AdminEventArkistoArchiverShowCreateResponses];
+
+export type AdminEventArkistoArchiverStatusRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/status/";
+};
+
+export type AdminEventArkistoArchiverStatusRetrieveResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverStatusRetrieveResponse =
+    AdminEventArkistoArchiverStatusRetrieveResponses[keyof AdminEventArkistoArchiverStatusRetrieveResponses];
+
+export type AdminEventArkistoArchiverTransferRightsCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/transfer-rights/";
+};
+
+export type AdminEventArkistoArchiverTransferRightsCreateResponses = {
+    200: ArchiverStatus;
+};
+
+export type AdminEventArkistoArchiverTransferRightsCreateResponse =
+    AdminEventArkistoArchiverTransferRightsCreateResponses[keyof AdminEventArkistoArchiverTransferRightsCreateResponses];
 
 export type AdminEventArkistoVideoCategoriesListData = {
     body?: never;

@@ -33,7 +33,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.time_created="{ item }">
-                        {{ formatDateTime(item.time_created) }}
+                        <DateCell :value="item.time_created" />
                     </template>
                     <template #item.status="{ item }">
                         <v-chip :color="getStatusColor(item)" size="small" variant="flat">
@@ -41,7 +41,7 @@
                         </v-chip>
                     </template>
                     <template #item.total_price="{ item }">
-                        {{ item.total_price }} &euro;
+                        <PriceCell :value="item.total_price" />
                     </template>
                     <template #item.actions="{ item }">
                         <v-btn
@@ -74,7 +74,9 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { StoreTransaction } from "@/api";
+import DateCell from "@/components/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import PriceCell from "@/components/PriceCell.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -82,7 +84,7 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
-const { t, d } = useI18n();
+const { t } = useI18n();
 const router = useRouter();
 const toast = useToast();
 const auth = useAuth();
@@ -143,11 +145,6 @@ const headers: ReadonlyHeaders = [
         align: "end",
     },
 ];
-
-function formatDateTime(dateStr: string | null | undefined): string {
-    if (!dateStr) return "-";
-    return d(new Date(dateStr), "long");
-}
 
 function getStatusColor(transaction: StoreTransaction): string {
     if (transaction.is_paid) return "success";

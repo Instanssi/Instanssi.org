@@ -45,32 +45,15 @@
                         <BooleanIcon :value="item.is_active" />
                     </template>
                     <template #item.date_joined="{ item }">
-                        {{ d(item.date_joined, "long") }}
+                        <DateCell :value="item.date_joined" />
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.USER)"
-                            density="compact"
-                            variant="text"
-                            color="red"
-                            @click="deleteUser(item)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faXmark" />
-                            </template>
-                            {{ t("General.delete") }}
-                        </v-btn>
-                        <v-btn
-                            v-if="auth.canChange(PermissionTarget.USER)"
-                            density="compact"
-                            variant="text"
-                            @click="editUser(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faPenToSquare" />
-                            </template>
-                            {{ t("General.edit") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="auth.canChange(PermissionTarget.USER)"
+                            :can-delete="auth.canDelete(PermissionTarget.USER)"
+                            @edit="editUser(item.id)"
+                            @delete="deleteUser(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -79,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -91,7 +74,9 @@ import { type VDataTable, type VDataTableServer } from "vuetify/components";
 import * as api from "@/api";
 import type { User } from "@/api";
 import BooleanIcon from "@/components/BooleanIcon.vue";
+import DateCell from "@/components/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import TableActionButtons from "@/components/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -100,7 +85,7 @@ import type { ConfirmDialogType } from "@/symbols";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
-const { t, d } = useI18n();
+const { t } = useI18n();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();

@@ -18,7 +18,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.time="{ item }">
-                        {{ item.time ? d(item.time, "long") : "-" }}
+                        <DateCell :value="item.time" />
                     </template>
                     <template #item.associated_username="{ item }">
                         {{ item.associated_username ?? "-" }}
@@ -41,6 +41,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { TicketVoteCode } from "@/api";
+import DateCell from "@/components/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -48,7 +49,7 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
-const { t, d } = useI18n();
+const { t } = useI18n();
 const toast = useToast();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));

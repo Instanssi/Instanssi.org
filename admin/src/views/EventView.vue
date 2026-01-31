@@ -42,7 +42,7 @@
                         <BooleanIcon :value="item.archived" />
                     </template>
                     <template #item.date="{ item }">
-                        {{ d(item.date, "long") }}
+                        <DateCell :value="item.date" />
                     </template>
                     <template #item.mainurl="{ item }">
                         <a v-if="item.mainurl" :href="item.mainurl" target="_blank">
@@ -50,29 +50,12 @@
                         </a>
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.EVENT)"
-                            density="compact"
-                            variant="text"
-                            color="red"
-                            @click="deleteEvent(item)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faXmark" />
-                            </template>
-                            {{ t("General.delete") }}
-                        </v-btn>
-                        <v-btn
-                            v-if="auth.canChange(PermissionTarget.EVENT)"
-                            density="compact"
-                            variant="text"
-                            @click="editEvent(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faPenToSquare" />
-                            </template>
-                            {{ t("General.edit") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="auth.canChange(PermissionTarget.EVENT)"
+                            :can-delete="auth.canDelete(PermissionTarget.EVENT)"
+                            @edit="editEvent(item.id)"
+                            @delete="deleteEvent(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -81,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -93,7 +76,9 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { Event } from "@/api";
 import BooleanIcon from "@/components/BooleanIcon.vue";
+import DateCell from "@/components/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import TableActionButtons from "@/components/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -102,7 +87,7 @@ import type { ConfirmDialogType } from "@/symbols";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
-const { t, d } = useI18n();
+const { t } = useI18n();
 const router = useRouter();
 
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;

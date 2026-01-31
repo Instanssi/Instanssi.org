@@ -69,29 +69,12 @@
                         {{ item.rank ?? "-" }}
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.ENTRY)"
-                            density="compact"
-                            variant="text"
-                            color="red"
-                            @click="deleteEntry(item)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faXmark" />
-                            </template>
-                            {{ t("General.delete") }}
-                        </v-btn>
-                        <v-btn
-                            v-if="auth.canChange(PermissionTarget.ENTRY)"
-                            density="compact"
-                            variant="text"
-                            @click="editEntry(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faPenToSquare" />
-                            </template>
-                            {{ t("General.edit") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="auth.canChange(PermissionTarget.ENTRY)"
+                            :can-delete="auth.canDelete(PermissionTarget.ENTRY)"
+                            @edit="editEntry(item.id)"
+                            @delete="deleteEntry(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -100,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -114,6 +97,7 @@ import type { Compo, CompoEntry } from "@/api";
 import BooleanIcon from "@/components/BooleanIcon.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import TableActionButtons from "@/components/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

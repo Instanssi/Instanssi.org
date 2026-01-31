@@ -54,7 +54,7 @@
                         {{ getVariantName(item.item, item.variant) }}
                     </template>
                     <template #item.purchase_price="{ item }">
-                        {{ item.purchase_price }} &euro;
+                        <PriceCell :value="item.purchase_price" />
                     </template>
                     <template #item.is_delivered="{ item }">
                         <BooleanIcon :value="item.is_delivered" />
@@ -77,6 +77,7 @@ import type { TransactionItem, StoreItem, StoreTransaction } from "@/api";
 import BooleanIcon from "@/components/BooleanIcon.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import PriceCell from "@/components/PriceCell.vue";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";

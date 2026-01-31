@@ -38,7 +38,9 @@
                     :loading-text="t('StoreItemsView.loadingItems')"
                     @update:options="debouncedLoad"
                 >
-                    <template #item.price="{ item }"> {{ item.price }} &euro; </template>
+                    <template #item.price="{ item }">
+                        <PriceCell :value="item.price" />
+                    </template>
                     <template #item.num_available="{ item }">
                         {{ item.num_available }}
                     </template>
@@ -49,29 +51,12 @@
                         <BooleanIcon :value="item.is_ticket" />
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.STORE_ITEM)"
-                            density="compact"
-                            variant="text"
-                            color="red"
-                            @click="deleteItem(item)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faXmark" />
-                            </template>
-                            {{ t("General.delete") }}
-                        </v-btn>
-                        <v-btn
-                            v-if="auth.canChange(PermissionTarget.STORE_ITEM)"
-                            density="compact"
-                            variant="text"
-                            @click="editItem(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faPenToSquare" />
-                            </template>
-                            {{ t("General.edit") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="auth.canChange(PermissionTarget.STORE_ITEM)"
+                            :can-delete="auth.canDelete(PermissionTarget.STORE_ITEM)"
+                            @edit="editItem(item.id)"
+                            @delete="deleteItem(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -80,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -93,6 +78,8 @@ import * as api from "@/api";
 import type { StoreItem } from "@/api";
 import BooleanIcon from "@/components/BooleanIcon.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import PriceCell from "@/components/PriceCell.vue";
+import TableActionButtons from "@/components/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

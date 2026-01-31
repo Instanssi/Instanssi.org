@@ -203,6 +203,8 @@ def staff_user(create_user) -> User:
         "kompomaatti.add_entry",
         "kompomaatti.change_entry",
         "kompomaatti.delete_entry",
+        "kompomaatti.view_vote",
+        "kompomaatti.delete_vote",
         "kompomaatti.view_competition",
         "kompomaatti.add_competition",
         "kompomaatti.change_competition",
@@ -1224,4 +1226,104 @@ def other_event_uploaded_file(other_event, staff_user, test_zip) -> UploadedFile
         user=staff_user,
         description="Other event uploaded file",
         file=file,
+    )
+
+
+@fixture
+def archive_user() -> User:
+    """The archive user that owns archived entries."""
+    return User.objects.create_user(
+        username="arkisto",
+        email="arkisto@instanssi.org",
+        password=None,
+        is_active=False,
+    )
+
+
+@fixture
+def past_event(faker) -> Event:
+    """Event that has ended (date in the past, for archiver tests)."""
+    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
+    return Event.objects.create(
+        name=f"Instanssi Past {unique_id}",
+        tag=f"past-{unique_id}",
+        date=date.today() - timedelta(days=30),
+        archived=False,
+        mainurl=f"http://localhost:8000/past-{unique_id}/",
+    )
+
+
+@fixture
+def past_compo(past_event) -> Compo:
+    """Compo that has ended (all deadlines in the past)."""
+    return Compo.objects.create(
+        event=past_event,
+        name="Past Compo",
+        description="This compo has ended",
+        adding_end=timezone.now() - timedelta(days=20),
+        editing_end=timezone.now() - timedelta(days=19),
+        compo_start=timezone.now() - timedelta(days=18),
+        voting_start=timezone.now() - timedelta(days=17),
+        voting_end=timezone.now() - timedelta(days=10),
+    )
+
+
+@fixture
+def past_compo_entry(faker, base_user, past_compo, entry_zip, image_png) -> Entry:
+    """Entry in a past compo (no archive scores set yet)."""
+    return Entry.objects.create(
+        compo=past_compo,
+        user=base_user,
+        name="Past Entry",
+        description=faker.text(),
+        creator=faker.name(),
+        platform="PC",
+        entryfile=entry_zip,
+        imagefile_original=image_png,
+    )
+
+
+@fixture
+def past_competition(past_event) -> Competition:
+    """Competition that has ended."""
+    return Competition.objects.create(
+        event=past_event,
+        name="Past Competition",
+        description="This competition has ended",
+        participation_end=timezone.now() - timedelta(days=20),
+        start=timezone.now() - timedelta(days=19),
+        end=timezone.now() - timedelta(days=10),
+        score_type="p",
+    )
+
+
+@fixture
+def past_competition_participation(faker, past_competition, base_user) -> CompetitionParticipation:
+    """Participation in a past competition."""
+    return CompetitionParticipation.objects.create(
+        competition=past_competition,
+        user=base_user,
+        participant_name=faker.name(),
+        score=100.0,
+    )
+
+
+@fixture
+def past_vote_group(base_user, past_compo) -> VoteGroup:
+    """Vote group for a past compo."""
+    return VoteGroup.objects.create(
+        user=base_user,
+        compo=past_compo,
+    )
+
+
+@fixture
+def past_vote(base_user, past_compo, past_compo_entry, past_vote_group) -> Vote:
+    """Vote in a past compo."""
+    return Vote.objects.create(
+        user=base_user,
+        compo=past_compo,
+        entry=past_compo_entry,
+        rank=1,
+        group=past_vote_group,
     )

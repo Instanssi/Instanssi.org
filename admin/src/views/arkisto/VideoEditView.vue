@@ -23,13 +23,13 @@
                             variant="outlined"
                             :label="t('VideoEditView.labels.name') + ' *'"
                         />
-                        <VuetifyTiptap v-model="description.value.value" />
-                        <div
-                            v-if="description.errorMessage.value"
-                            class="text-error text-caption mb-4"
-                        >
-                            {{ description.errorMessage.value }}
-                        </div>
+                        <v-textarea
+                            v-model="description.value.value"
+                            :error-messages="description.errorMessage.value"
+                            variant="outlined"
+                            :label="t('VideoEditView.labels.description')"
+                            rows="4"
+                        />
 
                         <FormSection>
                             {{ t("VideoEditView.sections.youtube") }}

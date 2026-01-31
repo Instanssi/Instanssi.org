@@ -16,6 +16,7 @@
 import {
     faArchive,
     faBlog,
+    faBoxes,
     faBoxOpen,
     faChartPie,
     faCreditCard,
@@ -135,6 +136,12 @@ const primaryLinks: NavigationLinks = [
         title: t("App.nav.arkisto"),
         icon: faArchive,
         children: [
+            {
+                title: t("App.nav.arkistoArchiver"),
+                icon: faBoxes,
+                to: "arkisto-archiver",
+                requirePerm: PermissionTarget.ENTRY,
+            },
             {
                 title: t("App.nav.arkistoCategories"),
                 icon: faFolder,

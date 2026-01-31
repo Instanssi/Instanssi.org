@@ -70,6 +70,7 @@
         "transactionItems": "Transaction Items",
         "storeSummary": "Sales Summary",
         "arkisto": "Archive",
+        "arkistoArchiver": "Archiver",
         "arkistoCategories": "Video Categories",
         "arkistoVideos": "Videos"
       }
@@ -847,6 +848,50 @@
       "login": "Login",
       "auth_failed": "Incorrect username or password!",
       "insufficient_permissions": "You do not have the required permissions to access this panel."
+    },
+    "ArchiverView": {
+      "title": "Archiver",
+      "loadFailure": "Failed to load archiver status; try again later.",
+      "ongoingWarning": "This event is still ongoing. Archiving actions are disabled until all compos and competitions have ended.",
+      "visibility": {
+        "title": "Archive Visibility",
+        "description": "Control whether this event is visible in the public archive.",
+        "visible": "Visible in archive",
+        "hidden": "Hidden from archive",
+        "showBtn": "Show in Archive",
+        "hideBtn": "Hide from Archive",
+        "showSuccess": "Event is now visible in archive!",
+        "showFailure": "Failed to show event in archive; try again later.",
+        "hideSuccess": "Event is now hidden from archive!",
+        "hideFailure": "Failed to hide event from archive; try again later."
+      },
+      "votingData": {
+        "title": "Voting Data",
+        "description": "Manage voting scores and vote records for this event.",
+        "scoresStatus": "Scores:",
+        "optimized": "Optimized",
+        "notOptimized": "Not optimized",
+        "oldVotesStatus": "Old votes:",
+        "oldVotesFound": "Old votes found",
+        "noOldVotes": "No old votes",
+        "optimizeBtn": "Optimize Scores",
+        "removeVotesBtn": "Remove Old Votes",
+        "optimizeSuccess": "Scores optimized successfully!",
+        "optimizeFailure": "Failed to optimize scores; try again later.",
+        "removeVotesConfirm": "Are you sure you want to remove all old vote records? This action cannot be undone. Make sure scores have been optimized first.",
+        "removeVotesSuccess": "Old votes removed successfully!",
+        "removeVotesFailure": "Failed to remove old votes; try again later."
+      },
+      "userRights": {
+        "title": "User Rights",
+        "description": "Transfer ownership of entries and competition participations to the archive user. This removes user associations from entries while preserving the entry data.",
+        "hasNonArchived": "Entries have user associations",
+        "allTransferred": "All rights transferred",
+        "transferBtn": "Transfer Rights",
+        "transferConfirm": "Are you sure you want to transfer all entry and participation rights to the archive user? This action cannot be undone.",
+        "transferSuccess": "Rights transferred successfully!",
+        "transferFailure": "Failed to transfer rights; try again later."
+      }
     }
   }
 }

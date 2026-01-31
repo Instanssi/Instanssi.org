@@ -22,8 +22,7 @@ def test_anonymous_can_get_video_detail(api_client, other_video):
     req = api_client.get(f"{base_url}{other_video.id}/")
     assert req.status_code == 200
     assert req.data["id"] == other_video.id
-    assert req.data["youtube_url"] is not None
-    assert req.data["youtube_url"]["video_id"] == "dQw4w9WgXcQ"
+    assert req.data["youtube_url"] == "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 
 @pytest.mark.django_db

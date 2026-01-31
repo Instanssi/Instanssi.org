@@ -531,10 +531,7 @@ export type CompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -622,10 +619,7 @@ export type CompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -1434,10 +1428,7 @@ export type OtherVideo = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url: string | null;
 };
 
 /**
@@ -1489,10 +1480,7 @@ export type OtherVideoRequest = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url: string | null;
 };
 
 export type PaginatedBlogEntryList = {
@@ -1919,10 +1907,7 @@ export type PatchedCompoEntryRequest = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -2145,10 +2130,7 @@ export type PatchedOtherVideoRequest = {
      * Videon kuvaus.
      */
     description?: string;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -2567,10 +2549,7 @@ export type PatchedUserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -3130,10 +3109,7 @@ export type PublicCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -3199,10 +3175,7 @@ export type PublicOtherVideo = {
      * Videon kuvaus.
      */
     description: string;
-    readonly youtube_url: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    readonly youtube_url: string | null;
 };
 
 /**
@@ -4247,10 +4220,7 @@ export type UserCompoEntry = {
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
     readonly score: number | null;
@@ -4292,10 +4262,7 @@ export type UserCompoEntryRequest = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -4864,10 +4831,7 @@ export type CompoEntryWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: string;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
     /**
      * Diskattu
      *
@@ -4950,10 +4914,7 @@ export type OtherVideoWritable = {
      * Videon kuvaus.
      */
     description: string;
-    youtube_url: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url: string | null;
 };
 
 /**
@@ -5027,10 +4988,7 @@ export type PatchedUserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -5363,10 +5321,7 @@ export type PublicCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -5974,10 +5929,7 @@ export type UserCompoEntryWritable = {
      * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
      */
     platform?: string | null;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**
@@ -6032,10 +5984,7 @@ export type UserCompoEntryRequestWritable = {
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
     imagefile_original?: Blob | File;
-    youtube_url?: {
-        video_id: string;
-        start?: number | null;
-    } | null;
+    youtube_url?: string | null;
 };
 
 /**

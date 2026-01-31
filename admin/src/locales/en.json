@@ -324,8 +324,7 @@
         "entryfile": "Entry file",
         "sourcefile": "Source file",
         "imagefile": "Image file",
-        "youtubeVideoId": "YouTube Video ID",
-        "youtubeStart": "Start time (seconds)",
+        "youtubeUrl": "YouTube URL",
         "score": "Score",
         "rank": "Rank",
         "disqualifiedOn": "Entry is disqualified",
@@ -836,8 +835,7 @@
         "name": "Name",
         "description": "Description",
         "youtubeUrl": "YouTube URL",
-        "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)",
-        "youtubeStart": "Start time (seconds)"
+        "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
     "LoginView": {

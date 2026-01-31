@@ -39,8 +39,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.active="{ item }">
-                        <FontAwesomeIcon v-if="item.active" :icon="faCheck" class="text-green" />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.active" />
                     </template>
                     <template #item.participation_end="{ item }">
                         {{ d(item.participation_end, "long") }}
@@ -83,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -94,6 +93,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Competition } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

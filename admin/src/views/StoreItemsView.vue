@@ -43,12 +43,10 @@
                         {{ item.num_available }}
                     </template>
                     <template #item.available="{ item }">
-                        <FontAwesomeIcon v-if="item.available" :icon="faCheck" class="text-green" />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.available" />
                     </template>
                     <template #item.is_ticket="{ item }">
-                        <FontAwesomeIcon v-if="item.is_ticket" :icon="faCheck" class="text-green" />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.is_ticket" />
                     </template>
                     <template #item.actions="{ item }">
                         <v-btn
@@ -82,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -93,6 +91,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { StoreItem } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

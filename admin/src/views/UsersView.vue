@@ -39,16 +39,10 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.is_superuser="{ item }">
-                        <FontAwesomeIcon
-                            v-if="item.is_superuser"
-                            :icon="faCheck"
-                            class="text-green"
-                        />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.is_superuser" />
                     </template>
                     <template #item.is_active="{ item }">
-                        <FontAwesomeIcon v-if="item.is_active" :icon="faCheck" class="text-green" />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.is_active" />
                     </template>
                     <template #item.date_joined="{ item }">
                         {{ d(item.date_joined, "long") }}
@@ -85,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -96,6 +90,7 @@ import { type VDataTable, type VDataTableServer } from "vuetify/components";
 
 import * as api from "@/api";
 import type { User } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

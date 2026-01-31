@@ -39,8 +39,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.public="{ item }">
-                        <FontAwesomeIcon v-if="item.public" :icon="faCheck" class="text-green" />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.public" />
                     </template>
                     <template #item.date="{ item }">
                         {{ d(item.date, "long") }}
@@ -77,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref } from "vue";
@@ -88,6 +87,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { BlogEntry } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

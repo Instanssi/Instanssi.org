@@ -57,12 +57,7 @@
                         {{ item.purchase_price }} &euro;
                     </template>
                     <template #item.is_delivered="{ item }">
-                        <FontAwesomeIcon
-                            v-if="item.is_delivered"
-                            :icon="faCheck"
-                            class="text-green"
-                        />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-red" />
+                        <BooleanIcon :value="item.is_delivered" />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -71,8 +66,6 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -81,6 +74,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { TransactionItem, StoreItem, StoreTransaction } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { useEvents } from "@/services/events";

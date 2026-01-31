@@ -35,45 +35,26 @@
             <!-- Statistics Cards -->
             <v-row class="mb-4">
                 <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" sm="6" lg>
-                    <v-card
+                    <StatCard
+                        :icon="faNewspaper"
+                        :value="stats.blogPosts.total"
+                        :label="t('MainView.stats.blogPosts')"
+                        :subtitle="`${stats.blogPosts.public} ${t('MainView.stats.public')} / ${stats.blogPosts.draft} ${t('MainView.stats.draft')}`"
                         color="blue"
-                        variant="tonal"
-                        class="cursor-pointer"
+                        clickable
                         @click="router.push({ name: 'blog', params: { eventId } })"
-                    >
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faNewspaper" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ stats.blogPosts.total }}</div>
-                                <div class="text-body-2">{{ t("MainView.stats.blogPosts") }}</div>
-                                <div class="text-caption text-grey">
-                                    {{ stats.blogPosts.public }} {{ t("MainView.stats.public") }} /
-                                    {{ stats.blogPosts.draft }} {{ t("MainView.stats.draft") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    />
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" sm="6" lg>
-                    <v-card
+                    <StatCard
+                        :icon="faFilm"
+                        :value="stats.compoEntries"
+                        :label="t('MainView.stats.compoEntries')"
+                        :subtitle="`${stats.compos} ${t('MainView.stats.compos')}`"
                         color="green"
-                        variant="tonal"
-                        class="cursor-pointer"
+                        clickable
                         @click="router.push({ name: 'entries', params: { eventId } })"
-                    >
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faFilm" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ stats.compoEntries }}</div>
-                                <div class="text-body-2">
-                                    {{ t("MainView.stats.compoEntries") }}
-                                </div>
-                                <div class="text-caption text-grey">
-                                    {{ stats.compos }} {{ t("MainView.stats.compos") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    />
                 </v-col>
                 <v-col
                     v-if="auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)"
@@ -81,109 +62,63 @@
                     sm="6"
                     lg
                 >
-                    <v-card
+                    <StatCard
+                        :icon="faMedal"
+                        :value="stats.competitionParticipants"
+                        :label="t('MainView.stats.competitionParticipants')"
+                        :subtitle="`${stats.competitions} ${t('MainView.stats.competitions')}`"
                         color="orange"
-                        variant="tonal"
-                        class="cursor-pointer"
+                        clickable
                         @click="
                             router.push({ name: 'competition-participations', params: { eventId } })
                         "
-                    >
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faMedal" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ stats.competitionParticipants }}</div>
-                                <div class="text-body-2">
-                                    {{ t("MainView.stats.competitionParticipants") }}
-                                </div>
-                                <div class="text-caption text-grey">
-                                    {{ stats.competitions }} {{ t("MainView.stats.competitions") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    />
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)" cols="12" sm="6" lg>
-                    <v-card
+                    <StatCard
+                        :icon="faCreditCard"
+                        :value="stats.transactions.total"
+                        :label="t('MainView.stats.transactions')"
+                        :subtitle="`${stats.transactions.paid} ${t('MainView.stats.paid')}`"
                         color="teal"
-                        variant="tonal"
-                        class="cursor-pointer"
+                        clickable
                         @click="router.push({ name: 'store-transactions', params: { eventId } })"
-                    >
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faCreditCard" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ stats.transactions.total }}</div>
-                                <div class="text-body-2">
-                                    {{ t("MainView.stats.transactions") }}
-                                </div>
-                                <div class="text-caption text-grey">
-                                    {{ stats.transactions.paid }} {{ t("MainView.stats.paid") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    />
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.VOTE_CODE_REQUEST)" cols="12" sm="6" lg>
-                    <v-card
+                    <StatCard
+                        :icon="faCheckToSlot"
+                        :value="stats.voteCodeRequests.pending"
+                        :label="t('MainView.stats.pendingVoteRequests')"
+                        :subtitle="`${stats.voteCodeRequests.total} ${t('MainView.stats.totalRequests')}`"
                         color="pink"
-                        variant="tonal"
-                        class="cursor-pointer"
+                        clickable
                         @click="router.push({ name: 'vote-code-requests', params: { eventId } })"
-                    >
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faCheckToSlot" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ stats.voteCodeRequests.pending }}</div>
-                                <div class="text-body-2">
-                                    {{ t("MainView.stats.pendingVoteRequests") }}
-                                </div>
-                                <div class="text-caption text-grey">
-                                    {{ stats.voteCodeRequests.total }}
-                                    {{ t("MainView.stats.totalRequests") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    />
                 </v-col>
             </v-row>
 
             <!-- Charts -->
             <v-row class="mb-4">
                 <v-col v-if="auth.canView(PermissionTarget.COMPO)" cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            <FontAwesomeIcon :icon="faChartPie" class="mr-2" />
-                            {{ t("MainView.charts.entriesPerCompo") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <div v-if="compoChartData.labels.length > 0" style="height: 300px">
-                                <Pie :data="compoChartData" :options="pieChartOptions" />
-                            </div>
-                            <div v-else class="text-center text-grey py-8">
-                                {{ t("MainView.charts.noData") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <ChartCard
+                        :title="t('MainView.charts.entriesPerCompo')"
+                        :icon="faChartPie"
+                        :has-data="compoChartData.labels.length > 0"
+                        :no-data-text="t('MainView.charts.noData')"
+                    >
+                        <Pie :data="compoChartData" :options="pieChartOptions" />
+                    </ChartCard>
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.COMPETITION)" cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            <FontAwesomeIcon :icon="faChartBar" class="mr-2" />
-                            {{ t("MainView.charts.competitionParticipants") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <div
-                                v-if="competitionChartData.labels.length > 0"
-                                style="height: 300px"
-                            >
-                                <Bar :data="competitionChartData" :options="barChartOptions" />
-                            </div>
-                            <div v-else class="text-center text-grey py-8">
-                                {{ t("MainView.charts.noData") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <ChartCard
+                        :title="t('MainView.charts.competitionParticipants')"
+                        :icon="faChartBar"
+                        :has-data="competitionChartData.labels.length > 0"
+                        :no-data-text="t('MainView.charts.noData')"
+                    >
+                        <Bar :data="competitionChartData" :options="barChartOptions" />
+                    </ChartCard>
                 </v-col>
             </v-row>
 
@@ -286,7 +221,9 @@ import { useRouter } from "vue-router";
 
 import * as api from "@/api";
 import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
+import ChartCard from "@/components/ChartCard.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import StatCard from "@/components/StatCard.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 const router = useRouter();

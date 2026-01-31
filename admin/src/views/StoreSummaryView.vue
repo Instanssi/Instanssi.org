@@ -7,64 +7,42 @@
             <!-- Summary Cards -->
             <v-row class="mb-4">
                 <v-col cols="12" sm="6">
-                    <v-card color="primary" variant="tonal">
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faBoxOpen" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ totalItemsSold }}</div>
-                                <div class="text-body-2">
-                                    {{ t("StoreSummaryView.totals.totalItems") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <StatCard
+                        :icon="faBoxOpen"
+                        :value="totalItemsSold"
+                        :label="t('StoreSummaryView.totals.totalItems')"
+                        color="primary"
+                    />
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <v-card color="success" variant="tonal">
-                        <v-card-text class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faEuroSign" size="2x" class="mr-4" />
-                            <div>
-                                <div class="text-h4">{{ totalRevenue.toFixed(2) }} &euro;</div>
-                                <div class="text-body-2">
-                                    {{ t("StoreSummaryView.totals.totalRevenue") }}
-                                </div>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <StatCard
+                        :icon="faEuroSign"
+                        :value="`${totalRevenue.toFixed(2)} €`"
+                        :label="t('StoreSummaryView.totals.totalRevenue')"
+                        color="success"
+                    />
                 </v-col>
             </v-row>
 
             <!-- Charts -->
             <v-row class="mb-4">
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("StoreSummaryView.charts.salesPerDay") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <div v-if="salesPerDayData.labels.length > 0" style="height: 300px">
-                                <Bar :data="salesPerDayData" :options="barChartOptions" />
-                            </div>
-                            <div v-else class="text-center text-grey py-8">
-                                {{ t("StoreSummaryView.charts.noData") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <ChartCard
+                        :title="t('StoreSummaryView.charts.salesPerDay')"
+                        :has-data="salesPerDayData.labels.length > 0"
+                        :no-data-text="t('StoreSummaryView.charts.noData')"
+                    >
+                        <Bar :data="salesPerDayData" :options="barChartOptions" />
+                    </ChartCard>
                 </v-col>
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("StoreSummaryView.charts.salesByHour") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <div v-if="salesByHourData.labels.length > 0" style="height: 300px">
-                                <Bar :data="salesByHourData" :options="barChartOptions" />
-                            </div>
-                            <div v-else class="text-center text-grey py-8">
-                                {{ t("StoreSummaryView.charts.noData") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <ChartCard
+                        :title="t('StoreSummaryView.charts.salesByHour')"
+                        :has-data="salesByHourData.labels.length > 0"
+                        :no-data-text="t('StoreSummaryView.charts.noData')"
+                    >
+                        <Bar :data="salesByHourData" :options="barChartOptions" />
+                    </ChartCard>
                 </v-col>
             </v-row>
 
@@ -118,7 +96,6 @@ import {
     Tooltip,
 } from "chart.js";
 import { faBoxOpen, faEuroSign } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -128,8 +105,10 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { StoreItem, StoreTransaction, TransactionItem } from "@/api";
+import ChartCard from "@/components/ChartCard.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
+import StatCard from "@/components/StatCard.vue";
 import { useEvents } from "@/services/events";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 

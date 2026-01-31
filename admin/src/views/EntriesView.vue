@@ -56,12 +56,11 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.disqualified="{ item }">
-                        <FontAwesomeIcon
-                            v-if="item.disqualified"
-                            :icon="faCheck"
-                            class="text-red"
+                        <BooleanIcon
+                            :value="item.disqualified"
+                            true-class="text-red"
+                            false-class="text-green"
                         />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-green" />
                     </template>
                     <template #item.compo="{ item }">
                         {{ getCompoName(item.compo) }}
@@ -101,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -112,6 +111,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
+import BooleanIcon from "@/components/BooleanIcon.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

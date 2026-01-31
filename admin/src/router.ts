@@ -345,6 +345,68 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/store/StoreSummaryView.vue"),
         },
+        // Arkisto (Archive) - Video Categories
+        {
+            path: "/:eventId(\\d+)/arkisto/categories",
+            name: "arkisto-categories",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO_CATEGORY,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideoCategoriesView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/arkisto/categories/new",
+            name: "arkisto-categories-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO_CATEGORY,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideoCategoryEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/arkisto/categories/:id(\\d+)/edit",
+            name: "arkisto-categories-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO_CATEGORY,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideoCategoryEditView.vue"),
+        },
+        // Arkisto (Archive) - Videos
+        {
+            path: "/:eventId(\\d+)/arkisto/videos",
+            name: "arkisto-videos",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideosView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/arkisto/videos/new",
+            name: "arkisto-videos-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideoEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/arkisto/videos/:id(\\d+)/edit",
+            name: "arkisto-videos-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.OTHER_VIDEO,
+            },
+            props: true,
+            component: () => import("@/views/arkisto/VideoEditView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/dashboard",
             name: "dashboard",

@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import {
+    faArchive,
     faBlog,
     faBoxOpen,
     faChartPie,
@@ -21,6 +22,7 @@ import {
     faDashboard,
     faEnvelope,
     faFileAudio,
+    faFolder,
     faGamepad,
     faMusic,
     faPeopleGroup,
@@ -30,6 +32,7 @@ import {
     faTicket,
     faTrophy,
     faUsers,
+    faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { computed, provide, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -125,6 +128,24 @@ const primaryLinks: NavigationLinks = [
                 icon: faReceipt,
                 to: "store-transaction-items",
                 requirePerm: PermissionTarget.TRANSACTION_ITEM,
+            },
+        ],
+    },
+    {
+        title: t("App.nav.arkisto"),
+        icon: faArchive,
+        children: [
+            {
+                title: t("App.nav.arkistoCategories"),
+                icon: faFolder,
+                to: "arkisto-categories",
+                requirePerm: PermissionTarget.OTHER_VIDEO_CATEGORY,
+            },
+            {
+                title: t("App.nav.arkistoVideos"),
+                icon: faVideo,
+                to: "arkisto-videos",
+                requirePerm: PermissionTarget.OTHER_VIDEO,
             },
         ],
     },

@@ -34,9 +34,9 @@ import {
 import { computed, provide, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import Navigation from "@/components/MainNavigation.vue";
-import type { NavigationLinks } from "@/components/NavigationList.vue";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
+import Navigation from "@/components/layout/MainNavigation.vue";
+import type { NavigationLinks } from "@/components/layout/NavigationList.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { confirmDialogKey } from "@/symbols";
 

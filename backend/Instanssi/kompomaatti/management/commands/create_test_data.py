@@ -7,6 +7,8 @@ from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 
+from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
+from Instanssi.common.youtube.parser import YoutubeURL
 from Instanssi.ext_blog.models import BlogEntry
 from Instanssi.kompomaatti.models import (
     Competition,
@@ -49,6 +51,7 @@ from .fixtures.store_transactions import (
     transaction_items,
 )
 from .fixtures.users import users
+from .fixtures.videos import video_categories, videos
 from .fixtures.votecodes import vote_code_requests
 from .fixtures.votes import vote_groups, votes
 
@@ -71,6 +74,7 @@ class Command(BaseCommand):
         self.created_store_items = {}
         self.created_transactions = {}
         self.created_transaction_items = {}
+        self.created_video_categories = {}
 
     def setup_users(self) -> None:
         """Create test users - password is same as username"""
@@ -634,6 +638,64 @@ class Command(BaseCommand):
 
             self.stdout.write(f"  Created {events_created} events for {transaction.full_name}")
 
+    def setup_video_categories(self) -> None:
+        """Create video categories for archive"""
+        self.stdout.write("Creating video categories...")
+        for cat_data in video_categories:
+            event_pk = cat_data["event_pk"]
+            cat_name = cat_data["name"]
+
+            event = self.created_events.get(event_pk)
+            if not event:
+                self.stderr.write(f"  Event {event_pk} not found, skipping video category...")
+                continue
+
+            if OtherVideoCategory.objects.filter(event=event, name=cat_name).exists():
+                self.stdout.write(
+                    f"  Video category '{cat_name}' for {event.name} already exists, skipping..."
+                )
+                self.created_video_categories[(event_pk, cat_name)] = OtherVideoCategory.objects.get(
+                    event=event, name=cat_name
+                )
+                continue
+
+            category = OtherVideoCategory.objects.create(event=event, name=cat_name)
+            self.created_video_categories[(event_pk, cat_name)] = category
+            self.stdout.write(f"  Created video category: {cat_name} for {event.name}")
+
+    def setup_videos(self) -> None:
+        """Create videos for archive"""
+        self.stdout.write("Creating videos...")
+        for video_data in videos:
+            cat_event_pk = video_data["category_event_pk"]
+            cat_name = video_data["category_name"]
+            video_name = video_data["name"]
+
+            category = self.created_video_categories.get((cat_event_pk, cat_name))
+            if not category:
+                self.stderr.write(f"  Category {cat_name} not found, skipping video...")
+                continue
+
+            if OtherVideo.objects.filter(category=category, name=video_name).exists():
+                self.stdout.write(f"  Video '{video_name}' already exists, skipping...")
+                continue
+
+            # Build YoutubeURL object
+            youtube_url = None
+            if video_data.get("youtube_video_id"):
+                youtube_url = YoutubeURL(
+                    video_id=video_data["youtube_video_id"],
+                    start=video_data.get("youtube_start"),
+                )
+
+            OtherVideo.objects.create(
+                category=category,
+                name=video_name,
+                description=video_data["description"],
+                youtube_url=youtube_url,
+            )
+            self.stdout.write(f"  Created video: {video_name} in {cat_name}")
+
     def handle(self, *args, **options) -> None:
         if not settings.DEBUG:
             self.stderr.write("Command disabled in production! settings.DEBUG must be True.")
@@ -658,6 +720,8 @@ class Command(BaseCommand):
                 self.setup_ticket_vote_codes()
                 self.setup_receipts()
                 self.setup_transaction_events()
+                self.setup_video_categories()
+                self.setup_videos()
 
                 self.stdout.write(self.style.SUCCESS("\nData loading complete!"))
                 self.stdout.write("\nTest user credentials (password = username):")

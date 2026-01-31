@@ -12,6 +12,18 @@ class YoutubeURL:
         self.video_id: str = video_id
         self.start: Optional[int] = start
 
+    def __str__(self) -> str:
+        """Return a YouTube URL that can be parsed back by from_url()."""
+        return self.link_url
+
+    def __repr__(self) -> str:
+        return f"YoutubeURL(video_id={self.video_id!r}, start={self.start!r})"
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, YoutubeURL):
+            return NotImplemented
+        return self.video_id == other.video_id and self.start == other.start
+
     @staticmethod
     def _parse_url(value: str) -> URL:
         if value.startswith(("http://", "https://", "//")):
@@ -68,7 +80,7 @@ class YoutubeURL:
         base = URL(f"https://www.youtube.com") / "watch"
         args = dict(v=self.video_id)
         if self.start:
-            args["start"] = self.start
+            args["start"] = str(self.start)
         return base.with_query(args)
 
     @property

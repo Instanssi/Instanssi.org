@@ -99,6 +99,7 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -231,7 +232,7 @@ async function deleteRequest(item: VoteCodeRequest) {
                 await load(lastLoadArgs.value);
             }
         } catch (e) {
-            toast.error(t("VoteCodeRequestsView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("VoteCodeRequestsView.deleteFailure")));
             console.error(e);
         }
     });

@@ -38,8 +38,13 @@ class YoutubeUrlField(serializers.Field):  # type: ignore[type-arg]
                 }
         return None
 
-    def to_internal_value(self, data: Any) -> str | None:
-        """Accept a URL string and let the model handle parsing."""
+    def to_internal_value(self, data: Any) -> YoutubeURL | None:
+        """Convert input data to YoutubeURL object."""
         if not data:
             return None
-        return str(data)
+        if isinstance(data, YoutubeURL):
+            return data
+        if isinstance(data, dict):
+            return YoutubeURL(video_id=data["video_id"], start=data.get("start"))
+        # Assume it's a URL string
+        return YoutubeURL.from_url(str(data))

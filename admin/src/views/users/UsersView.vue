@@ -22,7 +22,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`blog-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -45,7 +44,7 @@
                         <BooleanIcon :value="item.is_active" />
                     </template>
                     <template #item.date_joined="{ item }">
-                        <DateCell :value="item.date_joined" />
+                        <DateTimeCell :value="item.date_joined" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -74,7 +73,7 @@ import { type VDataTable, type VDataTableServer } from "vuetify/components";
 import * as api from "@/api";
 import type { User } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -82,6 +81,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -110,7 +110,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const users: Ref<User[]> = ref([]);
 const search = ref("");
-const refreshKey = ref(0);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("UsersView.headers.id"),
@@ -161,11 +161,14 @@ const headers: ReadonlyHeaders = [
 ];
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminUsersList({ query: getLoadArgs(args) });
         users.value = response.data!.results;
@@ -189,7 +192,7 @@ async function deleteUser(item: User): Promise<void> {
             flushData();
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
-            toast.error(t("UsersView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("UsersView.deleteFailure")));
             console.error(e);
         }
     }

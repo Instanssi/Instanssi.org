@@ -2,6 +2,7 @@ from django.urls import URLPattern, URLResolver, include, path
 from rest_framework import routers
 
 from Instanssi.api.v2.viewsets.admin.arkisto import (
+    ArchiverViewSet,
     OtherVideoCategoryViewSet,
     OtherVideoViewSet,
 )
@@ -71,6 +72,7 @@ program_router.register("events", ProgramEventViewSet, basename="admin_program_e
 
 # /api/v2/admin/event/<event_pk>/arkisto/...
 arkisto_router = routers.SimpleRouter()
+arkisto_router.register("archiver", ArchiverViewSet, basename="admin_arkisto_archiver")
 arkisto_router.register(
     "video_categories", OtherVideoCategoryViewSet, basename="admin_arkisto_video_categories"
 )

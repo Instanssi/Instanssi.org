@@ -280,7 +280,7 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
-import { handleApiError } from "@/utils/http";
+import { getApiErrorMessage, handleApiError } from "@/utils/http";
 
 const props = defineProps<{
     eventId: string;
@@ -472,7 +472,7 @@ async function deleteVariant(variant: StoreItemVariant) {
             variants.value = variants.value.filter((v) => v.id !== variant.id);
             toast.success(t("StoreItemEditView.variants.deleteSuccess"));
         } catch (e) {
-            toast.error(t("StoreItemEditView.variants.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("StoreItemEditView.variants.deleteFailure")));
             console.error(e);
         }
     });

@@ -22,7 +22,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`compos-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -42,13 +41,13 @@
                         <BooleanIcon :value="item.active" />
                     </template>
                     <template #item.adding_end="{ item }">
-                        <DateCell :value="item.adding_end" />
+                        <DateTimeCell :value="item.adding_end" />
                     </template>
                     <template #item.voting_start="{ item }">
-                        <DateCell :value="item.voting_start" />
+                        <DateTimeCell :value="item.voting_start" />
                     </template>
                     <template #item.voting_end="{ item }">
-                        <DateCell :value="item.voting_end" />
+                        <DateTimeCell :value="item.voting_end" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -77,7 +76,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { Compo } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -85,6 +84,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -111,7 +111,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const compos: Ref<Compo[]> = ref([]);
 const search = ref("");
-const refreshKey = ref(0);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("ComposView.headers.id"),
@@ -152,11 +152,14 @@ const headers: ReadonlyHeaders = [
 ];
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminEventKompomaattiComposList({
             path: { event_pk: parseInt(props.eventId, 10) },
@@ -186,7 +189,7 @@ async function deleteCompo(item: Compo): Promise<void> {
             toast.success(t("ComposView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("ComposView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("ComposView.deleteFailure")));
             console.error(e);
         }
     });

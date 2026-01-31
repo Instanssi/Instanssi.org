@@ -45,7 +45,9 @@
       "newEntry": "New Entry",
       "newCompetition": "New Competition",
       "newParticipation": "New Participation",
-      "newStoreItem": "New Product"
+      "newStoreItem": "New Product",
+      "newVideoCategory": "New Category",
+      "newVideo": "New Video"
     },
     "App": {
       "nav": {
@@ -66,7 +68,11 @@
         "storeItems": "Products",
         "transactions": "Transactions",
         "transactionItems": "Transaction Items",
-        "storeSummary": "Sales Summary"
+        "storeSummary": "Sales Summary",
+        "arkisto": "Archive",
+        "arkistoArchiver": "Archiver",
+        "arkistoCategories": "Video Categories",
+        "arkistoVideos": "Videos"
       }
     },
     "MainNavigation": {
@@ -767,6 +773,73 @@
         "noData": "No data available"
       }
     },
+    "VideoCategoriesView": {
+      "title": "Video Categories",
+      "newCategory": "New Category",
+      "confirmDelete": "Do you really want to delete category '{name}'?",
+      "loadFailure": "Failed to load video categories; try again later.",
+      "deleteSuccess": "Category deleted!",
+      "deleteFailure": "Failed to delete category; try again later.",
+      "noCategoriesFound": "No video categories found.",
+      "loadingCategories": "Loading video categories ...",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "actions": "Actions"
+      }
+    },
+    "VideoCategoryEditView": {
+      "newTitle": "New Video Category",
+      "editTitle": "Edit Video Category",
+      "loadFailure": "Failed to load video category; try again later.",
+      "createSuccess": "Category created!",
+      "createFailure": "Failed to create category; try again later.",
+      "editSuccess": "Category updated!",
+      "editFailure": "Failed to update category; try again later.",
+      "labels": {
+        "name": "Name"
+      }
+    },
+    "VideosView": {
+      "title": "Videos",
+      "newVideo": "New Video",
+      "confirmDelete": "Do you really want to delete video '{name}'?",
+      "loadFailure": "Failed to load videos; try again later.",
+      "deleteSuccess": "Video deleted!",
+      "deleteFailure": "Failed to delete video; try again later.",
+      "noVideosFound": "No videos found.",
+      "loadingVideos": "Loading videos ...",
+      "filterByCategory": "Filter by category",
+      "allCategories": "All categories",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "category": "Category",
+        "youtube": "YouTube",
+        "actions": "Actions"
+      }
+    },
+    "VideoEditView": {
+      "newTitle": "New Video",
+      "editTitle": "Edit Video",
+      "loadFailure": "Failed to load video; try again later.",
+      "createSuccess": "Video created!",
+      "createFailure": "Failed to create video; try again later.",
+      "editSuccess": "Video updated!",
+      "editFailure": "Failed to update video; try again later.",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "youtube": "YouTube"
+      },
+      "labels": {
+        "category": "Category",
+        "name": "Name",
+        "description": "Description",
+        "youtubeUrl": "YouTube URL",
+        "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)",
+        "youtubeStart": "Start time (seconds)"
+      }
+    },
     "LoginView": {
       "title": "Sign in",
       "subtitle": "Sign in using username and password, or by using one of the SSO methods.",
@@ -775,6 +848,50 @@
       "login": "Login",
       "auth_failed": "Incorrect username or password!",
       "insufficient_permissions": "You do not have the required permissions to access this panel."
+    },
+    "ArchiverView": {
+      "title": "Archiver",
+      "loadFailure": "Failed to load archiver status; try again later.",
+      "ongoingWarning": "This event is still ongoing. Archiving actions are disabled until all compos and competitions have ended.",
+      "visibility": {
+        "title": "Archive Visibility",
+        "description": "Control whether this event is visible in the public archive.",
+        "visible": "Visible in archive",
+        "hidden": "Hidden from archive",
+        "showBtn": "Show in Archive",
+        "hideBtn": "Hide from Archive",
+        "showSuccess": "Event is now visible in archive!",
+        "showFailure": "Failed to show event in archive; try again later.",
+        "hideSuccess": "Event is now hidden from archive!",
+        "hideFailure": "Failed to hide event from archive; try again later."
+      },
+      "votingData": {
+        "title": "Voting Data",
+        "description": "Manage voting scores and vote records for this event.",
+        "scoresStatus": "Scores:",
+        "optimized": "Optimized",
+        "notOptimized": "Not optimized",
+        "oldVotesStatus": "Old votes:",
+        "oldVotesFound": "Old votes found",
+        "noOldVotes": "No old votes",
+        "optimizeBtn": "Optimize Scores",
+        "removeVotesBtn": "Remove Old Votes",
+        "optimizeSuccess": "Scores optimized successfully!",
+        "optimizeFailure": "Failed to optimize scores; try again later.",
+        "removeVotesConfirm": "Are you sure you want to remove all old vote records? This action cannot be undone. Make sure scores have been optimized first.",
+        "removeVotesSuccess": "Old votes removed successfully!",
+        "removeVotesFailure": "Failed to remove old votes; try again later."
+      },
+      "userRights": {
+        "title": "User Rights",
+        "description": "Transfer ownership of entries and competition participations to the archive user. This removes user associations from entries while preserving the entry data.",
+        "hasNonArchived": "Entries have user associations",
+        "allTransferred": "All rights transferred",
+        "transferBtn": "Transfer Rights",
+        "transferConfirm": "Are you sure you want to transfer all entry and participation rights to the archive user? This action cannot be undone.",
+        "transferSuccess": "Rights transferred successfully!",
+        "transferFailure": "Failed to transfer rights; try again later."
+      }
     }
   }
 }

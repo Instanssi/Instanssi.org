@@ -26,7 +26,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`participations-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -107,6 +106,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -135,7 +135,6 @@ const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
 const users: Ref<User[]> = ref([]);
 const selectedCompetition: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -198,7 +197,9 @@ function getUserName(userId: number): string {
 }
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function loadCompetitions() {
@@ -266,7 +267,7 @@ async function deleteParticipation(item: CompetitionParticipation): Promise<void
             toast.success(t("CompetitionParticipationsView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("CompetitionParticipationsView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("CompetitionParticipationsView.deleteFailure")));
             console.error(e);
         }
     });

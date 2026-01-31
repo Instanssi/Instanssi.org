@@ -22,7 +22,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`blog-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -42,7 +41,7 @@
                         <BooleanIcon :value="item.public" />
                     </template>
                     <template #item.date="{ item }">
-                        <DateCell :value="item.date" />
+                        <DateTimeCell :value="item.date" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -71,7 +70,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { BlogEntry } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -79,6 +78,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -105,7 +105,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const blogPosts: Ref<BlogEntry[]> = ref([]);
 const search = ref("");
-const refreshKey = ref(0);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("BlogEditorView.headers.id"),
@@ -141,11 +141,14 @@ const headers: ReadonlyHeaders = [
 ];
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminBlogList({
             query: {
@@ -173,7 +176,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
             toast.success(t("BlogEditorView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("BlogEditorView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("BlogEditorView.deleteFailure")));
             console.error(e);
         }
     });

@@ -19,7 +19,7 @@
                         <v-card-text>
                             <div>
                                 <span class="text-grey">{{ t("MainView.eventDate") }}:</span>
-                                {{ event ? d(event.date, "long") : "-" }}
+                                {{ event ? d(event.date, "short") : "-" }}
                             </div>
                             <div v-if="event" class="mt-2">
                                 <span class="text-grey">{{ t("MainView.countdown") }}:</span>

@@ -8,13 +8,13 @@
                     </template>
                     {{ t("EntriesView.newEntry") }}
                 </v-btn>
-                <ExportButton
-                    v-if="auth.canView(PermissionTarget.ENTRY)"
-                    class="ml-2"
-                    :label="t('EntriesView.exportResults')"
-                    :loading="exportLoading"
-                    @export="downloadResults"
-                />
+                <div v-if="auth.canView(PermissionTarget.ENTRY)" class="ml-4">
+                    <ExportButton
+                        :label="t('EntriesView.exportResults')"
+                        :loading="exportLoading"
+                        @export="downloadResults"
+                    />
+                </div>
                 <v-select
                     v-model="selectedCompo"
                     :items="compoOptions"
@@ -39,7 +39,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`entries-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -103,6 +102,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
@@ -133,7 +133,6 @@ const entries: Ref<CompoEntry[]> = ref([]);
 const compos: Ref<Compo[]> = ref([]);
 const search = ref("");
 const selectedCompo: Ref<number | null> = ref(null);
-const refreshKey = ref(0);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -186,7 +185,9 @@ function getCompoName(compoId: number): string {
 }
 
 function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        load(lastLoadArgs.value);
+    }
 }
 
 async function loadCompos() {
@@ -241,7 +242,7 @@ async function deleteEntry(item: CompoEntry): Promise<void> {
             toast.success(t("EntriesView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("EntriesView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("EntriesView.deleteFailure")));
             console.error(e);
         }
     });

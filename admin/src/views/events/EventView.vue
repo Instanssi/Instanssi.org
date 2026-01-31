@@ -22,7 +22,6 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    :key="`blog-table-${refreshKey}`"
                     v-model:items-per-page="perPage"
                     class="elevation-1 primary"
                     item-value="id"
@@ -84,6 +83,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -114,7 +114,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const events: Ref<Event[]> = ref([]);
 const search = ref("");
-const refreshKey = ref(0);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("EventView.headers.id"),
@@ -155,12 +155,15 @@ const headers: ReadonlyHeaders = [
 ];
 
 async function flushData() {
-    refreshKey.value += 1;
+    if (lastLoadArgs.value) {
+        await load(lastLoadArgs.value);
+    }
     await eventService.refreshEvents();
 }
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminEventsList({ query: getLoadArgs(args) });
         events.value = response.data!.results;
@@ -184,7 +187,7 @@ async function deleteEvent(item: Event): Promise<void> {
             await flushData();
             toast.success(t("EventView.deleteSuccess"));
         } catch (e) {
-            toast.error(t("EventView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("EventView.deleteFailure")));
             console.error(e);
         }
     }

@@ -1,9 +1,15 @@
+from typing import TYPE_CHECKING
+
+from django.db.models import QuerySet
 from django.utils import timezone
 
 from Instanssi.kompomaatti.models import Competition, Compo, Entry
 
+if TYPE_CHECKING:
+    from Instanssi.kompomaatti.models import Event
 
-def is_votes_unoptimized(compo_ids):
+
+def is_votes_unoptimized(compo_ids: QuerySet[Compo]) -> bool:
     entries = Entry.objects.filter(compo__in=compo_ids, archive_score=None)
     if len(entries) > 0:
         return True
@@ -15,7 +21,7 @@ def is_votes_unoptimized(compo_ids):
     return False
 
 
-def is_event_ongoing(event):
+def is_event_ongoing(event: "Event") -> bool:
     if event.date > timezone.now().date():
         return True
 

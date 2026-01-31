@@ -6,7 +6,7 @@ from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import CompoSerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
-from Instanssi.kompomaatti.models import Compo
+from Instanssi.kompomaatti.models import Compo, Entry
 
 IMAGE_FORMATS = {"png", "jpg", "jpeg"}
 
@@ -58,3 +58,9 @@ class CompoViewSet(PermissionViewSet):
         merged.update(serializer.validated_data)
         self._validate_thumbnail_pref(merged)
         serializer.save()
+
+    def perform_destroy(self, instance: Compo) -> None:  # type: ignore[override]
+        """Prevent deletion of compos that have entries."""
+        if Entry.objects.filter(compo=instance).exists():
+            raise serializers.ValidationError({"detail": "Cannot delete a compo that has entries."})
+        super().perform_destroy(instance)

@@ -66,7 +66,9 @@ def test_staff_can_create_program_event(staff_api_client, event):
             "description": "A brand new program event",
             "presenters": "Test Presenter",
             "place": "Main Hall",
+            "active": True,
         },
+        format="multipart",
     )
     assert req.status_code == 201
     assert req.data == {
@@ -99,7 +101,9 @@ def test_staff_can_create_program_event(staff_api_client, event):
 def test_staff_can_update_program_event(staff_api_client, program_event):
     """Test that staff can update a program event."""
     base_url = get_base_url(program_event.event_id)
-    req = staff_api_client.patch(f"{base_url}{program_event.id}/", {"title": "Updated Program Event"})
+    req = staff_api_client.patch(
+        f"{base_url}{program_event.id}/", {"title": "Updated Program Event"}, format="multipart"
+    )
     assert req.status_code == 200
     assert req.data == {
         "id": program_event.id,

@@ -70,7 +70,7 @@ def test_get_user_compo_entry(auth_client, votable_compo_entry):
         "imagefile_original_url": f"http://testserver{votable_compo_entry.imagefile_original.url}",
         "imagefile_thumbnail_url": f"http://testserver{votable_compo_entry.imagefile_thumbnail.url}",
         "imagefile_medium_url": f"http://testserver{votable_compo_entry.imagefile_medium.url}",
-        "youtube_url": {"video_id": "dQw4w9WgXcQ", "start": None},
+        "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "disqualified": votable_compo_entry.disqualified,
         "disqualified_reason": votable_compo_entry.disqualified_reason,
         "score": None,

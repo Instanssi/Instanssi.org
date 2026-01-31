@@ -25,10 +25,7 @@ def test_staff_can_get_video_detail(staff_api_client, other_video):
         "category": other_video.category_id,
         "name": other_video.name,
         "description": other_video.description,
-        "youtube_url": {
-            "video_id": "dQw4w9WgXcQ",
-            "start": None,
-        },
+        "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     }
 
 
@@ -42,7 +39,7 @@ def test_staff_can_create_video(staff_api_client, video_category):
             "category": video_category.id,
             "name": "New Video",
             "description": "A brand new video",
-            "youtube_url": "https://www.youtube.com/watch?v=abc123",
+            "youtube_url": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
         },
     )
     assert req.status_code == 201
@@ -51,10 +48,7 @@ def test_staff_can_create_video(staff_api_client, video_category):
         "category": video_category.id,
         "name": "New Video",
         "description": "A brand new video",
-        "youtube_url": {
-            "video_id": "abc123",
-            "start": None,
-        },
+        "youtube_url": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
     }
 
 
@@ -69,10 +63,7 @@ def test_staff_can_update_video(staff_api_client, other_video):
         "category": other_video.category_id,
         "name": "Updated Video Name",
         "description": other_video.description,
-        "youtube_url": {
-            "video_id": "dQw4w9WgXcQ",
-            "start": None,
-        },
+        "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     }
 
 
@@ -143,7 +134,7 @@ def test_cannot_create_video_with_category_from_other_event(
             "category": other_event_video_category.id,
             "name": "Test Video",
             "description": "Test description",
-            "youtube_url": "https://www.youtube.com/watch?v=abc123",
+            "youtube_url": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
         },
     )
     assert req.status_code == 400

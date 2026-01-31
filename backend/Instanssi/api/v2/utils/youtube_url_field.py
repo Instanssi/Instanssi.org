@@ -3,48 +3,32 @@ from typing import Any
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from Instanssi.common.youtube import YoutubeURL
+from Instanssi.common.youtube import InvalidVideoIdError, YoutubeURL
+from Instanssi.common.youtube.parser import InvalidYoutubeUrlError
 
 
-@extend_schema_field(
-    {
-        "type": "object",
-        "nullable": True,
-        "properties": {
-            "video_id": {"type": "string"},
-            "start": {"type": "integer", "nullable": True},
-        },
-        "required": ["video_id"],
-    }
-)
+@extend_schema_field({"type": "string", "nullable": True})
 class YoutubeUrlField(serializers.Field):  # type: ignore[type-arg]
-    """Custom field to handle YoutubeVideoField serialization/deserialization."""
+    """Custom field to handle YoutubeVideoField serialization/deserialization.
 
-    def to_representation(self, value: Any) -> dict[str, Any] | None:
-        """Convert YoutubeURL object to dictionary."""
+    Accepts and returns YouTube URLs as strings. Internally converts to/from YoutubeURL objects.
+    """
+
+    def to_representation(self, value: Any) -> str | None:
+        """Convert YoutubeURL object to URL string."""
         if not value:
             return None
         if isinstance(value, YoutubeURL):
-            return {
-                "video_id": value.video_id,
-                "start": value.start,
-            }
-        if isinstance(value, str):
-            parsed = YoutubeURL.from_url(value)
-            if parsed:
-                return {
-                    "video_id": parsed.video_id,
-                    "start": parsed.start,
-                }
+            return str(value)
         return None
 
     def to_internal_value(self, data: Any) -> YoutubeURL | None:
-        """Convert input data to YoutubeURL object."""
+        """Convert URL string to YoutubeURL object."""
         if not data:
             return None
         if isinstance(data, YoutubeURL):
             return data
-        if isinstance(data, dict):
-            return YoutubeURL(video_id=data["video_id"], start=data.get("start"))
-        # Assume it's a URL string
-        return YoutubeURL.from_url(str(data))
+        try:
+            return YoutubeURL.from_url(str(data))
+        except (InvalidYoutubeUrlError, InvalidVideoIdError) as e:
+            raise serializers.ValidationError(str(e))

@@ -82,7 +82,16 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    username: "username",
+    email: "email",
+    first_name: "firstName",
+    last_name: "lastName",
+    is_active: "isActive",
+};
 
 const props = defineProps<{
     id?: string;
@@ -172,13 +181,7 @@ async function createItem(values: GenericObject) {
         toast.success(t("UserDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"), {
-            username: "username",
-            email: "email",
-            first_name: "firstName",
-            last_name: "lastName",
-            is_active: "isActive",
-        });
+        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -198,13 +201,7 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("UserDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"), {
-            username: "username",
-            email: "email",
-            first_name: "firstName",
-            last_name: "lastName",
-            is_active: "isActive",
-        });
+        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

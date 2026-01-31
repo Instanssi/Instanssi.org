@@ -238,7 +238,23 @@ import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    creator: "creator",
+    description: "description",
+    compo: "compo",
+    user: "user",
+    platform: "platform",
+    entryfile: "entryFile",
+    sourcefile: "sourceFile",
+    imagefile_original: "imageFile",
+    youtube_url: "youtubeUrl",
+    disqualified: "disqualified",
+    disqualified_reason: "disqualifiedReason",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -463,20 +479,7 @@ async function createItem(values: GenericObject) {
         toast.success(t("EntryEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EntryEditView.createFailure"), {
-            name: "name",
-            creator: "creator",
-            description: "description",
-            compo: "compo",
-            user: "user",
-            platform: "platform",
-            entryfile: "entryFile",
-            sourcefile: "sourceFile",
-            imagefile_original: "imageFile",
-            youtube_url: "youtubeUrl",
-            disqualified: "disqualified",
-            disqualified_reason: "disqualifiedReason",
-        });
+        handleApiError(e, setErrors, toast, t("EntryEditView.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -520,18 +523,7 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("EntryEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EntryEditView.editFailure"), {
-            name: "name",
-            creator: "creator",
-            description: "description",
-            platform: "platform",
-            entryfile: "entryFile",
-            sourcefile: "sourceFile",
-            imagefile_original: "imageFile",
-            youtube_url: "youtubeUrl",
-            disqualified: "disqualified",
-            disqualified_reason: "disqualifiedReason",
-        });
+        handleApiError(e, setErrors, toast, t("EntryEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

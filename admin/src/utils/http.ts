@@ -3,7 +3,9 @@ import { HttpStatus } from "@/utils/http_status";
 type FieldErrors = Record<string, string>;
 type SetErrorsFn = (errors: FieldErrors) => void;
 type ToastInterface = { error: (message: string) => void };
-type FieldMapping = Record<string, string>;
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+export type FieldMapping = Record<string, string>;
 
 interface ErrorResponse {
     status: number;

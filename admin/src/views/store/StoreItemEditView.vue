@@ -283,7 +283,24 @@ import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { type FileValue, getFile } from "@/utils/file";
-import { getApiErrorMessage, handleApiError } from "@/utils/http";
+import { getApiErrorMessage, handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    description: "description",
+    price: "price",
+    max: "max",
+    max_per_order: "maxPerOrder",
+    sort_index: "sortIndex",
+    discount_amount: "discountAmount",
+    discount_percentage: "discountPercentage",
+    available: "available",
+    is_ticket: "isTicket",
+    is_secret: "isSecret",
+    secret_key: "secretKey",
+    imagefile_original: "imageFile",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -433,21 +450,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("StoreItemEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.createFailure"), {
-            name: "name",
-            description: "description",
-            price: "price",
-            max: "max",
-            max_per_order: "maxPerOrder",
-            sort_index: "sortIndex",
-            discount_amount: "discountAmount",
-            discount_percentage: "discountPercentage",
-            available: "available",
-            is_ticket: "isTicket",
-            is_secret: "isSecret",
-            secret_key: "secretKey",
-            imagefile_original: "imageFile",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("StoreItemEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -495,21 +504,7 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("StoreItemEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"), {
-            name: "name",
-            description: "description",
-            price: "price",
-            max: "max",
-            max_per_order: "maxPerOrder",
-            sort_index: "sortIndex",
-            discount_amount: "discountAmount",
-            discount_percentage: "discountPercentage",
-            available: "available",
-            is_ticket: "isTicket",
-            is_secret: "isSecret",
-            secret_key: "secretKey",
-            imagefile_original: "imageFile",
-        });
+        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

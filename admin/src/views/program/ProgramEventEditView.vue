@@ -253,7 +253,29 @@ import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
 import { type FileValue, getFile } from "@/utils/file";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    title: "title",
+    description: "description",
+    start: "start",
+    end: "end",
+    place: "place",
+    presenters: "presenters",
+    presenters_titles: "presentersTitles",
+    icon_original: "icon1File",
+    icon2_original: "icon2File",
+    home_url: "homeUrl",
+    email: "email",
+    twitter_url: "twitterUrl",
+    github_url: "githubUrl",
+    facebook_url: "facebookUrl",
+    linkedin_url: "linkedinUrl",
+    wiki_url: "wikiUrl",
+    event_type: "eventType",
+    active: "active",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -430,26 +452,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("ProgramEventEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("ProgramEventEditView.createFailure"), {
-            title: "title",
-            description: "description",
-            start: "start",
-            end: "end",
-            place: "place",
-            presenters: "presenters",
-            presenters_titles: "presentersTitles",
-            icon_original: "icon1File",
-            icon2_original: "icon2File",
-            home_url: "homeUrl",
-            email: "email",
-            twitter_url: "twitterUrl",
-            github_url: "githubUrl",
-            facebook_url: "facebookUrl",
-            linkedin_url: "linkedinUrl",
-            wiki_url: "wikiUrl",
-            event_type: "eventType",
-            active: "active",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("ProgramEventEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -505,26 +514,13 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("ProgramEventEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("ProgramEventEditView.editFailure"), {
-            title: "title",
-            description: "description",
-            start: "start",
-            end: "end",
-            place: "place",
-            presenters: "presenters",
-            presenters_titles: "presentersTitles",
-            icon_original: "icon1File",
-            icon2_original: "icon2File",
-            home_url: "homeUrl",
-            email: "email",
-            twitter_url: "twitterUrl",
-            github_url: "githubUrl",
-            facebook_url: "facebookUrl",
-            linkedin_url: "linkedinUrl",
-            wiki_url: "wikiUrl",
-            event_type: "eventType",
-            active: "active",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("ProgramEventEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

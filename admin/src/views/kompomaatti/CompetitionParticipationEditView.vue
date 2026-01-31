@@ -127,7 +127,17 @@ import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    competition: "competition",
+    user: "user",
+    participant_name: "participantName",
+    score: "score",
+    disqualified: "disqualified",
+    disqualified_reason: "disqualifiedReason",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -232,14 +242,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("CompetitionParticipationEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.createFailure"), {
-            competition: "competition",
-            user: "user",
-            participant_name: "participantName",
-            score: "score",
-            disqualified: "disqualified",
-            disqualified_reason: "disqualifiedReason",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionParticipationEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -258,12 +267,13 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("CompetitionParticipationEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.editFailure"), {
-            participant_name: "participantName",
-            score: "score",
-            disqualified: "disqualified",
-            disqualified_reason: "disqualifiedReason",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionParticipationEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

@@ -80,7 +80,16 @@ import {
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    date: "date",
+    archived: "archived",
+    tag: "tag",
+    mainurl: "mainurl",
+};
 
 const props = defineProps<{
     id?: string;
@@ -172,13 +181,7 @@ async function createItem(values: GenericObject) {
         toast.success(t("EventDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EventDialog.createFailure"), {
-            name: "name",
-            date: "date",
-            archived: "archived",
-            tag: "tag",
-            mainurl: "mainurl",
-        });
+        handleApiError(e, setErrors, toast, t("EventDialog.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -198,13 +201,7 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("EventDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EventDialog.editFailure"), {
-            name: "name",
-            date: "date",
-            archived: "archived",
-            tag: "tag",
-            mainurl: "mainurl",
-        });
+        handleApiError(e, setErrors, toast, t("EventDialog.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

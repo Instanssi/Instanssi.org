@@ -91,7 +91,13 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
 import { toFormData } from "@/utils/formdata";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    description: "description",
+    file: "file",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -201,29 +207,26 @@ async function createItem(values: GenericObject) {
         toast.success(t("UploadEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UploadEditView.createFailure"), {
-            description: "description",
-            file: "file",
-        });
+        handleApiError(e, setErrors, toast, t("UploadEditView.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
+        const selectedFile = getFile(values.file);
         await api.adminEventUploadsFilesPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
             body: {
                 description: values.description || "",
+                file: selectedFile,
             },
             bodySerializer: toFormData,
         });
         toast.success(t("UploadEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UploadEditView.editFailure"), {
-            description: "description",
-        });
+        handleApiError(e, setErrors, toast, t("UploadEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

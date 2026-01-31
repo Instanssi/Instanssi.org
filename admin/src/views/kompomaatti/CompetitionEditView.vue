@@ -151,7 +151,21 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    description: "description",
+    participation_end: "participationEnd",
+    start: "start",
+    end: "end",
+    score_type: "scoreType",
+    score_sort: "scoreSort",
+    active: "active",
+    show_results: "showResults",
+    hide_from_archive: "hideFromArchive",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -279,18 +293,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("CompetitionEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.createFailure"), {
-            name: "name",
-            description: "description",
-            participation_end: "participationEnd",
-            start: "start",
-            end: "end",
-            score_type: "scoreType",
-            score_sort: "scoreSort",
-            active: "active",
-            show_results: "showResults",
-            hide_from_archive: "hideFromArchive",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -315,18 +324,13 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("CompetitionEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.editFailure"), {
-            name: "name",
-            description: "description",
-            participation_end: "participationEnd",
-            start: "start",
-            end: "end",
-            score_type: "scoreType",
-            score_sort: "scoreSort",
-            active: "active",
-            show_results: "showResults",
-            hide_from_archive: "hideFromArchive",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

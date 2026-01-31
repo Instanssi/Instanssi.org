@@ -218,7 +218,9 @@ describe("getApiErrorMessage", () => {
                     data: { detail: "Internal server error details" },
                 },
             };
-            expect(getApiErrorMessage(error, fallbackMessage)).toBe("Internal server error details");
+            expect(getApiErrorMessage(error, fallbackMessage)).toBe(
+                "Internal server error details"
+            );
         });
     });
 

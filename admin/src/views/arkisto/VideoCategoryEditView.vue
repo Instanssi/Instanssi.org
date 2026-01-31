@@ -51,7 +51,12 @@ import { object as yupObject, string as yupString } from "yup";
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -127,9 +132,13 @@ async function createCategory(values: GenericObject) {
         toast.success(t("VideoCategoryEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.createFailure"), {
-            name: "name",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("VideoCategoryEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -145,9 +154,13 @@ async function editCategory(categoryId: number, values: GenericObject) {
         toast.success(t("VideoCategoryEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.editFailure"), {
-            name: "name",
-        });
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("VideoCategoryEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

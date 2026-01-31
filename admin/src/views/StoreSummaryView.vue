@@ -27,22 +27,10 @@
             <!-- Charts -->
             <v-row class="mb-4">
                 <v-col cols="12" md="6">
-                    <ChartCard
-                        :title="t('StoreSummaryView.charts.salesPerDay')"
-                        :has-data="salesPerDayData.labels.length > 0"
-                        :no-data-text="t('StoreSummaryView.charts.noData')"
-                    >
-                        <Bar :data="salesPerDayData" :options="barChartOptions" />
-                    </ChartCard>
+                    <SalesPerDayChart :paid-times="paidTimesForItems" />
                 </v-col>
                 <v-col cols="12" md="6">
-                    <ChartCard
-                        :title="t('StoreSummaryView.charts.salesByHour')"
-                        :has-data="salesByHourData.labels.length > 0"
-                        :no-data-text="t('StoreSummaryView.charts.noData')"
-                    >
-                        <Bar :data="salesByHourData" :options="barChartOptions" />
-                    </ChartCard>
+                    <SalesByHourChart :paid-times="paidTimesForItems" />
                 </v-col>
             </v-row>
 
@@ -86,34 +74,25 @@
 </template>
 
 <script setup lang="ts">
-import {
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
-} from "chart.js";
 import { faBoxOpen, faEuroSign } from "@fortawesome/free-solid-svg-icons";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { Bar } from "vue-chartjs";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
+import { Temporal } from "temporal-polyfill";
+
 import * as api from "@/api";
 import type { StoreItem, StoreTransaction, TransactionItem } from "@/api";
-import ChartCard from "@/components/ChartCard.vue";
+import SalesByHourChart from "@/components/charts/SalesByHourChart.vue";
+import SalesPerDayChart from "@/components/charts/SalesPerDayChart.vue";
 import ExportButton from "@/components/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import StatCard from "@/components/StatCard.vue";
 import { useEvents } from "@/services/events";
+import { ADMIN_TIMEZONE } from "@/utils/datetime";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
-
-// Register Chart.js components
-ChartJS.register(BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip);
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -169,25 +148,6 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
-// Chart options
-const barChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            display: false,
-        },
-    },
-    scales: {
-        y: {
-            beginAtZero: true,
-            ticks: {
-                stepSize: 1,
-            },
-        },
-    },
-};
-
 // Get paid transactions sorted by time
 const paidTransactions = computed(() => {
     return transactions.value
@@ -209,101 +169,28 @@ const paidTransactionItems = computed(() => {
     return transactionItems.value.filter((item) => paidTransactionIds.value.has(item.transaction));
 });
 
-// Build transaction ID to paid time map
+// Build transaction ID to paid time map (in Helsinki timezone)
 const transactionPaidTimeMap = computed(() => {
-    const map = new Map<number, Date>();
+    const map = new Map<number, Temporal.ZonedDateTime>();
     for (const tx of paidTransactions.value) {
         if (tx.time_paid) {
-            map.set(tx.id, new Date(tx.time_paid));
+            const instant = Temporal.Instant.from(tx.time_paid);
+            map.set(tx.id, instant.toZonedDateTimeISO(ADMIN_TIMEZONE));
         }
     }
     return map;
 });
 
-// Sales per day chart data
-const salesPerDayData = computed(() => {
-    if (paidTransactions.value.length === 0) {
-        return { labels: [], datasets: [] };
-    }
-
-    // Group sales by date
-    const salesByDate = new Map<string, number>();
+// Get paid times array for charts (one entry per transaction item)
+const paidTimesForItems = computed(() => {
+    const times: Temporal.ZonedDateTime[] = [];
     for (const txItem of paidTransactionItems.value) {
         const paidTime = transactionPaidTimeMap.value.get(txItem.transaction);
         if (paidTime) {
-            const dateKey = paidTime.toISOString().slice(0, 10);
-            salesByDate.set(dateKey, (salesByDate.get(dateKey) ?? 0) + 1);
+            times.push(paidTime);
         }
     }
-
-    // Get date range and fill in all days
-    const sortedDates = Array.from(salesByDate.keys()).sort();
-    if (sortedDates.length === 0) {
-        return { labels: [], datasets: [] };
-    }
-
-    const labels: string[] = [];
-    const data: number[] = [];
-    const firstDate = sortedDates[0];
-    const lastDate = sortedDates[sortedDates.length - 1];
-    if (!firstDate || !lastDate) {
-        return { labels: [], datasets: [] };
-    }
-    const startDate = new Date(firstDate);
-    const endDate = new Date(lastDate);
-
-    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        const dateKey = d.toISOString().slice(0, 10);
-        labels.push(dateKey);
-        data.push(salesByDate.get(dateKey) ?? 0);
-    }
-
-    return {
-        labels,
-        datasets: [
-            {
-                label: t("StoreSummaryView.charts.salesCount"),
-                data,
-                backgroundColor: "#4CAF50",
-            },
-        ],
-    };
-});
-
-// Sales by hour chart data
-const salesByHourData = computed(() => {
-    if (paidTransactionItems.value.length === 0) {
-        return { labels: [], datasets: [] };
-    }
-
-    // Group sales by hour
-    const salesByHour = new Array(24).fill(0);
-    for (const txItem of paidTransactionItems.value) {
-        const paidTime = transactionPaidTimeMap.value.get(txItem.transaction);
-        if (paidTime) {
-            const hour = paidTime.getHours();
-            salesByHour[hour]++;
-        }
-    }
-
-    // Only show hours with sales and nearby hours
-    const labels: string[] = [];
-    const data: number[] = [];
-    for (let i = 0; i < 24; i++) {
-        labels.push(`${i.toString().padStart(2, "0")}:00`);
-        data.push(salesByHour[i]);
-    }
-
-    return {
-        labels,
-        datasets: [
-            {
-                label: t("StoreSummaryView.charts.salesCount"),
-                data,
-                backgroundColor: "#2196F3",
-            },
-        ],
-    };
+    return times;
 });
 
 // Build summary rows grouped by item + variant

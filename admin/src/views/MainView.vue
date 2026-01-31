@@ -23,9 +23,7 @@
                             </div>
                             <div v-if="event" class="mt-2">
                                 <span class="text-grey">{{ t("MainView.countdown") }}:</span>
-                                <v-chip :color="countdownColor" size="small" class="ml-1">
-                                    {{ countdownText }}
-                                </v-chip>
+                                <EventCountdown :date="event.date" class="ml-1" />
                             </div>
                         </v-card-text>
                     </v-card>
@@ -101,24 +99,13 @@
             <!-- Charts -->
             <v-row class="mb-4">
                 <v-col v-if="auth.canView(PermissionTarget.COMPO)" cols="12" md="6">
-                    <ChartCard
-                        :title="t('MainView.charts.entriesPerCompo')"
-                        :icon="faChartPie"
-                        :has-data="compoChartData.labels.length > 0"
-                        :no-data-text="t('MainView.charts.noData')"
-                    >
-                        <Pie :data="compoChartData" :options="pieChartOptions" />
-                    </ChartCard>
+                    <EntriesPerCompoChart :compos="compos" :entry-counts="compoEntryCounts" />
                 </v-col>
                 <v-col v-if="auth.canView(PermissionTarget.COMPETITION)" cols="12" md="6">
-                    <ChartCard
-                        :title="t('MainView.charts.competitionParticipants')"
-                        :icon="faChartBar"
-                        :has-data="competitionChartData.labels.length > 0"
-                        :no-data-text="t('MainView.charts.noData')"
-                    >
-                        <Bar :data="competitionChartData" :options="barChartOptions" />
-                    </ChartCard>
+                    <CompetitionParticipantsChart
+                        :competitions="competitions"
+                        :participant-counts="competitionParticipantCounts"
+                    />
                 </v-col>
             </v-row>
 
@@ -186,24 +173,11 @@
 </template>
 
 <script setup lang="ts">
-import {
-    ArcElement,
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
-} from "chart.js";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { Bar, Pie } from "vue-chartjs";
 import {
     faCalendarDays,
-    faChartBar,
-    faChartPie,
     faCheckToSlot,
     faClockRotateLeft,
     faCreditCard,
@@ -216,20 +190,18 @@ import {
     faNewspaper,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 import { useRouter } from "vue-router";
 
 import * as api from "@/api";
 import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
-import ChartCard from "@/components/ChartCard.vue";
+import CompetitionParticipantsChart from "@/components/charts/CompetitionParticipantsChart.vue";
+import EntriesPerCompoChart from "@/components/charts/EntriesPerCompoChart.vue";
+import EventCountdown from "@/components/EventCountdown.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/LayoutBase.vue";
 import StatCard from "@/components/StatCard.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 const router = useRouter();
-
-// Register Chart.js components
-ChartJS.register(ArcElement, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip);
 
 const props = defineProps<{ eventId: string }>();
 const { t, d } = useI18n();
@@ -266,98 +238,6 @@ const compos = ref<Compo[]>([]);
 const competitions = ref<Competition[]>([]);
 const compoEntryCounts = ref<Map<number, number>>(new Map());
 const competitionParticipantCounts = ref<Map<number, number>>(new Map());
-
-// Countdown
-const countdownDays = computed(() => {
-    if (!event.value) return 0;
-    const eventDate = new Date(event.value.date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
-    return Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-});
-
-const countdownText = computed(() => {
-    const days = countdownDays.value;
-    if (days > 0) {
-        return t("MainView.daysUntil", { days });
-    } else if (days === 0) {
-        return t("MainView.today");
-    } else {
-        return t("MainView.daysAgo", { days: Math.abs(days) });
-    }
-});
-
-const countdownColor = computed(() => {
-    const days = countdownDays.value;
-    if (days > 7) return "green";
-    if (days > 0) return "orange";
-    if (days === 0) return "red";
-    return "grey";
-});
-
-// Chart configurations
-const pieChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            position: "right" as const,
-        },
-    },
-};
-
-const barChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            display: false,
-        },
-    },
-    scales: {
-        y: {
-            beginAtZero: true,
-            ticks: {
-                stepSize: 1,
-            },
-        },
-    },
-};
-
-const chartColors = [
-    "#4CAF50",
-    "#2196F3",
-    "#FF9800",
-    "#9C27B0",
-    "#E91E63",
-    "#00BCD4",
-    "#FFEB3B",
-    "#795548",
-    "#607D8B",
-    "#F44336",
-];
-
-const compoChartData = computed(() => ({
-    labels: compos.value.map((c) => c.name),
-    datasets: [
-        {
-            data: compos.value.map((c) => compoEntryCounts.value.get(c.id) ?? 0),
-            backgroundColor: chartColors.slice(0, compos.value.length),
-        },
-    ],
-}));
-
-const competitionChartData = computed(() => ({
-    labels: competitions.value.map((c) => c.name),
-    datasets: [
-        {
-            label: t("MainView.stats.participants"),
-            data: competitions.value.map((c) => competitionParticipantCounts.value.get(c.id) ?? 0),
-            backgroundColor: "#2196F3",
-        },
-    ],
-}));
 
 function getCompoName(compoId: number): string {
     return compos.value.find((c) => c.id === compoId)?.name ?? t("MainView.unknown");

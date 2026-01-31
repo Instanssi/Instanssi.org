@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer color="grey-darken-4">
+    <v-navigation-drawer color="grey-darken-4" permanent>
         <div class="fill-height d-flex flex-column ma-0 pa-0">
             <div class="d-flex flex-row ma-5 flex-0-0">
                 <v-img :src="logoImage" />

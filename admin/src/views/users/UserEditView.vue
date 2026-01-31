@@ -172,7 +172,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("UserDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"));
+        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"), {
+            username: "username",
+            email: "email",
+            first_name: "firstName",
+            last_name: "lastName",
+            is_active: "isActive",
+        });
     }
     return false;
 }
@@ -192,7 +198,13 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("UserDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"));
+        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"), {
+            username: "username",
+            email: "email",
+            first_name: "firstName",
+            last_name: "lastName",
+            is_active: "isActive",
+        });
     }
     return false;
 }

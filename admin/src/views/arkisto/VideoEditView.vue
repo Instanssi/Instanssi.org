@@ -193,7 +193,12 @@ async function createVideo(values: GenericObject) {
         toast.success(t("VideoEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("VideoEditView.createFailure"), {
+            category: "category",
+            name: "name",
+            description: "description",
+            youtube_url: "youtubeUrl",
+        });
     }
     return false;
 }
@@ -212,7 +217,12 @@ async function editVideo(videoId: number, values: GenericObject) {
         toast.success(t("VideoEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("VideoEditView.editFailure"), {
+            category: "category",
+            name: "name",
+            description: "description",
+            youtube_url: "youtubeUrl",
+        });
     }
     return false;
 }

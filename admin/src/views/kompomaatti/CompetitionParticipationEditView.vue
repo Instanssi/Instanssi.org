@@ -232,7 +232,14 @@ async function createItem(values: GenericObject) {
         toast.success(t("CompetitionParticipationEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.createFailure"), {
+            competition: "competition",
+            user: "user",
+            participant_name: "participantName",
+            score: "score",
+            disqualified: "disqualified",
+            disqualified_reason: "disqualifiedReason",
+        });
     }
     return false;
 }
@@ -251,7 +258,12 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("CompetitionParticipationEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.editFailure"), {
+            participant_name: "participantName",
+            score: "score",
+            disqualified: "disqualified",
+            disqualified_reason: "disqualifiedReason",
+        });
     }
     return false;
 }

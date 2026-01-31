@@ -127,7 +127,9 @@ async function createCategory(values: GenericObject) {
         toast.success(t("VideoCategoryEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.createFailure"), {
+            name: "name",
+        });
     }
     return false;
 }
@@ -143,7 +145,9 @@ async function editCategory(categoryId: number, values: GenericObject) {
         toast.success(t("VideoCategoryEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.editFailure"), {
+            name: "name",
+        });
     }
     return false;
 }

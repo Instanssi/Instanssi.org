@@ -151,7 +151,11 @@ async function createItem(values: GenericObject) {
         toast.success(t("BlogPostDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("BlogPostDialog.createFailure"));
+        handleApiError(e, setErrors, toast, t("BlogPostDialog.createFailure"), {
+            title: "title",
+            text: "text",
+            public: "public",
+        });
     }
     return false;
 }
@@ -169,7 +173,11 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("BlogPostDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("BlogPostDialog.editFailure"));
+        handleApiError(e, setErrors, toast, t("BlogPostDialog.editFailure"), {
+            title: "title",
+            text: "text",
+            public: "public",
+        });
     }
     return false;
 }

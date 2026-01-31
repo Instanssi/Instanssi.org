@@ -28,8 +28,9 @@
                             {{ t("StoreItemEditView.sections.image") }}
                         </FormSection>
                         <v-file-input
-                            v-model="imageFile"
+                            v-model="imageFile.value.value"
                             :label="t('StoreItemEditView.labels.imagefile')"
+                            :error-messages="imageFile.errorMessage.value"
                             variant="outlined"
                             accept="image/*"
                             prepend-icon=""
@@ -266,6 +267,7 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import {
     boolean as yupBoolean,
+    mixed as yupMixed,
     number as yupNumber,
     object as yupObject,
     string as yupString,
@@ -280,6 +282,7 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { type FileValue, getFile } from "@/utils/file";
 import { getApiErrorMessage, handleApiError } from "@/utils/http";
 
 const props = defineProps<{
@@ -301,7 +304,6 @@ const itemName = ref<string>("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const isEditMode = computed(() => props.id !== undefined);
 const currentImageUrl = ref<string | null>(null);
-const imageFile = ref<File[] | null>(null);
 const variants: Ref<StoreItemVariant[]> = ref([]);
 const newVariantName = ref("");
 
@@ -338,6 +340,7 @@ const validationSchema = yupObject({
     isTicket: yupBoolean(),
     isSecret: yupBoolean(),
     secretKey: yupString(),
+    imageFile: yupMixed().nullable(),
 });
 
 const { handleSubmit, setValues, setErrors, meta } = useForm({
@@ -355,6 +358,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         isTicket: false,
         isSecret: false,
         secretKey: "",
+        imageFile: null as FileValue,
     },
 });
 
@@ -370,6 +374,7 @@ const available = useField<boolean>("available");
 const isTicket = useField<boolean>("isTicket");
 const isSecret = useField<boolean>("isSecret");
 const secretKey = useField<string>("secretKey");
+const imageFile = useField<FileValue>("imageFile");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -387,6 +392,7 @@ const submit = handleSubmit(async (values) => {
 
 async function createItem(values: GenericObject) {
     try {
+        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventStoreItemsCreate({
             path: { event_pk: eventId.value },
             body: {
@@ -402,19 +408,53 @@ async function createItem(values: GenericObject) {
                 is_ticket: values.isTicket,
                 is_secret: values.isSecret,
                 secret_key: values.secretKey || undefined,
-                imagefile_original: imageFile.value?.[0] ?? undefined,
+                imagefile_original: getFile(values.imageFile),
+            },
+            bodySerializer: (body) => {
+                const formData = new FormData();
+                formData.append("name", body.name);
+                formData.append("description", body.description || "");
+                formData.append("price", body.price);
+                formData.append("max", String(body.max));
+                if (body.max_per_order !== undefined)
+                    formData.append("max_per_order", String(body.max_per_order));
+                formData.append("sort_index", String(body.sort_index ?? 0));
+                formData.append("discount_amount", String(body.discount_amount ?? -1));
+                formData.append("discount_percentage", String(body.discount_percentage ?? 0));
+                formData.append("available", body.available ? "true" : "false");
+                formData.append("is_ticket", body.is_ticket ? "true" : "false");
+                formData.append("is_secret", body.is_secret ? "true" : "false");
+                if (body.secret_key) formData.append("secret_key", body.secret_key);
+                if (body.imagefile_original)
+                    formData.append("imagefile_original", body.imagefile_original);
+                return formData;
             },
         });
         toast.success(t("StoreItemEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("StoreItemEditView.createFailure"), {
+            name: "name",
+            description: "description",
+            price: "price",
+            max: "max",
+            max_per_order: "maxPerOrder",
+            sort_index: "sortIndex",
+            discount_amount: "discountAmount",
+            discount_percentage: "discountPercentage",
+            available: "available",
+            is_ticket: "isTicket",
+            is_secret: "isSecret",
+            secret_key: "secretKey",
+            imagefile_original: "imageFile",
+        });
     }
     return false;
 }
 
 async function editItem(itemId: number, values: GenericObject) {
     try {
+        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventStoreItemsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
             body: {
@@ -430,12 +470,46 @@ async function editItem(itemId: number, values: GenericObject) {
                 is_ticket: values.isTicket,
                 is_secret: values.isSecret,
                 secret_key: values.secretKey || undefined,
+                imagefile_original: getFile(values.imageFile),
+            },
+            bodySerializer: (body) => {
+                const formData = new FormData();
+                formData.append("name", body.name);
+                formData.append("description", body.description || "");
+                formData.append("price", body.price);
+                formData.append("max", String(body.max));
+                if (body.max_per_order !== undefined)
+                    formData.append("max_per_order", String(body.max_per_order));
+                formData.append("sort_index", String(body.sort_index ?? 0));
+                formData.append("discount_amount", String(body.discount_amount ?? -1));
+                formData.append("discount_percentage", String(body.discount_percentage ?? 0));
+                formData.append("available", body.available ? "true" : "false");
+                formData.append("is_ticket", body.is_ticket ? "true" : "false");
+                formData.append("is_secret", body.is_secret ? "true" : "false");
+                if (body.secret_key) formData.append("secret_key", body.secret_key);
+                if (body.imagefile_original)
+                    formData.append("imagefile_original", body.imagefile_original);
+                return formData;
             },
         });
         toast.success(t("StoreItemEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"), {
+            name: "name",
+            description: "description",
+            price: "price",
+            max: "max",
+            max_per_order: "maxPerOrder",
+            sort_index: "sortIndex",
+            discount_amount: "discountAmount",
+            discount_percentage: "discountPercentage",
+            available: "available",
+            is_ticket: "isTicket",
+            is_secret: "isSecret",
+            secret_key: "secretKey",
+            imagefile_original: "imageFile",
+        });
     }
     return false;
 }

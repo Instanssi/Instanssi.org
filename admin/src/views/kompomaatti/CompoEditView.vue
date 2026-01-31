@@ -566,7 +566,27 @@ async function createItem(values: GenericObject) {
         toast.success(t("CompoEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompoEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("CompoEditView.createFailure"), {
+            name: "name",
+            description: "description",
+            adding_end: "addingEnd",
+            editing_end: "editingEnd",
+            compo_start: "compoStart",
+            voting_start: "votingStart",
+            voting_end: "votingEnd",
+            entry_sizelimit: "entrySizelimit",
+            source_sizelimit: "sourceSizelimit",
+            formats: "formats",
+            source_formats: "sourceFormats",
+            image_formats: "imageFormats",
+            active: "active",
+            show_voting_results: "showVotingResults",
+            is_votable: "isVotable",
+            entry_view_type: "entryViewType",
+            thumbnail_pref: "thumbnailPref",
+            hide_from_archive: "hideFromArchive",
+            hide_from_frontpage: "hideFromFrontpage",
+        });
     }
     return false;
 }
@@ -600,7 +620,27 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("CompoEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompoEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("CompoEditView.editFailure"), {
+            name: "name",
+            description: "description",
+            adding_end: "addingEnd",
+            editing_end: "editingEnd",
+            compo_start: "compoStart",
+            voting_start: "votingStart",
+            voting_end: "votingEnd",
+            entry_sizelimit: "entrySizelimit",
+            source_sizelimit: "sourceSizelimit",
+            formats: "formats",
+            source_formats: "sourceFormats",
+            image_formats: "imageFormats",
+            active: "active",
+            show_voting_results: "showVotingResults",
+            is_votable: "isVotable",
+            entry_view_type: "entryViewType",
+            thumbnail_pref: "thumbnailPref",
+            hide_from_archive: "hideFromArchive",
+            hide_from_frontpage: "hideFromFrontpage",
+        });
     }
     return false;
 }

@@ -172,7 +172,13 @@ async function createItem(values: GenericObject) {
         toast.success(t("EventDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EventDialog.createFailure"));
+        handleApiError(e, setErrors, toast, t("EventDialog.createFailure"), {
+            name: "name",
+            date: "date",
+            archived: "archived",
+            tag: "tag",
+            mainurl: "mainurl",
+        });
     }
     return false;
 }
@@ -192,7 +198,13 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("EventDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EventDialog.editFailure"));
+        handleApiError(e, setErrors, toast, t("EventDialog.editFailure"), {
+            name: "name",
+            date: "date",
+            archived: "archived",
+            tag: "tag",
+            mainurl: "mainurl",
+        });
     }
     return false;
 }

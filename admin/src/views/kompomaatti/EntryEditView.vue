@@ -237,6 +237,7 @@ import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
+import { type FileValue, getFile } from "@/utils/file";
 import { handleApiError } from "@/utils/http";
 
 const props = defineProps<{
@@ -266,16 +267,6 @@ const existingFiles: Ref<Pick<
 const votingScore = ref<string>("-");
 const votingRank = ref<string>("-");
 const alternateFiles: Ref<AlternateEntryFile[]> = ref([]);
-
-// Helper to get file from v-file-input value (can be File, File[], or null)
-function getFile(value: File | File[] | null | undefined): File | undefined {
-    if (!value) return undefined;
-    if (Array.isArray(value)) return value[0];
-    return value;
-}
-
-// File type for validation
-type FileValue = File | File[] | null;
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const items: BreadcrumbItem[] = [
@@ -472,69 +463,75 @@ async function createItem(values: GenericObject) {
         toast.success(t("EntryEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EntryEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("EntryEditView.createFailure"), {
+            name: "name",
+            creator: "creator",
+            description: "description",
+            compo: "compo",
+            user: "user",
+            platform: "platform",
+            entryfile: "entryFile",
+            sourcefile: "sourceFile",
+            imagefile_original: "imageFile",
+            youtube_url: "youtubeUrl",
+            disqualified: "disqualified",
+            disqualified_reason: "disqualifiedReason",
+        });
     }
     return false;
 }
 
 async function editItem(itemId: number, values: GenericObject) {
     const hasImageFile = allowsImageFile.value && !!getFile(values.imageFile);
-    const hasFiles = !!getFile(values.entryFile) || !!getFile(values.sourceFile) || hasImageFile;
-    const youtubeUrlValue = values.youtubeUrl || null;
 
     try {
-        if (hasFiles) {
-            // Use FormData when uploading files
-            await api.adminEventKompomaattiEntriesPartialUpdate({
-                path: { event_pk: eventId.value, id: itemId },
-                body: {
-                    name: values.name,
-                    creator: values.creator,
-                    description: values.description || "",
-                    platform: values.platform || null,
-                    youtube_url: youtubeUrlValue,
-                    disqualified: values.disqualified,
-                    disqualified_reason: values.disqualifiedReason || "",
-                    entryfile: getFile(values.entryFile),
-                    sourcefile: getFile(values.sourceFile),
-                    imagefile_original: hasImageFile ? getFile(values.imageFile) : undefined,
-                },
-                bodySerializer: (body) => {
-                    const formData = new FormData();
-                    formData.append("name", body.name);
-                    formData.append("creator", body.creator);
-                    formData.append("description", body.description || "");
-                    if (body.platform) formData.append("platform", body.platform);
-                    if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
-                    if (body.disqualified) formData.append("disqualified", "true");
-                    if (body.disqualified_reason)
-                        formData.append("disqualified_reason", body.disqualified_reason);
-                    if (body.entryfile) formData.append("entryfile", body.entryfile);
-                    if (body.sourcefile) formData.append("sourcefile", body.sourcefile);
-                    if (body.imagefile_original)
-                        formData.append("imagefile_original", body.imagefile_original);
-                    return formData;
-                },
-            });
-        } else {
-            // Use regular JSON when no files
-            await api.adminEventKompomaattiEntriesPartialUpdate({
-                path: { event_pk: eventId.value, id: itemId },
-                body: {
-                    name: values.name,
-                    creator: values.creator,
-                    description: values.description || "",
-                    platform: values.platform || null,
-                    youtube_url: youtubeUrlValue,
-                    disqualified: values.disqualified,
-                    disqualified_reason: values.disqualifiedReason || "",
-                },
-            });
-        }
+        // Always use FormData for this endpoint (supports optional file uploads)
+        await api.adminEventKompomaattiEntriesPartialUpdate({
+            path: { event_pk: eventId.value, id: itemId },
+            body: {
+                name: values.name,
+                creator: values.creator,
+                description: values.description || "",
+                platform: values.platform || null,
+                youtube_url: values.youtubeUrl || null,
+                disqualified: values.disqualified,
+                disqualified_reason: values.disqualifiedReason || "",
+                entryfile: getFile(values.entryFile),
+                sourcefile: getFile(values.sourceFile),
+                imagefile_original: hasImageFile ? getFile(values.imageFile) : undefined,
+            },
+            bodySerializer: (body) => {
+                const formData = new FormData();
+                formData.append("name", body.name);
+                formData.append("creator", body.creator);
+                formData.append("description", body.description || "");
+                if (body.platform) formData.append("platform", body.platform);
+                if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
+                if (body.disqualified) formData.append("disqualified", "true");
+                if (body.disqualified_reason)
+                    formData.append("disqualified_reason", body.disqualified_reason);
+                if (body.entryfile) formData.append("entryfile", body.entryfile);
+                if (body.sourcefile) formData.append("sourcefile", body.sourcefile);
+                if (body.imagefile_original)
+                    formData.append("imagefile_original", body.imagefile_original);
+                return formData;
+            },
+        });
         toast.success(t("EntryEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("EntryEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("EntryEditView.editFailure"), {
+            name: "name",
+            creator: "creator",
+            description: "description",
+            platform: "platform",
+            entryfile: "entryFile",
+            sourcefile: "sourceFile",
+            imagefile_original: "imageFile",
+            youtube_url: "youtubeUrl",
+            disqualified: "disqualified",
+            disqualified_reason: "disqualifiedReason",
+        });
     }
     return false;
 }

@@ -279,7 +279,18 @@ async function createItem(values: GenericObject) {
         toast.success(t("CompetitionEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("CompetitionEditView.createFailure"), {
+            name: "name",
+            description: "description",
+            participation_end: "participationEnd",
+            start: "start",
+            end: "end",
+            score_type: "scoreType",
+            score_sort: "scoreSort",
+            active: "active",
+            show_results: "showResults",
+            hide_from_archive: "hideFromArchive",
+        });
     }
     return false;
 }
@@ -304,7 +315,18 @@ async function editItem(itemId: number, values: GenericObject) {
         toast.success(t("CompetitionEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("CompetitionEditView.editFailure"), {
+            name: "name",
+            description: "description",
+            participation_end: "participationEnd",
+            start: "start",
+            end: "end",
+            score_type: "scoreType",
+            score_sort: "scoreSort",
+            active: "active",
+            show_results: "showResults",
+            hide_from_archive: "hideFromArchive",
+        });
     }
     return false;
 }

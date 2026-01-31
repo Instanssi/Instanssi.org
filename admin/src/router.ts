@@ -15,7 +15,7 @@ const router = createRouter({
             meta: {
                 requireAuth: false,
             },
-            component: () => import("@/views/LoginView.vue"),
+            component: () => import("@/views/auth/LoginView.vue"),
         },
         {
             path: "/logout",
@@ -43,7 +43,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.EVENT,
             },
             props: true,
-            component: () => import("@/views/EventEditView.vue"),
+            component: () => import("@/views/events/EventEditView.vue"),
         },
         {
             path: "/events/:id(\\d+)/edit",
@@ -53,7 +53,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.EVENT,
             },
             props: true,
-            component: () => import("@/views/EventEditView.vue"),
+            component: () => import("@/views/events/EventEditView.vue"),
         },
         {
             path: "/events",
@@ -63,7 +63,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.EVENT,
             },
             props: true,
-            component: () => import("@/views/EventView.vue"),
+            component: () => import("@/views/events/EventView.vue"),
         },
         {
             path: "/users/new",
@@ -73,7 +73,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.USER,
             },
             props: true,
-            component: () => import("@/views/UserEditView.vue"),
+            component: () => import("@/views/users/UserEditView.vue"),
         },
         {
             path: "/users/:id(\\d+)/edit",
@@ -83,7 +83,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.USER,
             },
             props: true,
-            component: () => import("@/views/UserEditView.vue"),
+            component: () => import("@/views/users/UserEditView.vue"),
         },
         {
             path: "/users",
@@ -93,7 +93,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.USER,
             },
             props: true,
-            component: () => import("@/views/UsersView.vue"),
+            component: () => import("@/views/users/UsersView.vue"),
         },
         {
             path: "/:eventId(\\d+)/blog/new",
@@ -103,7 +103,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
-            component: () => import("@/views/BlogEntryEditView.vue"),
+            component: () => import("@/views/blog/BlogEntryEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/blog/:id(\\d+)/edit",
@@ -113,7 +113,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
-            component: () => import("@/views/BlogEntryEditView.vue"),
+            component: () => import("@/views/blog/BlogEntryEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/blog",
@@ -123,7 +123,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.BLOG_ENTRY,
             },
             props: true,
-            component: () => import("@/views/BlogView.vue"),
+            component: () => import("@/views/blog/BlogView.vue"),
         },
         // Compos
         {
@@ -134,7 +134,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPO,
             },
             props: true,
-            component: () => import("@/views/ComposView.vue"),
+            component: () => import("@/views/kompomaatti/ComposView.vue"),
         },
         {
             path: "/:eventId(\\d+)/compos/new",
@@ -144,7 +144,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPO,
             },
             props: true,
-            component: () => import("@/views/CompoEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompoEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/compos/:id(\\d+)/edit",
@@ -154,7 +154,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPO,
             },
             props: true,
-            component: () => import("@/views/CompoEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompoEditView.vue"),
         },
         // Entries
         {
@@ -165,7 +165,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.ENTRY,
             },
             props: true,
-            component: () => import("@/views/EntriesView.vue"),
+            component: () => import("@/views/kompomaatti/EntriesView.vue"),
         },
         {
             path: "/:eventId(\\d+)/entries/new",
@@ -175,7 +175,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.ENTRY,
             },
             props: true,
-            component: () => import("@/views/EntryEditView.vue"),
+            component: () => import("@/views/kompomaatti/EntryEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/entries/:id(\\d+)/edit",
@@ -185,7 +185,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.ENTRY,
             },
             props: true,
-            component: () => import("@/views/EntryEditView.vue"),
+            component: () => import("@/views/kompomaatti/EntryEditView.vue"),
         },
         // Competitions
         {
@@ -196,7 +196,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION,
             },
             props: true,
-            component: () => import("@/views/CompetitionsView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionsView.vue"),
         },
         {
             path: "/:eventId(\\d+)/competitions/new",
@@ -206,7 +206,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION,
             },
             props: true,
-            component: () => import("@/views/CompetitionEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/competitions/:id(\\d+)/edit",
@@ -216,7 +216,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION,
             },
             props: true,
-            component: () => import("@/views/CompetitionEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionEditView.vue"),
         },
         // Competition Participations
         {
@@ -227,7 +227,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
             },
             props: true,
-            component: () => import("@/views/CompetitionParticipationsView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionParticipationsView.vue"),
         },
         {
             path: "/:eventId(\\d+)/competition-participations/new",
@@ -237,7 +237,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
             },
             props: true,
-            component: () => import("@/views/CompetitionParticipationEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionParticipationEditView.vue"),
         },
         {
             path: "/:eventId(\\d+)/competition-participations/:id(\\d+)/edit",
@@ -247,7 +247,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.COMPETITION_PARTICIPATION,
             },
             props: true,
-            component: () => import("@/views/CompetitionParticipationEditView.vue"),
+            component: () => import("@/views/kompomaatti/CompetitionParticipationEditView.vue"),
         },
         // Vote Codes
         {
@@ -258,7 +258,7 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.TICKET_VOTE_CODE,
             },
             props: true,
-            component: () => import("@/views/VoteCodesView.vue"),
+            component: () => import("@/views/kompomaatti/VoteCodesView.vue"),
         },
         // Vote Code Requests
         {
@@ -269,7 +269,81 @@ const router = createRouter({
                 requireViewPermission: PermissionTarget.VOTE_CODE_REQUEST,
             },
             props: true,
-            component: () => import("@/views/VoteCodeRequestsView.vue"),
+            component: () => import("@/views/kompomaatti/VoteCodeRequestsView.vue"),
+        },
+        // Store Items
+        {
+            path: "/:eventId(\\d+)/store/items",
+            name: "store-items",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/store/StoreItemsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/items/new",
+            name: "store-items-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/store/StoreItemEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/items/:id(\\d+)/edit",
+            name: "store-items-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/store/StoreItemEditView.vue"),
+        },
+        // Transactions
+        {
+            path: "/:eventId(\\d+)/store/transactions",
+            name: "store-transactions",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_TRANSACTION,
+            },
+            props: true,
+            component: () => import("@/views/store/TransactionsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/store/transactions/:id(\\d+)",
+            name: "store-transaction-detail",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.STORE_TRANSACTION,
+            },
+            props: true,
+            component: () => import("@/views/store/TransactionDetailView.vue"),
+        },
+        // Transaction Items
+        {
+            path: "/:eventId(\\d+)/store/transaction-items",
+            name: "store-transaction-items",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.TRANSACTION_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/store/TransactionItemsView.vue"),
+        },
+        // Store Summary
+        {
+            path: "/:eventId(\\d+)/store/summary",
+            name: "store-summary",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.TRANSACTION_ITEM,
+            },
+            props: true,
+            component: () => import("@/views/store/StoreSummaryView.vue"),
         },
         {
             path: "/:eventId(\\d+)/dashboard",
@@ -278,7 +352,7 @@ const router = createRouter({
                 requireAuth: true,
             },
             props: true,
-            component: () => import("@/views/MainView.vue"),
+            component: () => import("@/views/events/MainView.vue"),
         },
         {
             path: "/",

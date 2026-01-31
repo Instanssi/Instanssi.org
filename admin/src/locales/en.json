@@ -34,6 +34,7 @@
       "save": "Save",
       "edit": "Edit",
       "delete": "Delete",
+      "view": "View",
       "disqualifiedOn": "Disqualified",
       "disqualifiedOff": "Not disqualified"
     },
@@ -43,7 +44,8 @@
       "newCompo": "New Compo",
       "newEntry": "New Entry",
       "newCompetition": "New Competition",
-      "newParticipation": "New Participation"
+      "newParticipation": "New Participation",
+      "newStoreItem": "New Product"
     },
     "App": {
       "nav": {
@@ -59,12 +61,18 @@
         "competitions": "Competitions",
         "competitionParticipations": "Participations",
         "voteCodes": "Ticket Vote Codes",
-        "voteCodeRequests": "Vote Requests"
+        "voteCodeRequests": "Vote Requests",
+        "store": "Store",
+        "storeItems": "Products",
+        "transactions": "Transactions",
+        "transactionItems": "Transaction Items",
+        "storeSummary": "Sales Summary"
       }
     },
     "MainNavigation": {
       "title": "Instanssi",
-      "event": "Event"
+      "event": "Event",
+      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost."
     },
     "EventView": {
       "title": "Events",
@@ -553,6 +561,210 @@
         "paidStatus": "Paid",
         "pending": "Pending",
         "createdStatus": "Created"
+      }
+    },
+    "StoreItemsView": {
+      "title": "Products",
+      "newItem": "New Product",
+      "export": "Export",
+      "confirmDelete": "Do you really want to delete product '{name}'?",
+      "loadFailure": "Failed to load products; try again later.",
+      "deleteSuccess": "Product deleted!",
+      "deleteFailure": "Failed to delete product; try again later.",
+      "exportSuccess": "Products exported!",
+      "exportFailure": "Failed to export products; try again later.",
+      "noItemsFound": "No products found.",
+      "loadingItems": "Loading products ...",
+      "headers": {
+        "id": "ID",
+        "name": "Name",
+        "price": "Price",
+        "available": "Available",
+        "max": "Max",
+        "isAvailable": "Is Available",
+        "isTicket": "Is Ticket",
+        "actions": "Actions"
+      }
+    },
+    "StoreItemEditView": {
+      "newTitle": "New Product",
+      "editTitle": "Edit Product",
+      "loadFailure": "Failed to load product; try again later.",
+      "createSuccess": "Product created!",
+      "createFailure": "Failed to create product; try again later.",
+      "editSuccess": "Product updated!",
+      "editFailure": "Failed to update product; try again later.",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "image": "Product Image",
+        "pricing": "Pricing & Discount",
+        "availability": "Availability",
+        "visibility": "Visibility & Secret",
+        "variants": "Variants"
+      },
+      "labels": {
+        "name": "Name",
+        "description": "Description",
+        "price": "Price",
+        "max": "Maximum quantity",
+        "maxPerOrder": "Maximum per order",
+        "sortIndex": "Sort index",
+        "discountAmount": "Discount threshold",
+        "discountPercentage": "Discount percentage",
+        "imagefile": "Product image",
+        "availableOn": "Product is available for purchase",
+        "availableOff": "Product is not available",
+        "availableHintOn": "Product is visible in the store",
+        "availableHintOff": "Product is hidden from the store",
+        "isTicketOn": "This is a ticket product",
+        "isTicketOff": "This is not a ticket product",
+        "isTicketHintOn": "Can be used for vote code requests in kompomaatti",
+        "isTicketHintOff": "Regular product without ticket functionality",
+        "isSecretOn": "Product is secret",
+        "isSecretOff": "Product is public",
+        "isSecretHintOn": "Only visible with secret key in URL",
+        "isSecretHintOff": "Visible to everyone in the store",
+        "secretKey": "Secret key"
+      },
+      "variants": {
+        "title": "Product Variants",
+        "noVariants": "No variants defined",
+        "addVariant": "Add Variant",
+        "name": "Variant name",
+        "deleteConfirm": "Do you really want to delete variant '{name}'?",
+        "deleteSuccess": "Variant deleted!",
+        "deleteFailure": "Failed to delete variant; try again later.",
+        "createSuccess": "Variant created!",
+        "createFailure": "Failed to create variant; try again later."
+      }
+    },
+    "TransactionsView": {
+      "title": "Transactions",
+      "export": "Export",
+      "confirmDelete": "Do you really want to delete transaction #{id}?",
+      "loadFailure": "Failed to load transactions; try again later.",
+      "exportSuccess": "Transactions exported!",
+      "exportFailure": "Failed to export transactions; try again later.",
+      "noTransactionsFound": "No transactions found.",
+      "loadingTransactions": "Loading transactions ...",
+      "headers": {
+        "id": "ID",
+        "fullName": "Full Name",
+        "email": "Email",
+        "created": "Created",
+        "status": "Status",
+        "total": "Total",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "paid": "Paid",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "created": "Created"
+      }
+    },
+    "TransactionDetailView": {
+      "title": "Transaction Details",
+      "loadFailure": "Failed to load transaction; try again later.",
+      "sections": {
+        "customer": "Customer Information",
+        "address": "Address",
+        "status": "Status",
+        "payment": "Payment Details",
+        "items": "Items",
+        "receipts": "Receipts",
+        "events": "Event Log"
+      },
+      "labels": {
+        "firstname": "First name",
+        "lastname": "Last name",
+        "company": "Company",
+        "email": "Email",
+        "telephone": "Telephone",
+        "mobile": "Mobile",
+        "street": "Street",
+        "postalcode": "Postal code",
+        "city": "City",
+        "country": "Country",
+        "timeCreated": "Created",
+        "timePending": "Pending",
+        "timePaid": "Paid",
+        "timeCancelled": "Cancelled",
+        "paymentMethod": "Payment method",
+        "total": "Total",
+        "key": "Key",
+        "token": "Token",
+        "information": "Additional information"
+      },
+      "items": {
+        "name": "Item",
+        "variant": "Variant",
+        "price": "Price",
+        "delivered": "Delivered",
+        "key": "Key"
+      },
+      "receipts": {
+        "noReceipts": "No receipts",
+        "subject": "Subject",
+        "to": "To",
+        "from": "From",
+        "sent": "Sent",
+        "notSent": "Not sent",
+        "resend": "Resend",
+        "resendSuccess": "Receipt resent!",
+        "resendFailure": "Failed to resend receipt; try again later."
+      },
+      "events": {
+        "noEvents": "No events logged",
+        "message": "Message",
+        "data": "Data",
+        "time": "Time"
+      }
+    },
+    "TransactionItemsView": {
+      "title": "Transaction Items",
+      "export": "Export",
+      "loadFailure": "Failed to load transaction items; try again later.",
+      "exportSuccess": "Transaction items exported!",
+      "exportFailure": "Failed to export transaction items; try again later.",
+      "noItemsFound": "No transaction items found.",
+      "loadingItems": "Loading transaction items ...",
+      "filterByItem": "Filter by product",
+      "allItems": "All products",
+      "headers": {
+        "id": "ID",
+        "transactionId": "Transaction ID",
+        "item": "Item",
+        "variant": "Variant",
+        "price": "Price",
+        "key": "Key",
+        "delivered": "Delivered"
+      }
+    },
+    "StoreSummaryView": {
+      "title": "Sales Summary",
+      "loadFailure": "Failed to load sales summary; try again later.",
+      "noSalesFound": "No sales found for this event.",
+      "loading": "Loading sales summary ...",
+      "export": "Export",
+      "exportSuccess": "Sales summary exported!",
+      "exportFailure": "Failed to export sales summary; try again later.",
+      "headers": {
+        "item": "Item",
+        "variant": "Variant",
+        "quantity": "Quantity Sold",
+        "revenue": "Revenue"
+      },
+      "totals": {
+        "title": "Totals",
+        "totalItems": "Total Items Sold",
+        "totalRevenue": "Total Revenue"
+      },
+      "charts": {
+        "salesPerDay": "Sales per Day",
+        "salesByHour": "Sales by Hour of Day",
+        "salesCount": "Sales",
+        "noData": "No data available"
       }
     },
     "LoginView": {

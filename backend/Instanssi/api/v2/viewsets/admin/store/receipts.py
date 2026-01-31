@@ -10,7 +10,7 @@ from Instanssi.api.v2.serializers.admin.store.receipt_serializer import (
     ReceiptSerializer,
 )
 from Instanssi.api.v2.utils.base import PermissionViewSet
-from Instanssi.store.models import Receipt
+from Instanssi.store.models import Receipt, StoreTransactionEvent
 
 
 class ReceiptViewSet(PermissionViewSet):
@@ -41,5 +41,16 @@ class ReceiptViewSet(PermissionViewSet):
             )
 
         receipt.send()
+        if receipt.transaction:
+            StoreTransactionEvent.log(
+                transaction=receipt.transaction,
+                message="Receipt resent",
+                data={
+                    "receipt_id": receipt.id,
+                    "mail_to": receipt.mail_to,
+                    "subject": receipt.subject,
+                    "user": request.user.username,
+                },
+            )
         serializer = self.get_serializer(receipt)
         return Response(serializer.data)

@@ -21,9 +21,11 @@ from Instanssi.kompomaatti.models import (
     VoteGroup,
 )
 from Instanssi.store.models import (
+    Receipt,
     StoreItem,
     StoreItemVariant,
     StoreTransaction,
+    StoreTransactionEvent,
     TransactionItem,
 )
 
@@ -548,6 +550,90 @@ class Command(BaseCommand):
             TicketVoteCode.objects.create(event=event, associated_to=user, ticket=ticket_item, time=time)
             self.stdout.write(f"  Created ticket vote code: {item_name} for {user_username} at {event.name}")
 
+    def setup_receipts(self) -> None:
+        """Create receipts for all transactions"""
+        self.stdout.write("Creating receipts...")
+        for transaction in self.created_transactions.values():
+            # Check if receipt already exists for this transaction
+            if Receipt.objects.filter(transaction=transaction).exists():
+                self.stdout.write(f"  Receipt for {transaction.full_name} already exists, skipping...")
+                continue
+
+            # Determine sent time - use time_paid for paid transactions, None otherwise
+            sent_time = transaction.time_paid
+
+            # Create receipt
+            receipt = Receipt.objects.create(
+                transaction=transaction,
+                subject=f"Instanssi - Tilausvahvistus #{transaction.id}",
+                mail_to=transaction.email,
+                mail_from="noreply@instanssi.org",
+                sent=sent_time,
+                params=None,
+                content=f"Test receipt content for transaction {transaction.id}",
+            )
+            status = "sent" if sent_time else "not sent"
+            self.stdout.write(f"  Created receipt for {transaction.full_name} ({status})")
+
+    def setup_transaction_events(self) -> None:
+        """Create transaction event logs"""
+        self.stdout.write("Creating transaction events...")
+        for transaction in self.created_transactions.values():
+            # Check if events already exist for this transaction
+            if StoreTransactionEvent.objects.filter(transaction=transaction).exists():
+                self.stdout.write(f"  Events for {transaction.full_name} already exist, skipping...")
+                continue
+
+            events_created = 0
+
+            # Event 1: Transaction created
+            StoreTransactionEvent.objects.create(
+                transaction=transaction,
+                message="Transaction created",
+                data={"source": "store", "email": transaction.email},
+                created=transaction.time_created,
+            )
+            events_created += 1
+
+            # Event 2: Payment pending (if applicable)
+            if transaction.time_pending:
+                StoreTransactionEvent.objects.create(
+                    transaction=transaction,
+                    message="Payment initiated - redirecting to payment provider",
+                    data={"provider": "paytrail", "method": transaction.payment_method_name or "unknown"},
+                    created=transaction.time_pending,
+                )
+                events_created += 1
+
+            # Event 3: Payment confirmed or cancelled
+            if transaction.time_paid:
+                StoreTransactionEvent.objects.create(
+                    transaction=transaction,
+                    message="Payment confirmed by provider",
+                    data={
+                        "provider": "paytrail",
+                        "status": "ok",
+                        "reference": f"REF-{transaction.id:06d}",
+                        "amount": str(transaction.get_total_price()),
+                    },
+                    created=transaction.time_paid,
+                )
+                events_created += 1
+            elif transaction.time_cancelled:
+                StoreTransactionEvent.objects.create(
+                    transaction=transaction,
+                    message="Payment cancelled or failed",
+                    data={
+                        "provider": "paytrail",
+                        "status": "fail",
+                        "reason": "User cancelled payment",
+                    },
+                    created=transaction.time_cancelled,
+                )
+                events_created += 1
+
+            self.stdout.write(f"  Created {events_created} events for {transaction.full_name}")
+
     def handle(self, *args, **options) -> None:
         if not settings.DEBUG:
             self.stderr.write("Command disabled in production! settings.DEBUG must be True.")
@@ -570,6 +656,8 @@ class Command(BaseCommand):
                 self.setup_store_transactions()
                 self.setup_transaction_items()
                 self.setup_ticket_vote_codes()
+                self.setup_receipts()
+                self.setup_transaction_events()
 
                 self.stdout.write(self.style.SUCCESS("\nData loading complete!"))
                 self.stdout.write("\nTest user credentials (password = username):")

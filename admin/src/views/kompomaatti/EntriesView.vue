@@ -8,13 +8,13 @@
                     </template>
                     {{ t("EntriesView.newEntry") }}
                 </v-btn>
-                <ExportButton
-                    v-if="auth.canView(PermissionTarget.ENTRY)"
-                    class="ml-2"
-                    :label="t('EntriesView.exportResults')"
-                    :loading="exportLoading"
-                    @export="downloadResults"
-                />
+                <div v-if="auth.canView(PermissionTarget.ENTRY)" class="ml-4">
+                    <ExportButton
+                        :label="t('EntriesView.exportResults')"
+                        :loading="exportLoading"
+                        @export="downloadResults"
+                    />
+                </div>
                 <v-select
                     v-model="selectedCompo"
                     :items="compoOptions"

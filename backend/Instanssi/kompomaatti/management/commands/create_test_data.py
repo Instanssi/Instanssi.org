@@ -7,9 +7,11 @@ from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
 
+from Instanssi.admin_upload.models import UploadedFile
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 from Instanssi.common.youtube.parser import YoutubeURL
 from Instanssi.ext_blog.models import BlogEntry
+from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,
@@ -44,12 +46,14 @@ from .fixtures.files import (
     get_random_video_filename,
 )
 from .fixtures.profiles import profiles
+from .fixtures.programme_events import programme_events
 from .fixtures.store_items import store_item_variants, store_items
 from .fixtures.store_transactions import (
     store_transactions,
     ticket_vote_codes,
     transaction_items,
 )
+from .fixtures.uploaded_files import uploaded_files
 from .fixtures.users import users
 from .fixtures.videos import video_categories, videos
 from .fixtures.votecodes import vote_code_requests
@@ -696,6 +700,90 @@ class Command(BaseCommand):
             )
             self.stdout.write(f"  Created video: {video_name} in {cat_name}")
 
+    def setup_uploaded_files(self) -> None:
+        """Create uploaded files"""
+        self.stdout.write("Creating uploaded files...")
+        for file_data in uploaded_files:
+            event_pk = file_data["event_pk"]
+            user_username = file_data["user_username"]
+
+            event = self.created_events.get(event_pk)
+            user = self.created_users.get(user_username)
+
+            if not event or not user:
+                self.stderr.write(f"  Event or user not found, skipping uploaded file...")
+                continue
+
+            description = file_data["description"]
+            # Check if similar file already exists (by description and event)
+            if UploadedFile.objects.filter(event=event, description=description).exists():
+                self.stdout.write(f"  Uploaded file '{description}' already exists, skipping...")
+                continue
+
+            uploaded_file = UploadedFile(
+                event=event,
+                user=user,
+                description=description,
+                date=file_data["date"],
+            )
+
+            # Attach file
+            file_type = file_data["file_type"]
+            uploaded_file.file = self.get_test_file(file_type)
+
+            uploaded_file.save()
+            self.stdout.write(f"  Created uploaded file: {description} ({file_type})")
+
+    def setup_programme_events(self) -> None:
+        """Create programme events"""
+        self.stdout.write("Creating programme events...")
+        for prog_data in programme_events:
+            event_pk = prog_data["event_pk"]
+            event = self.created_events.get(event_pk)
+
+            if not event:
+                self.stderr.write(f"  Event {event_pk} not found, skipping programme event...")
+                continue
+
+            title = prog_data["title"]
+            start = prog_data["start"]
+
+            # Check if programme event already exists (by title, event, and start time)
+            if ProgrammeEvent.objects.filter(event=event, title=title, start=start).exists():
+                self.stdout.write(f"  Programme event '{title}' already exists, skipping...")
+                continue
+
+            programme_event = ProgrammeEvent(
+                event=event,
+                title=title,
+                start=start,
+                end=prog_data["end"],
+                description=prog_data["description"],
+                presenters=prog_data["presenters"],
+                presenters_titles=prog_data["presenters_titles"],
+                place=prog_data["place"],
+                event_type=prog_data["event_type"],
+                active=prog_data["active"],
+                email=prog_data["email"],
+                home_url=prog_data["home_url"],
+                twitter_url=prog_data["twitter_url"],
+                github_url=prog_data["github_url"],
+                facebook_url=prog_data["facebook_url"],
+                linkedin_url=prog_data["linkedin_url"],
+                wiki_url=prog_data["wiki_url"],
+            )
+
+            # Attach icon files if specified
+            if prog_data["icon_original"]:
+                programme_event.icon_original = self.get_test_file("image")
+            if prog_data["icon2_original"]:
+                programme_event.icon2_original = self.get_test_file("image")
+
+            programme_event.save()
+            event_type_str = "detailed" if prog_data["event_type"] == 1 else "simple"
+            active_str = "" if prog_data["active"] else " (inactive)"
+            self.stdout.write(f"  Created programme event: {title} ({event_type_str}){active_str}")
+
     def handle(self, *args, **options) -> None:
         if not settings.DEBUG:
             self.stderr.write("Command disabled in production! settings.DEBUG must be True.")
@@ -722,6 +810,8 @@ class Command(BaseCommand):
                 self.setup_transaction_events()
                 self.setup_video_categories()
                 self.setup_videos()
+                self.setup_uploaded_files()
+                self.setup_programme_events()
 
                 self.stdout.write(self.style.SUCCESS("\nData loading complete!"))
                 self.stdout.write("\nTest user credentials (password = username):")

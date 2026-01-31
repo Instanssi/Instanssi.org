@@ -33,7 +33,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.time_created="{ item }">
-                        <DateCell :value="item.time_created" />
+                        <DateTimeCell :value="item.time_created" />
                     </template>
                     <template #item.status="{ item }">
                         <v-chip :color="getStatusColor(item)" size="small" variant="flat">
@@ -74,7 +74,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { StoreTransaction } from "@/api";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

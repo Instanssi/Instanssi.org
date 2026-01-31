@@ -42,7 +42,7 @@
                         <BooleanIcon :value="item.public" />
                     </template>
                     <template #item.date="{ item }">
-                        <DateCell :value="item.date" />
+                        <DateTimeCell :value="item.date" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -71,7 +71,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { BlogEntry } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

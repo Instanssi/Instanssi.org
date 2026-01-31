@@ -45,7 +45,7 @@
                         <BooleanIcon :value="item.is_active" />
                     </template>
                     <template #item.date_joined="{ item }">
-                        <DateCell :value="item.date_joined" />
+                        <DateTimeCell :value="item.date_joined" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -74,7 +74,7 @@ import { type VDataTable, type VDataTableServer } from "vuetify/components";
 import * as api from "@/api";
 import type { User } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

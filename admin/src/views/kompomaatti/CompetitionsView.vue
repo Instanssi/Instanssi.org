@@ -42,13 +42,13 @@
                         <BooleanIcon :value="item.active" />
                     </template>
                     <template #item.participation_end="{ item }">
-                        <DateCell :value="item.participation_end" />
+                        <DateTimeCell :value="item.participation_end" />
                     </template>
                     <template #item.start="{ item }">
-                        <DateCell :value="item.start" />
+                        <DateTimeCell :value="item.start" />
                     </template>
                     <template #item.end="{ item }">
-                        <DateCell :value="item.end" />
+                        <DateTimeCell :value="item.end" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -77,7 +77,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { Competition } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

@@ -18,7 +18,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.time="{ item }">
-                        <DateCell :value="item.time" />
+                        <DateTimeCell :value="item.time" />
                     </template>
                     <template #item.associated_username="{ item }">
                         {{ item.associated_username ?? "-" }}
@@ -41,7 +41,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { TicketVoteCode } from "@/api";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

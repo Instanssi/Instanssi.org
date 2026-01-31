@@ -42,13 +42,13 @@
                         <BooleanIcon :value="item.active" />
                     </template>
                     <template #item.adding_end="{ item }">
-                        <DateCell :value="item.adding_end" />
+                        <DateTimeCell :value="item.adding_end" />
                     </template>
                     <template #item.voting_start="{ item }">
-                        <DateCell :value="item.voting_start" />
+                        <DateTimeCell :value="item.voting_start" />
                     </template>
                     <template #item.voting_end="{ item }">
-                        <DateCell :value="item.voting_end" />
+                        <DateTimeCell :value="item.voting_end" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -77,7 +77,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { Compo } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
-import DateCell from "@/components/table/DateCell.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

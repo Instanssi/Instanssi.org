@@ -81,6 +81,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -191,7 +192,7 @@ async function deleteUser(item: User): Promise<void> {
             flushData();
             toast.success(t("UsersView.deleteSuccess"));
         } catch (e) {
-            toast.error(t("UsersView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("UsersView.deleteFailure")));
             console.error(e);
         }
     }

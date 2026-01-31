@@ -84,6 +84,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -192,7 +193,7 @@ async function deleteItem(item: StoreItem): Promise<void> {
             toast.success(t("StoreItemsView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("StoreItemsView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("StoreItemsView.deleteFailure")));
             console.error(e);
         }
     });

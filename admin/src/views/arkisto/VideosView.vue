@@ -94,6 +94,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -236,7 +237,7 @@ async function deleteVideo(item: OtherVideo): Promise<void> {
             toast.success(t("VideosView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("VideosView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("VideosView.deleteFailure")));
             console.error(e);
         }
     });

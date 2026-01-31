@@ -9,6 +9,21 @@ type ToastInterface = { error: (message: string) => void };
 type FieldMapping = Record<string, string>;
 
 /**
+ * Extract error message from API error response.
+ * Returns the detail message if available, otherwise the fallback.
+ */
+export function getApiErrorMessage(error: unknown, fallbackMessage: string): string {
+    const axiosError = error as AxiosError;
+    if (axiosError?.response?.data) {
+        const data = axiosError.response.data as Record<string, unknown>;
+        if (typeof data.detail === "string") {
+            return data.detail;
+        }
+    }
+    return fallbackMessage;
+}
+
+/**
  * Handle API errors by mapping field-level validation errors to form fields
  * and showing appropriate toast messages.
  *

@@ -78,6 +78,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -175,7 +176,7 @@ async function deletePost(item: BlogEntry): Promise<void> {
             toast.success(t("BlogEditorView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("BlogEditorView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("BlogEditorView.deleteFailure")));
             console.error(e);
         }
     });

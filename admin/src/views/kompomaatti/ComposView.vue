@@ -84,6 +84,7 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { getApiErrorMessage } from "@/utils/http";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -188,7 +189,7 @@ async function deleteCompo(item: Compo): Promise<void> {
             toast.success(t("ComposView.deleteSuccess"));
             flushData();
         } catch (e) {
-            toast.error(t("ComposView.deleteFailure"));
+            toast.error(getApiErrorMessage(e, t("ComposView.deleteFailure")));
             console.error(e);
         }
     });

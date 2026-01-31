@@ -22,10 +22,12 @@ class YoutubeVideoField(models.JSONField):
         return YoutubeURL(video_id=value["video_id"], start=value["start"])
 
     def to_python(self, value: Any) -> Optional[YoutubeURL]:
-        if isinstance(value, YoutubeURL):
-            return value
         if not value:
             return None
+        if isinstance(value, YoutubeURL):
+            return value
+        if isinstance(value, dict):
+            return YoutubeURL(video_id=value["video_id"], start=value.get("start"))
         return YoutubeURL.from_url(value)
 
     def value_to_string(self, obj):

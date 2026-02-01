@@ -81,7 +81,6 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
-import { useEvents } from "@/services/events";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -100,7 +99,6 @@ const props = defineProps<{
 const { t, d } = useI18n();
 const router = useRouter();
 const toast = useToast();
-const { getLatestEvent } = useEvents();
 
 const loading = ref(false);
 const saving = ref(false);
@@ -113,14 +111,7 @@ const isActiveLabel = computed(() =>
 );
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
-    const event = getLatestEvent();
-    const items: BreadcrumbItem[] = [
-        {
-            title: event?.name ?? "...",
-            to: event ? { name: "dashboard", params: { eventId: event.id } } : undefined,
-        },
-        { title: t("UsersView.title"), to: { name: "users" } },
-    ];
+    const items: BreadcrumbItem[] = [{ title: t("UsersView.title"), to: { name: "users" } }];
     if (isEditMode.value) {
         items.push({ title: userName.value || "...", disabled: true });
     } else {

@@ -76,6 +76,19 @@ vi.mock("@/api", () => ({
     adminEventStoreItemsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
     adminEventStoreItemVariantsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
     adminEventStoreItemVariantsDestroy: vi.fn().mockResolvedValue({}),
+
+    // Tokens
+    tokensList: vi.fn().mockResolvedValue({ data: { results: [], count: 0 } }),
+    tokensDestroy: vi.fn().mockResolvedValue({}),
+    userTokensCreateToken: vi.fn().mockResolvedValue({
+        data: {
+            pk: "test-pk",
+            token_key: "abc12345",
+            token: "abc12345defgh67890ijklmnop123456qrstuvwxyz789012345678901234",
+            created: "2024-01-15T10:00:00Z",
+            expiry: "2024-02-14T10:00:00Z",
+        },
+    }),
 }));
 
 // Mock vue-router
@@ -131,6 +144,7 @@ vi.mock("@/services/auth", () => ({
         EVENT: "event",
         USER: "user",
         BLOG_ENTRY: "blogentry",
+        AUTH_TOKEN: "authtoken",
     },
 }));
 

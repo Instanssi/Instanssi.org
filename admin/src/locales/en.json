@@ -20,6 +20,28 @@
       "clickToPreview": "Click to preview",
       "previewTitle": "Image Preview"
     },
+    "ImageCell": {
+      "clickToPreview": "Click to preview",
+      "previewTitle": "Image Preview",
+      "download": "Download file"
+    },
+    "MediaCell": {
+      "clickToPreview": "Click to preview",
+      "download": "Download file",
+      "imagePreviewTitle": "Image Preview",
+      "videoPreviewTitle": "Video Preview",
+      "audioPreviewTitle": "Audio Preview",
+      "videoNotSupported": "Your browser does not support video playback.",
+      "audioNotSupported": "Your browser does not support audio playback."
+    },
+    "SocialLinksCell": {
+      "home": "Website",
+      "twitter": "Twitter/X",
+      "github": "GitHub",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "wikipedia": "Wikipedia"
+    },
     "FileUploadField": {
       "clickToPreview": "Click to preview",
       "download": "Download file",
@@ -306,8 +328,10 @@
       "allCompos": "All compos",
       "headers": {
         "id": "ID",
+        "image": "Image",
         "name": "Name",
         "creator": "Creator",
+        "entryfile": "Entry File",
         "compo": "Compo",
         "disqualified": "Disqualified",
         "rank": "Rank",
@@ -600,6 +624,7 @@
       "loadingItems": "Loading products ...",
       "headers": {
         "id": "ID",
+        "image": "Image",
         "name": "Name",
         "price": "Price",
         "available": "Available",
@@ -920,10 +945,13 @@
       "loadingProgramEvents": "Loading program events ...",
       "headers": {
         "id": "ID",
+        "icon": "Icon 1",
+        "icon2": "Icon 2",
         "title": "Title",
         "start": "Start",
         "end": "End",
         "place": "Place",
+        "socialLinks": "Links",
         "eventType": "Type",
         "active": "Active",
         "actions": "Actions"

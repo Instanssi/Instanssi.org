@@ -38,9 +38,7 @@
                     @update:options="debouncedLoad"
                 >
                     <template #item.file="{ item }">
-                        <a :href="item.file" target="_blank" class="text-decoration-none">
-                            {{ getFilename(item.file) }}
-                        </a>
+                        <MediaCell :url="item.file" />
                     </template>
                     <template #item.actions="{ item }">
                         <v-btn
@@ -78,7 +76,9 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { UploadedFile } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { getFilenameFromUrl } from "@/utils/media";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -137,15 +137,6 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
-function getFilename(url: string): string {
-    try {
-        const pathname = new URL(url).pathname;
-        return pathname.split("/").pop() || url;
-    } catch {
-        return url;
-    }
-}
-
 async function copyUrl(url: string): Promise<void> {
     try {
         await navigator.clipboard.writeText(url);
@@ -185,7 +176,7 @@ const debouncedLoad = debounce(load, 250);
 
 async function deleteItem(item: UploadedFile): Promise<void> {
     const text = t("UploadsView.confirmDelete", {
-        description: item.description || getFilename(item.file),
+        description: item.description || getFilenameFromUrl(item.file) || item.file,
     });
     await confirmDialog.value!.ifConfirmed(text, async () => {
         try {

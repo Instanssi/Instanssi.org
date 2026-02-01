@@ -54,6 +54,12 @@
                     :loading-text="t('EntriesView.loadingEntries')"
                     @update:options="debouncedLoad"
                 >
+                    <template #item.imagefile_thumbnail_url="{ item }">
+                        <ImageCell :url="item.imagefile_thumbnail_url" />
+                    </template>
+                    <template #item.entryfile_url="{ item }">
+                        <MediaCell :url="item.entryfile_url" />
+                    </template>
                     <template #item.disqualified="{ item }">
                         <BooleanIcon
                             :value="item.disqualified"
@@ -95,7 +101,9 @@ import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
+import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -142,6 +150,12 @@ const headers: ReadonlyHeaders = [
         key: "id",
     },
     {
+        title: t("EntriesView.headers.image"),
+        sortable: false,
+        key: "imagefile_thumbnail_url",
+        width: 60,
+    },
+    {
         title: t("EntriesView.headers.name"),
         sortable: true,
         key: "name",
@@ -150,6 +164,11 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.creator"),
         sortable: true,
         key: "creator",
+    },
+    {
+        title: t("EntriesView.headers.entryfile"),
+        sortable: false,
+        key: "entryfile_url",
     },
     {
         title: t("EntriesView.headers.compo"),

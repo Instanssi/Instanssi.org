@@ -47,11 +47,27 @@
                     :loading-text="t('ProgramEventsView.loadingProgramEvents')"
                     @update:options="debouncedLoad"
                 >
+                    <template #item.icon_small_url="{ item }">
+                        <ImageCell :url="item.icon_small_url" />
+                    </template>
+                    <template #item.icon2_small_url="{ item }">
+                        <ImageCell :url="item.icon2_small_url" />
+                    </template>
                     <template #item.start="{ item }">
                         <DateTimeCell :value="item.start" />
                     </template>
                     <template #item.end="{ item }">
                         <DateTimeCell :value="item.end" />
+                    </template>
+                    <template #item.social_links="{ item }">
+                        <SocialLinksCell
+                            :home-url="item.home_url"
+                            :twitter-url="item.twitter_url"
+                            :github-url="item.github_url"
+                            :facebook-url="item.facebook_url"
+                            :linkedin-url="item.linkedin_url"
+                            :wiki-url="item.wiki_url"
+                        />
                     </template>
                     <template #item.event_type="{ item }">
                         {{ t(`ProgramEventsView.eventTypes.${item.event_type}`) }}
@@ -87,7 +103,9 @@ import * as api from "@/api";
 import type { ProgramEvent } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
+import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import SocialLinksCell from "@/components/table/SocialLinksCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -136,6 +154,18 @@ const headers: ReadonlyHeaders = [
         key: "id",
     },
     {
+        title: t("ProgramEventsView.headers.icon"),
+        sortable: false,
+        key: "icon_small_url",
+        width: 60,
+    },
+    {
+        title: t("ProgramEventsView.headers.icon2"),
+        sortable: false,
+        key: "icon2_small_url",
+        width: 60,
+    },
+    {
         title: t("ProgramEventsView.headers.title"),
         sortable: false,
         key: "title",
@@ -154,6 +184,11 @@ const headers: ReadonlyHeaders = [
         title: t("ProgramEventsView.headers.place"),
         sortable: false,
         key: "place",
+    },
+    {
+        title: t("ProgramEventsView.headers.socialLinks"),
+        sortable: false,
+        key: "social_links",
     },
     {
         title: t("ProgramEventsView.headers.eventType"),

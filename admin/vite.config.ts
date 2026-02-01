@@ -12,6 +12,7 @@ export default defineConfig({
         compression({
             include: /\.(js|map|css|html|ico|svg)$/i,
             threshold: 1500,
+            algorithms: ["gzip"],
         }),
     ],
     esbuild: {

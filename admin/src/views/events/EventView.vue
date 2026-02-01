@@ -44,6 +44,9 @@
                     <template #item.archived="{ item }">
                         <BooleanIcon :value="item.archived" />
                     </template>
+                    <template #item.hidden="{ item }">
+                        <BooleanIcon :value="item.hidden" />
+                    </template>
                     <template #item.date="{ item }">
                         <DateCell :value="item.date" />
                     </template>
@@ -149,6 +152,11 @@ const headers: ReadonlyHeaders = [
         title: t("EventView.headers.archived"),
         sortable: false,
         key: "archived",
+    },
+    {
+        title: t("EventView.headers.hidden"),
+        sortable: false,
+        key: "hidden",
     },
     {
         title: t("EventView.headers.mainUrl"),

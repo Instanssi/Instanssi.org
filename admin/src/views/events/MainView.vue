@@ -243,26 +243,36 @@ function getCompoName(compoId: number): string {
     return compos.value.find((c) => c.id === compoId)?.name ?? t("MainView.unknown");
 }
 
-async function loadDashboardData() {
-    loading.value = true;
-    const eid = eventIdNum.value;
-
+async function loadEvent(eid: number) {
     try {
-        // Load event details
-        const eventResponse = await api.adminEventsRetrieve({ path: { id: eid } });
-        event.value = eventResponse.data ?? null;
+        const response = await api.adminEventsRetrieve({ path: { id: eid } });
+        event.value = response.data ?? null;
+    } catch (e) {
+        console.error("Failed to load event:", e);
+    }
+}
 
-        // Load all data in parallel
-        const [
-            blogResponse,
-            compoResponse,
-            entriesResponse,
-            competitionsResponse,
-            participantsResponse,
-            transactionsResponse,
-            voteRequestsResponse,
-        ] = await Promise.all([
-            api.adminBlogList({ query: { event: eid, limit: 1000 } }),
+async function loadBlogPosts(eid: number) {
+    if (!auth.canView(PermissionTarget.BLOG_ENTRY)) return;
+    try {
+        const response = await api.adminBlogList({ query: { event: eid, limit: 1000 } });
+        const blogPosts = response.data?.results ?? [];
+        const publicPosts = blogPosts.filter((p) => p.public).length;
+        stats.value.blogPosts = {
+            total: blogPosts.length,
+            public: publicPosts,
+            draft: blogPosts.length - publicPosts,
+        };
+        recentBlogPosts.value = blogPosts.slice(0, 5);
+    } catch (e) {
+        console.error("Failed to load blog posts:", e);
+    }
+}
+
+async function loadComposAndEntries(eid: number) {
+    if (!auth.canView(PermissionTarget.COMPO) && !auth.canView(PermissionTarget.ENTRY)) return;
+    try {
+        const [compoResponse, entriesResponse] = await Promise.all([
             api.adminEventKompomaattiComposList({
                 path: { event_pk: eid },
                 query: { limit: 1000 },
@@ -271,6 +281,31 @@ async function loadDashboardData() {
                 path: { event_pk: eid },
                 query: { limit: 1000 },
             }),
+        ]);
+
+        const compoList = compoResponse.data?.results ?? [];
+        const entries = entriesResponse.data?.results ?? [];
+        compos.value = compoList;
+        stats.value.compos = compoList.length;
+        stats.value.compoEntries = entries.length;
+        recentCompoEntries.value = entries.slice(0, 5);
+
+        const entryCounts = new Map<number, number>();
+        for (const entry of entries) {
+            entryCounts.set(entry.compo, (entryCounts.get(entry.compo) ?? 0) + 1);
+        }
+        compoEntryCounts.value = entryCounts;
+    } catch (e) {
+        console.error("Failed to load compos/entries:", e);
+    }
+}
+
+async function loadCompetitionsAndParticipants(eid: number) {
+    if (!auth.canView(PermissionTarget.COMPETITION) && !auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)) {
+        return;
+    }
+    try {
+        const [competitionsResponse, participantsResponse] = await Promise.all([
             api.adminEventKompomaattiCompetitionsList({
                 path: { event_pk: eid },
                 query: { limit: 1000 },
@@ -279,75 +314,74 @@ async function loadDashboardData() {
                 path: { event_pk: eid },
                 query: { limit: 1000 },
             }),
-            api.adminEventStoreTransactionsList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
-            api.adminEventKompomaattiVoteCodeRequestsList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
         ]);
 
-        // Process blog stats
-        const blogPosts = blogResponse.data?.results ?? [];
-        const publicPosts = blogPosts.filter((p) => p.public).length;
-        stats.value.blogPosts = {
-            total: blogPosts.length,
-            public: publicPosts,
-            draft: blogPosts.length - publicPosts,
-        };
-        recentBlogPosts.value = blogPosts.slice(0, 5);
-
-        // Process compo stats
-        const compoList = compoResponse.data?.results ?? [];
-        const entries = entriesResponse.data?.results ?? [];
-        compos.value = compoList;
-        stats.value.compos = compoList.length;
-        stats.value.compoEntries = entries.length;
-        recentCompoEntries.value = entries.slice(0, 5);
-
-        // Count entries per compo
-        const entryCounts = new Map<number, number>();
-        entries.forEach((entry) => {
-            entryCounts.set(entry.compo, (entryCounts.get(entry.compo) ?? 0) + 1);
-        });
-        compoEntryCounts.value = entryCounts;
-
-        // Process competition stats
         const competitionList = competitionsResponse.data?.results ?? [];
         const participants = participantsResponse.data?.results ?? [];
         competitions.value = competitionList;
         stats.value.competitions = competitionList.length;
         stats.value.competitionParticipants = participants.length;
 
-        // Count participants per competition
         const participantCounts = new Map<number, number>();
-        participants.forEach((p) => {
+        for (const p of participants) {
             participantCounts.set(p.competition, (participantCounts.get(p.competition) ?? 0) + 1);
-        });
+        }
         competitionParticipantCounts.value = participantCounts;
+    } catch (e) {
+        console.error("Failed to load competitions/participants:", e);
+    }
+}
 
-        // Process transactions
-        const transactions = transactionsResponse.data?.results ?? [];
-        const paidTransactions = transactions.filter((t) => t.time_paid).length;
+async function loadTransactions(eid: number) {
+    if (!auth.canView(PermissionTarget.STORE_TRANSACTION)) return;
+    try {
+        const response = await api.adminEventStoreTransactionsList({
+            path: { event_pk: eid },
+            query: { limit: 1000 },
+        });
+        const transactions = response.data?.results ?? [];
+        const paidTransactions = transactions.filter((tx) => tx.time_paid).length;
         stats.value.transactions = {
             total: transactions.length,
             paid: paidTransactions,
         };
+    } catch (e) {
+        console.error("Failed to load transactions:", e);
+    }
+}
 
-        // Process vote code requests
-        const voteRequests = voteRequestsResponse.data?.results ?? [];
+async function loadVoteCodeRequests(eid: number) {
+    if (!auth.canView(PermissionTarget.VOTE_CODE_REQUEST)) return;
+    try {
+        const response = await api.adminEventKompomaattiVoteCodeRequestsList({
+            path: { event_pk: eid },
+            query: { limit: 1000 },
+        });
+        const voteRequests = response.data?.results ?? [];
         const pendingRequests = voteRequests.filter((r) => r.status === 0).length;
         stats.value.voteCodeRequests = {
             total: voteRequests.length,
             pending: pendingRequests,
         };
     } catch (e) {
-        console.error("Failed to load dashboard data:", e);
-    } finally {
-        loading.value = false;
+        console.error("Failed to load vote code requests:", e);
     }
+}
+
+async function loadDashboardData() {
+    loading.value = true;
+    const eid = eventIdNum.value;
+
+    await loadEvent(eid);
+    await Promise.all([
+        loadBlogPosts(eid),
+        loadComposAndEntries(eid),
+        loadCompetitionsAndParticipants(eid),
+        loadTransactions(eid),
+        loadVoteCodeRequests(eid),
+    ]);
+
+    loading.value = false;
 }
 
 onMounted(loadDashboardData);

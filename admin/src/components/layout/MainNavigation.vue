@@ -1,8 +1,20 @@
 <template>
-    <v-navigation-drawer color="grey-darken-4" permanent>
+    <!-- Mobile App Bar -->
+    <v-app-bar v-if="mobile" color="grey-darken-4" density="compact">
+        <v-app-bar-nav-icon @click="drawer = !drawer" />
+        <v-app-bar-title>{{ t("MainNavigation.title") }}</v-app-bar-title>
+    </v-app-bar>
+
+    <!-- Navigation Drawer (permanent on desktop, temporary on mobile) -->
+    <v-navigation-drawer
+        v-model="drawer"
+        color="grey-darken-4"
+        :permanent="!mobile"
+        :temporary="mobile"
+    >
         <div class="fill-height d-flex flex-column ma-0 pa-0">
             <div class="d-flex flex-row ma-5 flex-0-0">
-                <v-img :src="logoImage" />
+                <v-img :src="logoImage" max-width="32" />
                 <h1 class="pl-2">
                     {{ t("MainNavigation.title") }}
                 </h1>
@@ -29,8 +41,18 @@
                 </template>
             </v-select>
             <v-divider />
-            <NavigationList :items="primary" :event="event" class="mb-auto" />
-            <NavigationList :items="secondary" :event="event" class="mt-auto" />
+            <NavigationList
+                :items="primary"
+                :event="event"
+                class="mb-auto"
+                @navigate="onNavigate"
+            />
+            <NavigationList
+                :items="secondary"
+                :event="event"
+                class="mt-auto"
+                @navigate="onNavigate"
+            />
         </div>
     </v-navigation-drawer>
 </template>
@@ -41,6 +63,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import { useDisplay } from "vuetify";
 
 import logoImage from "@/assets/icon.png";
 import NavigationList, { type NavigationLinks } from "@/components/layout/NavigationList.vue";
@@ -56,10 +79,22 @@ const eventService = useEvents();
 const authService = useAuth();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const { t } = useI18n();
+const { mobile } = useDisplay();
+
+const drawer = ref(true);
 const event: Ref<undefined | number> = ref(undefined);
 const events = computed(() =>
     eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))
 );
+
+/**
+ * Close drawer on mobile after navigation
+ */
+function onNavigate() {
+    if (mobile.value) {
+        drawer.value = false;
+    }
+}
 
 /**
  * Check if the current route is an edit or create page.
@@ -91,10 +126,12 @@ async function onEventChange(newEvent: number | undefined): Promise<void> {
             query: route.query,
         });
     }
+    onNavigate();
 }
 
 function routeToEvents(): void {
     router.push({ name: "events" });
+    onNavigate();
 }
 
 /**

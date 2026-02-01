@@ -145,14 +145,20 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        title: values.title,
+        text: values.text,
+        public: values.public,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminBlogCreate({
             body: {
                 event: parseInt(props.eventId, 10),
-                title: values.title,
-                text: values.text,
-                public: values.public,
+                ...buildBody(values),
             },
         });
         toast.success(t("BlogPostDialog.createSuccess"));
@@ -167,11 +173,7 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminBlogPartialUpdate({
             path: { id: itemId },
-            body: {
-                title: values.title,
-                text: values.text,
-                public: values.public,
-            },
+            body: buildBody(values),
         });
         toast.success(t("BlogPostDialog.editSuccess"));
         return true;

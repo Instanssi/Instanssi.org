@@ -560,31 +560,35 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+        description: values.description || "",
+        adding_end: toISODatetime(values.addingEnd)!,
+        editing_end: toISODatetime(values.editingEnd)!,
+        compo_start: toISODatetime(values.compoStart)!,
+        voting_start: toISODatetime(values.votingStart)!,
+        voting_end: toISODatetime(values.votingEnd)!,
+        entry_sizelimit: values.entrySizelimit,
+        source_sizelimit: values.sourceSizelimit,
+        formats: values.formats || "",
+        source_formats: values.sourceFormats || "",
+        image_formats: values.imageFormats || "",
+        active: values.active,
+        show_voting_results: values.showVotingResults,
+        is_votable: values.isVotable,
+        entry_view_type: values.entryViewType,
+        thumbnail_pref: values.thumbnailPref,
+        hide_from_archive: values.hideFromArchive,
+        hide_from_frontpage: values.hideFromFrontpage,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiComposCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                adding_end: toISODatetime(values.addingEnd)!,
-                editing_end: toISODatetime(values.editingEnd)!,
-                compo_start: toISODatetime(values.compoStart)!,
-                voting_start: toISODatetime(values.votingStart)!,
-                voting_end: toISODatetime(values.votingEnd)!,
-                entry_sizelimit: values.entrySizelimit,
-                source_sizelimit: values.sourceSizelimit,
-                formats: values.formats || "",
-                source_formats: values.sourceFormats || "",
-                image_formats: values.imageFormats || "",
-                active: values.active,
-                show_voting_results: values.showVotingResults,
-                is_votable: values.isVotable,
-                entry_view_type: values.entryViewType,
-                thumbnail_pref: values.thumbnailPref,
-                hide_from_archive: values.hideFromArchive,
-                hide_from_frontpage: values.hideFromFrontpage,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompoEditView.createSuccess"));
         return true;
@@ -598,27 +602,7 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiComposPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                adding_end: toISODatetime(values.addingEnd)!,
-                editing_end: toISODatetime(values.editingEnd)!,
-                compo_start: toISODatetime(values.compoStart)!,
-                voting_start: toISODatetime(values.votingStart)!,
-                voting_end: toISODatetime(values.votingEnd)!,
-                entry_sizelimit: values.entrySizelimit,
-                source_sizelimit: values.sourceSizelimit,
-                formats: values.formats || "",
-                source_formats: values.sourceFormats || "",
-                image_formats: values.imageFormats || "",
-                active: values.active,
-                show_voting_results: values.showVotingResults,
-                is_votable: values.isVotable,
-                entry_view_type: values.entryViewType,
-                thumbnail_pref: values.thumbnailPref,
-                hide_from_archive: values.hideFromArchive,
-                hide_from_frontpage: values.hideFromFrontpage,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompoEditView.editSuccess"));
         return true;

@@ -167,16 +167,20 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        username: values.username,
+        is_active: values.isActive,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminUsersCreate({
-            body: {
-                first_name: values.firstName,
-                last_name: values.lastName,
-                email: values.email,
-                username: values.username,
-                is_active: values.isActive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("UserDialog.createSuccess"));
         return true;
@@ -190,13 +194,7 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminUsersPartialUpdate({
             path: { id: itemId },
-            body: {
-                first_name: values.firstName,
-                last_name: values.lastName,
-                email: values.email,
-                username: values.username,
-                is_active: values.isActive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("UserDialog.editSuccess"));
         return true;

@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { toFormData } from "./formdata";
+import { prepareFileField, toFormData } from "./formdata";
 
 describe("toFormData", () => {
     describe("with null and undefined values", () => {
-        it("should skip null values", () => {
+        it("should send empty string for null values", () => {
             const result = toFormData({ name: "test", empty: null });
             expect(result.get("name")).toBe("test");
-            expect(result.has("empty")).toBe(false);
+            expect(result.get("empty")).toBe("");
         });
 
         it("should skip undefined values", () => {
@@ -16,10 +16,12 @@ describe("toFormData", () => {
             expect(result.has("empty")).toBe(false);
         });
 
-        it("should handle object with only null/undefined values", () => {
+        it("should distinguish null from undefined", () => {
             const result = toFormData({ a: null, b: undefined });
             const entries = Array.from(result.entries());
-            expect(entries).toHaveLength(0);
+            expect(entries).toHaveLength(1);
+            expect(result.get("a")).toBe("");
+            expect(result.has("b")).toBe(false);
         });
     });
 
@@ -39,6 +41,22 @@ describe("toFormData", () => {
 
             const formFile = result.get("image") as File;
             expect(formFile.type).toBe("image/jpeg");
+        });
+
+        it("should handle File array (v-file-input with multiple)", () => {
+            const file1 = new File(["content1"], "file1.txt", { type: "text/plain" });
+            const file2 = new File(["content2"], "file2.txt", { type: "text/plain" });
+            const result = toFormData({ document: [file1, file2] });
+
+            // Should only use the first file
+            const formFile = result.get("document");
+            expect(formFile).toBeInstanceOf(File);
+            expect((formFile as File).name).toBe("file1.txt");
+        });
+
+        it("should skip empty File array", () => {
+            const result = toFormData({ document: [] as File[] });
+            expect(result.has("document")).toBe(false);
         });
     });
 
@@ -110,25 +128,59 @@ describe("toFormData", () => {
             expect(result.get("price")).toBe("29.99");
             expect(result.get("active")).toBe("true");
             expect(result.get("hidden")).toBe("false");
-            expect(result.has("description")).toBe(false);
-            expect(result.has("optional")).toBe(false);
+            expect(result.get("description")).toBe(""); // null becomes empty string
+            expect(result.has("optional")).toBe(false); // undefined is skipped
             expect(result.get("document")).toBeInstanceOf(File);
         });
 
-        it("should maintain all non-null/undefined entries", () => {
+        it("should include all non-undefined entries", () => {
             const result = toFormData({
                 a: "string",
                 b: 123,
                 c: true,
                 d: null,
                 e: undefined,
+                f: false,
             });
 
             const keys = Array.from(result.keys());
-            expect(keys).toHaveLength(3);
-            expect(keys).toContain("a");
-            expect(keys).toContain("b");
-            expect(keys).toContain("c");
+            expect(keys).toHaveLength(5); // e (undefined) is skipped
+            expect(result.get("a")).toBe("string");
+            expect(result.get("b")).toBe("123");
+            expect(result.get("c")).toBe("true");
+            expect(result.get("d")).toBe("");
+            expect(result.has("e")).toBe(false);
+            expect(result.get("f")).toBe("false");
         });
+    });
+});
+
+describe("prepareFileField", () => {
+    it("should return File when given a File", () => {
+        const file = new File(["content"], "test.txt");
+        const result = prepareFileField(file);
+        expect(result).toBe(file);
+    });
+
+    it("should return first File when given File array", () => {
+        const file1 = new File(["content1"], "file1.txt");
+        const file2 = new File(["content2"], "file2.txt");
+        const result = prepareFileField([file1, file2]);
+        expect(result).toBe(file1);
+    });
+
+    it("should return null when given null (to clear the file)", () => {
+        const result = prepareFileField(null);
+        expect(result).toBeNull();
+    });
+
+    it("should return undefined when given undefined", () => {
+        const result = prepareFileField(undefined);
+        expect(result).toBeUndefined();
+    });
+
+    it("should return undefined when given empty array", () => {
+        const result = prepareFileField([]);
+        expect(result).toBeUndefined();
     });
 });

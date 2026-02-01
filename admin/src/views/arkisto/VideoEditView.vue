@@ -187,16 +187,20 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        category: values.category,
+        name: values.name,
+        description: values.description || "",
+        youtube_url: values.youtubeUrl,
+    };
+}
+
 async function createVideo(values: GenericObject) {
     try {
         await api.adminEventArkistoVideosCreate({
             path: { event_pk: eventId.value },
-            body: {
-                category: values.category,
-                name: values.name,
-                description: values.description || "",
-                youtube_url: values.youtubeUrl,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoEditView.createSuccess"));
         return true;
@@ -210,12 +214,7 @@ async function editVideo(videoId: number, values: GenericObject) {
     try {
         await api.adminEventArkistoVideosPartialUpdate({
             path: { event_pk: eventId.value, id: videoId },
-            body: {
-                category: values.category,
-                name: values.name,
-                description: values.description || "",
-                youtube_url: values.youtubeUrl,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoEditView.editSuccess"));
         return true;

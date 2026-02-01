@@ -70,61 +70,31 @@
                         </FormSection>
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-file-input
+                                <FileUploadField
                                     v-model="entryFile.value.value"
-                                    variant="outlined"
-                                    :label="entryFileLabel"
-                                    :error-messages="entryFile.errorMessage.value"
-                                    :hint="existingFiles?.entryfile_url ?? undefined"
-                                    :persistent-hint="!!existingFiles?.entryfile_url"
+                                    :current-file-url="existingFiles?.entryfile_url"
+                                    :label="t('EntryEditView.labels.entryfile')"
+                                    :error-message="entryFile.errorMessage.value"
                                     :accept="entryAccept"
-                                    prepend-icon=""
-                                    prepend-inner-icon="fas fa-file"
-                                    :append-inner-icon="
-                                        existingFiles?.entryfile_url
-                                            ? 'fas fa-external-link'
-                                            : undefined
-                                    "
-                                    @click:append-inner="openUrl(existingFiles?.entryfile_url)"
+                                    required
                                 />
                             </v-col>
                             <v-col cols="12" md="4">
-                                <v-file-input
+                                <FileUploadField
                                     v-model="sourceFile.value.value"
-                                    variant="outlined"
+                                    :current-file-url="existingFiles?.sourcefile_url"
                                     :label="t('EntryEditView.labels.sourcefile')"
-                                    :hint="existingFiles?.sourcefile_url ?? undefined"
-                                    :persistent-hint="!!existingFiles?.sourcefile_url"
                                     :accept="sourceAccept"
-                                    prepend-icon=""
-                                    prepend-inner-icon="fas fa-code"
-                                    :append-inner-icon="
-                                        existingFiles?.sourcefile_url
-                                            ? 'fas fa-external-link'
-                                            : undefined
-                                    "
-                                    @click:append-inner="openUrl(existingFiles?.sourcefile_url)"
                                 />
                             </v-col>
                             <v-col v-if="allowsImageFile" cols="12" md="4">
-                                <v-file-input
+                                <ImageUploadField
                                     v-model="imageFile.value.value"
-                                    variant="outlined"
-                                    :label="imageFileLabel"
-                                    :error-messages="imageFile.errorMessage.value"
-                                    :hint="existingFiles?.imagefile_original_url ?? undefined"
-                                    :persistent-hint="!!existingFiles?.imagefile_original_url"
+                                    :current-image-url="existingFiles?.imagefile_original_url"
+                                    :label="t('EntryEditView.labels.imagefile')"
+                                    :error-message="imageFile.errorMessage.value"
                                     :accept="imageAccept"
-                                    prepend-icon=""
-                                    prepend-inner-icon="fas fa-image"
-                                    :append-inner-icon="
-                                        existingFiles?.imagefile_original_url
-                                            ? 'fas fa-external-link'
-                                            : undefined
-                                    "
-                                    @click:append-inner="
-                                        openUrl(existingFiles?.imagefile_original_url)
-                                    "
+                                    :required="requiresImageFile"
                                 />
                             </v-col>
                         </v-row>
@@ -234,10 +204,13 @@ import {
 import * as api from "@/api";
 import type { AlternateEntryFile, Compo, CompoEntry, User } from "@/api";
 import DisqualificationField from "@/components/form/DisqualificationField.vue";
+import FileUploadField from "@/components/form/FileUploadField.vue";
 import FormSection from "@/components/form/FormSection.vue";
+import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
+import { prepareFileField, toFormData } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -325,9 +298,13 @@ const validationSchema = yupObject({
     entryFile: yupMixed()
         .nullable()
         .test("entry-file-required", t("EntryEditView.entryFileRequired"), (value) => {
-            // Entry file is always required; in edit mode, existing file is also OK
-            if (existingFiles.value?.entryfile_url) return true;
-            return !!getFile(value as FileValue);
+            // Entry file is always required
+            // If a new file is selected, it's valid
+            if (getFile(value as FileValue)) return true;
+            // In edit mode, existing file is also OK
+            // value is undefined initially, null when cleared
+            if (value === undefined && existingFiles.value?.entryfile_url) return true;
+            return false;
         }),
     sourceFile: yupMixed().nullable(),
     imageFile: yupMixed()
@@ -338,9 +315,12 @@ const validationSchema = yupObject({
             const selectedCompo = getCompoById(compoId);
             const requiresImage = selectedCompo?.thumbnail_pref === 0;
             if (!requiresImage) return true;
+            // If a new file is selected, it's valid
+            if (getFile(value as FileValue)) return true;
             // In edit mode, existing file is also OK
-            if (existingFiles.value?.imagefile_original_url) return true;
-            return !!getFile(value as FileValue);
+            // value is undefined initially, null when cleared
+            if (value === undefined && existingFiles.value?.imagefile_original_url) return true;
+            return false;
         }),
 });
 
@@ -356,9 +336,9 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         youtubeUrl: "",
         disqualified: false,
         disqualifiedReason: "",
-        entryFile: null as FileValue,
-        sourceFile: null as FileValue,
-        imageFile: null as FileValue,
+        entryFile: undefined as FileValue | undefined,
+        sourceFile: undefined as FileValue | undefined,
+        imageFile: undefined as FileValue | undefined,
     },
 });
 
@@ -407,24 +387,6 @@ const allowsImageFile = computed(() => {
 // Image file is required when thumbnail_pref is 0
 const requiresImageFile = computed(() => selectedCompo.value?.thumbnail_pref === 0);
 
-// Entry file label (always required)
-const entryFileLabel = computed(() => `${t("EntryEditView.labels.entryfile")} *`);
-
-// Dynamic label for image file field
-const imageFileLabel = computed(() => {
-    const base = t("EntryEditView.labels.imagefile");
-    if (requiresImageFile.value) {
-        return `${base} *`;
-    }
-    return base;
-});
-
-function openUrl(url: string | null | undefined) {
-    if (url) {
-        window.open(url, "_blank");
-    }
-}
-
 const submit = handleSubmit(async (values) => {
     saving.value = true;
     let ok: boolean;
@@ -439,42 +401,34 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    // For create, use getFile (requires a file). For edit, use prepareFileField (file is optional).
+    const fileGetter = isCreate ? getFile : prepareFileField;
+    return {
+        name: values.name,
+        creator: values.creator,
+        description: values.description || "",
+        // compo and user can only be set on create, not on edit
+        compo: isCreate ? values.compo : undefined,
+        user: isCreate ? values.user : undefined,
+        platform: values.platform || null,
+        entryfile: fileGetter(values.entryFile),
+        sourcefile: fileGetter(values.sourceFile),
+        imagefile_original: allowsImageFile.value ? fileGetter(values.imageFile) : undefined,
+        youtube_url: values.youtubeUrl || null,
+        disqualified: values.disqualified,
+        disqualified_reason: values.disqualifiedReason || "",
+    };
+}
+
 async function createItem(values: GenericObject) {
+    const body = buildBody(values, true);
     try {
         await api.adminEventKompomaattiEntriesCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                creator: values.creator,
-                description: values.description || "",
-                compo: values.compo,
-                user: values.user,
-                platform: values.platform || null,
-                entryfile: getFile(values.entryFile)!,
-                sourcefile: getFile(values.sourceFile),
-                imagefile_original: allowsImageFile.value ? getFile(values.imageFile) : undefined,
-                youtube_url: values.youtubeUrl || null,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("name", body.name);
-                formData.append("creator", body.creator);
-                formData.append("description", body.description);
-                formData.append("compo", String(body.compo));
-                formData.append("user", String(body.user));
-                if (body.platform) formData.append("platform", body.platform);
-                formData.append("entryfile", body.entryfile);
-                if (body.sourcefile) formData.append("sourcefile", body.sourcefile);
-                if (body.imagefile_original)
-                    formData.append("imagefile_original", body.imagefile_original);
-                if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
-                if (body.disqualified) formData.append("disqualified", "true");
-                if (body.disqualified_reason)
-                    formData.append("disqualified_reason", body.disqualified_reason);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.CompoEntryRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("EntryEditView.createSuccess"));
         return true;
@@ -485,40 +439,13 @@ async function createItem(values: GenericObject) {
 }
 
 async function editItem(itemId: number, values: GenericObject) {
-    const hasImageFile = allowsImageFile.value && !!getFile(values.imageFile);
-
+    const body = buildBody(values, false);
     try {
-        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventKompomaattiEntriesPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                creator: values.creator,
-                description: values.description || "",
-                platform: values.platform || null,
-                youtube_url: values.youtubeUrl || null,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-                entryfile: getFile(values.entryFile),
-                sourcefile: getFile(values.sourceFile),
-                imagefile_original: hasImageFile ? getFile(values.imageFile) : undefined,
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("name", body.name);
-                formData.append("creator", body.creator);
-                formData.append("description", body.description || "");
-                if (body.platform) formData.append("platform", body.platform);
-                if (body.youtube_url) formData.append("youtube_url", body.youtube_url);
-                if (body.disqualified) formData.append("disqualified", "true");
-                if (body.disqualified_reason)
-                    formData.append("disqualified_reason", body.disqualified_reason);
-                if (body.entryfile) formData.append("entryfile", body.entryfile);
-                if (body.sourcefile) formData.append("sourcefile", body.sourcefile);
-                if (body.imagefile_original)
-                    formData.append("imagefile_original", body.imagefile_original);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.PatchedCompoEntryRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("EntryEditView.editSuccess"));
         return true;

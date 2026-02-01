@@ -27,24 +27,11 @@
                         <FormSection>
                             {{ t("StoreItemEditView.sections.image") }}
                         </FormSection>
-                        <v-file-input
+                        <ImageUploadField
                             v-model="imageFile.value.value"
+                            :current-image-url="currentImageUrl"
                             :label="t('StoreItemEditView.labels.imagefile')"
-                            :error-messages="imageFile.errorMessage.value"
-                            variant="outlined"
-                            accept="image/*"
-                            prepend-icon=""
-                            clearable
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faImage" />
-                            </template>
-                        </v-file-input>
-                        <v-img
-                            v-if="currentImageUrl"
-                            :src="currentImageUrl"
-                            max-width="200"
-                            class="mb-4"
+                            :error-message="imageFile.errorMessage.value"
                         />
 
                         <FormSection>
@@ -252,12 +239,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-    faFloppyDisk as faSave,
-    faImage,
-    faPlus,
-    faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk as faSave, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
@@ -276,6 +258,7 @@ import {
 import * as api from "@/api";
 import type { StoreItemVariant } from "@/api";
 import FormSection from "@/components/form/FormSection.vue";
+import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -283,6 +266,7 @@ import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { type FileValue, getFile } from "@/utils/file";
+import { prepareFileField, toFormData } from "@/utils/formdata";
 import { getApiErrorMessage, handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -375,7 +359,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         isTicket: false,
         isSecret: false,
         secretKey: "",
-        imageFile: null as FileValue,
+        imageFile: undefined as FileValue | undefined,
     },
 });
 
@@ -407,45 +391,33 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    const fileGetter = isCreate ? getFile : prepareFileField;
+    return {
+        name: values.name,
+        description: values.description || "",
+        price: values.price,
+        max: values.max,
+        max_per_order: values.maxPerOrder,
+        sort_index: values.sortIndex ?? 0,
+        discount_amount: values.discountAmount ?? -1,
+        discount_percentage: values.discountPercentage ?? 0,
+        available: values.available,
+        is_ticket: values.isTicket,
+        is_secret: values.isSecret,
+        secret_key: values.secretKey || "",
+        imagefile_original: fileGetter(values.imageFile),
+    };
+}
+
 async function createItem(values: GenericObject) {
+    const body = buildBody(values, true);
     try {
-        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventStoreItemsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                price: values.price,
-                max: values.max,
-                max_per_order: values.maxPerOrder ?? undefined,
-                sort_index: values.sortIndex ?? 0,
-                discount_amount: values.discountAmount ?? -1,
-                discount_percentage: values.discountPercentage ?? 0,
-                available: values.available,
-                is_ticket: values.isTicket,
-                is_secret: values.isSecret,
-                secret_key: values.secretKey || undefined,
-                imagefile_original: getFile(values.imageFile),
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("name", body.name);
-                formData.append("description", body.description || "");
-                formData.append("price", body.price);
-                formData.append("max", String(body.max));
-                if (body.max_per_order !== undefined)
-                    formData.append("max_per_order", String(body.max_per_order));
-                formData.append("sort_index", String(body.sort_index ?? 0));
-                formData.append("discount_amount", String(body.discount_amount ?? -1));
-                formData.append("discount_percentage", String(body.discount_percentage ?? 0));
-                formData.append("available", body.available ? "true" : "false");
-                formData.append("is_ticket", body.is_ticket ? "true" : "false");
-                formData.append("is_secret", body.is_secret ? "true" : "false");
-                if (body.secret_key) formData.append("secret_key", body.secret_key);
-                if (body.imagefile_original)
-                    formData.append("imagefile_original", body.imagefile_original);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.StoreItemRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("StoreItemEditView.createSuccess"));
         return true;
@@ -462,44 +434,13 @@ async function createItem(values: GenericObject) {
 }
 
 async function editItem(itemId: number, values: GenericObject) {
+    const body = buildBody(values, false);
     try {
-        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventStoreItemsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                price: values.price,
-                max: values.max,
-                max_per_order: values.maxPerOrder ?? undefined,
-                sort_index: values.sortIndex ?? 0,
-                discount_amount: values.discountAmount ?? -1,
-                discount_percentage: values.discountPercentage ?? 0,
-                available: values.available,
-                is_ticket: values.isTicket,
-                is_secret: values.isSecret,
-                secret_key: values.secretKey || undefined,
-                imagefile_original: getFile(values.imageFile),
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("name", body.name);
-                formData.append("description", body.description || "");
-                formData.append("price", body.price);
-                formData.append("max", String(body.max));
-                if (body.max_per_order !== undefined)
-                    formData.append("max_per_order", String(body.max_per_order));
-                formData.append("sort_index", String(body.sort_index ?? 0));
-                formData.append("discount_amount", String(body.discount_amount ?? -1));
-                formData.append("discount_percentage", String(body.discount_percentage ?? 0));
-                formData.append("available", body.available ? "true" : "false");
-                formData.append("is_ticket", body.is_ticket ? "true" : "false");
-                formData.append("is_secret", body.is_secret ? "true" : "false");
-                if (body.secret_key) formData.append("secret_key", body.secret_key);
-                if (body.imagefile_original)
-                    formData.append("imagefile_original", body.imagefile_original);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.PatchedStoreItemRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("StoreItemEditView.editSuccess"));
         return true;

@@ -273,22 +273,26 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+        description: values.description || "",
+        participation_end: toISODatetime(values.participationEnd)!,
+        start: toISODatetime(values.start)!,
+        end: toISODatetime(values.end),
+        score_type: values.scoreType,
+        score_sort: values.scoreSort,
+        active: values.active,
+        show_results: values.showResults,
+        hide_from_archive: values.hideFromArchive,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                participation_end: toISODatetime(values.participationEnd)!,
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end),
-                score_type: values.scoreType,
-                score_sort: values.scoreSort,
-                active: values.active,
-                show_results: values.showResults,
-                hide_from_archive: values.hideFromArchive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompetitionEditView.createSuccess"));
         return true;
@@ -308,18 +312,7 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                participation_end: toISODatetime(values.participationEnd)!,
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end),
-                score_type: values.scoreType,
-                score_sort: values.scoreSort,
-                active: values.active,
-                show_results: values.showResults,
-                hide_from_archive: values.hideFromArchive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompetitionEditView.editSuccess"));
         return true;

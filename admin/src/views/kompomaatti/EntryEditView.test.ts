@@ -832,7 +832,8 @@ describe("EntryEditView", () => {
             const formData = getSerializedApiCallBody(
                 vi.mocked(api.adminEventKompomaattiEntriesCreate)
             ) as FormData;
-            expect(formData.has("platform")).toBe(false);
+            // Empty platform sends empty string (null in FormData = empty string)
+            expectFormDataContains(formData, { platform: "" });
         });
 
         it("submits with youtubeUrl when filled", async () => {
@@ -901,7 +902,8 @@ describe("EntryEditView", () => {
             const formData = getSerializedApiCallBody(
                 vi.mocked(api.adminEventKompomaattiEntriesCreate)
             ) as FormData;
-            expect(formData.has("youtube_url")).toBe(false);
+            // Empty youtube_url sends empty string (null in FormData = empty string)
+            expectFormDataContains(formData, { youtube_url: "" });
         });
 
         it("submits with disqualified toggle enabled and reason", async () => {
@@ -966,8 +968,8 @@ describe("EntryEditView", () => {
             const formData = getSerializedApiCallBody(
                 vi.mocked(api.adminEventKompomaattiEntriesCreate)
             ) as FormData;
-            // When disqualified is false, it should not be in the form data
-            expect(formData.has("disqualified")).toBe(false);
+            // When disqualified is false, it should be "false" in the form data
+            expectFormDataContains(formData, { disqualified: "false" });
         });
     });
 

@@ -158,7 +158,7 @@ describe("UploadEditView", () => {
             });
         });
 
-        it("shows current file URL in edit mode", async () => {
+        it("shows current file in edit mode", async () => {
             vi.mocked(api.adminEventUploadsFilesRetrieve).mockResolvedValueOnce({
                 data: {
                     id: 5,
@@ -170,9 +170,12 @@ describe("UploadEditView", () => {
             const wrapper = mountComponent({ eventId: "1", id: "5" });
             await flushPromises();
 
-            // Should show alert with current file URL
-            const alert = wrapper.findComponent({ name: "VAlert" });
-            expect(alert.exists()).toBe(true);
+            // Should show FileUploadField with current file
+            const fileUploadField = wrapper.findComponent({ name: "FileUploadField" });
+            expect(fileUploadField.exists()).toBe(true);
+            expect(fileUploadField.props("currentFileUrl")).toBe(
+                "https://example.com/uploads/test.pdf"
+            );
         });
 
         it("does not require file in edit mode", async () => {
@@ -331,7 +334,7 @@ describe("UploadEditView", () => {
             expect(callArgs?.bodySerializer).toBeDefined();
         });
 
-        it("extracts filename from URL in edit mode", async () => {
+        it("displays filename in FileUploadField in edit mode", async () => {
             vi.mocked(api.adminEventUploadsFilesRetrieve).mockResolvedValueOnce({
                 data: {
                     id: 5,
@@ -343,12 +346,14 @@ describe("UploadEditView", () => {
             const wrapper = mountComponent({ eventId: "1", id: "5" });
             await flushPromises();
 
-            // Should display filename in the alert
-            const alertText = wrapper.text();
-            expect(alertText).toContain("important-document.pdf");
+            // FileUploadField should receive the current file URL
+            const fileUploadField = wrapper.findComponent({ name: "FileUploadField" });
+            expect(fileUploadField.props("currentFileUrl")).toBe(
+                "https://example.com/uploads/important-document.pdf"
+            );
         });
 
-        it("has copy URL functionality", async () => {
+        it("has download functionality via FileUploadField", async () => {
             vi.mocked(api.adminEventUploadsFilesRetrieve).mockResolvedValueOnce({
                 data: {
                     id: 5,
@@ -360,9 +365,9 @@ describe("UploadEditView", () => {
             const wrapper = mountComponent({ eventId: "1", id: "5" });
             await flushPromises();
 
-            // Should have a button to copy URL
-            const copyButton = wrapper.find(".v-btn--icon");
-            expect(copyButton.exists()).toBe(true);
+            // FileUploadField component handles download/preview - just verify it's present
+            const fileUploadField = wrapper.findComponent({ name: "FileUploadField" });
+            expect(fileUploadField.exists()).toBe(true);
         });
     });
 

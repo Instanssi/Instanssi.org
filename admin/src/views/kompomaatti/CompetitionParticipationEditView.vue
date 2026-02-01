@@ -226,18 +226,23 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    return {
+        // competition and user can only be set on create, not on edit
+        competition: isCreate ? values.competition : undefined,
+        user: isCreate ? values.user : undefined,
+        participant_name: values.participantName || "",
+        score: values.score,
+        disqualified: values.disqualified,
+        disqualified_reason: values.disqualifiedReason || "",
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionParticipationsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                competition: values.competition,
-                user: values.user,
-                participant_name: values.participantName || undefined,
-                score: values.score ?? undefined,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-            },
+            body: buildBody(values, true),
         });
         toast.success(t("CompetitionParticipationEditView.createSuccess"));
         return true;
@@ -257,12 +262,7 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionParticipationsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                participant_name: values.participantName || undefined,
-                score: values.score ?? undefined,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-            },
+            body: buildBody(values, false),
         });
         toast.success(t("CompetitionParticipationEditView.editSuccess"));
         return true;

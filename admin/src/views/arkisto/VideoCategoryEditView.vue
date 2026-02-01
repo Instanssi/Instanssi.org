@@ -121,13 +121,17 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+    };
+}
+
 async function createCategory(values: GenericObject) {
     try {
         await api.adminEventArkistoVideoCategoriesCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoCategoryEditView.createSuccess"));
         return true;
@@ -147,9 +151,7 @@ async function editCategory(categoryId: number, values: GenericObject) {
     try {
         await api.adminEventArkistoVideoCategoriesPartialUpdate({
             path: { event_pk: eventId.value, id: categoryId },
-            body: {
-                name: values.name,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoCategoryEditView.editSuccess"));
         return true;

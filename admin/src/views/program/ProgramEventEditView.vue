@@ -72,45 +72,19 @@
                             </FormSection>
                             <v-row>
                                 <v-col cols="12" md="6">
-                                    <v-file-input
+                                    <ImageUploadField
                                         v-model="icon1File.value.value"
+                                        :current-image-url="currentIcon1Url"
                                         :label="t('ProgramEventEditView.labels.icon1')"
-                                        :error-messages="icon1File.errorMessage.value"
-                                        variant="outlined"
-                                        accept="image/*"
-                                        prepend-icon=""
-                                        clearable
-                                    >
-                                        <template #prepend>
-                                            <FontAwesomeIcon :icon="faImage" />
-                                        </template>
-                                    </v-file-input>
-                                    <v-img
-                                        v-if="currentIcon1Url"
-                                        :src="currentIcon1Url"
-                                        max-width="200"
-                                        class="mb-4"
+                                        :error-message="icon1File.errorMessage.value"
                                     />
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-file-input
+                                    <ImageUploadField
                                         v-model="icon2File.value.value"
+                                        :current-image-url="currentIcon2Url"
                                         :label="t('ProgramEventEditView.labels.icon2')"
-                                        :error-messages="icon2File.errorMessage.value"
-                                        variant="outlined"
-                                        accept="image/*"
-                                        prepend-icon=""
-                                        clearable
-                                    >
-                                        <template #prepend>
-                                            <FontAwesomeIcon :icon="faImage" />
-                                        </template>
-                                    </v-file-input>
-                                    <v-img
-                                        v-if="currentIcon2Url"
-                                        :src="currentIcon2Url"
-                                        max-width="200"
-                                        class="mb-4"
+                                        :error-message="icon2File.errorMessage.value"
                                     />
                                 </v-col>
                             </v-row>
@@ -230,7 +204,7 @@
 </template>
 
 <script setup lang="ts">
-import { faFloppyDisk as faSave, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
@@ -248,11 +222,13 @@ import {
 
 import * as api from "@/api";
 import FormSection from "@/components/form/FormSection.vue";
+import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
 import { type FileValue, getFile } from "@/utils/file";
+import { prepareFileField, toFormData } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -363,8 +339,8 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         wikiUrl: "",
         eventType: 0,
         active: true,
-        icon1File: null as FileValue,
-        icon2File: null as FileValue,
+        icon1File: undefined as FileValue | undefined,
+        icon2File: undefined as FileValue | undefined,
     },
 });
 
@@ -401,53 +377,38 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    const fileGetter = isCreate ? getFile : prepareFileField;
+    return {
+        title: values.title,
+        description: values.description || "",
+        start: toISODatetime(values.start)!,
+        end: toISODatetime(values.end),
+        place: values.place || "",
+        presenters: values.presenters || "",
+        presenters_titles: values.presentersTitles || "",
+        home_url: values.homeUrl || "",
+        email: values.email || "",
+        twitter_url: values.twitterUrl || "",
+        github_url: values.githubUrl || "",
+        facebook_url: values.facebookUrl || "",
+        linkedin_url: values.linkedinUrl || "",
+        wiki_url: values.wikiUrl || "",
+        event_type: values.eventType ?? 0,
+        active: values.active,
+        icon_original: fileGetter(values.icon1File),
+        icon2_original: fileGetter(values.icon2File),
+    };
+}
+
 async function createItem(values: GenericObject) {
+    const body = buildBody(values, true);
     try {
-        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventProgramEventsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                title: values.title,
-                description: values.description || "",
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end) ?? undefined,
-                place: values.place || "",
-                presenters: values.presenters || "",
-                presenters_titles: values.presentersTitles || "",
-                home_url: values.homeUrl || "",
-                email: values.email || "",
-                twitter_url: values.twitterUrl || "",
-                github_url: values.githubUrl || "",
-                facebook_url: values.facebookUrl || "",
-                linkedin_url: values.linkedinUrl || "",
-                wiki_url: values.wikiUrl || "",
-                event_type: values.eventType,
-                active: values.active,
-                icon_original: getFile(values.icon1File),
-                icon2_original: getFile(values.icon2File),
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("title", body.title);
-                formData.append("description", body.description || "");
-                formData.append("start", body.start);
-                if (body.end) formData.append("end", body.end);
-                formData.append("place", body.place || "");
-                formData.append("presenters", body.presenters || "");
-                formData.append("presenters_titles", body.presenters_titles || "");
-                formData.append("home_url", body.home_url || "");
-                formData.append("email", body.email || "");
-                formData.append("twitter_url", body.twitter_url || "");
-                formData.append("github_url", body.github_url || "");
-                formData.append("facebook_url", body.facebook_url || "");
-                formData.append("linkedin_url", body.linkedin_url || "");
-                formData.append("wiki_url", body.wiki_url || "");
-                formData.append("event_type", String(body.event_type ?? 0));
-                formData.append("active", body.active ? "true" : "false");
-                if (body.icon_original) formData.append("icon_original", body.icon_original);
-                if (body.icon2_original) formData.append("icon2_original", body.icon2_original);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.ProgramEventRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("ProgramEventEditView.createSuccess"));
         return true;
@@ -464,52 +425,13 @@ async function createItem(values: GenericObject) {
 }
 
 async function editItem(itemId: number, values: GenericObject) {
+    const body = buildBody(values, false);
     try {
-        // Always use FormData for this endpoint (supports optional file uploads)
         await api.adminEventProgramEventsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                title: values.title,
-                description: values.description || "",
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end) ?? undefined,
-                place: values.place || "",
-                presenters: values.presenters || "",
-                presenters_titles: values.presentersTitles || "",
-                home_url: values.homeUrl || "",
-                email: values.email || "",
-                twitter_url: values.twitterUrl || "",
-                github_url: values.githubUrl || "",
-                facebook_url: values.facebookUrl || "",
-                linkedin_url: values.linkedinUrl || "",
-                wiki_url: values.wikiUrl || "",
-                event_type: values.eventType,
-                active: values.active,
-                icon_original: getFile(values.icon1File),
-                icon2_original: getFile(values.icon2File),
-            },
-            bodySerializer: (body) => {
-                const formData = new FormData();
-                formData.append("title", body.title);
-                formData.append("description", body.description || "");
-                formData.append("start", body.start);
-                if (body.end) formData.append("end", body.end);
-                formData.append("place", body.place || "");
-                formData.append("presenters", body.presenters || "");
-                formData.append("presenters_titles", body.presenters_titles || "");
-                formData.append("home_url", body.home_url || "");
-                formData.append("email", body.email || "");
-                formData.append("twitter_url", body.twitter_url || "");
-                formData.append("github_url", body.github_url || "");
-                formData.append("facebook_url", body.facebook_url || "");
-                formData.append("linkedin_url", body.linkedin_url || "");
-                formData.append("wiki_url", body.wiki_url || "");
-                formData.append("event_type", String(body.event_type ?? 0));
-                formData.append("active", body.active ? "true" : "false");
-                if (body.icon_original) formData.append("icon_original", body.icon_original);
-                if (body.icon2_original) formData.append("icon2_original", body.icon2_original);
-                return formData;
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.PatchedProgramEventRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("ProgramEventEditView.editSuccess"));
         return true;

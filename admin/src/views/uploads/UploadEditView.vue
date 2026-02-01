@@ -7,43 +7,13 @@
             <v-card>
                 <v-card-text>
                     <v-form @submit.prevent="submit">
-                        <v-file-input
+                        <FileUploadField
                             v-model="file.value.value"
-                            :label="t('UploadEditView.labels.file') + (isEditMode ? '' : ' *')"
-                            :error-messages="file.errorMessage.value"
-                            variant="outlined"
-                            prepend-icon=""
-                            clearable
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faUpload" />
-                            </template>
-                        </v-file-input>
-                        <v-alert
-                            v-if="isEditMode && currentFileUrl"
-                            type="info"
-                            variant="tonal"
-                            class="mb-4"
-                        >
-                            <div class="d-flex align-center">
-                                <span class="mr-2">{{ t("UploadEditView.labels.fileUrl") }}:</span>
-                                <a
-                                    :href="currentFileUrl"
-                                    target="_blank"
-                                    class="text-decoration-none mr-2"
-                                >
-                                    {{ getFilename(currentFileUrl) }}
-                                </a>
-                                <v-btn
-                                    icon
-                                    variant="text"
-                                    size="small"
-                                    @click="copyUrl(currentFileUrl)"
-                                >
-                                    <FontAwesomeIcon :icon="faCopy" />
-                                </v-btn>
-                            </div>
-                        </v-alert>
+                            :current-file-url="currentFileUrl"
+                            :label="t('UploadEditView.labels.file')"
+                            :error-message="file.errorMessage.value"
+                            :required="!isEditMode"
+                        />
                         <v-textarea
                             v-model="description.value.value"
                             :error-messages="description.errorMessage.value"
@@ -76,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCopy, faFloppyDisk as faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
@@ -87,10 +57,11 @@ import { useToast } from "vue-toastification";
 import { mixed as yupMixed, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import FileUploadField from "@/components/form/FileUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
-import { toFormData } from "@/utils/formdata";
+import { prepareFileField, toFormData } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -151,7 +122,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
     initialValues: {
         description: "",
-        file: null as FileValue,
+        file: undefined as FileValue | undefined,
     },
 });
 
@@ -164,15 +135,6 @@ function getFilename(url: string): string {
         return pathname.split("/").pop() || url;
     } catch {
         return url;
-    }
-}
-
-async function copyUrl(url: string): Promise<void> {
-    try {
-        await navigator.clipboard.writeText(url);
-        toast.success(t("UploadsView.copySuccess"));
-    } catch {
-        toast.error(t("UploadsView.copyFailure"));
     }
 }
 
@@ -190,19 +152,24 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    const fileGetter = isCreate ? getFile : prepareFileField;
+    return {
+        description: values.description || "",
+        file: fileGetter(values.file),
+    };
+}
+
 async function createItem(values: GenericObject) {
-    const selectedFile = getFile(values.file);
-    if (!selectedFile) {
+    const body = buildBody(values, true);
+    if (!body.file) {
         return false;
     }
     try {
         await api.adminEventUploadsFilesCreate({
             path: { event_pk: eventId.value },
-            body: {
-                description: values.description || undefined,
-                file: selectedFile,
-            },
-            bodySerializer: toFormData,
+            body: body as typeof body & { file: File },
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("UploadEditView.createSuccess"));
         return true;
@@ -213,15 +180,13 @@ async function createItem(values: GenericObject) {
 }
 
 async function editItem(itemId: number, values: GenericObject) {
+    const body = buildBody(values, false);
     try {
-        const selectedFile = getFile(values.file);
         await api.adminEventUploadsFilesPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                description: values.description || "",
-                file: selectedFile,
-            },
-            bodySerializer: toFormData,
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.PatchedUploadedFileRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("UploadEditView.editSuccess"));
         return true;

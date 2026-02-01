@@ -129,10 +129,12 @@ describe("StoreItemEditView", () => {
             expectFormDataContains(formData, { name: "Store Item Name" });
             expectFormDataContains(formData, { price: "19.99" });
             expectFormDataContains(formData, { max: "100" });
-            // Check for snake_case fields
-            expect(formData.has("max_per_order") || formData.has("sort_index")).toBe(true);
+            // Check for snake_case fields - all fields are always sent
+            expect(formData.has("max_per_order")).toBe(true);
+            expect(formData.has("sort_index")).toBe(true);
             expect(formData.has("discount_amount")).toBe(true);
             expect(formData.has("discount_percentage")).toBe(true);
+            expect(formData.has("available")).toBe(true);
             expect(formData.has("is_ticket")).toBe(true);
             expect(formData.has("is_secret")).toBe(true);
         });

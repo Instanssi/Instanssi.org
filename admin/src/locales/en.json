@@ -16,6 +16,19 @@
     }
   },
   "translations": {
+    "ImageUploadField": {
+      "clickToPreview": "Click to preview",
+      "previewTitle": "Image Preview"
+    },
+    "FileUploadField": {
+      "clickToPreview": "Click to preview",
+      "download": "Download file",
+      "imagePreviewTitle": "Image Preview",
+      "videoPreviewTitle": "Video Preview",
+      "audioPreviewTitle": "Audio Preview",
+      "videoNotSupported": "Your browser does not support video playback.",
+      "audioNotSupported": "Your browser does not support audio playback."
+    },
     "Toasts": {
       "errors": {
         "conflict": "Operation failed due to data integrity error.",

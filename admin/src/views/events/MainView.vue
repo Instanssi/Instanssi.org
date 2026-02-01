@@ -301,7 +301,10 @@ async function loadComposAndEntries(eid: number) {
 }
 
 async function loadCompetitionsAndParticipants(eid: number) {
-    if (!auth.canView(PermissionTarget.COMPETITION) && !auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)) {
+    if (
+        !auth.canView(PermissionTarget.COMPETITION) &&
+        !auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)
+    ) {
         return;
     }
     try {

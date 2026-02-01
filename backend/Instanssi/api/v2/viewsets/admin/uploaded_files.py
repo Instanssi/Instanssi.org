@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.admin_upload.models import UploadedFile
@@ -12,6 +13,7 @@ class UploadedFileViewSet(PermissionViewSet):
     Staff with admin_upload permissions can manage uploaded files.
     """
 
+    parser_classes = (MultiPartParser, FormParser)
     queryset = UploadedFile.objects.all()
     serializer_class = UploadedFileSerializer  # type: ignore[assignment]
     ordering_fields = ("id", "date", "user", "description")

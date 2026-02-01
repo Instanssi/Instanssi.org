@@ -83,7 +83,15 @@ import type { OtherVideoCategory } from "@/api";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    category: "category",
+    name: "name",
+    description: "description",
+    youtube_url: "youtubeUrl",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -179,21 +187,25 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        category: values.category,
+        name: values.name,
+        description: values.description || "",
+        youtube_url: values.youtubeUrl,
+    };
+}
+
 async function createVideo(values: GenericObject) {
     try {
         await api.adminEventArkistoVideosCreate({
             path: { event_pk: eventId.value },
-            body: {
-                category: values.category,
-                name: values.name,
-                description: values.description || "",
-                youtube_url: values.youtubeUrl,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("VideoEditView.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -202,17 +214,12 @@ async function editVideo(videoId: number, values: GenericObject) {
     try {
         await api.adminEventArkistoVideosPartialUpdate({
             path: { event_pk: eventId.value, id: videoId },
-            body: {
-                category: values.category,
-                name: values.name,
-                description: values.description || "",
-                youtube_url: values.youtubeUrl,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("VideoEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

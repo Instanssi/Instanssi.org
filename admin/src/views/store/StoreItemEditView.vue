@@ -27,23 +27,11 @@
                         <FormSection>
                             {{ t("StoreItemEditView.sections.image") }}
                         </FormSection>
-                        <v-file-input
-                            v-model="imageFile"
+                        <ImageUploadField
+                            v-model="imageFile.value.value"
+                            :current-image-url="currentImageUrl"
                             :label="t('StoreItemEditView.labels.imagefile')"
-                            variant="outlined"
-                            accept="image/*"
-                            prepend-icon=""
-                            clearable
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faImage" />
-                            </template>
-                        </v-file-input>
-                        <v-img
-                            v-if="currentImageUrl"
-                            :src="currentImageUrl"
-                            max-width="200"
-                            class="mb-4"
+                            :error-message="imageFile.errorMessage.value"
                         />
 
                         <FormSection>
@@ -251,12 +239,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-    faFloppyDisk as faSave,
-    faImage,
-    faPlus,
-    faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk as faSave, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
@@ -266,6 +249,7 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import {
     boolean as yupBoolean,
+    mixed as yupMixed,
     number as yupNumber,
     object as yupObject,
     string as yupString,
@@ -274,13 +258,33 @@ import {
 import * as api from "@/api";
 import type { StoreItemVariant } from "@/api";
 import FormSection from "@/components/form/FormSection.vue";
+import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
-import { getApiErrorMessage, handleApiError } from "@/utils/http";
+import { type FileValue, getFile } from "@/utils/file";
+import { prepareFileField, toFormData } from "@/utils/formdata";
+import { getApiErrorMessage, handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    description: "description",
+    price: "price",
+    max: "max",
+    max_per_order: "maxPerOrder",
+    sort_index: "sortIndex",
+    discount_amount: "discountAmount",
+    discount_percentage: "discountPercentage",
+    available: "available",
+    is_ticket: "isTicket",
+    is_secret: "isSecret",
+    secret_key: "secretKey",
+    imagefile_original: "imageFile",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -301,7 +305,6 @@ const itemName = ref<string>("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const isEditMode = computed(() => props.id !== undefined);
 const currentImageUrl = ref<string | null>(null);
-const imageFile = ref<File[] | null>(null);
 const variants: Ref<StoreItemVariant[]> = ref([]);
 const newVariantName = ref("");
 
@@ -338,6 +341,7 @@ const validationSchema = yupObject({
     isTicket: yupBoolean(),
     isSecret: yupBoolean(),
     secretKey: yupString(),
+    imageFile: yupMixed().nullable(),
 });
 
 const { handleSubmit, setValues, setErrors, meta } = useForm({
@@ -355,6 +359,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         isTicket: false,
         isSecret: false,
         secretKey: "",
+        imageFile: undefined as FileValue | undefined,
     },
 });
 
@@ -370,6 +375,7 @@ const available = useField<boolean>("available");
 const isTicket = useField<boolean>("isTicket");
 const isSecret = useField<boolean>("isSecret");
 const secretKey = useField<string>("secretKey");
+const imageFile = useField<FileValue>("imageFile");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -385,57 +391,61 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    const fileGetter = isCreate ? getFile : prepareFileField;
+    return {
+        name: values.name,
+        description: values.description || "",
+        price: values.price,
+        max: values.max,
+        max_per_order: values.maxPerOrder,
+        sort_index: values.sortIndex ?? 0,
+        discount_amount: values.discountAmount ?? -1,
+        discount_percentage: values.discountPercentage ?? 0,
+        available: values.available,
+        is_ticket: values.isTicket,
+        is_secret: values.isSecret,
+        secret_key: values.secretKey || "",
+        imagefile_original: fileGetter(values.imageFile),
+    };
+}
+
 async function createItem(values: GenericObject) {
+    const body = buildBody(values, true);
     try {
         await api.adminEventStoreItemsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                price: values.price,
-                max: values.max,
-                max_per_order: values.maxPerOrder ?? undefined,
-                sort_index: values.sortIndex ?? 0,
-                discount_amount: values.discountAmount ?? -1,
-                discount_percentage: values.discountPercentage ?? 0,
-                available: values.available,
-                is_ticket: values.isTicket,
-                is_secret: values.isSecret,
-                secret_key: values.secretKey || undefined,
-                imagefile_original: imageFile.value?.[0] ?? undefined,
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.StoreItemRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("StoreItemEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.createFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("StoreItemEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
 
 async function editItem(itemId: number, values: GenericObject) {
+    const body = buildBody(values, false);
     try {
         await api.adminEventStoreItemsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                price: values.price,
-                max: values.max,
-                max_per_order: values.maxPerOrder ?? undefined,
-                sort_index: values.sortIndex ?? 0,
-                discount_amount: values.discountAmount ?? -1,
-                discount_percentage: values.discountPercentage ?? 0,
-                available: values.available,
-                is_ticket: values.isTicket,
-                is_secret: values.isSecret,
-                secret_key: values.secretKey || undefined,
-            },
+            // Type assertion needed: our bodySerializer handles null for file clearing
+            body: body as api.PatchedStoreItemRequest,
+            bodySerializer: () => toFormData(body),
         });
         toast.success(t("StoreItemEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("StoreItemEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

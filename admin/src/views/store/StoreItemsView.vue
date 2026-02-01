@@ -37,6 +37,9 @@
                     :loading-text="t('StoreItemsView.loadingItems')"
                     @update:options="debouncedLoad"
                 >
+                    <template #item.imagefile_thumbnail_url="{ item }">
+                        <ImageCell :url="item.imagefile_thumbnail_url" />
+                    </template>
                     <template #item.price="{ item }">
                         <PriceCell :value="item.price" />
                     </template>
@@ -76,6 +79,7 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { StoreItem } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
+import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
@@ -118,6 +122,12 @@ const headers: ReadonlyHeaders = [
         title: t("StoreItemsView.headers.id"),
         sortable: true,
         key: "id",
+    },
+    {
+        title: t("StoreItemsView.headers.image"),
+        sortable: false,
+        key: "imagefile_thumbnail_url",
+        width: 60,
     },
     {
         title: t("StoreItemsView.headers.name"),

@@ -73,10 +73,9 @@ poetry run pytest tests/store/test_models.py
   - **arkisto/**: Archive of past events and entries
   - **users/**: User authentication and profiles
   - **api/**: REST APIs with v1 (legacy) and v2 (current) versions
-  - **admin_\***: Admin panel apps (admin_base, admin_kompomaatti, admin_store, etc.)
   - **ext_\***: External integrations (ext_blog, ext_mastodon, ext_programme)
   - **main20XX/**: Year-specific landing pages (e.g., main2024, main2025)
-  - **management/**: Management interface (static files built by Vite from separate admin project)
+  - **management/**: Vue-based admin interface (static files built by Vite from separate admin project)
   - **infodesk/**: Infodesk/ticket validation interface
   - **common_config.py**: Shared Django settings
   - **settings.py**: Local configuration (never committed)
@@ -160,7 +159,7 @@ Multiple OAuth backends configured via python-social-auth:
 - Steam OpenID
 - Django's built-in ModelBackend
 
-Separate login URLs for users (`/users/login/`) and admin (`/manage/auth/login/`).
+Separate login URLs for users (`/users/login/`) and management panel (`/management/`).
 
 ### REST API
 
@@ -232,13 +231,12 @@ Items can be hidden behind secret keys:
 
 ## URL Structure
 
-- `/2024/`, `/2025/`: Year-specific event landing pages
+- `/2024/`, `/2026/`: Year-specific event landing pages
 - `/kompomaatti/`: Public compo browsing and participation
 - `/arkisto/`: Historical event archive
 - `/store/`: Ticket and merchandise store
-- `/manage/`: Admin panel (staff only)
-- `/manage/<event_id>/`: Event-specific admin sections
+- `/management/`: Vue-based admin panel (staff only)
 - `/api/v1/`, `/api/v2/`: REST APIs
 - `/admin/`: Django admin (debug/development only)
 
-Root URL redirects to current year's main page (currently `/2025/`).
+Root URL redirects to current year's main page (currently `/2026/`).

@@ -45,8 +45,6 @@ MEDIA_PROGRAMME_IMAGES: str = "programme/images"
 MEDIA_STORE_IMAGES: str = "store/images"
 MEDIA_UPLOAD_FILES: str = "files"
 
-# Admin panel settings
-ADMIN_LOGIN_URL = "/manage/auth/login/"
 LOGIN_URL = "/users/login/"
 
 # Shorten session expiration (default is 2 weeks)
@@ -153,17 +151,7 @@ INSTALLED_APPS = (
     "Instanssi.arkisto",
     "Instanssi.main2024",
     "Instanssi.main2026",
-    "Instanssi.admin_base",
-    "Instanssi.admin_arkisto",
-    "Instanssi.admin_blog",
     "Instanssi.admin_upload",
-    "Instanssi.admin_events",
-    "Instanssi.admin_kompomaatti",
-    "Instanssi.admin_users",
-    "Instanssi.admin_profile",
-    "Instanssi.admin_programme",
-    "Instanssi.admin_events_overview",
-    "Instanssi.admin_store",
     "Instanssi.users",
     "Instanssi.kompomaatti",
     "Instanssi.ext_blog",

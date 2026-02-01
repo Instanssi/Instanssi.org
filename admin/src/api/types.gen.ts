@@ -1379,6 +1379,12 @@ export type Event = {
      */
     archived?: boolean;
     /**
+     * Piilotettu
+     *
+     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
+     */
+    hidden?: boolean;
+    /**
      * Tapahtuman pääsivu
      *
      * URL Tapahtuman pääsivustolle
@@ -1414,6 +1420,12 @@ export type EventRequest = {
      * Saa näyttää arkistossa
      */
     archived?: boolean;
+    /**
+     * Piilotettu
+     *
+     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
+     */
+    hidden?: boolean;
     /**
      * Tapahtuman pääsivu
      *
@@ -2195,6 +2207,12 @@ export type PatchedEventRequest = {
      * Saa näyttää arkistossa
      */
     archived?: boolean;
+    /**
+     * Piilotettu
+     *
+     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
+     */
+    hidden?: boolean;
     /**
      * Tapahtuman pääsivu
      *
@@ -5014,6 +5032,12 @@ export type EventWritable = {
      * Saa näyttää arkistossa
      */
     archived?: boolean;
+    /**
+     * Piilotettu
+     *
+     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
+     */
+    hidden?: boolean;
     /**
      * Tapahtuman pääsivu
      *

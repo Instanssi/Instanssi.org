@@ -2,7 +2,11 @@
     <LayoutBase :key="`blog-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.BLOG_ENTRY)" @click="createPost">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.BLOG_ENTRY)"
+                    color="primary"
+                    @click="createPost"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

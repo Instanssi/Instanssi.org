@@ -4,6 +4,7 @@
             <v-row>
                 <v-btn
                     v-if="auth.canAdd(PermissionTarget.OTHER_VIDEO_CATEGORY)"
+                    color="primary"
                     @click="createCategory"
                 >
                     <template #prepend>

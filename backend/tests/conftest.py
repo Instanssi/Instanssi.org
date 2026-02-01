@@ -237,6 +237,9 @@ def staff_user(create_user) -> User:
         "admin_upload.add_uploadedfile",
         "admin_upload.change_uploadedfile",
         "admin_upload.delete_uploadedfile",
+        "knox.view_authtoken",
+        "knox.add_authtoken",
+        "knox.delete_authtoken",
     ]
     return create_user(is_staff=True, permissions=permissions)
 

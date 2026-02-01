@@ -2,7 +2,11 @@
     <LayoutBase :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.USER)" @click="createUser">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.USER)"
+                    color="primary"
+                    @click="createUser"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>
@@ -64,7 +68,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, computed, inject, ref } from "vue";
+import { type Ref, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -77,7 +81,6 @@ import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
-import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
@@ -90,18 +93,8 @@ const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
 const auth = useAuth();
-const { getLatestEvent } = useEvents();
 
-const breadcrumbs = computed<BreadcrumbItem[]>(() => {
-    const event = getLatestEvent();
-    return [
-        {
-            title: event?.name ?? "...",
-            to: event ? { name: "dashboard", params: { eventId: event.id } } : undefined,
-        },
-        { title: t("UsersView.title"), disabled: true },
-    ];
-});
+const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
 
 const loading = ref(false);
 const pageSizeOptions = [25, 50, 100];

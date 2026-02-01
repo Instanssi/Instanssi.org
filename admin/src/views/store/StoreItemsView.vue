@@ -2,7 +2,11 @@
     <LayoutBase :key="`store-items-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.STORE_ITEM)" @click="createItem">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.STORE_ITEM)"
+                    color="primary"
+                    @click="createItem"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

@@ -96,6 +96,15 @@ const router = createRouter({
             component: () => import("@/views/users/UsersView.vue"),
         },
         {
+            path: "/tokens",
+            name: "tokens",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.AUTH_TOKEN,
+            },
+            component: () => import("@/views/tokens/TokensView.vue"),
+        },
+        {
             path: "/:eventId(\\d+)/blog/new",
             name: "blog-new",
             meta: {

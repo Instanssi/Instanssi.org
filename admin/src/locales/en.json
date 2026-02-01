@@ -112,7 +112,8 @@
         "arkisto": "Archive",
         "arkistoArchiver": "Archiver",
         "arkistoCategories": "Video Categories",
-        "arkistoVideos": "Videos"
+        "arkistoVideos": "Videos",
+        "apiTokens": "API Tokens"
       }
     },
     "MainNavigation": {
@@ -1041,6 +1042,44 @@
         "fileUrl": "File URL"
       },
       "fileRequired": "Please select a file to upload."
+    },
+    "TokensView": {
+      "title": "API Tokens",
+      "newToken": "New Token",
+      "loadingTokens": "Loading tokens ...",
+      "noTokensFound": "No tokens found.",
+      "confirmDelete": "Do you really want to delete token '{tokenKey}...'?",
+      "headers": {
+        "tokenKey": "Token Prefix",
+        "user": "User",
+        "created": "Created",
+        "expiry": "Expiry",
+        "actions": "Actions"
+      },
+      "loadFailure": "Failed to load tokens; try again later.",
+      "deleteFailure": "Failed to delete token; try again later.",
+      "deleteSuccess": "Token deleted!"
+    },
+    "TokenCreateDialog": {
+      "title": "Create API Token",
+      "create": "Create Token",
+      "labels": {
+        "expiry": "Expiry date and time"
+      },
+      "expiryHint": "The token will expire at the specified date and time. Default is 30 days from now.",
+      "expiryRequired": "Please select an expiry date.",
+      "createSuccess": "Token created!",
+      "createFailure": "Failed to create token; try again later."
+    },
+    "TokenCreatedDialog": {
+      "title": "Token Created",
+      "warning": "This token will only be shown once. Please copy it now and store it securely.",
+      "labels": {
+        "token": "API Token"
+      },
+      "copyToClipboard": "Copy to clipboard",
+      "copySuccess": "Token copied to clipboard!",
+      "copyFailure": "Failed to copy token to clipboard."
     }
   }
 }

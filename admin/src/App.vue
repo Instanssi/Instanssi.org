@@ -26,6 +26,7 @@ import {
     faFileAudio,
     faFolder,
     faGamepad,
+    faKey,
     faMusic,
     faNewspaper,
     faPeopleGroup,
@@ -184,6 +185,13 @@ const secondaryLinks: NavigationLinks = [
         icon: faUsers,
         to: "users",
         noEventId: true,
+    },
+    {
+        title: t("App.nav.apiTokens"),
+        icon: faKey,
+        to: "tokens",
+        noEventId: true,
+        requirePerm: PermissionTarget.AUTH_TOKEN,
     },
     {
         title: t("App.nav.logout"),

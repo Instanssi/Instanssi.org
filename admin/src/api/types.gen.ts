@@ -39,6 +39,38 @@ export type ArchiverStatus = {
 };
 
 /**
+ * Read-only serializer for listing tokens.
+ */
+export type AuthToken = {
+    /**
+     * Digest
+     */
+    readonly pk: string;
+    readonly token_key: string;
+    readonly created: string;
+    readonly expiry: string | null;
+    readonly user: number;
+};
+
+/**
+ * Input serializer for token creation.
+ */
+export type AuthTokenCreateRequest = {
+    expiry: string;
+};
+
+/**
+ * Response with plain token (shown only once).
+ */
+export type AuthTokenCreateResponse = {
+    pk: string;
+    token_key: string;
+    token: string;
+    created: string;
+    expiry: string;
+};
+
+/**
  * Serializer for staff - includes all fields.
  *
  * The user field is read-only and set automatically to the current user on create.
@@ -519,13 +551,13 @@ export type CompoEntry = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: string;
+    sourcefile?: string | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: string;
+    imagefile_original?: string | null;
     readonly entryfile_url: string | null;
     readonly sourcefile_url: string | null;
     readonly imagefile_original_url: string | null;
@@ -612,13 +644,13 @@ export type CompoEntryRequest = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: Blob | File;
+    sourcefile?: Blob | File | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: Blob | File;
+    imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
     /**
      * Diskattu
@@ -1483,6 +1515,13 @@ export type OtherVideoRequest = {
     youtube_url: string | null;
 };
 
+export type PaginatedAuthTokenList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AuthToken>;
+};
+
 export type PaginatedBlogEntryList = {
     count: number;
     next?: string | null;
@@ -1900,13 +1939,13 @@ export type PatchedCompoEntryRequest = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: Blob | File;
+    sourcefile?: Blob | File | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: Blob | File;
+    imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
     /**
      * Diskattu
@@ -4824,13 +4863,13 @@ export type CompoEntryWritable = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: string;
+    sourcefile?: string | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: string;
+    imagefile_original?: string | null;
     youtube_url?: string | null;
     /**
      * Diskattu
@@ -4929,6 +4968,13 @@ export type OtherVideoCategoryWritable = {
     name: string;
 };
 
+export type PaginatedAuthTokenListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
 export type PaginatedUserTicketVoteCodeListWritable = {
     count: number;
     next?: string | null;
@@ -4981,13 +5027,13 @@ export type PatchedUserCompoEntryRequestWritable = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: Blob | File;
+    sourcefile?: Blob | File | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: Blob | File;
+    imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
 };
 
@@ -5977,13 +6023,13 @@ export type UserCompoEntryRequestWritable = {
      *
      * Lähdekoodipaketti.
      */
-    sourcefile?: Blob | File;
+    sourcefile?: Blob | File | null;
     /**
      * Kuva
      *
      * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
      */
-    imagefile_original?: Blob | File;
+    imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
 };
 
@@ -9547,6 +9593,67 @@ export type PublicStoreItemsRetrieveResponses = {
 
 export type PublicStoreItemsRetrieveResponse =
     PublicStoreItemsRetrieveResponses[keyof PublicStoreItemsRetrieveResponses];
+
+export type TokensListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/tokens/";
+};
+
+export type TokensListResponses = {
+    200: PaginatedAuthTokenList;
+};
+
+export type TokensListResponse = TokensListResponses[keyof TokensListResponses];
+
+export type TokensDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique value identifying this auth token.
+         */
+        digest: string;
+    };
+    query?: never;
+    url: "/api/v2/tokens/{digest}/";
+};
+
+export type TokensDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type TokensDestroyResponse = TokensDestroyResponses[keyof TokensDestroyResponses];
+
+export type UserTokensCreateTokenData = {
+    body: AuthTokenCreateRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/tokens/create/";
+};
+
+export type UserTokensCreateTokenResponses = {
+    201: AuthTokenCreateResponse;
+};
+
+export type UserTokensCreateTokenResponse =
+    UserTokensCreateTokenResponses[keyof UserTokensCreateTokenResponses];
 
 export type UserInfoData = {
     body?: never;

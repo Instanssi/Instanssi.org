@@ -2,7 +2,11 @@
     <LayoutBase :key="`compos-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.COMPO)" @click="createCompo">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.COMPO)"
+                    color="primary"
+                    @click="createCompo"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

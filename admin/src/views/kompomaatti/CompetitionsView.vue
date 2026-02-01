@@ -2,7 +2,11 @@
     <LayoutBase :key="`competitions-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.COMPETITION)" @click="createCompetition">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.COMPETITION)"
+                    color="primary"
+                    @click="createCompetition"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

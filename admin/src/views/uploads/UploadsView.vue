@@ -2,7 +2,11 @@
     <LayoutBase :key="`uploads-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.UPLOADED_FILE)" @click="createItem">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.UPLOADED_FILE)"
+                    color="primary"
+                    @click="createItem"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

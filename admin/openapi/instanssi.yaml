@@ -1419,7 +1419,6 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
-        Compo-event validation and file deletion are handled by the mixin.
       parameters:
       - in: query
         name: compo
@@ -1480,7 +1479,6 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
-        Compo-event validation and file deletion are handled by the mixin.
       parameters:
       - in: path
         name: event_pk
@@ -1515,7 +1513,6 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
-        Compo-event validation and file deletion are handled by the mixin.
       parameters:
       - in: path
         name: event_pk
@@ -1546,7 +1543,6 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
-        Compo-event validation and file deletion are handled by the mixin.
       parameters:
       - in: path
         name: event_pk
@@ -1583,10 +1579,9 @@ paths:
     patch:
       operationId: admin_event_kompomaatti_entries_partial_update
       description: |-
-        Handle partial updates with file deletion support.
+        Staff viewset for managing compo entries.
 
-        Files can be deleted by sending an empty string for the field.
-        Subclasses can override validate_partial_update() to add extra checks.
+        Staff can manage entries without deadline restrictions.
       parameters:
       - in: path
         name: event_pk
@@ -1625,7 +1620,6 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
-        Compo-event validation and file deletion are handled by the mixin.
       parameters:
       - in: path
         name: event_pk
@@ -4080,11 +4074,7 @@ paths:
           description: ''
     patch:
       operationId: event_user_kompomaatti_entries_partial_update
-      description: |-
-        Handle partial updates with file deletion support.
-
-        Files can be deleted by sending an empty string for the field.
-        Subclasses can override validate_partial_update() to add extra checks.
+      description: Manage the current user's own compo entries.
       parameters:
       - in: path
         name: event_pk
@@ -5585,6 +5575,88 @@ paths:
               schema:
                 $ref: '#/components/schemas/PublicStoreItem'
           description: ''
+  /api/v2/tokens/:
+    get:
+      operationId: tokens_list
+      description: Manage API authentication tokens for the current user.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - tokens
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthTokenList'
+          description: ''
+  /api/v2/tokens/{digest}/:
+    delete:
+      operationId: tokens_destroy
+      description: Manage API authentication tokens for the current user.
+      parameters:
+      - in: path
+        name: digest
+        schema:
+          type: string
+        description: A unique value identifying this auth token.
+        required: true
+      tags:
+      - tokens
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v2/tokens/create/:
+    post:
+      operationId: user_tokens_create_token
+      description: Create a new API token. The plain token is returned only once.
+      tags:
+      - tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthTokenCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthTokenCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthTokenCreateRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenCreateResponse'
+          description: ''
   /api/v2/user_info/:
     get:
       operationId: user_info
@@ -5645,6 +5717,66 @@ components:
       - old_votes_found
       - ongoing_activity
       - votes_unoptimized
+    AuthToken:
+      type: object
+      description: Read-only serializer for listing tokens.
+      properties:
+        pk:
+          type: string
+          readOnly: true
+          title: Digest
+        token_key:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        expiry:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - created
+      - expiry
+      - pk
+      - token_key
+      - user
+    AuthTokenCreateRequest:
+      type: object
+      description: Input serializer for token creation.
+      properties:
+        expiry:
+          type: string
+          format: date-time
+      required:
+      - expiry
+    AuthTokenCreateResponse:
+      type: object
+      description: Response with plain token (shown only once).
+      properties:
+        pk:
+          type: string
+        token_key:
+          type: string
+        token:
+          type: string
+        created:
+          type: string
+          format: date-time
+        expiry:
+          type: string
+          format: date-time
+      required:
+      - created
+      - expiry
+      - pk
+      - token
+      - token_key
     BlogEntry:
       type: object
       description: |-
@@ -6143,11 +6275,13 @@ components:
         sourcefile:
           type: string
           format: uri
+          nullable: true
           title: Lähdekoodi
           description: Lähdekoodipaketti.
         imagefile_original:
           type: string
           format: uri
+          nullable: true
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         entryfile_url:
@@ -6272,11 +6406,13 @@ components:
         sourcefile:
           type: string
           format: binary
+          nullable: true
           title: Lähdekoodi
           description: Lähdekoodipaketti.
         imagefile_original:
           type: string
           format: binary
+          nullable: true
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
@@ -7182,6 +7318,29 @@ components:
       - description
       - name
       - youtube_url
+    PaginatedAuthTokenList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthToken'
     PaginatedBlogEntryList:
       type: object
       required:
@@ -8101,11 +8260,13 @@ components:
         sourcefile:
           type: string
           format: binary
+          nullable: true
           title: Lähdekoodi
           description: Lähdekoodipaketti.
         imagefile_original:
           type: string
           format: binary
+          nullable: true
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
@@ -8740,12 +8901,14 @@ components:
           type: string
           format: binary
           writeOnly: true
+          nullable: true
           title: Lähdekoodi
           description: Lähdekoodipaketti.
         imagefile_original:
           type: string
           format: binary
           writeOnly: true
+          nullable: true
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:
@@ -10911,12 +11074,14 @@ components:
           type: string
           format: binary
           writeOnly: true
+          nullable: true
           title: Lähdekoodi
           description: Lähdekoodipaketti.
         imagefile_original:
           type: string
           format: binary
           writeOnly: true
+          nullable: true
           title: Kuva
           description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
         youtube_url:

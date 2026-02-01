@@ -4,6 +4,7 @@
             <v-row>
                 <v-btn
                     v-if="auth.canAdd(PermissionTarget.COMPETITION_PARTICIPATION)"
+                    color="primary"
                     @click="createParticipation"
                 >
                     <template #prepend>

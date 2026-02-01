@@ -2,7 +2,11 @@
     <LayoutBase :key="`entries-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.ENTRY)" @click="createEntry">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.ENTRY)"
+                    color="primary"
+                    @click="createEntry"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

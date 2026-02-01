@@ -16,11 +16,16 @@ from Instanssi.api.v2.viewsets.user.kompomaatti.user_vote_code_requests import (
 from Instanssi.api.v2.viewsets.user.kompomaatti.user_vote_groups import (
     UserVoteGroupViewSet,
 )
+from Instanssi.api.v2.viewsets.user.tokens import UserTokenViewSet
 from Instanssi.api.v2.viewsets.user.user_info import UserInfoViewSet
 
 # /api/v2/user_info/
 user_info_router = routers.SimpleRouter()
 user_info_router.register("user_info", UserInfoViewSet, basename="user_info")
+
+# /api/v2/tokens/
+tokens_router = routers.SimpleRouter()
+tokens_router.register("tokens", UserTokenViewSet, basename="user_tokens")
 
 # /api/v2/event/<event_pk>/user/kompomaatti/...
 kompomaatti_router = routers.SimpleRouter()
@@ -38,5 +43,6 @@ kompomaatti_router.register("votes", UserVoteGroupViewSet, basename="event_user_
 
 urlpatterns: list[URLPattern | URLResolver] = [
     path("", include(user_info_router.urls)),
+    path("", include(tokens_router.urls)),
     path("event/<int:event_pk>/user/kompomaatti/", include(kompomaatti_router.urls)),
 ]

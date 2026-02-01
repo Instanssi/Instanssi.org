@@ -2,7 +2,11 @@
     <LayoutBase :key="`videos-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.OTHER_VIDEO)" @click="createVideo">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.OTHER_VIDEO)"
+                    color="primary"
+                    @click="createVideo"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

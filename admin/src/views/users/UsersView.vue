@@ -2,7 +2,11 @@
     <LayoutBase :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.USER)" @click="createUser">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.USER)"
+                    color="primary"
+                    @click="createUser"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

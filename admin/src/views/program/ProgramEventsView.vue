@@ -2,7 +2,11 @@
     <LayoutBase :key="`program-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <v-row>
-                <v-btn v-if="auth.canAdd(PermissionTarget.PROGRAMME_EVENT)" @click="createItem">
+                <v-btn
+                    v-if="auth.canAdd(PermissionTarget.PROGRAMME_EVENT)"
+                    color="primary"
+                    @click="createItem"
+                >
                     <template #prepend>
                         <FontAwesomeIcon :icon="faPlus" />
                     </template>

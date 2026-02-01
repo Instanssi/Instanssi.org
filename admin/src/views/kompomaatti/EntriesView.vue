@@ -182,7 +182,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("EntriesView.headers.rank"),
-        sortable: true,
+        sortable: false,
         key: "rank",
     },
     {

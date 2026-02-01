@@ -170,7 +170,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("CompetitionParticipationsView.headers.rank"),
-        sortable: true,
+        sortable: false,
         key: "rank",
     },
     {

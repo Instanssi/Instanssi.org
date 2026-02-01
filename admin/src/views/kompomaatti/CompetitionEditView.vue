@@ -151,7 +151,21 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    description: "description",
+    participation_end: "participationEnd",
+    start: "start",
+    end: "end",
+    score_type: "scoreType",
+    score_sort: "scoreSort",
+    active: "active",
+    show_results: "showResults",
+    hide_from_archive: "hideFromArchive",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -259,27 +273,37 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+        description: values.description || "",
+        participation_end: toISODatetime(values.participationEnd)!,
+        start: toISODatetime(values.start)!,
+        end: toISODatetime(values.end),
+        score_type: values.scoreType,
+        score_sort: values.scoreSort,
+        active: values.active,
+        show_results: values.showResults,
+        hide_from_archive: values.hideFromArchive,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                participation_end: toISODatetime(values.participationEnd)!,
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end),
-                score_type: values.scoreType,
-                score_sort: values.scoreSort,
-                active: values.active,
-                show_results: values.showResults,
-                hide_from_archive: values.hideFromArchive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompetitionEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.createFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -288,23 +312,18 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                participation_end: toISODatetime(values.participationEnd)!,
-                start: toISODatetime(values.start)!,
-                end: toISODatetime(values.end),
-                score_type: values.scoreType,
-                score_sort: values.scoreSort,
-                active: values.active,
-                show_results: values.showResults,
-                hide_from_archive: values.hideFromArchive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompetitionEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionEditView.editFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

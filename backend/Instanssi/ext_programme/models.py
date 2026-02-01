@@ -1,6 +1,5 @@
 from datetime import datetime, time
 from pathlib import Path
-from typing import Any
 
 import arrow
 from auditlog.registry import auditlog
@@ -91,18 +90,6 @@ class ProgrammeEvent(models.Model):
             start = arrow.get(self.start).to(settings.TIME_ZONE)
             return "{} {}".format(short_days[start.weekday()], start.format("HH:mm"))
         return ""
-
-    def save(self, *args: Any, **kwargs: Any) -> None:
-        # Delete old icon file when editing
-        try:
-            this = ProgrammeEvent.objects.get(id=self.id)
-            if this.icon_original != self.icon_original:
-                this.icon_original.delete(save=False)
-        except ProgrammeEvent.DoesNotExist:
-            pass
-
-        # Continue with normal save
-        super(ProgrammeEvent, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title

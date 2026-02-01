@@ -2,6 +2,7 @@ from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.store import StoreItemSerializer
@@ -12,6 +13,7 @@ from Instanssi.store.models import StoreItem
 class StoreItemViewSet(PermissionViewSet):
     """Staff viewset for managing store items."""
 
+    parser_classes = (MultiPartParser, FormParser)
     queryset = StoreItem.objects.all()
     serializer_class = StoreItemSerializer  # type: ignore[assignment]
     filter_backends = (OrderingFilter, DjangoFilterBackend)

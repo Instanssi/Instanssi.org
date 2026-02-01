@@ -97,6 +97,7 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
         extra_kwargs = {
             "id": {"read_only": True},
             "entryfile": {"write_only": True},
-            "sourcefile": {"write_only": True, "required": False},
-            "imagefile_original": {"write_only": True, "required": False},
+            # allow_null=True lets DRF convert empty string to None for clearing
+            "sourcefile": {"write_only": True, "required": False, "allow_null": True},
+            "imagefile_original": {"write_only": True, "required": False, "allow_null": True},
         }

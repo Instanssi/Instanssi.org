@@ -2022,13 +2022,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/ProgramEventRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ProgramEventRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/ProgramEventRequest'
         required: true
@@ -2089,13 +2086,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/ProgramEventRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ProgramEventRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/ProgramEventRequest'
         required: true
@@ -2128,13 +2122,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedProgramEventRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedProgramEventRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedProgramEventRequest'
       security:
@@ -2450,13 +2441,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/StoreItemRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/StoreItemRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/StoreItemRequest'
         required: true
@@ -2517,13 +2505,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/StoreItemRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/StoreItemRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/StoreItemRequest'
         required: true
@@ -2556,13 +2541,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedStoreItemRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedStoreItemRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedStoreItemRequest'
       security:
@@ -3383,13 +3365,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UploadedFileRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UploadedFileRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UploadedFileRequest'
         required: true
@@ -3456,13 +3435,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UploadedFileRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UploadedFileRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UploadedFileRequest'
         required: true
@@ -3498,13 +3474,10 @@ paths:
       - admin
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedUploadedFileRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUploadedFileRequest'
-          multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedUploadedFileRequest'
       security:

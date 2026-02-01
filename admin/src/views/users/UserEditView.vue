@@ -82,7 +82,16 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    username: "username",
+    email: "email",
+    first_name: "firstName",
+    last_name: "lastName",
+    is_active: "isActive",
+};
 
 const props = defineProps<{
     id?: string;
@@ -158,21 +167,25 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        username: values.username,
+        is_active: values.isActive,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminUsersCreate({
-            body: {
-                first_name: values.firstName,
-                last_name: values.lastName,
-                email: values.email,
-                username: values.username,
-                is_active: values.isActive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("UserDialog.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"));
+        handleApiError(e, setErrors, toast, t("UserDialog.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -181,18 +194,12 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminUsersPartialUpdate({
             path: { id: itemId },
-            body: {
-                first_name: values.firstName,
-                last_name: values.lastName,
-                email: values.email,
-                username: values.username,
-                is_active: values.isActive,
-            },
+            body: buildBody(values),
         });
         toast.success(t("UserDialog.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"));
+        handleApiError(e, setErrors, toast, t("UserDialog.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

@@ -11,14 +11,11 @@ from Instanssi.api.v2.utils.entry_file_validation import (
 )
 from Instanssi.kompomaatti.models import Compo, Entry
 
-from .entry_viewset_mixin import EntryViewSetMixin
 
-
-class CompoEntryViewSet(EntryViewSetMixin, PermissionViewSet):  # type: ignore[misc]
+class CompoEntryViewSet(PermissionViewSet):
     """Staff viewset for managing compo entries.
 
     Staff can manage entries without deadline restrictions.
-    Compo-event validation and file deletion are handled by the mixin.
     """
 
     queryset = Entry.objects.all()

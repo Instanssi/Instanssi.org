@@ -1,10 +1,81 @@
 import { vi } from "vitest";
 
-// Mock API (only auth endpoints used by LoginView.test.ts)
+// Mock API - includes all admin endpoints used by form views
 vi.mock("@/api", () => ({
+    // Auth endpoints
     login: vi.fn(),
     logout: vi.fn(),
     userInfo: vi.fn(),
+
+    // Users
+    adminUsersCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminUsersPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminUsersRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+    adminUsersList: vi.fn().mockResolvedValue({ data: { results: [] } }),
+
+    // Events
+    adminEventsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventsPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Blog
+    adminBlogCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminBlogPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminBlogRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Video categories
+    adminEventArkistoVideoCategoriesCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventArkistoVideoCategoriesPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventArkistoVideoCategoriesRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+    adminEventArkistoVideoCategoriesList: vi.fn().mockResolvedValue({ data: { results: [] } }),
+
+    // Videos
+    adminEventArkistoVideosCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventArkistoVideosPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventArkistoVideosRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Competitions
+    adminEventKompomaattiCompetitionsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiCompetitionsPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiCompetitionsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+    adminEventKompomaattiCompetitionsList: vi.fn().mockResolvedValue({ data: { results: [] } }),
+
+    // Competition participations
+    adminEventKompomaattiCompetitionParticipationsCreate: vi
+        .fn()
+        .mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiCompetitionParticipationsPartialUpdate: vi
+        .fn()
+        .mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiCompetitionParticipationsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Compos
+    adminEventKompomaattiComposCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiComposPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiComposRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+    adminEventKompomaattiComposList: vi.fn().mockResolvedValue({ data: { results: [] } }),
+
+    // Entries
+    adminEventKompomaattiEntriesCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiEntriesPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventKompomaattiEntriesRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Program events
+    adminEventProgramEventsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventProgramEventsPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventProgramEventsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Uploads
+    adminEventUploadsFilesCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventUploadsFilesPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventUploadsFilesRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+
+    // Store items
+    adminEventStoreItemsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventStoreItemsPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventStoreItemsRetrieve: vi.fn().mockResolvedValue({ data: {} }),
+    adminEventStoreItemVariantsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    adminEventStoreItemVariantsDestroy: vi.fn().mockResolvedValue({}),
 }));
 
 // Mock vue-router
@@ -66,4 +137,16 @@ vi.mock("@/services/auth", () => ({
 // Mock symbols (for inject)
 vi.mock("@/symbols", () => ({
     confirmDialogKey: Symbol("confirmDialog"),
+}));
+
+// Mock VuetifyTiptap component
+vi.mock("vuetify-pro-tiptap", () => ({
+    VuetifyTiptap: {
+        name: "VuetifyTiptap",
+        template:
+            '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)"></textarea>',
+        props: ["modelValue"],
+        emits: ["update:modelValue"],
+    },
+    createVuetifyProTipTap: vi.fn(() => ({})),
 }));

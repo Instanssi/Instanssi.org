@@ -83,6 +83,7 @@ def test_staff_can_create_store_item(store_staff_api_client, event):
             "is_secret": False,
             "secret_key": "",
         },
+        format="multipart",
     )
     assert req.status_code == 201
     assert req.data["name"] == "New Test Item"
@@ -96,6 +97,7 @@ def test_staff_can_update_store_item(store_staff_api_client, store_item):
     req = store_staff_api_client.patch(
         f"{base_url}{store_item.id}/",
         {"name": "Updated Item Name", "price": "30.00"},
+        format="multipart",
     )
     assert req.status_code == 200
     assert req.data["name"] == "Updated Item Name"
@@ -127,6 +129,7 @@ def test_staff_can_make_item_hidden(store_staff_api_client, store_item):
     req = store_staff_api_client.patch(
         f"{base_url}{store_item.id}/",
         {"is_secret": True, "secret_key": "test_secret"},
+        format="multipart",
     )
     assert req.status_code == 200
     assert req.data["is_secret"] is True

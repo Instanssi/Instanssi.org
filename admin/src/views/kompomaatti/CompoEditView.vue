@@ -285,7 +285,30 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+    description: "description",
+    adding_end: "addingEnd",
+    editing_end: "editingEnd",
+    compo_start: "compoStart",
+    voting_start: "votingStart",
+    voting_end: "votingEnd",
+    entry_sizelimit: "entrySizelimit",
+    source_sizelimit: "sourceSizelimit",
+    formats: "formats",
+    source_formats: "sourceFormats",
+    image_formats: "imageFormats",
+    active: "active",
+    show_voting_results: "showVotingResults",
+    is_votable: "isVotable",
+    entry_view_type: "entryViewType",
+    thumbnail_pref: "thumbnailPref",
+    hide_from_archive: "hideFromArchive",
+    hide_from_frontpage: "hideFromFrontpage",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -537,36 +560,40 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+        description: values.description || "",
+        adding_end: toISODatetime(values.addingEnd)!,
+        editing_end: toISODatetime(values.editingEnd)!,
+        compo_start: toISODatetime(values.compoStart)!,
+        voting_start: toISODatetime(values.votingStart)!,
+        voting_end: toISODatetime(values.votingEnd)!,
+        entry_sizelimit: values.entrySizelimit,
+        source_sizelimit: values.sourceSizelimit,
+        formats: values.formats || "",
+        source_formats: values.sourceFormats || "",
+        image_formats: values.imageFormats || "",
+        active: values.active,
+        show_voting_results: values.showVotingResults,
+        is_votable: values.isVotable,
+        entry_view_type: values.entryViewType,
+        thumbnail_pref: values.thumbnailPref,
+        hide_from_archive: values.hideFromArchive,
+        hide_from_frontpage: values.hideFromFrontpage,
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiComposCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                adding_end: toISODatetime(values.addingEnd)!,
-                editing_end: toISODatetime(values.editingEnd)!,
-                compo_start: toISODatetime(values.compoStart)!,
-                voting_start: toISODatetime(values.votingStart)!,
-                voting_end: toISODatetime(values.votingEnd)!,
-                entry_sizelimit: values.entrySizelimit,
-                source_sizelimit: values.sourceSizelimit,
-                formats: values.formats || "",
-                source_formats: values.sourceFormats || "",
-                image_formats: values.imageFormats || "",
-                active: values.active,
-                show_voting_results: values.showVotingResults,
-                is_votable: values.isVotable,
-                entry_view_type: values.entryViewType,
-                thumbnail_pref: values.thumbnailPref,
-                hide_from_archive: values.hideFromArchive,
-                hide_from_frontpage: values.hideFromFrontpage,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompoEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompoEditView.createFailure"));
+        handleApiError(e, setErrors, toast, t("CompoEditView.createFailure"), API_FIELD_MAPPING);
     }
     return false;
 }
@@ -575,32 +602,12 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiComposPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                name: values.name,
-                description: values.description || "",
-                adding_end: toISODatetime(values.addingEnd)!,
-                editing_end: toISODatetime(values.editingEnd)!,
-                compo_start: toISODatetime(values.compoStart)!,
-                voting_start: toISODatetime(values.votingStart)!,
-                voting_end: toISODatetime(values.votingEnd)!,
-                entry_sizelimit: values.entrySizelimit,
-                source_sizelimit: values.sourceSizelimit,
-                formats: values.formats || "",
-                source_formats: values.sourceFormats || "",
-                image_formats: values.imageFormats || "",
-                active: values.active,
-                show_voting_results: values.showVotingResults,
-                is_votable: values.isVotable,
-                entry_view_type: values.entryViewType,
-                thumbnail_pref: values.thumbnailPref,
-                hide_from_archive: values.hideFromArchive,
-                hide_from_frontpage: values.hideFromFrontpage,
-            },
+            body: buildBody(values),
         });
         toast.success(t("CompoEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompoEditView.editFailure"));
+        handleApiError(e, setErrors, toast, t("CompoEditView.editFailure"), API_FIELD_MAPPING);
     }
     return false;
 }

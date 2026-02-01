@@ -859,6 +859,18 @@ files = [
 django = ">=3.2"
 
 [[package]]
+name = "django-cleanup"
+version = "9.0.0"
+description = "Deletes old files."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "django_cleanup-9.0.0-py3-none-any.whl", hash = "sha256:19f8b0e830233f9f0f683b17181f414672a0f48afe3ea3cc80ba47ae40ad880c"},
+    {file = "django_cleanup-9.0.0.tar.gz", hash = "sha256:bb9fb560aaf62959c81e31fa40885c36bbd5854d5aa21b90df2c7e4ba633531e"},
+]
+
+[[package]]
 name = "django-compressor"
 version = "4.6.0"
 description = "Compresses linked and inline JavaScript or CSS into single cached files."
@@ -4161,4 +4173,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "c32d31a5301ef9ebf34da2ed5fb7b454b99534a5961d33541625854d679cbd3a"
+content-hash = "475d9102e82149d94757147e915417dd325ac8b08ce622227a6cad825246c875"

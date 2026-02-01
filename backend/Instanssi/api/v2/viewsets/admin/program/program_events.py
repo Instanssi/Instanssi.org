@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.program import ProgramEventSerializer
@@ -9,6 +10,7 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 class ProgramEventViewSet(PermissionViewSet):
     """Staff viewset for managing program events."""
 
+    parser_classes = (MultiPartParser, FormParser)
     queryset = ProgrammeEvent.objects.all()
     serializer_class = ProgramEventSerializer  # type: ignore[assignment]
     ordering_fields = ("id", "start", "end", "title", "event_type")

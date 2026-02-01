@@ -127,7 +127,17 @@ import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    competition: "competition",
+    user: "user",
+    participant_name: "participantName",
+    score: "score",
+    disqualified: "disqualified",
+    disqualified_reason: "disqualifiedReason",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -216,23 +226,34 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject, isCreate: boolean) {
+    return {
+        // competition and user can only be set on create, not on edit
+        competition: isCreate ? values.competition : undefined,
+        user: isCreate ? values.user : undefined,
+        participant_name: values.participantName || "",
+        score: values.score,
+        disqualified: values.disqualified,
+        disqualified_reason: values.disqualifiedReason || "",
+    };
+}
+
 async function createItem(values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionParticipationsCreate({
             path: { event_pk: eventId.value },
-            body: {
-                competition: values.competition,
-                user: values.user,
-                participant_name: values.participantName || undefined,
-                score: values.score ?? undefined,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-            },
+            body: buildBody(values, true),
         });
         toast.success(t("CompetitionParticipationEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.createFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionParticipationEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -241,17 +262,18 @@ async function editItem(itemId: number, values: GenericObject) {
     try {
         await api.adminEventKompomaattiCompetitionParticipationsPartialUpdate({
             path: { event_pk: eventId.value, id: itemId },
-            body: {
-                participant_name: values.participantName || undefined,
-                score: values.score ?? undefined,
-                disqualified: values.disqualified,
-                disqualified_reason: values.disqualifiedReason || "",
-            },
+            body: buildBody(values, false),
         });
         toast.success(t("CompetitionParticipationEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("CompetitionParticipationEditView.editFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("CompetitionParticipationEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

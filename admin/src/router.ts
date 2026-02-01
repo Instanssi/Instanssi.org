@@ -125,6 +125,68 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/blog/BlogView.vue"),
         },
+        // Program Events
+        {
+            path: "/:eventId(\\d+)/program",
+            name: "program",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.PROGRAMME_EVENT,
+            },
+            props: true,
+            component: () => import("@/views/program/ProgramEventsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/program/new",
+            name: "program-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.PROGRAMME_EVENT,
+            },
+            props: true,
+            component: () => import("@/views/program/ProgramEventEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/program/:id(\\d+)/edit",
+            name: "program-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.PROGRAMME_EVENT,
+            },
+            props: true,
+            component: () => import("@/views/program/ProgramEventEditView.vue"),
+        },
+        // Uploads
+        {
+            path: "/:eventId(\\d+)/uploads",
+            name: "uploads",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.UPLOADED_FILE,
+            },
+            props: true,
+            component: () => import("@/views/uploads/UploadsView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/uploads/new",
+            name: "uploads-new",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.UPLOADED_FILE,
+            },
+            props: true,
+            component: () => import("@/views/uploads/UploadEditView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/uploads/:id(\\d+)/edit",
+            name: "uploads-edit",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.UPLOADED_FILE,
+            },
+            props: true,
+            component: () => import("@/views/uploads/UploadEditView.vue"),
+        },
         // Compos
         {
             path: "/:eventId(\\d+)/compos",

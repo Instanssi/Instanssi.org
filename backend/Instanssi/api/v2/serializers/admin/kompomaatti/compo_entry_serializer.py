@@ -88,3 +88,8 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             "rank",
             "alternate_files",
         )
+        extra_kwargs = {
+            # allow_null=True lets DRF convert empty string to None for clearing
+            "sourcefile": {"required": False, "allow_null": True},
+            "imagefile_original": {"required": False, "allow_null": True},
+        }

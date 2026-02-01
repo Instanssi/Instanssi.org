@@ -51,7 +51,12 @@ import { object as yupObject, string as yupString } from "yup";
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
-import { handleApiError } from "@/utils/http";
+import { handleApiError, type FieldMapping } from "@/utils/http";
+
+/** Maps API field names (snake_case) to form field names (camelCase) */
+const API_FIELD_MAPPING: FieldMapping = {
+    name: "name",
+};
 
 const props = defineProps<{
     eventId: string;
@@ -116,18 +121,28 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
+function buildBody(values: GenericObject) {
+    return {
+        name: values.name,
+    };
+}
+
 async function createCategory(values: GenericObject) {
     try {
         await api.adminEventArkistoVideoCategoriesCreate({
             path: { event_pk: eventId.value },
-            body: {
-                name: values.name,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoCategoryEditView.createSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.createFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("VideoCategoryEditView.createFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }
@@ -136,14 +151,18 @@ async function editCategory(categoryId: number, values: GenericObject) {
     try {
         await api.adminEventArkistoVideoCategoriesPartialUpdate({
             path: { event_pk: eventId.value, id: categoryId },
-            body: {
-                name: values.name,
-            },
+            body: buildBody(values),
         });
         toast.success(t("VideoCategoryEditView.editSuccess"));
         return true;
     } catch (e) {
-        handleApiError(e, setErrors, toast, t("VideoCategoryEditView.editFailure"));
+        handleApiError(
+            e,
+            setErrors,
+            toast,
+            t("VideoCategoryEditView.editFailure"),
+            API_FIELD_MAPPING
+        );
     }
     return false;
 }

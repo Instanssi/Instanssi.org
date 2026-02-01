@@ -70,7 +70,9 @@ def test_staff_can_create_uploaded_file(staff_api_client, event, staff_user, tes
 def test_staff_can_update_uploaded_file(staff_api_client, uploaded_file):
     """Test that staff can update an uploaded file."""
     base_url = get_base_url(uploaded_file.event_id)
-    req = staff_api_client.patch(f"{base_url}{uploaded_file.id}/", {"description": "Updated description"})
+    req = staff_api_client.patch(
+        f"{base_url}{uploaded_file.id}/", {"description": "Updated description"}, format="multipart"
+    )
     assert req.status_code == 200
     assert req.data == {
         "id": uploaded_file.id,

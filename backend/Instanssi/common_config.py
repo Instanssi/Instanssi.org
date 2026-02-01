@@ -191,6 +191,7 @@ INSTALLED_APPS = (
     "qr_code",
     "auditlog",
     "drf_spectacular",
+    "django_cleanup.apps.CleanupConfig",  # Must be last - cleans up files on model delete/update
 )
 
 # Authentication backends

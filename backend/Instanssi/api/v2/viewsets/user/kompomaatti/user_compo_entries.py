@@ -14,13 +14,10 @@ from Instanssi.api.v2.utils.entry_file_validation import (
     maybe_copy_entry_to_image,
     validate_entry_files,
 )
-from Instanssi.api.v2.viewsets.admin.kompomaatti.entry_viewset_mixin import (
-    EntryViewSetMixin,
-)
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
-class UserCompoEntryViewSet(EntryViewSetMixin, ModelViewSet[Entry]):
+class UserCompoEntryViewSet(ModelViewSet[Entry]):
     """Manage the current user's own compo entries."""
 
     permission_classes = [IsAuthenticated]

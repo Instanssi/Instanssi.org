@@ -1,0 +1,3 @@
+import{d5 as E}from"./index-BSHMv_df.js";function g(e){return e?.response??null}function h(e){const{data:r}=e;return typeof r=="object"&&r!==null?r:null}function A(e,r){const t=g(e),n=t&&h(t);return n&&typeof n.detail=="string"?n.detail:r}function m(e,r,t,n,y={}){const o=g(e);if(!o){t.error(n),console.error(e);return}const s=h(o);if(o.status===E.BAD_REQUEST&&s){const i={},a=[];for(const[c,u]of Object.entries(s)){if(c==="detail"||!Array.isArray(u))continue;const p=u.join(", "),d=y[c];d?i[d]=p:a.push(`${c}: ${p}`)}const f=Object.keys(i).length>0,l=a.length>0;if(f||l){f&&r(i),l&&t.error(a.join(`
+`));return}}if(s&&typeof s.detail=="string"){t.error(s.detail);return}t.error(n),console.error(e)}export{A as g,m as h};
+//# sourceMappingURL=http-BZkoYM_m.js.map

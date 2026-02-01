@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { debounce, parseInt } from "lodash-es";
-import { type Ref, computed, ref } from "vue";
+import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
@@ -67,6 +67,7 @@ const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
 const currentPage = ref(1);
 const voteCodes: Ref<TicketVoteCode[]> = ref([]);
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
         title: t("VoteCodesView.headers.id"),
@@ -92,9 +93,10 @@ const headers: ReadonlyHeaders = [
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminEventKompomaattiTicketVoteCodesList({
-            path: { event_pk: parseInt(props.eventId, 10) },
+            path: { event_pk: eventId.value },
             query: {
                 ...getLoadArgs(args),
             },
@@ -110,4 +112,17 @@ async function load(args: LoadArgs) {
 }
 
 const debouncedLoad = debounce(load, 250);
+
+function refresh() {
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload when event changes
+watch(eventId, refresh);
 </script>

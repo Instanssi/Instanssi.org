@@ -251,6 +251,22 @@ watch(selectedCompo, () => {
     }
 });
 
+function refresh() {
+    selectedCompo.value = null;
+    search.value = "";
+    loadCompos();
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload compos and entries when event changes
+watch(eventId, refresh);
+
 async function deleteEntry(item: CompoEntry): Promise<void> {
     const text = t("EntriesView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {

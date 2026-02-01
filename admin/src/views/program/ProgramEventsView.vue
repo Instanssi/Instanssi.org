@@ -242,6 +242,21 @@ watch(filterEventType, () => {
     flushData();
 });
 
+function refresh() {
+    filterEventType.value = null;
+    search.value = "";
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload when event changes
+watch(eventId, refresh);
+
 async function deleteItem(item: ProgramEvent): Promise<void> {
     const text = t("ProgramEventsView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {

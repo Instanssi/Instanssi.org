@@ -65,7 +65,7 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
-import { type Ref, computed, ref } from "vue";
+import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -104,6 +104,7 @@ const totalItems = ref(0);
 const currentPage = ref(1);
 const transactions: Ref<StoreTransaction[]> = ref([]);
 const search = ref("");
+const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
     {
@@ -160,6 +161,7 @@ function getStatusText(transaction: StoreTransaction): string {
 
 async function load(args: LoadArgs) {
     loading.value = true;
+    lastLoadArgs.value = args;
     try {
         const response = await api.adminEventStoreTransactionsList({
             path: { event_pk: eventId.value },
@@ -176,6 +178,20 @@ async function load(args: LoadArgs) {
 }
 
 const debouncedLoad = debounce(load, 250);
+
+function refresh() {
+    search.value = "";
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload when event changes
+watch(eventId, refresh);
 
 function viewDetails(id: number): void {
     router.push({ name: "store-transaction-detail", params: { eventId: eventId.value, id } });

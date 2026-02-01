@@ -206,6 +206,22 @@ watch(selectedItem, () => {
     }
 });
 
+function refresh() {
+    selectedItem.value = null;
+    search.value = "";
+    loadStoreItems();
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload store items when event changes
+watch(eventId, refresh);
+
 async function exportData(format: SpreadsheetFormat): Promise<void> {
     exportLoading.value = true;
     try {

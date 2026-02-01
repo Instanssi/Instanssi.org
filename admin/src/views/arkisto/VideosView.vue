@@ -205,6 +205,22 @@ watch(selectedCategory, () => {
     }
 });
 
+function refresh() {
+    selectedCategory.value = null;
+    search.value = "";
+    loadCategories();
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload categories when event changes
+watch(eventId, refresh);
+
 async function deleteVideo(item: OtherVideo): Promise<void> {
     const text = t("VideosView.confirmDelete", item);
     await confirmDialog.value!.ifConfirmed(text, async () => {

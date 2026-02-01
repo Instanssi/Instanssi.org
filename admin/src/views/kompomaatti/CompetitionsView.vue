@@ -67,7 +67,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
-import { type Ref, computed, inject, ref } from "vue";
+import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -178,6 +178,20 @@ async function load(args: LoadArgs) {
 }
 
 const debouncedLoad = debounce(load, 250);
+
+function refresh() {
+    search.value = "";
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload when event changes
+watch(eventId, refresh);
 
 async function deleteCompetition(item: Competition): Promise<void> {
     const text = t("CompetitionsView.confirmDelete", item);

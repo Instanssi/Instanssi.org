@@ -255,6 +255,21 @@ watch(selectedCompetition, () => {
     }
 });
 
+function refresh() {
+    selectedCompetition.value = null;
+    loadCompetitions();
+    debouncedLoad({
+        page: 1,
+        itemsPerPage: perPage.value ?? 25,
+        sortBy: [],
+        groupBy: [] as never,
+        search: "",
+    });
+}
+
+// Reload competitions when event changes
+watch(eventId, refresh);
+
 async function deleteParticipation(item: CompetitionParticipation): Promise<void> {
     const text = t("CompetitionParticipationsView.confirmDelete", {
         name: item.participant_name || `#${item.id}`,

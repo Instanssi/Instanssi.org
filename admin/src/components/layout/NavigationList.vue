@@ -14,6 +14,7 @@
                     :key="`${item.title}-${child.title}`"
                     :title="child.title"
                     :to="navigateTo(child)"
+                    @click="emit('navigate')"
                 >
                     <template #prepend>
                         <FontAwesomeIcon :icon="child.icon" class="nav-icon" />
@@ -25,6 +26,7 @@
                 :key="`root-${item.title}`"
                 :title="item.title"
                 :to="navigateTo(item)"
+                @click="emit('navigate')"
             >
                 <template #prepend>
                     <FontAwesomeIcon :icon="item.icon" class="nav-icon" />
@@ -53,6 +55,7 @@ export type NavigationLink = {
 export type NavigationLinks = NavigationLink[];
 
 const props = defineProps<{ items: NavigationLinks; event: number | undefined }>();
+const emit = defineEmits<{ navigate: [] }>();
 
 const authService = useAuth();
 const { event } = toRefs(props);

@@ -325,8 +325,14 @@ import type {
     PublicStoreItemsListResponses,
     PublicStoreItemsRetrieveData,
     PublicStoreItemsRetrieveResponses,
+    TokensDestroyData,
+    TokensDestroyResponses,
+    TokensListData,
+    TokensListResponses,
     UserInfoData,
     UserInfoResponses,
+    UserTokensCreateTokenData,
+    UserTokensCreateTokenResponses,
 } from "./types.gen";
 
 export type Options<
@@ -1596,7 +1602,6 @@ export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean =
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
- * Compo-event validation and file deletion are handled by the mixin.
  */
 export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesListData, ThrowOnError>
@@ -1627,7 +1632,6 @@ export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = 
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
- * Compo-event validation and file deletion are handled by the mixin.
  */
 export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesCreateData, ThrowOnError>
@@ -1663,7 +1667,6 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
- * Compo-event validation and file deletion are handled by the mixin.
  */
 export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesDestroyData, ThrowOnError>
@@ -1693,7 +1696,6 @@ export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
- * Compo-event validation and file deletion are handled by the mixin.
  */
 export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesRetrieveData, ThrowOnError>
@@ -1721,10 +1723,9 @@ export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolea
 };
 
 /**
- * Handle partial updates with file deletion support.
+ * Staff viewset for managing compo entries.
  *
- * Files can be deleted by sending an empty string for the field.
- * Subclasses can override validate_partial_update() to add extra checks.
+ * Staff can manage entries without deadline restrictions.
  */
 export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesPartialUpdateData, ThrowOnError>
@@ -1760,7 +1761,6 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
- * Compo-event validation and file deletion are handled by the mixin.
  */
 export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesUpdateData, ThrowOnError>
@@ -3849,10 +3849,7 @@ export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean
 };
 
 /**
- * Handle partial updates with file deletion support.
- *
- * Files can be deleted by sending an empty string for the field.
- * Subclasses can override validate_partial_update() to add extra checks.
+ * Manage the current user's own compo entries.
  */
 export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesPartialUpdateData, ThrowOnError>
@@ -4935,6 +4932,81 @@ export const publicStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
             ...options,
         }
     );
+};
+
+/**
+ * Manage API authentication tokens for the current user.
+ */
+export const tokensList = <ThrowOnError extends boolean = false>(
+    options?: Options<TokensListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<TokensListResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/tokens/",
+        ...options,
+    });
+};
+
+/**
+ * Manage API authentication tokens for the current user.
+ */
+export const tokensDestroy = <ThrowOnError extends boolean = false>(
+    options: Options<TokensDestroyData, ThrowOnError>
+) => {
+    return (options.client ?? client).delete<TokensDestroyResponses, unknown, ThrowOnError>({
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/tokens/{digest}/",
+        ...options,
+    });
+};
+
+/**
+ * Create a new API token. The plain token is returned only once.
+ */
+export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
+    options: Options<UserTokensCreateTokenData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<UserTokensCreateTokenResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/tokens/create/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
 };
 
 /**

@@ -19,7 +19,10 @@ class YoutubeVideoField(models.JSONField):
         value = super().from_db_value(value, expression, connection)
         if not value:
             return None
-        return YoutubeURL(video_id=value["video_id"], start=value["start"])
+        # Handle legacy data where start might be stored as a string
+        start = value.get("start")
+        start = int(start) if start else None
+        return YoutubeURL(video_id=value["video_id"], start=start)
 
     def to_python(self, value: Any) -> Optional[YoutubeURL]:
         if not value:

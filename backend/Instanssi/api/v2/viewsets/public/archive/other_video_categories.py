@@ -20,5 +20,6 @@ class PublicOtherVideoCategoryViewSet(PublicReadOnlyViewSet[OtherVideoCategory])
         event_id = int(self.kwargs["event_pk"])
         return self.queryset.filter(
             event_id=event_id,
+            event__hidden=False,
             event__archived=True,
         ).order_by("name")

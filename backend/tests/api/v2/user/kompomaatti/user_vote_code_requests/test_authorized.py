@@ -131,3 +131,34 @@ def test_filter_by_status(auth_client, approved_vote_code_request):
     assert len(req.data) == 1
     assert req.data[0]["id"] == approved_vote_code_request.id
     assert req.data[0]["status"] == 1
+
+
+@pytest.mark.django_db
+def test_user_cannot_list_vote_code_requests_for_hidden_event(auth_client, hidden_event, base_user):
+    """User should not see their vote code requests for hidden events."""
+    from Instanssi.kompomaatti.models import VoteCodeRequest
+
+    # Create a vote code request for the hidden event
+    VoteCodeRequest.objects.create(
+        event=hidden_event,
+        user=base_user,
+        text="Please give me voting rights",
+        status=0,
+    )
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_cannot_create_vote_code_request_for_hidden_event(auth_client, hidden_event):
+    """User should not be able to request vote codes for hidden events."""
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.post(
+        base_url,
+        data={
+            "text": "Please give me voting rights",
+        },
+    )
+    assert req.status_code == 400

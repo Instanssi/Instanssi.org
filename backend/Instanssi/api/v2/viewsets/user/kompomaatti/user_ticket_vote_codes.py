@@ -47,13 +47,13 @@ class UserTicketVoteCodeViewSet(
         """Return only the current user's vote codes for this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return self.queryset.filter(event_id=event_id, associated_to=user)
+        return self.queryset.filter(event_id=event_id, event__hidden=False, associated_to=user)
 
     @transaction.atomic
     def perform_create(self, serializer: BaseSerializer[TicketVoteCode]) -> None:
         """Validate ticket key against the event and create vote code."""
         event_id = int(self.kwargs["event_pk"])
-        event = Event.objects.filter(id=event_id).first()
+        event = Event.objects.filter(id=event_id, hidden=False).first()
         if not event:
             raise serializers.ValidationError({"event": ["Event not found."]})
 

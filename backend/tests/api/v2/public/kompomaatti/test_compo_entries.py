@@ -143,3 +143,12 @@ def test_anonymous_cannot_modify_entries(api_client, votable_compo_entry, method
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     url = f"{base_url}{votable_compo_entry.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_entries_not_in_list(api_client, hidden_event, hidden_event_compo, hidden_event_entry):
+    """Entries from hidden events should not appear in the list."""
+    base_url = get_base_url(hidden_event.id)
+    req = api_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0

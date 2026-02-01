@@ -16,6 +16,7 @@ class PublicOtherVideoViewSet(PublicReadOnlyViewSet[OtherVideo]):
         return (
             self.queryset.filter(
                 category__event_id=event_id,
+                category__event__hidden=False,
                 category__event__archived=True,
             )
             .select_related("category")

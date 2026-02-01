@@ -17,7 +17,7 @@ from rest_framework.viewsets import GenericViewSet
 from Instanssi.api.v2.serializers.user.kompomaatti.user_vote_code_request_serializer import (
     UserVoteCodeRequestSerializer,
 )
-from Instanssi.kompomaatti.models import VoteCodeRequest
+from Instanssi.kompomaatti.models import Event, VoteCodeRequest
 
 
 class UserVoteCodeRequestViewSet(
@@ -49,16 +49,20 @@ class UserVoteCodeRequestViewSet(
         """Return only the current user's vote code requests for this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return self.queryset.filter(event_id=event_id, user=user)
+        return self.queryset.filter(event_id=event_id, event__hidden=False, user=user)
 
     def perform_create(self, serializer: BaseSerializer[VoteCodeRequest]) -> None:
         """Create vote code request with the current user and event from URL."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
 
+        event = Event.objects.filter(id=event_id, hidden=False).first()
+        if not event:
+            raise serializers.ValidationError({"event": ["Event not found."]})
+
         if VoteCodeRequest.objects.filter(event_id=event_id, user=user).exists():
             raise serializers.ValidationError(
                 {"non_field_errors": ["You have already requested a vote code for this event"]}
             )
 
-        serializer.save(user=user, event_id=event_id)
+        serializer.save(user=user, event=event)

@@ -33,16 +33,20 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
         return (
-            self.queryset.filter(compo__event_id=event_id, compo__active=True, user=user)
+            self.queryset.filter(
+                compo__event_id=event_id, compo__event__hidden=False, compo__active=True, user=user
+            )
             .select_related("compo")
             .prefetch_related("alternate_files")
         )
 
     def validate_compo_belongs_to_event(self, compo: Compo) -> None:
-        """Validate that compo belongs to the event in the URL."""
+        """Validate that compo belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
             raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+        if compo.event.hidden:
+            raise serializers.ValidationError({"compo": ["Compo not found or not active"]})
 
     def _validate_editing_allowed(self, compo: Compo) -> None:
         """Validate that the compo is active and editing is still open."""

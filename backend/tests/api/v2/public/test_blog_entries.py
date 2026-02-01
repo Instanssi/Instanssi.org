@@ -50,3 +50,12 @@ def test_anonymous_cannot_modify_blog_entries(api_client, public_blog_entry, met
     """Test that write methods return 405 on read-only endpoint."""
     url = f"{BASE_URL}{public_blog_entry.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_blog_entries_not_in_list(api_client, hidden_event_blog_entry):
+    """Blog entries from hidden events should not appear in the list."""
+    req = api_client.get(BASE_URL)
+    assert req.status_code == 200
+    blog_ids = [b["id"] for b in req.data]
+    assert hidden_event_blog_entry.id not in blog_ids

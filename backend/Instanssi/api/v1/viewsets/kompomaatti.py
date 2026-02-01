@@ -51,7 +51,7 @@ class EventViewSet(ReadOnlyModelViewSet):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
-    queryset = Event.objects.filter(name__startswith="Instanssi")
+    queryset = Event.objects.filter(hidden=False)
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
@@ -77,7 +77,7 @@ class CompetitionViewSet(ReadOnlyModelViewSet):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
-    queryset = Competition.objects.filter(active=True)
+    queryset = Competition.objects.filter(active=True, event__hidden=False)
     serializer_class = CompetitionSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
@@ -100,7 +100,9 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
-    queryset = CompetitionParticipation.objects.filter(competition__active=True)
+    queryset = CompetitionParticipation.objects.filter(
+        competition__active=True, competition__event__hidden=False
+    )
     serializer_class = CompetitionParticipationSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
@@ -133,7 +135,9 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     filterset_fields = ("competition",)
 
     def get_queryset(self):
-        return CompetitionParticipation.objects.filter(competition__active=True, user=self.request.user)
+        return CompetitionParticipation.objects.filter(
+            competition__active=True, competition__event__hidden=False, user=self.request.user
+        )
 
     def perform_destroy(self, instance):
         if not instance.competition.is_participating_open():
@@ -155,7 +159,7 @@ class CompoViewSet(ReadOnlyModelViewSet):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
-    queryset = Compo.objects.filter(active=True)
+    queryset = Compo.objects.filter(active=True, event__hidden=False)
     serializer_class = CompoSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (
@@ -187,7 +191,7 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return Entry.objects.filter(compo__active=True).filter(
+        return Entry.objects.filter(compo__active=True, compo__event__hidden=False).filter(
             Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True)
         )
 
@@ -218,7 +222,7 @@ class UserCompoEntryViewSet(ModelViewSet):
     filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return Entry.objects.filter(compo__active=True, user=self.request.user)
+        return Entry.objects.filter(compo__active=True, compo__event__hidden=False, user=self.request.user)
 
     def perform_destroy(self, instance):
         if not instance.compo.is_editing_open():
@@ -294,7 +298,7 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
     filterset_fields = ("event",)
 
     def get_queryset(self):
-        return VoteCodeRequest.objects.filter(user=self.request.user)
+        return VoteCodeRequest.objects.filter(user=self.request.user, event__hidden=False)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -322,7 +326,7 @@ class TicketVoteCodeViewSet(ReadWriteModelViewSet):
     filterset_fields = ("event",)
 
     def get_queryset(self):
-        return TicketVoteCode.objects.filter(associated_to=self.request.user)
+        return TicketVoteCode.objects.filter(associated_to=self.request.user, event__hidden=False)
 
     def perform_create(self, serializer):
         serializer.save(associated_to=self.request.user)
@@ -350,7 +354,7 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
     filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return VoteGroup.objects.filter(user=self.request.user)
+        return VoteGroup.objects.filter(user=self.request.user, compo__event__hidden=False)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

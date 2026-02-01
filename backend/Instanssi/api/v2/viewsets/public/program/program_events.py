@@ -13,4 +13,4 @@ class PublicProgramEventViewSet(PublicReadOnlyViewSet[ProgrammeEvent]):
 
     def get_queryset(self) -> QuerySet[ProgrammeEvent]:
         event_id = int(self.kwargs["event_pk"])
-        return self.queryset.filter(event_id=event_id, active=True).order_by("start")
+        return self.queryset.filter(event_id=event_id, event__hidden=False, active=True).order_by("start")

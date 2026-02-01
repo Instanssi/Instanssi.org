@@ -34,12 +34,12 @@ logger = logging.getLogger(__name__)
 
 class CompoForeignKey(PrimaryKeyRelatedField):
     def get_queryset(self) -> QuerySet:
-        return Compo.objects.filter(active=True, event__name__startswith="Instanssi")
+        return Compo.objects.filter(active=True, event__hidden=False)
 
 
 class CompetitionForeignKey(PrimaryKeyRelatedField):
     def get_queryset(self) -> QuerySet:
-        return Competition.objects.filter(active=True, event__name__startswith="Instanssi")
+        return Competition.objects.filter(active=True, event__hidden=False)
 
 
 class UserSerializer(ModelSerializer):
@@ -251,6 +251,8 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
     def validate_competition(self, competition: Competition) -> Competition:
         if not competition.active:
             raise ValidationError("Kilpailu ei ole aktiivinen")
+        if competition.event.hidden:
+            raise ValidationError("Kilpailu ei ole aktiivinen")
         return competition
 
     def validate(self, data: dict) -> dict:
@@ -316,6 +318,8 @@ class UserCompoEntrySerializer(ModelSerializer):
 
     def validate_compo(self, compo: Compo) -> Compo:
         if not compo.active:
+            raise ValidationError("Kompoa ei ole olemassa")
+        if compo.event.hidden:
             raise ValidationError("Kompoa ei ole olemassa")
         return compo
 
@@ -455,9 +459,11 @@ class TicketVoteCodeSerializer(ModelSerializer):
     def validate(self, data: dict) -> dict:
         data = super(TicketVoteCodeSerializer, self).validate(data)
 
-        obj = TicketVoteCode.objects.filter(
-            event=data["event"], associated_to=self.context["request"].user
-        ).first()
+        event = data["event"]
+        if event.hidden:
+            raise ValidationError("Tapahtumaa ei ole olemassa")
+
+        obj = TicketVoteCode.objects.filter(event=event, associated_to=self.context["request"].user).first()
         if obj:
             raise ValidationError("Äänestyskoodi on jo hankittu")
 
@@ -505,6 +511,9 @@ class VoteCodeRequestSerializer(ModelSerializer):
         if not event:
             event = self.instance.event
 
+        if event.hidden:
+            raise ValidationError("Tapahtumaa ei ole olemassa")
+
         data = super(VoteCodeRequestSerializer, self).validate(data)
 
         # If content has changed or is new, make sure to test for uniqueness
@@ -544,6 +553,10 @@ class VoteGroupSerializer(ModelSerializer):
         compo = data["compo"]
         entries = data["entries"]
         user = self.context["request"].user
+
+        # Make sure event is not hidden
+        if compo.event.hidden:
+            raise ValidationError("Kompoa ei ole olemassa")
 
         # Make sure compo voting is open
         if not compo.is_voting_open():

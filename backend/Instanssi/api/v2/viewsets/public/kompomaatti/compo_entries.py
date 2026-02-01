@@ -21,6 +21,7 @@ class PublicCompoEntryViewSet(PublicReadOnlyViewSet[Entry]):
         return (
             self.queryset.filter(
                 compo__event_id=event_id,
+                compo__event__hidden=False,
                 compo__active=True,
             )
             .filter(Q(compo__voting_start__lte=timezone.now()) | Q(compo__event__archived=True))

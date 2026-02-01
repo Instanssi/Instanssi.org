@@ -55,3 +55,20 @@ def test_anonymous_cannot_modify_compos(api_client, open_compo, method, status):
     base_url = get_base_url(open_compo.event_id)
     url = f"{base_url}{open_compo.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_compos_not_in_list(api_client, hidden_event, hidden_event_compo):
+    """Compos from hidden events should not appear in the list."""
+    base_url = get_base_url(hidden_event.id)
+    req = api_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_hidden_event_compo_detail_returns_404(api_client, hidden_event, hidden_event_compo):
+    """Compo detail from hidden event should return 404."""
+    base_url = get_base_url(hidden_event.id)
+    req = api_client.get(f"{base_url}{hidden_event_compo.id}/")
+    assert req.status_code == 404

@@ -52,13 +52,15 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
         """Return only the current user's vote groups for compos in this event."""
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
-        return self.queryset.filter(compo__event_id=event_id, user=user)
+        return self.queryset.filter(compo__event_id=event_id, compo__event__hidden=False, user=user)
 
     def validate_compo_belongs_to_event(self, compo: Compo) -> None:
-        """Validate that compo belongs to the event in the URL."""
+        """Validate that compo belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
             raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+        if compo.event.hidden:
+            raise serializers.ValidationError({"compo": ["Compo is not active"]})
 
     def validate_entries(self, entries: list[Entry], compo: Compo) -> None:
         """Validate that entries are unique, belong to the compo, and are not disqualified."""

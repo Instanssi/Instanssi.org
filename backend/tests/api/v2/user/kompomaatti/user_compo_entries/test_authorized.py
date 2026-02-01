@@ -299,3 +299,42 @@ def test_user_entry_includes_alternate_files(auth_client, editable_alternate_ent
     alt_file = req.data["alternate_files"][0]
     assert alt_file["format"] == "audio/webm;codecs=opus"
     assert "url" in alt_file
+
+
+@pytest.mark.django_db
+def test_user_cannot_list_entries_for_hidden_event(
+    auth_client, hidden_event, hidden_event_compo, hidden_event_entry
+):
+    """User should not see their entries for hidden events."""
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_cannot_create_entry_for_hidden_event(
+    auth_client, hidden_event, hidden_event_compo, entry_zip, image_png
+):
+    """User should not be able to create entries for hidden events."""
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    # Make the compo open for additions
+    hidden_event_compo.adding_end = timezone.now() + timedelta(hours=1)
+    hidden_event_compo.save()
+
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.post(
+        base_url,
+        data={
+            "compo": hidden_event_compo.id,
+            "name": "Test Entry",
+            "description": "Test description",
+            "creator": "Test Creator",
+            "entryfile": entry_zip,
+        },
+        format="multipart",
+    )
+    assert req.status_code == 400

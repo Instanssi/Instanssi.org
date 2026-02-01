@@ -57,3 +57,14 @@ def test_anonymous_cannot_modify_video_categories(api_client, video_category, me
     base_url = get_base_url(video_category.event_id)
     url = f"{base_url}{video_category.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_video_categories_not_in_list(
+    api_client, hidden_archived_event, hidden_event_video_category
+):
+    """Video categories from hidden archived events should not appear in the list."""
+    base_url = get_base_url(hidden_archived_event.id)
+    req = api_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0

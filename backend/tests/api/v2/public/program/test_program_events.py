@@ -55,3 +55,12 @@ def test_anonymous_cannot_modify_program_events(api_client, program_event, metho
     base_url = get_base_url(program_event.event_id)
     url = f"{base_url}{program_event.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_program_not_in_list(api_client, hidden_event, hidden_event_program):
+    """Program events from hidden events should not appear in the list."""
+    base_url = get_base_url(hidden_event.id)
+    req = api_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0

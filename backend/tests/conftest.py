@@ -1330,3 +1330,142 @@ def past_vote(base_user, past_compo, past_compo_entry, past_vote_group) -> Vote:
         rank=1,
         group=past_vote_group,
     )
+
+
+# Hidden event fixtures - for testing hidden event filtering
+
+
+@fixture
+def hidden_event(faker) -> Event:
+    """A hidden event that should not appear in public/user APIs."""
+    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
+    return Event.objects.create(
+        name=f"Hidden Event {unique_id}",
+        tag=f"hidden-{unique_id}",
+        date=date.today(),
+        archived=False,
+        hidden=True,
+        mainurl=f"http://localhost:8000/hidden-{unique_id}/",
+    )
+
+
+@fixture
+def hidden_archived_event(faker) -> Event:
+    """A hidden archived event that should not appear even in archive APIs."""
+    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
+    return Event.objects.create(
+        name=f"Hidden Archived Event {unique_id}",
+        tag=f"hidarch-{unique_id}",
+        date=date.today() - timedelta(days=365),
+        archived=True,
+        hidden=True,
+        mainurl=f"http://localhost:8000/hidden-archived-{unique_id}/",
+    )
+
+
+@fixture
+def hidden_event_compo(hidden_event) -> Compo:
+    """Compo belonging to a hidden event."""
+    return Compo.objects.create(
+        event=hidden_event,
+        name="Hidden Compo",
+        description="This compo is in a hidden event",
+        active=True,
+        adding_end=timezone.now() + timedelta(hours=1),
+        editing_end=timezone.now() + timedelta(hours=2),
+        compo_start=timezone.now() + timedelta(hours=3),
+        voting_start=timezone.now() - timedelta(hours=1),
+        voting_end=timezone.now() + timedelta(hours=8),
+    )
+
+
+@fixture
+def hidden_event_entry(faker, base_user, hidden_event_compo, entry_zip, image_png) -> Entry:
+    """Entry in a hidden event's compo."""
+    return Entry.objects.create(
+        compo=hidden_event_compo,
+        user=base_user,
+        name="Hidden Entry",
+        description=faker.text(),
+        creator=faker.name(),
+        platform="PC",
+        entryfile=entry_zip,
+        imagefile_original=image_png,
+    )
+
+
+@fixture
+def hidden_event_competition(hidden_event) -> Competition:
+    """Competition belonging to a hidden event."""
+    return Competition.objects.create(
+        event=hidden_event,
+        name="Hidden Competition",
+        description="This competition is in a hidden event",
+        active=True,
+        participation_end=timezone.now() + timedelta(hours=1),
+        start=timezone.now() - timedelta(hours=1),
+        end=timezone.now() + timedelta(hours=8),
+        score_type="p",
+    )
+
+
+@fixture
+def hidden_event_participation(faker, base_user, hidden_event_competition) -> CompetitionParticipation:
+    """Participation in a hidden event's competition."""
+    return CompetitionParticipation.objects.create(
+        competition=hidden_event_competition,
+        user=base_user,
+        participant_name=faker.name(),
+        score=100.0,
+    )
+
+
+@fixture
+def hidden_event_program(hidden_event, faker) -> ProgrammeEvent:
+    """Program event belonging to a hidden event."""
+    return ProgrammeEvent.objects.create(
+        event=hidden_event,
+        start=timezone.now() + timedelta(hours=1),
+        end=timezone.now() + timedelta(hours=2),
+        title=faker.sentence(nb_words=4),
+        description=faker.text(max_nb_chars=256),
+        presenters=faker.name(),
+        place="Main Stage",
+        active=True,
+    )
+
+
+@fixture
+def hidden_event_video_category(hidden_archived_event) -> OtherVideoCategory:
+    """Video category belonging to a hidden archived event."""
+    return OtherVideoCategory.objects.create(
+        event=hidden_archived_event,
+        name="Hidden Videos",
+    )
+
+
+@fixture
+def hidden_event_blog_entry(hidden_event, base_user) -> BlogEntry:
+    """Blog entry belonging to a hidden event."""
+    return BlogEntry.objects.create(
+        event=hidden_event,
+        user=base_user,
+        title="Hidden Blog Post",
+        text="This blog entry is in a hidden event.",
+        date=timezone.now(),
+        public=True,
+    )
+
+
+@fixture
+def hidden_event_store_item(hidden_event) -> StoreItem:
+    """Store item belonging to a hidden event."""
+    return StoreItem.objects.create(
+        event=hidden_event,
+        name="Hidden Event Ticket",
+        description="Ticket for a hidden event",
+        price=Decimal("20.00"),
+        max=100,
+        available=True,
+        is_ticket=True,
+    )

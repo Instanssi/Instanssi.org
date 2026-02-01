@@ -22,7 +22,7 @@ class ProgrammeEventViewSet(ReadOnlyModelViewSet):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
-    queryset = ProgrammeEvent.objects.filter(active=True)
+    queryset = ProgrammeEvent.objects.filter(active=True, event__hidden=False)
     serializer_class = ProgrammeEventSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (

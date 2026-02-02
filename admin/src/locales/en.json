@@ -775,6 +775,8 @@
         "from": "From",
         "sent": "Sent",
         "notSent": "Not sent",
+        "view": "View",
+        "contentTitle": "Receipt Content",
         "resend": "Resend",
         "resendSuccess": "Receipt resent!",
         "resendFailure": "Failed to resend receipt; try again later."

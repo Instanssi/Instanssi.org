@@ -294,6 +294,17 @@
                                         </td>
                                         <td>
                                             <v-btn
+                                                v-if="auth.canView(PermissionTarget.RECEIPT)"
+                                                size="small"
+                                                variant="text"
+                                                @click="viewReceipt(receipt.content)"
+                                            >
+                                                <template #prepend>
+                                                    <FontAwesomeIcon :icon="faEye" />
+                                                </template>
+                                                {{ t("TransactionDetailView.receipts.view") }}
+                                            </v-btn>
+                                            <v-btn
                                                 v-if="auth.canChange(PermissionTarget.RECEIPT)"
                                                 size="small"
                                                 variant="text"
@@ -309,6 +320,30 @@
                                     </tr>
                                 </tbody>
                             </v-table>
+                            <v-dialog v-model="receiptDialogVisible" max-width="800">
+                                <v-card>
+                                    <v-card-title class="d-flex justify-space-between align-center">
+                                        <span>{{
+                                            t("TransactionDetailView.receipts.contentTitle")
+                                        }}</span>
+                                        <v-btn
+                                            icon
+                                            variant="text"
+                                            density="compact"
+                                            @click="receiptDialogVisible = false"
+                                        >
+                                            <FontAwesomeIcon :icon="faXmark" />
+                                        </v-btn>
+                                    </v-card-title>
+                                    <v-divider />
+                                    <v-card-text
+                                        class="pa-4"
+                                        style="white-space: pre-wrap; font-family: monospace"
+                                    >
+                                        {{ receiptContent }}
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -363,7 +398,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPaperPlane, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
@@ -394,6 +429,8 @@ const auth = useAuth();
 const loading = ref(false);
 const itemsLoading = ref(false);
 const resendingReceiptId = ref<number | null>(null);
+const receiptDialogVisible = ref(false);
+const receiptContent = ref("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const transactionId = computed(() => parseInt(props.id, 10));
 const transaction: Ref<StoreTransaction | null> = ref(null);
@@ -454,6 +491,11 @@ function getVariantName(itemId: number, variantId: number | null | undefined): s
     if (!item) return `#${variantId}`;
     const variant = item.variants?.find((v) => v.id === variantId);
     return variant?.name ?? `#${variantId}`;
+}
+
+function viewReceipt(content: string | null | undefined) {
+    receiptContent.value = content ?? "";
+    receiptDialogVisible.value = true;
 }
 
 async function resendReceipt(receiptId: number) {

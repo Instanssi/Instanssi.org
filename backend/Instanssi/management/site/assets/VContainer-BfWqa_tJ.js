@@ -1,0 +1,2 @@
+import{aT as t,co as l,b0 as r,b2 as i,cp as c,cq as m,cn as u,e as C,bf as d,aa as f,cr as p}from"./index-DXU74lGt.js";const y=i({fluid:{type:Boolean,default:!1},...u(),...m(),...c()},"VContainer"),k=t()({name:"VContainer",props:y(),setup(e,a){let{slots:s}=a;const{rtlClasses:n}=l(),{dimensionStyles:o}=p(e);return r(()=>C(e.tag,{class:f(["v-container",{"v-container--fluid":e.fluid},n.value,e.class]),style:d([o.value,e.style])},s)),{}}});export{k as V};
+//# sourceMappingURL=VContainer-BfWqa_tJ.js.map

@@ -1,2 +1,0 @@
-import{d as t,b as r,c as n,t as c,G as u}from"./index-qrfwdmHz.js";const f=t({__name:"PriceCell",props:{value:{default:null},currency:{default:"€"},fallback:{default:"-"}},setup(a){const e=a,l=u(()=>e.value===null||e.value===void 0?e.fallback:`${e.value} ${e.currency}`);return(o,s)=>(r(),n("span",null,c(l.value),1))}});export{f as _};
-//# sourceMappingURL=PriceCell.vue_vue_type_script_setup_true_lang-BtBLjvrW.js.map

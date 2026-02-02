@@ -6,6 +6,7 @@ from Instanssi.api.v2.viewsets.admin.arkisto import (
     OtherVideoCategoryViewSet,
     OtherVideoViewSet,
 )
+from Instanssi.api.v2.viewsets.admin.auditlog import AuditLogViewSet
 from Instanssi.api.v2.viewsets.admin.blog_entries import BlogEntryViewSet
 from Instanssi.api.v2.viewsets.admin.events import EventViewSet
 from Instanssi.api.v2.viewsets.admin.kompomaatti.competition_participations import (
@@ -37,6 +38,7 @@ from Instanssi.api.v2.viewsets.admin.users import UserViewSet
 
 # /api/v2/admin/ - Top-level admin endpoints
 admin_router = routers.SimpleRouter()
+admin_router.register("auditlog", AuditLogViewSet, basename="admin_auditlog")
 admin_router.register("blog", BlogEntryViewSet, basename="admin_blog")
 admin_router.register("events", EventViewSet, basename="admin_events")
 admin_router.register("users", UserViewSet, basename="admin_users")

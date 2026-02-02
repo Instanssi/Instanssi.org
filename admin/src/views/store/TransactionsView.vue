@@ -42,6 +42,12 @@
                     <template #item.total_price="{ item }">
                         <PriceCell :value="item.total_price" />
                     </template>
+                    <template #item.information="{ item }">
+                        <LongTextCell
+                            :value="item.information"
+                            :title="t('TransactionsView.headers.informationDialogTitle')"
+                        />
+                    </template>
                     <template #item.actions="{ item }">
                         <v-btn
                             v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)"
@@ -75,6 +81,7 @@ import * as api from "@/api";
 import type { StoreTransaction } from "@/api";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -136,6 +143,11 @@ const headers: ReadonlyHeaders = [
         title: t("TransactionsView.headers.total"),
         sortable: false,
         key: "total_price",
+    },
+    {
+        title: t("TransactionsView.headers.information"),
+        sortable: false,
+        key: "information",
     },
     {
         title: t("TransactionsView.headers.actions"),

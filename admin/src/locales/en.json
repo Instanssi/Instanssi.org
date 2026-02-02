@@ -25,6 +25,10 @@
       "previewTitle": "Image Preview",
       "download": "Download file"
     },
+    "LongTextCell": {
+      "clickToView": "Click to view",
+      "dialogTitle": "Details"
+    },
     "MediaCell": {
       "clickToPreview": "Click to preview",
       "download": "Download file",
@@ -713,6 +717,8 @@
         "created": "Created",
         "status": "Status",
         "total": "Total",
+        "information": "Info",
+        "informationDialogTitle": "Additional information",
         "actions": "Actions"
       },
       "statuses": {

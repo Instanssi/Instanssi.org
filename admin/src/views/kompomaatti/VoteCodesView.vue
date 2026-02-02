@@ -3,7 +3,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -11,11 +12,11 @@
                     :items="voteCodes"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('VoteCodesView.noVoteCodesFound')"
                     :loading-text="t('VoteCodesView.loadingVoteCodes')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.time="{ item }">
                         <DateTimeCell :value="item.time" />
@@ -43,6 +44,7 @@ import * as api from "@/api";
 import type { TicketVoteCode } from "@/api";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import { useTableState } from "@/composables/useTableState";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 
@@ -62,10 +64,9 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("VoteCodesView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState();
 const totalItems = ref(0);
-const currentPage = ref(1);
 const voteCodes: Ref<TicketVoteCode[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
@@ -113,10 +114,16 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

@@ -3,7 +3,7 @@
         <v-col>
             <v-row>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -16,7 +16,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -24,12 +25,12 @@
                     :items="transactions"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('TransactionsView.noTransactionsFound')"
                     :loading-text="t('TransactionsView.loadingTransactions')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.time_created="{ item }">
                         <DateTimeCell :value="item.time_created" />
@@ -77,6 +78,7 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import LongTextCell from "@/components/table/LongTextCell.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -99,12 +101,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("TransactionsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState();
 const totalItems = ref(0);
-const currentPage = ref(1);
 const transactions: Ref<StoreTransaction[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -185,11 +185,17 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
-    search.value = "";
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

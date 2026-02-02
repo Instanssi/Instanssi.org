@@ -3,7 +3,7 @@
         <v-col>
             <v-row>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -16,7 +16,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -24,12 +25,12 @@
                     :items="requests"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('VoteCodeRequestsView.noRequestsFound')"
                     :loading-text="t('VoteCodeRequestsView.loadingRequests')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.user="{ item }">
                         {{ item.user }}
@@ -96,6 +97,7 @@ import * as api from "@/api";
 import type { StatusEnum, VoteCodeRequest } from "@/api";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -120,12 +122,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("VoteCodeRequestsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState();
 const totalItems = ref(0);
-const currentPage = ref(1);
 const requests: Ref<VoteCodeRequest[]> = ref([]);
-const search = ref("");
 const lastLoadArgs = ref<LoadArgs | null>(null);
 
 const headers: ReadonlyHeaders = [
@@ -240,11 +240,17 @@ async function deleteRequest(item: VoteCodeRequest) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
-    search.value = "";
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

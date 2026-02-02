@@ -27,7 +27,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -35,11 +36,11 @@
                     :items="participations"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('CompetitionParticipationsView.noParticipationsFound')"
                     :loading-text="t('CompetitionParticipationsView.loadingParticipations')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.competition="{ item }">
                         {{ getCompetitionName(item.competition) }}
@@ -91,6 +92,7 @@ import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -117,15 +119,21 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("CompetitionParticipationsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["competition"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
 const users: Ref<User[]> = ref([]);
-const selectedCompetition: Ref<number | null> = ref(null);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const selectedCompetition = computed({
+    get: () => tableState.getFilterAsNumber("competition"),
+    set: (value: number | null) => {
+        tableState.setFilter("competition", value);
+        tableState.resetPage();
+    },
+});
 
 const headers: ReadonlyHeaders = [
     {
@@ -238,6 +246,11 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 // Reload when competition filter changes
 watch(selectedCompetition, () => {
     if (lastLoadArgs.value) {
@@ -247,10 +260,11 @@ watch(selectedCompetition, () => {
 
 function refresh() {
     selectedCompetition.value = null;
+    tableState.page.value = 1;
     loadCompetitions();
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

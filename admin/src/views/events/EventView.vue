@@ -13,7 +13,7 @@
                     {{ t("EventView.newEvent") }}
                 </v-btn>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -26,7 +26,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -34,12 +35,12 @@
                     :items="events"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :search="search"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :search="tableState.search.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('EventView.noEventsFound')"
                     :loading-text="t('EventView.loadingEvents')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.archived="{ item }">
                         <BooleanIcon :value="item.archived" />
@@ -90,6 +91,7 @@ import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateCell from "@/components/table/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -119,13 +121,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     ];
 });
 
+const tableState = useTableState();
 const loading = ref(false);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
 const totalItems = ref(0);
-const currentPage = ref(1);
 const events: Ref<Event[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
@@ -193,7 +192,12 @@ async function load(args: LoadArgs) {
     }
 }
 
-const debouncedLoad = debounce(load, 250); // Don't murderate the server API
+const debouncedLoad = debounce(load, 250);
+
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
 
 async function deleteEvent(item: Event): Promise<void> {
     const text = t("EventView.confirmDelete", item);

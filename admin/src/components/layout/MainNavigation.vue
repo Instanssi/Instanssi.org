@@ -26,6 +26,7 @@
                 :label="t('MainNavigation.event')"
                 variant="outlined"
                 density="compact"
+                hide-details
                 :items="events"
                 @update:model-value="onEventChange"
             >
@@ -36,7 +37,7 @@
                         class="event-btn"
                         @click="routeToEvents"
                     >
-                        <FontAwesomeIcon :icon="faCalendarDays" class="ma-0 pa-0" />
+                        <FontAwesomeIcon :icon="faPenToSquare" class="ma-0 pa-0" />
                     </v-btn>
                 </template>
             </v-select>
@@ -58,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -167,10 +168,11 @@ onMounted(initEvents);
 
 <style lang="scss">
 .nav-event-select .v-input__append {
-    margin-inline-start: 8px !important;
+    margin-inline-start: 0 !important;
+    padding-inline-end: 0 !important;
 }
 .event-btn {
     min-width: 0;
-    margin: 0.2rem;
+    margin: 0;
 }
 </style>

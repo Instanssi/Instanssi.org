@@ -20,6 +20,7 @@ import {
     faBoxOpen,
     faCalendarAlt,
     faChartPie,
+    faClockRotateLeft,
     faCreditCard,
     faDashboard,
     faEnvelope,
@@ -49,7 +50,7 @@ import { PermissionTarget, useAuth } from "@/services/auth";
 import { confirmDialogKey } from "@/symbols";
 
 const { t } = useI18n();
-const backgroundClass = computed(() => (authService.isLoggedIn() ? undefined : "login-view"));
+const backgroundClass = computed(() => (authService.isLoggedIn() ? "main-view" : "login-view"));
 const authService = useAuth();
 const confirmDialog = ref(undefined);
 const primaryLinks: NavigationLinks = [
@@ -194,6 +195,13 @@ const secondaryLinks: NavigationLinks = [
         requirePerm: PermissionTarget.AUTH_TOKEN,
     },
     {
+        title: t("App.nav.auditLog"),
+        icon: faClockRotateLeft,
+        to: "auditlog",
+        noEventId: true,
+        requirePerm: PermissionTarget.LOG_ENTRY,
+    },
+    {
         title: t("App.nav.logout"),
         icon: faRightFromBracket,
         to: "logout",
@@ -209,5 +217,14 @@ provide(confirmDialogKey, confirmDialog);
     background-image: url("@/assets/webtausta.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.main-view {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+        url("@/assets/webtausta.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 </style>

@@ -113,7 +113,8 @@
         "arkistoArchiver": "Archiver",
         "arkistoCategories": "Video Categories",
         "arkistoVideos": "Videos",
-        "apiTokens": "API Tokens"
+        "apiTokens": "API Tokens",
+        "auditLog": "Audit Log"
       }
     },
     "MainNavigation": {
@@ -1080,6 +1081,64 @@
       "copyToClipboard": "Copy to clipboard",
       "copySuccess": "Token copied to clipboard!",
       "copyFailure": "Failed to copy token to clipboard."
+    },
+    "AuditLogView": {
+      "title": "Audit Log",
+      "noEntriesFound": "No audit log entries found.",
+      "loadingEntries": "Loading audit log ...",
+      "loadFailure": "Failed to load audit log; try again later.",
+      "system": "System",
+      "filterByModel": "Filter by model",
+      "headers": {
+        "timestamp": "Time",
+        "user": "User",
+        "action": "Action",
+        "model": "Model",
+        "object": "Object"
+      },
+      "actions": {
+        "create": "Create",
+        "update": "Update",
+        "delete": "Delete",
+        "access": "Access",
+        "unknown": "Unknown"
+      },
+      "models": {
+        "user": "User",
+        "event": "Event",
+        "blogEntry": "Blog Entry",
+        "programmeEvent": "Program Event",
+        "compo": "Compo",
+        "entry": "Entry",
+        "competition": "Competition",
+        "competitionParticipation": "Competition Participation",
+        "storeItem": "Store Item",
+        "storeTransaction": "Store Transaction",
+        "uploadedFile": "Uploaded File",
+        "otherVideo": "Video",
+        "otherVideoCategory": "Video Category"
+      }
+    },
+    "AuditLogTable": {
+      "title": "Change History",
+      "noEntriesFound": "No changes recorded.",
+      "loadingEntries": "Loading change history ...",
+      "loadFailure": "Failed to load change history; try again later.",
+      "noChanges": "No field changes recorded.",
+      "system": "System",
+      "headers": {
+        "timestamp": "Time",
+        "user": "User",
+        "action": "Action",
+        "object": "Object"
+      },
+      "actions": {
+        "create": "Create",
+        "update": "Update",
+        "delete": "Delete",
+        "access": "Access",
+        "unknown": "Unknown"
+      }
     }
   }
 }

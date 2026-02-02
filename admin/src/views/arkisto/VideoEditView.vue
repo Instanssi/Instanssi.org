@@ -46,6 +46,13 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="arkisto"
+                        model="othervideo"
+                        :object-pk="props.id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -80,6 +87,7 @@ import { number as yupNumber, object as yupObject, string as yupString } from "y
 
 import * as api from "@/api";
 import type { OtherVideoCategory } from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";

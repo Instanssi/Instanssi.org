@@ -16,6 +16,13 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="arkisto"
+                        model="othervideocategory"
+                        :object-pk="props.id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -49,6 +56,7 @@ import { useToast } from "vue-toastification";
 import { object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { handleApiError, type FieldMapping } from "@/utils/http";

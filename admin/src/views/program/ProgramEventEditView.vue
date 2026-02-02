@@ -182,6 +182,13 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="ext_programme"
+                        model="programmeevent"
+                        :object-pk="props.id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -221,6 +228,7 @@ import {
 } from "yup";
 
 import * as api from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

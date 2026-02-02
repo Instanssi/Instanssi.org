@@ -4,6 +4,84 @@ info:
   version: 2.0.0
   description: Instanssi.org APIv2
 paths:
+  /api/v2/admin/auditlog/:
+    get:
+      operationId: admin_auditlog_list
+      description: |-
+        Read-only viewset for viewing audit log entries.
+
+        Requires auditlog.view_logentry permission. Model-specific filtering
+        is handled in get_queryset().
+      parameters:
+      - in: query
+        name: app_label
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: model
+        schema:
+          type: string
+      - in: query
+        name: object_pk
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLogEntryList'
+          description: ''
+  /api/v2/admin/auditlog/{id}/:
+    get:
+      operationId: admin_auditlog_retrieve
+      description: |-
+        Read-only viewset for viewing audit log entries.
+
+        Requires auditlog.view_logentry permission. Model-specific filtering
+        is handled in get_queryset().
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lokimerkintä.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogEntry'
+          description: ''
   /api/v2/admin/blog/:
     get:
       operationId: admin_blog_list
@@ -5578,7 +5656,14 @@ paths:
   /api/v2/tokens/:
     get:
       operationId: tokens_list
-      description: Manage API authentication tokens for the current user.
+      description: |-
+        Manage API authentication tokens for the current user.
+
+        Requires knox.view_authtoken permission to list tokens.
+        Requires knox.delete_authtoken permission to delete tokens.
+        Requires knox.add_authtoken permission to create tokens.
+
+        Users can only see and delete their own tokens.
       parameters:
       - name: limit
         required: false
@@ -5613,7 +5698,14 @@ paths:
   /api/v2/tokens/{digest}/:
     delete:
       operationId: tokens_destroy
-      description: Manage API authentication tokens for the current user.
+      description: |-
+        Manage API authentication tokens for the current user.
+
+        Requires knox.view_authtoken permission to list tokens.
+        Requires knox.delete_authtoken permission to delete tokens.
+        Requires knox.add_authtoken permission to create tokens.
+
+        Users can only see and delete their own tokens.
       parameters:
       - in: path
         name: digest
@@ -5677,6 +5769,35 @@ paths:
           description: ''
 components:
   schemas:
+    ActionEnum:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      type: integer
+      description: |-
+        * `0` - create
+        * `1` - update
+        * `2` - delete
+        * `3` - access
+    Actor:
+      type: object
+      description: Serializer for the actor (user) who made the change.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Käyttäjätunnus
+          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
+            @/./+/-/_ ovat sallittuja.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+      required:
+      - id
+      - username
     AlternateEntryFile:
       type: object
       description: Staff serializer for alternate entry files (transcoded media).
@@ -6582,6 +6703,24 @@ components:
       - name
       - voting_end
       - voting_start
+    ContentType:
+      type: object
+      description: Serializer for content type information.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        app_label:
+          type: string
+          maxLength: 100
+        model:
+          type: string
+          title: Mallin python-luokan nimi
+          maxLength: 100
+      required:
+      - app_label
+      - id
+      - model
     CountryEnum:
       enum:
       - AF
@@ -7197,6 +7336,52 @@ components:
           maxLength: 150
       required:
       - name
+    LogEntry:
+      type: object
+      description: Serializer for audit log entries.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        content_type:
+          allOf:
+          - $ref: '#/components/schemas/ContentType'
+          readOnly: true
+        object_pk:
+          type: string
+          maxLength: 255
+        object_repr:
+          type: string
+          title: Object representation
+        action:
+          allOf:
+          - $ref: '#/components/schemas/ActionEnum'
+          minimum: 0
+          maximum: 9223372036854775807
+        changes:
+          type: object
+          additionalProperties: {}
+          description: Return the changes as a dictionary.
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/Actor'
+          readOnly: true
+        remote_addr:
+          type: string
+          nullable: true
+          title: Remote address
+      required:
+      - action
+      - actor
+      - changes
+      - content_type
+      - id
+      - object_pk
+      - object_repr
     NestedReceipt:
       type: object
       description: Serializer for Receipt model (nested in transaction response).
@@ -7479,6 +7664,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Event'
+    PaginatedLogEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
     PaginatedOtherVideoCategoryList:
       type: object
       required:

@@ -45,6 +45,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.OTHER_VIDEO_CATEGORY)"
                             :can-delete="auth.canDelete(PermissionTarget.OTHER_VIDEO_CATEGORY)"
+                            :audit-log="{
+                                appLabel: 'arkisto',
+                                model: 'othervideocategory',
+                                objectPk: item.id,
+                            }"
                             @edit="editCategory(item.id)"
                             @delete="deleteCategory(item)"
                         />

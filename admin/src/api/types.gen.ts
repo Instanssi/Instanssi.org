@@ -5,6 +5,27 @@ export type ClientOptions = {
 };
 
 /**
+ * * `0` - create
+ * * `1` - update
+ * * `2` - delete
+ * * `3` - access
+ */
+export type ActionEnum = 0 | 1 | 2 | 3;
+
+/**
+ * Serializer for the actor (user) who made the change.
+ */
+export type Actor = {
+    readonly id: number;
+    /**
+     * Käyttäjätunnus
+     *
+     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     */
+    username: string;
+};
+
+/**
  * Staff serializer for alternate entry files (transcoded media).
  */
 export type AlternateEntryFile = {
@@ -807,6 +828,18 @@ export type CompoRequest = {
 };
 
 /**
+ * Serializer for content type information.
+ */
+export type ContentType = {
+    readonly id: number;
+    app_label: string;
+    /**
+     * Mallin python-luokan nimi
+     */
+    model: string;
+};
+
+/**
  * * `AF` - Afghanistan
  * * `AX` - Åland Islands
  * * `AL` - Albania
@@ -1416,6 +1449,32 @@ export type GroupRequest = {
 };
 
 /**
+ * Serializer for audit log entries.
+ */
+export type LogEntry = {
+    readonly id: number;
+    content_type: ContentType;
+    object_pk: string;
+    /**
+     * Object representation
+     */
+    object_repr: string;
+    action: ActionEnum;
+    /**
+     * Return the changes as a dictionary.
+     */
+    readonly changes: {
+        [key: string]: unknown;
+    };
+    timestamp?: string;
+    actor: Actor;
+    /**
+     * Remote address
+     */
+    remote_addr?: string | null;
+};
+
+/**
  * Serializer for Receipt model (nested in transaction response).
  */
 export type NestedReceipt = {
@@ -1562,6 +1621,13 @@ export type PaginatedEventList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Event>;
+};
+
+export type PaginatedLogEntryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<LogEntry>;
 };
 
 export type PaginatedOtherVideoCategoryList = {
@@ -4550,6 +4616,18 @@ export type VoteCodeRequestRequest = {
 };
 
 /**
+ * Serializer for the actor (user) who made the change.
+ */
+export type ActorWritable = {
+    /**
+     * Käyttäjätunnus
+     *
+     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     */
+    username: string;
+};
+
+/**
  * Serializer for staff - includes all fields.
  *
  * The user field is read-only and set automatically to the current user on create.
@@ -4898,6 +4976,17 @@ export type CompoEntryWritable = {
 };
 
 /**
+ * Serializer for content type information.
+ */
+export type ContentTypeWritable = {
+    app_label: string;
+    /**
+     * Mallin python-luokan nimi
+     */
+    model: string;
+};
+
+/**
  * Staff serializer for events.
  */
 export type EventWritable = {
@@ -4931,6 +5020,23 @@ export type EventWritable = {
      * URL Tapahtuman pääsivustolle
      */
     mainurl?: string;
+};
+
+/**
+ * Serializer for audit log entries.
+ */
+export type LogEntryWritable = {
+    object_pk: string;
+    /**
+     * Object representation
+     */
+    object_repr: string;
+    action: ActionEnum;
+    timestamp?: string;
+    /**
+     * Remote address
+     */
+    remote_addr?: string | null;
 };
 
 /**
@@ -6131,6 +6237,55 @@ export type VoteCodeRequestWritable = {
      */
     status?: StatusEnum;
 };
+
+export type AdminAuditlogListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        app_label?: string;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        model?: string;
+        object_pk?: string;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+    };
+    url: "/api/v2/admin/auditlog/";
+};
+
+export type AdminAuditlogListResponses = {
+    200: PaginatedLogEntryList;
+};
+
+export type AdminAuditlogListResponse =
+    AdminAuditlogListResponses[keyof AdminAuditlogListResponses];
+
+export type AdminAuditlogRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this lokimerkintä.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/auditlog/{id}/";
+};
+
+export type AdminAuditlogRetrieveResponses = {
+    200: LogEntry;
+};
+
+export type AdminAuditlogRetrieveResponse =
+    AdminAuditlogRetrieveResponses[keyof AdminAuditlogRetrieveResponses];
 
 export type AdminBlogListData = {
     body?: never;

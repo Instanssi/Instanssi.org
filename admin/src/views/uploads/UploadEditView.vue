@@ -24,6 +24,13 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="admin_upload"
+                        model="uploadedfile"
+                        :object-pk="props.id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -57,6 +64,7 @@ import { useToast } from "vue-toastification";
 import { mixed as yupMixed, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FileUploadField from "@/components/form/FileUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";

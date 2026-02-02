@@ -57,6 +57,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.COMPO)"
                             :can-delete="auth.canDelete(PermissionTarget.COMPO)"
+                            :audit-log="{
+                                appLabel: 'kompomaatti',
+                                model: 'compo',
+                                objectPk: item.id,
+                            }"
                             @edit="editCompo(item.id)"
                             @delete="deleteCompo(item)"
                         />

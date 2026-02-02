@@ -65,7 +65,7 @@
                         :value="stats.competitionParticipants"
                         :label="t('MainView.stats.competitionParticipants')"
                         :subtitle="`${stats.competitions} ${t('MainView.stats.competitions')}`"
-                        color="orange"
+                        color="orange-darken-3"
                         clickable
                         @click="
                             router.push({ name: 'competition-participations', params: { eventId } })

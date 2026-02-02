@@ -57,6 +57,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.UPLOADED_FILE)"
                             :can-delete="auth.canDelete(PermissionTarget.UPLOADED_FILE)"
+                            :audit-log="{
+                                appLabel: 'admin_upload',
+                                model: 'uploadedfile',
+                                objectPk: item.id,
+                            }"
                             @edit="editItem(item.id)"
                             @delete="deleteItem(item)"
                         />

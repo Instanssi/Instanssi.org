@@ -163,6 +163,13 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="kompomaatti"
+                        model="entry"
+                        :object-pk="props.id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -203,6 +210,7 @@ import {
 
 import * as api from "@/api";
 import type { AlternateEntryFile, Compo, CompoEntry, User } from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FileUploadField from "@/components/form/FileUploadField.vue";
 import FormSection from "@/components/form/FormSection.vue";

@@ -59,29 +59,17 @@
                         {{ item.rank ?? "-" }}
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.COMPETITION_PARTICIPATION)"
-                            density="compact"
-                            variant="text"
-                            color="red"
-                            @click="deleteParticipation(item)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faXmark" />
-                            </template>
-                            {{ t("General.delete") }}
-                        </v-btn>
-                        <v-btn
-                            v-if="auth.canChange(PermissionTarget.COMPETITION_PARTICIPATION)"
-                            density="compact"
-                            variant="text"
-                            @click="editParticipation(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faPenToSquare" />
-                            </template>
-                            {{ t("General.edit") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="auth.canChange(PermissionTarget.COMPETITION_PARTICIPATION)"
+                            :can-delete="auth.canDelete(PermissionTarget.COMPETITION_PARTICIPATION)"
+                            :audit-log="{
+                                appLabel: 'kompomaatti',
+                                model: 'competitionparticipation',
+                                objectPk: item.id,
+                            }"
+                            @edit="editParticipation(item.id)"
+                            @delete="deleteParticipation(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -90,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPenToSquare, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -102,6 +90,7 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

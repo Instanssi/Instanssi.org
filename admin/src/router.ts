@@ -105,6 +105,15 @@ const router = createRouter({
             component: () => import("@/views/tokens/TokensView.vue"),
         },
         {
+            path: "/auditlog",
+            name: "auditlog",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.LOG_ENTRY,
+            },
+            component: () => import("@/views/auditlog/AuditLogView.vue"),
+        },
+        {
             path: "/:eventId(\\d+)/blog/new",
             name: "blog-new",
             meta: {

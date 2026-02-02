@@ -83,6 +83,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.PROGRAMME_EVENT)"
                             :can-delete="auth.canDelete(PermissionTarget.PROGRAMME_EVENT)"
+                            :audit-log="{
+                                appLabel: 'ext_programme',
+                                model: 'programmeevent',
+                                objectPk: item.id,
+                            }"
                             @edit="editItem(item.id)"
                             @delete="deleteItem(item)"
                         />

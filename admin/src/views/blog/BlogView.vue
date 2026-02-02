@@ -51,6 +51,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.BLOG_ENTRY)"
                             :can-delete="auth.canDelete(PermissionTarget.BLOG_ENTRY)"
+                            :audit-log="{
+                                appLabel: 'ext_blog',
+                                model: 'blogentry',
+                                objectPk: item.id,
+                            }"
                             @edit="editPost(item.id)"
                             @delete="deletePost(item)"
                         />

@@ -7,6 +7,9 @@ vi.mock("@/api", () => ({
     logout: vi.fn(),
     userInfo: vi.fn(),
 
+    // Audit log
+    adminAuditlogList: vi.fn().mockResolvedValue({ data: { results: [], count: 0 } }),
+
     // Users
     adminUsersCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
     adminUsersPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
@@ -145,6 +148,7 @@ vi.mock("@/services/auth", () => ({
         USER: "user",
         BLOG_ENTRY: "blogentry",
         AUTH_TOKEN: "authtoken",
+        LOG_ENTRY: "logentry",
     },
 }));
 

@@ -61,6 +61,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.OTHER_VIDEO)"
                             :can-delete="auth.canDelete(PermissionTarget.OTHER_VIDEO)"
+                            :audit-log="{
+                                appLabel: 'arkisto',
+                                model: 'othervideo',
+                                objectPk: item.id,
+                            }"
                             @edit="editVideo(item.id)"
                             @delete="deleteVideo(item)"
                         />

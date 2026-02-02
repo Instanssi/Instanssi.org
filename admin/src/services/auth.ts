@@ -24,6 +24,7 @@ type PermissionType = "add" | "change" | "delete" | "view";
 
 export enum PermissionTarget {
     AUTH_TOKEN = "authtoken",
+    LOG_ENTRY = "logentry",
     UPLOADED_FILE = "uploadedfile",
     OTHER_VIDEO = "othervideo",
     OTHER_VIDEO_CATEGORY = "othervideocategory",

@@ -20,6 +20,7 @@ import {
     faBoxOpen,
     faCalendarAlt,
     faChartPie,
+    faClockRotateLeft,
     faCreditCard,
     faDashboard,
     faEnvelope,
@@ -192,6 +193,13 @@ const secondaryLinks: NavigationLinks = [
         to: "tokens",
         noEventId: true,
         requirePerm: PermissionTarget.AUTH_TOKEN,
+    },
+    {
+        title: t("App.nav.auditLog"),
+        icon: faClockRotateLeft,
+        to: "auditlog",
+        noEventId: true,
+        requirePerm: PermissionTarget.LOG_ENTRY,
     },
     {
         title: t("App.nav.logout"),

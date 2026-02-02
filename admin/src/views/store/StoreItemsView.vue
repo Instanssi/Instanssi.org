@@ -60,6 +60,11 @@
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.STORE_ITEM)"
                             :can-delete="auth.canDelete(PermissionTarget.STORE_ITEM)"
+                            :audit-log="{
+                                appLabel: 'store',
+                                model: 'storeitem',
+                                objectPk: item.id,
+                            }"
                             @edit="editItem(item.id)"
                             @delete="deleteItem(item)"
                         />

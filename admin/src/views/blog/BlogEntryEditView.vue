@@ -28,7 +28,14 @@
                         />
                     </v-form>
                 </v-card-text>
-                <v-card-actions class="justify-end">
+                <v-card-actions>
+                    <AuditLogButton
+                        v-if="isEditMode"
+                        app-label="ext_blog"
+                        model="blogentry"
+                        :object-pk="id"
+                    />
+                    <v-spacer />
                     <v-btn variant="text" @click="goBack">
                         {{ t("General.cancel") }}
                     </v-btn>
@@ -62,6 +69,7 @@ import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { handleApiError, type FieldMapping } from "@/utils/http";

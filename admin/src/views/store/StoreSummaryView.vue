@@ -1,9 +1,6 @@
 <template>
     <LayoutBase :key="`store-summary-${eventId}`" :breadcrumbs="breadcrumbs">
-        <v-col v-if="loading" class="d-flex justify-center my-8">
-            <v-progress-circular indeterminate size="64" />
-        </v-col>
-        <v-col v-else>
+        <v-col>
             <!-- Summary Cards -->
             <v-row class="mb-4">
                 <v-col cols="12" sm="6">
@@ -70,13 +67,15 @@
                 </v-col>
             </v-row>
         </v-col>
+
+        <RefreshControl @refresh="loadData" />
     </LayoutBase>
 </template>
 
 <script setup lang="ts">
 import { faBoxOpen, faEuroSign } from "@fortawesome/free-solid-svg-icons";
 import { parseInt } from "lodash-es";
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
@@ -85,6 +84,7 @@ import { Temporal } from "temporal-polyfill";
 
 import * as api from "@/api";
 import type { StoreItem, StoreTransaction, TransactionItem } from "@/api";
+import RefreshControl from "@/components/dashboard/RefreshControl.vue";
 import SalesByHourChart from "@/components/dashboard/charts/SalesByHourChart.vue";
 import SalesPerDayChart from "@/components/dashboard/charts/SalesPerDayChart.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
@@ -108,7 +108,6 @@ const { t } = useI18n();
 const toast = useToast();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
-const loading = ref(false);
 const exportLoading = ref(false);
 
 const storeItems: Ref<StoreItem[]> = ref([]);
@@ -241,7 +240,6 @@ function getVariantName(itemId: number, variantId: number | null | undefined): s
 }
 
 async function loadData() {
-    loading.value = true;
     try {
         const [itemsResponse, transactionsResponse, txItemsResponse] = await Promise.all([
             api.adminEventStoreItemsList({
@@ -263,8 +261,6 @@ async function loadData() {
     } catch (e) {
         toast.error(t("StoreSummaryView.loadFailure"));
         console.error(e);
-    } finally {
-        loading.value = false;
     }
 }
 
@@ -292,6 +288,4 @@ function exportData(format: SpreadsheetFormat): void {
         exportLoading.value = false;
     }
 }
-
-onMounted(loadData);
 </script>

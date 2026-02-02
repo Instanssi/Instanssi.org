@@ -84,9 +84,25 @@ const { mobile } = useDisplay();
 
 const drawer = ref(true);
 const event: Ref<undefined | number> = ref(undefined);
-const events = computed(() =>
-    eventService.getEvents().map((item) => ({ title: item.name, value: item.id }))
-);
+
+type SelectItem = { title: string; value: number } | { type: "subheader"; title: string };
+
+const events = computed((): SelectItem[] => {
+    const allEvents = eventService.getEvents();
+    const publicEvents = allEvents.filter((e) => !e.hidden);
+    const hiddenEvents = allEvents.filter((e) => e.hidden);
+    const items: SelectItem[] = [];
+
+    if (publicEvents.length > 0) {
+        items.push({ type: "subheader", title: t("MainNavigation.publicEvents") });
+        items.push(...publicEvents.map((item) => ({ title: item.name, value: item.id })));
+    }
+    if (hiddenEvents.length > 0) {
+        items.push({ type: "subheader", title: t("MainNavigation.hiddenEvents") });
+        items.push(...hiddenEvents.map((item) => ({ title: item.name, value: item.id })));
+    }
+    return items;
+});
 
 /**
  * Close drawer on mobile after navigation

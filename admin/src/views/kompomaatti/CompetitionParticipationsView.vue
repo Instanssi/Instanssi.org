@@ -22,6 +22,28 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-text-field
+                    v-model="tableState.search.value"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('General.search')"
+                    style="max-width: 400px"
+                    class="ma-0 pa-0 ml-4"
+                    clearable
+                />
+                <v-select
+                    v-model="filterDisqualified"
+                    :items="[
+                        { title: t('CompetitionParticipationsView.allStatuses'), value: null },
+                        { title: t('General.disqualifiedOn'), value: true },
+                        { title: t('General.disqualifiedOff'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('CompetitionParticipationsView.filterByDisqualified')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -37,6 +59,7 @@
                     :items-length="totalItems"
                     :loading="loading"
                     :page="tableState.page.value"
+                    :search="tableState.search.value"
                     :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('CompetitionParticipationsView.noParticipationsFound')"
                     :loading-text="t('CompetitionParticipationsView.loadingParticipations')"
@@ -120,7 +143,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("CompetitionParticipationsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["competition"] });
+const tableState = useTableState({ filterKeys: ["competition", "disqualified"] });
 const totalItems = ref(0);
 const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
@@ -131,6 +154,17 @@ const selectedCompetition = computed({
     get: () => tableState.getFilterAsNumber("competition"),
     set: (value: number | null) => {
         tableState.setFilter("competition", value);
+        tableState.resetPage();
+    },
+});
+
+const filterDisqualified = computed({
+    get: () => {
+        const value = tableState.filters.value.disqualified;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("disqualified", value === null ? null : String(value));
         tableState.resetPage();
     },
 });
@@ -232,6 +266,9 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(selectedCompetition.value ? { competition: selectedCompetition.value } : {}),
+                ...(filterDisqualified.value !== null
+                    ? { disqualified: filterDisqualified.value }
+                    : {}),
             },
         });
         participations.value = response.data!.results;
@@ -251,15 +288,17 @@ function onTableOptionsUpdate(args: LoadArgs) {
     debouncedLoad(args);
 }
 
-// Reload when competition filter changes
-watch(selectedCompetition, () => {
+// Reload when filters change
+watch([selectedCompetition, filterDisqualified], () => {
     if (lastLoadArgs.value) {
-        debouncedLoad(lastLoadArgs.value);
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }
 });
 
 function refresh() {
-    selectedCompetition.value = null;
+    tableState.setFilter("competition", null);
+    tableState.setFilter("disqualified", null);
+    tableState.search.value = "";
     tableState.page.value = 1;
     loadCompetitions();
     debouncedLoad({

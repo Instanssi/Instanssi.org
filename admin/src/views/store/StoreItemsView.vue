@@ -21,6 +21,45 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterAvailable"
+                    :items="[
+                        { title: t('StoreItemsView.allAvailability'), value: null },
+                        { title: t('StoreItemsView.inStockOnly'), value: true },
+                        { title: t('StoreItemsView.outOfStockOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByAvailability')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsTicket"
+                    :items="[
+                        { title: t('StoreItemsView.allTypes'), value: null },
+                        { title: t('StoreItemsView.ticketsOnly'), value: true },
+                        { title: t('StoreItemsView.nonTicketsOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByType')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsSecret"
+                    :items="[
+                        { title: t('StoreItemsView.allVisibility'), value: null },
+                        { title: t('StoreItemsView.secretOnly'), value: true },
+                        { title: t('StoreItemsView.publicOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByVisibility')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -121,10 +160,43 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("StoreItemsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState();
+const tableState = useTableState({ filterKeys: ["available", "is_ticket", "is_secret"] });
 const totalItems = ref(0);
 const items: Ref<StoreItem[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const filterAvailable = computed({
+    get: () => {
+        const value = tableState.filters.value.available;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("available", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
+
+const filterIsTicket = computed({
+    get: () => {
+        const value = tableState.filters.value.is_ticket;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("is_ticket", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
+
+const filterIsSecret = computed({
+    get: () => {
+        const value = tableState.filters.value.is_secret;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("is_secret", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
 
 const headers: ReadonlyHeaders = [
     {
@@ -188,7 +260,12 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminEventStoreItemsList({
             path: { event_pk: eventId.value },
-            query: getLoadArgs(args),
+            query: {
+                ...getLoadArgs(args),
+                ...(filterAvailable.value !== null ? { available: filterAvailable.value } : {}),
+                ...(filterIsTicket.value !== null ? { is_ticket: filterIsTicket.value } : {}),
+                ...(filterIsSecret.value !== null ? { is_secret: filterIsSecret.value } : {}),
+            },
         });
         items.value = response.data!.results;
         totalItems.value = response.data!.count;
@@ -202,12 +279,22 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+// Reload when filters change
+watch([filterAvailable, filterIsTicket, filterIsSecret], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
+
 function onTableOptionsUpdate(args: LoadArgs) {
     tableState.onOptionsUpdate(args);
     debouncedLoad(args);
 }
 
 function refresh() {
+    tableState.setFilter("available", null);
+    tableState.setFilter("is_ticket", null);
+    tableState.setFilter("is_secret", null);
     tableState.search.value = "";
     tableState.page.value = 1;
     debouncedLoad({

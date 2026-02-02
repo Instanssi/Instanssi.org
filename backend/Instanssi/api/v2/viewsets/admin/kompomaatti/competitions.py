@@ -12,7 +12,7 @@ class CompetitionViewSet(PermissionViewSet):
 
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "event", "name", "start")
+    ordering_fields = ("id", "event", "name", "participation_end", "start", "end", "active")
     search_fields = ("name", "description")
     filterset_fields = ("active", "show_results", "hide_from_archive")
 

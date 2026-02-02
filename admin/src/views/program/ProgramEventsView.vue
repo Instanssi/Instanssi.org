@@ -31,6 +31,19 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterActive"
+                    :items="[
+                        { title: t('ProgramEventsView.allStatuses'), value: null },
+                        { title: t('ProgramEventsView.activeOnly'), value: true },
+                        { title: t('ProgramEventsView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('ProgramEventsView.filterActive')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -145,7 +158,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("ProgramEventsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["eventType"] });
+const tableState = useTableState({ filterKeys: ["eventType", "active"] });
 const totalItems = ref(0);
 const items: Ref<ProgramEvent[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
@@ -154,6 +167,18 @@ const filterEventType = computed({
     get: () => tableState.getFilterAsNumber("eventType") as 0 | 1 | null,
     set: (value: 0 | 1 | null) => {
         tableState.setFilter("eventType", value);
+        tableState.resetPage();
+    },
+});
+
+const filterActive = computed({
+    get: () => {
+        const value = tableState.filters.value.active;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("active", value === null ? null : String(value));
+        tableState.resetPage();
     },
 });
 
@@ -182,7 +207,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("ProgramEventsView.headers.title"),
-        sortable: false,
+        sortable: true,
         key: "title",
     },
     {
@@ -207,7 +232,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("ProgramEventsView.headers.eventType"),
-        sortable: false,
+        sortable: true,
         key: "event_type",
     },
     {
@@ -238,6 +263,7 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(filterEventType.value !== null ? { event_type: filterEventType.value } : {}),
+                ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },
         });
         items.value = response.data!.results;
@@ -257,13 +283,16 @@ function onTableOptionsUpdate(args: LoadArgs) {
     debouncedLoad(args);
 }
 
-// Watch filter and reload when it changes
-watch(filterEventType, () => {
-    flushData();
+// Watch filters and reload when they change
+watch([filterEventType, filterActive], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
 });
 
 function refresh() {
-    filterEventType.value = null;
+    tableState.setFilter("eventType", null);
+    tableState.setFilter("active", null);
     tableState.search.value = "";
     tableState.page.value = 1;
     debouncedLoad({

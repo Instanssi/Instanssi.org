@@ -21,7 +21,7 @@ class CompoEntryViewSet(PermissionViewSet):
     queryset = Entry.objects.all()
     serializer_class = CompoEntrySerializer  # type: ignore[assignment]
     parser_classes = (MultiPartParser, FormParser)
-    ordering_fields = ("id", "compo", "name", "creator", "user")
+    ordering_fields = ("id", "compo", "name", "creator", "user", "disqualified")
     search_fields = ("name", "creator", "description")
     filterset_fields = ("compo", "disqualified", "user")
 

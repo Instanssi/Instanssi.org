@@ -21,6 +21,19 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterActive"
+                    :items="[
+                        { title: t('ComposView.allStatuses'), value: null },
+                        { title: t('ComposView.activeOnly'), value: true },
+                        { title: t('ComposView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('ComposView.filterByStatus')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -117,10 +130,21 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("ComposView.title"), disabled: true },
 ]);
 
-const tableState = useTableState();
+const tableState = useTableState({ filterKeys: ["active"] });
 const totalItems = ref(0);
 const compos: Ref<Compo[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const filterActive = computed({
+    get: () => {
+        const value = tableState.filters.value.active;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("active", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
 const headers: ReadonlyHeaders = [
     {
         title: t("ComposView.headers.id"),
@@ -149,7 +173,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("ComposView.headers.active"),
-        sortable: false,
+        sortable: true,
         key: "active",
     },
     {
@@ -174,6 +198,7 @@ async function load(args: LoadArgs) {
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
                 ...getLoadArgs(args),
+                ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },
         });
         compos.value = response.data!.results;
@@ -188,12 +213,20 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+// Reload when filter changes
+watch(filterActive, () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
+
 function onTableOptionsUpdate(args: LoadArgs) {
     tableState.onOptionsUpdate(args);
     debouncedLoad(args);
 }
 
 function refresh() {
+    tableState.setFilter("active", null);
     tableState.search.value = "";
     tableState.page.value = 1;
     debouncedLoad({

@@ -136,7 +136,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("VoteCodeRequestsView.headers.user"),
-        sortable: false,
+        sortable: true,
         key: "user",
     },
     {

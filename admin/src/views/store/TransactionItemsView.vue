@@ -128,7 +128,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("TransactionItemsView.headers.item"),
-        sortable: false,
+        sortable: true,
         key: "item",
     },
     {

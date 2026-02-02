@@ -146,7 +146,15 @@
       },
       "loadFailure": "Failed to load events; try again later.",
       "deleteFailure": "Failed to delete event; try again later.",
-      "deleteSuccess": "Event deleted!"
+      "deleteSuccess": "Event deleted!",
+      "filterByArchived": "Archive",
+      "filterByVisibility": "Visibility",
+      "allEvents": "All",
+      "archivedOnly": "Archived",
+      "notArchivedOnly": "Not archived",
+      "allVisibility": "All",
+      "hiddenOnly": "Hidden",
+      "visibleOnly": "Visible"
     },
     "UsersView": {
       "title": "Users",
@@ -167,7 +175,15 @@
       },
       "loadFailure": "Failed to load users; try again later.",
       "deleteFailure": "Failed to delete user; try again later.",
-      "deleteSuccess": "User deleted!"
+      "deleteSuccess": "User deleted!",
+      "filterByStatus": "Status",
+      "filterByType": "Type",
+      "allStatuses": "All",
+      "activeOnly": "Active",
+      "inactiveOnly": "Inactive",
+      "allTypes": "All",
+      "staffOnly": "Staff",
+      "regularOnly": "Regular"
     },
     "BlogEditorView": {
       "title": "Blog",
@@ -225,7 +241,11 @@
         "votingEnd": "Voting end",
         "active": "Active",
         "actions": "Actions"
-      }
+      },
+      "filterByStatus": "Status",
+      "allStatuses": "All",
+      "activeOnly": "Active",
+      "inactiveOnly": "Inactive"
     },
     "CompoEditView": {
       "newTitle": "New Compo",
@@ -335,6 +355,8 @@
       "loadingEntries": "Loading entries ...",
       "filterByCompo": "Filter by compo",
       "allCompos": "All compos",
+      "filterByDisqualified": "Status",
+      "allStatuses": "All",
       "headers": {
         "id": "ID",
         "image": "Image",
@@ -401,7 +423,11 @@
         "end": "End",
         "active": "Active",
         "actions": "Actions"
-      }
+      },
+      "filterByStatus": "Status",
+      "allStatuses": "All",
+      "activeOnly": "Active",
+      "inactiveOnly": "Inactive"
     },
     "CompetitionEditView": {
       "newTitle": "New Competition",
@@ -455,6 +481,8 @@
       "loadingParticipations": "Loading participations ...",
       "filterByCompetition": "Filter by competition",
       "allCompetitions": "All competitions",
+      "filterByDisqualified": "Status",
+      "allStatuses": "All",
       "headers": {
         "id": "ID",
         "participantName": "Participant name",
@@ -647,7 +675,19 @@
         "isAvailable": "Is Available",
         "isTicket": "Is Ticket",
         "actions": "Actions"
-      }
+      },
+      "filterByAvailability": "Availability",
+      "filterByType": "Type",
+      "filterByVisibility": "Visibility",
+      "allAvailability": "All",
+      "inStockOnly": "In stock",
+      "outOfStockOnly": "Out of stock",
+      "allTypes": "All",
+      "ticketsOnly": "Tickets",
+      "nonTicketsOnly": "Non-tickets",
+      "allVisibility": "All",
+      "secretOnly": "Secret",
+      "publicOnly": "Public"
     },
     "StoreItemEditView": {
       "newTitle": "New Product",

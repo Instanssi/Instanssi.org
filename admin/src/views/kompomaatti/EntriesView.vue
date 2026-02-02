@@ -38,6 +38,19 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterDisqualified"
+                    :items="[
+                        { title: t('EntriesView.allStatuses'), value: null },
+                        { title: t('General.disqualifiedOn'), value: true },
+                        { title: t('General.disqualifiedOff'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('EntriesView.filterByDisqualified')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -145,7 +158,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("EntriesView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["compo"] });
+const tableState = useTableState({ filterKeys: ["compo", "disqualified"] });
 const totalItems = ref(0);
 const entries: Ref<CompoEntry[]> = ref([]);
 const compos: Ref<Compo[]> = ref([]);
@@ -155,6 +168,17 @@ const selectedCompo = computed({
     get: () => tableState.getFilterAsNumber("compo"),
     set: (value: number | null) => {
         tableState.setFilter("compo", value);
+        tableState.resetPage();
+    },
+});
+
+const filterDisqualified = computed({
+    get: () => {
+        const value = tableState.filters.value.disqualified;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("disqualified", value === null ? null : String(value));
         tableState.resetPage();
     },
 });
@@ -188,7 +212,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("EntriesView.headers.compo"),
-        sortable: false,
+        sortable: true,
         key: "compo",
     },
     {
@@ -246,6 +270,9 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(selectedCompo.value ? { compo: selectedCompo.value } : {}),
+                ...(filterDisqualified.value !== null
+                    ? { disqualified: filterDisqualified.value }
+                    : {}),
             },
         });
         entries.value = response.data!.results;
@@ -265,8 +292,8 @@ function onTableOptionsUpdate(args: LoadArgs) {
     debouncedLoad(args);
 }
 
-// Reload when compo filter changes
-watch(selectedCompo, () => {
+// Reload when filters change
+watch([selectedCompo, filterDisqualified], () => {
     if (lastLoadArgs.value) {
         debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }
@@ -274,6 +301,7 @@ watch(selectedCompo, () => {
 
 function refresh() {
     tableState.setFilter("compo", null);
+    tableState.setFilter("disqualified", null);
     tableState.search.value = "";
     tableState.page.value = 1;
     loadCompos();

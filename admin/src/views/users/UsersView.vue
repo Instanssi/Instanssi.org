@@ -21,6 +21,32 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterIsActive"
+                    :items="[
+                        { title: t('UsersView.allStatuses'), value: null },
+                        { title: t('UsersView.activeOnly'), value: true },
+                        { title: t('UsersView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('UsersView.filterByStatus')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsStaff"
+                    :items="[
+                        { title: t('UsersView.allTypes'), value: null },
+                        { title: t('UsersView.staffOnly'), value: true },
+                        { title: t('UsersView.regularOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('UsersView.filterByType')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -69,7 +95,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -98,8 +124,30 @@ const auth = useAuth();
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
 
-const tableState = useTableState();
+const tableState = useTableState({ filterKeys: ["is_active", "is_staff"] });
 const loading = ref(false);
+
+const filterIsActive = computed({
+    get: () => {
+        const value = tableState.filters.value.is_active;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("is_active", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
+
+const filterIsStaff = computed({
+    get: () => {
+        const value = tableState.filters.value.is_staff;
+        return value === "true" ? true : value === "false" ? false : null;
+    },
+    set: (value: boolean | null) => {
+        tableState.setFilter("is_staff", value === null ? null : String(value));
+        tableState.resetPage();
+    },
+});
 const totalItems = ref(0);
 const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
@@ -111,7 +159,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("UsersView.headers.userName"),
-        sortable: false,
+        sortable: true,
         key: "username",
     },
     {
@@ -141,7 +189,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("UsersView.headers.dateJoined"),
-        sortable: false,
+        sortable: true,
         key: "date_joined",
     },
     {
@@ -162,7 +210,13 @@ async function load(args: LoadArgs) {
     loading.value = true;
     lastLoadArgs.value = args;
     try {
-        const response = await api.adminUsersList({ query: getLoadArgs(args) });
+        const response = await api.adminUsersList({
+            query: {
+                ...getLoadArgs(args),
+                ...(filterIsActive.value !== null ? { is_active: filterIsActive.value } : {}),
+                ...(filterIsStaff.value !== null ? { is_staff: filterIsStaff.value } : {}),
+            },
+        });
         users.value = response.data!.results;
         totalItems.value = response.data!.count;
     } catch (e) {
@@ -172,6 +226,13 @@ async function load(args: LoadArgs) {
         loading.value = false;
     }
 }
+
+// Reload when filters change
+watch([filterIsActive, filterIsStaff], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
 
 const debouncedLoad = debounce(load, 250);
 

@@ -147,7 +147,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("VideosView.headers.category"),
-        sortable: false,
+        sortable: true,
         key: "category",
     },
     {

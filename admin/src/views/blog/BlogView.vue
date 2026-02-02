@@ -133,12 +133,12 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("BlogEditorView.headers.createdBy"),
-        sortable: true,
+        sortable: false,
         key: "created_by",
     },
     {
         title: t("BlogEditorView.headers.isPublic"),
-        sortable: false,
+        sortable: true,
         key: "public",
     },
     {

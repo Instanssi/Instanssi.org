@@ -10,3 +10,4 @@ class EventViewSet(PermissionViewSet):
     serializer_class = EventSerializer  # type: ignore[assignment]
     ordering_fields = ("id", "name", "date", "tag")
     search_fields = ("name", "tag")
+    filterset_fields = ("archived", "hidden")

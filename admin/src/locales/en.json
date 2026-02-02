@@ -550,7 +550,9 @@
         "pending": "Pending",
         "approved": "Approved",
         "rejected": "Rejected"
-      }
+      },
+      "accept": "Accept",
+      "reject": "Reject"
     },
     "UserDialog": {
       "title": "User",

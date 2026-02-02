@@ -49,10 +49,14 @@
                             color="success"
                             size="small"
                             variant="text"
+                            class="mr-1"
                             :loading="updatingId === item.id"
                             @click="updateStatus(item.id, 1)"
                         >
-                            <FontAwesomeIcon :icon="faCheck" />
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faCheck" />
+                            </template>
+                            {{ t("VoteCodeRequestsView.accept") }}
                         </v-btn>
                         <v-btn
                             v-if="
@@ -62,20 +66,25 @@
                             color="error"
                             size="small"
                             variant="text"
+                            class="mr-1"
                             :loading="updatingId === item.id"
                             @click="updateStatus(item.id, 2)"
                         >
-                            <FontAwesomeIcon :icon="faTimes" />
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faTimes" />
+                            </template>
+                            {{ t("VoteCodeRequestsView.reject") }}
                         </v-btn>
-                        <v-btn
-                            v-if="auth.canDelete(PermissionTarget.VOTE_CODE_REQUEST)"
-                            color="error"
-                            size="small"
-                            variant="text"
-                            @click="deleteRequest(item)"
-                        >
-                            <FontAwesomeIcon :icon="faTrash" />
-                        </v-btn>
+                        <TableActionButtons
+                            :can-edit="false"
+                            :can-delete="auth.canDelete(PermissionTarget.VOTE_CODE_REQUEST)"
+                            :audit-log="{
+                                appLabel: 'kompomaatti',
+                                model: 'votecoderequest',
+                                objectPk: item.id,
+                            }"
+                            @delete="deleteRequest(item)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -85,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCheck, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, ref, watch } from "vue";
@@ -97,6 +106,7 @@ import * as api from "@/api";
 import type { StatusEnum, VoteCodeRequest } from "@/api";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

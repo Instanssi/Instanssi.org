@@ -61,17 +61,12 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { LogEntry } from "@/api";
-import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import DiffViewer from "@/components/auditlog/DiffViewer.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
+import { type LoadOptions, useAuditLogUtils } from "@/composables/useAuditLogUtils";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
-
-interface LoadOptions {
-    page: number;
-    itemsPerPage: number;
-    sortBy: { key: string; order: "asc" | "desc" }[];
-}
 
 const props = defineProps<{
     appLabel: string;
@@ -82,6 +77,7 @@ const props = defineProps<{
 const { t } = useI18n();
 const toast = useToast();
 const auth = useAuth();
+const { actionLabel, actionColor } = useAuditLogUtils();
 
 const hasPermission = computed(() => auth.canView(PermissionTarget.LOG_ENTRY));
 
@@ -101,32 +97,6 @@ const headers: ReadonlyHeaders = [
     { title: t("AuditLogTable.headers.action"), key: "action", sortable: false, width: 100 },
     { title: t("AuditLogTable.headers.object"), key: "object_repr", sortable: false },
 ];
-
-function actionLabel(action: number): string {
-    switch (action) {
-        case 0:
-            return t("AuditLogTable.actions.create");
-        case 1:
-            return t("AuditLogTable.actions.update");
-        case 2:
-            return t("AuditLogTable.actions.delete");
-        default:
-            return t("AuditLogTable.actions.unknown");
-    }
-}
-
-function actionColor(action: number): string {
-    switch (action) {
-        case 0:
-            return "success";
-        case 1:
-            return "warning";
-        case 2:
-            return "error";
-        default:
-            return "grey";
-    }
-}
 
 async function load(options: LoadOptions) {
     if (!hasPermission.value) return;
@@ -152,8 +122,8 @@ async function load(options: LoadOptions) {
         }
 
         const response = await api.adminAuditlogList({ query });
-        entries.value = response.data!.results;
-        totalItems.value = response.data!.count ?? 0;
+        entries.value = response.data?.results ?? [];
+        totalItems.value = response.data?.count ?? 0;
     } catch (e) {
         toast.error(t("AuditLogTable.loadFailure"));
         console.error(e);

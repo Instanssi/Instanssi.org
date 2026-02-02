@@ -78,16 +78,11 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { LogEntry } from "@/api";
 import DiffViewer from "@/components/auditlog/DiffViewer.vue";
-import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
+import { type LoadOptions, useAuditLogUtils } from "@/composables/useAuditLogUtils";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
-
-interface LoadOptions {
-    page: number;
-    itemsPerPage: number;
-    sortBy: { key: string; order: "asc" | "desc" }[];
-}
 
 interface ModelOption {
     label: string;
@@ -96,8 +91,14 @@ interface ModelOption {
 
 const { t } = useI18n();
 const toast = useToast();
+const { actionLabel: getActionLabel, actionColor } = useAuditLogUtils();
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("AuditLogView.title"), disabled: true }];
+
+// Wrapper to use AuditLogView translations
+function actionLabel(action: number): string {
+    return getActionLabel(action, "AuditLogView");
+}
 
 // Available models for filtering
 const modelOptions: ModelOption[] = [
@@ -160,32 +161,6 @@ const headers: ReadonlyHeaders = [
     },
 ];
 
-function actionLabel(action: number): string {
-    switch (action) {
-        case 0:
-            return t("AuditLogView.actions.create");
-        case 1:
-            return t("AuditLogView.actions.update");
-        case 2:
-            return t("AuditLogView.actions.delete");
-        default:
-            return t("AuditLogView.actions.unknown");
-    }
-}
-
-function actionColor(action: number): string {
-    switch (action) {
-        case 0:
-            return "success";
-        case 1:
-            return "warning";
-        case 2:
-            return "error";
-        default:
-            return "grey";
-    }
-}
-
 function onFilterChange() {
     // Reset to page 1 when filter changes
     currentPage.value = 1;
@@ -218,8 +193,8 @@ async function load(options: LoadOptions) {
         }
 
         const response = await api.adminAuditlogList({ query });
-        entries.value = response.data!.results;
-        totalItems.value = response.data!.count ?? 0;
+        entries.value = response.data?.results ?? [];
+        totalItems.value = response.data?.count ?? 0;
     } catch (e) {
         toast.error(t("AuditLogView.loadFailure"));
         console.error(e);

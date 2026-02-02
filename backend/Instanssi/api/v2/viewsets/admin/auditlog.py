@@ -1,6 +1,6 @@
 from auditlog.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from django_filters import rest_framework as filters
 from rest_framework.filters import OrderingFilter
 
@@ -57,11 +57,26 @@ class AuditLogViewSet(PermissionReadOnlyViewSet):
         if user.is_superuser:
             return queryset
 
-        # Filter to only include entries for models the user can view
-        allowed_content_types: list[int] = []
-        for ct in ContentType.objects.all():
-            perm = f"{ct.app_label}.view_{ct.model}"
-            if user.has_perm(perm):
-                allowed_content_types.append(ct.pk)
+        # Get all user permissions at once (more efficient than checking each ContentType)
+        user_perms = user.get_all_permissions()
 
-        return queryset.filter(content_type_id__in=allowed_content_types)
+        # Extract app_label.model pairs from view_* permissions
+        viewable_models: set[tuple[str, str]] = set()
+        for perm in user_perms:
+            if ".view_" in perm:
+                # Permission format: "app_label.view_modelname"
+                app_label, perm_name = perm.split(".", 1)
+                model_name = perm_name.removeprefix("view_")
+                viewable_models.add((app_label, model_name))
+
+        if not viewable_models:
+            return queryset.none()
+
+        # Get ContentType IDs for allowed models in a single query
+        q_filter = Q()
+        for app_label, model in viewable_models:
+            q_filter |= Q(app_label=app_label, model=model)
+
+        allowed_ct_ids = list(ContentType.objects.filter(q_filter).values_list("pk", flat=True))
+
+        return queryset.filter(content_type_id__in=allowed_ct_ids)

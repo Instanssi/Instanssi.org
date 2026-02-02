@@ -2,25 +2,34 @@
     <span>
         <v-btn
             v-if="canDelete"
+            class="ml-1 mr-1"
+            icon
             density="compact"
-            variant="text"
+            variant="elevated"
+            size="small"
             color="red"
+            :title="t('General.delete')"
             @click="emit('delete')"
         >
-            <template #prepend>
-                <FontAwesomeIcon :icon="faXmark" />
-            </template>
-            {{ t("General.delete") }}
+            <FontAwesomeIcon :icon="faXmark" />
         </v-btn>
-        <v-btn v-if="canEdit" density="compact" variant="text" @click="emit('edit')">
-            <template #prepend>
-                <FontAwesomeIcon :icon="faPenToSquare" />
-            </template>
-            {{ t("General.edit") }}
+        <v-btn
+            v-if="canEdit"
+            class="ml-1 mr-1"
+            icon
+            density="compact"
+            variant="elevated"
+            color="green"
+            size="small"
+            :title="t('General.edit')"
+            @click="emit('edit')"
+        >
+            <FontAwesomeIcon :icon="faPenToSquare" />
         </v-btn>
         <template v-if="auditLog && hasAuditLogPermission">
             <v-btn
                 icon
+                class="ml-1 mr-1"
                 density="compact"
                 variant="text"
                 size="small"

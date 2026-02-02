@@ -42,16 +42,14 @@
                 </template>
             </v-select>
             <v-divider />
-            <NavigationList
-                :items="primary"
-                :event="event"
-                class="mb-auto"
-                @navigate="onNavigate"
-            />
+            <div class="primary-nav-container">
+                <NavigationList :items="primary" :event="event" @navigate="onNavigate" />
+            </div>
+            <v-divider />
             <NavigationList
                 :items="secondary"
                 :event="event"
-                class="mt-auto"
+                class="flex-0-0"
                 @navigate="onNavigate"
             />
         </div>
@@ -190,5 +188,10 @@ onMounted(initEvents);
 .event-btn {
     min-width: 0;
     margin: 0;
+}
+.primary-nav-container {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0;
 }
 </style>

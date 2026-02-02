@@ -49,17 +49,12 @@
                         />
                     </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)"
-                            density="compact"
-                            variant="text"
-                            @click="viewDetails(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faEye" />
-                            </template>
-                            {{ t("General.view") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-view="auth.canView(PermissionTarget.STORE_TRANSACTION)"
+                            :can-edit="false"
+                            :can-delete="false"
+                            @view="viewDetails(item.id)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -68,8 +63,6 @@
 </template>
 
 <script setup lang="ts">
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -83,6 +76,7 @@ import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
+import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";

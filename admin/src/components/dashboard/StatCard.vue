@@ -1,16 +1,16 @@
 <template>
     <v-card
         :color="color"
-        variant="tonal"
+        variant="elevated"
         :class="{ 'cursor-pointer': clickable }"
         @click="clickable ? emit('click') : undefined"
     >
-        <v-card-text class="d-flex align-center">
+        <v-card-text class="d-flex align-center text-white">
             <FontAwesomeIcon :icon="icon" size="2x" class="mr-4" />
             <div>
                 <div class="text-h4">{{ value }}</div>
                 <div class="text-body-2">{{ label }}</div>
-                <div v-if="subtitle" class="text-caption text-grey">
+                <div v-if="subtitle" class="text-caption">
                     {{ subtitle }}
                 </div>
             </div>

@@ -194,3 +194,30 @@ def test_user_cannot_create_participation_for_other_event_competition(auth_clien
     )
     assert req.status_code == 400
     assert "competition" in req.data
+
+
+@pytest.mark.django_db
+def test_user_cannot_list_participations_for_hidden_event(
+    auth_client, hidden_event, hidden_event_competition, hidden_event_participation
+):
+    """User should not see their participations for hidden events."""
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_cannot_create_participation_for_hidden_event(
+    auth_client, hidden_event, hidden_event_competition
+):
+    """User should not be able to participate in hidden events."""
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.post(
+        base_url,
+        data={
+            "competition": hidden_event_competition.id,
+            "participant_name": "Test Participant",
+        },
+    )
+    assert req.status_code == 400

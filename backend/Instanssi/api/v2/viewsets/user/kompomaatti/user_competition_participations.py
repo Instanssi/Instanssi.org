@@ -35,14 +35,19 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
         event_id = int(self.kwargs["event_pk"])
         user: User = self.request.user  # type: ignore[assignment]
         return self.queryset.filter(
-            competition__event_id=event_id, competition__active=True, user=user
+            competition__event_id=event_id,
+            competition__event__hidden=False,
+            competition__active=True,
+            user=user,
         ).select_related("competition")
 
     def validate_competition_belongs_to_event(self, competition: Competition) -> None:
-        """Validate that competition belongs to the event in the URL."""
+        """Validate that competition belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if competition.event_id != event_id:
             raise serializers.ValidationError({"competition": ["Competition does not belong to this event"]})
+        if competition.event.hidden:
+            raise serializers.ValidationError({"competition": ["Competition is not active"]})
 
     def validate_competition(self, competition: Competition) -> None:
         """Validate that competition is active and open for participation."""

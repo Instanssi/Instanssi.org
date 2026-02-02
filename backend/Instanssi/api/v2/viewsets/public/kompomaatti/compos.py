@@ -13,4 +13,4 @@ class PublicCompoViewSet(PublicReadOnlyViewSet[Compo]):
 
     def get_queryset(self) -> QuerySet[Compo]:
         event_id = int(self.kwargs["event_pk"])
-        return self.queryset.filter(event_id=event_id, active=True)
+        return self.queryset.filter(event_id=event_id, event__hidden=False, active=True)

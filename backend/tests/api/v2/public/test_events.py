@@ -45,3 +45,20 @@ def test_anonymous_cannot_modify_events(api_client, event, method, status):
     """Test that write methods return 405 on read-only endpoint."""
     url = f"{BASE_URL}{event.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_not_in_list(api_client, event, hidden_event):
+    """Hidden events should not appear in the public events list."""
+    req = api_client.get(BASE_URL)
+    assert req.status_code == 200
+    event_ids = [e["id"] for e in req.data]
+    assert event.id in event_ids
+    assert hidden_event.id not in event_ids
+
+
+@pytest.mark.django_db
+def test_hidden_event_detail_returns_404(api_client, hidden_event):
+    """Hidden event detail should return 404."""
+    req = api_client.get(f"{BASE_URL}{hidden_event.id}/")
+    assert req.status_code == 404

@@ -179,3 +179,35 @@ def test_ticket_key_too_short(auth_client, event, claimable_ticket):
         },
     )
     assert req.status_code == 400
+
+
+@pytest.mark.django_db
+def test_user_cannot_list_ticket_vote_codes_for_hidden_event(
+    auth_client, hidden_event, base_user, transaction_item_a
+):
+    """User should not see their ticket vote codes for hidden events."""
+    from Instanssi.kompomaatti.models import TicketVoteCode
+
+    # Create a ticket vote code for the hidden event
+    TicketVoteCode.objects.create(
+        event=hidden_event,
+        ticket=transaction_item_a,
+        associated_to=base_user,
+    )
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_cannot_create_ticket_vote_code_for_hidden_event(auth_client, hidden_event, claimable_ticket):
+    """User should not be able to claim ticket vote codes for hidden events."""
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.post(
+        base_url,
+        data={
+            "ticket_key": claimable_ticket.key[:8],
+        },
+    )
+    assert req.status_code == 400

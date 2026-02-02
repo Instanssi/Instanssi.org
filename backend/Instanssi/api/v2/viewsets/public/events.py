@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 
@@ -15,3 +16,6 @@ class PublicEventViewSet(PublicReadOnlyViewSet[Event]):
     search_fields = ("name", "tag")
     filterset_fields = ("archived",)
     queryset = Event.objects.all()
+
+    def get_queryset(self) -> QuerySet[Event]:
+        return Event.objects.filter(hidden=False)

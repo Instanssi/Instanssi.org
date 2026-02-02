@@ -148,7 +148,11 @@ class StoreItem(models.Model):
 
     @staticmethod
     def items_available() -> QuerySet:
-        return StoreItem.objects.filter(max__gt=0, available=True).order_by("sort_index")
+        return (
+            StoreItem.objects.filter(max__gt=0, available=True)
+            .filter(Q(event__isnull=True) | Q(event__hidden=False))
+            .order_by("sort_index")
+        )
 
     @staticmethod
     def items_visible(secret_key: Optional[str] = None) -> QuerySet:
@@ -156,6 +160,7 @@ class StoreItem(models.Model):
         the user has said the magic word."""
         return (
             StoreItem.objects.filter(max__gt=0, available=True)
+            .filter(Q(event__isnull=True) | Q(event__hidden=False))
             .filter(Q(is_secret=False) | Q(secret_key=secret_key))
             .order_by("sort_index")
         )

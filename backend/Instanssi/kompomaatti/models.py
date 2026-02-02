@@ -41,6 +41,11 @@ class Event(models.Model):
     )
     date = models.DateField("Päivämäärä", help_text="Tapahtuman päivämäärä (alku)")
     archived = models.BooleanField("Arkistoitu", help_text="Saa näyttää arkistossa", default=False)
+    hidden = models.BooleanField(
+        "Piilotettu",
+        help_text="Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta",
+        default=False,
+    )
     mainurl = models.URLField("Tapahtuman pääsivu", help_text="URL Tapahtuman pääsivustolle", blank=True)
 
     def __str__(self) -> str:

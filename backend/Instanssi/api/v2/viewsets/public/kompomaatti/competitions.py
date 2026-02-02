@@ -13,4 +13,4 @@ class PublicCompetitionViewSet(PublicReadOnlyViewSet[Competition]):
 
     def get_queryset(self) -> QuerySet[Competition]:
         event_id = int(self.kwargs["event_pk"])
-        return self.queryset.filter(event_id=event_id, active=True)
+        return self.queryset.filter(event_id=event_id, event__hidden=False, active=True)

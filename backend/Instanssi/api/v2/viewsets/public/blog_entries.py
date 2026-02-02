@@ -17,4 +17,4 @@ class PublicBlogEntryViewSet(PublicReadOnlyViewSet[BlogEntry]):
     filterset_fields = ("event",)
 
     def get_queryset(self) -> QuerySet[BlogEntry]:
-        return BlogEntry.objects.filter(public=True)
+        return BlogEntry.objects.filter(public=True, event__hidden=False)

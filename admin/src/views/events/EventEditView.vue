@@ -32,10 +32,24 @@
                             variant="outlined"
                             :label="t('EventDialog.labels.mainUrl') + ' *'"
                         />
-                        <v-switch
+                        <ToggleSwitch
                             v-model="archived.value.value"
-                            :error-messages="archived.errorMessage.value"
-                            :label="archivedLabel"
+                            :error-message="archived.errorMessage.value"
+                            :label-on="t('EventDialog.labels.isArchived')"
+                            :label-off="t('EventDialog.labels.isNotArchived')"
+                            :hint-on="t('EventDialog.labels.archivedHintOn')"
+                            :hint-off="t('EventDialog.labels.archivedHintOff')"
+                            color="success"
+                        />
+                        <ToggleSwitch
+                            :model-value="!hidden.value.value"
+                            :error-message="hidden.errorMessage.value"
+                            :label-on="t('EventDialog.labels.isNotHidden')"
+                            :label-off="t('EventDialog.labels.isHidden')"
+                            :hint-on="t('EventDialog.labels.hiddenHintOff')"
+                            :hint-off="t('EventDialog.labels.hiddenHintOn')"
+                            color="success"
+                            @update:model-value="hidden.value.value = !$event"
                         />
                     </v-form>
                 </v-card-text>
@@ -86,6 +100,7 @@ import {
 
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
+import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { handleApiError, type FieldMapping } from "@/utils/http";
@@ -95,6 +110,7 @@ const API_FIELD_MAPPING: FieldMapping = {
     name: "name",
     date: "date",
     archived: "archived",
+    hidden: "hidden",
     tag: "tag",
     mainurl: "mainurl",
 };
@@ -130,18 +146,13 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     return items;
 });
 
-const archivedLabel = computed(() =>
-    archived.value.value
-        ? t("EventDialog.labels.isArchived")
-        : t("EventDialog.labels.isNotArchived")
-);
-
 // Form validation
 const validationSchema = yupObject({
     name: yupString().required().min(1).max(64),
     tag: yupString().required().min(1).max(8),
     date: yupDate().required(),
     archived: yupBoolean(),
+    hidden: yupBoolean(),
     mainurl: yupString().required().url().max(200),
 });
 const { handleSubmit, setValues, setErrors, meta } = useForm({
@@ -151,6 +162,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         tag: "",
         date: "",
         archived: false,
+        hidden: false,
         mainurl: "",
     },
 });
@@ -158,6 +170,7 @@ const name = useField<string>("name");
 const tag = useField<string>("tag");
 const date = useField<string>("date");
 const archived = useField<boolean>("archived");
+const hidden = useField<boolean>("hidden");
 const mainurl = useField<string>("mainurl");
 
 const submit = handleSubmit(async (values) => {
@@ -180,6 +193,7 @@ function buildBody(values: GenericObject) {
         name: values.name,
         date: values.date,
         archived: values.archived,
+        hidden: values.hidden,
         tag: values.tag,
         mainurl: values.mainurl,
     };
@@ -230,6 +244,7 @@ onMounted(async () => {
                 tag: item.tag ?? "",
                 date: item.date,
                 archived: item.archived ?? false,
+                hidden: item.hidden ?? false,
                 mainurl: item.mainurl ?? "",
             });
         } catch (e) {

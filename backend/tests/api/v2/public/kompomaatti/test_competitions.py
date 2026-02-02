@@ -55,3 +55,12 @@ def test_anonymous_cannot_modify_competitions(api_client, competition, method, s
     base_url = get_base_url(competition.event_id)
     url = f"{base_url}{competition.id}/"
     assert api_client.generic(method, url).status_code == status
+
+
+@pytest.mark.django_db
+def test_hidden_event_competitions_not_in_list(api_client, hidden_event, hidden_event_competition):
+    """Competitions from hidden events should not appear in the list."""
+    base_url = get_base_url(hidden_event.id)
+    req = api_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0

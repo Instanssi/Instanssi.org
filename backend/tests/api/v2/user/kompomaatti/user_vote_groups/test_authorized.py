@@ -229,3 +229,44 @@ def test_user_votes_filter_by_compo(
     assert req.status_code == 200
     assert len(req.data) == 1
     assert req.data[0]["id"] == entry_vote_group.id
+
+
+@pytest.mark.django_db
+def test_user_cannot_list_vote_groups_for_hidden_event(
+    auth_client, hidden_event, hidden_event_compo, base_user
+):
+    """User should not see their vote groups for hidden events."""
+    from Instanssi.kompomaatti.models import VoteGroup
+
+    # Create a vote group for the hidden event
+    VoteGroup.objects.create(
+        user=base_user,
+        compo=hidden_event_compo,
+    )
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.get(base_url)
+    assert req.status_code == 200
+    assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_cannot_create_vote_group_for_hidden_event(
+    auth_client,
+    hidden_event,
+    hidden_event_compo,
+    hidden_event_entry,
+    ticket_vote_code,
+):
+    """User should not be able to vote in hidden events."""
+    # We need voting rights for the visible event, not hidden
+    # This test verifies that even with voting rights, the compo validation fails
+    base_url = get_base_url(hidden_event.id)
+    req = auth_client.post(
+        base_url,
+        data={
+            "compo": hidden_event_compo.id,
+            "entries": [hidden_event_entry.id],
+        },
+        format="json",
+    )
+    assert req.status_code == 400

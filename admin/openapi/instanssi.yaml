@@ -7262,6 +7262,10 @@ components:
           type: boolean
           title: Arkistoitu
           description: Saa näyttää arkistossa
+        hidden:
+          type: boolean
+          title: Piilotettu
+          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri
@@ -7298,6 +7302,10 @@ components:
           type: boolean
           title: Arkistoitu
           description: Saa näyttää arkistossa
+        hidden:
+          type: boolean
+          title: Piilotettu
+          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri
@@ -8655,6 +8663,10 @@ components:
           type: boolean
           title: Arkistoitu
           description: Saa näyttää arkistossa
+        hidden:
+          type: boolean
+          title: Piilotettu
+          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri

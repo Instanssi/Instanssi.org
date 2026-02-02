@@ -134,6 +134,7 @@
         "tag": "Tag",
         "date": "Starting date",
         "archived": "Archived",
+        "hidden": "Hidden",
         "mainUrl": "Main URL",
         "actions": "Actions"
       },
@@ -545,7 +546,13 @@
         "date": "Starting date",
         "mainUrl": "Main URL",
         "isArchived": "Event is archived",
-        "isNotArchived": "Event is not archived"
+        "isNotArchived": "Event is not archived",
+        "archivedHintOn": "This event is shown in the public archive section.",
+        "archivedHintOff": "Enable to show this event in the public archive section.",
+        "isHidden": "Event is hidden from public",
+        "isNotHidden": "Event is visible to public",
+        "hiddenHintOn": "This event is hidden from public and user APIs.",
+        "hiddenHintOff": "This event is visible in public and user APIs."
       },
       "editFailure": "Failed to edit event; try again later.",
       "createFailure": "Failed to create event; try again later.",

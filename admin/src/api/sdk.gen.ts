@@ -8,6 +8,10 @@ import {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+    AdminAuditlogListData,
+    AdminAuditlogListResponses,
+    AdminAuditlogRetrieveData,
+    AdminAuditlogRetrieveResponses,
     AdminBlogCreateData,
     AdminBlogCreateResponses,
     AdminBlogDestroyData,
@@ -350,6 +354,60 @@ export type Options<
      * used to access values that aren't defined as part of the SDK function.
      */
     meta?: Record<string, unknown>;
+};
+
+/**
+ * Read-only viewset for viewing audit log entries.
+ *
+ * Requires auditlog.view_logentry permission. Model-specific filtering
+ * is handled in get_queryset().
+ */
+export const adminAuditlogList = <ThrowOnError extends boolean = false>(
+    options?: Options<AdminAuditlogListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<AdminAuditlogListResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/auditlog/",
+        ...options,
+    });
+};
+
+/**
+ * Read-only viewset for viewing audit log entries.
+ *
+ * Requires auditlog.view_logentry permission. Model-specific filtering
+ * is handled in get_queryset().
+ */
+export const adminAuditlogRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<AdminAuditlogRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<AdminAuditlogRetrieveResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/auditlog/{id}/",
+        ...options,
+    });
 };
 
 /**
@@ -4936,6 +4994,12 @@ export const publicStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * Manage API authentication tokens for the current user.
+ *
+ * Requires knox.view_authtoken permission to list tokens.
+ * Requires knox.delete_authtoken permission to delete tokens.
+ * Requires knox.add_authtoken permission to create tokens.
+ *
+ * Users can only see and delete their own tokens.
  */
 export const tokensList = <ThrowOnError extends boolean = false>(
     options?: Options<TokensListData, ThrowOnError>
@@ -4960,6 +5024,12 @@ export const tokensList = <ThrowOnError extends boolean = false>(
 
 /**
  * Manage API authentication tokens for the current user.
+ *
+ * Requires knox.view_authtoken permission to list tokens.
+ * Requires knox.delete_authtoken permission to delete tokens.
+ * Requires knox.add_authtoken permission to create tokens.
+ *
+ * Users can only see and delete their own tokens.
  */
 export const tokensDestroy = <ThrowOnError extends boolean = false>(
     options: Options<TokensDestroyData, ThrowOnError>

@@ -1508,6 +1508,10 @@ export type NestedReceipt = {
      */
     readonly sent: string | null;
     readonly is_sent: boolean;
+    /**
+     * Kuitin sisältö
+     */
+    readonly content: string | null;
 };
 
 /**

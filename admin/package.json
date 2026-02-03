@@ -19,7 +19,6 @@
     "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
   },
   "dependencies": {
-    "@fontsource/exo": "^5.2.8",
     "@fontsource/exo-2": "^5.2.8",
     "@fontsource/fira-mono": "^5.2.7",
     "@fontsource/open-sans": "^5.2.7",

@@ -10,6 +10,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.file_handling import clean_filename, generate_upload_path
+from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.common.youtube.fields import YoutubeVideoField
 from Instanssi.kompomaatti.enums import (
     AUDIO_FILE_EXTENSIONS,
@@ -161,7 +162,7 @@ class Compo(models.Model):
         on_delete=models.PROTECT,
     )
     name = models.CharField("Nimi", max_length=32, help_text="Kompon nimi (max 32 merkkiä).")
-    description = models.TextField("Kuvaus")
+    description = SanitizedHtmlField("Kuvaus")
     adding_end = models.DateTimeField(
         "Deadline entryjen lisäyksille",
         help_text="Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.",
@@ -605,7 +606,7 @@ class Competition(models.Model):
         on_delete=models.PROTECT,
     )
     name = models.CharField("Nimi", max_length=32, help_text="Kilpailun nimi (max 32 merkkiä).")
-    description = models.TextField("Kuvaus")
+    description = SanitizedHtmlField("Kuvaus")
     participation_end = models.DateTimeField(
         "Deadline osallistumiselle.", help_text="Tämän jälkeen kilpailuun ei voi enää osallistua."
     )

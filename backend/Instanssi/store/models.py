@@ -16,6 +16,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from Instanssi.common.file_handling import clean_filename, generate_upload_path
+from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.kompomaatti.models import Event
 from Instanssi.store.utils.receipt import ReceiptParams
 
@@ -41,7 +42,7 @@ class StoreItem(models.Model):
         on_delete=models.PROTECT,
     )
     name = models.CharField("Tuotteen nimi", help_text="Tuotteen lyhyt nimi.", max_length=255)
-    description = models.TextField("Tuotteen kuvaus", help_text="Tuotteen pitkä kuvaus.")
+    description = SanitizedHtmlField("Tuotteen kuvaus", help_text="Tuotteen pitkä kuvaus.")
     price = models.DecimalField(
         "Tuotteen hinta", help_text="Tuotteen hinta.", max_digits=5, decimal_places=2
     )

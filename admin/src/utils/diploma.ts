@@ -1,4 +1,4 @@
-import exoFontUrl from "@fontsource/exo/files/exo-latin-700-normal.woff2?url";
+import exoFontUrl from "@/assets/fonts/Exo-Bold.ttf?url";
 import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 

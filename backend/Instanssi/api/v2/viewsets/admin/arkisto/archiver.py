@@ -11,8 +11,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from Instanssi.admin_arkisto.misc import utils
 from Instanssi.api.v2.serializers.admin.arkisto import ArchiverStatusSerializer
+from Instanssi.arkisto import utils
 from Instanssi.kompomaatti.models import (
     CompetitionParticipation,
     Compo,

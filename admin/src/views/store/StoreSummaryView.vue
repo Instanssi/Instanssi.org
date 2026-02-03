@@ -2,7 +2,7 @@
     <LayoutBase :key="`store-summary-${eventId}`" :breadcrumbs="breadcrumbs">
         <v-col>
             <!-- Summary Cards -->
-            <v-row class="mb-4">
+            <v-row>
                 <v-col cols="12" sm="6">
                     <StatCard
                         :icon="faBoxOpen"
@@ -22,7 +22,7 @@
             </v-row>
 
             <!-- Charts -->
-            <v-row class="mb-4">
+            <v-row class="mt-2">
                 <v-col cols="12" md="6">
                     <SalesPerDayChart :paid-times="paidTimesForItems" />
                 </v-col>
@@ -32,7 +32,7 @@
             </v-row>
 
             <!-- Sales Table -->
-            <v-row>
+            <v-row class="mt-2">
                 <v-col cols="12">
                     <v-card>
                         <v-card-title class="d-flex align-center">

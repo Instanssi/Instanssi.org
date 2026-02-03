@@ -1,7 +1,7 @@
 <template>
     <LayoutBase :key="`dashboard-${eventId}`" :breadcrumbs="breadcrumbs">
         <!-- Event Overview -->
-        <v-row class="mb-4">
+        <v-row>
             <v-col cols="12">
                 <v-card>
                     <v-card-title class="d-flex align-center">
@@ -26,7 +26,7 @@
         </v-row>
 
         <!-- Statistics Cards -->
-        <v-row class="mb-4">
+        <v-row class="mt-2">
             <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" sm="6" lg>
                 <StatCard
                     :icon="faNewspaper"
@@ -92,7 +92,7 @@
         </v-row>
 
         <!-- Charts -->
-        <v-row class="mb-4">
+        <v-row class="mt-2">
             <v-col v-if="auth.canView(PermissionTarget.COMPO)" cols="12" md="6">
                 <EntriesPerCompoChart :compos="compos" :entry-counts="compoEntryCounts" />
             </v-col>
@@ -105,7 +105,7 @@
         </v-row>
 
         <!-- Recent Activity -->
-        <v-row class="mb-4">
+        <v-row class="mt-2 mb-1">
             <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" md="6">
                 <v-card>
                     <v-card-title>

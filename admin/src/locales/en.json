@@ -137,7 +137,7 @@
       "loadingEvents": "Loading events ...",
       "noEventsFound": "No events found.",
       "confirmDelete": "Do your really want to delete event '{name}' ?",
-      "headers":  {
+      "headers": {
         "id": "ID",
         "name": "Name",
         "tag": "Tag",
@@ -165,7 +165,7 @@
       "loadingUsers": "Loading users ...",
       "noUsersFound": "No users found.",
       "confirmDelete": "Do your really want to delete user '{username}' ?",
-      "headers":  {
+      "headers": {
         "id": "ID",
         "userName": "Username",
         "firstName": "First name",
@@ -339,9 +339,29 @@
         "GB": "GB"
       },
       "commonFormats": {
-        "entry": ["zip", "7z", "rar", "tar.gz", "exe", "com", "prg", "d64"],
-        "source": ["zip", "7z", "rar", "tar.gz"],
-        "image": ["png", "jpg", "jpeg", "gif", "webp"]
+        "entry": [
+          "zip",
+          "7z",
+          "rar",
+          "tar.gz",
+          "exe",
+          "com",
+          "prg",
+          "d64"
+        ],
+        "source": [
+          "zip",
+          "7z",
+          "rar",
+          "tar.gz"
+        ],
+        "image": [
+          "png",
+          "jpg",
+          "jpeg",
+          "gif",
+          "webp"
+        ]
       }
     },
     "EntriesView": {
@@ -471,7 +491,15 @@
         "highestFirst": "Highest first",
         "lowestFirst": "Lowest first"
       },
-      "commonScoreTypes": ["pts", "sec", "min", "m", "km", "kg", "pcs"]
+      "commonScoreTypes": [
+        "pts",
+        "sec",
+        "min",
+        "m",
+        "km",
+        "kg",
+        "pcs"
+      ]
     },
     "CompetitionParticipationsView": {
       "title": "Competition Participations",
@@ -486,6 +514,9 @@
       "allCompetitions": "All competitions",
       "filterByDisqualified": "Status",
       "allStatuses": "All",
+      "exportResults": "Export results",
+      "exportSuccess": "Results exported!",
+      "exportFailure": "Failed to export results.",
       "headers": {
         "id": "ID",
         "participantName": "Participant name",
@@ -1201,6 +1232,26 @@
         "access": "Access",
         "unknown": "Unknown"
       }
+    },
+    "DiplomaGenerator": {
+      "title": "Diplomas",
+      "backgroundImage": "Background image",
+      "selectBackground": "Select background image",
+      "noImagesFound": "No image files found",
+      "includeIn": "Include in diplomas",
+      "includeCompos": "Compo entries",
+      "includeCompetitions": "Competition participations",
+      "mainOrganizer": "Main organizer title",
+      "mainOrganizerName": "Main organizer name",
+      "programOrganizer": "Program organizer title",
+      "programOrganizerName": "Program organizer name",
+      "preview": "Preview",
+      "generateAll": "Generate all",
+      "generating": "Generating {current} of {total}...",
+      "success": "Diplomas generated",
+      "noEntries": "No ranked entries found",
+      "loadFailure": "Failed to load data",
+      "generateFailure": "Failed to generate diplomas"
     }
   }
 }

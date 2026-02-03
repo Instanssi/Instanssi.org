@@ -12,6 +12,33 @@
                     </template>
                     {{ t("CompetitionParticipationsView.newParticipation") }}
                 </v-btn>
+                <div v-if="auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)" class="ml-4">
+                    <ExportButton
+                        :label="t('CompetitionParticipationsView.exportResults')"
+                        :loading="exportLoading"
+                        @export="downloadResults"
+                    />
+                </div>
+                <v-btn
+                    v-if="auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)"
+                    color="secondary"
+                    class="ml-4"
+                    @click="openDiplomaDialog"
+                >
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faCertificate" />
+                    </template>
+                    {{ t("DiplomaGenerator.title") }}
+                </v-btn>
+                <v-text-field
+                    v-model="tableState.search.value"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('General.search')"
+                    style="max-width: 400px"
+                    class="ma-0 pa-0 ml-4"
+                    clearable
+                />
                 <v-select
                     v-model="selectedCompetition"
                     :items="competitionOptions"
@@ -19,15 +46,6 @@
                     density="compact"
                     :label="t('CompetitionParticipationsView.filterByCompetition')"
                     style="max-width: 300px"
-                    class="ma-0 pa-0 ml-4"
-                    clearable
-                />
-                <v-text-field
-                    v-model="tableState.search.value"
-                    variant="outlined"
-                    density="compact"
-                    :label="t('General.search')"
-                    style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
@@ -98,11 +116,12 @@
                 </v-data-table-server>
             </v-row>
         </v-col>
+        <DiplomaGeneratorDialog ref="diplomaDialog" :event-id="eventId" />
     </LayoutBase>
 </template>
 
 <script setup lang="ts">
-import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCertificate, faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -113,6 +132,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
+import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
@@ -122,6 +142,9 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { getApiErrorMessage } from "@/utils/http";
+import { toRomanNumeral } from "@/utils/roman";
+import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
+import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -134,6 +157,8 @@ const auth = useAuth();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
+const exportLoading = ref(false);
+const diplomaDialog: Ref<InstanceType<typeof DiplomaGeneratorDialog> | undefined> = ref(undefined);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -331,6 +356,83 @@ function editParticipation(id: number): void {
 
 function createParticipation(): void {
     router.push({ name: "competition-participations-new", params: { eventId: eventId.value } });
+}
+
+function openDiplomaDialog(): void {
+    diplomaDialog.value?.open();
+}
+
+interface ResultRow {
+    participantName: string;
+    rankString: string;
+    competitionName: string;
+}
+
+/**
+ * Generate results data with top 3 participations per competition.
+ */
+function generateResultsData(allParticipations: CompetitionParticipation[]): ResultRow[] {
+    // Group participations by competition
+    const participationsByCompetition = new Map<number, CompetitionParticipation[]>();
+    for (const participation of allParticipations) {
+        const compParticipations = participationsByCompetition.get(participation.competition) ?? [];
+        compParticipations.push(participation);
+        participationsByCompetition.set(participation.competition, compParticipations);
+    }
+
+    // Build rows: top 3 participations per competition, sorted by rank
+    const rows: ResultRow[] = [];
+    for (const competition of competitions.value) {
+        const compParticipations = participationsByCompetition.get(competition.id) ?? [];
+
+        // Sort by rank (participations without rank go to the end)
+        const sorted = [...compParticipations].sort((a, b) => {
+            if (a.rank === null && b.rank === null) return 0;
+            if (a.rank === null) return 1;
+            if (b.rank === null) return -1;
+            return a.rank - b.rank;
+        });
+
+        // Take top 3
+        const top3 = sorted.slice(0, 3);
+
+        for (const participation of top3) {
+            if (participation.rank === null) continue; // Skip unranked participations
+            rows.push({
+                participantName: participation.participant_name || "Unknown",
+                rankString: toRomanNumeral(participation.rank),
+                competitionName: competition.name,
+            });
+        }
+    }
+
+    return rows;
+}
+
+/**
+ * Generate and download spreadsheet with top 3 participations per competition
+ */
+async function downloadResults(format: SpreadsheetFormat): Promise<void> {
+    exportLoading.value = true;
+    try {
+        const response = await api.adminEventKompomaattiCompetitionParticipationsList({
+            path: { event_pk: eventId.value },
+            query: { limit: 10000 },
+        });
+        const results = generateResultsData(response.data!.results);
+        const data = results.map((row) => [
+            row.participantName,
+            row.rankString,
+            row.competitionName,
+        ]);
+        downloadSpreadsheet(data, "instanssi_competition_results", format, "Results");
+        toast.success(t("CompetitionParticipationsView.exportSuccess"));
+    } catch (e) {
+        toast.error(t("CompetitionParticipationsView.exportFailure"));
+        console.error(e);
+    } finally {
+        exportLoading.value = false;
+    }
 }
 
 onMounted(() => {

@@ -19,6 +19,26 @@
                         @export="downloadResults"
                     />
                 </div>
+                <v-btn
+                    v-if="auth.canView(PermissionTarget.ENTRY)"
+                    color="secondary"
+                    class="ml-4"
+                    @click="openDiplomaDialog"
+                >
+                    <template #prepend>
+                        <FontAwesomeIcon :icon="faCertificate" />
+                    </template>
+                    {{ t("DiplomaGenerator.title") }}
+                </v-btn>
+                <v-text-field
+                    v-model="tableState.search.value"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('General.search')"
+                    style="max-width: 400px"
+                    class="ma-0 pa-0 ml-4"
+                    clearable
+                />
                 <v-select
                     v-model="selectedCompo"
                     :items="compoOptions"
@@ -26,15 +46,6 @@
                     density="compact"
                     :label="t('EntriesView.filterByCompo')"
                     style="max-width: 300px"
-                    class="ma-0 pa-0 ml-4"
-                    clearable
-                />
-                <v-text-field
-                    v-model="tableState.search.value"
-                    variant="outlined"
-                    density="compact"
-                    :label="t('General.search')"
-                    style="max-width: 400px"
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
@@ -107,11 +118,12 @@
                 </v-data-table-server>
             </v-row>
         </v-col>
+        <DiplomaGeneratorDialog ref="diplomaDialog" :event-id="eventId" />
     </LayoutBase>
 </template>
 
 <script setup lang="ts">
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCertificate, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -134,8 +146,10 @@ import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
+import { toRomanNumeral } from "@/utils/roman";
 import { getApiErrorMessage } from "@/utils/http";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
+import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -149,6 +163,7 @@ const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
 const exportLoading = ref(false);
+const diplomaDialog: Ref<InstanceType<typeof DiplomaGeneratorDialog> | undefined> = ref(undefined);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -332,11 +347,8 @@ function createEntry(): void {
     router.push({ name: "entries-new", params: { eventId: eventId.value } });
 }
 
-/**
- * Convert a rank number to Roman numerals (1 = I, 2 = II, 3 = III, etc.)
- */
-function toRomanNumeral(rank: number): string {
-    return "I".repeat(rank);
+function openDiplomaDialog(): void {
+    diplomaDialog.value?.open();
 }
 
 /**

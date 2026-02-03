@@ -351,11 +351,17 @@ function openDiplomaDialog(): void {
     diplomaDialog.value?.open();
 }
 
+interface ResultRow {
+    entryName: string;
+    creator: string;
+    rankString: string;
+    compoName: string;
+}
+
 /**
- * Generate spreadsheet data with top 3 entries per compo for diploma generation.
- * Returns array of rows: [Entry Name, Creator, Placement, Compo Name]
+ * Generate results data with top 3 entries per compo for diploma generation.
  */
-function generateResultsData(allEntries: CompoEntry[]): Array<[string, string, string, string]> {
+function generateResultsData(allEntries: CompoEntry[]): ResultRow[] {
     // Group entries by compo
     const entriesByCompo = new Map<number, CompoEntry[]>();
     for (const entry of allEntries) {
@@ -365,7 +371,7 @@ function generateResultsData(allEntries: CompoEntry[]): Array<[string, string, s
     }
 
     // Build rows: top 3 entries per compo, sorted by rank
-    const rows: Array<[string, string, string, string]> = [];
+    const rows: ResultRow[] = [];
     for (const compo of compos.value) {
         const compoEntries = entriesByCompo.get(compo.id) ?? [];
 
@@ -382,7 +388,12 @@ function generateResultsData(allEntries: CompoEntry[]): Array<[string, string, s
 
         for (const entry of top3) {
             if (entry.rank === null) continue; // Skip unranked entries
-            rows.push([entry.name, entry.creator, toRomanNumeral(entry.rank), compo.name]);
+            rows.push({
+                entryName: entry.name,
+                creator: entry.creator,
+                rankString: toRomanNumeral(entry.rank),
+                compoName: compo.name,
+            });
         }
     }
 
@@ -399,7 +410,13 @@ async function downloadResults(format: SpreadsheetFormat): Promise<void> {
             path: { event_pk: eventId.value },
             query: { limit: 10000 },
         });
-        const data = generateResultsData(response.data!.results);
+        const results = generateResultsData(response.data!.results);
+        const data = results.map((row) => [
+            row.entryName,
+            row.creator,
+            row.rankString,
+            row.compoName,
+        ]);
         downloadSpreadsheet(data, "instanssi_entries", format, "Results");
         toast.success(t("EntriesView.exportSuccess"));
     } catch (e) {

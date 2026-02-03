@@ -18,7 +18,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="pk"
                     density="compact"
@@ -26,11 +27,11 @@
                     :items="tokens"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('TokensView.noTokensFound')"
                     :loading-text="t('TokensView.loadingTokens')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.token_key="{ item }">
                         <code>{{ item.token_key }}...</code>
@@ -77,6 +78,7 @@ import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TokenCreateDialog from "@/views/tokens/TokenCreateDialog.vue";
 import TokenCreatedDialog from "@/components/dialogs/TokenCreatedDialog.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
@@ -93,10 +95,8 @@ const auth = useAuth();
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("TokensView.title"), disabled: true }];
 
 const loading = ref(false);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+const tableState = useTableState();
 const totalItems = ref(0);
-const currentPage = ref(1);
 const tokens: Ref<AuthToken[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const showCreateDialog = ref(false);
@@ -149,6 +149,11 @@ async function load(args: LoadArgs) {
 }
 
 const debouncedLoad = debounce(load, 250);
+
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
 
 async function deleteToken(item: AuthToken): Promise<void> {
     const text = t("TokensView.confirmDelete", { tokenKey: item.token_key });

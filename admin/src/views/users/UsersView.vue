@@ -13,7 +13,7 @@
                     {{ t("UsersView.newUser") }}
                 </v-btn>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -21,12 +21,39 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterIsActive"
+                    :items="[
+                        { title: t('UsersView.allStatuses'), value: null },
+                        { title: t('UsersView.activeOnly'), value: true },
+                        { title: t('UsersView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('UsersView.filterByStatus')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsStaff"
+                    :items="[
+                        { title: t('UsersView.allTypes'), value: null },
+                        { title: t('UsersView.staffOnly'), value: true },
+                        { title: t('UsersView.regularOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('UsersView.filterByType')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -34,12 +61,12 @@
                     :items="users"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :search="search"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :search="tableState.search.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('UsersView.noUsersFound')"
                     :loading-text="t('UsersView.loadingUsers')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.is_superuser="{ item }">
                         <BooleanIcon :value="item.is_superuser" />
@@ -68,11 +95,11 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { type Ref, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import { type VDataTable, type VDataTableServer } from "vuetify/components";
+import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { User } from "@/api";
@@ -80,6 +107,7 @@ import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
@@ -96,13 +124,13 @@ const auth = useAuth();
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
 
+const tableState = useTableState({ filterKeys: ["is_active", "is_staff"] });
 const loading = ref(false);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const filterIsActive = tableState.useBooleanFilter("is_active");
+const filterIsStaff = tableState.useBooleanFilter("is_staff");
 const totalItems = ref(0);
-const currentPage = ref(1);
 const users: Ref<User[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
@@ -112,7 +140,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("UsersView.headers.userName"),
-        sortable: false,
+        sortable: true,
         key: "username",
     },
     {
@@ -142,7 +170,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("UsersView.headers.dateJoined"),
-        sortable: false,
+        sortable: true,
         key: "date_joined",
     },
     {
@@ -163,7 +191,13 @@ async function load(args: LoadArgs) {
     loading.value = true;
     lastLoadArgs.value = args;
     try {
-        const response = await api.adminUsersList({ query: getLoadArgs(args) });
+        const response = await api.adminUsersList({
+            query: {
+                ...getLoadArgs(args),
+                ...(filterIsActive.value !== null ? { is_active: filterIsActive.value } : {}),
+                ...(filterIsStaff.value !== null ? { is_staff: filterIsStaff.value } : {}),
+            },
+        });
         users.value = response.data!.results;
         totalItems.value = response.data!.count;
     } catch (e) {
@@ -174,7 +208,19 @@ async function load(args: LoadArgs) {
     }
 }
 
-const debouncedLoad = debounce(load, 250); // Don't murderate the server API
+// Reload when filters change
+watch([filterIsActive, filterIsStaff], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
+
+const debouncedLoad = debounce(load, 250);
+
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
 
 async function deleteUser(item: User): Promise<void> {
     const text = t("UsersView.confirmDelete", item);

@@ -12,7 +12,7 @@ class TransactionItemViewSet(PermissionViewSet):
 
     queryset = TransactionItem.objects.all()
     serializer_class = TransactionItemSerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "item", "transaction", "time_delivered")
+    ordering_fields = ("id", "item", "transaction", "purchase_price", "time_delivered")
     search_fields = ("key", "transaction__firstname", "transaction__lastname", "transaction__email")
     filterset_fields = ("item", "transaction", "variant")
 

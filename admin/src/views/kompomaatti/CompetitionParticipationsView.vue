@@ -22,12 +22,35 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-text-field
+                    v-model="tableState.search.value"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('General.search')"
+                    style="max-width: 400px"
+                    class="ma-0 pa-0 ml-4"
+                    clearable
+                />
+                <v-select
+                    v-model="filterDisqualified"
+                    :items="[
+                        { title: t('CompetitionParticipationsView.allStatuses'), value: null },
+                        { title: t('General.disqualifiedOn'), value: true },
+                        { title: t('General.disqualifiedOff'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('CompetitionParticipationsView.filterByDisqualified')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -35,11 +58,12 @@
                     :items="participations"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :search="tableState.search.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('CompetitionParticipationsView.noParticipationsFound')"
                     :loading-text="t('CompetitionParticipationsView.loadingParticipations')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.competition="{ item }">
                         {{ getCompetitionName(item.competition) }}
@@ -91,6 +115,7 @@ import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -117,15 +142,23 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("CompetitionParticipationsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["competition", "disqualified"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
 const users: Ref<User[]> = ref([]);
-const selectedCompetition: Ref<number | null> = ref(null);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const selectedCompetition = computed({
+    get: () => tableState.getFilterAsNumber("competition"),
+    set: (value: number | null) => {
+        tableState.setFilter("competition", value);
+        tableState.resetPage();
+    },
+});
+
+const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
 const headers: ReadonlyHeaders = [
     {
@@ -224,6 +257,9 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(selectedCompetition.value ? { competition: selectedCompetition.value } : {}),
+                ...(filterDisqualified.value !== null
+                    ? { disqualified: filterDisqualified.value }
+                    : {}),
             },
         });
         participations.value = response.data!.results;
@@ -238,19 +274,27 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
-// Reload when competition filter changes
-watch(selectedCompetition, () => {
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
+// Reload when filters change
+watch([selectedCompetition, filterDisqualified], () => {
     if (lastLoadArgs.value) {
-        debouncedLoad(lastLoadArgs.value);
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }
 });
 
 function refresh() {
-    selectedCompetition.value = null;
+    tableState.setFilter("competition", null);
+    tableState.setFilter("disqualified", null);
+    tableState.search.value = "";
+    tableState.page.value = 1;
     loadCompetitions();
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

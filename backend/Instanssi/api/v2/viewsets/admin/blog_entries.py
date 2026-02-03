@@ -10,7 +10,7 @@ class BlogEntryViewSet(PermissionViewSet):
 
     queryset = BlogEntry.objects.all()
     serializer_class = BlogEntrySerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "user", "date")
+    ordering_fields = ("id", "user", "date", "public")
     filterset_fields = ("user", "event")
     search_fields = ("title", "text")
 

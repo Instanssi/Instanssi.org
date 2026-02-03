@@ -7418,7 +7418,13 @@ components:
         is_sent:
           type: boolean
           readOnly: true
+        content:
+          type: string
+          readOnly: true
+          nullable: true
+          title: Kuitin sisältö
       required:
+      - content
       - id
       - is_sent
       - mail_from

@@ -577,7 +577,7 @@ def competition(event) -> Competition:
     return Competition.objects.create(
         event=event,
         name="Test competition",
-        description="Test competition is the awesomest ever!",
+        description="<p>Test competition is the <strong>awesomest</strong> ever!</p>",
         participation_end=timezone.now() + timedelta(hours=1),
         start=timezone.now() + timedelta(hours=1, minutes=30),
         end=timezone.now() + timedelta(hours=8),
@@ -591,7 +591,7 @@ def started_competition(event) -> Competition:
     return Competition.objects.create(
         event=event,
         name="Started Competition",
-        description="Test competition that has started",
+        description="<p>Test competition that has <em>started</em></p>",
         participation_end=timezone.now() + timedelta(hours=-1),
         start=timezone.now() + timedelta(hours=-30, minutes=-30),
         end=timezone.now() + timedelta(hours=8),
@@ -605,7 +605,7 @@ def inactive_competition(event) -> Competition:
     return Competition.objects.create(
         event=event,
         name="Inactive Competition",
-        description="Test competition that is inactive",
+        description="<p>Test competition that is <strong>inactive</strong></p>",
         active=False,
         participation_end=timezone.now() + timedelta(hours=-1),
         start=timezone.now() + timedelta(hours=-30, minutes=-30),
@@ -1123,7 +1123,7 @@ def other_competition(other_event) -> Competition:
     return Competition.objects.create(
         event=other_event,
         name="Other Competition",
-        description="Competition from another event",
+        description="<p>Competition from <em>another</em> event</p>",
         participation_end=timezone.now() + timedelta(hours=1),
         start=timezone.now() + timedelta(hours=2),
         end=timezone.now() + timedelta(hours=8),
@@ -1292,7 +1292,7 @@ def past_competition(past_event) -> Competition:
     return Competition.objects.create(
         event=past_event,
         name="Past Competition",
-        description="This competition has ended",
+        description="<p>This competition has <strong>ended</strong></p>",
         participation_end=timezone.now() - timedelta(days=20),
         start=timezone.now() - timedelta(days=19),
         end=timezone.now() - timedelta(days=10),
@@ -1400,7 +1400,7 @@ def hidden_event_competition(hidden_event) -> Competition:
     return Competition.objects.create(
         event=hidden_event,
         name="Hidden Competition",
-        description="This competition is in a hidden event",
+        description="<p>This competition is in a <em>hidden</em> event</p>",
         active=True,
         participation_end=timezone.now() + timedelta(hours=1),
         start=timezone.now() - timedelta(hours=1),

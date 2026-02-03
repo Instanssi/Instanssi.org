@@ -13,7 +13,7 @@
                     {{ t("ProgramEventsView.newProgramEvent") }}
                 </v-btn>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -31,12 +31,26 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterActive"
+                    :items="[
+                        { title: t('ProgramEventsView.allStatuses'), value: null },
+                        { title: t('ProgramEventsView.activeOnly'), value: true },
+                        { title: t('ProgramEventsView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('ProgramEventsView.filterActive')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -44,12 +58,12 @@
                     :items="items"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('ProgramEventsView.noProgramEventsFound')"
                     :loading-text="t('ProgramEventsView.loadingProgramEvents')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.icon_small_url="{ item }">
                         <ImageCell :url="item.icon_small_url" />
@@ -106,7 +120,7 @@ import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer, VDataTable } from "vuetify/components";
+import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { ProgramEvent } from "@/api";
@@ -116,6 +130,7 @@ import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import SocialLinksCell from "@/components/table/SocialLinksCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -142,14 +157,21 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("ProgramEventsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["eventType", "active"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const items: Ref<ProgramEvent[]> = ref([]);
-const search = ref("");
-const filterEventType: Ref<0 | 1 | null> = ref(null);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const filterEventType = computed({
+    get: () => tableState.getFilterAsNumber("eventType") as 0 | 1 | null,
+    set: (value: 0 | 1 | null) => {
+        tableState.setFilter("eventType", value);
+        tableState.resetPage();
+    },
+});
+
+const filterActive = tableState.useBooleanFilter("active");
 
 const eventTypeFilterOptions = [
     { title: t("ProgramEventsView.eventTypes.0"), value: 0 },
@@ -176,7 +198,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("ProgramEventsView.headers.title"),
-        sortable: false,
+        sortable: true,
         key: "title",
     },
     {
@@ -201,7 +223,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("ProgramEventsView.headers.eventType"),
-        sortable: false,
+        sortable: true,
         key: "event_type",
     },
     {
@@ -232,6 +254,7 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(filterEventType.value !== null ? { event_type: filterEventType.value } : {}),
+                ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },
         });
         items.value = response.data!.results;
@@ -246,17 +269,26 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
-// Watch filter and reload when it changes
-watch(filterEventType, () => {
-    flushData();
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
+// Watch filters and reload when they change
+watch([filterEventType, filterActive], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
 });
 
 function refresh() {
-    filterEventType.value = null;
-    search.value = "";
+    tableState.setFilter("eventType", null);
+    tableState.setFilter("active", null);
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

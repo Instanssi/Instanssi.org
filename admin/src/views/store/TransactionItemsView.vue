@@ -18,7 +18,7 @@
                     clearable
                 />
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -31,7 +31,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -39,12 +40,12 @@
                     :items="items"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('TransactionItemsView.noItemsFound')"
                     :loading-text="t('TransactionItemsView.loadingItems')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.item="{ item }">
                         {{ getItemName(item.item) }}
@@ -77,6 +78,7 @@ import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
+import { useTableState } from "@/composables/useTableState";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
@@ -98,15 +100,20 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("TransactionItemsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["item"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const items: Ref<TransactionItem[]> = ref([]);
 const storeItems: Ref<StoreItem[]> = ref([]);
-const search = ref("");
-const selectedItem: Ref<number | null> = ref(null);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const selectedItem = computed({
+    get: () => tableState.getFilterAsNumber("item"),
+    set: (value: number | null) => {
+        tableState.setFilter("item", value);
+        tableState.resetPage();
+    },
+});
 
 const headers: ReadonlyHeaders = [
     {
@@ -121,7 +128,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("TransactionItemsView.headers.item"),
-        sortable: false,
+        sortable: true,
         key: "item",
     },
     {
@@ -199,20 +206,26 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 // Reload when item filter changes
 watch(selectedItem, () => {
     if (lastLoadArgs.value) {
-        debouncedLoad(lastLoadArgs.value);
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }
 });
 
 function refresh() {
     selectedItem.value = null;
-    search.value = "";
+    tableState.search.value = "";
+    tableState.page.value = 1;
     loadStoreItems();
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

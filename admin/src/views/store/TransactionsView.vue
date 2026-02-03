@@ -3,7 +3,7 @@
         <v-col>
             <v-row>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -16,7 +16,8 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -24,12 +25,12 @@
                     :items="transactions"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('TransactionsView.noTransactionsFound')"
                     :loading-text="t('TransactionsView.loadingTransactions')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.time_created="{ item }">
                         <DateTimeCell :value="item.time_created" />
@@ -42,18 +43,19 @@
                     <template #item.total_price="{ item }">
                         <PriceCell :value="item.total_price" />
                     </template>
+                    <template #item.information="{ item }">
+                        <LongTextCell
+                            :value="item.information"
+                            :title="t('TransactionsView.headers.informationDialogTitle')"
+                        />
+                    </template>
                     <template #item.actions="{ item }">
-                        <v-btn
-                            v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)"
-                            density="compact"
-                            variant="text"
-                            @click="viewDetails(item.id)"
-                        >
-                            <template #prepend>
-                                <FontAwesomeIcon :icon="faEye" />
-                            </template>
-                            {{ t("General.view") }}
-                        </v-btn>
+                        <TableActionButtons
+                            :can-view="auth.canView(PermissionTarget.STORE_TRANSACTION)"
+                            :can-edit="false"
+                            :can-delete="false"
+                            @view="viewDetails(item.id)"
+                        />
                     </template>
                 </v-data-table-server>
             </v-row>
@@ -62,8 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -75,7 +75,10 @@ import * as api from "@/api";
 import type { StoreTransaction } from "@/api";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
+import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -98,12 +101,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("TransactionsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState();
 const totalItems = ref(0);
-const currentPage = ref(1);
 const transactions: Ref<StoreTransaction[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
@@ -114,7 +115,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("TransactionsView.headers.fullName"),
-        sortable: true,
+        sortable: false,
         key: "full_name",
     },
     {
@@ -136,6 +137,11 @@ const headers: ReadonlyHeaders = [
         title: t("TransactionsView.headers.total"),
         sortable: false,
         key: "total_price",
+    },
+    {
+        title: t("TransactionsView.headers.information"),
+        sortable: false,
+        key: "information",
     },
     {
         title: t("TransactionsView.headers.actions"),
@@ -179,11 +185,17 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
-    search.value = "";
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

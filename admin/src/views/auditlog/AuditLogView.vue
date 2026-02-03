@@ -20,8 +20,9 @@
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
                     v-model:expanded="expanded"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -29,12 +30,12 @@
                     :items="entries"
                     :items-length="totalItems"
                     :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('AuditLogView.noEntriesFound')"
                     :loading-text="t('AuditLogView.loadingEntries')"
                     show-expand
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.timestamp="{ item }">
                         <DateTimeCell :value="item.timestamp" />
@@ -70,7 +71,7 @@
 
 <script setup lang="ts">
 import { debounce } from "lodash-es";
-import { type Ref, ref } from "vue";
+import { type Ref, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
@@ -81,6 +82,7 @@ import DiffViewer from "@/components/auditlog/DiffViewer.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import { type LoadOptions, useAuditLogUtils } from "@/composables/useAuditLogUtils";
+import { useTableState } from "@/composables/useTableState";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -121,15 +123,21 @@ const modelOptions: ModelOption[] = [
 ];
 
 const loading = ref(false);
-const defaultPageSize = 25;
-const pageSizeOptions = [defaultPageSize, 50, 100];
-const perPage = ref(defaultPageSize);
+const tableState = useTableState({ filterKeys: ["model"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const entries: Ref<LogEntry[]> = ref([]);
 const expanded: Ref<string[]> = ref([]);
-const selectedModel = ref<string | null>(null);
 const lastLoadOptions: Ref<LoadOptions | null> = ref(null);
+
+const selectedModel = computed({
+    get: () => {
+        const value = tableState.filters.value.model;
+        return value ?? null;
+    },
+    set: (value: string | null) => {
+        tableState.setFilter("model", value);
+    },
+});
 
 const headers: ReadonlyHeaders = [
     { title: "", key: "data-table-expand", width: 50 },
@@ -163,10 +171,20 @@ const headers: ReadonlyHeaders = [
 
 function onFilterChange() {
     // Reset to page 1 when filter changes
-    currentPage.value = 1;
+    tableState.page.value = 1;
     if (lastLoadOptions.value) {
         load({ ...lastLoadOptions.value, page: 1 });
     }
+}
+
+function onTableOptionsUpdate(options: LoadOptions) {
+    // Adapt LoadOptions to LoadArgs for tableState
+    tableState.onOptionsUpdate({
+        ...options,
+        groupBy: [] as never,
+        search: "",
+    });
+    debouncedLoad(options);
 }
 
 async function load(options: LoadOptions) {

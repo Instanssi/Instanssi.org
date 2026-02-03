@@ -16,7 +16,16 @@ class CompoViewSet(PermissionViewSet):
 
     queryset = Compo.objects.all()
     serializer_class = CompoSerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "event", "name", "compo_start", "voting_start")
+    ordering_fields = (
+        "id",
+        "event",
+        "name",
+        "adding_end",
+        "compo_start",
+        "voting_start",
+        "voting_end",
+        "active",
+    )
     search_fields = ("name", "description")
     filterset_fields = (
         "active",

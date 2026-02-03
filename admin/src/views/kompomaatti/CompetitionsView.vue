@@ -13,7 +13,7 @@
                     {{ t("CompetitionsView.newCompetition") }}
                 </v-btn>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -21,12 +21,26 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterActive"
+                    :items="[
+                        { title: t('CompetitionsView.allStatuses'), value: null },
+                        { title: t('CompetitionsView.activeOnly'), value: true },
+                        { title: t('CompetitionsView.inactiveOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('CompetitionsView.filterByStatus')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -34,12 +48,12 @@
                     :items="competitions"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('CompetitionsView.noCompetitionsFound')"
                     :loading-text="t('CompetitionsView.loadingCompetitions')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.active="{ item }">
                         <BooleanIcon :value="item.active" />
@@ -80,7 +94,7 @@ import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer, VDataTable } from "vuetify/components";
+import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Competition } from "@/api";
@@ -88,6 +102,7 @@ import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -114,13 +129,13 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("CompetitionsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["active"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const competitions: Ref<Competition[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const filterActive = tableState.useBooleanFilter("active");
 const headers: ReadonlyHeaders = [
     {
         title: t("CompetitionsView.headers.id"),
@@ -149,7 +164,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("CompetitionsView.headers.active"),
-        sortable: false,
+        sortable: true,
         key: "active",
     },
     {
@@ -174,6 +189,7 @@ async function load(args: LoadArgs) {
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
                 ...getLoadArgs(args),
+                ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },
         });
         competitions.value = response.data!.results;
@@ -188,11 +204,25 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+// Reload when filter changes
+watch(filterActive, () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
+
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
-    search.value = "";
+    tableState.setFilter("active", null);
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

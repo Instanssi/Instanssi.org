@@ -30,7 +30,7 @@
                     clearable
                 />
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -38,12 +38,26 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterDisqualified"
+                    :items="[
+                        { title: t('EntriesView.allStatuses'), value: null },
+                        { title: t('General.disqualifiedOn'), value: true },
+                        { title: t('General.disqualifiedOff'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('EntriesView.filterByDisqualified')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -51,12 +65,12 @@
                     :items="entries"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('EntriesView.noEntriesFound')"
                     :loading-text="t('EntriesView.loadingEntries')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.imagefile_thumbnail_url="{ item }">
                         <ImageCell :url="item.imagefile_thumbnail_url" />
@@ -104,7 +118,7 @@ import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTableServer, VDataTable } from "vuetify/components";
+import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
@@ -114,6 +128,7 @@ import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -142,15 +157,22 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("EntriesView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["compo", "disqualified"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const entries: Ref<CompoEntry[]> = ref([]);
 const compos: Ref<Compo[]> = ref([]);
-const search = ref("");
-const selectedCompo: Ref<number | null> = ref(null);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const selectedCompo = computed({
+    get: () => tableState.getFilterAsNumber("compo"),
+    set: (value: number | null) => {
+        tableState.setFilter("compo", value);
+        tableState.resetPage();
+    },
+});
+
+const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
 const headers: ReadonlyHeaders = [
     {
@@ -181,7 +203,7 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("EntriesView.headers.compo"),
-        sortable: false,
+        sortable: true,
         key: "compo",
     },
     {
@@ -239,6 +261,9 @@ async function load(args: LoadArgs) {
             query: {
                 ...getLoadArgs(args),
                 ...(selectedCompo.value ? { compo: selectedCompo.value } : {}),
+                ...(filterDisqualified.value !== null
+                    ? { disqualified: filterDisqualified.value }
+                    : {}),
             },
         });
         entries.value = response.data!.results;
@@ -253,20 +278,27 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
-// Reload when compo filter changes
-watch(selectedCompo, () => {
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
+// Reload when filters change
+watch([selectedCompo, filterDisqualified], () => {
     if (lastLoadArgs.value) {
-        debouncedLoad(lastLoadArgs.value);
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }
 });
 
 function refresh() {
-    selectedCompo.value = null;
-    search.value = "";
+    tableState.setFilter("compo", null);
+    tableState.setFilter("disqualified", null);
+    tableState.search.value = "";
+    tableState.page.value = 1;
     loadCompos();
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

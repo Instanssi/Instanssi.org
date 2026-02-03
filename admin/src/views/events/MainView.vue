@@ -1,180 +1,174 @@
 <template>
     <LayoutBase :key="`dashboard-${eventId}`" :breadcrumbs="breadcrumbs">
-        <v-row v-if="loading" class="justify-center my-8">
-            <v-progress-circular indeterminate size="64" />
+        <!-- Event Overview -->
+        <v-row>
+            <v-col cols="12">
+                <v-card>
+                    <v-card-title class="d-flex align-center">
+                        <FontAwesomeIcon :icon="faCalendarDays" class="mr-2" />
+                        {{ event?.name ?? t("MainView.noEvent") }}
+                        <v-chip v-if="event?.archived" class="ml-2" color="grey" size="small">
+                            {{ t("MainView.archived") }}
+                        </v-chip>
+                    </v-card-title>
+                    <v-card-text>
+                        <div>
+                            <span class="text-grey">{{ t("MainView.eventDate") }}:</span>
+                            {{ event ? d(event.date, "short") : "-" }}
+                        </div>
+                        <div v-if="event" class="mt-2">
+                            <span class="text-grey">{{ t("MainView.countdown") }}:</span>
+                            <EventCountdown :date="event.date" class="ml-1" />
+                        </div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
         </v-row>
 
-        <template v-else>
-            <!-- Event Overview -->
-            <v-row class="mb-4">
-                <v-col cols="12">
-                    <v-card>
-                        <v-card-title class="d-flex align-center">
-                            <FontAwesomeIcon :icon="faCalendarDays" class="mr-2" />
-                            {{ event?.name ?? t("MainView.noEvent") }}
-                            <v-chip v-if="event?.archived" class="ml-2" color="grey" size="small">
-                                {{ t("MainView.archived") }}
-                            </v-chip>
-                        </v-card-title>
-                        <v-card-text>
-                            <div>
-                                <span class="text-grey">{{ t("MainView.eventDate") }}:</span>
-                                {{ event ? d(event.date, "short") : "-" }}
-                            </div>
-                            <div v-if="event" class="mt-2">
-                                <span class="text-grey">{{ t("MainView.countdown") }}:</span>
-                                <EventCountdown :date="event.date" class="ml-1" />
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-            </v-row>
+        <!-- Statistics Cards -->
+        <v-row class="mt-2">
+            <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" sm="6" lg>
+                <StatCard
+                    :icon="faNewspaper"
+                    :value="stats.blogPosts.total"
+                    :label="t('MainView.stats.blogPosts')"
+                    :subtitle="`${stats.blogPosts.public} ${t('MainView.stats.public')} / ${stats.blogPosts.draft} ${t('MainView.stats.draft')}`"
+                    color="blue"
+                    clickable
+                    @click="router.push({ name: 'blog', params: { eventId } })"
+                />
+            </v-col>
+            <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" sm="6" lg>
+                <StatCard
+                    :icon="faFilm"
+                    :value="stats.compoEntries"
+                    :label="t('MainView.stats.compoEntries')"
+                    :subtitle="`${stats.compos} ${t('MainView.stats.compos')}`"
+                    color="green"
+                    clickable
+                    @click="router.push({ name: 'entries', params: { eventId } })"
+                />
+            </v-col>
+            <v-col
+                v-if="auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)"
+                cols="12"
+                sm="6"
+                lg
+            >
+                <StatCard
+                    :icon="faMedal"
+                    :value="stats.competitionParticipants"
+                    :label="t('MainView.stats.competitionParticipants')"
+                    :subtitle="`${stats.competitions} ${t('MainView.stats.competitions')}`"
+                    color="orange-darken-3"
+                    clickable
+                    @click="
+                        router.push({ name: 'competition-participations', params: { eventId } })
+                    "
+                />
+            </v-col>
+            <v-col v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)" cols="12" sm="6" lg>
+                <StatCard
+                    :icon="faCreditCard"
+                    :value="stats.transactions.total"
+                    :label="t('MainView.stats.transactions')"
+                    :subtitle="`${stats.transactions.paid} ${t('MainView.stats.paid')}`"
+                    color="teal"
+                    clickable
+                    @click="router.push({ name: 'store-transactions', params: { eventId } })"
+                />
+            </v-col>
+            <v-col v-if="auth.canView(PermissionTarget.VOTE_CODE_REQUEST)" cols="12" sm="6" lg>
+                <StatCard
+                    :icon="faCheckToSlot"
+                    :value="stats.voteCodeRequests.pending"
+                    :label="t('MainView.stats.pendingVoteRequests')"
+                    :subtitle="`${stats.voteCodeRequests.total} ${t('MainView.stats.totalRequests')}`"
+                    color="pink"
+                    clickable
+                    @click="router.push({ name: 'vote-code-requests', params: { eventId } })"
+                />
+            </v-col>
+        </v-row>
 
-            <!-- Statistics Cards -->
-            <v-row class="mb-4">
-                <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" sm="6" lg>
-                    <StatCard
-                        :icon="faNewspaper"
-                        :value="stats.blogPosts.total"
-                        :label="t('MainView.stats.blogPosts')"
-                        :subtitle="`${stats.blogPosts.public} ${t('MainView.stats.public')} / ${stats.blogPosts.draft} ${t('MainView.stats.draft')}`"
-                        color="blue"
-                        clickable
-                        @click="router.push({ name: 'blog', params: { eventId } })"
-                    />
-                </v-col>
-                <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" sm="6" lg>
-                    <StatCard
-                        :icon="faFilm"
-                        :value="stats.compoEntries"
-                        :label="t('MainView.stats.compoEntries')"
-                        :subtitle="`${stats.compos} ${t('MainView.stats.compos')}`"
-                        color="green"
-                        clickable
-                        @click="router.push({ name: 'entries', params: { eventId } })"
-                    />
-                </v-col>
-                <v-col
-                    v-if="auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)"
-                    cols="12"
-                    sm="6"
-                    lg
-                >
-                    <StatCard
-                        :icon="faMedal"
-                        :value="stats.competitionParticipants"
-                        :label="t('MainView.stats.competitionParticipants')"
-                        :subtitle="`${stats.competitions} ${t('MainView.stats.competitions')}`"
-                        color="orange-darken-3"
-                        clickable
-                        @click="
-                            router.push({ name: 'competition-participations', params: { eventId } })
-                        "
-                    />
-                </v-col>
-                <v-col v-if="auth.canView(PermissionTarget.STORE_TRANSACTION)" cols="12" sm="6" lg>
-                    <StatCard
-                        :icon="faCreditCard"
-                        :value="stats.transactions.total"
-                        :label="t('MainView.stats.transactions')"
-                        :subtitle="`${stats.transactions.paid} ${t('MainView.stats.paid')}`"
-                        color="teal"
-                        clickable
-                        @click="router.push({ name: 'store-transactions', params: { eventId } })"
-                    />
-                </v-col>
-                <v-col v-if="auth.canView(PermissionTarget.VOTE_CODE_REQUEST)" cols="12" sm="6" lg>
-                    <StatCard
-                        :icon="faCheckToSlot"
-                        :value="stats.voteCodeRequests.pending"
-                        :label="t('MainView.stats.pendingVoteRequests')"
-                        :subtitle="`${stats.voteCodeRequests.total} ${t('MainView.stats.totalRequests')}`"
-                        color="pink"
-                        clickable
-                        @click="router.push({ name: 'vote-code-requests', params: { eventId } })"
-                    />
-                </v-col>
-            </v-row>
+        <!-- Charts -->
+        <v-row class="mt-2">
+            <v-col v-if="auth.canView(PermissionTarget.COMPO)" cols="12" md="6">
+                <EntriesPerCompoChart :compos="compos" :entry-counts="compoEntryCounts" />
+            </v-col>
+            <v-col v-if="auth.canView(PermissionTarget.COMPETITION)" cols="12" md="6">
+                <CompetitionParticipantsChart
+                    :competitions="competitions"
+                    :participant-counts="competitionParticipantCounts"
+                />
+            </v-col>
+        </v-row>
 
-            <!-- Charts -->
-            <v-row class="mb-4">
-                <v-col v-if="auth.canView(PermissionTarget.COMPO)" cols="12" md="6">
-                    <EntriesPerCompoChart :compos="compos" :entry-counts="compoEntryCounts" />
-                </v-col>
-                <v-col v-if="auth.canView(PermissionTarget.COMPETITION)" cols="12" md="6">
-                    <CompetitionParticipantsChart
-                        :competitions="competitions"
-                        :participant-counts="competitionParticipantCounts"
-                    />
-                </v-col>
-            </v-row>
+        <!-- Recent Activity -->
+        <v-row class="mt-2 mb-1">
+            <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" md="6">
+                <v-card>
+                    <v-card-title>
+                        <FontAwesomeIcon :icon="faClockRotateLeft" class="mr-2" />
+                        {{ t("MainView.recentActivity.blogPosts") }}
+                    </v-card-title>
+                    <v-card-text>
+                        <v-list v-if="recentBlogPosts.length > 0" density="compact">
+                            <v-list-item
+                                v-for="post in recentBlogPosts"
+                                :key="post.id"
+                                :title="post.title"
+                                :subtitle="d(post.date, 'long')"
+                            >
+                                <template #prepend>
+                                    <FontAwesomeIcon
+                                        :icon="post.public ? faEye : faEyeSlash"
+                                        :class="post.public ? 'text-green mr-3' : 'text-grey mr-3'"
+                                        size="sm"
+                                    />
+                                </template>
+                            </v-list-item>
+                        </v-list>
+                        <div v-else class="text-center text-grey py-4">
+                            {{ t("MainView.recentActivity.noRecentPosts") }}
+                        </div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" md="6">
+                <v-card>
+                    <v-card-title>
+                        <FontAwesomeIcon :icon="faFileImport" class="mr-2" />
+                        {{ t("MainView.recentActivity.compoEntries") }}
+                    </v-card-title>
+                    <v-card-text>
+                        <v-list v-if="recentCompoEntries.length > 0" density="compact">
+                            <v-list-item
+                                v-for="entry in recentCompoEntries"
+                                :key="entry.id"
+                                :title="entry.name"
+                                :subtitle="getCompoName(entry.compo)"
+                            >
+                                <template #prepend>
+                                    <FontAwesomeIcon :icon="faFile" size="sm" class="mr-3" />
+                                </template>
+                            </v-list-item>
+                        </v-list>
+                        <div v-else class="text-center text-grey py-4">
+                            {{ t("MainView.recentActivity.noRecentEntries") }}
+                        </div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
 
-            <!-- Recent Activity -->
-            <v-row class="mb-4">
-                <v-col v-if="auth.canView(PermissionTarget.BLOG_ENTRY)" cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            <FontAwesomeIcon :icon="faClockRotateLeft" class="mr-2" />
-                            {{ t("MainView.recentActivity.blogPosts") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-list v-if="recentBlogPosts.length > 0" density="compact">
-                                <v-list-item
-                                    v-for="post in recentBlogPosts"
-                                    :key="post.id"
-                                    :title="post.title"
-                                    :subtitle="d(post.date, 'long')"
-                                >
-                                    <template #prepend>
-                                        <FontAwesomeIcon
-                                            :icon="post.public ? faEye : faEyeSlash"
-                                            :class="
-                                                post.public ? 'text-green mr-3' : 'text-grey mr-3'
-                                            "
-                                            size="sm"
-                                        />
-                                    </template>
-                                </v-list-item>
-                            </v-list>
-                            <div v-else class="text-center text-grey py-4">
-                                {{ t("MainView.recentActivity.noRecentPosts") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col v-if="auth.canView(PermissionTarget.ENTRY)" cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            <FontAwesomeIcon :icon="faFileImport" class="mr-2" />
-                            {{ t("MainView.recentActivity.compoEntries") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-list v-if="recentCompoEntries.length > 0" density="compact">
-                                <v-list-item
-                                    v-for="entry in recentCompoEntries"
-                                    :key="entry.id"
-                                    :title="entry.name"
-                                    :subtitle="getCompoName(entry.compo)"
-                                >
-                                    <template #prepend>
-                                        <FontAwesomeIcon :icon="faFile" size="sm" class="mr-3" />
-                                    </template>
-                                </v-list-item>
-                            </v-list>
-                            <div v-else class="text-center text-grey py-4">
-                                {{ t("MainView.recentActivity.noRecentEntries") }}
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </template>
+        <RefreshControl @refresh="loadDashboardData" />
     </LayoutBase>
 </template>
 
 <script setup lang="ts">
 import { parseInt } from "lodash-es";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import {
     faCalendarDays,
@@ -197,6 +191,7 @@ import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
 import CompetitionParticipantsChart from "@/components/dashboard/charts/CompetitionParticipantsChart.vue";
 import EntriesPerCompoChart from "@/components/dashboard/charts/EntriesPerCompoChart.vue";
 import EventCountdown from "@/components/dashboard/EventCountdown.vue";
+import RefreshControl from "@/components/dashboard/RefreshControl.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import StatCard from "@/components/dashboard/StatCard.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -207,7 +202,6 @@ const props = defineProps<{ eventId: string }>();
 const { t, d } = useI18n();
 const auth = useAuth();
 
-const loading = ref(true);
 const event = ref<Event | null>(null);
 const eventIdNum = computed(() => parseInt(props.eventId, 10));
 
@@ -372,9 +366,7 @@ async function loadVoteCodeRequests(eid: number) {
 }
 
 async function loadDashboardData() {
-    loading.value = true;
     const eid = eventIdNum.value;
-
     await loadEvent(eid);
     await Promise.all([
         loadBlogPosts(eid),
@@ -383,10 +375,7 @@ async function loadDashboardData() {
         loadTransactions(eid),
         loadVoteCodeRequests(eid),
     ]);
-
-    loading.value = false;
 }
 
-onMounted(loadDashboardData);
 watch(() => props.eventId, loadDashboardData);
 </script>

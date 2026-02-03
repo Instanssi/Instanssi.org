@@ -13,5 +13,5 @@ class NestedReceiptSerializer(ModelSerializer[Receipt]):
 
     class Meta:
         model = Receipt
-        fields = ("id", "subject", "mail_to", "mail_from", "sent", "is_sent")
-        read_only_fields = ("id", "subject", "mail_to", "mail_from", "sent", "is_sent")
+        fields = ("id", "subject", "mail_to", "mail_from", "sent", "is_sent", "content")
+        read_only_fields = ("id", "subject", "mail_to", "mail_from", "sent", "is_sent", "content")

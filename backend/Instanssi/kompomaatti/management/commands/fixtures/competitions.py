@@ -7,12 +7,10 @@ competitions = [
     {
         "event_pk": 25,  # Instanssi 2026
         "name": "Speed Coding",
-        "description": """Koodauskilpailu jossa ratkaistaan algoritmisia ongelmia mahdollisimman nopeasti!
-
-Kilpailu kestää 2 tuntia ja sisältää useita tehtäviä.
-Pisteet lasketaan ratkaistujen tehtävien määrän ja käytetyn ajan perusteella.
-
-Kieli vapaa - käytä mitä tahansa ohjelmointikieltä.""",
+        "description": """<p>Koodauskilpailu jossa ratkaistaan algoritmisia ongelmia mahdollisimman nopeasti!</p>
+<p>Kilpailu kestää <strong>2 tuntia</strong> ja sisältää useita tehtäviä.
+Pisteet lasketaan ratkaistujen tehtävien määrän ja käytetyn ajan perusteella.</p>
+<p><em>Kieli vapaa</em> - käytä mitä tahansa ohjelmointikieltä.</p>""",
         "participation_end": datetime(2026, 2, 26, 12, 0, 0, tzinfo=UTC),
         "start": datetime(2026, 2, 27, 14, 0, 0, tzinfo=UTC),
         "end": datetime(2026, 2, 27, 16, 0, 0, tzinfo=UTC),
@@ -25,12 +23,10 @@ Kieli vapaa - käytä mitä tahansa ohjelmointikieltä.""",
     {
         "event_pk": 25,
         "name": "Speedrun Challenge",
-        "description": """Pelaa läpi klassikkopeli mahdollisimman nopeasti!
-
-Peli ilmoitetaan kilpailun alkaessa.
-Kaikki käyttävät samaa platformia ja versiota.
-
-Pisteet = aika sekunteina (pienin voittaa!)""",
+        "description": """<p>Pelaa läpi klassikkopeli mahdollisimman nopeasti!</p>
+<p>Peli ilmoitetaan kilpailun alkaessa.
+Kaikki käyttävät samaa platformia ja versiota.</p>
+<p><strong>Pisteet = aika sekunteina</strong> (pienin voittaa!)</p>""",
         "participation_end": datetime(2026, 2, 26, 18, 0, 0, tzinfo=UTC),
         "start": datetime(2026, 2, 28, 14, 0, 0, tzinfo=UTC),
         "end": datetime(2026, 2, 28, 16, 0, 0, tzinfo=UTC),
@@ -44,7 +40,7 @@ Pisteet = aika sekunteina (pienin voittaa!)""",
     {
         "event_pk": 23,  # Instanssi 2024
         "name": "Retro Gaming",
-        "description": "Retro gaming high score competition",
+        "description": "<p>Retro gaming <strong>high score</strong> competition</p>",
         "participation_end": datetime(2024, 2, 28, 18, 0, 0, tzinfo=UTC),
         "start": datetime(2024, 3, 1, 14, 0, 0, tzinfo=UTC),
         "end": datetime(2024, 3, 1, 18, 0, 0, tzinfo=UTC),

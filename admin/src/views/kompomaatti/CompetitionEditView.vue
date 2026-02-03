@@ -13,13 +13,13 @@
                             variant="outlined"
                             :label="t('CompetitionEditView.labels.name') + ' *'"
                         />
-                        <v-textarea
-                            v-model="description.value.value"
-                            :error-messages="description.errorMessage.value"
-                            variant="outlined"
-                            :label="t('CompetitionEditView.labels.description')"
-                            rows="3"
-                        />
+                        <VuetifyTiptap v-model="description.value.value" />
+                        <div
+                            v-if="description.errorMessage.value"
+                            class="text-error text-caption mb-4"
+                        >
+                            {{ description.errorMessage.value }}
+                        </div>
 
                         <FormSection>
                             {{ t("CompetitionEditView.sections.schedule") }}

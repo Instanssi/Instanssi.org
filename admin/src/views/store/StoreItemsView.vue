@@ -13,7 +13,7 @@
                     {{ t("StoreItemsView.newItem") }}
                 </v-btn>
                 <v-text-field
-                    v-model="search"
+                    v-model="tableState.search.value"
                     variant="outlined"
                     density="compact"
                     :label="t('General.search')"
@@ -21,12 +21,52 @@
                     class="ma-0 pa-0 ml-4"
                     clearable
                 />
+                <v-select
+                    v-model="filterAvailable"
+                    :items="[
+                        { title: t('StoreItemsView.allAvailability'), value: null },
+                        { title: t('StoreItemsView.inStockOnly'), value: true },
+                        { title: t('StoreItemsView.outOfStockOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByAvailability')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsTicket"
+                    :items="[
+                        { title: t('StoreItemsView.allTypes'), value: null },
+                        { title: t('StoreItemsView.ticketsOnly'), value: true },
+                        { title: t('StoreItemsView.nonTicketsOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByType')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
+                <v-select
+                    v-model="filterIsSecret"
+                    :items="[
+                        { title: t('StoreItemsView.allVisibility'), value: null },
+                        { title: t('StoreItemsView.secretOnly'), value: true },
+                        { title: t('StoreItemsView.publicOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('StoreItemsView.filterByVisibility')"
+                    style="max-width: 180px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
             <v-row>
                 <v-data-table-server
-                    v-model:items-per-page="perPage"
+                    v-model:items-per-page="tableState.perPage.value"
+                    :sort-by="tableState.sortByArray.value"
                     class="elevation-1 primary"
                     item-value="id"
                     density="compact"
@@ -34,12 +74,12 @@
                     :items="items"
                     :items-length="totalItems"
                     :loading="loading"
-                    :search="search"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
+                    :search="tableState.search.value"
+                    :page="tableState.page.value"
+                    :items-per-page-options="tableState.pageSizeOptions"
                     :no-data-text="t('StoreItemsView.noItemsFound')"
                     :loading-text="t('StoreItemsView.loadingItems')"
-                    @update:options="debouncedLoad"
+                    @update:options="onTableOptionsUpdate"
                 >
                     <template #item.imagefile_thumbnail_url="{ item }">
                         <ImageCell :url="item.imagefile_thumbnail_url" />
@@ -92,6 +132,7 @@ import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
@@ -118,13 +159,15 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
     { title: t("StoreItemsView.title"), disabled: true },
 ]);
-const pageSizeOptions = [25, 50, 100];
-const perPage = ref(pageSizeOptions[0]);
+
+const tableState = useTableState({ filterKeys: ["available", "is_ticket", "is_secret"] });
 const totalItems = ref(0);
-const currentPage = ref(1);
 const items: Ref<StoreItem[]> = ref([]);
-const search = ref("");
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
+
+const filterAvailable = tableState.useBooleanFilter("available");
+const filterIsTicket = tableState.useBooleanFilter("is_ticket");
+const filterIsSecret = tableState.useBooleanFilter("is_secret");
 
 const headers: ReadonlyHeaders = [
     {
@@ -188,7 +231,12 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminEventStoreItemsList({
             path: { event_pk: eventId.value },
-            query: getLoadArgs(args),
+            query: {
+                ...getLoadArgs(args),
+                ...(filterAvailable.value !== null ? { available: filterAvailable.value } : {}),
+                ...(filterIsTicket.value !== null ? { is_ticket: filterIsTicket.value } : {}),
+                ...(filterIsSecret.value !== null ? { is_secret: filterIsSecret.value } : {}),
+            },
         });
         items.value = response.data!.results;
         totalItems.value = response.data!.count;
@@ -202,11 +250,27 @@ async function load(args: LoadArgs) {
 
 const debouncedLoad = debounce(load, 250);
 
+// Reload when filters change
+watch([filterAvailable, filterIsTicket, filterIsSecret], () => {
+    if (lastLoadArgs.value) {
+        debouncedLoad({ ...lastLoadArgs.value, page: 1 });
+    }
+});
+
+function onTableOptionsUpdate(args: LoadArgs) {
+    tableState.onOptionsUpdate(args);
+    debouncedLoad(args);
+}
+
 function refresh() {
-    search.value = "";
+    tableState.setFilter("available", null);
+    tableState.setFilter("is_ticket", null);
+    tableState.setFilter("is_secret", null);
+    tableState.search.value = "";
+    tableState.page.value = 1;
     debouncedLoad({
         page: 1,
-        itemsPerPage: perPage.value ?? 25,
+        itemsPerPage: tableState.perPage.value ?? 25,
         sortBy: [],
         groupBy: [] as never,
         search: "",

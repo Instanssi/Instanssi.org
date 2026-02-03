@@ -14,7 +14,7 @@ class CompetitionParticipationViewSet(PermissionViewSet):
 
     queryset = CompetitionParticipation.objects.all()
     serializer_class = CompetitionParticipationSerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "competition", "user", "score")
+    ordering_fields = ("id", "competition", "user", "participant_name", "score", "disqualified")
     search_fields = ("participant_name",)
     filterset_fields = ("competition", "user", "disqualified")
 

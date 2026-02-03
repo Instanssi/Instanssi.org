@@ -1,6 +1,19 @@
 <template>
     <span>
         <v-btn
+            v-if="canView"
+            class="ml-1 mr-1"
+            icon
+            density="compact"
+            variant="elevated"
+            size="small"
+            color="blue"
+            :title="t('General.view')"
+            @click="emit('view')"
+        >
+            <FontAwesomeIcon :icon="faEye" />
+        </v-btn>
+        <v-btn
             v-if="canDelete"
             class="ml-1 mr-1"
             icon
@@ -49,7 +62,12 @@
 </template>
 
 <script setup lang="ts">
-import { faClockRotateLeft, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faClockRotateLeft,
+    faEye,
+    faPenToSquare,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -65,11 +83,13 @@ export interface AuditLogConfig {
 
 const props = withDefaults(
     defineProps<{
+        canView?: boolean;
         canEdit?: boolean;
         canDelete?: boolean;
         auditLog?: AuditLogConfig;
     }>(),
     {
+        canView: false,
         canEdit: true,
         canDelete: true,
         auditLog: undefined,
@@ -77,6 +97,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
+    view: [];
     edit: [];
     delete: [];
 }>();

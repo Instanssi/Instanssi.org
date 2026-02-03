@@ -95,7 +95,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, computed, inject, ref, watch } from "vue";
+import { type Ref, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -127,27 +127,8 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: 
 const tableState = useTableState({ filterKeys: ["is_active", "is_staff"] });
 const loading = ref(false);
 
-const filterIsActive = computed({
-    get: () => {
-        const value = tableState.filters.value.is_active;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("is_active", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
-
-const filterIsStaff = computed({
-    get: () => {
-        const value = tableState.filters.value.is_staff;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("is_staff", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterIsActive = tableState.useBooleanFilter("is_active");
+const filterIsStaff = tableState.useBooleanFilter("is_staff");
 const totalItems = ref(0);
 const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

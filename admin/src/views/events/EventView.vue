@@ -153,27 +153,8 @@ const totalItems = ref(0);
 const events: Ref<Event[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const filterArchived = computed({
-    get: () => {
-        const value = tableState.filters.value.archived;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("archived", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
-
-const filterHidden = computed({
-    get: () => {
-        const value = tableState.filters.value.hidden;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("hidden", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterArchived = tableState.useBooleanFilter("archived");
+const filterHidden = tableState.useBooleanFilter("hidden");
 const headers: ReadonlyHeaders = [
     {
         title: t("EventView.headers.id"),

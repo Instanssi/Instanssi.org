@@ -158,16 +158,7 @@ const selectedCompetition = computed({
     },
 });
 
-const filterDisqualified = computed({
-    get: () => {
-        const value = tableState.filters.value.disqualified;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("disqualified", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
 const headers: ReadonlyHeaders = [
     {

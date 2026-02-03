@@ -171,16 +171,7 @@ const filterEventType = computed({
     },
 });
 
-const filterActive = computed({
-    get: () => {
-        const value = tableState.filters.value.active;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("active", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterActive = tableState.useBooleanFilter("active");
 
 const eventTypeFilterOptions = [
     { title: t("ProgramEventsView.eventTypes.0"), value: 0 },

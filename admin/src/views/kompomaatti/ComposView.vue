@@ -135,16 +135,7 @@ const totalItems = ref(0);
 const compos: Ref<Compo[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const filterActive = computed({
-    get: () => {
-        const value = tableState.filters.value.active;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("active", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterActive = tableState.useBooleanFilter("active");
 const headers: ReadonlyHeaders = [
     {
         title: t("ComposView.headers.id"),

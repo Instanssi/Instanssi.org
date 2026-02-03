@@ -165,38 +165,9 @@ const totalItems = ref(0);
 const items: Ref<StoreItem[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const filterAvailable = computed({
-    get: () => {
-        const value = tableState.filters.value.available;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("available", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
-
-const filterIsTicket = computed({
-    get: () => {
-        const value = tableState.filters.value.is_ticket;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("is_ticket", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
-
-const filterIsSecret = computed({
-    get: () => {
-        const value = tableState.filters.value.is_secret;
-        return value === "true" ? true : value === "false" ? false : null;
-    },
-    set: (value: boolean | null) => {
-        tableState.setFilter("is_secret", value === null ? null : String(value));
-        tableState.resetPage();
-    },
-});
+const filterAvailable = tableState.useBooleanFilter("available");
+const filterIsTicket = tableState.useBooleanFilter("is_ticket");
+const filterIsSecret = tableState.useBooleanFilter("is_secret");
 
 const headers: ReadonlyHeaders = [
     {

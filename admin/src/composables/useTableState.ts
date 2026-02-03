@@ -1,10 +1,11 @@
 import { debounce } from "lodash-es";
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { type ComputedRef, type Ref, type WritableComputedRef, computed, ref, watch } from "vue";
 import { type LocationQuery, useRoute, useRouter } from "vue-router";
 
 import type { LoadArgs } from "@/services/utils/query_tools";
 
 type SortItem = { key: string; order: "asc" | "desc" };
+type BooleanFilter = WritableComputedRef<boolean | null>;
 
 export type SortOrder = "asc" | "desc";
 
@@ -37,6 +38,8 @@ export interface TableState {
     setFilter: (key: string, value: string | number | null) => void;
     /** Reset pagination to page 1 (useful when filters change) */
     resetPage: () => void;
+    /** Create a writable computed ref for a boolean filter (true/false/null) */
+    useBooleanFilter: (key: string) => BooleanFilter;
 }
 
 /**
@@ -219,6 +222,23 @@ export function useTableState(options: TableStateOptions = {}): TableState {
     }
 
     /**
+     * Create a writable computed ref for a boolean filter.
+     * Converts between boolean | null in the UI and string | null in the URL.
+     */
+    function useBooleanFilter(key: string): BooleanFilter {
+        return computed({
+            get: () => {
+                const value = filters.value[key];
+                return value === "true" ? true : value === "false" ? false : null;
+            },
+            set: (value: boolean | null) => {
+                setFilter(key, value === null ? null : String(value));
+                resetPage();
+            },
+        });
+    }
+
+    /**
      * Sort state in Vuetify v-data-table format
      */
     const sortByArray = computed<SortItem[]>(() => {
@@ -258,5 +278,6 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         getFilterAsNumber,
         setFilter,
         resetPage,
+        useBooleanFilter,
     };
 }

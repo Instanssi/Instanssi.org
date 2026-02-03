@@ -25,9 +25,7 @@ vi.mock("lodash-es", async () => {
 });
 
 // Helper to create LoadArgs with proper typing
-function createLoadArgs(
-    overrides: Partial<Omit<LoadArgs, "groupBy">> = {}
-): LoadArgs {
+function createLoadArgs(overrides: Partial<Omit<LoadArgs, "groupBy">> = {}): LoadArgs {
     return {
         page: 1,
         itemsPerPage: 25,

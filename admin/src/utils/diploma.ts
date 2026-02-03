@@ -295,45 +295,6 @@ function drawDiplomaContent(page: PDFPage, data: DiplomaData, font: PDFFont): vo
 }
 
 /**
- * Generate a single diploma PDF
- */
-export async function generateDiplomaPdf(
-    data: DiplomaData,
-    options: DiplomaOptions
-): Promise<Uint8Array> {
-    // Create PDF document
-    const pdfDoc = await PDFDocument.create();
-    pdfDoc.registerFontkit(fontkit);
-
-    // Load and embed font
-    const fontBytes = await loadFont();
-    const font = await pdfDoc.embedFont(fontBytes);
-
-    // Load and embed background image
-    const { bytes: imgBytes, type: imgType } = await loadBackgroundImage(
-        options.backgroundImageUrl
-    );
-    const image =
-        imgType === "png" ? await pdfDoc.embedPng(imgBytes) : await pdfDoc.embedJpg(imgBytes);
-
-    // Add A4 page
-    const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
-
-    // Draw background image to fill page
-    page.drawImage(image, {
-        x: 0,
-        y: 0,
-        width: PAGE_WIDTH,
-        height: PAGE_HEIGHT,
-    });
-
-    // Draw diploma content
-    drawDiplomaContent(page, data, font);
-
-    return pdfDoc.save();
-}
-
-/**
  * Progress callback type for diploma generation
  */
 export type DiplomaProgressCallback = (current: number, total: number) => void;
@@ -360,8 +321,9 @@ export async function generateAllDiplomasPdf(
     pdfDoc.registerFontkit(fontkit);
 
     // Load font once
+    // Disable ligatures to prevent "ff", "fi", "fl" etc. from disappearing in PDFs
     const fontBytes = await loadFont();
-    const font = await pdfDoc.embedFont(fontBytes);
+    const font = await pdfDoc.embedFont(fontBytes, { features: { liga: false } });
 
     // Load and embed background image once
     const { bytes: imgBytes, type: imgType } = await loadBackgroundImage(

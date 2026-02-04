@@ -64,7 +64,7 @@ import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
@@ -87,6 +87,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const { getEventById } = useEvents();
@@ -192,7 +193,7 @@ async function editItem(itemId: number, values: GenericObject) {
 }
 
 function goBack() {
-    router.push({ name: "blog", params: { eventId: props.eventId } });
+    router.push({ name: "blog", params: { eventId: props.eventId }, query: route.query });
 }
 
 onMounted(async () => {

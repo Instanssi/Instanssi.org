@@ -82,7 +82,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTableServer, VDataTable } from "vuetify/components";
 
@@ -105,6 +105,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
@@ -231,10 +232,14 @@ async function deleteItem(item: UploadedFile): Promise<void> {
 }
 
 function editItem(id: number): void {
-    router.push({ name: "uploads-edit", params: { eventId: eventId.value, id } });
+    router.push({
+        name: "uploads-edit",
+        params: { eventId: eventId.value, id },
+        query: route.query,
+    });
 }
 
 function createItem(): void {
-    router.push({ name: "uploads-new", params: { eventId: eventId.value } });
+    router.push({ name: "uploads-new", params: { eventId: eventId.value }, query: route.query });
 }
 </script>

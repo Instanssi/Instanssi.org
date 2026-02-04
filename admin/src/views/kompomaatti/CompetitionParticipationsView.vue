@@ -126,7 +126,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -150,6 +150,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
@@ -354,11 +355,16 @@ function editParticipation(id: number): void {
     router.push({
         name: "competition-participations-edit",
         params: { eventId: eventId.value, id },
+        query: route.query,
     });
 }
 
 function createParticipation(): void {
-    router.push({ name: "competition-participations-new", params: { eventId: eventId.value } });
+    router.push({
+        name: "competition-participations-new",
+        params: { eventId: eventId.value },
+        query: route.query,
+    });
 }
 
 function openDiplomaDialog(): void {

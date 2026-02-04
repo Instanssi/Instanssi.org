@@ -67,7 +67,7 @@
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -87,6 +87,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const auth = useAuth();
@@ -206,6 +207,10 @@ function refresh() {
 watch(eventId, refresh);
 
 function viewDetails(id: number): void {
-    router.push({ name: "store-transaction-detail", params: { eventId: eventId.value, id } });
+    router.push({
+        name: "store-transaction-detail",
+        params: { eventId: eventId.value, id },
+        query: route.query,
+    });
 }
 </script>

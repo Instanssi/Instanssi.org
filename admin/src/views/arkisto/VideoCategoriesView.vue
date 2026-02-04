@@ -67,7 +67,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -87,6 +87,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
@@ -190,10 +191,18 @@ async function deleteCategory(item: OtherVideoCategory): Promise<void> {
 }
 
 function editCategory(id: number): void {
-    router.push({ name: "arkisto-categories-edit", params: { eventId: eventId.value, id } });
+    router.push({
+        name: "arkisto-categories-edit",
+        params: { eventId: eventId.value, id },
+        query: route.query,
+    });
 }
 
 function createCategory(): void {
-    router.push({ name: "arkisto-categories-new", params: { eventId: eventId.value } });
+    router.push({
+        name: "arkisto-categories-new",
+        params: { eventId: eventId.value },
+        query: route.query,
+    });
 }
 </script>

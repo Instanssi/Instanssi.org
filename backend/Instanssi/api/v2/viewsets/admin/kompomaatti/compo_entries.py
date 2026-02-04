@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
@@ -38,7 +39,7 @@ class CompoEntryViewSet(PermissionViewSet):
         """Validate that compo belongs to the event in the URL."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
-            raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+            raise serializers.ValidationError({"compo": [_("Compo does not belong to this event")]})
 
     def perform_create(self, serializer: BaseSerializer[Entry]) -> None:  # type: ignore[override]
         if compo := serializer.validated_data.get("compo"):
@@ -51,7 +52,7 @@ class CompoEntryViewSet(PermissionViewSet):
         assert serializer.instance is not None
         if new_compo := serializer.validated_data.get("compo"):
             if new_compo.id != serializer.instance.compo_id:
-                raise serializers.ValidationError({"compo": ["Cannot change compo after creation"]})
+                raise serializers.ValidationError({"compo": [_("Cannot change compo after creation")]})
         validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)

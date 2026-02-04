@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import QuerySet
+from django.utils.text import format_lazy
+from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -58,23 +60,33 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
         """Validate that compo belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
-            raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+            raise serializers.ValidationError({"compo": [_("Compo does not belong to this event")]})
         if compo.event.hidden:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+            raise serializers.ValidationError({"compo": [_("Compo is not active")]})
 
     def validate_entries(self, entries: list[Entry], compo: Compo) -> None:
         """Validate that entries are unique, belong to the compo, and are not disqualified."""
         ids = [entry.id for entry in entries]
         if len(ids) > len(set(ids)):
-            raise serializers.ValidationError({"entries": ["You can only vote for each entry once"]})
+            raise serializers.ValidationError({"entries": [_("You can only vote for each entry once")]})
 
         for entry in entries:
             if entry.compo_id != compo.id:
                 raise serializers.ValidationError(
-                    {"entries": [f"Entry '{entry.name}' does not belong to compo '{compo.name}'"]}
+                    {
+                        "entries": [
+                            format_lazy(
+                                _("Entry '{name}' does not belong to compo '{compo}'"),
+                                name=entry.name,
+                                compo=compo.name,
+                            )
+                        ]
+                    }
                 )
             if entry.disqualified:
-                raise serializers.ValidationError({"entries": [f"Entry '{entry.name}' is disqualified"]})
+                raise serializers.ValidationError(
+                    {"entries": [format_lazy(_("Entry '{name}' is disqualified"), name=entry.name)]}
+                )
 
     def validate_voting_rights(self, user: User, compo: Compo) -> None:
         """Validate that the user has voting rights for the compo's event."""
@@ -84,7 +96,7 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
         ).exists()
         if not has_ticket_code and not has_approved_request:
             raise serializers.ValidationError(
-                {"non_field_errors": ["You do not have voting rights for this event"]}
+                {"non_field_errors": [_("You do not have voting rights for this event")]}
             )
 
     @transaction.atomic
@@ -97,10 +109,10 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
         self.validate_compo_belongs_to_event(compo)
 
         if not compo.active:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+            raise serializers.ValidationError({"compo": [_("Compo is not active")]})
 
         if not compo.is_voting_open():
-            raise serializers.ValidationError({"compo": ["Voting is not open for this compo"]})
+            raise serializers.ValidationError({"compo": [_("Voting is not open for this compo")]})
 
         self.validate_voting_rights(user, compo)
         self.validate_entries(entries, compo)

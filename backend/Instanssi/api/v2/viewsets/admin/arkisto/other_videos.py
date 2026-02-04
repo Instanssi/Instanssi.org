@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
@@ -29,7 +30,7 @@ class OtherVideoViewSet(PermissionViewSet):
         """Validate that the category belongs to the event from the URL."""
         event_id = int(self.kwargs["event_pk"])
         if category.event_id != event_id:
-            raise serializers.ValidationError({"category": ["Category does not belong to this event"]})
+            raise serializers.ValidationError({"category": [_("Category does not belong to this event")]})
 
     def perform_create(self, serializer: BaseSerializer[OtherVideo]) -> None:  # type: ignore[override]
         """Validate category belongs to event before creating."""

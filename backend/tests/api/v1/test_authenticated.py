@@ -51,7 +51,7 @@ def test_auth_competition_participation_fail(auth_client, competition_participat
         },
     )
     assert req.status_code == 400
-    assert req.data == {"non_field_errors": ["Olet jo osallistunut tähän kilpailuun"]}
+    assert req.data == {"non_field_errors": ["You have already participated in this competition"]}
 
 
 @pytest.mark.django_db
@@ -363,7 +363,7 @@ def test_auth_user_vote_code_post_duplicate(auth_client, ticket_vote_code):
         url, data={"event": ticket_vote_code.event.id, "ticket_key": ticket_vote_code.ticket.key}
     )
     assert req.status_code == 400
-    assert req.data == {"non_field_errors": ["Äänestyskoodi on jo hankittu"]}
+    assert req.data == {"non_field_errors": ["Vote code has already been acquired"]}
 
 
 @pytest.mark.django_db
@@ -416,7 +416,7 @@ def test_auth_user_vote_code_request_post_duplicate(auth_client, vote_code_reque
         },
     )
     assert req.status_code == 400
-    assert req.data == {"non_field_errors": ["Äänestyskoodipyyntö on jo olemassa"]}
+    assert req.data == {"non_field_errors": ["Vote code request already exists"]}
 
 
 @pytest.mark.django_db
@@ -491,7 +491,7 @@ def test_auth_user_vote_post_fail_not_started(auth_client, editable_compo_entry)
         url, data={"compo": editable_compo_entry.compo_id, "entries": [editable_compo_entry.id]}
     )
     assert req.status_code == 400
-    assert req.data == {"non_field_errors": ["Kompon äänestysaika ei ole voimassa"]}
+    assert req.data == {"non_field_errors": ["Compo voting time is not valid"]}
 
 
 @pytest.mark.django_db
@@ -502,7 +502,7 @@ def test_auth_user_vote_post_fail_missing_rights(auth_client, votable_compo_entr
         url, data={"compo": votable_compo_entry.compo_id, "entries": [votable_compo_entry.id]}
     )
     assert req.status_code == 400
-    assert req.data == {"non_field_errors": ["Äänestysoikeus puuttuu"]}
+    assert req.data == {"non_field_errors": ["Voting rights are missing"]}
 
 
 @pytest.mark.django_db

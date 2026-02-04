@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
@@ -25,7 +26,7 @@ class TransactionItemViewSet(PermissionViewSet):
         """Validate that the item belongs to the event from the URL."""
         event_id = int(self.kwargs["event_pk"])
         if item.event_id != event_id:
-            raise serializers.ValidationError({"item": ["Item does not belong to this event"]})
+            raise serializers.ValidationError({"item": [_("Item does not belong to this event")]})
 
     def perform_update(self, serializer: BaseSerializer[TransactionItem]) -> None:  # type: ignore[override]
         if item := serializer.validated_data.get("item"):

@@ -2,6 +2,8 @@ import os
 from typing import Any
 
 from django.core.files.uploadedfile import UploadedFile
+from django.utils.text import format_lazy
+from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
 
 from Instanssi.kompomaatti.models import Compo, Entry
@@ -17,11 +19,11 @@ def validate_entry_files(data: dict[str, Any], compo: Compo, instance: Entry | N
     image_file = data.get("imagefile_original")
     if not image_file and not (instance and instance.imagefile_original):
         if compo.is_imagefile_required:
-            raise ValidationError({"imagefile_original": ["Image file is required for this compo"]})
+            raise ValidationError({"imagefile_original": [_("Image file is required for this compo")]})
 
     # Check if image file is provided but not allowed
     if image_file and not compo.is_imagefile_allowed:
-        raise ValidationError({"imagefile_original": ["Image file is not allowed for this compo"]})
+        raise ValidationError({"imagefile_original": [_("Image file is not allowed for this compo")]})
 
     # File validation configuration per field
     check_files_on = {
@@ -70,18 +72,18 @@ def _validate_file(
     accept_formats_readable: str,
     max_size: int,
     max_readable_size: str,
-) -> list[str]:
+) -> list[Any]:
     """Validate file size and format, returning list of error messages."""
-    errors: list[str] = []
+    errors: list[Any] = []
 
     # Check file size
     if file.size is not None and file.size > max_size:
-        errors.append(f"Maximum allowed file size is {max_readable_size}")
+        errors.append(format_lazy(_("Maximum allowed file size is {size}"), size=max_readable_size))
 
     # Check file extension
     if file.name:
         ext = os.path.splitext(file.name)[1][1:]
         if ext.lower() not in accept_formats:
-            errors.append(f"Allowed file types are {accept_formats_readable}")
+            errors.append(format_lazy(_("Allowed file types are {types}"), types=accept_formats_readable))
 
     return errors

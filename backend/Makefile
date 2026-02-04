@@ -39,3 +39,10 @@ django-check:
 format: black isort
 check: black isort mypy pytest-parallel django-check
 checks: check
+
+# i18n targets
+messages:
+	poetry run python manage.py makemessages -l fi --ignore=content --ignore=.venv --no-location --no-obsolete
+
+messages-compile:
+	poetry run python manage.py compilemessages

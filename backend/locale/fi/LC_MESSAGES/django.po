@@ -1,0 +1,616 @@
+# Instanssi.org Finnish translations.
+# Copyright (C) 2026 Instanssi.org
+# This file is distributed under the same license as the Instanssi.org package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Instanssi.org\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-04 17:36+0200\n"
+"PO-Revision-Date: 2026-02-04 17:08+0200\n"
+"Last-Translator: \n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Event"
+msgstr "Tapahtuma"
+
+msgid "User"
+msgstr "Käyttäjä"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "File"
+msgstr "Tiedosto"
+
+msgid "Date"
+msgstr "Päivämäärä"
+
+msgid "Competition is not active"
+msgstr "Kilpailu ei ole aktiivinen"
+
+msgid "Competition participation time has ended"
+msgstr "Kilpailun osallistumisaika on päättynyt"
+
+msgid "You have already participated in this competition"
+msgstr "Olet jo osallistunut tähän kilpailuun"
+
+msgid "Compo does not exist"
+msgstr "Kompoa ei löydy"
+
+#, python-brace-format
+msgid "Maximum allowed file size is {size}"
+msgstr "Suurin sallittu tiedostokoko on {size}"
+
+#, python-brace-format
+msgid "Allowed file types are {formats}"
+msgstr "Sallitut tiedostotyypit ovat {formats}"
+
+msgid "Compo entry adding time has ended"
+msgstr "Kompon entryjen lisäysaika on päättynyt"
+
+msgid "Compo edit time has ended"
+msgstr "Kompon muokkausaika on päättynyt"
+
+msgid "Image file is required for this compo"
+msgstr "Kuvatiedosto vaaditaan tälle kompolle"
+
+msgid "Image file is not allowed for this compo"
+msgstr "Kuvatiedostoa ei sallita tälle kompolle"
+
+msgid "Event does not exist"
+msgstr "Tapahtumaa ei löydy"
+
+msgid "Vote code has already been acquired"
+msgstr "Äänestyskoodi on jo käytetty"
+
+msgid "Ticket key is already in use"
+msgstr "Lippuavain on jo käytössä"
+
+msgid "Requested ticket key does not exist"
+msgstr "Pyydettyä lippuavainta ei löydy"
+
+msgid "Vote code request already exists"
+msgstr "Äänestyskoodipyyntö on jo olemassa"
+
+msgid "You can only vote for each entry once"
+msgstr "Voit äänestää kutakin entryä vain kerran"
+
+msgid "Compo voting time is not valid"
+msgstr "Kompon äänestysaika ei ole voimassa"
+
+msgid "Voting rights are missing"
+msgstr "Äänestysoikeus puuttuu"
+
+#, python-brace-format
+msgid "Entry '{entry}' does not belong to compo '{compo}'"
+msgstr "Entry '{entry}' ei kuulu kompoon '{compo}'"
+
+msgid "Terms and conditions must be accepted before proceeding"
+msgstr "Käyttöehdot tulee hyväksyä ennen jatkamista"
+
+msgid "Shopping cart must contain at least one item"
+msgstr "Ostoskorissa tulee olla vähintään yksi tuote"
+
+msgid "Participation has ended"
+msgstr "Osallistumisaika on päättynyt"
+
+msgid "Expiry must be in the future"
+msgstr "Vanhentumisajan tulee olla tulevaisuudessa"
+
+#, python-brace-format
+msgid "Allowed file types are {types}"
+msgstr "Sallitut tiedostotyypit ovat {types}"
+
+msgid "Invalid YouTube URL"
+msgstr "Virheellinen YouTube-URL"
+
+msgid "Category does not belong to this event"
+msgstr "Kategoria ei kuulu tähän tapahtumaan"
+
+msgid "Competition does not belong to this event"
+msgstr "Kilpailu ei kuulu tähän tapahtumaan"
+
+msgid "Cannot change competition after creation"
+msgstr "Kilpailua ei voi vaihtaa luomisen jälkeen"
+
+msgid "Cannot delete a competition that has participations"
+msgstr "Kilpailua ei voi poistaa jos sillä on osallistumisia"
+
+msgid "Compo does not belong to this event"
+msgstr "Kompo ei kuulu tähän tapahtumaan"
+
+msgid "Cannot change compo after creation"
+msgstr "Kompoa ei voi vaihtaa luomisen jälkeen"
+
+msgid "Automatic thumbnails require image-only entry formats (png, jpg)"
+msgstr "Automaattiset pikkukuvat vaativat vain kuvatiedostomuotoja (png, jpg)"
+
+msgid "Cannot delete a compo that has entries"
+msgstr "Kompoa ei voi poistaa jos sillä on entryjä"
+
+msgid "Cannot delete a store item that has sold units"
+msgstr "Kauppatuotetta ei voi poistaa jos sitä on myyty"
+
+msgid "Item does not belong to this event"
+msgstr "Tuote ei kuulu tähän tapahtumaan"
+
+msgid "Terms and conditions must be accepted before proceeding with the order"
+msgstr "Käyttöehdot tulee hyväksyä ennen tilauksen jatkamista"
+
+msgid "Compo not found or not active"
+msgstr "Kompoa ei löydy tai se ei ole aktiivinen"
+
+msgid "Compo is not active"
+msgstr "Kompo ei ole aktiivinen"
+
+msgid "Event not found"
+msgstr "Tapahtumaa ei löydy"
+
+msgid "You already have a vote code for this event"
+msgstr "Sinulla on jo äänestyskoodi tälle tapahtumalle"
+
+msgid "This ticket key has already been used"
+msgstr "Tämä lippuavain on jo käytetty"
+
+msgid "No valid ticket found with this key"
+msgstr "Tällä avaimella ei löytynyt voimassa olevaa lippua"
+
+msgid "Ticket key is ambiguous, please provide more characters"
+msgstr "Lippuavain on moniselitteinen, anna lisää merkkejä"
+
+msgid "You have already requested a vote code for this event"
+msgstr "Olet jo pyytänyt äänestyskoodia tälle tapahtumalle"
+
+#, python-brace-format
+msgid "Entry '{name}' does not belong to compo '{compo}'"
+msgstr "Entry '{name}' ei kuulu kompoon '{compo}'"
+
+#, python-brace-format
+msgid "Entry '{name}' is disqualified"
+msgstr "Entry '{name}' on diskattu"
+
+msgid "You do not have voting rights for this event"
+msgstr "Sinulla ei ole äänestysoikeutta tälle tapahtumalle"
+
+msgid "Voting is not open for this compo"
+msgstr "Äänestys ei ole avoinna tälle kompolle"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Category"
+msgstr "Kategoria"
+
+msgid "Youtube URL"
+msgstr "Youtube URL"
+
+msgid "Value is not a youtube URL"
+msgstr "Arvo ei ole Youtube-URL"
+
+#, python-format
+msgid "%(value)s is not a youtube URL"
+msgstr "%(value)s ei ole Youtube-URL"
+
+msgid "English"
+msgstr "Englanti"
+
+msgid "Finnish"
+msgstr "Suomi"
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "Text"
+msgstr "Teksti"
+
+msgid "Public"
+msgstr "Julkinen"
+
+msgid "Public entries are shown on the event page and RSS feed."
+msgstr "Julkiset merkinnät näkyvät tapahtuman sivulla ja RSS-syötteessä."
+
+msgid "Simple"
+msgstr "Yksinkertainen"
+
+msgid "Detailed"
+msgstr "Yksityiskohtainen"
+
+msgid "Start"
+msgstr "Alku"
+
+msgid "End"
+msgstr "Loppu"
+
+msgid "Presenters"
+msgstr "Esiintyjät"
+
+msgid "Presenter titles"
+msgstr "Esiintyjien nimikkeet"
+
+msgid "Place"
+msgstr "Paikka"
+
+msgid "Image 1"
+msgstr "Kuva 1"
+
+msgid "Image 2"
+msgstr "Kuva 2"
+
+msgid "Email"
+msgstr "Sähköposti"
+
+msgid "Home URL"
+msgstr "Kotisivu"
+
+msgid "Twitter"
+msgstr "Twitter"
+
+msgid "Github"
+msgstr "Github"
+
+msgid "Facebook"
+msgstr "Facebook"
+
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+msgid "Event type"
+msgstr "Tapahtuman tyyppi"
+
+msgid "Detailed events are shown in the front page event list."
+msgstr "Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa."
+
+msgid "Active"
+msgstr "Aktiivinen"
+
+msgid "Other contact info"
+msgstr "Muut yhteystiedot"
+
+msgid "Short tag"
+msgstr "Lyhyt tunniste"
+
+msgid "Short name, e.g. year"
+msgstr "Lyhyt nimi, esim. vuosi"
+
+msgid "Archived"
+msgstr "Arkistoitu"
+
+msgid "Hidden"
+msgstr "Piilotettu"
+
+msgid "Main URL"
+msgstr "Pääsivu"
+
+msgid "Pending"
+msgstr "Odottaa"
+
+msgid "Approved"
+msgstr "Hyväksytty"
+
+msgid "Rejected"
+msgstr "Hylätty"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "Ticket"
+msgstr "Lippu"
+
+msgid "Timestamp"
+msgstr "Aikaleima"
+
+msgid "Nothing"
+msgstr "Ei mitään"
+
+msgid "Youtube first, then image"
+msgstr "Youtube ensin, sitten kuva"
+
+msgid "Image only"
+msgstr "Vain kuva"
+
+msgid "(deprecated)"
+msgstr "(vanhentunut)"
+
+msgid "Require separate thumbnail"
+msgstr "Vaadi erillinen pikkukuva"
+
+msgid "Use entry file as thumbnail (png/jpg only)"
+msgstr "Käytä entrytiedostoa pikkukuvana (vain png/jpg)"
+
+msgid "Allow thumbnail (not required)"
+msgstr "Salli pikkukuva (ei pakollinen)"
+
+msgid "Do not allow thumbnail"
+msgstr "Älä salli pikkukuvaa"
+
+msgid "Entry adding deadline"
+msgstr "Entryjen lisäyksen deadline"
+
+msgid "Entry editing deadline"
+msgstr "Entryjen muokkauksen deadline"
+
+msgid "Compo start time"
+msgstr "Kompon alkuaika"
+
+msgid "Voting start time"
+msgstr "Äänestyksen alkuaika"
+
+msgid "Voting end time"
+msgstr "Äänestyksen loppuaika"
+
+msgid "Entry size limit"
+msgstr "Entryn kokoraja"
+
+msgid "Source size limit"
+msgstr "Lähdekoodin kokoraja"
+
+msgid "Allowed file extensions"
+msgstr "Sallitut tiedostopäätteet"
+
+msgid "Pipe-separated list, e.g. png|jpg"
+msgstr "Pystyviivalla eroteltu lista, esim. png|jpg"
+
+msgid "Allowed source extensions"
+msgstr "Sallitut lähdekoodipäätteet"
+
+msgid "Pipe-separated list"
+msgstr "Pystyviivalla eroteltu lista"
+
+msgid "Allowed image extensions"
+msgstr "Sallitut kuvapäätteet"
+
+msgid "Show results"
+msgstr "Näytä tulokset"
+
+msgid "Entry view type"
+msgstr "Entryn näkymätyyppi"
+
+msgid "Hide from archive"
+msgstr "Piilota arkistosta"
+
+msgid "Hide from frontpage"
+msgstr "Piilota etusivulta"
+
+msgid "Is votable"
+msgstr "Äänestettävissä"
+
+msgid "Thumbnail settings"
+msgstr "Pikkukuva-asetukset"
+
+msgid "Compo"
+msgstr "Kompo"
+
+msgid "Created"
+msgstr "Luotu"
+
+msgid "Creator"
+msgstr "Tekijä"
+
+msgid "Platform"
+msgstr "Alusta"
+
+msgid "Entry file"
+msgstr "Entrytiedosto"
+
+msgid "Source file"
+msgstr "Lähdekooditiedosto"
+
+msgid "Image"
+msgstr "Kuva"
+
+msgid "Disqualified"
+msgstr "Diskattu"
+
+msgid "Disqualification reason"
+msgstr "Diskauksen syy"
+
+msgid "Score"
+msgstr "Pisteet"
+
+msgid "Rank"
+msgstr "Sijoitus"
+
+msgid "Entry"
+msgstr "Entry"
+
+msgid "Highest score first"
+msgstr "Korkein tulos ensin"
+
+msgid "Lowest score first"
+msgstr "Matalin tulos ensin"
+
+msgid "Participation deadline"
+msgstr "Osallistumisen deadline"
+
+msgid "Score type"
+msgstr "Pistetyyppi"
+
+msgid "e.g. km, m, sec"
+msgstr "esim. km, m, sek"
+
+msgid "Score sorting"
+msgstr "Pisteiden järjestys"
+
+msgid "Competition"
+msgstr "Kilpailu"
+
+msgid "Participant name"
+msgstr "Osallistujan nimi"
+
+msgid "Same product variant can only be in cart once"
+msgstr "Sama tuotevariantti voi olla ostoskorissa vain kerran"
+
+msgid "At least one item must be purchased"
+msgstr "Vähintään yksi tuote tulee ostaa"
+
+msgid "Product is not available"
+msgstr "Tuote ei ole saatavilla"
+
+msgid "Product variant is not available"
+msgstr "Tuotevariantti ei ole saatavilla"
+
+#, python-brace-format
+msgid "Product {name} is not available in sufficient quantity"
+msgstr "Tuotetta {name} ei ole riittävästi saatavilla"
+
+msgid "Selected payment method is not allowed for this order"
+msgstr "Valittu maksutapa ei ole sallittu tälle tilaukselle"
+
+msgid "Price"
+msgstr "Hinta"
+
+msgid "Available quantity"
+msgstr "Saatavilla"
+
+msgid "Available for purchase"
+msgstr "Ostettavissa"
+
+msgid "Product image"
+msgstr "Tuotekuva"
+
+msgid "Max per order"
+msgstr "Maksimi per tilaus"
+
+msgid "Sort index"
+msgstr "Järjestysarvo"
+
+msgid "Discount threshold"
+msgstr "Alennusraja"
+
+msgid "Minimum quantity for discount (-1 = disabled)"
+msgstr "Vähimmäismäärä alennukseen (-1 = ei käytössä)"
+
+msgid "Discount percentage"
+msgstr "Alennusprosentti"
+
+msgid "Is ticket product"
+msgstr "On lipputuote"
+
+msgid "Is secret product"
+msgstr "On salainen tuote"
+
+msgid "Secret key"
+msgstr "Salainen avain"
+
+msgid "Service token"
+msgstr "Palvelutunniste"
+
+msgid "Paid"
+msgstr "Maksettu"
+
+msgid "Cancelled"
+msgstr "Peruutettu"
+
+msgid "Payment method"
+msgstr "Maksutapa"
+
+msgid "Key"
+msgstr "Avain"
+
+msgid "First name"
+msgstr "Etunimi"
+
+msgid "Last name"
+msgstr "Sukunimi"
+
+msgid "Company"
+msgstr "Yritys"
+
+msgid "Telephone"
+msgstr "Puhelin"
+
+msgid "Mobile"
+msgstr "Matkapuhelin"
+
+msgid "Street address"
+msgstr "Katuosoite"
+
+msgid "Postal code"
+msgstr "Postinumero"
+
+msgid "City"
+msgstr "Kaupunki"
+
+msgid "Country"
+msgstr "Maa"
+
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+msgid "Delivered"
+msgstr "Toimitettu"
+
+msgid "Items selected"
+msgstr "Tuotteet valittu"
+
+msgid "Message"
+msgstr "Viesti"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Item"
+msgstr "Tuote"
+
+msgid "Variant"
+msgstr "Variantti"
+
+msgid "Transaction"
+msgstr "Tilaus"
+
+msgid "Purchase price"
+msgstr "Ostohinta"
+
+msgid "Original price"
+msgstr "Alkuperäinen hinta"
+
+msgid "Subject"
+msgstr "Aihe"
+
+msgid "Recipient"
+msgstr "Vastaanottaja"
+
+msgid "Sender"
+msgstr "Lähettäjä"
+
+msgid "Sent"
+msgstr "Lähetetty"
+
+msgid "Parameters"
+msgstr "Parametrit"
+
+msgid "Content"
+msgstr "Sisältö"
+
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+msgid "Password"
+msgstr "Salasana"
+
+msgid "Login with username"
+msgstr "Kirjaudu käyttäjätunnuksella"
+
+msgid "Login"
+msgstr "Kirjaudu"
+
+msgid "Invalid username or password!"
+msgstr "Väärä käyttäjätunnus tai salasana!"
+
+msgid "Other contact information, e.g. IRC nick & network."
+msgstr "Muut yhteystiedot, esim. IRC-nick ja verkko."
+
+msgid "User profile"
+msgstr "Käyttäjäprofiili"
+
+msgid "Save"
+msgstr "Tallenna"

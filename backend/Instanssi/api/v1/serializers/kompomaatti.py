@@ -7,6 +7,8 @@ from django.core.files.uploadedfile import UploadedFile
 from django.db import transaction
 from django.db.models import QuerySet
 from django.utils import timezone
+from django.utils.text import format_lazy
+from django.utils.translation import gettext_lazy as _
 from rest_framework.serializers import (
     CharField,
     ListField,
@@ -250,9 +252,9 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
 
     def validate_competition(self, competition: Competition) -> Competition:
         if not competition.active:
-            raise ValidationError("Kilpailu ei ole aktiivinen")
+            raise ValidationError(_("Competition is not active"))
         if competition.event.hidden:
-            raise ValidationError("Kilpailu ei ole aktiivinen")
+            raise ValidationError(_("Competition is not active"))
         return competition
 
     def validate(self, data: dict) -> dict:
@@ -262,7 +264,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
 
         # Check competition edits and additions
         if not competition.is_participating_open():
-            raise ValidationError("Kilpailun osallistumisaika on päättynyt")
+            raise ValidationError(_("Competition participation time has ended"))
 
         data = super(UserCompetitionParticipationSerializer, self).validate(data)
 
@@ -272,7 +274,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
                 competition=competition, user=self.context["request"].user
             ).first()
             if obj:
-                raise ValidationError("Olet jo osallistunut tähän kilpailuun")
+                raise ValidationError(_("You have already participated in this competition"))
         return data
 
     class Meta:
@@ -318,9 +320,9 @@ class UserCompoEntrySerializer(ModelSerializer):
 
     def validate_compo(self, compo: Compo) -> Compo:
         if not compo.active:
-            raise ValidationError("Kompoa ei ole olemassa")
+            raise ValidationError(_("Compo does not exist"))
         if compo.event.hidden:
-            raise ValidationError("Kompoa ei ole olemassa")
+            raise ValidationError(_("Compo does not exist"))
         return compo
 
     @staticmethod
@@ -335,12 +337,14 @@ class UserCompoEntrySerializer(ModelSerializer):
 
         # Make sure the file size is within limits
         if file.size > max_size:
-            errors.append(f"Maksimi sallittu tiedostokoko on {max_readable_size}")
+            errors.append(format_lazy(_("Maximum allowed file size is {size}"), size=max_readable_size))
 
         # Make sure the file extension seems correct
         ext = os.path.splitext(file.name)[1][1:]
         if ext.lower() not in accept_formats:
-            errors.append(f"Sallitut tiedostotyypit ovat {accept_formats_readable}")
+            errors.append(
+                format_lazy(_("Allowed file types are {formats}"), formats=accept_formats_readable)
+            )
 
         return errors
 
@@ -352,17 +356,17 @@ class UserCompoEntrySerializer(ModelSerializer):
 
         # Check adding & editing time
         if not self.instance and not compo.is_adding_open():
-            raise ValidationError("Kompon lisäysaika on päättynyt")
+            raise ValidationError(_("Compo entry adding time has ended"))
         if self.instance and not compo.is_editing_open():
-            raise ValidationError("Kompon muokkausaika on päättynyt")
+            raise ValidationError(_("Compo edit time has ended"))
 
         # Aggro if image field is missing but required
         if not data.get("imagefile_original") and compo.is_imagefile_required:
-            raise ValidationError({"imagefile_original": ["Kuvatiedosto tarvitaan tälle kompolle"]})
+            raise ValidationError({"imagefile_original": [_("Image file is required for this compo")]})
 
         # Also aggro if image field is supplied but not allowed
         if data.get("imagefile_original") and not compo.is_imagefile_allowed:
-            raise ValidationError({"imagefile_original": ["Kuvatiedostoa ei tarvita tälle kompolle"]})
+            raise ValidationError({"imagefile_original": [_("Image file is not allowed for this compo")]})
 
         # Required validation function arguments for each field
         errors = {}
@@ -461,17 +465,17 @@ class TicketVoteCodeSerializer(ModelSerializer):
 
         event = data["event"]
         if event.hidden:
-            raise ValidationError("Tapahtumaa ei ole olemassa")
+            raise ValidationError(_("Event does not exist"))
 
         obj = TicketVoteCode.objects.filter(event=event, associated_to=self.context["request"].user).first()
         if obj:
-            raise ValidationError("Äänestyskoodi on jo hankittu")
+            raise ValidationError(_("Vote code has already been acquired"))
 
         # Check if key is already used, return error if it is
         key = data["key"]
         try:
             TicketVoteCode.objects.get(event=data["event"], ticket__key__startswith=key)
-            raise ValidationError({"ticket_key": ["Lippuavain on jo käytössä!"]})
+            raise ValidationError({"ticket_key": [_("Ticket key is already in use")]})
         except TicketVoteCode.DoesNotExist:
             pass
 
@@ -484,7 +488,7 @@ class TicketVoteCodeSerializer(ModelSerializer):
                 transaction__time_paid__isnull=False,
             )  # Must be paid
         except TransactionItem.DoesNotExist:
-            raise ValidationError({"ticket_key": ["Pyydettyä lippuavainta ei ole olemassa!"]})
+            raise ValidationError({"ticket_key": [_("Requested ticket key does not exist")]})
 
         return data
 
@@ -512,7 +516,7 @@ class VoteCodeRequestSerializer(ModelSerializer):
             event = self.instance.event
 
         if event.hidden:
-            raise ValidationError("Tapahtumaa ei ole olemassa")
+            raise ValidationError(_("Event does not exist"))
 
         data = super(VoteCodeRequestSerializer, self).validate(data)
 
@@ -521,7 +525,7 @@ class VoteCodeRequestSerializer(ModelSerializer):
         if not self.instance or has_changed:
             obj = VoteCodeRequest.objects.filter(event=event, user=self.context["request"].user).first()
             if obj:
-                raise ValidationError("Äänestyskoodipyyntö on jo olemassa")
+                raise ValidationError(_("Vote code request already exists"))
 
         return data
 
@@ -545,7 +549,7 @@ class VoteGroupSerializer(ModelSerializer):
         # Fail if not unique entries
         ids = [entry.id for entry in entries]
         if len(ids) > len(set(ids)):
-            raise ValidationError("Voit äänestää entryä vain kerran")
+            raise ValidationError(_("You can only vote for each entry once"))
         return entries
 
     def validate(self, data: dict) -> dict:
@@ -556,11 +560,11 @@ class VoteGroupSerializer(ModelSerializer):
 
         # Make sure event is not hidden
         if compo.event.hidden:
-            raise ValidationError("Kompoa ei ole olemassa")
+            raise ValidationError(_("Compo does not exist"))
 
         # Make sure compo voting is open
         if not compo.is_voting_open():
-            raise ValidationError("Kompon äänestysaika ei ole voimassa")
+            raise ValidationError(_("Compo voting time is not valid"))
 
         # Make sure user has rights to vote
         try:
@@ -569,12 +573,22 @@ class VoteGroupSerializer(ModelSerializer):
             try:
                 VoteCodeRequest.objects.get(user=user, event=compo.event, status=1)
             except VoteCodeRequest.DoesNotExist:
-                raise ValidationError("Äänestysoikeus puuttuu")
+                raise ValidationError(_("Voting rights are missing"))
 
         # Make sure entries belong to the requested compo
         for entry in entries:
             if entry.compo.id != compo.id:
-                raise ValidationError({"entries": ["Entry '{}' ei kuulu kompoon '{}'".format(entry, compo)]})
+                raise ValidationError(
+                    {
+                        "entries": [
+                            format_lazy(
+                                _("Entry '{entry}' does not belong to compo '{compo}'"),
+                                entry=entry,
+                                compo=compo,
+                            )
+                        ]
+                    }
+                )
 
         return data
 

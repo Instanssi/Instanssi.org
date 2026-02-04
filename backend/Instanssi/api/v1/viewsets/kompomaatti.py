@@ -2,6 +2,7 @@ import logging
 
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -141,7 +142,7 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         if not instance.competition.is_participating_open():
-            raise serializers.ValidationError("Osallistuminen on päättynyt")
+            raise serializers.ValidationError(_("Participation has ended"))
         return super(UserCompetitionParticipationViewSet, self).perform_destroy(instance)
 
     def perform_create(self, serializer):
@@ -226,7 +227,7 @@ class UserCompoEntryViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         if not instance.compo.is_editing_open():
-            raise serializers.ValidationError("Kompon muokkausaika on päättynyt")
+            raise serializers.ValidationError(_("Compo edit time has ended"))
         return super(UserCompoEntryViewSet, self).perform_destroy(instance)
 
     def partial_update(self, request, *args, **kwargs):

@@ -3,20 +3,21 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.kompomaatti.models import Event
 
 
 class BlogEntry(models.Model):
-    event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
-    title = models.CharField("Otsikko", help_text="Lyhyt otsikko entrylle.", max_length=128)
-    text = SanitizedHtmlField("Teksti")
-    date = models.DateTimeField("Aika", default=timezone.now)
+    event = models.ForeignKey(Event, verbose_name=_("Event"), on_delete=models.PROTECT)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.SET_NULL, null=True)
+    title = models.CharField(_("Title"), max_length=128)
+    text = SanitizedHtmlField(_("Text"))
+    date = models.DateTimeField(_("Date"), default=timezone.now)
     public = models.BooleanField(
-        "Julkinen",
-        help_text="Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.",
+        _("Public"),
+        help_text=_("Public entries are shown on the event page and RSS feed."),
         default=False,
     )
 
@@ -26,10 +27,6 @@ class BlogEntry(models.Model):
 
     def __str__(self) -> str:
         return self.title
-
-    class Meta:
-        verbose_name = "entry"
-        verbose_name_plural = "entryt"
 
 
 auditlog.register(BlogEntry)

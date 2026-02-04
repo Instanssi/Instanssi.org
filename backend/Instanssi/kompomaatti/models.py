@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
@@ -22,101 +23,61 @@ from Instanssi.kompomaatti.misc import entrysort, sizeformat
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.CASCADE)
-    otherinfo = models.TextField(
-        "Muut yhteystiedot", help_text="Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne."
-    )
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    otherinfo = models.TextField(_("Other contact info"))
 
     def __str__(self) -> str:
         return self.user.username
 
-    class Meta:
-        verbose_name = "profiili"
-        verbose_name_plural = "profiilit"
-
 
 class Event(models.Model):
-    name = models.CharField("Nimi", max_length=64, help_text="Tapahtuman nimi", unique=True)
+    name = models.CharField(_("Name"), max_length=64, unique=True)
     tag = models.CharField(
-        "Lyhyt esitys", max_length=8, help_text="Lyhyt nimi, eg. vuosi", null=True, unique=True
+        _("Short tag"), max_length=8, help_text=_("Short name, e.g. year"), null=True, unique=True
     )
-    date = models.DateField("Päivämäärä", help_text="Tapahtuman päivämäärä (alku)")
-    archived = models.BooleanField("Arkistoitu", help_text="Saa näyttää arkistossa", default=False)
-    hidden = models.BooleanField(
-        "Piilotettu",
-        help_text="Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta",
-        default=False,
-    )
-    mainurl = models.URLField("Tapahtuman pääsivu", help_text="URL Tapahtuman pääsivustolle", blank=True)
+    date = models.DateField(_("Date"))
+    archived = models.BooleanField(_("Archived"), default=False)
+    hidden = models.BooleanField(_("Hidden"), default=False)
+    mainurl = models.URLField(_("Main URL"), blank=True)
 
     def __str__(self) -> str:
         return self.name
 
-    class Meta:
-        verbose_name = "tapahtuma"
-        verbose_name_plural = "tapahtumat"
-
 
 class VoteCodeRequest(models.Model):
     STATUS_TYPES = (
-        (0, "Odottaa hyväksyntää"),
-        (1, "Hyväksytty"),
-        (2, "Hylätty"),
+        (0, _("Pending")),
+        (1, _("Approved")),
+        (2, _("Rejected")),
     )
 
-    event = models.ForeignKey(
-        Event,
-        verbose_name="Tapahtuma",
-        help_text="Tapahtuma, johon äänestysoikeutta pyydetään",
-        null=True,
-        on_delete=models.PROTECT,
-    )
-    user = models.ForeignKey(
-        User,
-        verbose_name="Käyttäjä",
-        help_text="Pyynnön esittänyt käyttäjä",
-        on_delete=models.CASCADE,
-    )
-    text = models.TextField("Kuvaus", help_text="Lyhyt aneluteksti admineille :)")
-    status = models.IntegerField("Tila", choices=STATUS_TYPES, default=0)
+    event = models.ForeignKey(Event, verbose_name=_("Event"), null=True, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    text = models.TextField(_("Description"))
+    status = models.IntegerField(_("Status"), choices=STATUS_TYPES, default=0)
 
     def __str__(self) -> str:
         return self.user.username
 
     class Meta:
         unique_together = (("event", "user"),)
-        verbose_name = "äänestyskoodipyyntö"
-        verbose_name_plural = "äänestyskoodipyynnöt"
 
 
 class TicketVoteCode(models.Model):
     event = models.ForeignKey(
-        Event,
-        verbose_name="Tapahtuma",
-        help_text="Tapahtuma, johon äänestysavain on assosioitu",
-        blank=True,
-        null=True,
-        on_delete=models.PROTECT,
+        Event, verbose_name=_("Event"), blank=True, null=True, on_delete=models.PROTECT
     )
     associated_to = models.ForeignKey(
-        User,
-        verbose_name="Käyttäjä",
-        help_text="Käyttäjä jolle avain on assosioitu",
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
+        User, verbose_name=_("User"), on_delete=models.CASCADE, blank=True, null=True
     )
     ticket = models.ForeignKey(
-        "store.TransactionItem",  # String to avoid circular dependency
-        verbose_name="Lipputuote",
-        help_text="Lipputuote jonka avainta käytetään äänestysavaimena",
+        "store.TransactionItem",
+        verbose_name=_("Ticket"),
         on_delete=models.PROTECT,
         blank=True,
         null=True,
     )
-    time = models.DateTimeField(
-        "Aikaleima", help_text="Aika jolloin avain assosioitiin käyttäjälle.", blank=True, null=True
-    )
+    time = models.DateTimeField(_("Timestamp"), blank=True, null=True)
 
     @property
     def key(self) -> Optional[str]:
@@ -134,8 +95,6 @@ class TicketVoteCode(models.Model):
         return "{}: {}".format(self.key, self.associated_username)
 
     class Meta:
-        verbose_name = "lippuäänestusavain"
-        verbose_name_plural = "lippuäänestysavaimet"
         unique_together = (("event", "ticket"), ("event", "associated_to"))
 
 
@@ -143,111 +102,56 @@ class Compo(models.Model):
     MAX_IMAGE_SIZE = 6 * 1024 * 1024
 
     ENTRY_VIEW_TYPES = (
-        (0, "Ei mitään"),
-        (1, "Youtube ensin, sitten kuva"),  # Videoentryille, koodauskompoille
-        (2, "Vain kuva"),  # Grafiikkakompoille
-        (3, "(deprecated)"),
+        (0, _("Nothing")),
+        (1, _("Youtube first, then image")),
+        (2, _("Image only")),
+        (3, _("(deprecated)")),
     )
     THUMBNAIL_REQ = (
-        (0, "Vaadi erillinen pikkukuva."),
-        (1, "Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille)."),
-        (2, "Salli pikkukuva (ei vaadittu)."),
-        (3, "Älä salli pikkukuvaa."),
+        (0, _("Require separate thumbnail")),
+        (1, _("Use entry file as thumbnail (png/jpg only)")),
+        (2, _("Allow thumbnail (not required)")),
+        (3, _("Do not allow thumbnail")),
     )
 
-    event = models.ForeignKey(
-        Event,
-        verbose_name="tapahtuma",
-        help_text="Tapahtuma johon kompo kuuluu",
-        on_delete=models.PROTECT,
-    )
-    name = models.CharField("Nimi", max_length=32, help_text="Kompon nimi (max 32 merkkiä).")
-    description = SanitizedHtmlField("Kuvaus")
-    adding_end = models.DateTimeField(
-        "Deadline entryjen lisäyksille",
-        help_text="Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.",
-    )
-    editing_end = models.DateTimeField(
-        "Deadline entryjen muokkauksille",
-        help_text="Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.",
-    )
-    compo_start = models.DateTimeField(
-        "Kompon aloitusaika",
-        help_text="Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).",
-    )
-    voting_start = models.DateTimeField(
-        "Äänestyksen alkamisaika", help_text="Alkamisaika entryjen äänestykselle."
-    )
-    voting_end = models.DateTimeField(
-        "Äänestyksen päättymisaika", help_text="Päättymisaika entryjen äänestykselle."
-    )
-    entry_sizelimit = models.IntegerField(
-        "Kokoraja entryille", help_text="Kokoraja entrytiedostoille (tavua).", default=134217728
-    )  # Default to 128M
-    source_sizelimit = models.IntegerField(
-        "Kokoraja sorsille", help_text="Kokoraja sorsatiedostoille (tavua).", default=134217728
-    )  # Default to 128M
+    event = models.ForeignKey(Event, verbose_name=_("Event"), on_delete=models.PROTECT)
+    name = models.CharField(_("Name"), max_length=32)
+    description = SanitizedHtmlField(_("Description"))
+    adding_end = models.DateTimeField(_("Entry adding deadline"))
+    editing_end = models.DateTimeField(_("Entry editing deadline"))
+    compo_start = models.DateTimeField(_("Compo start time"))
+    voting_start = models.DateTimeField(_("Voting start time"))
+    voting_end = models.DateTimeField(_("Voting end time"))
+    entry_sizelimit = models.IntegerField(_("Entry size limit"), default=134217728)
+    source_sizelimit = models.IntegerField(_("Source size limit"), default=134217728)
     formats = models.CharField(
-        "Sallitut tiedostopäätteet",
+        _("Allowed file extensions"),
         max_length=128,
-        help_text='Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".',
+        help_text=_("Pipe-separated list, e.g. png|jpg"),
         default="zip|7z|gz|bz2",
     )
     source_formats = models.CharField(
-        "Sallitut lähdekoodipaketin päätteet",
+        _("Allowed source extensions"),
         max_length=128,
-        help_text="Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna",
+        help_text=_("Pipe-separated list"),
         default="zip|7z|gz|bz2",
     )
     image_formats = models.CharField(
-        "Sallitut kuvatiedoston päätteet",
+        _("Allowed image extensions"),
         max_length=128,
-        help_text="Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna",
+        help_text=_("Pipe-separated list"),
         default="png|jpg",
     )
-    active = models.BooleanField(
-        "Aktiivinen",
-        help_text="Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.",
-        default=True,
-    )
-    show_voting_results = models.BooleanField(
-        "Näytä tulokset", help_text="Näytä äänestustulokset.", default=False
-    )
-    entry_view_type = models.IntegerField(
-        "Entryesittely",
-        choices=ENTRY_VIEW_TYPES,
-        default=0,
-        help_text="Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.",
-    )
-    hide_from_archive = models.BooleanField(
-        "Piilotus arkistosta",
-        help_text="Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.",
-        default=False,
-    )
-    hide_from_frontpage = models.BooleanField(
-        "Piilotus etusivulta",
-        help_text="Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. "
-        "Käytä esim. jos kompon kuvaus on vielä suunnitteilla.",
-        default=False,
-    )
-    is_votable = models.BooleanField(
-        "Äänestettävissä",
-        help_text="Teosta voi ylipäätään äänestää (Pois esim. robocodelle).",
-        default=True,
-    )
-    thumbnail_pref = models.IntegerField(
-        "Pikkukuvan asetukset",
-        choices=THUMBNAIL_REQ,
-        default=2,
-        help_text="Pikkukuvan luonti ja asettaminen.",
-    )
+    active = models.BooleanField(_("Active"), default=True)
+    show_voting_results = models.BooleanField(_("Show results"), default=False)
+    entry_view_type = models.IntegerField(_("Entry view type"), choices=ENTRY_VIEW_TYPES, default=0)
+    hide_from_archive = models.BooleanField(_("Hide from archive"), default=False)
+    hide_from_frontpage = models.BooleanField(_("Hide from frontpage"), default=False)
+    is_votable = models.BooleanField(_("Is votable"), default=True)
+    thumbnail_pref = models.IntegerField(_("Thumbnail settings"), choices=THUMBNAIL_REQ, default=2)
 
     def __str__(self) -> str:
         return f"{self.event.name}: {self.name}"
-
-    class Meta:
-        verbose_name = "kompo"
-        verbose_name_plural = "kompot"
 
     def is_voting_open(self) -> bool:
         if not self.is_votable:
@@ -350,44 +254,19 @@ def generate_entry_image_path(entry: "Entry", filename: str) -> str:
 
 
 class Entry(models.Model):
-    user = models.ForeignKey(
-        User,
-        verbose_name="käyttäjä",
-        help_text="Käyttäjä jolle entry kuuluu",
-        on_delete=models.PROTECT,
-    )
-    compo = models.ForeignKey(
-        Compo, verbose_name="kompo", help_text="Kompo johon osallistutaan", on_delete=models.PROTECT
-    )
-    created_at = models.DateTimeField("Luontiaika", default=timezone.now)
-    name = models.CharField("Nimi", max_length=64, help_text="Nimi tuotokselle")
-    description = models.TextField(
-        "Kuvaus", help_text="Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa."
-    )
-    creator = models.CharField("Tekijä", max_length=64, help_text="Tuotoksen tekijän tai tekijäryhmän nimi")
-    platform = models.CharField(
-        "Alusta",
-        max_length=128,
-        help_text="Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.",
-        null=True,
-        blank=True,
-    )
-    entryfile = models.FileField(
-        "Tiedosto", max_length=255, upload_to=generate_entry_file_path, help_text="Tuotospaketti."
-    )
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.PROTECT)
+    compo = models.ForeignKey(Compo, verbose_name=_("Compo"), on_delete=models.PROTECT)
+    created_at = models.DateTimeField(_("Created"), default=timezone.now)
+    name = models.CharField(_("Name"), max_length=64)
+    description = models.TextField(_("Description"))
+    creator = models.CharField(_("Creator"), max_length=64)
+    platform = models.CharField(_("Platform"), max_length=128, null=True, blank=True)
+    entryfile = models.FileField(_("Entry file"), max_length=255, upload_to=generate_entry_file_path)
     sourcefile = models.FileField(
-        "Lähdekoodi",
-        max_length=255,
-        upload_to=generate_entry_source_path,
-        help_text="Lähdekoodipaketti.",
-        blank=True,
+        _("Source file"), max_length=255, upload_to=generate_entry_source_path, blank=True
     )
     imagefile_original = models.ImageField(
-        "Kuva",
-        max_length=255,
-        upload_to=generate_entry_image_path,
-        help_text="Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.",
-        blank=True,
+        _("Image"), max_length=255, upload_to=generate_entry_image_path, blank=True
     )
     imagefile_thumbnail = ImageSpecField(
         [ResizeToFill(160, 100)],
@@ -401,37 +280,14 @@ class Entry(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
-    youtube_url = YoutubeVideoField(
-        "Youtube URL", help_text="Linkki teoksen Youtube-videoon.", null=True, blank=True
-    )
-    disqualified = models.BooleanField(
-        "Diskattu",
-        help_text="Entry on diskattu sääntörikon tai teknisten ongelmien takia. "
-        "DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!",
-        default=False,
-    )
-    disqualified_reason = models.TextField("Syy diskaukseen", help_text="Diskauksen syy.", blank=True)
-    archive_score = models.FloatField(
-        "Pisteet",
-        help_text="Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, "
-        "lasketaan pisteet suoraan äänestystuloksista.",
-        null=True,
-        blank=True,
-    )
-    archive_rank = models.IntegerField(
-        "Sijoitus",
-        help_text="Arkistoidun entryn kompossa saama sijoitus. "
-        "Tämä voidaan laskea myös pistemääristä automaattisesti.",
-        null=True,
-        blank=True,
-    )
+    youtube_url = YoutubeVideoField(_("Youtube URL"), null=True, blank=True)
+    disqualified = models.BooleanField(_("Disqualified"), default=False)
+    disqualified_reason = models.TextField(_("Disqualification reason"), blank=True)
+    archive_score = models.FloatField(_("Score"), null=True, blank=True)
+    archive_rank = models.IntegerField(_("Rank"), null=True, blank=True)
 
     def __str__(self) -> str:
         return "{} by {}".format(self.name, self.creator)
-
-    class Meta:
-        verbose_name = "tuotos"
-        verbose_name_plural = "tuotokset"
 
     @property
     def entry_file_ext(self) -> str:
@@ -546,8 +402,8 @@ class AlternateEntryFile(models.Model):
 
 
 class VoteGroup(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
-    compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    compo = models.ForeignKey(Compo, verbose_name=_("Compo"), on_delete=models.CASCADE)
 
     @property
     def entries(self) -> List[Entry]:
@@ -567,15 +423,13 @@ class VoteGroup(models.Model):
 
     class Meta:
         unique_together = (("user", "compo"),)
-        verbose_name = "ääniryhmä"
-        verbose_name_plural = "ääniryhmät"
 
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
-    compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, verbose_name="tuotos", on_delete=models.CASCADE)
-    rank = models.IntegerField("Sijoitus")
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    compo = models.ForeignKey(Compo, verbose_name=_("Compo"), on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, verbose_name=_("Entry"), on_delete=models.CASCADE)
+    rank = models.IntegerField(_("Rank"))
     group = models.ForeignKey(
         VoteGroup,
         default=None,
@@ -588,56 +442,24 @@ class Vote(models.Model):
     def __str__(self) -> str:
         return "{} by {} as {}".format(self.entry.name, self.user.username, self.rank)
 
-    class Meta:
-        verbose_name = "ääni"
-        verbose_name_plural = "äänet"
-
 
 class Competition(models.Model):
-    ENTRY_VIEW_TYPES = (
-        (0, "Korkein tulos ensin"),
-        (1, "Matalin tulos ensin"),
+    SCORE_SORT_TYPES = (
+        (0, _("Highest score first")),
+        (1, _("Lowest score first")),
     )
 
-    event = models.ForeignKey(
-        Event,
-        verbose_name="Tapahtuma",
-        help_text="Tapahtuma johon kilpailu kuuluu",
-        on_delete=models.PROTECT,
-    )
-    name = models.CharField("Nimi", max_length=32, help_text="Kilpailun nimi (max 32 merkkiä).")
-    description = SanitizedHtmlField("Kuvaus")
-    participation_end = models.DateTimeField(
-        "Deadline osallistumiselle.", help_text="Tämän jälkeen kilpailuun ei voi enää osallistua."
-    )
-    start = models.DateTimeField("Kilpailun alku", help_text="Kilpailun aloitusaika.")
-    end = models.DateTimeField(
-        "Kilpailun loppu", help_text="Kilpailun päättymisaika.", null=True, blank=True
-    )
-    score_type = models.CharField(
-        "Pisteiden tyyppi",
-        max_length=8,
-        help_text="Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.",
-    )
-    score_sort = models.IntegerField(
-        "Pisteiden järjestely",
-        choices=ENTRY_VIEW_TYPES,
-        help_text="Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?",
-        default=0,
-    )
-    show_results = models.BooleanField(
-        "Näytä tulokset", help_text="Näytä kilpailun tulokset.", default=False
-    )
-    active = models.BooleanField(
-        "Aktiivinen",
-        help_text="Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.",
-        default=True,
-    )
-    hide_from_archive = models.BooleanField(
-        "Piilotus arkistosta",
-        help_text="Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.",
-        default=False,
-    )
+    event = models.ForeignKey(Event, verbose_name=_("Event"), on_delete=models.PROTECT)
+    name = models.CharField(_("Name"), max_length=32)
+    description = SanitizedHtmlField(_("Description"))
+    participation_end = models.DateTimeField(_("Participation deadline"))
+    start = models.DateTimeField(_("Start"))
+    end = models.DateTimeField(_("End"), null=True, blank=True)
+    score_type = models.CharField(_("Score type"), max_length=8, help_text=_("e.g. km, m, sec"))
+    score_sort = models.IntegerField(_("Score sorting"), choices=SCORE_SORT_TYPES, default=0)
+    show_results = models.BooleanField(_("Show results"), default=False)
+    active = models.BooleanField(_("Active"), default=True)
+    hide_from_archive = models.BooleanField(_("Hide from archive"), default=False)
 
     def is_participating_open(self) -> bool:
         return timezone.now() < self.participation_end
@@ -645,34 +467,14 @@ class Competition(models.Model):
     def __str__(self) -> str:
         return "{}: {}".format(self.event.name, self.name)
 
-    class Meta:
-        verbose_name = "kilpailu"
-        verbose_name_plural = "kilpailut"
-
 
 class CompetitionParticipation(models.Model):
-    competition = models.ForeignKey(
-        Competition,
-        verbose_name="Kilpailu",
-        help_text="Kilpailu johon osallistuttu",
-        on_delete=models.CASCADE,
-    )
-    user = models.ForeignKey(
-        User, verbose_name="Käyttäjä", help_text="Osallistuja", on_delete=models.CASCADE
-    )
-    participant_name = models.CharField(
-        "Osallistujan nimi",
-        help_text="Nimimerkki jolla haluat osallistua.",
-        max_length=32,
-        default="",
-    )
-    score = models.FloatField("Pisteet", help_text="Kilpailijan saavuttamat pisteet", blank=True, default=0)
-    disqualified = models.BooleanField(
-        "Diskattu",
-        help_text="Suoritus on diskattu sääntörikon tai teknisten virheiden takia.",
-        default=False,
-    )
-    disqualified_reason = models.TextField("Diskauksen syy", blank=True)
+    competition = models.ForeignKey(Competition, verbose_name=_("Competition"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    participant_name = models.CharField(_("Participant name"), max_length=32, default="")
+    score = models.FloatField(_("Score"), blank=True, default=0)
+    disqualified = models.BooleanField(_("Disqualified"), default=False)
+    disqualified_reason = models.TextField(_("Disqualification reason"), blank=True)
 
     def get_formatted_score(self) -> str:
         return "{} {}".format(self.score, self.competition.score_type)
@@ -697,10 +499,6 @@ class CompetitionParticipation(models.Model):
 
     def __str__(self) -> str:
         return "{}, {}: {}".format(self.competition.name, self.participant_name, self.score)
-
-    class Meta:
-        verbose_name = "ilmoittautuminen"
-        verbose_name_plural = "ilmoittautumiset"
 
 
 auditlog.register(Compo)

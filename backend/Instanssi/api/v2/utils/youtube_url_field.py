@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
@@ -30,5 +31,5 @@ class YoutubeUrlField(serializers.Field):  # type: ignore[type-arg]
             return data
         try:
             return YoutubeURL.from_url(str(data))
-        except (InvalidYoutubeUrlError, InvalidVideoIdError) as e:
-            raise serializers.ValidationError(str(e))
+        except (InvalidYoutubeUrlError, InvalidVideoIdError):
+            raise serializers.ValidationError(_("Invalid YouTube URL"))

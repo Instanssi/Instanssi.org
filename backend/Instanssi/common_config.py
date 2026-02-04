@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Tuple
 
 import sentry_sdk
+from django.utils.translation import gettext_lazy as _
 
 PROJECT_DIR = Path(__file__).resolve(strict=True).parent
 BASE_DIR = PROJECT_DIR.parent
@@ -14,6 +15,13 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = False  # Disable to keep default timestamps
 USE_TZ = True
+
+# Internationalization
+LANGUAGES = [
+    ("en", _("English")),
+    ("fi", _("Finnish")),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 # Files
 MEDIA_ROOT = BASE_DIR / "content" / "uploads"
@@ -136,6 +144,7 @@ STATICFILES_FINDERS = (
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

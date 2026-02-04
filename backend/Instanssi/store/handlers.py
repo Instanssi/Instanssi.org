@@ -5,6 +5,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from django.db import transaction
 from django.http import HttpRequest
 from django.utils import timezone
+from django.utils.text import format_lazy
+from django.utils.translation import gettext_lazy as _
 
 from Instanssi.store.methods import PaymentMethod, no_method, paytrail
 from Instanssi.store.models import (
@@ -24,29 +26,31 @@ class TransactionException(Exception):
 def validate_items(items: List[Dict[str, Any]]) -> None:
     item_ids = {(item["item_id"], item["variant_id"]) for item in items}
     if len(item_ids) < len(items):
-        raise TransactionException("Samaa tuotevarianttia saa olla korissa vain kerran")
+        raise TransactionException(_("Same product variant can only be in cart once"))
 
 
 def validate_item(item: Dict[str, Any]) -> None:
     if item["amount"] < 1:
-        raise TransactionException("Tuotetta on ostettava vähintään yksi kappale")
+        raise TransactionException(_("At least one item must be purchased"))
 
     # First, make sure the item exists at all
     try:
         store_item = StoreItem.items_available().get(id=item["item_id"])
     except StoreItem.DoesNotExist:
-        raise TransactionException("Tuotetta ei ole saatavilla")
+        raise TransactionException(_("Product is not available"))
 
     # Make sure the variant exists and belongs to the requested item
     if item["variant_id"]:
         try:
             store_item.variants.get(id=item["variant_id"])
         except StoreItemVariant.DoesNotExist:
-            raise TransactionException("Tuotetyyppiä ei ole saatavilla")
+            raise TransactionException(_("Product variant is not available"))
 
     # Make sure there are enough items in the stock to satisfy this request
     if store_item.num_available() < item["amount"]:
-        raise TransactionException("Tuotetta {} ei ole saatavilla riittävästi!".format(store_item.name))
+        raise TransactionException(
+            format_lazy(_("Product {name} is not available in sufficient quantity"), name=store_item.name)
+        )
 
 
 def get_item_and_variant(item: Dict[str, Any]) -> Tuple[StoreItem, Optional[StoreItemVariant]]:
@@ -65,10 +69,10 @@ def validate_payment_method(items: List[Dict[str, Any]], method: PaymentMethod) 
     """
     if method == PaymentMethod.NO_METHOD:
         for item in items:
-            store_item, _ = get_item_and_variant(item)
+            store_item, _unused = get_item_and_variant(item)
             purchase_price = store_item.get_discounted_unit_price(item["amount"])
             if purchase_price > 0:
-                raise TransactionException("Valittu maksutapa ei ole sallittu tälle tilaukselle!")
+                raise TransactionException(_("Selected payment method is not allowed for this order"))
 
 
 def create_store_transaction(data: Dict[str, Any]) -> StoreTransaction:

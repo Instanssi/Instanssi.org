@@ -1,6 +1,7 @@
 import logging
 from typing import List, Optional
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework.serializers import (
     BooleanField,
     CharField,
@@ -109,12 +110,12 @@ class StoreTransactionSerializer(Serializer):
 
     def validate_read_terms(self, value: Optional[bool]) -> Optional[bool]:
         if not value:
-            raise ValidationError("Käyttöehdot tulee hyväksyä ennen kuin tilausta voidaan jatkaa")
+            raise ValidationError(_("Terms and conditions must be accepted before proceeding"))
         return value
 
     def validate_items(self, value: Optional[List[dict]]) -> List[dict]:
         if not value:
-            raise ValidationError("Ostoskorissa on oltava vähintään yksi tuote")
+            raise ValidationError(_("Shopping cart must contain at least one item"))
         serializer = StoreTransactionItemSerializer(data=value, many=True)
         serializer.is_valid(raise_exception=True)
         try:

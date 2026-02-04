@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --emptyOutDir",
+    "build:production": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint src/ --fix",

@@ -6,8 +6,8 @@ This is the administration frontend for the Instanssi event website.
 
 1. Install Node 24.x LTS
 2. Install pnpm: `npm install -g pnpm@10`
-3. Install packages: `pnpm install`
-4. Start up in dev mode, run: `pnpm run dev`
+3. Install packages: `pnpm install --frozen-lockfile`
+4. Start up in dev mode: `pnpm run dev`
 
 For development, VSCode with Volar + eslint + prettier plugins will do fine.
 

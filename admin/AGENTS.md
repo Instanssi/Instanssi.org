@@ -129,8 +129,8 @@ Forms are implemented as dialog components for create/edit operations:
 ### Starting Development
 
 ```bash
-pnpm install              # Install dependencies
-pnpm run dev              # Start dev server (http://localhost:5173)
+pnpm install --frozen-lockfile   # Install dependencies (use exact versions from lockfile)
+pnpm run dev                     # Start dev server (http://localhost:5173)
 ```
 
 Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.

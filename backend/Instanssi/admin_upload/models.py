@@ -29,7 +29,7 @@ class UploadedFile(models.Model):
         "Kuvaus", help_text="Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.", blank=True
     )
     file = models.FileField("Tiedosto", max_length=255, upload_to=generate_file_path)
-    date = models.DateTimeField("Aika", default=timezone.now)
+    date = models.DateTimeField("Aika", default=timezone.now, db_index=True)
 
     def __str__(self) -> str:
         return str(self.file.name)

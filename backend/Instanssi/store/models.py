@@ -190,7 +190,7 @@ class StoreTransaction(models.Model):
     token = models.CharField(
         "Palvelutunniste", help_text="Maksupalvelun maksukohtainen tunniste", max_length=255
     )
-    time_created = models.DateTimeField("Luontiaika", null=True, blank=True)
+    time_created = models.DateTimeField("Luontiaika", null=True, blank=True, db_index=True)
     time_paid = models.DateTimeField("Maksun varmistumisaika", null=True, blank=True)
     time_pending = models.DateTimeField("Maksun maksuaika", null=True, blank=True)
     time_cancelled = models.DateTimeField("Peruutusaika", null=True, blank=True)

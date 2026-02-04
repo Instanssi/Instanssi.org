@@ -41,7 +41,7 @@ class ProgrammeEvent(models.Model):
     )
 
     event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
-    start = models.DateTimeField("Alku", help_text="Tapahtuman alkamisaika.")
+    start = models.DateTimeField("Alku", help_text="Tapahtuman alkamisaika.", db_index=True)
     end = models.DateTimeField("Loppu", help_text="Tapahtuman loppumisaika.", null=True, blank=True)
     description = SanitizedHtmlField("Kuvaus", blank=True)
     title = models.CharField("Otsikko", help_text="Lyhyt otsikko.", max_length=128)

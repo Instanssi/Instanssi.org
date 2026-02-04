@@ -13,7 +13,7 @@ class BlogEntry(models.Model):
     user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
     title = models.CharField("Otsikko", help_text="Lyhyt otsikko entrylle.", max_length=128)
     text = SanitizedHtmlField("Teksti")
-    date = models.DateTimeField("Aika", default=timezone.now)
+    date = models.DateTimeField("Aika", default=timezone.now, db_index=True)
     public = models.BooleanField(
         "Julkinen",
         help_text="Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.",

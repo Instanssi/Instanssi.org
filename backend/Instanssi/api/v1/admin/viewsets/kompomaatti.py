@@ -10,7 +10,7 @@ from Instanssi.api.v1.admin.viewsets.base import AdminReadOnlyViewSet
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
-class AdminCompoViewSet(AdminReadOnlyViewSet):
+class AdminCompoViewSet(AdminReadOnlyViewSet[Compo]):
     queryset = Compo.objects.all()
     serializer_class = AdminCompoSerializer
     pagination_class = LimitOffsetPagination
@@ -29,7 +29,7 @@ class AdminCompoViewSet(AdminReadOnlyViewSet):
     )
 
 
-class AdminCompoEntryViewSet(AdminReadOnlyViewSet):
+class AdminCompoEntryViewSet(AdminReadOnlyViewSet[Entry]):
     queryset = Entry.objects.all()
     serializer_class = AdminCompoEntrySerializer
     pagination_class = LimitOffsetPagination

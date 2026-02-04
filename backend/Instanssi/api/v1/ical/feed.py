@@ -18,14 +18,14 @@ class Event:
     end_time: datetime | None = None
 
 
-class EventFeed(ICalFeed):
+class EventFeed(ICalFeed):  # type: ignore[misc]
     title = "Instanssi"
     description = "Instanssi event calendar"
     product_id = "-//instanssi.org//Events//EN"
     timezone = "UTC"
     file_name = "instanssi.ics"
 
-    def items(self):
+    def items(self) -> list[Event]:
         events: list[Event] = []
         start = datetime.now(timezone.utc) - timedelta(days=365)
         for compo in Compo.objects.filter(compo_start__gt=start, active=True):
@@ -103,7 +103,7 @@ class EventFeed(ICalFeed):
     def item_start_datetime(self, item: Event) -> datetime:
         return item.start_time
 
-    def item_end_datetime(self, item: Event) -> datetime:
+    def item_end_datetime(self, item: Event) -> datetime | None:
         return item.end_time
 
     def item_link(self, item: Event) -> str:

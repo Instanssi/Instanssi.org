@@ -1,8 +1,9 @@
 from datetime import timedelta
 from pathlib import Path
-from typing import Tuple
+from typing import Any
 
 import sentry_sdk
+from django.utils.translation import gettext_lazy as _
 
 PROJECT_DIR = Path(__file__).resolve(strict=True).parent
 BASE_DIR = PROJECT_DIR.parent
@@ -14,6 +15,13 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = False  # Disable to keep default timestamps
 USE_TZ = True
+
+# Internationalization
+LANGUAGES = [
+    ("en", _("English")),
+    ("fi", _("Finnish")),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 # Files
 MEDIA_ROOT = BASE_DIR / "content" / "uploads"
@@ -136,6 +144,7 @@ STATICFILES_FINDERS = (
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -214,11 +223,11 @@ LOGGING = {
 }
 
 
-def make_celery_conf(debug_mode: bool) -> Tuple[str, dict]:
+def make_celery_conf(debug_mode: bool) -> tuple[str, dict[str, Any]]:
     return "redis://127.0.0.1:6379/3", {}
 
 
-def make_cache_conf(debug_mode: bool) -> dict:
+def make_cache_conf(debug_mode: bool) -> dict[str, Any]:
     if debug_mode:
         return {
             "default": {
@@ -242,7 +251,7 @@ def make_email_conf(debug_mode: bool) -> str:
         return "django.core.mail.backends.smtp.EmailBackend"
 
 
-def setup_sentry(conf: dict) -> None:
+def setup_sentry(conf: dict[str, Any]) -> None:
     from sentry_sdk.integrations.celery import CeleryIntegration
     from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.redis import RedisIntegration

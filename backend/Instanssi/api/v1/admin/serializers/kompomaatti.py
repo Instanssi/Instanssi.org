@@ -1,5 +1,3 @@
-from typing import Optional
-
 from rest_framework.fields import (
     CharField,
     IntegerField,
@@ -11,7 +9,7 @@ from rest_framework.serializers import ModelSerializer
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
-class AdminCompoSerializer(ModelSerializer):
+class AdminCompoSerializer(ModelSerializer[Compo]):
     max_entry_size = IntegerField()
     max_source_size = IntegerField()
     source_format_list = ListField(child=CharField())
@@ -45,7 +43,7 @@ class AdminCompoSerializer(ModelSerializer):
         )
 
 
-class AdminCompoEntrySerializer(ModelSerializer):
+class AdminCompoEntrySerializer(ModelSerializer[Entry]):
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -54,29 +52,29 @@ class AdminCompoEntrySerializer(ModelSerializer):
     rank = SerializerMethodField()
     score = SerializerMethodField()
 
-    def get_entryfile_url(self, obj: Entry) -> Optional[str]:
+    def get_entryfile_url(self, obj: Entry) -> str | None:
         if obj.entryfile:
-            return self.context["request"].build_absolute_uri(obj.entryfile.url)
+            return str(self.context["request"].build_absolute_uri(obj.entryfile.url))
         return None
 
-    def get_sourcefile_url(self, obj: Entry) -> Optional[str]:
+    def get_sourcefile_url(self, obj: Entry) -> str | None:
         if obj.sourcefile:
-            return self.context["request"].build_absolute_uri(obj.sourcefile.url)
+            return str(self.context["request"].build_absolute_uri(obj.sourcefile.url))
         return None
 
-    def get_imagefile_original_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_original_url(self, obj: Entry) -> str | None:
         if obj.imagefile_original:
-            return self.context["request"].build_absolute_uri(obj.imagefile_original.url)
+            return str(self.context["request"].build_absolute_uri(obj.imagefile_original.url))
         return None
 
-    def get_imagefile_medium_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_medium_url(self, obj: Entry) -> str | None:
         if obj.imagefile_medium:
-            return self.context["request"].build_absolute_uri(obj.imagefile_medium.url)
+            return str(self.context["request"].build_absolute_uri(obj.imagefile_medium.url))
         return None
 
-    def get_imagefile_thumbnail_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_thumbnail_url(self, obj: Entry) -> str | None:
         if obj.imagefile_thumbnail:
-            return self.context["request"].build_absolute_uri(obj.imagefile_thumbnail.url)
+            return str(self.context["request"].build_absolute_uri(obj.imagefile_thumbnail.url))
         return None
 
     def get_rank(self, obj: Entry) -> int:
@@ -106,7 +104,7 @@ class AdminCompoEntrySerializer(ModelSerializer):
             "score",
             "rank",
         )
-        extra_kwargs = {
+        extra_kwargs: dict[str, dict[str, bool]] = {
             "entryfile_url": {"read_only": True},
             "sourcefile_url": {"read_only": True},
             "imagefile_original_url": {"read_only": True},

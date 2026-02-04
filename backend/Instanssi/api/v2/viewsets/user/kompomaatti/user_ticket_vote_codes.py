@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import QuerySet
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -55,19 +56,19 @@ class UserTicketVoteCodeViewSet(
         event_id = int(self.kwargs["event_pk"])
         event = Event.objects.filter(id=event_id, hidden=False).first()
         if not event:
-            raise serializers.ValidationError({"event": ["Event not found."]})
+            raise serializers.ValidationError({"event": [_("Event not found")]})
 
         user: User = self.request.user  # type: ignore[assignment]
 
         if TicketVoteCode.objects.filter(event=event, associated_to=user).exists():
             raise serializers.ValidationError(
-                {"non_field_errors": ["You already have a vote code for this event"]}
+                {"non_field_errors": [_("You already have a vote code for this event")]}
             )
 
         ticket_key: str = serializer.validated_data.pop("ticket_key")
 
         if TicketVoteCode.objects.filter(event=event, ticket__key__startswith=ticket_key).exists():
-            raise serializers.ValidationError({"ticket_key": ["This ticket key has already been used."]})
+            raise serializers.ValidationError({"ticket_key": [_("This ticket key has already been used")]})
 
         try:
             ticket = TransactionItem.objects.get(
@@ -77,10 +78,10 @@ class UserTicketVoteCodeViewSet(
                 transaction__time_paid__isnull=False,
             )
         except TransactionItem.DoesNotExist:
-            raise serializers.ValidationError({"ticket_key": ["No valid ticket found with this key."]})
+            raise serializers.ValidationError({"ticket_key": [_("No valid ticket found with this key")]})
         except TransactionItem.MultipleObjectsReturned:
             raise serializers.ValidationError(
-                {"ticket_key": ["Ticket key is ambiguous. Please provide more characters."]}
+                {"ticket_key": [_("Ticket key is ambiguous, please provide more characters")]}
             )
 
         serializer.save(event=event, ticket=ticket, associated_to=user, time=timezone.now())

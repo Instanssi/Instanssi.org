@@ -8,7 +8,7 @@ from Instanssi.api.v2.serializers.admin.auditlog_serializer import LogEntrySeria
 from Instanssi.api.v2.utils.base import PermissionReadOnlyViewSet
 
 
-class LogEntryFilter(filters.FilterSet):  # type: ignore[misc]
+class LogEntryFilter(filters.FilterSet):
     """Filter for audit log entries."""
 
     app_label = filters.CharFilter(method="filter_by_content_type")

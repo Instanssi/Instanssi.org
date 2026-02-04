@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Dict, Final
+from typing import Final
 
 import ffmpeg
 from celery import shared_task
@@ -15,19 +15,19 @@ log = logging.getLogger(__name__)
 
 
 # Predefined bit-rates for known formats. Otherwise, use a guess.
-FFMPEG_BITRATE: Final[Dict[MediaCodec, str]] = {
+FFMPEG_BITRATE: Final[dict[MediaCodec, str]] = {
     MediaCodec.OPUS: "64k",
     MediaCodec.AAC: "128k",
 }
 
 # Map codec to ffmpeg encoder name
-FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
+FFMPEG_ENCODERS: Final[dict[MediaCodec, str]] = {
     MediaCodec.AAC: "aac",
     MediaCodec.OPUS: "libopus",
 }
 
 
-@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})
+@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})  # type: ignore[untyped-decorator]
 def generate_alternate_audio_files(entry_id: int, codec_index: int, container_index: int) -> None:
     output_codec = MediaCodec(codec_index)
     output_codec_name = output_codec.name.lower()

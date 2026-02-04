@@ -11,7 +11,7 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 logger = logging.getLogger(__name__)
 
 
-class ProgrammeEventViewSet(ReadOnlyModelViewSet):
+class ProgrammeEventViewSet(ReadOnlyModelViewSet[ProgrammeEvent]):
     """
     Exposes all programme events.
 

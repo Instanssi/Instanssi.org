@@ -70,7 +70,7 @@ def test_store_api_transaction_post_no_items_error(transaction_base, api_client)
     )
     assert req.status_code == 400
     assert req.data == {
-        "items": [ErrorDetail(string="Ostoskorissa on oltava vähintään yksi tuote", code="invalid")]
+        "items": [ErrorDetail(string="Shopping cart must contain at least one item", code="invalid")]
     }
 
 
@@ -91,7 +91,7 @@ def test_store_api_transaction_post_dup_item(transaction_base, api_client, varia
     )
     assert req.status_code == 400
     assert req.data == {
-        "items": [ErrorDetail(string="Samaa tuotevarianttia saa olla korissa vain kerran", code="invalid")]
+        "items": [ErrorDetail(string="Same product variant can only be in cart once", code="invalid")]
     }
 
 
@@ -112,7 +112,7 @@ def test_store_api_transaction_post_dup_variant(transaction_base, api_client, st
     )
     assert req.status_code == 400
     assert req.data == {
-        "items": [ErrorDetail(string="Samaa tuotevarianttia saa olla korissa vain kerran", code="invalid")]
+        "items": [ErrorDetail(string="Same product variant can only be in cart once", code="invalid")]
     }
 
 
@@ -137,9 +137,7 @@ def test_store_api_transaction_post_zero_item_count(
         "items": [
             {
                 "amount": [
-                    ErrorDetail(
-                        string="Tämän luvun on oltava suurempi tai yhtä suuri kuin 1.", code="min_value"
-                    )
+                    ErrorDetail(string="Ensure this value is greater than or equal to 1.", code="min_value")
                 ]
             }
         ]
@@ -165,7 +163,9 @@ def test_store_api_transaction_post_hit_max_item_count(transaction_base, api_cli
         "items": [
             {
                 "non_field_errors": [
-                    ErrorDetail(string="Tuotetta Test item 1 ei ole saatavilla riittävästi!", code="invalid")
+                    ErrorDetail(
+                        string="Product Test item 1 is not available in sufficient quantity", code="invalid"
+                    )
                 ]
             }
         ]
@@ -194,7 +194,9 @@ def test_store_api_transaction_post_out_of_stock(transaction_base, api_client, s
         "items": [
             {
                 "non_field_errors": [
-                    ErrorDetail(string="Tuotetta Test item 1 ei ole saatavilla riittävästi!", code="invalid")
+                    ErrorDetail(
+                        string="Product Test item 1 is not available in sufficient quantity", code="invalid"
+                    )
                 ]
             }
         ]

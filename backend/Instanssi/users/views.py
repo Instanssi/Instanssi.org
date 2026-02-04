@@ -1,5 +1,7 @@
+from typing import Any, Final
+
 from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -7,7 +9,7 @@ from Instanssi.common.auth import user_access_required
 from Instanssi.common.misc import get_url_local_path
 from Instanssi.users.forms import DjangoLoginForm, ProfileForm
 
-AUTH_METHODS = [
+AUTH_METHODS: Final[list[tuple[str, str, str]]] = [
     # Short name, social-auth, friendly name
     ("google", "google-oauth2", "Google"),
     ("github", "github", "Github"),
@@ -15,7 +17,7 @@ AUTH_METHODS = [
 ]
 
 
-def login(request):
+def login(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:profile"))
 
@@ -47,12 +49,12 @@ def login(request):
     )
 
 
-def loggedout(request):
+def loggedout(request: HttpRequest) -> HttpResponse:
     return render(request, "users/loggedout.html")
 
 
 @user_access_required
-def profile(request):
+def profile(request: HttpRequest) -> HttpResponse:
     from social_django.models import DjangoStorage
 
     if request.method == "POST":
@@ -64,12 +66,12 @@ def profile(request):
         profileform = ProfileForm(instance=request.user, user=request.user)
 
     # Get all active providers for this user
-    active_providers = []
-    for social_auth in DjangoStorage.user.get_social_auth_for_user(request.user):
+    active_providers: list[Any] = []
+    for social_auth in DjangoStorage.user.get_social_auth_for_user(request.user):  # type: ignore[no-untyped-call]
         active_providers.append(social_auth.provider)
 
     # Providers list
-    methods = []
+    methods: list[tuple[str, str, str, bool]] = []
     for method in AUTH_METHODS:
         methods.append(method + (method[1] in active_providers,))
 
@@ -80,6 +82,6 @@ def profile(request):
     )
 
 
-def logout(request):
+def logout(request: HttpRequest) -> HttpResponse:
     auth.logout(request)
     return HttpResponseRedirect(reverse("users:loggedout"))

@@ -1,4 +1,5 @@
 from copy import copy
+from typing import Any
 
 from django.http import Http404, HttpRequest, HttpResponse
 from django.http.response import JsonResponse
@@ -21,12 +22,12 @@ def text_event(request: HttpRequest, event_id: int) -> HttpResponse:
     event = get_object_or_404(Event, pk=event_id, archived=True)
 
     # Get all compos that are active but not hidden from archive
-    compos = []
+    compos: list[Any] = []
     for compo in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if compo.show_voting_results:
-            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))  # type: ignore[attr-defined]
         else:
-            compo.entries = Entry.objects.filter(compo=compo).order_by("name")
+            compo.entries = list(Entry.objects.filter(compo=compo).order_by("name"))  # type: ignore[attr-defined]
         compos.append(compo)
 
     return render(
@@ -41,13 +42,13 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
     event = get_object_or_404(Event, pk=event_id, archived=True)
 
     # Get all compos that are active but not hidden from archive
-    entries_out = []
-    compos_out = []
+    entries_out: list[dict[str, Any]] = []
+    compos_out: list[dict[str, Any]] = []
     for c in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if c.show_voting_results:
             entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
         else:
-            entries = Entry.objects.filter(compo=c).order_by("name")
+            entries = list(Entry.objects.filter(compo=c).order_by("name"))
 
         compos_out.append({"id": c.pk, "name": c.name, "entry_count": len(entries)})
 
@@ -85,7 +86,7 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
     return JsonResponse({"entries": entries_out, "compos": compos_out})
 
 
-def entries_m3u8(request, event_id):
+def entries_m3u8(request: HttpRequest, event_id: int) -> HttpResponse:
     event = get_object_or_404(Event, pk=event_id, archived=True)
 
     response = HttpResponse(
@@ -99,15 +100,17 @@ def entries_m3u8(request, event_id):
     for entry in entries:
         webm_qs = entry.alternate_files.filter(container=MediaContainer.WEBM).only("file")
         if webm_qs.exists():
-            url = request.build_absolute_uri(webm_qs.first().file.url)
-            response.write(f"#EXTINF:0,{entry.creator} - {entry.name}\r\n".encode())
-            response.write(url)
-            response.write("\r\n\r\n".encode())
+            first_webm = webm_qs.first()
+            if first_webm:
+                url = request.build_absolute_uri(first_webm.file.url)
+                response.write(f"#EXTINF:0,{entry.creator} - {entry.name}\r\n".encode())
+                response.write(url)
+                response.write("\r\n\r\n".encode())
 
     return response
 
 
-def event_index(request, event_id):
+def event_index(request: HttpRequest, event_id: int) -> HttpResponse:
     event = get_object_or_404(Event, pk=event_id, archived=True)
 
     # Filter compos, videos and competitions
@@ -118,25 +121,25 @@ def event_index(request, event_id):
     )
 
     # Get all compos that are active but not hidden from archive
-    compo_list = []
+    compo_list: list[Any] = []
     for compo in compos_q:
         if compo.show_voting_results:
-            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))  # type: ignore[attr-defined]
         else:
-            compo.entries = Entry.objects.filter(compo=compo).order_by("name")
+            compo.entries = list(Entry.objects.filter(compo=compo).order_by("name"))  # type: ignore[attr-defined]
         compo_list.append(copy(compo))
 
     # Get other videos
-    video_list = []
+    video_list: list[Any] = []
     for cat in videos_q:
-        cat.videos = OtherVideo.objects.filter(category=cat)
+        cat.videos = list(OtherVideo.objects.filter(category=cat))  # type: ignore[attr-defined]
         video_list.append(copy(cat))
 
     # Get competitions
-    competition_list = []
+    competition_list: list[Any] = []
     for comp in competitions_q:
         rank_by = "score" if comp.score_sort == 1 else "-score"
-        comp.participants = CompetitionParticipation.objects.filter(competition=comp).order_by(rank_by)
+        comp.participants = list(CompetitionParticipation.objects.filter(competition=comp).order_by(rank_by))  # type: ignore[attr-defined]
         competition_list.append(copy(comp))
 
     # Render Event frontpage

@@ -27,7 +27,7 @@ GOOGLE_API_KEY = ""
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 TIME_ZONE = "Europe/Helsinki"
 ZONE_INFO = ZoneInfo(TIME_ZONE)
-LANGUAGE_CODE = "fi-FI"
+LANGUAGE_CODE = "en"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"

@@ -1,41 +1,51 @@
+from typing import TYPE_CHECKING, Any
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
 from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.http import HttpRequest
+from django.utils.translation import gettext_lazy as _
 
 from Instanssi.common.misc import get_url_local_path
 from Instanssi.kompomaatti.models import Profile
 
+if TYPE_CHECKING:
+    _ProfileFormBase = forms.ModelForm[User]
+else:
+    _ProfileFormBase = forms.ModelForm
+
 
 class DjangoLoginForm(forms.Form):
-    username = forms.CharField(label="Käyttäjätunnus")
-    password = forms.CharField(label="Salasana", widget=forms.PasswordInput)
+    username = forms.CharField(label=_("Username"))
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     next = forms.CharField(widget=forms.HiddenInput)
 
-    def __init__(self, *args, **kwargs):
-        self.next_page = kwargs.pop("next", "")
-        self.logged_user = None
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.next_page: str = kwargs.pop("next", "")
+        self.logged_user: User | None = None
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
         self.fields["next"].initial = self.next_page
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "Kirjautuminen käyttäjätunnuksilla",
+                _("Login with username"),
                 "username",
                 "password",
                 "next",
-                ButtonHolder(Submit("submit", "Kirjaudu")),
+                ButtonHolder(Submit("submit", _("Login"))),
             )
         )
 
-    def clean_next(self):
+    def clean_next(self) -> str:
         return get_url_local_path(self.cleaned_data["next"])
 
-    def clean(self):
+    def clean(self) -> dict[str, Any]:
         # Make sure the user is valid
         cleaned_data = super(DjangoLoginForm, self).clean()
+        assert cleaned_data is not None
 
         if "username" in self.cleaned_data and "password" in self.cleaned_data:
             self.logged_user = auth.authenticate(
@@ -43,24 +53,24 @@ class DjangoLoginForm(forms.Form):
             )
             if not self.logged_user or self.logged_user.is_active is False:
                 self.logged_user = None
-                raise ValidationError("Väärä käyttäjätunnus tai salasana!")
+                raise ValidationError(_("Invalid username or password!"))
         return cleaned_data
 
-    def login(self, request):
+    def login(self, request: HttpRequest) -> None:
         auth.login(request, self.logged_user)
 
 
-class ProfileForm(forms.ModelForm):
+class ProfileForm(_ProfileFormBase):
     otherinfo = forms.CharField(
         widget=forms.Textarea(),
-        label="Muut yhteystiedot",
-        help_text="Muut yhteystiedot, mm. IRC-nick & verkko, jne.",
+        label=_("Other contact info"),
+        help_text=_("Other contact information, e.g. IRC nick & network."),
         required=False,
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         # Init
-        self.user = kwargs.pop("user", None)
+        self.user: User | None = kwargs.pop("user", None)
         super(ProfileForm, self).__init__(*args, **kwargs)
 
         # Find profile
@@ -74,26 +84,26 @@ class ProfileForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
-                "Käyttäjäprofiili",
+                _("User profile"),
                 "first_name",
                 "last_name",
                 "email",
                 "otherinfo",
-                ButtonHolder(Submit("submit-profile", "Tallenna")),
+                ButtonHolder(Submit("submit-profile", _("Save"))),
             )
         )
 
-        # Finnish labels
-        self.fields["first_name"].label = "Etunimi"
-        self.fields["last_name"].label = "Sukunimi"
-        self.fields["email"].label = "Sähköposti"
+        self.fields["first_name"].label = _("First name")
+        self.fields["last_name"].label = _("Last name")
+        self.fields["email"].label = _("Email")
         self.fields["email"].required = True
         self.fields["otherinfo"].initial = self.profile.otherinfo
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> User:
         super(ProfileForm, self).save()
         self.profile.otherinfo = self.cleaned_data["otherinfo"]
         self.profile.save()
+        return self.instance
 
     class Meta:
         model = User

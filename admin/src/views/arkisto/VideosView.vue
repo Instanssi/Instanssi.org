@@ -120,7 +120,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("VideosView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["category"] });
+const tableState = useTableState({
+    filterKeys: ["category"],
+    defaultSort: { key: "id", order: "desc" },
+});
 const totalItems = ref(0);
 const items: Ref<OtherVideo[]> = ref([]);
 const categories: Ref<OtherVideoCategory[]> = ref([]);

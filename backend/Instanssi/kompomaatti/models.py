@@ -610,7 +610,7 @@ class Competition(models.Model):
     participation_end = models.DateTimeField(
         "Deadline osallistumiselle.", help_text="Tämän jälkeen kilpailuun ei voi enää osallistua."
     )
-    start = models.DateTimeField("Kilpailun alku", help_text="Kilpailun aloitusaika.")
+    start = models.DateTimeField("Kilpailun alku", help_text="Kilpailun aloitusaika.", db_index=True)
     end = models.DateTimeField(
         "Kilpailun loppu", help_text="Kilpailun päättymisaika.", null=True, blank=True
     )

@@ -158,7 +158,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("ProgramEventsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["eventType", "active"] });
+const tableState = useTableState({
+    filterKeys: ["eventType", "active"],
+    defaultSort: { key: "start", order: "desc" },
+});
 const totalItems = ref(0);
 const items: Ref<ProgramEvent[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

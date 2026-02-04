@@ -123,7 +123,10 @@ const modelOptions: ModelOption[] = [
 ];
 
 const loading = ref(false);
-const tableState = useTableState({ filterKeys: ["model"] });
+const tableState = useTableState({
+    filterKeys: ["model"],
+    defaultSort: { key: "timestamp", order: "desc" },
+});
 const totalItems = ref(0);
 const entries: Ref<LogEntry[]> = ref([]);
 const expanded: Ref<string[]> = ref([]);

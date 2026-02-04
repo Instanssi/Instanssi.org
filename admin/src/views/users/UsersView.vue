@@ -124,7 +124,10 @@ const auth = useAuth();
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
 
-const tableState = useTableState({ filterKeys: ["is_active", "is_staff"] });
+const tableState = useTableState({
+    filterKeys: ["is_active", "is_staff"],
+    defaultSort: { key: "username", order: "asc" },
+});
 const loading = ref(false);
 
 const filterIsActive = tableState.useBooleanFilter("is_active");

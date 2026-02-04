@@ -111,7 +111,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("BlogEditorView.title"), disabled: true },
 ]);
 
-const tableState = useTableState();
+const tableState = useTableState({ defaultSort: { key: "date", order: "desc" } });
 const totalItems = ref(0);
 const blogPosts: Ref<BlogEntry[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

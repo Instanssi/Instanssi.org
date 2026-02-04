@@ -42,6 +42,9 @@
                     :loading-text="t('UploadsView.loadingUploads')"
                     @update:options="onTableOptionsUpdate"
                 >
+                    <template #item.date="{ item }">
+                        <DateTimeCell :value="item.date" />
+                    </template>
                     <template #item.file="{ item }">
                         <MediaCell :url="item.file" />
                     </template>
@@ -86,6 +89,7 @@ import type { VDataTableServer, VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { UploadedFile } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
@@ -117,7 +121,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("UploadsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState();
+const tableState = useTableState({ defaultSort: { key: "date", order: "desc" } });
 const totalItems = ref(0);
 const items: Ref<UploadedFile[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
@@ -127,6 +131,11 @@ const headers: ReadonlyHeaders = [
         title: t("UploadsView.headers.id"),
         sortable: true,
         key: "id",
+    },
+    {
+        title: t("UploadsView.headers.date"),
+        sortable: true,
+        key: "date",
     },
     {
         title: t("UploadsView.headers.file"),

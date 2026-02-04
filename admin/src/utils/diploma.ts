@@ -192,7 +192,9 @@ function drawDiplomaContent(page: PDFPage, data: DiplomaData, font: PDFFont): vo
     }
 
     // 4. "sijoittunut" / "sijoittuneet" - BLACK
-    currentY = drawCenteredText(page, verbPlaced, font, 12, currentY, BLACK);
+    // When there's no entry name, include "on/ovat" before the verb
+    const placementText = data.entryName ? verbPlaced : `${verbIs} ${verbPlaced}`;
+    currentY = drawCenteredText(page, placementText, font, 12, currentY, BLACK);
     currentY -= 40;
 
     // 5. Placement I/II/III (large, black)

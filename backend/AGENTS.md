@@ -75,7 +75,6 @@ poetry run pytest tests/store/test_models.py
   - **api/**: REST APIs with v1 (legacy) and v2 (current) versions
   - **ext_\***: External integrations (ext_blog, ext_mastodon, ext_programme)
   - **main20XX/**: Year-specific landing pages (e.g., main2024, main2025)
-  - **management/**: Vue-based admin interface (static files built by Vite from separate admin project)
   - **infodesk/**: Infodesk/ticket validation interface
   - **common_config.py**: Shared Django settings
   - **settings.py**: Local configuration (never committed)
@@ -129,7 +128,6 @@ Celery is used for async tasks:
 - Static files are in `Instanssi/static/` and per-app `static/` directories
 - SCSS is compiled via django-libsass
 - Assets are compressed with django-compressor (offline compression in production)
-- Management panel static files are built externally by Vite (see `Instanssi/management/README.md`)
 
 ### Payment Integration
 
@@ -159,7 +157,7 @@ Multiple OAuth backends configured via python-social-auth:
 - Steam OpenID
 - Django's built-in ModelBackend
 
-Separate login URLs for users (`/users/login/`) and management panel (`/management/`).
+Login URL for users is `/users/login/`.
 
 ### REST API
 
@@ -235,8 +233,9 @@ Items can be hidden behind secret keys:
 - `/kompomaatti/`: Public compo browsing and participation
 - `/arkisto/`: Historical event archive
 - `/store/`: Ticket and merchandise store
-- `/management/`: Vue-based admin panel (staff only)
 - `/api/v1/`, `/api/v2/`: REST APIs
 - `/admin/`: Django admin (debug/development only)
 
 Root URL redirects to current year's main page (currently `/2026/`).
+
+Note: The Vue-based admin panel (`/management/`) is deployed separately and served directly by nginx in production.

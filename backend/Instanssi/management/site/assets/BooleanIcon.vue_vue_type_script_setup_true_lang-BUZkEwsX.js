@@ -1,2 +1,0 @@
-import{d as s,b as l,g as n,j as e,k as t,ab as o,a0 as c,aE as r}from"./index-CQkWvXOv.js";const C=s({__name:"BooleanIcon",props:{value:{type:Boolean,default:!1},trueClass:{default:"text-green"},falseClass:{default:"text-red"}},setup(a){return(u,f)=>(l(),n(e(t),{icon:a.value?e(c):e(r),class:o(a.value?a.trueClass:a.falseClass)},null,8,["icon","class"]))}});export{C as _};
-//# sourceMappingURL=BooleanIcon.vue_vue_type_script_setup_true_lang-BUZkEwsX.js.map

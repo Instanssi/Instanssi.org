@@ -124,17 +124,6 @@ Forms are implemented as dialog components for create/edit operations:
 - `BaseFormDialog.vue` - Form dialog with validation
 - `*Dialog.vue` - Specific entity dialogs (EventDialog, UserDialog, etc.)
 
-### 5. Build Output Location
-
-**Important**: The build output goes to `../backend/Instanssi/management/site/` so Django can serve it.
-
-```typescript
-// vite.config.ts
-build: {
-  outDir: fileURLToPath(new URL("../backend/Instanssi/management/site/", import.meta.url)),
-}
-```
-
 ## Development Workflow
 
 ### Starting Development
@@ -172,9 +161,8 @@ npm run lint-check       # Check linting
 ### Building for Production
 
 ```bash
-npm run build            # Build to ./dist for local testing
-npm run build-final      # Build to ../backend/Instanssi/management/site/ for deployment
-npm run preview          # Preview production build (from ./dist)
+npm run build            # Build to ./dist
+npm run preview          # Preview production build
 ```
 
 ### Analyzing Bundle Size
@@ -239,7 +227,6 @@ const onSubmit = handleSubmit(async (values) => {
 ### vite.config.ts
 - Base URL: `/management/`
 - Proxy configuration for API calls
-- Build output directory
 - Compression settings
 - Source maps enabled
 
@@ -251,8 +238,7 @@ const onSubmit = handleSubmit(async (values) => {
 ### package.json Scripts
 - `dev` - Development server
 - `build` - Production build to `./dist`
-- `build-final` - Production build to Django's static directory
-- `preview` - Preview production build from `./dist`
+- `preview` - Preview production build
 - `type-check` - TypeScript checking
 - `lint` / `lint-check` - ESLint
 - `format` / `format-check` - Prettier
@@ -303,11 +289,10 @@ Interceptors handle:
 ## Common Pitfalls
 
 1. **Never manually edit `src/api/`** - It's auto-generated and will be overwritten
-2. **Build output location** - Remember builds go to Django's static directory
-3. **CSRF tokens** - Required for POST/PUT/DELETE. Handled automatically by interceptors
-4. **Permissions** - Always check permissions for UI elements and routes
-5. **Event context** - Many operations require an active event ID from route params
-6. **Base URL** - App runs at `/management/` not root path
+2. **CSRF tokens** - Required for POST/PUT/DELETE. Handled automatically by interceptors
+3. **Permissions** - Always check permissions for UI elements and routes
+4. **Event context** - Many operations require an active event ID from route params
+5. **Base URL** - App runs at `/management/` not root path
 
 ## Backend Context
 
@@ -356,10 +341,10 @@ Modern browsers with ES6+ support required. No IE11 support needed.
 
 ## Deployment
 
-1. Build frontend: `npm run build-final`
-2. Files are output to `../backend/Instanssi/management/site/`
-3. Django serves these static files
-4. In production, typically served directly via nginx
+1. Build frontend: `npm run build`
+2. Files are output to `./dist`
+3. Deploy built files to the server
+4. In production, served directly via nginx at `/management/`
 
 ## Additional Notes for AI Assistants
 

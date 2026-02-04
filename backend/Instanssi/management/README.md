@@ -1,1 +1,0 @@
-NOTE! Contents of static/management/ is produced by vite from the admin-project!

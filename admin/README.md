@@ -4,17 +4,18 @@ This is the administration frontend for the Instanssi event website.
 
 ## Development setup
 
-1. Install Node 22.x LTS
-2. Install packages (cleanly), run: `npm ci`
-3. Start up in dev mode, run: `npm run dev`
-`
+1. Install Node 24.x LTS
+2. Install pnpm: `npm install -g pnpm@10`
+3. Install packages: `pnpm install --frozen-lockfile`
+4. Start up in dev mode: `pnpm run dev`
+
 For development, VSCode with Volar + eslint + prettier plugins will do fine.
 
 ## Building for production
 
 Just run:
 ```sh
-npm run build
+pnpm run build
 ```
 
 Note that the completed build will be put to `backend/Instanssi/management/site/` directory!
@@ -24,16 +25,16 @@ offer that directory directly via nginx as static content.
 ### Running code quality tools
 
 ```sh
-npm run format
-npm run type-check
-npm run lint
-npm run test
+pnpm run format
+pnpm run type-check
+pnpm run lint
+pnpm run test
 ```
 
 ### Checking bundle size
 
 ```sh
-npx vite-bundle-visualizer
+pnpm dlx vite-bundle-visualizer
 ```
 
 ## Updating API client
@@ -43,7 +44,7 @@ backend, directly from the API definition.
 
 To update API client, do:
 1. Make sure backend is running
-2. Run command `npm run fetch-apidoc`. This will fetch the openapi schema documentation from the server.
-3. Run command `npm run generate-api`. This will generate a new API based on the downloaded spec.
+2. Run command `pnpm run fetch-apidoc`. This will fetch the openapi schema documentation from the server.
+3. Run command `pnpm run generate-api`. This will generate a new API based on the downloaded spec.
 4. Commit and push changed files to Git.
 5. Profit!

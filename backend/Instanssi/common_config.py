@@ -159,7 +159,6 @@ INSTALLED_APPS = (
     "Instanssi.ext_mastodon",
     "Instanssi.store",
     "Instanssi.infodesk",
-    "Instanssi.management",
     "imagekit",
     "rest_framework",
     "knox",

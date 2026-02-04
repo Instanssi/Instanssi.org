@@ -85,8 +85,8 @@ Main composables:
 
 To update the API client:
 ```bash
-npm run fetch-apidoc   # Fetch OpenAPI spec from backend
-npm run generate-api   # Generate TypeScript client
+pnpm run fetch-apidoc   # Fetch OpenAPI spec from backend
+pnpm run generate-api   # Generate TypeScript client
 ```
 
 API usage example:
@@ -124,24 +124,13 @@ Forms are implemented as dialog components for create/edit operations:
 - `BaseFormDialog.vue` - Form dialog with validation
 - `*Dialog.vue` - Specific entity dialogs (EventDialog, UserDialog, etc.)
 
-### 5. Build Output Location
-
-**Important**: The build output goes to `../backend/Instanssi/management/site/` so Django can serve it.
-
-```typescript
-// vite.config.ts
-build: {
-  outDir: fileURLToPath(new URL("../backend/Instanssi/management/site/", import.meta.url)),
-}
-```
-
 ## Development Workflow
 
 ### Starting Development
 
 ```bash
-npm ci                    # Clean install dependencies
-npm run dev              # Start dev server (http://localhost:5173)
+pnpm install --frozen-lockfile   # Install dependencies (use exact versions from lockfile)
+pnpm run dev                     # Start dev server (http://localhost:5173)
 ```
 
 Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
@@ -151,10 +140,10 @@ Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
 **You MUST run these commands after making any code changes:**
 
 ```bash
-npm run type-check       # TypeScript type checking
-npm run lint             # Lint and auto-fix with ESLint
-npm run format           # Format code with Prettier
-npm run test             # Run unit tests
+pnpm run type-check       # TypeScript type checking
+pnpm run lint             # Lint and auto-fix with ESLint
+pnpm run format           # Format code with Prettier
+pnpm run test             # Run unit tests
 ```
 
 These checks are mandatory before considering any task complete. Do not skip them.
@@ -162,25 +151,24 @@ These checks are mandatory before considering any task complete. Do not skip the
 ### Code Quality
 
 ```bash
-npm run format           # Format code with Prettier
-npm run lint             # Lint and auto-fix with ESLint
-npm run type-check       # TypeScript type checking
-npm run format-check     # Check formatting
-npm run lint-check       # Check linting
+pnpm run format           # Format code with Prettier
+pnpm run lint             # Lint and auto-fix with ESLint
+pnpm run type-check       # TypeScript type checking
+pnpm run format-check     # Check formatting
+pnpm run lint-check       # Check linting
 ```
 
 ### Building for Production
 
 ```bash
-npm run build            # Build to ./dist for local testing
-npm run build-final      # Build to ../backend/Instanssi/management/site/ for deployment
-npm run preview          # Preview production build (from ./dist)
+pnpm run build            # Build to ./dist
+pnpm run preview          # Preview production build
 ```
 
 ### Analyzing Bundle Size
 
 ```bash
-npx vite-bundle-visualizer
+pnpm dlx vite-bundle-visualizer
 ```
 
 ## Common Development Tasks
@@ -195,8 +183,8 @@ npx vite-bundle-visualizer
 ### Adding a New API Endpoint
 
 1. Add/modify endpoint in Django backend
-2. Run `npm run fetch-apidoc` to fetch updated OpenAPI spec
-3. Run `npm run generate-api` to regenerate client
+2. Run `pnpm run fetch-apidoc` to fetch updated OpenAPI spec
+3. Run `pnpm run generate-api` to regenerate client
 4. Use the new API function from `@/api`
 
 ### Adding a New Permission Target
@@ -239,7 +227,6 @@ const onSubmit = handleSubmit(async (values) => {
 ### vite.config.ts
 - Base URL: `/management/`
 - Proxy configuration for API calls
-- Build output directory
 - Compression settings
 - Source maps enabled
 
@@ -251,8 +238,7 @@ const onSubmit = handleSubmit(async (values) => {
 ### package.json Scripts
 - `dev` - Development server
 - `build` - Production build to `./dist`
-- `build-final` - Production build to Django's static directory
-- `preview` - Preview production build from `./dist`
+- `preview` - Preview production build
 - `type-check` - TypeScript checking
 - `lint` / `lint-check` - ESLint
 - `format` / `format-check` - Prettier
@@ -303,11 +289,10 @@ Interceptors handle:
 ## Common Pitfalls
 
 1. **Never manually edit `src/api/`** - It's auto-generated and will be overwritten
-2. **Build output location** - Remember builds go to Django's static directory
-3. **CSRF tokens** - Required for POST/PUT/DELETE. Handled automatically by interceptors
-4. **Permissions** - Always check permissions for UI elements and routes
-5. **Event context** - Many operations require an active event ID from route params
-6. **Base URL** - App runs at `/management/` not root path
+2. **CSRF tokens** - Required for POST/PUT/DELETE. Handled automatically by interceptors
+3. **Permissions** - Always check permissions for UI elements and routes
+4. **Event context** - Many operations require an active event ID from route params
+5. **Base URL** - App runs at `/management/` not root path
 
 ## Backend Context
 
@@ -325,8 +310,8 @@ Backend runs on `http://localhost:8000` during development.
 Unit tests are configured using Vitest with Vue Test Utils:
 
 ```bash
-npm run test             # Run tests once
-npm run test:watch       # Run tests in watch mode
+pnpm run test             # Run tests once
+pnpm run test:watch       # Run tests in watch mode
 ```
 
 Test files are located alongside source files with `.test.ts` suffix (e.g., `LoginView.test.ts`).
@@ -356,10 +341,10 @@ Modern browsers with ES6+ support required. No IE11 support needed.
 
 ## Deployment
 
-1. Build frontend: `npm run build-final`
-2. Files are output to `../backend/Instanssi/management/site/`
-3. Django serves these static files
-4. In production, typically served directly via nginx
+1. Build frontend: `pnpm run build`
+2. Files are output to `./dist`
+3. Deploy built files to the server
+4. In production, served directly via nginx at `/management/`
 
 ## Additional Notes for AI Assistants
 

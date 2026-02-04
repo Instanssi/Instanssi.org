@@ -10,20 +10,11 @@ BASE_URL = "/api/v2/admin/blog/"
 
 @pytest.mark.django_db
 def test_staff_can_see_all_entries(super_api_client, blog_entry, public_blog_entry):
-    """Test staff can see both public and non-public blog entries"""
+    """Test staff can see both public and non-public blog entries (ordered by -id)"""
     result = super_api_client.get(BASE_URL)
     assert result.status_code == 200
+    # Default ordering is -id (newest first)
     assert result.data == [
-        {
-            "id": blog_entry.id,
-            "user": blog_entry.user_id,
-            "created_by": blog_entry.user.get_username(),
-            "date": blog_entry.date.astimezone(settings.ZONE_INFO).isoformat(),
-            "title": "Test post",
-            "text": "This is a non-public test blog entry.",
-            "public": False,
-            "event": blog_entry.event_id,
-        },
         {
             "id": public_blog_entry.id,
             "user": public_blog_entry.user_id,
@@ -33,6 +24,16 @@ def test_staff_can_see_all_entries(super_api_client, blog_entry, public_blog_ent
             "text": "This is a public test blog entry.",
             "public": True,
             "event": public_blog_entry.event_id,
+        },
+        {
+            "id": blog_entry.id,
+            "user": blog_entry.user_id,
+            "created_by": blog_entry.user.get_username(),
+            "date": blog_entry.date.astimezone(settings.ZONE_INFO).isoformat(),
+            "title": "Test post",
+            "text": "This is a non-public test blog entry.",
+            "public": False,
+            "event": blog_entry.event_id,
         },
     ]
 

@@ -30,6 +30,26 @@
                     </template>
                     {{ t("DiplomaGenerator.title") }}
                 </v-btn>
+                <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
+                    <template #activator="{ props: menuProps }">
+                        <v-btn class="ml-4" v-bind="menuProps">
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faDownload" />
+                            </template>
+                            {{ t("EntriesView.download") }}
+                            <template #append>
+                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
+                            </template>
+                        </v-btn>
+                    </template>
+                    <v-list density="compact">
+                        <v-list-item @click="downloadArchive">
+                            <v-list-item-title>
+                                {{ t("EntriesView.downloadAllEntries") }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 <v-text-field
                     v-model="tableState.search.value"
                     variant="outlined"
@@ -123,7 +143,12 @@
 </template>
 
 <script setup lang="ts">
-import { faCertificate, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+    faChevronDown,
+    faDownload,
+    faCertificate,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -357,6 +382,20 @@ function createEntry(): void {
 
 function openDiplomaDialog(): void {
     diplomaDialog.value?.open();
+}
+
+/**
+ * Download entry files as a zip archive.
+ * Opens the streaming download URL in a new window.
+ */
+function downloadArchive(): void {
+    const params = new URLSearchParams();
+    if (selectedCompo.value) {
+        params.set("compo", String(selectedCompo.value));
+    }
+    const queryString = params.toString();
+    const url = `/api/v2/admin/event/${eventId.value}/kompomaatti/entries/download-archive/${queryString ? `?${queryString}` : ""}`;
+    window.open(url, "_blank");
 }
 
 interface ResultRow {

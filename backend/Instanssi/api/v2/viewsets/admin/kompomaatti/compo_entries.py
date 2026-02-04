@@ -1,6 +1,16 @@
+from collections.abc import Iterator
+from pathlib import Path
+from typing import cast
+
 from django.db.models import QuerySet
+from django.http import StreamingHttpResponse
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import serializers
+from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import CompoEntrySerializer
@@ -9,7 +19,9 @@ from Instanssi.api.v2.utils.entry_file_validation import (
     maybe_copy_entry_to_image,
     validate_entry_files,
 )
-from Instanssi.kompomaatti.models import Compo, Entry
+from Instanssi.api.v2.utils.zip_stream import generate_zip_stream
+from Instanssi.common.file_handling import clean_filename
+from Instanssi.kompomaatti.models import Compo, Entry, Event
 
 
 class CompoEntryViewSet(PermissionViewSet):
@@ -55,3 +67,62 @@ class CompoEntryViewSet(PermissionViewSet):
         validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)
+
+    @extend_schema(
+        responses={(200, "application/zip"): bytes},
+        summary="Download entry files archive",
+        description="Streams all entry files as a ZIP archive organized by compo directory.",
+    )
+    @action(detail=False, methods=["get"], url_path="download-archive")
+    def download_archive(self, request: Request, event_pk: int = 0) -> StreamingHttpResponse | Response:
+        """Download entry files as a .zip archive.
+
+        Streams all entry files organized by compo directory, with rank prefix.
+        Disqualified entries are excluded. Supports filtering via query params.
+
+        Query parameters (inherited from viewset):
+            compo: Filter by compo ID
+            user: Filter by user ID
+        """
+        event = get_object_or_404(Event, pk=event_pk)
+
+        # Build queryset directly without prefetch_related (not needed for archive)
+        # Use only() to minimize memory usage - we only need these fields
+        # Note: rank is an annotation from with_rank(), not a model field
+        base_queryset = (
+            self.queryset.filter(compo__event_id=event_pk)
+            .filter(disqualified=False)
+            .exclude(entryfile="")
+            .select_related("compo")
+            .with_rank()
+            .only("id", "name", "entryfile", "compo__name")
+        )
+        # Apply any filters from query params (e.g., compo, user)
+        queryset = self.filter_queryset(base_queryset)
+
+        # Build file list and validate in single pass using iterator()
+        # This avoids loading all Entry objects into memory at once
+        files: list[tuple[str, Path]] = []
+        missing_files: list[str] = []
+
+        for entry in cast(Iterator[Entry], queryset.iterator()):
+            file_path = Path(entry.entryfile.path)
+            if not file_path.is_file():
+                missing_files.append(f"Entry {entry.id}: {entry.name}")
+            else:
+                archive_name = f"{clean_filename(entry.compo.name)}/{entry.rank:03d}__{file_path.name}"
+                files.append((archive_name, file_path))
+
+        if missing_files:
+            return Response(
+                {"error": "Missing entry files on disk", "entries": missing_files},
+                status=400,
+            )
+
+        response = StreamingHttpResponse(
+            generate_zip_stream(files),
+            content_type="application/zip",
+        )
+        archive_filename = f"entries_{event.tag or event.id}.zip"
+        response["Content-Disposition"] = f'attachment; filename="{archive_filename}"'
+        return response

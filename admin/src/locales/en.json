@@ -368,6 +368,8 @@
       "title": "Entries",
       "newEntry": "New Entry",
       "exportResults": "Export Results",
+      "download": "Download",
+      "downloadAllEntries": "All entries (.zip)",
       "confirmDelete": "Do you really want to delete entry '{name}'?",
       "loadFailure": "Failed to load entries; try again later.",
       "deleteSuccess": "Entry deleted!",

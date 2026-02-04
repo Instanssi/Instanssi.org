@@ -3,13 +3,14 @@ import hmac
 import json
 import logging
 import uuid
-from dataclasses import dataclass, fields
+from dataclasses import dataclass
+from dataclasses import fields as dataclass_fields
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, Final, Iterable, List, Literal, Optional, Tuple, Union
+from typing import Any, Final, Iterable, Literal
 
+import orjson
 import requests
-from orjson import orjson
 from yarl import URL
 
 logger = logging.getLogger(__name__)
@@ -41,9 +42,9 @@ class Base:
             return str(v)
         return v
 
-    def to_dict(self):
-        out = {}
-        for field in fields(self):
+    def to_dict(self) -> dict[str, Any]:
+        out: dict[str, Any] = {}
+        for field in dataclass_fields(self):
             key = field.name
             value = getattr(self, key)
             if value is not None:
@@ -59,9 +60,9 @@ class Item(Base):
     units: int
     vat_percentage: int
     product_code: str
-    description: Optional[str] = None
-    category: Optional[str] = None
-    orderId: Optional[str] = None
+    description: str | None = None
+    category: str | None = None
+    orderId: str | None = None
 
 
 @dataclass
@@ -69,11 +70,11 @@ class Customer(Base):
     """Ref: https://docs.paytrail.com/#/?id=customer-1"""
 
     email: str
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    phone: Optional[str] = None
-    vat_id: Optional[str] = None
-    company_name: Optional[str] = None
+    first_name: str | None = None
+    last_name: str | None = None
+    phone: str | None = None
+    vat_id: str | None = None
+    company_name: str | None = None
 
 
 @dataclass
@@ -84,7 +85,7 @@ class Address(Base):
     postal_code: str
     city: str
     country: str
-    county: Optional[str] = None
+    county: str | None = None
 
 
 @dataclass
@@ -103,13 +104,13 @@ class Payment(Base):
     reference: str
     amount: int
     currency: Literal["EUR"]
-    language: Union[Literal["FI"], Literal["EN"], Literal["SV"]]
-    items: List[Item]
+    language: Literal["FI"] | Literal["EN"] | Literal["SV"]
+    items: list[Item]
     customer: Customer
     redirect_urls: CallbackUrl
-    callback_urls: Optional[CallbackUrl] = None
-    delivery_address: Optional[Address] = None
-    invoicing_address: Optional[Address] = None
+    callback_urls: CallbackUrl | None = None
+    delivery_address: Address | None = None
+    invoicing_address: Address | None = None
 
 
 @dataclass
@@ -145,8 +146,10 @@ class NewPaymentCallback(Base):
     provider: str
 
     @classmethod
-    def from_dict(cls, data: Dict[str, str]) -> "NewPaymentCallback":
-        raw = {k[9:].replace("-", "_"): v for k, v in data.items() if k.startswith("checkout-")}
+    def from_dict(cls, data: dict[str, str]) -> "NewPaymentCallback":
+        raw: dict[str, Any] = {
+            k[9:].replace("-", "_"): v for k, v in data.items() if k.startswith("checkout-")
+        }
         return cls(
             amount=int(raw.pop("amount")),
             status=NewPaymentStatus(raw.pop("status")),
@@ -172,11 +175,11 @@ class HashMethod(Enum):
     SHA512 = "sha512"
 
     @classmethod
-    def options(cls) -> List[str]:
+    def options(cls) -> list[str]:
         return [v.value for v in cls]
 
 
-HASH_METHODS: Dict[HashMethod, Any] = {
+HASH_METHODS: dict[HashMethod, Any] = {
     HashMethod.SHA256: hashlib.sha256,
     HashMethod.SHA512: hashlib.sha512,
 }
@@ -202,9 +205,9 @@ def generate_hmac_sha(secret: str, message: bytes, hash_method: HashMethod) -> s
 def generate_payment_headers(
     account: str,
     method: RequestMethod,
-    transaction_id: Optional[str] = None,
+    transaction_id: str | None = None,
     hash_method: HashMethod = HashMethod.SHA256,
-) -> Dict[str, str]:
+) -> dict[str, str]:
     """Generates payment headers for HTTP requests."""
     headers = {
         "checkout-account": account,
@@ -219,7 +222,7 @@ def generate_payment_headers(
 
 
 def generate_hmac_signature(
-    secret: str, params: Dict[str, str], body: bytes = b"", hash_method: HashMethod = HashMethod.SHA256
+    secret: str, params: dict[str, str], body: bytes = b"", hash_method: HashMethod = HashMethod.SHA256
 ) -> str:
     """
     Grab all checkout headers from dict, sort them out and generate a valid HMAC signature
@@ -241,7 +244,7 @@ def generate_hmac_signature(
     return generate_hmac_sha(secret, b"\n".join(packed), hash_method)
 
 
-def verify_signature(params: Dict[str, str], body: bytes, secret: str) -> None:
+def verify_signature(params: dict[str, str], body: bytes, secret: str) -> None:
     """Verifies paytrail api response signature HMAC hash"""
     signature_header = params.get("signature")
     algorithm_header = params.get("checkout-algorithm")
@@ -256,7 +259,7 @@ def verify_signature(params: Dict[str, str], body: bytes, secret: str) -> None:
         raise PaytrailResponseError("Invalid response; signature mismatch")
 
 
-def verify_account(params: Dict[str, str], account: str) -> None:
+def verify_account(params: dict[str, str], account: str) -> None:
     """Verify account id parameter"""
     account_param = params.get("checkout-account")
     if not account_param:
@@ -265,7 +268,7 @@ def verify_account(params: Dict[str, str], account: str) -> None:
         raise PaytrailResponseError(f"Invalid response; unexpected account argument value '{account_param}'")
 
 
-def verify_method(params: Dict[str, str], method: RequestMethod) -> None:
+def verify_method(params: dict[str, str], method: RequestMethod) -> None:
     """Verify checkout method parameter"""
     method_param = params.get("checkout-method")
     if not method_param:
@@ -284,7 +287,7 @@ def _parse_response(body: str) -> Any:
 def decode_error_message(response: requests.Response) -> str:
     """Attempt to decode paytrail error message"""
     try:
-        return json.loads(response.content)["message"]
+        return str(json.loads(response.content)["message"])
     except (json.JSONDecodeError, KeyError):
         return "<no message>"
 
@@ -292,12 +295,12 @@ def decode_error_message(response: requests.Response) -> str:
 def make_request(
     method: RequestMethod,
     address: URL,
-    params: Dict[str, str],
+    params: dict[str, str],
     account: str,
     secret: str,
-    body: Optional[Union[Dict, List]] = None,
+    body: dict[str, Any] | list[Any] | None = None,
     hash_method: HashMethod = HashMethod.SHA256,
-) -> Tuple[Any, str]:
+) -> tuple[Any, str | None]:
     """
     Make a HTTP request to the API. Authentication headers, signature and response
     verification is handled all here.
@@ -325,27 +328,30 @@ def make_request(
     }
 
     try:
-        response = requests.request(method.value, address, headers=headers, params=params, data=encoded_body)
+        response = requests.request(
+            method.value, str(address), headers=headers, params=params, data=encoded_body
+        )
         response.raise_for_status()
         response_data = response.content
     except UnicodeDecodeError as e:
         raise PaytrailRequestError("Error while decoding response data") from e
     except requests.exceptions.RequestException as e:
-        raise PaytrailRequestError(f"Paytrail request failed: {decode_error_message(e.response)}") from e
+        err_msg = decode_error_message(e.response) if e.response is not None else "<no response>"
+        raise PaytrailRequestError(f"Paytrail request failed: {err_msg}") from e
 
-    verify_account(params=response.headers, account=account)
-    verify_method(params=response.headers, method=method)
-    verify_signature(params=response.headers, body=response_data, secret=secret)
+    verify_account(params=dict(response.headers), account=account)
+    verify_method(params=dict(response.headers), method=method)
+    verify_signature(params=dict(response.headers), body=response_data, secret=secret)
     return _parse_response(response_data.decode()), response.headers.get("request-id")
 
 
 def create_payment(
-    base_url: Union[URL],
+    base_url: URL,
     account: str,
     secret: str,
     payment: Payment,
-    amount: Optional[int] = None,
-    groups: Iterable[PaymentMethod] = None,
+    amount: int | None = None,
+    groups: Iterable[PaymentMethod] | None = None,
 ) -> NewPaymentResponse:
     """
     Initiates a payment to Paytrail. For request & response field docs,
@@ -372,12 +378,12 @@ def create_payment(
         RequestMethod.POST, address, params, account, secret, body=payment.to_dict()
     )
     return NewPaymentResponse(
-        href=response["href"], transaction_id=response["transactionId"], request_id=request_id
+        href=response["href"], transaction_id=response["transactionId"], request_id=request_id or ""
     )
 
 
 def verify_callback(
-    params: Dict[str, str],
+    params: dict[str, str],
     account: str,
     secret: str,
 ) -> NewPaymentCallback:

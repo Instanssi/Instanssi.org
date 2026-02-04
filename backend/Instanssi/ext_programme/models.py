@@ -68,7 +68,7 @@ class ProgrammeEvent(models.Model):
     def short_start_time(self) -> str:
         if self.start:
             start = arrow.get(self.start).to(settings.TIME_ZONE)
-            return "{} {}".format(SHORT_DAYS[start.weekday()], start.format("HH:mm"))
+            return f"{SHORT_DAYS[start.weekday()]} {start.format('HH:mm')}"
         return ""
 
     def __str__(self) -> str:

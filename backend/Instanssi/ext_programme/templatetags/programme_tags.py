@@ -1,4 +1,6 @@
 import time
+from datetime import date, datetime
+from typing import Any
 
 import arrow
 from django import template
@@ -12,7 +14,7 @@ register = template.Library()
 
 
 @register.inclusion_tag("ext_programme/tags/programme.html")
-def render_programme(event_id):
+def render_programme(event_id: int) -> dict[str, Any]:
     progs = ProgrammeEvent.objects.filter(event_id=event_id, event_type=1, active=True).order_by("start")
 
     return {
@@ -22,7 +24,7 @@ def render_programme(event_id):
 
 
 @register.inclusion_tag("ext_programme/tags/calendar.html")
-def render_calendar(event_id):
+def render_calendar(event_id: int) -> dict[str, Any]:
     compos = Compo.objects.filter(event_id=event_id, active=True)
     progs = ProgrammeEvent.objects.filter(event_id=event_id, active=True)
     comps = Competition.objects.filter(event_id=event_id, active=True)
@@ -118,20 +120,22 @@ def render_calendar(event_id):
             )
 
     # Sort list
-    def helper(obj):
+    def helper(obj: dict[str, Any]) -> float:
         return time.mktime(obj["date"].timetuple())
 
     events = sorted(events, key=helper)
 
     # Group by day
-    grouped_events = {}
-    keys = []
-    for event in events:
-        d = event["date"].date()
+    grouped_events: dict[date, list[dict[str, Any]]] = {}
+    keys: list[date] = []
+    for evt in events:
+        event_datetime = evt["date"]
+        assert isinstance(event_datetime, datetime)
+        d = event_datetime.date()
         if d not in grouped_events:
             grouped_events[d] = []
             keys.append(d)
-        grouped_events[d].append(event)
+        grouped_events[d].append(evt)
 
     # Final list for template
     events = []
@@ -149,7 +153,7 @@ def render_calendar(event_id):
         events.append(
             {
                 "items": grouped_events[key],
-                "title": "{} {}".format(days[key.weekday()], dt),
+                "title": f"{days[key.weekday()]} {dt}",
             }
         )
 

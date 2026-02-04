@@ -3,9 +3,9 @@ def size_format(size: int) -> str:
     mb = kb * 1024
     gb = mb * 1024
     if size > gb:
-        return "{} Gt".format(round(size / gb, 2))
+        return f"{round(size / gb, 2)} Gt"
     if size > mb:
-        return "{} Mt".format(round(size / mb, 2))
+        return f"{round(size / mb, 2)} Mt"
     if size > kb:
-        return "{} Kt".format(round(size / kb, 2))
-    return "{} t".format(size)
+        return f"{round(size / kb, 2)} Kt"
+    return f"{size} t"

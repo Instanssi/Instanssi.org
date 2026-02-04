@@ -25,7 +25,7 @@ pytest:
 	poetry run pytest
 
 mypy:
-	poetry run mypy -p Instanssi.api.v2
+	poetry run mypy -p Instanssi
 
 pytest-parallel:
 	poetry run pytest -n auto

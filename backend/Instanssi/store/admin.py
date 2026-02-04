@@ -1,4 +1,6 @@
-from csvexport.actions import csvexport
+from typing import TYPE_CHECKING
+
+from csvexport.actions import csvexport  # type: ignore[import-untyped]
 from django.contrib import admin
 
 from Instanssi.store.models import (
@@ -10,8 +12,21 @@ from Instanssi.store.models import (
     TransactionItem,
 )
 
+if TYPE_CHECKING:
+    _StoreTransactionAdminBase = admin.ModelAdmin[StoreTransaction]
+    _StoreTransactionEventAdminBase = admin.ModelAdmin[StoreTransactionEvent]
+    _TransactionItemAdminBase = admin.ModelAdmin[TransactionItem]
+    _ReceiptAdminBase = admin.ModelAdmin[Receipt]
+    _StoreItemAdminBase = admin.ModelAdmin[StoreItem]
+else:
+    _StoreTransactionAdminBase = admin.ModelAdmin
+    _StoreTransactionEventAdminBase = admin.ModelAdmin
+    _TransactionItemAdminBase = admin.ModelAdmin
+    _ReceiptAdminBase = admin.ModelAdmin
+    _StoreItemAdminBase = admin.ModelAdmin
 
-class StoreTransactionAdmin(admin.ModelAdmin):
+
+class StoreTransactionAdmin(_StoreTransactionAdminBase):
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -27,7 +42,7 @@ class StoreTransactionAdmin(admin.ModelAdmin):
     ]
 
 
-class StoreTransactionEventAdmin(admin.ModelAdmin):
+class StoreTransactionEventAdmin(_StoreTransactionEventAdminBase):
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -38,7 +53,7 @@ class StoreTransactionEventAdmin(admin.ModelAdmin):
     ]
 
 
-class TransactionItemAdmin(admin.ModelAdmin):
+class TransactionItemAdmin(_TransactionItemAdminBase):
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -50,7 +65,7 @@ class TransactionItemAdmin(admin.ModelAdmin):
     ]
 
 
-class ReceiptAdmin(admin.ModelAdmin):
+class ReceiptAdmin(_ReceiptAdminBase):
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -62,7 +77,7 @@ class ReceiptAdmin(admin.ModelAdmin):
     ]
 
 
-class StoreItemAdmin(admin.ModelAdmin):
+class StoreItemAdmin(_StoreItemAdminBase):
     actions = [csvexport]
     list_display = [
         "name",

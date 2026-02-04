@@ -6,7 +6,7 @@ from rest_framework.serializers import ModelSerializer
 logger = logging.getLogger(__name__)
 
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer[User]):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "email")

@@ -1,8 +1,9 @@
 import os
+from datetime import date as date_type
 from datetime import datetime, time
 from decimal import Decimal
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any
 
 from auditlog.registry import auditlog
 from django.conf import settings
@@ -21,10 +22,14 @@ from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.kompomaatti.models import Event
 from Instanssi.store.utils.receipt import ReceiptParams
 
+if TYPE_CHECKING:
+    from django.utils.functional import _StrPromise
+
 
 def generate_image_path(item: "StoreItem", filename: str) -> str:
     slug = clean_filename(Path(filename).stem)
-    dt = datetime.combine(item.event.date, time(0, 0, 0, 0))
+    event_date: date_type = item.event.date if item.event else datetime.now().date()
+    dt = datetime.combine(event_date, time(0, 0, 0, 0))
     return generate_upload_path(
         original_file=filename,
         path=settings.MEDIA_STORE_IMAGES,
@@ -71,7 +76,7 @@ class StoreItem(models.Model):
         return self.discount_amount >= 0
 
     @property
-    def variants(self) -> QuerySet:
+    def variants(self) -> QuerySet["StoreItemVariant"]:
         """Returns a queryset with the available item variants"""
         return StoreItemVariant.objects.filter(item=self)
 
@@ -115,7 +120,7 @@ class StoreItem(models.Model):
         return TransactionItem.objects.filter(transaction__time_paid__isnull=False, item=self).count()
 
     @staticmethod
-    def items_available() -> QuerySet:
+    def items_available() -> QuerySet["StoreItem"]:
         return (
             StoreItem.objects.filter(max__gt=0, available=True)
             .filter(Q(event__isnull=True) | Q(event__hidden=False))
@@ -123,7 +128,7 @@ class StoreItem(models.Model):
         )
 
     @staticmethod
-    def items_visible(secret_key: Optional[str] = None) -> QuerySet:
+    def items_visible(secret_key: str | None = None) -> QuerySet["StoreItem"]:
         """Returns items visible in the store. May return additional items if
         the user has said the magic word."""
         return (
@@ -142,7 +147,7 @@ class StoreItemVariant(models.Model):
     name = models.CharField(_("Name"), max_length=32, blank=False, null=False)
 
     def __str__(self) -> str:
-        return "{}: {}".format(self.item.name, self.name)
+        return f"{self.item.name}: {self.name}"
 
 
 class StoreTransaction(models.Model):
@@ -162,7 +167,7 @@ class StoreTransaction(models.Model):
     street = models.CharField(_("Street address"), max_length=128)
     postalcode = models.CharField(_("Postal code"), max_length=16)
     city = models.CharField(_("City"), max_length=64)
-    country = CountryField(_("Country"), default="FI")
+    country = CountryField(verbose_name=_("Country"), default="FI")
     information = models.TextField(_("Additional information"), blank=True)
 
     @property
@@ -190,9 +195,9 @@ class StoreTransaction(models.Model):
 
     @property
     def full_name(self) -> str:
-        return "{} {}".format(self.firstname, self.lastname)
+        return f"{self.firstname} {self.lastname}"
 
-    def get_status_text(self) -> str:
+    def get_status_text(self) -> "str | _StrPromise":
         if self.is_cancelled:
             return _("Cancelled")
         if self.is_delivered:
@@ -209,12 +214,12 @@ class StoreTransaction(models.Model):
             ret += item.purchase_price
         return ret
 
-    def get_transaction_items(self) -> QuerySet:
+    def get_transaction_items(self) -> QuerySet["TransactionItem"]:
         return TransactionItem.objects.filter(transaction=self)
 
     def get_distinct_store_items_and_prices(
         self,
-    ) -> List[Tuple[StoreItem, Optional[StoreItemVariant], Decimal]]:
+    ) -> list[tuple["StoreItem", "StoreItemVariant | None", Decimal]]:
         """
         We find the unique item groups here. Because in database we have all the bought items as individual
         items, we need to group them up for payment service and receipt. This function handles that.
@@ -233,8 +238,8 @@ class StoreTransaction(models.Model):
     def get_store_item_count(
         self,
         store_item: StoreItem,
-        variant: Optional[StoreItemVariant] = None,
-        purchase_price: Optional[Decimal] = None,
+        variant: "StoreItemVariant | None" = None,
+        purchase_price: Decimal | None = None,
     ) -> int:
         """
         Gets transaction item by its linked store-item. You can also use item variant and purchase price to make the
@@ -260,7 +265,7 @@ class StoreTransactionEvent(models.Model):
     created = models.DateTimeField(_("Created"), null=False, default=timezone.now)
 
     @classmethod
-    def log(cls, transaction: StoreTransaction, message: str, data: Dict) -> None:
+    def log(cls, transaction: StoreTransaction, message: str, data: dict[str, Any]) -> None:
         obj = cls(transaction=transaction, message=message, data=data)
         obj.save()
 
@@ -287,7 +292,7 @@ class TransactionItem(models.Model):
         return reverse("store:ti_view", kwargs={"item_key": self.key})
 
     def __str__(self) -> str:
-        return "{} for {}".format(self.item.name, self.transaction.full_name)
+        return f"{self.item.name} for {self.transaction.full_name}"
 
 
 class Receipt(models.Model):
@@ -300,7 +305,7 @@ class Receipt(models.Model):
     content = models.TextField(_("Content"), default=None, null=True)
 
     def __str__(self) -> str:
-        return "{}: {}".format(self.mail_to, self.subject)
+        return f"{self.mail_to}: {self.subject}"
 
     @property
     def is_sent(self) -> bool:
@@ -313,7 +318,7 @@ class Receipt(models.Model):
         mail_from: str,
         subject: str,
         params: ReceiptParams,
-        transaction: Optional[StoreTransaction] = None,
+        transaction: "StoreTransaction | None" = None,
     ) -> "Receipt":
         # First, save header information and save so that we get a receipt ID
         r = cls()
@@ -334,7 +339,7 @@ class Receipt(models.Model):
 
     def send(self) -> None:
         self.sent = timezone.now()
-        send_mail(self.subject, self.content, self.mail_from, (self.mail_to,))
+        send_mail(self.subject, self.content or "", self.mail_from, (self.mail_to,))
         self.save()
 
 

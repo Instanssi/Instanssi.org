@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Any, Iterable, List, Optional
 
 from auditlog.registry import auditlog
 from django.conf import settings
@@ -92,7 +92,7 @@ class TicketVoteCode(models.Model):
         return None
 
     def __str__(self) -> str:
-        return "{}: {}".format(self.key, self.associated_username)
+        return f"{self.key}: {self.associated_username}"
 
     class Meta:
         unique_together = (("event", "ticket"), ("event", "associated_to"))
@@ -287,7 +287,7 @@ class Entry(models.Model):
     archive_rank = models.IntegerField(_("Rank"), null=True, blank=True)
 
     def __str__(self) -> str:
-        return "{} by {}".format(self.name, self.creator)
+        return f"{self.name} by {self.creator}"
 
     @property
     def entry_file_ext(self) -> str:
@@ -328,8 +328,8 @@ class Entry(models.Model):
             n += 1
         return n
 
-    def get_show_list(self) -> dict:
-        show = {"youtube": False, "image": False, "noshow": True}
+    def get_show_list(self) -> dict[str, bool]:
+        show: dict[str, bool] = {"youtube": False, "image": False, "noshow": True}
 
         state = self.compo.entry_view_type
         if state == 1:
@@ -353,7 +353,7 @@ class Entry(models.Model):
             clean_filename(self.creator) if self.creator else None,
             clean_filename(self.name),
         ]
-        return "__".join(filter(lambda x: bool(x), file_pieces))
+        return "__".join(piece for piece in file_pieces if piece)
 
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
@@ -362,10 +362,10 @@ class Entry(models.Model):
         if self.is_audio:
             for codec, container in WEB_AUDIO_FORMATS:
                 tasks.generate_alternate_audio_files.apply_async(
-                    countdown=1, args=[self.id, int(codec), int(container)]
+                    countdown=1, args=(self.id, int(codec), int(container))
                 )
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         """Save and force regeneration of alternate files"""
         super().save(*args, **kwargs)
         self.generate_alternates()
@@ -394,7 +394,7 @@ class AlternateEntryFile(models.Model):
         return MediaContainer(self.container).name.lower()
 
     @property
-    def mime_format(self):
+    def mime_format(self) -> str:
         return f"audio/{self.container_name};codecs={self.codec_name}"
 
     def __str__(self) -> str:
@@ -419,7 +419,7 @@ class VoteGroup(models.Model):
             current_rank += 1
 
     def __str__(self) -> str:
-        return "votes for {} by {}".format(self.compo.name, self.user.username)
+        return f"votes for {self.compo.name} by {self.user.username}"
 
     class Meta:
         unique_together = (("user", "compo"),)
@@ -440,7 +440,7 @@ class Vote(models.Model):
     )
 
     def __str__(self) -> str:
-        return "{} by {} as {}".format(self.entry.name, self.user.username, self.rank)
+        return f"{self.entry.name} by {self.user.username} as {self.rank}"
 
 
 class Competition(models.Model):
@@ -465,7 +465,7 @@ class Competition(models.Model):
         return timezone.now() < self.participation_end
 
     def __str__(self) -> str:
-        return "{}: {}".format(self.event.name, self.name)
+        return f"{self.event.name}: {self.name}"
 
 
 class CompetitionParticipation(models.Model):
@@ -477,7 +477,7 @@ class CompetitionParticipation(models.Model):
     disqualified_reason = models.TextField(_("Disqualification reason"), blank=True)
 
     def get_formatted_score(self) -> str:
-        return "{} {}".format(self.score, self.competition.score_type)
+        return f"{self.score} {self.competition.score_type}"
 
     def get_rank(self) -> int:
         # Get results
@@ -498,7 +498,7 @@ class CompetitionParticipation(models.Model):
         return rank
 
     def __str__(self) -> str:
-        return "{}, {}: {}".format(self.competition.name, self.participant_name, self.score)
+        return f"{self.competition.name}, {self.participant_name}: {self.score}"
 
 
 auditlog.register(Compo)

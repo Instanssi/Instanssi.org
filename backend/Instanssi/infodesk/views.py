@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Final
 
 import arrow
@@ -57,22 +58,20 @@ def order_search_ac(request: HttpRequest) -> HttpResponse:
     transactions = StoreTransaction.objects.filter(ta_fuzzy_query(term))
     items = TransactionItem.objects.filter(ti_fuzzy_query(term))
 
-    def fmt_t(t):
+    def fmt_t(t: datetime) -> str:
         return arrow.get(t).to(settings.TIME_ZONE).format("DD.MM.YYYY HH:mm")
 
-    def format_transaction(t):
-        return "%s, %s (%s)" % (t.lastname, t.firstname, fmt_t(t.time_created))
+    def format_transaction(t: StoreTransaction) -> str:
+        time_str = fmt_t(t.time_created) if t.time_created else ""
+        return f"{t.lastname}, {t.firstname} ({time_str})"
 
-    results = [
-        {"id": "%s%s" % (TXN_PREFIX, t.id), "text": format_transaction(t)}  # exact query link
-        for t in transactions
-    ]
+    results = [{"id": f"{TXN_PREFIX}{t.id}", "text": format_transaction(t)} for t in transactions]
 
     results.extend(
         [
             {
-                "id": "%s%s" % (TXN_ITEM_PREFIX, item.key),
-                "text": "%s -- ostaja %s" % (item.item, format_transaction(item.transaction)),
+                "id": f"{TXN_ITEM_PREFIX}{item.key}",
+                "text": f"{item.item} -- ostaja {format_transaction(item.transaction)}",
             }
             for item in items
         ]
@@ -82,7 +81,7 @@ def order_search_ac(request: HttpRequest) -> HttpResponse:
 
 
 @infodesk_access_required
-def order_search(request):
+def order_search(request: HttpRequest) -> HttpResponse:
     """Search view that finds transactions, items and customers."""
     term = request.GET.get("term")
     transactions = None
@@ -124,6 +123,7 @@ def item_check(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = ItemKeyScanForm(request.POST)
         if form.is_valid():
+            assert form.item is not None  # Set in clean_key
             return HttpResponseRedirect(reverse("infodesk:item_info", args=(form.item.id,)))
     else:
         form = ItemKeyScanForm()
@@ -136,6 +136,7 @@ def transaction_check(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = TransactionKeyScanForm(request.POST)
         if form.is_valid():
+            assert form.transaction is not None  # Set in clean_key
             return HttpResponseRedirect(reverse("infodesk:transaction_info", args=(form.transaction.id,)))
     else:
         form = TransactionKeyScanForm()

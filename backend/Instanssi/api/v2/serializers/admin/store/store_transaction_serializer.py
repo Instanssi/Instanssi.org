@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from Instanssi.api.v2.serializers.admin.store.nested_receipt_serializer import (
@@ -7,6 +9,9 @@ from Instanssi.api.v2.serializers.admin.store.store_transaction_event_serializer
     StoreTransactionEventSerializer,
 )
 from Instanssi.store.models import StoreTransaction
+
+if TYPE_CHECKING:
+    from django.utils.functional import _StrPromise
 
 
 class StoreTransactionSerializer(ModelSerializer[StoreTransaction]):
@@ -37,7 +42,7 @@ class StoreTransactionSerializer(ModelSerializer[StoreTransaction]):
     def get_full_name(self, obj: StoreTransaction) -> str:
         return obj.full_name
 
-    def get_status_text(self, obj: StoreTransaction) -> str:
+    def get_status_text(self, obj: StoreTransaction) -> "str | _StrPromise":
         return obj.get_status_text()
 
     def get_total_price(self, obj: StoreTransaction) -> str:

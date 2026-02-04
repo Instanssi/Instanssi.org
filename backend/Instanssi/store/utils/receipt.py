@@ -5,7 +5,7 @@ Receipt parameters handler
 import json
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 import arrow
 from django.template.loader import render_to_string
@@ -24,8 +24,8 @@ class ReceiptEncoder(json.JSONEncoder):
 
 
 class ReceiptParams:
-    def __init__(self, source_json: Optional[Union[bytes, str]] = None) -> None:
-        self.params: Dict[str, Any]
+    def __init__(self, source_json: bytes | str | None = None) -> None:
+        self.params: dict[str, Any]
         if source_json:
             self.params = self.from_json(json.loads(source_json))
         else:
@@ -50,7 +50,7 @@ class ReceiptParams:
             )
 
     @staticmethod
-    def from_json(src: dict) -> dict:
+    def from_json(src: dict[str, Any]) -> dict[str, Any]:
         items = []
         for src_item in src["items"]:
             items.append(
@@ -87,10 +87,10 @@ class ReceiptParams:
     def receipt_number(self, var: int) -> None:
         self.params["receipt_number"] = var
 
-    def receipt_date(self, var: Optional[datetime]) -> None:
+    def receipt_date(self, var: datetime | None) -> None:
         self.params["receipt_date"] = var
 
-    def order_date(self, var: Optional[datetime]) -> None:
+    def order_date(self, var: datetime | None) -> None:
         self.params["order_date"] = var
 
     def order_number(self, var: int) -> None:

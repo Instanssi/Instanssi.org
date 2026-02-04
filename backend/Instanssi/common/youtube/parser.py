@@ -127,9 +127,9 @@ class YoutubeURL:
 
     def embed_obj(self, autoplay: Optional[bool] = None, origin: Optional[str] = None) -> URL:
         base = URL("https://www.youtube.com") / "embed" / self.video_id
-        args = dict()
+        args: dict[str, str] = dict()
         if self.start:
-            args["start"] = self.start
+            args["start"] = str(self.start)
         if autoplay is not None:
             args["autoplay"] = "1" if autoplay else "0"
         if origin is not None:

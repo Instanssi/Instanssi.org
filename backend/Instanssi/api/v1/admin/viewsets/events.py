@@ -7,7 +7,7 @@ from Instanssi.api.v1.admin.viewsets.base import AdminReadOnlyViewSet
 from Instanssi.kompomaatti.models import Event
 
 
-class AdminEventViewSet(AdminReadOnlyViewSet):
+class AdminEventViewSet(AdminReadOnlyViewSet[Event]):
     queryset = Event.objects.all()
     serializer_class = AdminEventSerializer
     pagination_class = LimitOffsetPagination

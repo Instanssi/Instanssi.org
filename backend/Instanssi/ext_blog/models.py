@@ -22,7 +22,7 @@ class BlogEntry(models.Model):
     )
 
     @classmethod
-    def get_latest(cls, public: bool = True) -> QuerySet:
+    def get_latest(cls, public: bool = True) -> QuerySet["BlogEntry"]:
         return cls.objects.filter(public=public).order_by("-date")
 
     def __str__(self) -> str:

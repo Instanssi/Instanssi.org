@@ -1,6 +1,8 @@
 import logging
+from typing import Any
 
-from django.db.models import Q
+from django.contrib.auth.models import User
+from django.db.models import Q, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
@@ -9,6 +11,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
@@ -39,7 +42,7 @@ from Instanssi.kompomaatti.models import (
 logger = logging.getLogger(__name__)
 
 
-class EventViewSet(ReadOnlyModelViewSet):
+class EventViewSet(ReadOnlyModelViewSet[Event]):
     """
     Exposes all Instanssi events. Note that ID's assigned to events are guaranteed to stay the same; they will not
     change, ever. So if you want, you can hardcode the event id's in your own code and don't need to bother fetching
@@ -63,7 +66,7 @@ class EventViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("id",)
 
 
-class CompetitionViewSet(ReadOnlyModelViewSet):
+class CompetitionViewSet(ReadOnlyModelViewSet[Competition]):
     """
     Exposes all sports competitions.
 
@@ -89,7 +92,7 @@ class CompetitionViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("event",)
 
 
-class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
+class CompetitionParticipationViewSet(ReadOnlyModelViewSet[CompetitionParticipation]):
     """
     Exposes all competition participations. This is everything that does not drop neatly to the democompo category,
     eg. sports events etc.
@@ -114,7 +117,7 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("competition",)
 
 
-class UserCompetitionParticipationViewSet(ModelViewSet):
+class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]):
     """
     Exposes only competition participations that belong to the logged user.
 
@@ -135,21 +138,22 @@ class UserCompetitionParticipationViewSet(ModelViewSet):
     ordering_fields = ("id",)
     filterset_fields = ("competition",)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[CompetitionParticipation]:
+        user: User = self.request.user  # type: ignore[assignment]
         return CompetitionParticipation.objects.filter(
-            competition__active=True, competition__event__hidden=False, user=self.request.user
+            competition__active=True, competition__event__hidden=False, user=user
         )
 
-    def perform_destroy(self, instance):
+    def perform_destroy(self, instance: CompetitionParticipation) -> None:
         if not instance.competition.is_participating_open():
             raise serializers.ValidationError(_("Participation has ended"))
-        return super(UserCompetitionParticipationViewSet, self).perform_destroy(instance)
+        super().perform_destroy(instance)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: serializers.BaseSerializer[CompetitionParticipation]) -> None:
         serializer.save(user=self.request.user)
 
 
-class CompoViewSet(ReadOnlyModelViewSet):
+class CompoViewSet(ReadOnlyModelViewSet[Compo]):
     """
     Exposes all compos.
 
@@ -171,7 +175,7 @@ class CompoViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("event",)
 
 
-class CompoEntryViewSet(ReadOnlyModelViewSet):
+class CompoEntryViewSet(ReadOnlyModelViewSet[Entry]):
     """
     Exposes all compo entries.
 
@@ -191,13 +195,13 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     ordering_fields = ("id",)
     filterset_fields = ("compo",)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Entry]:
         return Entry.objects.filter(compo__active=True, compo__event__hidden=False).filter(
             Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True)
         )
 
 
-class UserCompoEntryViewSet(ModelViewSet):
+class UserCompoEntryViewSet(ModelViewSet[Entry]):
     """
     Exposes only compo entries that belong to the logged user.
 
@@ -222,15 +226,16 @@ class UserCompoEntryViewSet(ModelViewSet):
     ordering_fields = ("id",)
     filterset_fields = ("compo",)
 
-    def get_queryset(self):
-        return Entry.objects.filter(compo__active=True, compo__event__hidden=False, user=self.request.user)
+    def get_queryset(self) -> QuerySet[Entry]:
+        user: User = self.request.user  # type: ignore[assignment]
+        return Entry.objects.filter(compo__active=True, compo__event__hidden=False, user=user)
 
-    def perform_destroy(self, instance):
+    def perform_destroy(self, instance: Entry) -> None:
         if not instance.compo.is_editing_open():
             raise serializers.ValidationError(_("Compo edit time has ended"))
-        return super(UserCompoEntryViewSet, self).perform_destroy(instance)
+        super().perform_destroy(instance)
 
-    def partial_update(self, request, *args, **kwargs):
+    def partial_update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         instance = self.get_object()
         delete_imagefile = False
         delete_sourcefile = False
@@ -264,15 +269,15 @@ class UserCompoEntryViewSet(ModelViewSet):
         if getattr(instance, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
+            setattr(instance, "_prefetched_objects_cache", {})
 
         return Response(serializer.data)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: serializers.BaseSerializer[Entry]) -> None:
         serializer.save(user=self.request.user)
 
 
-class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
+class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet[VoteCodeRequest]):
     """
     Exposes vote code requests belonging to the currently logged in user.
 
@@ -298,14 +303,15 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
     ordering_fields = ("id",)
     filterset_fields = ("event",)
 
-    def get_queryset(self):
-        return VoteCodeRequest.objects.filter(user=self.request.user, event__hidden=False)
+    def get_queryset(self) -> QuerySet[VoteCodeRequest]:
+        user: User = self.request.user  # type: ignore[assignment]
+        return VoteCodeRequest.objects.filter(user=user, event__hidden=False)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: serializers.BaseSerializer[VoteCodeRequest]) -> None:
         serializer.save(user=self.request.user)
 
 
-class TicketVoteCodeViewSet(ReadWriteModelViewSet):
+class TicketVoteCodeViewSet(ReadWriteModelViewSet[TicketVoteCode]):
     """
     Exposes vote codes belonging to the currently logged in user.
 
@@ -326,14 +332,15 @@ class TicketVoteCodeViewSet(ReadWriteModelViewSet):
     ordering_fields = ("id",)
     filterset_fields = ("event",)
 
-    def get_queryset(self):
-        return TicketVoteCode.objects.filter(associated_to=self.request.user, event__hidden=False)
+    def get_queryset(self) -> QuerySet[TicketVoteCode]:
+        user: User = self.request.user  # type: ignore[assignment]
+        return TicketVoteCode.objects.filter(associated_to=user, event__hidden=False)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: serializers.BaseSerializer[TicketVoteCode]) -> None:
         serializer.save(associated_to=self.request.user)
 
 
-class VoteGroupViewSet(ReadWriteModelViewSet):
+class VoteGroupViewSet(ReadWriteModelViewSet[VoteGroup]):
     """
     Exposes compo entry votes belonging to the currently logged in user.
 
@@ -354,8 +361,9 @@ class VoteGroupViewSet(ReadWriteModelViewSet):
     ordering_fields = ("compo",)
     filterset_fields = ("compo",)
 
-    def get_queryset(self):
-        return VoteGroup.objects.filter(user=self.request.user, compo__event__hidden=False)
+    def get_queryset(self) -> QuerySet[VoteGroup]:
+        user: User = self.request.user  # type: ignore[assignment]
+        return VoteGroup.objects.filter(user=user, compo__event__hidden=False)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: serializers.BaseSerializer[VoteGroup]) -> None:
         serializer.save(user=self.request.user)

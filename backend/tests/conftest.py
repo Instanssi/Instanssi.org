@@ -1469,3 +1469,23 @@ def hidden_event_store_item(hidden_event) -> StoreItem:
         available=True,
         is_ticket=True,
     )
+
+
+@fixture
+def audio_entry(faker, base_user, open_compo, source_zip, image_png) -> Entry:
+    """Entry with an audio file (mp3 extension triggers is_audio=True)."""
+    audio_file = SimpleUploadedFile("test_audio.mp3", b"fake audio data", content_type="audio/mpeg")
+    entry = Entry(
+        compo=open_compo,
+        user=base_user,
+        name="Audio Entry",
+        description=faker.text(),
+        creator=faker.name(),
+        platform="PC",
+        entryfile=audio_file,
+        sourcefile=source_zip,
+        imagefile_original=image_png,
+    )
+    # Save without calling the overridden save() that triggers generate_alternates
+    Entry.objects.bulk_create([entry])
+    return Entry.objects.get(name="Audio Entry")

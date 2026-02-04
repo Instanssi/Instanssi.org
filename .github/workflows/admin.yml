@@ -19,19 +19,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Node 22
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+    - name: Set up Node 24
       uses: actions/setup-node@v4
       with:
-        node-version: '22.x'
+        node-version: '24.x'
+        cache: 'pnpm'
+        cache-dependency-path: admin/pnpm-lock.yaml
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
     - name: Run format-check
-      run: npm run format-check
+      run: pnpm run format-check
     - name: Run type-check
-      run: npm run type-check
+      run: pnpm run type-check
     - name: Run lint-check
-      run: npm run lint-check
+      run: pnpm run lint-check
     - name: Run tests
-      run: npm run test
+      run: pnpm run test
     - name: Run prod test-build
-      run: npm run build
+      run: pnpm run build

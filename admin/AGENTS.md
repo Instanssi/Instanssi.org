@@ -85,8 +85,8 @@ Main composables:
 
 To update the API client:
 ```bash
-npm run fetch-apidoc   # Fetch OpenAPI spec from backend
-npm run generate-api   # Generate TypeScript client
+pnpm run fetch-apidoc   # Fetch OpenAPI spec from backend
+pnpm run generate-api   # Generate TypeScript client
 ```
 
 API usage example:
@@ -129,8 +129,8 @@ Forms are implemented as dialog components for create/edit operations:
 ### Starting Development
 
 ```bash
-npm ci                    # Clean install dependencies
-npm run dev              # Start dev server (http://localhost:5173)
+pnpm install              # Install dependencies
+pnpm run dev              # Start dev server (http://localhost:5173)
 ```
 
 Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
@@ -140,10 +140,10 @@ Dev server proxies `/api` requests to Django backend at `http://localhost:8000`.
 **You MUST run these commands after making any code changes:**
 
 ```bash
-npm run type-check       # TypeScript type checking
-npm run lint             # Lint and auto-fix with ESLint
-npm run format           # Format code with Prettier
-npm run test             # Run unit tests
+pnpm run type-check       # TypeScript type checking
+pnpm run lint             # Lint and auto-fix with ESLint
+pnpm run format           # Format code with Prettier
+pnpm run test             # Run unit tests
 ```
 
 These checks are mandatory before considering any task complete. Do not skip them.
@@ -151,24 +151,24 @@ These checks are mandatory before considering any task complete. Do not skip the
 ### Code Quality
 
 ```bash
-npm run format           # Format code with Prettier
-npm run lint             # Lint and auto-fix with ESLint
-npm run type-check       # TypeScript type checking
-npm run format-check     # Check formatting
-npm run lint-check       # Check linting
+pnpm run format           # Format code with Prettier
+pnpm run lint             # Lint and auto-fix with ESLint
+pnpm run type-check       # TypeScript type checking
+pnpm run format-check     # Check formatting
+pnpm run lint-check       # Check linting
 ```
 
 ### Building for Production
 
 ```bash
-npm run build            # Build to ./dist
-npm run preview          # Preview production build
+pnpm run build            # Build to ./dist
+pnpm run preview          # Preview production build
 ```
 
 ### Analyzing Bundle Size
 
 ```bash
-npx vite-bundle-visualizer
+pnpm dlx vite-bundle-visualizer
 ```
 
 ## Common Development Tasks
@@ -183,8 +183,8 @@ npx vite-bundle-visualizer
 ### Adding a New API Endpoint
 
 1. Add/modify endpoint in Django backend
-2. Run `npm run fetch-apidoc` to fetch updated OpenAPI spec
-3. Run `npm run generate-api` to regenerate client
+2. Run `pnpm run fetch-apidoc` to fetch updated OpenAPI spec
+3. Run `pnpm run generate-api` to regenerate client
 4. Use the new API function from `@/api`
 
 ### Adding a New Permission Target
@@ -310,8 +310,8 @@ Backend runs on `http://localhost:8000` during development.
 Unit tests are configured using Vitest with Vue Test Utils:
 
 ```bash
-npm run test             # Run tests once
-npm run test:watch       # Run tests in watch mode
+pnpm run test             # Run tests once
+pnpm run test:watch       # Run tests in watch mode
 ```
 
 Test files are located alongside source files with `.test.ts` suffix (e.g., `LoginView.test.ts`).
@@ -341,7 +341,7 @@ Modern browsers with ES6+ support required. No IE11 support needed.
 
 ## Deployment
 
-1. Build frontend: `npm run build`
+1. Build frontend: `pnpm run build`
 2. Files are output to `./dist`
 3. Deploy built files to the server
 4. In production, served directly via nginx at `/management/`

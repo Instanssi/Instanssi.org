@@ -97,8 +97,8 @@
                         />
                         <FontAwesomeIcon v-else :icon="faXmark" class="text-green" />
                     </template>
-                    <template #item.rank="{ item }">
-                        {{ item.rank ?? "-" }}
+                    <template #item.computed_rank="{ item }">
+                        {{ item.computed_rank ?? "-" }}
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -211,19 +211,19 @@ const headers: ReadonlyHeaders = [
         key: "competition",
     },
     {
-        title: t("CompetitionParticipationsView.headers.score"),
-        sortable: true,
-        key: "score",
-    },
-    {
         title: t("CompetitionParticipationsView.headers.disqualified"),
         sortable: false,
         key: "disqualified",
     },
     {
         title: t("CompetitionParticipationsView.headers.rank"),
-        sortable: false,
-        key: "rank",
+        sortable: true,
+        key: "computed_rank",
+    },
+    {
+        title: t("CompetitionParticipationsView.headers.score"),
+        sortable: true,
+        key: "score",
     },
     {
         title: t("CompetitionParticipationsView.headers.actions"),
@@ -396,20 +396,20 @@ function generateResultsData(allParticipations: CompetitionParticipation[]): Res
 
         // Sort by rank (participations without rank go to the end)
         const sorted = [...compParticipations].sort((a, b) => {
-            if (a.rank === null && b.rank === null) return 0;
-            if (a.rank === null) return 1;
-            if (b.rank === null) return -1;
-            return a.rank - b.rank;
+            if (a.computed_rank === null && b.computed_rank === null) return 0;
+            if (a.computed_rank === null) return 1;
+            if (b.computed_rank === null) return -1;
+            return a.computed_rank - b.computed_rank;
         });
 
         // Take top 3
         const top3 = sorted.slice(0, 3);
 
         for (const participation of top3) {
-            if (participation.rank === null) continue; // Skip unranked participations
+            if (participation.computed_rank === null) continue; // Skip unranked participations
             rows.push({
                 participantName: participation.participant_name || "Unknown",
-                rankString: toRomanNumeral(participation.rank),
+                rankString: toRomanNumeral(participation.computed_rank),
                 competitionName: competition.name,
             });
         }

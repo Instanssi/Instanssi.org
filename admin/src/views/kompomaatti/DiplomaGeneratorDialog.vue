@@ -186,20 +186,22 @@ const diplomaDataList = computed<DiplomaData[]>(() => {
 
             // Sort by rank (entries without rank go to the end)
             const sorted = [...compoEntries].sort((a, b) => {
-                if (a.rank === null && b.rank === null) return 0;
-                if (a.rank === null) return 1;
-                if (b.rank === null) return -1;
-                return a.rank - b.rank;
+                if (a.computed_rank === null && b.computed_rank === null) return 0;
+                if (a.computed_rank === null) return 1;
+                if (b.computed_rank === null) return -1;
+                return a.computed_rank - b.computed_rank;
             });
 
-            // Take top 3 with ranks
-            const top3 = sorted.filter((e) => e.rank !== null && e.rank <= 3);
+            // Take top 3 with ranks, excluding disqualified entries
+            const top3 = sorted.filter(
+                (e) => e.computed_rank !== null && e.computed_rank <= 3 && !e.disqualified
+            );
 
             for (const entry of top3) {
                 result.push({
                     author: entry.creator,
                     entryName: entry.name || null,
-                    placement: toRomanNumeral(entry.rank!),
+                    placement: toRomanNumeral(entry.computed_rank!),
                     compoName: compo.name,
                     eventName: eventName.value,
                     hasMultipleAuthors: hasMultipleAuthors(entry.creator),
@@ -224,21 +226,23 @@ const diplomaDataList = computed<DiplomaData[]>(() => {
 
             // Sort by rank (participations without rank go to the end)
             const sorted = [...compParticipations].sort((a, b) => {
-                if (a.rank === null && b.rank === null) return 0;
-                if (a.rank === null) return 1;
-                if (b.rank === null) return -1;
-                return a.rank - b.rank;
+                if (a.computed_rank === null && b.computed_rank === null) return 0;
+                if (a.computed_rank === null) return 1;
+                if (b.computed_rank === null) return -1;
+                return a.computed_rank - b.computed_rank;
             });
 
-            // Take top 3 with ranks
-            const top3 = sorted.filter((p) => p.rank !== null && p.rank <= 3);
+            // Take top 3 with ranks, excluding disqualified participations
+            const top3 = sorted.filter(
+                (p) => p.computed_rank !== null && p.computed_rank <= 3 && !p.disqualified
+            );
 
             for (const participation of top3) {
                 const participantName = participation.participant_name || "Unknown";
                 result.push({
                     author: participantName,
                     entryName: null, // No entry for competitions
-                    placement: toRomanNumeral(participation.rank!),
+                    placement: toRomanNumeral(participation.computed_rank!),
                     compoName: competition.name,
                     eventName: eventName.value,
                     hasMultipleAuthors: hasMultipleAuthors(participantName),

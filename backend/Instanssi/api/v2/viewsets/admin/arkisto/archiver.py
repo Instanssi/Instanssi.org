@@ -147,10 +147,10 @@ class ArchiverViewSet(ViewSet):
             )
 
         # Set score and rank to database
-        entries = Entry.objects.filter(compo__event=event)
+        entries = Entry.objects.filter(compo__event=event).with_rank()
         for entry in entries:
-            entry.archive_rank = entry.get_rank()
-            entry.archive_score = entry.get_score()
+            entry.archive_rank = entry.computed_rank
+            entry.archive_score = entry.computed_score
             entry.save()
 
         logger.info("Event scores optimized", extra={"user": request.user, "event": event})

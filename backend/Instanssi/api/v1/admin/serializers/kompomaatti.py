@@ -80,10 +80,10 @@ class AdminCompoEntrySerializer(ModelSerializer):
         return None
 
     def get_rank(self, obj: Entry) -> int:
-        return obj.get_rank()
+        return obj.computed_rank
 
     def get_score(self, obj: Entry) -> float:
-        return obj.get_score()
+        return obj.computed_score
 
     class Meta:
         model = Entry

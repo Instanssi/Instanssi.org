@@ -23,7 +23,7 @@ def test_staff_can_get_participation_detail(staff_api_client, competition_partic
     assert req.data["id"] == competition_participation.id
     assert req.data["competition"] == competition_participation.competition_id
     assert req.data["user"] == competition_participation.user_id
-    assert "rank" in req.data
+    assert "computed_rank" in req.data
 
 
 @pytest.mark.django_db
@@ -71,7 +71,7 @@ def test_participation_includes_rank(staff_api_client, competition_participation
     base_url = get_base_url(competition_participation.competition.event_id)
     req = staff_api_client.get(f"{base_url}{competition_participation.id}/")
     assert req.status_code == 200
-    assert "rank" in req.data
+    assert "computed_rank" in req.data
 
 
 @pytest.mark.django_db
@@ -104,7 +104,7 @@ def test_staff_can_always_see_participation_score_rank(staff_api_client, started
     req = staff_api_client.get(f"{base_url}{started_competition_participation.id}/")
     assert req.status_code == 200
     assert req.data["score"] is not None
-    assert req.data["rank"] is not None
+    assert req.data["computed_rank"] is not None
 
 
 @pytest.mark.django_db

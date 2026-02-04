@@ -208,12 +208,12 @@ class CompoEntrySerializer(ModelSerializer):
 
     def get_rank(self, obj: Entry) -> Optional[int]:
         if obj.compo.show_voting_results:
-            return obj.get_rank()
+            return obj.computed_rank
         return None
 
     def get_score(self, obj: Entry) -> Optional[float]:
         if obj.compo.show_voting_results:
-            return obj.get_score()
+            return obj.computed_score
         return None
 
     def get_youtube_url(self, obj: Entry) -> Optional[str]:

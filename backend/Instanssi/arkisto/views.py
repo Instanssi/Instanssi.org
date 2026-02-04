@@ -7,7 +7,6 @@ from django.utils.text import slugify
 
 from Instanssi.arkisto.models import OtherVideo, OtherVideoCategory
 from Instanssi.kompomaatti.enums import MediaContainer
-from Instanssi.kompomaatti.misc import entrysort
 from Instanssi.kompomaatti.models import (
     Competition,
     CompetitionParticipation,
@@ -24,7 +23,7 @@ def text_event(request: HttpRequest, event_id: int) -> HttpResponse:
     compos = []
     for compo in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if compo.show_voting_results:
-            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")
         else:
             compo.entries = Entry.objects.filter(compo=compo).order_by("name")
         compos.append(compo)
@@ -45,7 +44,7 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
     compos_out = []
     for c in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if c.show_voting_results:
-            entries = entrysort.sort_by_score(Entry.objects.filter(compo=c))
+            entries = Entry.objects.filter(compo=c).with_rank().order_by("computed_rank")
         else:
             entries = Entry.objects.filter(compo=c).order_by("name")
 
@@ -59,8 +58,8 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
                     "compo_id": c.pk,
                     "entry_name": e.name,
                     "entry_author": e.creator,
-                    "entry_score": round(e.get_score(), 2),
-                    "entry_rank": e.get_rank(),
+                    "entry_score": round(e.computed_score, 2),
+                    "entry_rank": e.computed_rank,
                     "entry_result_url": request.build_absolute_uri(e.entryfile.url),
                     "entry_source_url": (
                         request.build_absolute_uri(e.sourcefile.url) if e.sourcefile else None
@@ -121,7 +120,7 @@ def event_index(request, event_id):
     compo_list = []
     for compo in compos_q:
         if compo.show_voting_results:
-            compo.entries = entrysort.sort_by_score(Entry.objects.filter(compo=compo))
+            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")
         else:
             compo.entries = Entry.objects.filter(compo=compo).order_by("name")
         compo_list.append(copy(compo))
@@ -135,8 +134,9 @@ def event_index(request, event_id):
     # Get competitions
     competition_list = []
     for comp in competitions_q:
-        rank_by = "score" if comp.score_sort == 1 else "-score"
-        comp.participants = CompetitionParticipation.objects.filter(competition=comp).order_by(rank_by)
+        comp.participants = (
+            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")
+        )
         competition_list.append(copy(comp))
 
     # Render Event frontpage
@@ -159,7 +159,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 # Entry page
 def entry_index(request: HttpRequest, entry_id: int) -> HttpResponse:
-    entry = get_object_or_404(Entry, pk=entry_id)
+    entry = get_object_or_404(Entry.objects.with_rank(), pk=entry_id)
 
     # Make sure the entry belongs to an archived event
     if not entry.compo.event.archived:

@@ -18,9 +18,7 @@ export type ActionEnum = 0 | 1 | 2 | 3;
 export type Actor = {
     readonly id: number;
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
 };
@@ -233,6 +231,8 @@ export type Competition = {
 
 /**
  * Staff serializer for competition participations.
+ *
+ * Requires queryset to have with_rank() annotation applied.
  */
 export type CompetitionParticipation = {
     readonly id: number;
@@ -270,11 +270,13 @@ export type CompetitionParticipation = {
      * Diskauksen syy
      */
     disqualified_reason?: string;
-    readonly rank: number | null;
+    readonly computed_rank: number;
 };
 
 /**
  * Staff serializer for competition participations.
+ *
+ * Requires queryset to have with_rank() annotation applied.
  */
 export type CompetitionParticipationRequest = {
     /**
@@ -609,8 +611,14 @@ export type CompoEntry = {
      * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
      */
     archive_rank?: number | null;
-    readonly score: number | null;
-    readonly rank: number | null;
+    /**
+     * Return the entry's score. Requires queryset to have with_rank() annotation applied.
+     */
+    readonly computed_score: number;
+    /**
+     * Return the entry's rank. Requires queryset to have with_rank() annotation applied.
+     */
+    readonly computed_rank: number;
     readonly alternate_files: Array<AlternateEntryFile>;
 };
 
@@ -834,7 +842,7 @@ export type ContentType = {
     readonly id: number;
     app_label: string;
     /**
-     * Mallin python-luokan nimi
+     * Python model class name
      */
     model: string;
 };
@@ -1444,9 +1452,6 @@ export type EventTypeEnum = 0 | 1;
  * Serializer for user groups (used in user info responses).
  */
 export type Group = {
-    /**
-     * Nimi
-     */
     name: string;
 };
 
@@ -1454,9 +1459,6 @@ export type Group = {
  * Serializer for user groups (used in user info responses).
  */
 export type GroupRequest = {
-    /**
-     * Nimi
-     */
     name: string;
 };
 
@@ -1865,6 +1867,8 @@ export type PatchedBlogEntryRequest = {
 
 /**
  * Staff serializer for competition participations.
+ *
+ * Requires queryset to have with_rank() annotation applied.
  */
 export type PatchedCompetitionParticipationRequest = {
     /**
@@ -2684,27 +2688,19 @@ export type PatchedUserCompoEntryRequest = {
  */
 export type PatchedUserRequest = {
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username?: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
     /**
-     * Voimassa
+     * Active
      *
-     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
 };
@@ -3239,8 +3235,8 @@ export type PublicCompoEntry = {
     youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
-    readonly score: number | null;
-    readonly rank: number | null;
+    readonly computed_score: number | null;
+    readonly computed_rank: number | null;
     readonly alternate_files: Array<PublicAlternateEntryFile>;
 };
 
@@ -4243,39 +4239,28 @@ export type UploadedFileRequest = {
 export type User = {
     readonly id: number;
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
     readonly user_permissions: Array<string>;
     /**
-     * Pääkäyttäjä
+     * Superuser status
      *
-     * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
+     * Designates that this user has all permissions without explicitly assigning them.
      */
     readonly is_superuser: boolean;
-    /**
-     * Liittynyt
-     */
     readonly date_joined: string;
     readonly groups: Array<Group>;
     /**
-     * Voimassa
+     * Active
      *
-     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
 };
@@ -4350,8 +4335,8 @@ export type UserCompoEntry = {
     youtube_url?: string | null;
     readonly disqualified: boolean | null;
     readonly disqualified_reason: string | null;
-    readonly score: number | null;
-    readonly rank: number | null;
+    readonly computed_score: number | null;
+    readonly computed_rank: number | null;
     readonly alternate_files: Array<AlternateEntryFile>;
 };
 
@@ -4398,33 +4383,22 @@ export type UserCompoEntryRequest = {
 export type UserInfo = {
     readonly id: number;
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
     readonly user_permissions: Array<string>;
     /**
-     * Pääkäyttäjä
+     * Superuser status
      *
-     * Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy erikseen luetella.
+     * Designates that this user has all permissions without explicitly assigning them.
      */
     readonly is_superuser: boolean;
-    /**
-     * Liittynyt
-     */
     readonly date_joined: string;
 };
 
@@ -4441,27 +4415,19 @@ export type UserLoginRequest = {
  */
 export type UserRequest = {
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
     /**
-     * Voimassa
+     * Active
      *
-     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
 };
@@ -4642,9 +4608,7 @@ export type VoteCodeRequestRequest = {
  */
 export type ActorWritable = {
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
 };
@@ -4746,6 +4710,8 @@ export type CompetitionWritable = {
 
 /**
  * Staff serializer for competition participations.
+ *
+ * Requires queryset to have with_rank() annotation applied.
  */
 export type CompetitionParticipationWritable = {
     /**
@@ -5003,7 +4969,7 @@ export type CompoEntryWritable = {
 export type ContentTypeWritable = {
     app_label: string;
     /**
-     * Mallin python-luokan nimi
+     * Python model class name
      */
     model: string;
 };
@@ -6037,27 +6003,19 @@ export type UploadedFileWritable = {
  */
 export type UserWritable = {
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
     /**
-     * Voimassa
+     * Active
      *
-     * Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin käytön poistamatta sitä.
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
 };
@@ -6172,21 +6130,13 @@ export type UserCompoEntryRequestWritable = {
  */
 export type UserInfoWritable = {
     /**
-     * Käyttäjätunnus
-     *
-     * Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja @/./+/-/_ ovat sallittuja.
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
-    /**
-     * Etunimi
-     */
     first_name?: string;
-    /**
-     * Sukunimi
-     */
     last_name?: string;
     /**
-     * Sähköpostiosoite
+     * Email address
      */
     email?: string;
 };
@@ -6300,7 +6250,7 @@ export type AdminAuditlogRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this lokimerkintä.
+         * A unique integer value identifying this log entry.
          */
         id: number;
     };
@@ -7340,6 +7290,22 @@ export type AdminEventKompomaattiEntriesUpdateResponses = {
 export type AdminEventKompomaattiEntriesUpdateResponse =
     AdminEventKompomaattiEntriesUpdateResponses[keyof AdminEventKompomaattiEntriesUpdateResponses];
 
+export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/";
+};
+
+export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses = {
+    200: CompoEntry;
+};
+
+export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponse =
+    AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses[keyof AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses];
+
 export type AdminEventKompomaattiTicketVoteCodesListData = {
     body?: never;
     path: {
@@ -7829,6 +7795,10 @@ export type AdminEventStoreItemsListData = {
          * Which field to use when ordering the results.
          */
         ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
     };
     url: "/api/v2/admin/event/{event_pk}/store/items/";
 };
@@ -8499,6 +8469,8 @@ export type AdminEventsListData = {
     body?: never;
     path?: never;
     query?: {
+        archived?: boolean;
+        hidden?: boolean;
         /**
          * Number of results to return per page.
          */
@@ -8623,6 +8595,9 @@ export type AdminUsersListData = {
     path?: never;
     query?: {
         email?: string;
+        is_active?: boolean;
+        is_staff?: boolean;
+        is_superuser?: boolean;
         /**
          * Number of results to return per page.
          */
@@ -8667,7 +8642,7 @@ export type AdminUsersDestroyData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this käyttäjä.
+         * A unique integer value identifying this user.
          */
         id: number;
     };
@@ -8689,7 +8664,7 @@ export type AdminUsersRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this käyttäjä.
+         * A unique integer value identifying this user.
          */
         id: number;
     };
@@ -8708,7 +8683,7 @@ export type AdminUsersPartialUpdateData = {
     body?: PatchedUserRequest;
     path: {
         /**
-         * A unique integer value identifying this käyttäjä.
+         * A unique integer value identifying this user.
          */
         id: number;
     };
@@ -8727,7 +8702,7 @@ export type AdminUsersUpdateData = {
     body: UserRequest;
     path: {
         /**
-         * A unique integer value identifying this käyttäjä.
+         * A unique integer value identifying this user.
          */
         id: number;
     };
@@ -9590,6 +9565,10 @@ export type PublicEventKompomaattiEntriesListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/";
 };

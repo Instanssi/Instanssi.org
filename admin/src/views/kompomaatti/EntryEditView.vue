@@ -509,8 +509,8 @@ onMounted(async () => {
             };
 
             // Set readonly voting results
-            votingScore.value = item.score?.toString() ?? "-";
-            votingRank.value = item.rank?.toString() ?? "-";
+            votingScore.value = item.computed_score?.toString() ?? "-";
+            votingRank.value = item.computed_rank?.toString() ?? "-";
             alternateFiles.value = item.alternate_files ?? [];
 
             setValues({

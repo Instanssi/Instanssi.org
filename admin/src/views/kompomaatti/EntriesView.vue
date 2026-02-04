@@ -119,8 +119,11 @@
                     <template #item.compo="{ item }">
                         {{ getCompoName(item.compo) }}
                     </template>
-                    <template #item.rank="{ item }">
-                        {{ item.rank ?? "-" }}
+                    <template #item.computed_score="{ item }">
+                        {{ item.computed_score?.toFixed(2) ?? "-" }}
+                    </template>
+                    <template #item.computed_rank="{ item }">
+                        {{ item.computed_rank ?? "-" }}
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -257,8 +260,13 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("EntriesView.headers.rank"),
-        sortable: false,
-        key: "rank",
+        sortable: true,
+        key: "computed_rank",
+    },
+    {
+        title: t("EntriesView.headers.score"),
+        sortable: true,
+        key: "computed_score",
     },
     {
         title: t("EntriesView.headers.actions"),
@@ -424,21 +432,21 @@ function generateResultsData(allEntries: CompoEntry[]): ResultRow[] {
 
         // Sort by rank (entries without rank go to the end)
         const sorted = [...compoEntries].sort((a, b) => {
-            if (a.rank === null && b.rank === null) return 0;
-            if (a.rank === null) return 1;
-            if (b.rank === null) return -1;
-            return a.rank - b.rank;
+            if (a.computed_rank === null && b.computed_rank === null) return 0;
+            if (a.computed_rank === null) return 1;
+            if (b.computed_rank === null) return -1;
+            return a.computed_rank - b.computed_rank;
         });
 
         // Take top 3
         const top3 = sorted.slice(0, 3);
 
         for (const entry of top3) {
-            if (entry.rank === null) continue; // Skip unranked entries
+            if (entry.computed_rank === null) continue; // Skip unranked entries
             rows.push({
                 entryName: entry.name,
                 creator: entry.creator,
-                rankString: toRomanNumeral(entry.rank),
+                rankString: toRomanNumeral(entry.computed_rank),
                 compoName: compo.name,
             });
         }

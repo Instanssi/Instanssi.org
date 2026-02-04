@@ -54,10 +54,10 @@ class TestAdminCompoEntryScoreRank:
         assert req.status_code == 200
         entries = {e["name"]: e for e in req.data}
 
-        assert entries["Test Entry"]["score"] == pytest.approx(2.0)
-        assert entries["Test Entry"]["rank"] == 1
-        assert entries["Second Entry"]["score"] == pytest.approx(1.5)
-        assert entries["Second Entry"]["rank"] == 2
+        assert entries["Test Entry"]["computed_score"] == pytest.approx(2.0)
+        assert entries["Test Entry"]["computed_rank"] == 1
+        assert entries["Second Entry"]["computed_score"] == pytest.approx(1.5)
+        assert entries["Second Entry"]["computed_rank"] == 2
 
     def test_archive_score_rank_exposed_and_used(self, staff_api_client, closed_compo_entry):
         """Admin sees archive_score/archive_rank as separate fields, and they affect score/rank."""
@@ -66,9 +66,9 @@ class TestAdminCompoEntryScoreRank:
         assert req.status_code == 200
         assert req.data["archive_score"] == 5.0
         assert req.data["archive_rank"] == 1
-        # score and rank should reflect archive values
-        assert req.data["score"] == 5.0
-        assert req.data["rank"] == 1
+        # computed_score and computed_rank should reflect archive values
+        assert req.data["computed_score"] == 5.0
+        assert req.data["computed_rank"] == 1
 
     def test_disqualified_entry_score(self, staff_api_client, votable_compo_entry):
         """Admin sees disqualified entry score as -1."""
@@ -78,7 +78,7 @@ class TestAdminCompoEntryScoreRank:
         base_url = f"/api/v2/admin/event/{votable_compo_entry.compo.event_id}/kompomaatti/entries/"
         req = staff_api_client.get(f"{base_url}{votable_compo_entry.id}/")
         assert req.status_code == 200
-        assert req.data["score"] == -1.0
+        assert req.data["computed_score"] == -1.0
 
 
 @pytest.mark.django_db
@@ -105,9 +105,9 @@ class TestAdminCompetitionParticipationScoreRank:
         parts = {p["participant_name"]: p for p in req.data}
 
         assert parts["Winner"]["score"] == 300.0
-        assert parts["Winner"]["rank"] == 1
+        assert parts["Winner"]["computed_rank"] == 1
         assert parts["Runner Up"]["score"] == 100.0
-        assert parts["Runner Up"]["rank"] == 2
+        assert parts["Runner Up"]["computed_rank"] == 2
 
     def test_score_rank_visible_without_show_results(self, staff_api_client, competition_participation):
         """Admin sees score/rank even when show_results is False."""
@@ -118,4 +118,4 @@ class TestAdminCompetitionParticipationScoreRank:
         req = staff_api_client.get(f"{base_url}{competition_participation.id}/")
         assert req.status_code == 200
         assert req.data["score"] == 100.0
-        assert req.data["rank"] == 1
+        assert req.data["computed_rank"] == 1

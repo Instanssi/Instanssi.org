@@ -100,6 +100,8 @@ import type {
     AdminEventKompomaattiEntriesCreateResponses,
     AdminEventKompomaattiEntriesDestroyData,
     AdminEventKompomaattiEntriesDestroyResponses,
+    AdminEventKompomaattiEntriesDownloadArchiveRetrieveData,
+    AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses,
     AdminEventKompomaattiEntriesListData,
     AdminEventKompomaattiEntriesListResponses,
     AdminEventKompomaattiEntriesPartialUpdateData,
@@ -1107,6 +1109,8 @@ export const adminEventArkistoVideosUpdate = <ThrowOnError extends boolean = fal
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsList = <
     ThrowOnError extends boolean = false,
@@ -1137,6 +1141,8 @@ export const adminEventKompomaattiCompetitionParticipationsList = <
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsCreate = <
     ThrowOnError extends boolean = false,
@@ -1171,6 +1177,8 @@ export const adminEventKompomaattiCompetitionParticipationsCreate = <
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsDestroy = <
     ThrowOnError extends boolean = false,
@@ -1200,6 +1208,8 @@ export const adminEventKompomaattiCompetitionParticipationsDestroy = <
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsRetrieve = <
     ThrowOnError extends boolean = false,
@@ -1230,6 +1240,8 @@ export const adminEventKompomaattiCompetitionParticipationsRetrieve = <
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsPartialUpdate = <
     ThrowOnError extends boolean = false,
@@ -1264,6 +1276,8 @@ export const adminEventKompomaattiCompetitionParticipationsPartialUpdate = <
 
 /**
  * Staff viewset for managing competition participations.
+ *
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiCompetitionParticipationsUpdate = <
     ThrowOnError extends boolean = false,
@@ -1660,6 +1674,7 @@ export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean =
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesListData, ThrowOnError>
@@ -1690,6 +1705,7 @@ export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = 
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesCreateData, ThrowOnError>
@@ -1725,6 +1741,7 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesDestroyData, ThrowOnError>
@@ -1754,6 +1771,7 @@ export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesRetrieveData, ThrowOnError>
@@ -1784,6 +1802,7 @@ export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolea
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesPartialUpdateData, ThrowOnError>
@@ -1819,6 +1838,7 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
  * Staff viewset for managing compo entries.
  *
  * Staff can manage entries without deadline restrictions.
+ * Supports ordering by rank and score.
  */
 export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesUpdateData, ThrowOnError>
@@ -1847,6 +1867,43 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
             "Content-Type": null,
             ...options.headers,
         },
+    });
+};
+
+/**
+ * Download entry files as a .tar.gz archive.
+ *
+ * Streams all entry files organized by compo directory, with rank prefix.
+ * Disqualified entries are excluded. Supports filtering via query params.
+ *
+ * Query parameters (inherited from viewset):
+ * compo: Filter by compo ID
+ * user: Filter by user ID
+ */
+export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AdminEventKompomaattiEntriesDownloadArchiveRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/",
+        ...options,
     });
 };
 
@@ -3792,6 +3849,8 @@ export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesListData, ThrowOnError>
@@ -3820,6 +3879,8 @@ export const eventUserKompomaattiEntriesList = <ThrowOnError extends boolean = f
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesCreateData, ThrowOnError>
@@ -3853,6 +3914,8 @@ export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean =
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesDestroyData, ThrowOnError>
@@ -3880,6 +3943,8 @@ export const eventUserKompomaattiEntriesDestroy = <ThrowOnError extends boolean 
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesRetrieveData, ThrowOnError>
@@ -3908,6 +3973,8 @@ export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesPartialUpdateData, ThrowOnError>
@@ -3941,6 +4008,8 @@ export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends bo
 
 /**
  * Manage the current user's own compo entries.
+ *
+ * Supports ordering by rank and score.
  */
 export const eventUserKompomaattiEntriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesUpdateData, ThrowOnError>
@@ -4837,6 +4906,8 @@ export const publicEventKompomaattiComposRetrieve = <ThrowOnError extends boolea
  *
  * Only entries from active compos where voting has started (or the event
  * is archived) are shown.
+ *
+ * Supports ordering by rank and score when results are visible.
  */
 export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiEntriesListData, ThrowOnError>
@@ -4857,6 +4928,8 @@ export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean =
  *
  * Only entries from active compos where voting has started (or the event
  * is archived) are shown.
+ *
+ * Supports ordering by rank and score when results are visible.
  */
 export const publicEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiEntriesRetrieveData, ThrowOnError>

@@ -35,8 +35,8 @@ def test_get_admin_compo_entry_detail(staff_api_client, votable_compo_entry):
     assert data["imagefile_medium_url"] is not None
     assert data["disqualified"] == votable_compo_entry.disqualified
     assert data["disqualified_reason"] == votable_compo_entry.disqualified_reason
-    assert "rank" in data
-    assert "score" in data
+    assert "computed_rank" in data
+    assert "computed_score" in data
 
 
 @pytest.mark.django_db
@@ -208,8 +208,8 @@ def test_staff_can_always_see_entry_score_rank(staff_api_client, votable_compo_e
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     req = staff_api_client.get(f"{base_url}{votable_compo_entry.id}/")
     assert req.status_code == 200
-    assert req.data["score"] is not None
-    assert req.data["rank"] is not None
+    assert req.data["computed_score"] is not None
+    assert req.data["computed_rank"] is not None
 
 
 @pytest.mark.django_db

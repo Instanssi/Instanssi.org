@@ -329,7 +329,7 @@ onMounted(async () => {
             });
             const item = response.data!;
             participationName.value = item.participant_name || `#${item.id}`;
-            rankDisplay.value = item.rank?.toString() ?? "-";
+            rankDisplay.value = item.computed_rank?.toString() ?? "-";
 
             setValues({
                 competition: item.competition,

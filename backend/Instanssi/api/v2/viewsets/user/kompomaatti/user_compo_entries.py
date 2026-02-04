@@ -18,14 +18,17 @@ from Instanssi.kompomaatti.models import Compo, Entry
 
 
 class UserCompoEntryViewSet(ModelViewSet[Entry]):
-    """Manage the current user's own compo entries."""
+    """Manage the current user's own compo entries.
+
+    Supports ordering by rank and score.
+    """
 
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompoEntrySerializer
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter, DjangoFilterBackend)
-    ordering_fields = ("id", "compo", "name")
+    ordering_fields = ("id", "compo", "name", "computed_rank", "computed_score")
     filterset_fields = ("compo",)
     queryset = Entry.objects.all()
 
@@ -38,6 +41,7 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
             )
             .select_related("compo")
             .prefetch_related("alternate_files")
+            .with_rank()
         )
 
     def validate_compo_belongs_to_event(self, compo: Compo) -> None:
@@ -55,6 +59,11 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
         if not compo.is_editing_open():
             raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
 
+    def _refresh_with_annotations(self, serializer: BaseSerializer[Entry]) -> None:
+        """Refresh the serializer instance with score/rank annotations."""
+        assert serializer.instance is not None
+        serializer.instance = self.get_queryset().get(pk=serializer.instance.pk)
+
     def perform_create(self, serializer: BaseSerializer[Entry]) -> None:
         if compo := serializer.validated_data.get("compo"):
             self.validate_compo_belongs_to_event(compo)
@@ -69,6 +78,7 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
 
         instance = serializer.save(user=self.request.user)
         maybe_copy_entry_to_image(instance)
+        self._refresh_with_annotations(serializer)
 
     def perform_update(self, serializer: BaseSerializer[Entry]) -> None:
         instance = serializer.instance
@@ -79,6 +89,7 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
         validate_entry_files(serializer.validated_data, instance.compo, instance)
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)
+        self._refresh_with_annotations(serializer)
 
     def validate_partial_update(self, instance: Entry) -> None:
         self._validate_editing_allowed(instance.compo)

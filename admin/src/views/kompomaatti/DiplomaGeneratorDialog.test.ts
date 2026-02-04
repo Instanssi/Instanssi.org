@@ -45,12 +45,12 @@ const mockCompos = {
 const mockEntries = {
     data: {
         results: [
-            { id: 1, compo: 1, name: "Cool Demo", creator: "Artist One", rank: 1 },
-            { id: 2, compo: 1, name: "Nice Demo", creator: "Artist Two", rank: 2 },
-            { id: 3, compo: 1, name: "Demo Three", creator: "Artist Three", rank: 3 },
-            { id: 4, compo: 1, name: "Demo Four", creator: "Artist Four", rank: 4 },
-            { id: 5, compo: 2, name: "Great Track", creator: "Musician One", rank: 1 },
-            { id: 6, compo: 2, name: "Nice Track", creator: "Team A / Team B", rank: 2 },
+            { id: 1, compo: 1, name: "Cool Demo", creator: "Artist One", computed_rank: 1 },
+            { id: 2, compo: 1, name: "Nice Demo", creator: "Artist Two", computed_rank: 2 },
+            { id: 3, compo: 1, name: "Demo Three", creator: "Artist Three", computed_rank: 3 },
+            { id: 4, compo: 1, name: "Demo Four", creator: "Artist Four", computed_rank: 4 },
+            { id: 5, compo: 2, name: "Great Track", creator: "Musician One", computed_rank: 1 },
+            { id: 6, compo: 2, name: "Nice Track", creator: "Team A / Team B", computed_rank: 2 },
         ],
     },
 };
@@ -67,9 +67,9 @@ const mockCompetitions = {
 const mockParticipations = {
     data: {
         results: [
-            { id: 1, competition: 1, participant_name: "Speedy", rank: 1 },
-            { id: 2, competition: 1, participant_name: "Quick", rank: 2 },
-            { id: 3, competition: 2, participant_name: "Smart One", rank: 1 },
+            { id: 1, competition: 1, participant_name: "Speedy", computed_rank: 1 },
+            { id: 2, competition: 1, participant_name: "Quick", computed_rank: 2 },
+            { id: 3, competition: 2, participant_name: "Smart One", computed_rank: 1 },
         ],
     },
 };

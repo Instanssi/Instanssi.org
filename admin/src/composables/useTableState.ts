@@ -18,6 +18,11 @@ export interface TableStateOptions {
     filterKeys?: string[];
     /** Debounce delay for URL updates (ms) */
     urlUpdateDelay?: number;
+    /** Default sort when no sort is specified in URL */
+    defaultSort?: {
+        key: string;
+        order: SortOrder;
+    };
 }
 
 export interface TableState {
@@ -52,6 +57,7 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         pageSizeOptions = [25, 50, 100],
         filterKeys = [],
         urlUpdateDelay = 100,
+        defaultSort,
     } = options;
 
     const route = useRoute();
@@ -106,6 +112,8 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         // Sort
         if (query.sortBy && typeof query.sortBy === "string") {
             sortBy.value = query.sortBy;
+        } else if (defaultSort) {
+            sortBy.value = defaultSort.key;
         } else {
             sortBy.value = null;
         }
@@ -113,6 +121,8 @@ export function useTableState(options: TableStateOptions = {}): TableState {
             if (query.sortOrder === "asc" || query.sortOrder === "desc") {
                 sortOrder.value = query.sortOrder;
             }
+        } else if (defaultSort) {
+            sortOrder.value = defaultSort.order;
         } else {
             sortOrder.value = "asc";
         }
@@ -183,6 +193,9 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         if (args.sortBy.length > 0) {
             sortBy.value = args.sortBy[0]!.key;
             sortOrder.value = args.sortBy[0]!.order;
+        } else if (defaultSort) {
+            sortBy.value = defaultSort.key;
+            sortOrder.value = defaultSort.order;
         } else {
             sortBy.value = null;
             sortOrder.value = "asc";

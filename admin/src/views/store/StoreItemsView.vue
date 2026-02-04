@@ -160,7 +160,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("StoreItemsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["available", "is_ticket", "is_secret"] });
+const tableState = useTableState({
+    filterKeys: ["available", "is_ticket", "is_secret"],
+    defaultSort: { key: "id", order: "desc" },
+});
 const totalItems = ref(0);
 const items: Ref<StoreItem[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

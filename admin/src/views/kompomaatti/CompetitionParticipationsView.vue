@@ -168,7 +168,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("CompetitionParticipationsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ filterKeys: ["competition", "disqualified"] });
+const tableState = useTableState({
+    filterKeys: ["competition", "disqualified"],
+    defaultSort: { key: "id", order: "desc" },
+});
 const totalItems = ref(0);
 const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);

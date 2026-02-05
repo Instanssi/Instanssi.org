@@ -133,7 +133,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const tableState = useTableState({
     filterKeys: ["active"],
-    defaultSort: { key: "start", order: "desc" },
+    initialSort: { key: "start", order: "desc" },
 });
 const totalItems = ref(0);
 const competitions: Ref<Competition[]> = ref([]);

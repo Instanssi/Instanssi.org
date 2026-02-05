@@ -125,7 +125,7 @@ const modelOptions: ModelOption[] = [
 const loading = ref(false);
 const tableState = useTableState({
     filterKeys: ["model"],
-    defaultSort: { key: "timestamp", order: "desc" },
+    initialSort: { key: "timestamp", order: "desc" },
 });
 const totalItems = ref(0);
 const entries: Ref<LogEntry[]> = ref([]);

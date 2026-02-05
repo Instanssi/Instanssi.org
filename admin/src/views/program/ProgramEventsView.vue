@@ -161,7 +161,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const tableState = useTableState({
     filterKeys: ["eventType", "active"],
-    defaultSort: { key: "start", order: "desc" },
+    initialSort: { key: "start", order: "desc" },
 });
 const totalItems = ref(0);
 const items: Ref<ProgramEvent[]> = ref([]);

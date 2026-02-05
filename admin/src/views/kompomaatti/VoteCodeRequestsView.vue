@@ -133,7 +133,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("VoteCodeRequestsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ defaultSort: { key: "id", order: "desc" } });
+const tableState = useTableState({ initialSort: { key: "id", order: "desc" } });
 const totalItems = ref(0);
 const requests: Ref<VoteCodeRequest[]> = ref([]);
 const lastLoadArgs = ref<LoadArgs | null>(null);

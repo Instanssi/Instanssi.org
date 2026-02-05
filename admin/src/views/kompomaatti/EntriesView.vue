@@ -204,7 +204,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const tableState = useTableState({
     filterKeys: ["compo", "disqualified"],
-    defaultSort: { key: "id", order: "desc" },
+    initialSort: { key: "id", order: "desc" },
 });
 const totalItems = ref(0);
 const entries: Ref<CompoEntry[]> = ref([]);

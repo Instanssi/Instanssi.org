@@ -122,7 +122,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("UploadsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ defaultSort: { key: "date", order: "desc" } });
+const tableState = useTableState({ initialSort: { key: "date", order: "desc" } });
 const totalItems = ref(0);
 const items: Ref<UploadedFile[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

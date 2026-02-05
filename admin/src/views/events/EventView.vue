@@ -150,7 +150,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
 
 const tableState = useTableState({
     filterKeys: ["archived", "hidden"],
-    defaultSort: { key: "date", order: "desc" },
+    initialSort: { key: "date", order: "desc" },
 });
 const loading = ref(false);
 const totalItems = ref(0);

@@ -103,7 +103,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("TransactionsView.title"), disabled: true },
 ]);
 
-const tableState = useTableState({ defaultSort: { key: "time_created", order: "desc" } });
+const tableState = useTableState({ initialSort: { key: "time_created", order: "desc" } });
 const totalItems = ref(0);
 const transactions: Ref<StoreTransaction[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

@@ -133,7 +133,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const tableState = useTableState({
     filterKeys: ["active"],
-    defaultSort: { key: "id", order: "desc" },
+    initialSort: { key: "id", order: "desc" },
 });
 const totalItems = ref(0);
 const compos: Ref<Compo[]> = ref([]);

@@ -18,8 +18,8 @@ export interface TableStateOptions {
     filterKeys?: string[];
     /** Debounce delay for URL updates (ms) */
     urlUpdateDelay?: number;
-    /** Default sort when no sort is specified in URL */
-    defaultSort?: {
+    /** Initial sort applied only on first load when no sort params in URL */
+    initialSort?: {
         key: string;
         order: SortOrder;
     };
@@ -57,7 +57,7 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         pageSizeOptions = [25, 50, 100],
         filterKeys = [],
         urlUpdateDelay = 100,
-        defaultSort,
+        initialSort,
     } = options;
 
     const route = useRoute();
@@ -70,6 +70,9 @@ export function useTableState(options: TableStateOptions = {}): TableState {
     const sortBy: Ref<string | null> = ref(null);
     const sortOrder: Ref<SortOrder> = ref("asc");
     const filters: Ref<Record<string, string | null>> = ref({});
+
+    // Track whether this is the initial load (for applying initialSort)
+    let isInitialLoad = true;
 
     // Initialize filters object with null values
     for (const key of filterKeys) {
@@ -109,11 +112,11 @@ export function useTableState(options: TableStateOptions = {}): TableState {
             search.value = "";
         }
 
-        // Sort
+        // Sort - only apply initialSort on first load when no URL params
         if (query.sortBy && typeof query.sortBy === "string") {
             sortBy.value = query.sortBy;
-        } else if (defaultSort) {
-            sortBy.value = defaultSort.key;
+        } else if (isInitialLoad && initialSort) {
+            sortBy.value = initialSort.key;
         } else {
             sortBy.value = null;
         }
@@ -121,8 +124,8 @@ export function useTableState(options: TableStateOptions = {}): TableState {
             if (query.sortOrder === "asc" || query.sortOrder === "desc") {
                 sortOrder.value = query.sortOrder;
             }
-        } else if (defaultSort) {
-            sortOrder.value = defaultSort.order;
+        } else if (isInitialLoad && initialSort) {
+            sortOrder.value = initialSort.order;
         } else {
             sortOrder.value = "asc";
         }
@@ -139,6 +142,7 @@ export function useTableState(options: TableStateOptions = {}): TableState {
 
     // Read initial state from URL immediately (before template renders)
     readFromUrl();
+    isInitialLoad = false;
 
     /**
      * Build query object from current state
@@ -193,9 +197,6 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         if (args.sortBy.length > 0) {
             sortBy.value = args.sortBy[0]!.key;
             sortOrder.value = args.sortBy[0]!.order;
-        } else if (defaultSort) {
-            sortBy.value = defaultSort.key;
-            sortOrder.value = defaultSort.order;
         } else {
             sortBy.value = null;
             sortOrder.value = "asc";

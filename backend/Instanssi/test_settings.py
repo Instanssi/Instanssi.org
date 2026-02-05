@@ -20,6 +20,11 @@ DATABASES = {
     }
 }
 
+# Use a fast password hasher for tests (PBKDF2 is intentionally slow)
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.MD5PasswordHasher",
+]
+
 # Google api stuff
 GOOGLE_API_KEY = ""
 

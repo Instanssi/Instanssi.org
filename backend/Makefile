@@ -1,4 +1,3 @@
-
 env:
 	poetry env use 3.13
 	poetry install
@@ -28,7 +27,7 @@ mypy:
 	poetry run mypy -p Instanssi.api.v2
 
 pytest-parallel:
-	poetry run pytest -n auto
+	poetry run pytest -n $$((`nproc` / 2))
 
 coverage:
 	poetry run pytest --cov=Instanssi

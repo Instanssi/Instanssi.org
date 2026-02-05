@@ -37,6 +37,7 @@ class ArchiverViewSet(ViewSet):
     """
 
     permission_classes = [IsAuthenticated]
+    serializer_class = ArchiverStatusSerializer
 
     def get_event(self) -> Event:
         """Get the event from URL kwargs."""
@@ -93,6 +94,7 @@ class ArchiverViewSet(ViewSet):
         return self._build_status_response()
 
     @extend_schema(
+        request=None,
         responses={200: ArchiverStatusSerializer},
         summary="Show event in archive",
         description="Makes the event visible in the public archive.",
@@ -110,6 +112,7 @@ class ArchiverViewSet(ViewSet):
         return self._build_status_response()
 
     @extend_schema(
+        request=None,
         responses={200: ArchiverStatusSerializer},
         summary="Hide event from archive",
         description="Hides the event from the public archive.",
@@ -127,6 +130,7 @@ class ArchiverViewSet(ViewSet):
         return self._build_status_response()
 
     @extend_schema(
+        request=None,
         responses={200: ArchiverStatusSerializer},
         summary="Optimize voting scores",
         description="Pre-calculates and stores entry ranks and scores. Cannot be run while event is ongoing.",
@@ -157,6 +161,7 @@ class ArchiverViewSet(ViewSet):
         return self._build_status_response()
 
     @extend_schema(
+        request=None,
         responses={200: ArchiverStatusSerializer},
         summary="Remove old votes",
         description="Deletes vote records after scores have been optimized. Cannot be run while event is ongoing or if scores are not optimized.",
@@ -193,6 +198,7 @@ class ArchiverViewSet(ViewSet):
         return self._build_status_response()
 
     @extend_schema(
+        request=None,
         responses={200: ArchiverStatusSerializer},
         summary="Transfer rights to archive user",
         description="Transfers entry and competition participation ownership to the 'arkisto' user. Cannot be run while event is ongoing.",

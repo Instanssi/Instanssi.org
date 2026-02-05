@@ -7300,7 +7300,7 @@ export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveData = {
 };
 
 export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses = {
-    200: CompoEntry;
+    200: Blob | File;
 };
 
 export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponse =

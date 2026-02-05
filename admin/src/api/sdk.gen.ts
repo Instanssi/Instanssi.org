@@ -1871,14 +1871,9 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
 };
 
 /**
- * Download entry files as a .tar.gz archive.
+ * Download entry files archive
  *
- * Streams all entry files organized by compo directory, with rank prefix.
- * Disqualified entries are excluded. Supports filtering via query params.
- *
- * Query parameters (inherited from viewset):
- * compo: Filter by compo ID
- * user: Filter by user ID
+ * Streams all entry files as a ZIP archive organized by compo directory.
  */
 export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
     ThrowOnError extends boolean = false,
@@ -1890,7 +1885,7 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
+        responseType: "blob",
         security: [
             {
                 name: "Authorization",

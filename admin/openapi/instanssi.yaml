@@ -1745,15 +1745,8 @@ paths:
   /api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/:
     get:
       operationId: admin_event_kompomaatti_entries_download_archive_retrieve
-      description: |-
-        Download entry files as a .tar.gz archive.
-
-        Streams all entry files organized by compo directory, with rank prefix.
-        Disqualified entries are excluded. Supports filtering via query params.
-
-        Query parameters (inherited from viewset):
-            compo: Filter by compo ID
-            user: Filter by user ID
+      description: Streams all entry files as a ZIP archive organized by compo directory.
+      summary: Download entry files archive
       parameters:
       - in: path
         name: event_pk
@@ -1768,9 +1761,10 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/zip:
               schema:
-                $ref: '#/components/schemas/CompoEntry'
+                type: string
+                format: binary
           description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/:
     get:

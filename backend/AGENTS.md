@@ -186,6 +186,13 @@ Tests use pytest-django with:
 - Faker for realistic test data
 - freezegun for time-based testing
 
+**Test Style:**
+
+- Do not use test classes. Write tests as plain functions (`def test_something():`, not `class TestSomething:`).
+- Use pytest fixtures for test setup and shared state. Place fixtures in `conftest.py` files.
+- Before creating new fixtures, check existing `conftest.py` files for reusable fixtures.
+- Prefer the AAA pattern: Arrange, Act, Assert.
+
 **API Testing Requirements:**
 
 When writing tests for API endpoints, you MUST test all three authorization scenarios:

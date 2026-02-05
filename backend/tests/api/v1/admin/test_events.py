@@ -52,3 +52,31 @@ def test_unauthorized_admin_events(user_api_client, method, status):
 )
 def test_authenticated_admin_events(staff_api_client, method, status):
     assert staff_api_client.generic(method, BASE_URL).status_code == status
+
+
+@pytest.mark.django_db
+def test_admin_events_list_response(staff_api_client, event):
+    req = staff_api_client.get(BASE_URL)
+    assert req.status_code == 200
+    assert req.data == [
+        {
+            "id": event.id,
+            "name": "Instanssi 2025",
+            "date": "2025-01-15",
+            "archived": False,
+            "mainurl": "http://localhost:8000/2025/",
+        }
+    ]
+
+
+@pytest.mark.django_db
+def test_admin_events_detail_response(staff_api_client, event):
+    req = staff_api_client.get(f"{BASE_URL}{event.id}/")
+    assert req.status_code == 200
+    assert req.data == {
+        "id": event.id,
+        "name": "Instanssi 2025",
+        "date": "2025-01-15",
+        "archived": False,
+        "mainurl": "http://localhost:8000/2025/",
+    }

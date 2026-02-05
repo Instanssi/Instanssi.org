@@ -20,6 +20,17 @@ DATABASES = {
     }
 }
 
+# Use a fast password hasher for tests (PBKDF2 is intentionally slow)
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.MD5PasswordHasher",
+]
+
+# Disable AuditlogMiddleware in tests (not needed for assertions, adds per-request overhead)
+MIDDLEWARE = [m for m in MIDDLEWARE if m != "auditlog.middleware.AuditlogMiddleware"]
+
+# Use Optimistic strategy for imagekit: generate once on save, skip existence checks on access
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = "imagekit.cachefiles.strategies.Optimistic"
+
 # Google api stuff
 GOOGLE_API_KEY = ""
 

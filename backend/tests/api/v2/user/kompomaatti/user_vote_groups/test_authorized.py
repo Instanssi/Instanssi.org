@@ -1,4 +1,7 @@
 import pytest
+from freezegun import freeze_time
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -28,6 +31,7 @@ def test_get_own_vote_group(auth_client, entry_vote_group):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_create_votes_with_ticket_code(
     auth_client, ticket_vote_code, votable_compo_entry, second_votable_entry
 ):
@@ -47,6 +51,7 @@ def test_create_votes_with_ticket_code(
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_create_votes_with_approved_request(
     auth_client, approved_vote_code_request, votable_compo, votable_compo_entry
 ):
@@ -64,6 +69,7 @@ def test_create_votes_with_approved_request(
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_vote_without_voting_rights(auth_client, votable_compo_entry):
     """Test that users cannot vote without voting rights."""
     base_url = get_base_url(votable_compo_entry.compo.event_id)
@@ -80,6 +86,7 @@ def test_cannot_vote_without_voting_rights(auth_client, votable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_vote_with_rejected_request(
     auth_client, rejected_vote_code_request, votable_compo, votable_compo_entry
 ):
@@ -114,6 +121,7 @@ def test_cannot_vote_in_closed_compo(auth_client, ticket_vote_code, closed_compo
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_vote_for_entry_in_different_compo(
     auth_client, ticket_vote_code, votable_compo, open_compo, editable_compo_entry
 ):
@@ -132,6 +140,7 @@ def test_cannot_vote_for_entry_in_different_compo(
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_vote_for_same_entry_twice(auth_client, ticket_vote_code, votable_compo_entry):
     """Test that users cannot vote for the same entry twice."""
     base_url = get_base_url(votable_compo_entry.compo.event_id)
@@ -148,6 +157,7 @@ def test_cannot_vote_for_same_entry_twice(auth_client, ticket_vote_code, votable
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_resubmitting_votes_replaces_previous(
     auth_client, ticket_vote_code, votable_compo_entry, second_votable_entry, third_votable_entry
 ):

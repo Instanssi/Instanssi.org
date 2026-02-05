@@ -1,107 +1,15 @@
 """Tests for hidden event filtering in API v1 endpoints."""
 
-from datetime import date, timedelta
-
 import pytest
-from django.utils import timezone
+from freezegun import freeze_time
 
-from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.kompomaatti.models import (
-    Competition,
-    CompetitionParticipation,
-    Compo,
-    Entry,
-    Event,
     TicketVoteCode,
     VoteCodeRequest,
     VoteGroup,
 )
 
-
-@pytest.fixture
-def hidden_event(faker) -> Event:
-    """A hidden event that should not appear in public/user APIs."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
-    return Event.objects.create(
-        name=f"Hidden Event {unique_id}",
-        tag=f"hidden-{unique_id}",
-        date=date.today(),
-        archived=False,
-        hidden=True,
-        mainurl=f"http://localhost:8000/hidden-{unique_id}/",
-    )
-
-
-@pytest.fixture
-def hidden_event_compo(hidden_event) -> Compo:
-    """Compo belonging to a hidden event."""
-    return Compo.objects.create(
-        event=hidden_event,
-        name="Hidden Compo",
-        description="This compo is in a hidden event",
-        active=True,
-        adding_end=timezone.now() + timedelta(hours=1),
-        editing_end=timezone.now() + timedelta(hours=2),
-        compo_start=timezone.now() + timedelta(hours=3),
-        voting_start=timezone.now() - timedelta(hours=1),
-        voting_end=timezone.now() + timedelta(hours=8),
-    )
-
-
-@pytest.fixture
-def hidden_event_entry(faker, base_user, hidden_event_compo, entry_zip, image_png) -> Entry:
-    """Entry in a hidden event's compo."""
-    return Entry.objects.create(
-        compo=hidden_event_compo,
-        user=base_user,
-        name="Hidden Entry",
-        description=faker.text(),
-        creator=faker.name(),
-        platform="PC",
-        entryfile=entry_zip,
-        imagefile_original=image_png,
-    )
-
-
-@pytest.fixture
-def hidden_event_competition(hidden_event) -> Competition:
-    """Competition belonging to a hidden event."""
-    return Competition.objects.create(
-        event=hidden_event,
-        name="Hidden Competition",
-        description="This competition is in a hidden event",
-        active=True,
-        participation_end=timezone.now() + timedelta(hours=1),
-        start=timezone.now() - timedelta(hours=1),
-        end=timezone.now() + timedelta(hours=8),
-        score_type="p",
-    )
-
-
-@pytest.fixture
-def hidden_event_participation(faker, base_user, hidden_event_competition) -> CompetitionParticipation:
-    """Participation in a hidden event's competition."""
-    return CompetitionParticipation.objects.create(
-        competition=hidden_event_competition,
-        user=base_user,
-        participant_name=faker.name(),
-        score=100.0,
-    )
-
-
-@pytest.fixture
-def hidden_event_program(hidden_event, faker) -> ProgrammeEvent:
-    """Program event belonging to a hidden event."""
-    return ProgrammeEvent.objects.create(
-        event=hidden_event,
-        start=timezone.now() + timedelta(hours=1),
-        end=timezone.now() + timedelta(hours=2),
-        title=faker.sentence(nb_words=4),
-        description=faker.text(max_nb_chars=256),
-        presenters=faker.name(),
-        place="Main Stage",
-        active=True,
-    )
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 @pytest.fixture
@@ -180,6 +88,7 @@ class TestComposHidden:
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 class TestCompoEntriesHidden:
     """Tests for hidden event entries in API."""
 
@@ -210,6 +119,7 @@ class TestCompetitionsHidden:
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 class TestCompetitionParticipationsHidden:
     """Tests for hidden event participations in API."""
 

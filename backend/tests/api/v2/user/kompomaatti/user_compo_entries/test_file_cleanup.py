@@ -2,6 +2,9 @@
 
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+from freezegun import freeze_time
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 from Instanssi.kompomaatti.models import Entry
 
@@ -14,6 +17,7 @@ def get_base_url(event_id: int) -> str:
 
 
 @pytest.mark.django_db(transaction=True)
+@freeze_time(FROZEN_TIME)
 def test_old_entryfile_deleted_when_replaced(auth_client, editable_compo_entry, test_zip):
     """When uploading a new entryfile, the old file should be deleted from storage."""
     old_file_name = editable_compo_entry.entryfile.name
@@ -39,6 +43,7 @@ def test_old_entryfile_deleted_when_replaced(auth_client, editable_compo_entry, 
 
 
 @pytest.mark.django_db(transaction=True)
+@freeze_time(FROZEN_TIME)
 def test_old_sourcefile_deleted_when_replaced(auth_client, editable_compo_entry, test_zip):
     """When uploading a new sourcefile, the old file should be deleted from storage."""
     old_file_name = editable_compo_entry.sourcefile.name
@@ -64,6 +69,7 @@ def test_old_sourcefile_deleted_when_replaced(auth_client, editable_compo_entry,
 
 
 @pytest.mark.django_db(transaction=True)
+@freeze_time(FROZEN_TIME)
 def test_sourcefile_cleared_when_empty_string_sent(auth_client, editable_compo_entry):
     """When sending empty string for sourcefile, the file should be cleared and deleted."""
     old_file_name = editable_compo_entry.sourcefile.name
@@ -87,6 +93,7 @@ def test_sourcefile_cleared_when_empty_string_sent(auth_client, editable_compo_e
 
 
 @pytest.mark.django_db(transaction=True)
+@freeze_time(FROZEN_TIME)
 def test_all_files_deleted_when_instance_deleted(auth_client, editable_compo_entry):
     """When deleting an Entry, all files should be deleted from storage."""
     entryfile_name = editable_compo_entry.entryfile.name
@@ -116,6 +123,7 @@ def test_all_files_deleted_when_instance_deleted(auth_client, editable_compo_ent
 
 
 @pytest.mark.django_db(transaction=True)
+@freeze_time(FROZEN_TIME)
 def test_files_not_deleted_when_other_fields_updated(auth_client, editable_compo_entry):
     """When updating non-file fields, the files should not be deleted."""
     entryfile_name = editable_compo_entry.entryfile.name

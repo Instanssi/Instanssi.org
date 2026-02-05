@@ -1,4 +1,5 @@
 import pytest
+from freezegun import freeze_time
 
 from Instanssi.kompomaatti.models import (
     CompetitionParticipation,
@@ -134,6 +135,7 @@ def test_staff_can_optimize_scores(staff_api_client, past_event, past_compo_entr
 
 
 @pytest.mark.django_db
+@freeze_time("2025-01-15T12:00:00Z")
 def test_optimize_scores_blocked_for_ongoing_event(staff_api_client, event, open_compo):
     """Test that optimize scores is blocked for ongoing events."""
     url = get_base_url(event.id) + "optimize-scores/"
@@ -176,6 +178,7 @@ def test_remove_old_votes_blocked_when_unoptimized(
 
 
 @pytest.mark.django_db
+@freeze_time("2025-01-15T12:00:00Z")
 def test_remove_old_votes_blocked_for_ongoing_event(staff_api_client, event, open_compo):
     """Test that remove old votes is blocked for ongoing events."""
     url = get_base_url(event.id) + "remove-old-votes/"
@@ -206,6 +209,7 @@ def test_staff_can_transfer_rights(
 
 
 @pytest.mark.django_db
+@freeze_time("2025-01-15T12:00:00Z")
 def test_transfer_rights_blocked_for_ongoing_event(staff_api_client, event, open_compo):
     """Test that transfer rights is blocked for ongoing events."""
     url = get_base_url(event.id) + "transfer-rights/"

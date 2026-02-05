@@ -25,6 +25,9 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
+# Disable AuditlogMiddleware in tests (not needed for assertions, adds per-request overhead)
+MIDDLEWARE = [m for m in MIDDLEWARE if m != "auditlog.middleware.AuditlogMiddleware"]
+
 # Google api stuff
 GOOGLE_API_KEY = ""
 

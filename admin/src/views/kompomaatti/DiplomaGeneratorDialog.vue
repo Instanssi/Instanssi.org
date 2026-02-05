@@ -101,7 +101,7 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
 import * as api from "@/api";
-import type { Compo, CompoEntry, Competition, CompetitionParticipation, UploadedFile } from "@/api";
+import type { UploadedFile } from "@/api";
 import BaseDialog from "@/components/dialogs/BaseDialog.vue";
 import ImageSelectField from "@/components/form/ImageSelectField.vue";
 import { useEvents } from "@/services/events";
@@ -131,10 +131,8 @@ const generating = ref(false);
 const progressCurrent = ref(0);
 const progressTotal = ref(0);
 const uploads: Ref<UploadedFile[]> = ref([]);
-const entries: Ref<CompoEntry[]> = ref([]);
-const compos: Ref<Compo[]> = ref([]);
-const competitions: Ref<Competition[]> = ref([]);
-const participations: Ref<CompetitionParticipation[]> = ref([]);
+const compoDiplomas: Ref<DiplomaData[]> = ref([]);
+const competitionDiplomas: Ref<DiplomaData[]> = ref([]);
 
 const selectedBackground: Ref<string | null> = ref(null);
 const mainOrganizerName = ref("");
@@ -163,97 +161,10 @@ const backgroundOptions = computed(() => {
 
 const eventName = computed(() => getEventById(props.eventId)?.name ?? "");
 
-// Build diploma data from entries and/or competition participations based on mode
-const diplomaDataList = computed<DiplomaData[]>(() => {
-    const organizers: DiplomaOrganizers = {
-        mainOrganizer: { name: mainOrganizerName.value, title: mainOrganizerTitle.value },
-        programOrganizer: { name: programOrganizerName.value, title: programOrganizerTitle.value },
-    };
-
-    const result: DiplomaData[] = [];
-
-    // Process compo entries (if mode includes compos)
-    if (includeCompos.value) {
-        const entriesByCompo = new Map<number, CompoEntry[]>();
-        for (const entry of entries.value) {
-            const compoEntries = entriesByCompo.get(entry.compo) ?? [];
-            compoEntries.push(entry);
-            entriesByCompo.set(entry.compo, compoEntries);
-        }
-
-        for (const compo of compos.value) {
-            const compoEntries = entriesByCompo.get(compo.id) ?? [];
-
-            // Sort by rank (entries without rank go to the end)
-            const sorted = [...compoEntries].sort((a, b) => {
-                if (a.computed_rank === null && b.computed_rank === null) return 0;
-                if (a.computed_rank === null) return 1;
-                if (b.computed_rank === null) return -1;
-                return a.computed_rank - b.computed_rank;
-            });
-
-            // Take top 3 with ranks, excluding disqualified entries
-            const top3 = sorted.filter(
-                (e) => e.computed_rank !== null && e.computed_rank <= 3 && !e.disqualified
-            );
-
-            for (const entry of top3) {
-                result.push({
-                    author: entry.creator,
-                    entryName: entry.name || null,
-                    placement: toRomanNumeral(entry.computed_rank!),
-                    compoName: compo.name,
-                    eventName: eventName.value,
-                    hasMultipleAuthors: hasMultipleAuthors(entry.creator),
-                    organizers,
-                });
-            }
-        }
-    }
-
-    // Process competition participations (if mode includes competitions)
-    if (includeCompetitions.value) {
-        const participationsByCompetition = new Map<number, CompetitionParticipation[]>();
-        for (const participation of participations.value) {
-            const compParticipations =
-                participationsByCompetition.get(participation.competition) ?? [];
-            compParticipations.push(participation);
-            participationsByCompetition.set(participation.competition, compParticipations);
-        }
-
-        for (const competition of competitions.value) {
-            const compParticipations = participationsByCompetition.get(competition.id) ?? [];
-
-            // Sort by rank (participations without rank go to the end)
-            const sorted = [...compParticipations].sort((a, b) => {
-                if (a.computed_rank === null && b.computed_rank === null) return 0;
-                if (a.computed_rank === null) return 1;
-                if (b.computed_rank === null) return -1;
-                return a.computed_rank - b.computed_rank;
-            });
-
-            // Take top 3 with ranks, excluding disqualified participations
-            const top3 = sorted.filter(
-                (p) => p.computed_rank !== null && p.computed_rank <= 3 && !p.disqualified
-            );
-
-            for (const participation of top3) {
-                const participantName = participation.participant_name || "Unknown";
-                result.push({
-                    author: participantName,
-                    entryName: null, // No entry for competitions
-                    placement: toRomanNumeral(participation.computed_rank!),
-                    compoName: competition.name,
-                    eventName: eventName.value,
-                    hasMultipleAuthors: hasMultipleAuthors(participantName),
-                    organizers,
-                });
-            }
-        }
-    }
-
-    return result;
-});
+const diplomaDataList = computed<DiplomaData[]>(() => [
+    ...(includeCompos.value ? compoDiplomas.value : []),
+    ...(includeCompetitions.value ? competitionDiplomas.value : []),
+]);
 
 const noEntriesWarning = computed(
     () => diplomaDataList.value.length === 0 && !loadingUploads.value
@@ -262,24 +173,103 @@ const canGenerate = computed(
     () => selectedBackground.value !== null && diplomaDataList.value.length > 0 && !generating.value
 );
 
+/**
+ * Take items whose rank is among the first 3 distinct ranks.
+ * Assumes items are already sorted by rank ascending from the backend.
+ */
+function takeTop3Ranks<T extends { computed_rank: number | null }>(items: T[]): T[] {
+    const ranks = new Set<number>();
+    const result: T[] = [];
+    for (const item of items) {
+        if (item.computed_rank === null) continue;
+        ranks.add(item.computed_rank);
+        if (ranks.size > 3) break;
+        result.push(item);
+    }
+    return result;
+}
+
+function getOrganizers(): DiplomaOrganizers {
+    return {
+        mainOrganizer: { name: mainOrganizerName.value, title: mainOrganizerTitle.value },
+        programOrganizer: { name: programOrganizerName.value, title: programOrganizerTitle.value },
+    };
+}
+
+async function loadCompoDiplomas(
+    compos: { id: number; name: string }[],
+    name: string,
+    organizers: DiplomaOrganizers
+): Promise<DiplomaData[]> {
+    const responses = await Promise.all(
+        compos.map((compo) =>
+            api.adminEventKompomaattiEntriesList({
+                path: { event_pk: props.eventId },
+                query: {
+                    compo: compo.id,
+                    disqualified: false,
+                    ordering: "computed_rank",
+                    limit: 100,
+                },
+            })
+        )
+    );
+    return compos.flatMap((compo, i) => {
+        const entries = takeTop3Ranks(responses[i]?.data?.results ?? []);
+        return entries.map((entry) => ({
+            author: entry.creator,
+            entryName: entry.name || null,
+            placement: toRomanNumeral(entry.computed_rank!),
+            compoName: compo.name,
+            eventName: name,
+            hasMultipleAuthors: hasMultipleAuthors(entry.creator),
+            organizers,
+        }));
+    });
+}
+
+async function loadCompetitionDiplomas(
+    competitions: { id: number; name: string }[],
+    name: string,
+    organizers: DiplomaOrganizers
+): Promise<DiplomaData[]> {
+    const responses = await Promise.all(
+        competitions.map((competition) =>
+            api.adminEventKompomaattiCompetitionParticipationsList({
+                path: { event_pk: props.eventId },
+                query: {
+                    competition: competition.id,
+                    disqualified: false,
+                    ordering: "computed_rank",
+                    limit: 100,
+                },
+            })
+        )
+    );
+    return competitions.flatMap((competition, i) => {
+        const participations = takeTop3Ranks(responses[i]?.data?.results ?? []);
+        return participations.map((p) => {
+            const participantName = p.participant_name || "Unknown";
+            return {
+                author: participantName,
+                entryName: null,
+                placement: toRomanNumeral(p.computed_rank!),
+                compoName: competition.name,
+                eventName: name,
+                hasMultipleAuthors: hasMultipleAuthors(participantName),
+                organizers,
+            };
+        });
+    });
+}
+
 async function loadData() {
     loadingUploads.value = true;
     try {
-        // Always load all data - filtering happens in diplomaDataList computed
-        const [
-            uploadsResponse,
-            entriesResponse,
-            composResponse,
-            competitionsResponse,
-            participationsResponse,
-        ] = await Promise.all([
+        const [uploadsResponse, composResponse, competitionsResponse] = await Promise.all([
             api.adminEventUploadsFilesList({
                 path: { event_pk: props.eventId },
                 query: { limit: 100 },
-            }),
-            api.adminEventKompomaattiEntriesList({
-                path: { event_pk: props.eventId },
-                query: { limit: 10000 },
             }),
             api.adminEventKompomaattiComposList({
                 path: { event_pk: props.eventId },
@@ -289,17 +279,18 @@ async function loadData() {
                 path: { event_pk: props.eventId },
                 query: { limit: 100 },
             }),
-            api.adminEventKompomaattiCompetitionParticipationsList({
-                path: { event_pk: props.eventId },
-                query: { limit: 10000 },
-            }),
         ]);
 
         uploads.value = uploadsResponse.data?.results ?? [];
-        entries.value = entriesResponse.data?.results ?? [];
-        compos.value = composResponse.data?.results ?? [];
-        competitions.value = competitionsResponse.data?.results ?? [];
-        participations.value = participationsResponse.data?.results ?? [];
+        const compos = composResponse.data?.results ?? [];
+        const competitions = competitionsResponse.data?.results ?? [];
+        const name = eventName.value;
+        const organizers = getOrganizers();
+
+        [compoDiplomas.value, competitionDiplomas.value] = await Promise.all([
+            loadCompoDiplomas(compos, name, organizers),
+            loadCompetitionDiplomas(competitions, name, organizers),
+        ]);
     } catch (e) {
         console.error("Failed to load data:", e);
         toast.error(t("DiplomaGenerator.loadFailure"));

@@ -42,13 +42,20 @@ const mockCompos = {
     },
 };
 
-const mockEntries = {
+const mockEntriesCompo1 = {
     data: {
         results: [
             { id: 1, compo: 1, name: "Cool Demo", creator: "Artist One", computed_rank: 1 },
             { id: 2, compo: 1, name: "Nice Demo", creator: "Artist Two", computed_rank: 2 },
             { id: 3, compo: 1, name: "Demo Three", creator: "Artist Three", computed_rank: 3 },
             { id: 4, compo: 1, name: "Demo Four", creator: "Artist Four", computed_rank: 4 },
+        ],
+    },
+};
+
+const mockEntriesCompo2 = {
+    data: {
+        results: [
             { id: 5, compo: 2, name: "Great Track", creator: "Musician One", computed_rank: 1 },
             { id: 6, compo: 2, name: "Nice Track", creator: "Team A / Team B", computed_rank: 2 },
         ],
@@ -64,13 +71,18 @@ const mockCompetitions = {
     },
 };
 
-const mockParticipations = {
+const mockParticipationsComp1 = {
     data: {
         results: [
             { id: 1, competition: 1, participant_name: "Speedy", computed_rank: 1 },
             { id: 2, competition: 1, participant_name: "Quick", computed_rank: 2 },
-            { id: 3, competition: 2, participant_name: "Smart One", computed_rank: 1 },
         ],
+    },
+};
+
+const mockParticipationsComp2 = {
+    data: {
+        results: [{ id: 3, competition: 2, participant_name: "Smart One", computed_rank: 1 }],
     },
 };
 
@@ -111,18 +123,31 @@ function mountComponent(props: { eventId: number }) {
     });
 }
 
+/** Set up per-compo/competition entry mocks based on the query filter. */
+function setupDefaultEntryMocks() {
+    vi.mocked(api.adminEventKompomaattiEntriesList).mockImplementation((args) => {
+        const compoId = (args as { query?: { compo?: number } }).query?.compo;
+        if (compoId === 1) return Promise.resolve(mockEntriesCompo1 as never);
+        if (compoId === 2) return Promise.resolve(mockEntriesCompo2 as never);
+        return Promise.resolve({ data: { results: [] } } as never);
+    });
+    vi.mocked(api.adminEventKompomaattiCompetitionParticipationsList).mockImplementation((args) => {
+        const competitionId = (args as { query?: { competition?: number } }).query?.competition;
+        if (competitionId === 1) return Promise.resolve(mockParticipationsComp1 as never);
+        if (competitionId === 2) return Promise.resolve(mockParticipationsComp2 as never);
+        return Promise.resolve({ data: { results: [] } } as never);
+    });
+}
+
 describe("DiplomaGeneratorDialog", () => {
     beforeEach(() => {
         vi.clearAllMocks();
         vi.mocked(api.adminEventUploadsFilesList).mockResolvedValue(mockUploads as never);
         vi.mocked(api.adminEventKompomaattiComposList).mockResolvedValue(mockCompos as never);
-        vi.mocked(api.adminEventKompomaattiEntriesList).mockResolvedValue(mockEntries as never);
         vi.mocked(api.adminEventKompomaattiCompetitionsList).mockResolvedValue(
             mockCompetitions as never
         );
-        vi.mocked(api.adminEventKompomaattiCompetitionParticipationsList).mockResolvedValue(
-            mockParticipations as never
-        );
+        setupDefaultEntryMocks();
     });
 
     describe("rendering", () => {
@@ -154,17 +179,13 @@ describe("DiplomaGeneratorDialog", () => {
         it("loads all data when dialog opens", async () => {
             const wrapper = mountComponent({ eventId: 1 });
 
-            // Call open method
             wrapper.vm.open();
             await flushPromises();
 
+            // Phase 1: uploads, compos, competitions fetched in parallel
             expect(api.adminEventUploadsFilesList).toHaveBeenCalledWith({
                 path: { event_pk: 1 },
                 query: { limit: 100 },
-            });
-            expect(api.adminEventKompomaattiEntriesList).toHaveBeenCalledWith({
-                path: { event_pk: 1 },
-                query: { limit: 10000 },
             });
             expect(api.adminEventKompomaattiComposList).toHaveBeenCalledWith({
                 path: { event_pk: 1 },
@@ -174,9 +195,37 @@ describe("DiplomaGeneratorDialog", () => {
                 path: { event_pk: 1 },
                 query: { limit: 100 },
             });
+
+            // Phase 2: entries fetched per compo
+            expect(api.adminEventKompomaattiEntriesList).toHaveBeenCalledTimes(2);
+            expect(api.adminEventKompomaattiEntriesList).toHaveBeenCalledWith({
+                path: { event_pk: 1 },
+                query: { compo: 1, disqualified: false, ordering: "computed_rank", limit: 100 },
+            });
+            expect(api.adminEventKompomaattiEntriesList).toHaveBeenCalledWith({
+                path: { event_pk: 1 },
+                query: { compo: 2, disqualified: false, ordering: "computed_rank", limit: 100 },
+            });
+
+            // Phase 2: participations fetched per competition
+            expect(api.adminEventKompomaattiCompetitionParticipationsList).toHaveBeenCalledTimes(2);
             expect(api.adminEventKompomaattiCompetitionParticipationsList).toHaveBeenCalledWith({
                 path: { event_pk: 1 },
-                query: { limit: 10000 },
+                query: {
+                    competition: 1,
+                    disqualified: false,
+                    ordering: "computed_rank",
+                    limit: 100,
+                },
+            });
+            expect(api.adminEventKompomaattiCompetitionParticipationsList).toHaveBeenCalledWith({
+                path: { event_pk: 1 },
+                query: {
+                    competition: 2,
+                    disqualified: false,
+                    ordering: "computed_rank",
+                    limit: 100,
+                },
             });
         });
     });
@@ -187,7 +236,6 @@ describe("DiplomaGeneratorDialog", () => {
             wrapper.vm.open();
             await flushPromises();
 
-            // Access computed property via component instance
             const vm = wrapper.vm as unknown as DialogInternals;
 
             // Should only include .png and .jpg files, not .pdf
@@ -218,6 +266,45 @@ describe("DiplomaGeneratorDialog", () => {
             // Rank 4 should not be included
             const rank4Entry = vm.diplomaDataList.find((d) => d.author === "Artist Four");
             expect(rank4Entry).toBeUndefined();
+        });
+
+        it("includes all three ranks when entries share a rank", async () => {
+            // Two entries tied at rank 1 — should still include rank 2 and rank 3
+            vi.mocked(api.adminEventKompomaattiEntriesList).mockResolvedValue({
+                data: {
+                    results: [
+                        { id: 1, compo: 1, name: "Tied A", creator: "Author A", computed_rank: 1 },
+                        { id: 2, compo: 1, name: "Tied B", creator: "Author B", computed_rank: 1 },
+                        {
+                            id: 3,
+                            compo: 1,
+                            name: "Second",
+                            creator: "Author C",
+                            computed_rank: 2,
+                        },
+                        { id: 4, compo: 1, name: "Third", creator: "Author D", computed_rank: 3 },
+                        { id: 5, compo: 1, name: "Fourth", creator: "Author E", computed_rank: 4 },
+                    ],
+                },
+            } as never);
+            vi.mocked(api.adminEventKompomaattiCompetitionParticipationsList).mockResolvedValue({
+                data: { results: [] },
+            } as never);
+
+            const wrapper = mountComponent({ eventId: 1 });
+            wrapper.vm.open();
+            await flushPromises();
+
+            const vm = wrapper.vm as unknown as DialogInternals;
+            const demoEntries = vm.diplomaDataList.filter((d) => d.compoName === "Demo Compo");
+
+            // Should have 4 diplomas: 2x rank 1 + 1x rank 2 + 1x rank 3
+            expect(demoEntries).toHaveLength(4);
+            expect(demoEntries.map((d) => d.placement)).toEqual(["I", "I", "II", "III"]);
+
+            // Rank 4 should not be included
+            const rank4 = vm.diplomaDataList.find((d) => d.author === "Author E");
+            expect(rank4).toBeUndefined();
         });
 
         it("detects multiple authors correctly", async () => {

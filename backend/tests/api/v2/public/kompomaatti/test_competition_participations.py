@@ -1,4 +1,7 @@
 import pytest
+from freezegun import freeze_time
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -25,6 +28,7 @@ def test_anonymous_can_get_started_participation_detail(api_client, started_comp
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_anonymous_cannot_see_non_started_participations(api_client, competition_participation):
     """Test that participations from non-started competitions are not visible."""
     base_url = get_base_url(competition_participation.competition.event_id)

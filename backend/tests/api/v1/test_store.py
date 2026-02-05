@@ -6,6 +6,7 @@ from rest_framework.exceptions import ErrorDetail
 
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreTransaction
+from tests.api.helpers import file_url
 
 
 @pytest.mark.django_db
@@ -15,44 +16,69 @@ def test_store_api_items_get_ok(api_client, store_item, discount_item, hidden_it
     assert req.status_code == 200
     assert req.data == [
         {
-            "available": True,
-            "description": ANY,
-            "discount_amount": -1,
-            "discount_factor": 1.0,
-            "discount_percentage": 0,
-            "event": 1,
-            "id": 1,
-            "imagefile_original_url": ANY,
-            "imagefile_thumbnail_url": ANY,
-            "is_discount_available": False,
-            "max": 50,
-            "max_per_order": 5,
+            "id": store_item.id,
+            "event": store_item.event_id,
             "name": "Test item 1",
-            "num_available": 5,
+            "description": store_item.description,
             "price": "20.00",
+            "max": 50,
+            "available": True,
+            "imagefile_original_url": file_url(store_item.imagefile_original),
+            "imagefile_thumbnail_url": file_url(store_item.imagefile_thumbnail),
+            "max_per_order": 5,
             "sort_index": 0,
+            "discount_amount": -1,
+            "discount_percentage": 0,
+            "is_discount_available": False,
+            "discount_factor": 1.0,
+            "num_available": 5,
             "variants": [],
         },
         {
-            "available": True,
-            "description": ANY,
-            "discount_amount": 5,
-            "discount_factor": 0.5,
-            "discount_percentage": 50,
-            "event": 1,
-            "id": 2,
-            "imagefile_original_url": ANY,
-            "imagefile_thumbnail_url": ANY,
-            "is_discount_available": True,
-            "max": 50,
-            "max_per_order": 5,
+            "id": discount_item.id,
+            "event": discount_item.event_id,
             "name": "Test item 1",
-            "num_available": 5,
+            "description": discount_item.description,
             "price": "20.00",
+            "max": 50,
+            "available": True,
+            "imagefile_original_url": file_url(discount_item.imagefile_original),
+            "imagefile_thumbnail_url": file_url(discount_item.imagefile_thumbnail),
+            "max_per_order": 5,
             "sort_index": 0,
+            "discount_amount": 5,
+            "discount_percentage": 50,
+            "is_discount_available": True,
+            "discount_factor": 0.5,
+            "num_available": 5,
             "variants": [],
         },
     ]
+
+
+@pytest.mark.django_db
+def test_store_api_items_detail_ok(api_client, store_item):
+    req = api_client.get(f"/api/v1/store_items/{store_item.id}/")
+    assert req.status_code == 200
+    assert req.data == {
+        "id": store_item.id,
+        "event": store_item.event_id,
+        "name": "Test item 1",
+        "description": store_item.description,
+        "price": "20.00",
+        "max": 50,
+        "available": True,
+        "imagefile_original_url": file_url(store_item.imagefile_original),
+        "imagefile_thumbnail_url": file_url(store_item.imagefile_thumbnail),
+        "max_per_order": 5,
+        "sort_index": 0,
+        "discount_amount": -1,
+        "discount_percentage": 0,
+        "is_discount_available": False,
+        "discount_factor": 1.0,
+        "num_available": 5,
+        "variants": [],
+    }
 
 
 @pytest.mark.django_db

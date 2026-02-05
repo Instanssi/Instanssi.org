@@ -1,4 +1,7 @@
 import pytest
+from freezegun import freeze_time
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -25,6 +28,7 @@ def test_anonymous_can_get_votable_entry_detail(api_client, votable_compo_entry)
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_anonymous_cannot_see_non_votable_entries(api_client, editable_compo_entry):
     """Test that entries from compos before voting starts are not visible."""
     base_url = get_base_url(editable_compo_entry.compo.event_id)

@@ -1,5 +1,8 @@
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+from freezegun import freeze_time
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -7,6 +10,7 @@ def get_base_url(event_id):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_invalid_entry_file_format_rejected(auth_client, open_compo, source_zip, image_png):
     """Test that entry files with invalid extensions are rejected"""
     invalid_file = SimpleUploadedFile("entry.exe", b"fake content", content_type="application/octet-stream")
@@ -31,6 +35,7 @@ def test_user_invalid_entry_file_format_rejected(auth_client, open_compo, source
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_invalid_source_file_format_rejected(auth_client, open_compo, entry_zip, image_png):
     """Test that source files with invalid extensions are rejected"""
     invalid_file = SimpleUploadedFile("source.exe", b"fake content", content_type="application/octet-stream")
@@ -55,6 +60,7 @@ def test_user_invalid_source_file_format_rejected(auth_client, open_compo, entry
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_invalid_image_file_format_rejected(auth_client, open_compo, entry_zip, source_zip, test_image):
     """Test that image files with invalid extensions are rejected"""
     # Use valid image data but with an extension not in allowed list (gif not in png|jpg)
@@ -80,6 +86,7 @@ def test_user_invalid_image_file_format_rejected(auth_client, open_compo, entry_
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_entry_file_too_large_rejected(auth_client, open_compo, source_zip, image_png):
     """Test that entry files exceeding size limit are rejected"""
     # Set a very small size limit for testing
@@ -108,6 +115,7 @@ def test_user_entry_file_too_large_rejected(auth_client, open_compo, source_zip,
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_image_required_but_missing_rejected(auth_client, open_compo, entry_zip, source_zip):
     """Test that entries without image are rejected when image is required"""
     # Set compo to require image (thumbnail_pref=0)
@@ -134,6 +142,7 @@ def test_user_image_required_but_missing_rejected(auth_client, open_compo, entry
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_image_not_allowed_but_provided_rejected(
     auth_client, open_compo, entry_zip, source_zip, image_png
 ):
@@ -163,6 +172,7 @@ def test_user_image_not_allowed_but_provided_rejected(
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_multiple_file_errors_aggregated(auth_client, open_compo, test_image):
     """Test that errors from multiple files are returned together"""
     # Set small size limits
@@ -198,6 +208,7 @@ def test_user_multiple_file_errors_aggregated(auth_client, open_compo, test_imag
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_entry_copied_to_image_when_configured(auth_client, open_compo, source_zip, image_png):
     """Test that entry file is copied to image when compo.is_imagefile_copied is True"""
     # Set compo to copy entry to image (thumbnail_pref=1)
@@ -226,6 +237,7 @@ def test_user_entry_copied_to_image_when_configured(auth_client, open_compo, sou
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_compo_must_belong_to_event_in_url(
     auth_client, open_compo, other_event, entry_zip, source_zip, image_png
 ):

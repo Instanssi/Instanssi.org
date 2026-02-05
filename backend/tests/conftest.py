@@ -2,7 +2,7 @@ import base64
 import secrets
 import tempfile
 from contextlib import contextmanager
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from datetime import timezone as dt_tz
 from decimal import Decimal
 from pathlib import Path
@@ -14,7 +14,6 @@ from django.contrib.auth.models import Permission, User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
-from django.utils import timezone
 from faker import Faker
 from pytest import fixture
 from rest_framework.test import APIClient
@@ -44,6 +43,10 @@ from Instanssi.store.models import (
     TransactionItem,
 )
 from Instanssi.store.utils.receipt import ReceiptParams
+
+# All time-sensitive fixtures use datetimes relative to this frozen time.
+# Tests that check time-dependent behavior should use @freeze_time(FROZEN_TIME).
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 @fixture(scope="session")
@@ -250,27 +253,25 @@ def super_user(create_user) -> User:
 
 
 @fixture
-def event(faker) -> Event:
-    event_year = faker.year()
+def event() -> Event:
     return Event.objects.create(
-        name=f"Instanssi {event_year}",
-        tag=str(event_year),
-        date=date.today(),
+        name="Instanssi 2025",
+        tag="2025",
+        date=date(2025, 1, 15),
         archived=False,
-        mainurl=f"http://localhost:8000/{event_year}/",
+        mainurl="http://localhost:8000/2025/",
     )
 
 
 @fixture
-def other_event(faker) -> Event:
+def other_event() -> Event:
     """A second event for testing cross-event validation."""
-    event_year = faker.year()
     return Event.objects.create(
-        name=f"Other Event {event_year}",
-        tag=f"other{event_year}",
-        date=date.today(),
+        name="Other Event 2025",
+        tag="other2025",
+        date=date(2025, 2, 15),
         archived=False,
-        mainurl=f"http://localhost:8000/other{event_year}/",
+        mainurl="http://localhost:8000/other2025/",
     )
 
 
@@ -301,180 +302,181 @@ def public_blog_entry(event, base_user) -> BlogEntry:
 
 
 @fixture
-def program_event(event, faker) -> ProgrammeEvent:
+def program_event(event) -> ProgrammeEvent:
     """Active program event for testing."""
     return ProgrammeEvent.objects.create(
         event=event,
-        start=timezone.now() + timedelta(hours=1),
-        end=timezone.now() + timedelta(hours=2),
-        title=faker.sentence(nb_words=4),
-        description=faker.text(max_nb_chars=256),
-        presenters=faker.name(),
+        start=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        title="Test Programme Event",
+        description="A test programme event",
+        presenters="Test Presenter",
         place="Main Stage",
         active=True,
     )
 
 
 @fixture
-def inactive_program_event(event, faker) -> ProgrammeEvent:
+def inactive_program_event(event) -> ProgrammeEvent:
     """Inactive program event for testing visibility."""
     return ProgrammeEvent.objects.create(
         event=event,
-        start=timezone.now() + timedelta(hours=3),
-        end=timezone.now() + timedelta(hours=4),
-        title=faker.sentence(nb_words=4),
-        description=faker.text(max_nb_chars=256),
-        presenters=faker.name(),
+        start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 16, 0, 0, tzinfo=dt_tz.utc),
+        title="Inactive Programme Event",
+        description="An inactive programme event",
+        presenters="Inactive Presenter",
         place="Side Stage",
         active=False,
     )
 
 
 @fixture
-def archived_event(faker) -> Event:
+def archived_event() -> Event:
     """Archived event for testing archive visibility."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Instanssi Archive {unique_id}",
-        tag=f"archive-{unique_id}",
-        date=date.today() - timedelta(days=365),
+        name="Instanssi Archive 2024",
+        tag="archive-2024",
+        date=date(2024, 1, 15),
         archived=True,
-        mainurl=f"http://localhost:8000/archive-{unique_id}/",
+        mainurl="http://localhost:8000/archive-2024/",
     )
 
 
 @fixture
-def non_archived_event(faker) -> Event:
+def non_archived_event() -> Event:
     """Non-archived event for testing archive visibility."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Instanssi Current {unique_id}",
-        tag=f"current-{unique_id}",
-        date=date.today(),
+        name="Instanssi Current 2025",
+        tag="current-2025",
+        date=date(2025, 1, 15),
         archived=False,
-        mainurl=f"http://localhost:8000/current-{unique_id}/",
+        mainurl="http://localhost:8000/current-2025/",
     )
 
 
 @fixture
-def video_category(archived_event, faker) -> OtherVideoCategory:
+def video_category(archived_event) -> OtherVideoCategory:
     """Video category for an archived event."""
     return OtherVideoCategory.objects.create(
         event=archived_event,
-        name=faker.word().capitalize() + " Videos",
+        name="Test Videos",
     )
 
 
 @fixture
-def video_category_non_archived(non_archived_event, faker) -> OtherVideoCategory:
+def video_category_non_archived(non_archived_event) -> OtherVideoCategory:
     """Video category for a non-archived event (not publicly visible)."""
     return OtherVideoCategory.objects.create(
         event=non_archived_event,
-        name=faker.word().capitalize() + " Videos",
+        name="Current Videos",
     )
 
 
 @fixture
-def other_video(video_category, faker) -> OtherVideo:
+def other_video(video_category) -> OtherVideo:
     """Video for an archived event."""
     return OtherVideo.objects.create(
         category=video_category,
-        name=faker.sentence(nb_words=3),
-        description=faker.text(max_nb_chars=256),
+        name="Test Video",
+        description="A test video description",
         youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     )
 
 
 @fixture
-def other_video_non_archived(video_category_non_archived, faker) -> OtherVideo:
+def other_video_non_archived(video_category_non_archived) -> OtherVideo:
     """Video for a non-archived event (not publicly visible)."""
     return OtherVideo.objects.create(
         category=video_category_non_archived,
-        name=faker.sentence(nb_words=3),
-        description=faker.text(max_nb_chars=256),
+        name="Current Video",
+        description="A current video description",
         youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     )
 
 
+# Compo fixtures - all times relative to FROZEN_TIME (2025-01-15T12:00:00Z)
+
+
 @fixture
-def upcoming_compo(faker, event) -> Compo:
+def upcoming_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
         name="Upcoming Compo",
         description="This compo cannot be participated in yet!",
-        adding_end=timezone.now() + timedelta(hours=1),
-        editing_end=timezone.now() + timedelta(hours=2),
-        compo_start=timezone.now() + timedelta(hours=6),
-        voting_start=timezone.now() + timedelta(hours=6, minutes=30),
-        voting_end=timezone.now() + timedelta(hours=8),
+        adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 18, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 18, 30, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def open_compo(faker, event) -> Compo:
+def open_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
-        name="Votable Compo",
+        name="Open Compo",
         description="Test Compo should be open for participations!",
-        adding_end=timezone.now() + timedelta(minutes=30),
-        editing_end=timezone.now() + timedelta(hours=1),
-        compo_start=timezone.now() + timedelta(hours=2),
-        voting_start=timezone.now() + timedelta(hours=3),
-        voting_end=timezone.now() + timedelta(hours=8),
+        adding_end=datetime(2025, 1, 15, 12, 30, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def votable_compo(faker, event) -> Compo:
+def votable_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
         name="Votable Compo",
         description="Test Compo should be votable!",
-        adding_end=timezone.now() + timedelta(hours=-6),
-        editing_end=timezone.now() + timedelta(hours=-2),
-        compo_start=timezone.now() + timedelta(hours=-1),
-        voting_start=timezone.now() + timedelta(minutes=-30),
-        voting_end=timezone.now() + timedelta(hours=8),
+        adding_end=datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def closed_compo(faker, event) -> Compo:
+def closed_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
         name="Closed Compo",
         description="Test Compo should be closed!",
-        adding_end=timezone.now() + timedelta(hours=-6),
-        editing_end=timezone.now() + timedelta(hours=-2),
-        compo_start=timezone.now() + timedelta(hours=-1),
-        voting_start=timezone.now() + timedelta(minutes=-30),
-        voting_end=timezone.now() + timedelta(minutes=-5),
+        adding_end=datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 11, 55, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def inactive_compo(faker, event) -> Compo:
+def inactive_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
         name="Inactive Compo",
         description="Test Compo is not active!",
         active=False,
-        adding_end=timezone.now() + timedelta(hours=1),
-        editing_end=timezone.now() + timedelta(hours=2),
-        compo_start=timezone.now() + timedelta(hours=3),
-        voting_start=timezone.now() + timedelta(hours=4),
-        voting_end=timezone.now() + timedelta(hours=8),
+        adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 16, 0, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, image_png) -> Entry:
+def editable_compo_entry(base_user, open_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=open_compo,
         user=base_user,
         name="Test Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="An editable test entry",
+        creator="Test Creator",
         platform="Commodore 64",
         entryfile=entry_zip,
         sourcefile=source_zip,
@@ -483,13 +485,13 @@ def editable_compo_entry(faker, base_user, open_compo, entry_zip, source_zip, im
 
 
 @fixture
-def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, image_png) -> Entry:
+def closed_compo_entry(base_user, closed_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=closed_compo,
         user=base_user,
         name="Closed Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A closed test entry",
+        creator="Closed Creator",
         platform="Commodore 64",
         entryfile=entry_zip,
         sourcefile=source_zip,
@@ -500,13 +502,13 @@ def closed_compo_entry(faker, base_user, closed_compo, entry_zip, source_zip, im
 
 
 @fixture
-def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
+def votable_compo_entry(base_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
     return Entry.objects.create(
         compo=votable_compo,
         user=base_user,
         name="Test Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A votable test entry",
+        creator="Test Creator",
         platform="Commodore 64",
         entryfile=entry_zip,
         sourcefile=source_zip,
@@ -516,14 +518,14 @@ def votable_compo_entry(faker, base_user, votable_compo, entry_zip, source_zip, 
 
 
 @fixture
-def second_votable_entry(faker, normal_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
+def second_votable_entry(normal_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
     """A second entry in the votable compo."""
     return Entry.objects.create(
         compo=votable_compo,
         user=normal_user,
         name="Second Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A second votable entry",
+        creator="Second Creator",
         platform="Amiga",
         entryfile=entry_zip,
         sourcefile=source_zip,
@@ -532,14 +534,14 @@ def second_votable_entry(faker, normal_user, votable_compo, entry_zip, source_zi
 
 
 @fixture
-def third_votable_entry(faker, normal_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
+def third_votable_entry(normal_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
     """A third entry in the votable compo."""
     return Entry.objects.create(
         compo=votable_compo,
         user=normal_user,
         name="Third Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A third votable entry",
+        creator="Third Creator",
         platform="PC",
         entryfile=entry_zip,
         sourcefile=source_zip,
@@ -571,6 +573,9 @@ def editable_alternate_entry_file(editable_compo_entry, test_zip) -> AlternateEn
     )
 
 
+# Competition fixtures - all times relative to FROZEN_TIME (2025-01-15T12:00:00Z)
+
+
 @fixture
 def competition(event) -> Competition:
     """Competition that hasn't started yet"""
@@ -578,9 +583,9 @@ def competition(event) -> Competition:
         event=event,
         name="Test competition",
         description="<p>Test competition is the <strong>awesomest</strong> ever!</p>",
-        participation_end=timezone.now() + timedelta(hours=1),
-        start=timezone.now() + timedelta(hours=1, minutes=30),
-        end=timezone.now() + timedelta(hours=8),
+        participation_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 15, 13, 30, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
     )
 
@@ -592,9 +597,9 @@ def started_competition(event) -> Competition:
         event=event,
         name="Started Competition",
         description="<p>Test competition that has <em>started</em></p>",
-        participation_end=timezone.now() + timedelta(hours=-1),
-        start=timezone.now() + timedelta(hours=-30, minutes=-30),
-        end=timezone.now() + timedelta(hours=8),
+        participation_end=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 14, 5, 30, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
     )
 
@@ -607,80 +612,101 @@ def inactive_competition(event) -> Competition:
         name="Inactive Competition",
         description="<p>Test competition that is <strong>inactive</strong></p>",
         active=False,
-        participation_end=timezone.now() + timedelta(hours=-1),
-        start=timezone.now() + timedelta(hours=-30, minutes=-30),
-        end=timezone.now() + timedelta(hours=8),
+        participation_end=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 14, 5, 30, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
     )
 
 
 @fixture
-def competition_participation(faker, competition, base_user) -> CompetitionParticipation:
-    return CompetitionParticipation.objects.create(
-        competition=competition, user=base_user, participant_name=faker.name(), score=100.0
+def results_competition(event) -> Competition:
+    """Competition with show_results=True."""
+    return Competition.objects.create(
+        event=event,
+        name="Results Competition",
+        description="<p>Competition with visible results</p>",
+        participation_end=datetime(2025, 1, 14, 12, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 14, 13, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        score_type="p",
+        show_results=True,
     )
 
 
 @fixture
-def started_competition_participation(faker, started_competition, base_user) -> CompetitionParticipation:
+def competition_participation(competition, base_user) -> CompetitionParticipation:
     return CompetitionParticipation.objects.create(
-        competition=started_competition, user=base_user, participant_name=faker.name(), score=150.0
+        competition=competition, user=base_user, participant_name="Test Participant", score=100.0
     )
 
 
 @fixture
-def other_user_competition_participation(
-    faker, started_competition, normal_user
-) -> CompetitionParticipation:
+def started_competition_participation(started_competition, base_user) -> CompetitionParticipation:
+    return CompetitionParticipation.objects.create(
+        competition=started_competition, user=base_user, participant_name="Started Participant", score=150.0
+    )
+
+
+@fixture
+def other_user_competition_participation(started_competition, normal_user) -> CompetitionParticipation:
     """Participation belonging to another user (normal_user)."""
     return CompetitionParticipation.objects.create(
-        competition=started_competition, user=normal_user, participant_name=faker.name(), score=75.0
+        competition=started_competition, user=normal_user, participant_name="Other Participant", score=75.0
     )
 
 
 @fixture
-def inactive_competition_participation(faker, inactive_competition, base_user) -> CompetitionParticipation:
+def inactive_competition_participation(inactive_competition, base_user) -> CompetitionParticipation:
     """Participation in an inactive competition."""
     return CompetitionParticipation.objects.create(
-        competition=inactive_competition, user=base_user, participant_name=faker.name(), score=50.0
+        competition=inactive_competition, user=base_user, participant_name="Inactive Participant", score=50.0
     )
 
 
 @fixture
-def store_transaction(faker, event) -> StoreTransaction:
+def results_competition_participation(results_competition, base_user) -> CompetitionParticipation:
+    """Participation in a competition with results shown."""
+    return CompetitionParticipation.objects.create(
+        competition=results_competition, user=base_user, participant_name="Results Participant", score=150.0
+    )
+
+
+@fixture
+def store_transaction(event) -> StoreTransaction:
     return StoreTransaction.objects.create(
-        token=secrets.token_hex(8),
-        time_created=timezone.now(),
-        time_paid=timezone.now(),
-        key=uuid4().hex,
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
-        email=faker.email(),
-        street=faker.street_address(),
-        postalcode=faker.postcode(),
-        city=faker.city(),
+        token="aabbccdd11223344",
+        time_created=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        time_paid=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        key="deadbeef12345678deadbeef12345678",
+        firstname="Testi",
+        lastname="Asiakas",
+        email="testi.asiakas@instanssi.org",
+        street="Kauppakatu 1",
+        postalcode="00100",
+        city="Helsinki",
     )
 
 
 @fixture
-def transaction_item_a(faker, store_item, store_transaction) -> TransactionItem:
+def transaction_item_a(store_item, store_transaction) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="aaaa1111bbbb2222cccc3333dddd4444",
         item=store_item,
         transaction=store_transaction,
-        time_delivered=timezone.now(),
+        time_delivered=datetime(2025, 1, 15, 10, 30, 0, tzinfo=dt_tz.utc),
         purchase_price=Decimal("2.50"),
         original_price=Decimal("2.50"),
     )
 
 
 @fixture
-def transaction_item_b(faker, store_item, store_transaction) -> TransactionItem:
+def transaction_item_b(store_item, store_transaction) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="eeee4444ffff5555aaaa6666bbbb7777",
         item=store_item,
         transaction=store_transaction,
-        time_delivered=timezone.now(),
+        time_delivered=datetime(2025, 1, 15, 10, 30, 0, tzinfo=dt_tz.utc),
         purchase_price=Decimal("1.00"),
         original_price=Decimal("1.00"),
     )
@@ -715,7 +741,7 @@ def ticket_vote_code(event, base_user, transaction_item_a) -> TicketVoteCode:
 def claimable_ticket(store_item, store_transaction) -> TransactionItem:
     """A paid ticket that can be claimed for voting rights (not yet used by any vote code)."""
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="cccc8888dddd9999eeee0000ffff1111",
         item=store_item,
         transaction=store_transaction,
         purchase_price=store_item.price,
@@ -724,19 +750,19 @@ def claimable_ticket(store_item, store_transaction) -> TransactionItem:
 
 
 @fixture
-def unpaid_transaction(faker) -> StoreTransaction:
+def unpaid_transaction() -> StoreTransaction:
     """An unpaid transaction."""
     return StoreTransaction.objects.create(
-        token=secrets.token_hex(8),
-        time_created=timezone.now(),
+        token="eeff0011aabb2233",
+        time_created=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
         time_paid=None,  # Not paid
-        key=uuid4().hex,
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
-        email=faker.email(),
-        street=faker.street_address(),
-        postalcode=faker.postcode(),
-        city=faker.city(),
+        key="cafebabe12345678cafebabe12345678",
+        firstname="Testi",
+        lastname="Maksamaton",
+        email="testi.maksamaton@instanssi.org",
+        street="Maksukatu 1",
+        postalcode="00100",
+        city="Helsinki",
     )
 
 
@@ -744,7 +770,7 @@ def unpaid_transaction(faker) -> StoreTransaction:
 def unpaid_ticket(store_item, unpaid_transaction) -> TransactionItem:
     """A ticket from an unpaid transaction."""
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="2222333344445555666677778888aaaa",
         item=store_item,
         transaction=unpaid_transaction,
         purchase_price=store_item.price,
@@ -756,7 +782,7 @@ def unpaid_ticket(store_item, unpaid_transaction) -> TransactionItem:
 def non_ticket_transaction_item(variant_item, store_transaction) -> TransactionItem:
     """A transaction item for a non-ticket store item."""
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="bbbb1111cccc2222dddd3333eeee4444",
         item=variant_item,
         transaction=store_transaction,
         purchase_price=variant_item.price,
@@ -846,12 +872,12 @@ def entry_vote(base_user, votable_compo_entry, votable_compo, entry_vote_group) 
 
 
 @fixture
-def base_store_item(faker, event, image_png) -> Callable[[], StoreItem]:
+def base_store_item(event, image_png) -> Callable[[], StoreItem]:
     def _inner() -> StoreItem:
         return StoreItem(
             name="Test item 1",
             event=event,
-            description=faker.text(),
+            description="A test store item",
             price=Decimal("20.00"),
             max=50,
             available=True,
@@ -912,24 +938,24 @@ def store_item_variant2(variant_item) -> StoreItemVariant:
 
 
 @fixture
-def new_transaction(faker, event) -> StoreTransaction:
+def new_transaction(event) -> StoreTransaction:
     return StoreTransaction.objects.create(
-        time_created=timezone.now(),
-        key=uuid4().hex,
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
-        email=faker.email(),
-        street=faker.street_address(),
-        postalcode=faker.postcode(),
-        city=faker.city(),
-        information=faker.text(),
+        time_created=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        key="a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8",
+        firstname="Testi",
+        lastname="Ostaja",
+        email="testi.ostaja@instanssi.org",
+        street="Ostoskatu 1",
+        postalcode="00100",
+        city="Helsinki",
+        information="Test transaction",
     )
 
 
 @fixture
 def new_transaction_item(new_transaction, variant_item, store_item_variant) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="1111aaaa2222bbbb3333cccc4444dddd",
         transaction=new_transaction,
         item=variant_item,
         variant=store_item_variant,
@@ -941,7 +967,7 @@ def new_transaction_item(new_transaction, variant_item, store_item_variant) -> T
 @fixture
 def new_transaction_item_copy(new_transaction, variant_item, store_item_variant) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="5555eeee6666ffff7777aaaa8888bbbb",
         transaction=new_transaction,
         item=variant_item,
         variant=store_item_variant,
@@ -953,7 +979,7 @@ def new_transaction_item_copy(new_transaction, variant_item, store_item_variant)
 @fixture
 def new_transaction_item2(new_transaction, variant_item, store_item_variant2) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="9999cccc0000dddd1111eeee2222ffff",
         transaction=new_transaction,
         item=variant_item,
         variant=store_item_variant2,
@@ -965,7 +991,7 @@ def new_transaction_item2(new_transaction, variant_item, store_item_variant2) ->
 @fixture
 def new_transaction_item3(new_transaction, store_item) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="3333aaaa4444bbbb5555cccc6666dddd",
         transaction=new_transaction,
         item=store_item,
         variant=None,
@@ -977,7 +1003,7 @@ def new_transaction_item3(new_transaction, store_item) -> TransactionItem:
 @fixture
 def new_transaction_item4(new_transaction, hidden_item) -> TransactionItem:
     return TransactionItem.objects.create(
-        key=uuid4().hex,
+        key="7777eeee8888ffff9999aaaa0000bbbb",
         transaction=new_transaction,
         item=hidden_item,
         variant=None,
@@ -987,23 +1013,23 @@ def new_transaction_item4(new_transaction, hidden_item) -> TransactionItem:
 
 
 @fixture
-def receipt_params(faker) -> ReceiptParams:
+def receipt_params() -> ReceiptParams:
     request = RequestFactory().get("/")
     p = ReceiptParams()
     p.order_number(20000)
     p.receipt_number(1000)
-    p.receipt_date(timezone.now())
-    p.order_date(timezone.now())
-    p.first_name(faker.first_name())
-    p.last_name(faker.last_name())
-    p.email(faker.email())
-    p.mobile(faker.phone_number())
-    p.telephone(faker.phone_number())
-    p.company(faker.company())
-    p.street(faker.street_address())
-    p.city(faker.city())
-    p.postal_code(faker.postcode())
-    p.country(faker.country_code())
+    p.receipt_date(datetime(2025, 1, 15, 12, 0, 0, tzinfo=dt_tz.utc))
+    p.order_date(datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc))
+    p.first_name("Testi")
+    p.last_name("Testinen")
+    p.email("testi@instanssi.org")
+    p.mobile("+358401234567")
+    p.telephone("091234567")
+    p.company("Test Oy")
+    p.street("Testikatu 1")
+    p.city("Helsinki")
+    p.postal_code("00100")
+    p.country("FI")
     p.transaction_url(request.build_absolute_uri(reverse("store:ta_view", args=("1234abcd",))))
     for k in range(3):
         p.add_item(
@@ -1124,9 +1150,9 @@ def other_competition(other_event) -> Competition:
         event=other_event,
         name="Other Competition",
         description="<p>Competition from <em>another</em> event</p>",
-        participation_end=timezone.now() + timedelta(hours=1),
-        start=timezone.now() + timedelta(hours=2),
-        end=timezone.now() + timedelta(hours=8),
+        participation_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
         active=True,
     )
@@ -1146,7 +1172,7 @@ def other_event_store_item(other_event) -> StoreItem:
 
 
 @fixture
-def other_event_transaction(other_event, faker) -> StoreTransaction:
+def other_event_transaction(other_event) -> StoreTransaction:
     """Transaction with items from a different event."""
     store_item = StoreItem.objects.create(
         event=other_event,
@@ -1157,20 +1183,20 @@ def other_event_transaction(other_event, faker) -> StoreTransaction:
         available=True,
     )
     transaction = StoreTransaction.objects.create(
-        time_created=timezone.now(),
-        time_paid=timezone.now(),
-        key=faker.uuid4(),
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
-        email=faker.email(),
-        street=faker.street_address(),
-        postalcode=faker.postcode(),
-        city=faker.city(),
+        time_created=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        time_paid=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        key="1111222233334444aaaabbbbccccdddd",
+        firstname="Other",
+        lastname="Buyer",
+        email="other.buyer@instanssi.org",
+        street="Other Street 1",
+        postalcode="00200",
+        city="Espoo",
     )
     TransactionItem.objects.create(
         item=store_item,
         transaction=transaction,
-        key=faker.uuid4(),
+        key="5555666677778888eeeeffff00001111",
         purchase_price=10,
         original_price=10,
     )
@@ -1178,7 +1204,7 @@ def other_event_transaction(other_event, faker) -> StoreTransaction:
 
 
 @fixture
-def other_event_transaction_item(other_event, faker) -> TransactionItem:
+def other_event_transaction_item(other_event) -> TransactionItem:
     """Transaction item from a store item belonging to a different event."""
     store_item = StoreItem.objects.create(
         event=other_event,
@@ -1189,20 +1215,20 @@ def other_event_transaction_item(other_event, faker) -> TransactionItem:
         available=True,
     )
     transaction = StoreTransaction.objects.create(
-        time_created=timezone.now(),
-        time_paid=timezone.now(),
-        key=faker.uuid4(),
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
-        email=faker.email(),
-        street=faker.street_address(),
-        postalcode=faker.postcode(),
-        city=faker.city(),
+        time_created=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        time_paid=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        key="9999aaaabbbbccccddddeeee11112222",
+        firstname="Ticket",
+        lastname="Buyer",
+        email="ticket.buyer@instanssi.org",
+        street="Ticket Street 1",
+        postalcode="00300",
+        city="Vantaa",
     )
     return TransactionItem.objects.create(
         item=store_item,
         transaction=transaction,
-        key=faker.uuid4(),
+        key="3333444455556666777788889999aaaa",
         purchase_price=10,
         original_price=10,
     )
@@ -1244,15 +1270,14 @@ def archive_user() -> User:
 
 
 @fixture
-def past_event(faker) -> Event:
+def past_event() -> Event:
     """Event that has ended (date in the past, for archiver tests)."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Instanssi Past {unique_id}",
-        tag=f"past-{unique_id}",
-        date=date.today() - timedelta(days=30),
+        name="Instanssi Past 2024",
+        tag="past-2024",
+        date=date(2024, 12, 16),
         archived=False,
-        mainurl=f"http://localhost:8000/past-{unique_id}/",
+        mainurl="http://localhost:8000/past-2024/",
     )
 
 
@@ -1263,23 +1288,23 @@ def past_compo(past_event) -> Compo:
         event=past_event,
         name="Past Compo",
         description="This compo has ended",
-        adding_end=timezone.now() - timedelta(days=20),
-        editing_end=timezone.now() - timedelta(days=19),
-        compo_start=timezone.now() - timedelta(days=18),
-        voting_start=timezone.now() - timedelta(days=17),
-        voting_end=timezone.now() - timedelta(days=10),
+        adding_end=datetime(2024, 12, 26, 12, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2024, 12, 27, 12, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2024, 12, 28, 12, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2024, 12, 29, 12, 0, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 5, 12, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def past_compo_entry(faker, base_user, past_compo, entry_zip, image_png) -> Entry:
+def past_compo_entry(base_user, past_compo, entry_zip, image_png) -> Entry:
     """Entry in a past compo (no archive scores set yet)."""
     return Entry.objects.create(
         compo=past_compo,
         user=base_user,
         name="Past Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A past test entry",
+        creator="Past Creator",
         platform="PC",
         entryfile=entry_zip,
         imagefile_original=image_png,
@@ -1293,20 +1318,20 @@ def past_competition(past_event) -> Competition:
         event=past_event,
         name="Past Competition",
         description="<p>This competition has <strong>ended</strong></p>",
-        participation_end=timezone.now() - timedelta(days=20),
-        start=timezone.now() - timedelta(days=19),
-        end=timezone.now() - timedelta(days=10),
+        participation_end=datetime(2024, 12, 26, 12, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2024, 12, 27, 12, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 5, 12, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
     )
 
 
 @fixture
-def past_competition_participation(faker, past_competition, base_user) -> CompetitionParticipation:
+def past_competition_participation(past_competition, base_user) -> CompetitionParticipation:
     """Participation in a past competition."""
     return CompetitionParticipation.objects.create(
         competition=past_competition,
         user=base_user,
-        participant_name=faker.name(),
+        participant_name="Past Participant",
         score=100.0,
     )
 
@@ -1336,30 +1361,28 @@ def past_vote(base_user, past_compo, past_compo_entry, past_vote_group) -> Vote:
 
 
 @fixture
-def hidden_event(faker) -> Event:
+def hidden_event() -> Event:
     """A hidden event that should not appear in public/user APIs."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Hidden Event {unique_id}",
-        tag=f"hidden-{unique_id}",
-        date=date.today(),
+        name="Hidden Event 2025",
+        tag="hidden-2025",
+        date=date(2025, 1, 15),
         archived=False,
         hidden=True,
-        mainurl=f"http://localhost:8000/hidden-{unique_id}/",
+        mainurl="http://localhost:8000/hidden-2025/",
     )
 
 
 @fixture
-def hidden_archived_event(faker) -> Event:
+def hidden_archived_event() -> Event:
     """A hidden archived event that should not appear even in archive APIs."""
-    unique_id = faker.unique.pyint(min_value=10000, max_value=99999)
     return Event.objects.create(
-        name=f"Hidden Archived Event {unique_id}",
-        tag=f"hidarch-{unique_id}",
-        date=date.today() - timedelta(days=365),
+        name="Hidden Archived Event 2024",
+        tag="hidarch-2024",
+        date=date(2024, 1, 15),
         archived=True,
         hidden=True,
-        mainurl=f"http://localhost:8000/hidden-archived-{unique_id}/",
+        mainurl="http://localhost:8000/hidden-archived-2024/",
     )
 
 
@@ -1371,23 +1394,23 @@ def hidden_event_compo(hidden_event) -> Compo:
         name="Hidden Compo",
         description="This compo is in a hidden event",
         active=True,
-        adding_end=timezone.now() + timedelta(hours=1),
-        editing_end=timezone.now() + timedelta(hours=2),
-        compo_start=timezone.now() + timedelta(hours=3),
-        voting_start=timezone.now() - timedelta(hours=1),
-        voting_end=timezone.now() + timedelta(hours=8),
+        adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
+        voting_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
-def hidden_event_entry(faker, base_user, hidden_event_compo, entry_zip, image_png) -> Entry:
+def hidden_event_entry(base_user, hidden_event_compo, entry_zip, image_png) -> Entry:
     """Entry in a hidden event's compo."""
     return Entry.objects.create(
         compo=hidden_event_compo,
         user=base_user,
         name="Hidden Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="A hidden test entry",
+        creator="Hidden Creator",
         platform="PC",
         entryfile=entry_zip,
         imagefile_original=image_png,
@@ -1402,34 +1425,34 @@ def hidden_event_competition(hidden_event) -> Competition:
         name="Hidden Competition",
         description="<p>This competition is in a <em>hidden</em> event</p>",
         active=True,
-        participation_end=timezone.now() + timedelta(hours=1),
-        start=timezone.now() - timedelta(hours=1),
-        end=timezone.now() + timedelta(hours=8),
+        participation_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         score_type="p",
     )
 
 
 @fixture
-def hidden_event_participation(faker, base_user, hidden_event_competition) -> CompetitionParticipation:
+def hidden_event_participation(base_user, hidden_event_competition) -> CompetitionParticipation:
     """Participation in a hidden event's competition."""
     return CompetitionParticipation.objects.create(
         competition=hidden_event_competition,
         user=base_user,
-        participant_name=faker.name(),
+        participant_name="Hidden Participant",
         score=100.0,
     )
 
 
 @fixture
-def hidden_event_program(hidden_event, faker) -> ProgrammeEvent:
+def hidden_event_program(hidden_event) -> ProgrammeEvent:
     """Program event belonging to a hidden event."""
     return ProgrammeEvent.objects.create(
         event=hidden_event,
-        start=timezone.now() + timedelta(hours=1),
-        end=timezone.now() + timedelta(hours=2),
-        title=faker.sentence(nb_words=4),
-        description=faker.text(max_nb_chars=256),
-        presenters=faker.name(),
+        start=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
+        end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
+        title="Hidden Programme Event",
+        description="A hidden programme event",
+        presenters="Hidden Presenter",
         place="Main Stage",
         active=True,
     )
@@ -1452,7 +1475,7 @@ def hidden_event_blog_entry(hidden_event, base_user) -> BlogEntry:
         user=base_user,
         title="Hidden Blog Post",
         text="This blog entry is in a hidden event.",
-        date=timezone.now(),
+        date=datetime(2025, 1, 15, 12, 0, 0, tzinfo=dt_tz.utc),
         public=True,
     )
 
@@ -1472,15 +1495,15 @@ def hidden_event_store_item(hidden_event) -> StoreItem:
 
 
 @fixture
-def audio_entry(faker, base_user, open_compo, source_zip, image_png) -> Entry:
+def audio_entry(base_user, open_compo, source_zip, image_png) -> Entry:
     """Entry with an audio file (mp3 extension triggers is_audio=True)."""
     audio_file = SimpleUploadedFile("test_audio.mp3", b"fake audio data", content_type="audio/mpeg")
     entry = Entry(
         compo=open_compo,
         user=base_user,
         name="Audio Entry",
-        description=faker.text(),
-        creator=faker.name(),
+        description="An audio test entry",
+        creator="Audio Creator",
         platform="PC",
         entryfile=audio_file,
         sourcefile=source_zip,

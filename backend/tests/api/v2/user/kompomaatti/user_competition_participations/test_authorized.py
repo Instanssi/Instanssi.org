@@ -1,6 +1,9 @@
 import pytest
+from freezegun import freeze_time
 
 from Instanssi.kompomaatti.models import CompetitionParticipation
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -31,6 +34,7 @@ def test_get_own_participation(auth_client, competition_participation):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_create_participation(auth_client, competition):
     """Test that users can create a participation in an open competition."""
     base_url = get_base_url(competition.event_id)
@@ -47,6 +51,7 @@ def test_create_participation(auth_client, competition):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_update_own_participation(auth_client, competition_participation):
     """Test that users can update their own participation."""
     base_url = get_base_url(competition_participation.competition.event_id)
@@ -62,6 +67,7 @@ def test_update_own_participation(auth_client, competition_participation):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_delete_own_participation(auth_client, competition_participation):
     """Test that users can delete their own participation."""
     base_url = get_base_url(competition_participation.competition.event_id)
@@ -112,6 +118,7 @@ def test_cannot_delete_after_deadline(auth_client, started_competition_participa
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_create_duplicate_participation(auth_client, competition_participation):
     """Test that users cannot participate twice in the same competition."""
     base_url = get_base_url(competition_participation.competition.event_id)

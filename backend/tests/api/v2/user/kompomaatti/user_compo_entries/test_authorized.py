@@ -1,4 +1,9 @@
 import pytest
+from freezegun import freeze_time
+
+from tests.api.helpers import file_url
+
+FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
@@ -6,6 +11,7 @@ def get_base_url(event_id):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_post_user_compo_entry(auth_client, open_compo, entry_zip, source_zip, image_png):
     base_url = get_base_url(open_compo.event_id)
     req = auth_client.post(
@@ -26,6 +32,7 @@ def test_post_user_compo_entry(auth_client, open_compo, entry_zip, source_zip, i
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_post_user_compo_entry_with_uppercase_ext(auth_client, open_compo, entry_zip, source_zip, image_png):
     base_url = get_base_url(open_compo.event_id)
     entry_zip.name = "entry_file.ZIP"  # UPPERCASE EXTS
@@ -65,11 +72,11 @@ def test_get_user_compo_entry(auth_client, votable_compo_entry):
         "description": votable_compo_entry.description,
         "creator": votable_compo_entry.creator,
         "platform": votable_compo_entry.platform,
-        "entryfile_url": f"http://testserver{votable_compo_entry.entryfile.url}",
-        "sourcefile_url": f"http://testserver{votable_compo_entry.sourcefile.url}",
-        "imagefile_original_url": f"http://testserver{votable_compo_entry.imagefile_original.url}",
-        "imagefile_thumbnail_url": f"http://testserver{votable_compo_entry.imagefile_thumbnail.url}",
-        "imagefile_medium_url": f"http://testserver{votable_compo_entry.imagefile_medium.url}",
+        "entryfile_url": file_url(votable_compo_entry.entryfile),
+        "sourcefile_url": file_url(votable_compo_entry.sourcefile),
+        "imagefile_original_url": file_url(votable_compo_entry.imagefile_original),
+        "imagefile_thumbnail_url": file_url(votable_compo_entry.imagefile_thumbnail),
+        "imagefile_medium_url": file_url(votable_compo_entry.imagefile_medium),
         "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "disqualified": votable_compo_entry.disqualified,
         "disqualified_reason": votable_compo_entry.disqualified_reason,
@@ -80,6 +87,7 @@ def test_get_user_compo_entry(auth_client, votable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_patch_user_compo_entry(auth_client, editable_compo_entry):
     base_url = get_base_url(editable_compo_entry.compo.event_id)
     instance_url = f"{base_url}{editable_compo_entry.id}/"
@@ -109,8 +117,8 @@ def test_patch_user_compo_entry(auth_client, editable_compo_entry):
         "description": "Awesome test entry description 2",
         "creator": "Test Creator 3000",
         "platform": editable_compo_entry.platform,
-        "entryfile_url": f"http://testserver{editable_compo_entry.entryfile.url}",
-        "sourcefile_url": f"http://testserver{editable_compo_entry.sourcefile.url}",
+        "entryfile_url": file_url(editable_compo_entry.entryfile),
+        "sourcefile_url": file_url(editable_compo_entry.sourcefile),
         "imagefile_original_url": None,
         "imagefile_thumbnail_url": None,
         "imagefile_medium_url": None,
@@ -124,6 +132,7 @@ def test_patch_user_compo_entry(auth_client, editable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_put_user_compo_entry(auth_client, editable_compo_entry, entry_zip2, source_zip2, image_png2):
     base_url = get_base_url(editable_compo_entry.compo.event_id)
     instance_url = f"{base_url}{editable_compo_entry.id}/"
@@ -157,11 +166,11 @@ def test_put_user_compo_entry(auth_client, editable_compo_entry, entry_zip2, sou
         "description": "Awesome test entry description",
         "creator": "Test Creator 3000",
         "platform": "Linux (Ubuntu 18.04)",
-        "entryfile_url": f"http://testserver{editable_compo_entry.entryfile.url}",
-        "sourcefile_url": f"http://testserver{editable_compo_entry.sourcefile.url}",
-        "imagefile_original_url": f"http://testserver{editable_compo_entry.imagefile_original.url}",
-        "imagefile_thumbnail_url": f"http://testserver{editable_compo_entry.imagefile_thumbnail.url}",
-        "imagefile_medium_url": f"http://testserver{editable_compo_entry.imagefile_medium.url}",
+        "entryfile_url": file_url(editable_compo_entry.entryfile),
+        "sourcefile_url": file_url(editable_compo_entry.sourcefile),
+        "imagefile_original_url": file_url(editable_compo_entry.imagefile_original),
+        "imagefile_thumbnail_url": file_url(editable_compo_entry.imagefile_thumbnail),
+        "imagefile_medium_url": file_url(editable_compo_entry.imagefile_medium),
         "youtube_url": None,
         "disqualified": None,
         "disqualified_reason": None,
@@ -172,6 +181,7 @@ def test_put_user_compo_entry(auth_client, editable_compo_entry, entry_zip2, sou
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_delete_user_compo_entry(auth_client, editable_compo_entry):
     base_url = get_base_url(editable_compo_entry.compo.event_id)
     instance_url = f"{base_url}{editable_compo_entry.id}/"
@@ -228,6 +238,7 @@ def test_cannot_delete_entry_after_deadline(auth_client, votable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_create_entry_in_inactive_compo(auth_client, open_compo, entry_zip, source_zip, image_png):
     """Test that entries cannot be created in inactive compos"""
     # Make the compo inactive
@@ -254,6 +265,7 @@ def test_cannot_create_entry_in_inactive_compo(auth_client, open_compo, entry_zi
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_edit_entry_in_inactive_compo(auth_client, editable_compo_entry):
     """Test that entries cannot be edited when compo becomes inactive"""
     # Make the compo inactive
@@ -274,6 +286,7 @@ def test_cannot_edit_entry_in_inactive_compo(auth_client, editable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_cannot_delete_entry_in_inactive_compo(auth_client, editable_compo_entry):
     """Test that entries cannot be deleted when compo becomes inactive"""
     # Make the compo inactive
@@ -288,6 +301,7 @@ def test_cannot_delete_entry_in_inactive_compo(auth_client, editable_compo_entry
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_user_entry_includes_alternate_files(auth_client, editable_alternate_entry_file):
     """Test that user entry response includes alternate_files"""
     entry = editable_alternate_entry_file.entry

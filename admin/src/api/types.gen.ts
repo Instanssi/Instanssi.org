@@ -4552,6 +4552,16 @@ export type UserVoteGroupRequest = {
     compo: number;
 };
 
+export type ValidateArchiveError = {
+    error: string;
+    entries: Array<string>;
+};
+
+export type ValidateArchiveOk = {
+    ok: boolean;
+    count: number;
+};
+
 /**
  * Staff serializer for vote code requests.
  */
@@ -7295,7 +7305,12 @@ export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveData = {
     path: {
         event_pk: number;
     };
-    query?: never;
+    query?: {
+        /**
+         * Filter by compo ID
+         */
+        compo?: number;
+    };
     url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/";
 };
 
@@ -7305,6 +7320,34 @@ export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses = {
 
 export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponse =
     AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses[keyof AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses];
+
+export type AdminEventKompomaattiEntriesValidateArchiveRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Filter by compo ID
+         */
+        compo?: number;
+    };
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/";
+};
+
+export type AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors = {
+    400: ValidateArchiveError;
+};
+
+export type AdminEventKompomaattiEntriesValidateArchiveRetrieveError =
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors[keyof AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors];
+
+export type AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses = {
+    200: ValidateArchiveOk;
+};
+
+export type AdminEventKompomaattiEntriesValidateArchiveRetrieveResponse =
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses[keyof AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses];
 
 export type AdminEventKompomaattiTicketVoteCodesListData = {
     body?: never;

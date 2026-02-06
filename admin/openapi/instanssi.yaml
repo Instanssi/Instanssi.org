@@ -1748,6 +1748,11 @@ paths:
       description: Streams all entry files as a ZIP archive organized by compo directory.
       summary: Download entry files archive
       parameters:
+      - in: query
+        name: compo
+        schema:
+          type: integer
+        description: Filter by compo ID
       - in: path
         name: event_pk
         schema:
@@ -1765,6 +1770,41 @@ paths:
               schema:
                 type: string
                 format: binary
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/:
+    get:
+      operationId: admin_event_kompomaatti_entries_validate_archive_retrieve
+      description: Checks that all entry files exist on disk before downloading. Call
+        this before download-archive to get actionable error messages.
+      summary: Validate entry files archive
+      parameters:
+      - in: query
+        name: compo
+        schema:
+          type: integer
+        description: Filter by compo ID
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateArchiveOk'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateArchiveError'
           description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/:
     get:
@@ -11660,6 +11700,28 @@ components:
       required:
       - compo
       - entries
+    ValidateArchiveError:
+      type: object
+      properties:
+        error:
+          type: string
+        entries:
+          type: array
+          items:
+            type: string
+      required:
+      - entries
+      - error
+    ValidateArchiveOk:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        count:
+          type: integer
+      required:
+      - count
+      - ok
     VoteCodeRequest:
       type: object
       description: Staff serializer for vote code requests.

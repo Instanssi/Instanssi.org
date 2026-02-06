@@ -3,7 +3,7 @@ from collections.abc import Iterable, Iterator
 from datetime import UTC, datetime
 from pathlib import Path
 
-from stream_zip import ZIP_AUTO, MemberFile, stream_zip
+from stream_zip import NO_COMPRESSION_64, MemberFile, stream_zip
 
 
 def generate_zip_stream(
@@ -31,6 +31,6 @@ def generate_zip_stream(
                     while chunk := f.read(65536):
                         yield chunk
 
-            yield arcname, modified_at, perms, ZIP_AUTO(file_stat.st_size), _read_chunks()
+            yield arcname, modified_at, perms, NO_COMPRESSION_64, _read_chunks()
 
     yield from stream_zip(_member_files())

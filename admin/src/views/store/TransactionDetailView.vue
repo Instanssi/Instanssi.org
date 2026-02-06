@@ -320,30 +320,15 @@
                                     </tr>
                                 </tbody>
                             </v-table>
-                            <v-dialog v-model="receiptDialogVisible" max-width="800">
-                                <v-card>
-                                    <v-card-title class="d-flex justify-space-between align-center">
-                                        <span>{{
-                                            t("TransactionDetailView.receipts.contentTitle")
-                                        }}</span>
-                                        <v-btn
-                                            icon
-                                            variant="text"
-                                            density="compact"
-                                            @click="receiptDialogVisible = false"
-                                        >
-                                            <FontAwesomeIcon :icon="faXmark" />
-                                        </v-btn>
-                                    </v-card-title>
-                                    <v-divider />
-                                    <v-card-text
-                                        class="pa-4"
-                                        style="white-space: pre-wrap; font-family: monospace"
-                                    >
-                                        {{ receiptContent }}
-                                    </v-card-text>
-                                </v-card>
-                            </v-dialog>
+                            <ContentDialog
+                                v-model="receiptDialogVisible"
+                                :title="t('TransactionDetailView.receipts.contentTitle')"
+                                :max-width="800"
+                            >
+                                <div style="white-space: pre-wrap; font-family: monospace">
+                                    {{ receiptContent }}
+                                </div>
+                            </ContentDialog>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -398,7 +383,7 @@
 </template>
 
 <script setup lang="ts">
-import { faEye, faPaperPlane, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
@@ -408,6 +393,7 @@ import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
+import ContentDialog from "@/components/dialogs/ContentDialog.vue";
 import type { StoreTransaction, StoreItem, TransactionItem } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

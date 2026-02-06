@@ -1,65 +1,58 @@
 <template>
-    <v-dialog v-model="dialogVisible" max-width="900" scrollable>
-        <v-card>
-            <v-card-title class="d-flex align-center">
-                <FontAwesomeIcon :icon="faClockRotateLeft" class="mr-2" />
-                {{ t("AuditLogTable.title") }}
-                <v-spacer />
-                <v-btn icon variant="text" @click="dialogVisible = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
-            </v-card-title>
-            <v-divider />
-            <v-card-text class="pa-0">
-                <v-data-table-server
-                    v-model:items-per-page="perPage"
-                    v-model:expanded="expanded"
-                    class="elevation-0"
-                    item-value="id"
-                    density="compact"
-                    :headers="headers"
-                    :items="entries"
-                    :items-length="totalItems"
-                    :loading="loading"
-                    :page="currentPage"
-                    :items-per-page-options="pageSizeOptions"
-                    :no-data-text="t('AuditLogTable.noEntriesFound')"
-                    :loading-text="t('AuditLogTable.loadingEntries')"
-                    show-expand
-                    @update:options="loadData"
-                >
-                    <template #item.timestamp="{ item }">
-                        <DateTimeCell :value="item.timestamp" />
-                    </template>
-                    <template #item.actor="{ item }">
-                        {{ item.actor?.username ?? t("AuditLogTable.system") }}
-                    </template>
-                    <template #item.action="{ item }">
-                        <v-chip :color="actionColor(item.action)" size="small" variant="tonal">
-                            {{ actionLabel(item.action) }}
-                        </v-chip>
-                    </template>
-                    <template #item.object_repr="{ item }">
-                        <span class="text-truncate" style="max-width: 200px; display: inline-block">
-                            {{ item.object_repr }}
-                        </span>
-                    </template>
-                    <template #expanded-row="{ columns, item }">
-                        <tr>
-                            <td :colspan="columns.length" class="pa-4 bg-grey-lighten-4">
-                                <DiffViewer :changes="item.changes" />
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table-server>
-            </v-card-text>
-        </v-card>
-    </v-dialog>
+    <ContentDialog
+        v-model="dialogVisible"
+        :title="t('AuditLogTable.title')"
+        :max-width="900"
+        :scrollable="true"
+        content-class="pa-0"
+    >
+        <template #default>
+            <v-data-table-server
+                v-model:items-per-page="perPage"
+                v-model:expanded="expanded"
+                class="elevation-0"
+                item-value="id"
+                density="compact"
+                :headers="headers"
+                :items="entries"
+                :items-length="totalItems"
+                :loading="loading"
+                :page="currentPage"
+                :items-per-page-options="pageSizeOptions"
+                :no-data-text="t('AuditLogTable.noEntriesFound')"
+                :loading-text="t('AuditLogTable.loadingEntries')"
+                show-expand
+                @update:options="loadData"
+            >
+                <template #item.timestamp="{ item }">
+                    <DateTimeCell :value="item.timestamp" />
+                </template>
+                <template #item.actor="{ item }">
+                    {{ item.actor?.username ?? t("AuditLogTable.system") }}
+                </template>
+                <template #item.action="{ item }">
+                    <v-chip :color="actionColor(item.action)" size="small" variant="tonal">
+                        {{ actionLabel(item.action) }}
+                    </v-chip>
+                </template>
+                <template #item.object_repr="{ item }">
+                    <span class="text-truncate" style="max-width: 200px; display: inline-block">
+                        {{ item.object_repr }}
+                    </span>
+                </template>
+                <template #expanded-row="{ columns, item }">
+                    <tr>
+                        <td :colspan="columns.length" class="pa-4 bg-grey-lighten-4">
+                            <DiffViewer :changes="item.changes" />
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table-server>
+        </template>
+    </ContentDialog>
 </template>
 
 <script setup lang="ts">
-import { faClockRotateLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { type Ref, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
@@ -68,6 +61,7 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { LogEntry } from "@/api";
 import DiffViewer from "@/components/auditlog/DiffViewer.vue";
+import ContentDialog from "@/components/dialogs/ContentDialog.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import { type LoadOptions, useAuditLogUtils } from "@/composables/useAuditLogUtils";
 

@@ -14,25 +14,7 @@
                 <v-img :src="url" :width="size" :height="size" cover class="rounded" />
             </div>
 
-            <v-dialog v-model="showImagePreview" max-width="900">
-                <v-card>
-                    <v-card-title class="d-flex justify-space-between align-center">
-                        <span>{{ t("MediaCell.imagePreviewTitle") }}</span>
-                        <v-btn
-                            icon
-                            variant="text"
-                            density="compact"
-                            @click="showImagePreview = false"
-                        >
-                            <FontAwesomeIcon :icon="faXmark" />
-                        </v-btn>
-                    </v-card-title>
-                    <v-divider />
-                    <v-card-text class="d-flex justify-center pa-4">
-                        <v-img :src="url" max-height="70vh" max-width="100%" />
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+            <ImagePreviewDialog v-model="showImagePreview" :src="url" />
         </template>
 
         <!-- Video: play icon button + player dialog -->
@@ -47,33 +29,7 @@
                 <FontAwesomeIcon :icon="faCirclePlay" size="lg" />
             </v-btn>
 
-            <v-dialog v-model="showVideoPreview" max-width="900">
-                <v-card>
-                    <v-card-title class="d-flex justify-space-between align-center">
-                        <span>{{ t("MediaCell.videoPreviewTitle") }}</span>
-                        <v-btn
-                            icon
-                            variant="text"
-                            density="compact"
-                            @click="showVideoPreview = false"
-                        >
-                            <FontAwesomeIcon :icon="faXmark" />
-                        </v-btn>
-                    </v-card-title>
-                    <v-divider />
-                    <v-card-text class="d-flex justify-center pa-4">
-                        <video
-                            v-if="showVideoPreview"
-                            :src="url"
-                            controls
-                            autoplay
-                            class="video-player"
-                        >
-                            {{ t("MediaCell.videoNotSupported") }}
-                        </video>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+            <VideoPreviewDialog v-model="showVideoPreview" :src="url" />
         </template>
 
         <!-- Audio: audio icon button + player dialog -->
@@ -88,33 +44,7 @@
                 <FontAwesomeIcon :icon="faVolumeHigh" size="lg" />
             </v-btn>
 
-            <v-dialog v-model="showAudioPreview" max-width="500">
-                <v-card>
-                    <v-card-title class="d-flex justify-space-between align-center">
-                        <span>{{ t("MediaCell.audioPreviewTitle") }}</span>
-                        <v-btn
-                            icon
-                            variant="text"
-                            density="compact"
-                            @click="showAudioPreview = false"
-                        >
-                            <FontAwesomeIcon :icon="faXmark" />
-                        </v-btn>
-                    </v-card-title>
-                    <v-divider />
-                    <v-card-text class="d-flex justify-center pa-4">
-                        <audio
-                            v-if="showAudioPreview"
-                            :src="url"
-                            controls
-                            autoplay
-                            class="audio-player"
-                        >
-                            {{ t("MediaCell.audioNotSupported") }}
-                        </audio>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+            <AudioPreviewDialog v-model="showAudioPreview" :src="url" />
         </template>
 
         <!-- Other: just download icon -->
@@ -131,11 +61,14 @@
 </template>
 
 <script setup lang="ts">
-import { faCirclePlay, faDownload, faVolumeHigh, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faDownload, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
+import AudioPreviewDialog from "@/components/dialogs/AudioPreviewDialog.vue";
+import ImagePreviewDialog from "@/components/dialogs/ImagePreviewDialog.vue";
+import VideoPreviewDialog from "@/components/dialogs/VideoPreviewDialog.vue";
 import { detectMediaType, getFilenameFromUrl } from "@/utils/media";
 
 const props = withDefaults(
@@ -188,16 +121,6 @@ const displayFilename = computed(() => {
 .image-thumbnail:focus {
     outline: 2px solid rgb(var(--v-theme-primary));
     outline-offset: 1px;
-}
-
-.video-player {
-    max-width: 100%;
-    max-height: 70vh;
-}
-
-.audio-player {
-    width: 100%;
-    min-width: 300px;
 }
 
 .filename-link {

@@ -6,34 +6,24 @@
             <FontAwesomeIcon :icon="faExternalLinkAlt" />
         </a>
 
-        <v-dialog v-model="showDialog" max-width="800">
-            <v-card>
-                <v-card-title class="d-flex justify-space-between align-center">
-                    <span>{{ videoId }}</span>
-                    <v-btn icon variant="text" @click="showDialog = false">
-                        <FontAwesomeIcon :icon="faTimes" />
-                    </v-btn>
-                </v-card-title>
-                <v-card-text class="pa-0">
-                    <div class="video-container">
-                        <iframe
-                            v-if="showDialog"
-                            :src="embedUrl"
-                            frameborder="0"
-                            allow="
-                                accelerometer;
-                                autoplay;
-                                clipboard-write;
-                                encrypted-media;
-                                gyroscope;
-                                picture-in-picture;
-                            "
-                            allowfullscreen
-                        />
-                    </div>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        <ContentDialog v-model="showDialog" :title="videoId" :max-width="800">
+            <div class="video-container">
+                <iframe
+                    v-if="showDialog"
+                    :src="embedUrl"
+                    frameborder="0"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                    "
+                    allowfullscreen
+                />
+            </div>
+        </ContentDialog>
     </span>
     <span v-else>{{ fallback }}</span>
 </template>
@@ -44,9 +34,11 @@
  * Shows video ID and start time (if present) as a clickable link.
  * Clicking opens a dialog with the embedded video.
  */
-import { faExternalLinkAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
+
+import ContentDialog from "@/components/dialogs/ContentDialog.vue";
 
 const showDialog = ref(false);
 

@@ -12,7 +12,7 @@
 {% for compo in compos %}
   {{ compo.name|upper|safe }}
   {% for entry in compo.entries %}
-  {{entry.get_rank|rjust:"2"}}. {%if entry.disqualified%}   DIS{%else%}{{entry.get_score|floatformat:2|rjust:"6"}}p{%endif%}  {{entry.name|safe}} - {{entry.creator|safe}}{% endfor %}
+  {{entry.computed_rank|rjust:"2"}}. {%if entry.disqualified%}   DIS{%else%}{{entry.computed_score|floatformat:2|rjust:"6"}}p{%endif%}  {{entry.name|safe}} - {{entry.creator|safe}}{% endfor %}
 
 {% endfor %} ---
  DIS = Disqualified entry

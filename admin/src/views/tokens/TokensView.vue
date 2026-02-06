@@ -95,7 +95,7 @@ const auth = useAuth();
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("TokensView.title"), disabled: true }];
 
 const loading = ref(false);
-const tableState = useTableState({ defaultSort: { key: "created", order: "desc" } });
+const tableState = useTableState({ initialSort: { key: "created", order: "desc" } });
 const totalItems = ref(0);
 const tokens: Ref<AuthToken[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);

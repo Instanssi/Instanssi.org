@@ -62,12 +62,12 @@ class TestCompoEntryScoreRank:
         assert req.status_code == 200
         entries = {e["name"]: e for e in req.data}
 
-        assert entries["Test Entry"]["score"] == pytest.approx(2.0)
-        assert entries["Test Entry"]["rank"] == 1
-        assert entries["Second Entry"]["score"] == pytest.approx(0.5)
-        assert entries["Second Entry"]["rank"] == 3
-        assert entries["Third Entry"]["score"] == pytest.approx(1 / 3 + 1 / 2)
-        assert entries["Third Entry"]["rank"] == 2
+        assert entries["Test Entry"]["computed_score"] == pytest.approx(2.0)
+        assert entries["Test Entry"]["computed_rank"] == 1
+        assert entries["Second Entry"]["computed_score"] == pytest.approx(0.5)
+        assert entries["Second Entry"]["computed_rank"] == 3
+        assert entries["Third Entry"]["computed_score"] == pytest.approx(1 / 3 + 1 / 2)
+        assert entries["Third Entry"]["computed_rank"] == 2
 
     def test_archive_score_rank_override(self, api_client, closed_compo, closed_compo_entry):
         """archive_score and archive_rank take precedence over calculated values."""
@@ -77,8 +77,8 @@ class TestCompoEntryScoreRank:
         base_url = f"/api/v2/public/event/{closed_compo.event_id}/kompomaatti/entries/"
         req = api_client.get(f"{base_url}{closed_compo_entry.id}/")
         assert req.status_code == 200
-        assert req.data["score"] == 5.0
-        assert req.data["rank"] == 1
+        assert req.data["computed_score"] == 5.0
+        assert req.data["computed_rank"] == 1
 
     def test_disqualified_entry_score(self, api_client, votable_compo, votable_compo_entry):
         """Disqualified entries have score -1."""
@@ -90,7 +90,7 @@ class TestCompoEntryScoreRank:
         base_url = f"/api/v2/public/event/{votable_compo.event_id}/kompomaatti/entries/"
         req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
         assert req.status_code == 200
-        assert req.data["score"] == -1.0
+        assert req.data["computed_score"] == -1.0
 
 
 @pytest.mark.django_db

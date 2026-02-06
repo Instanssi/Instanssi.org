@@ -18,7 +18,7 @@ class PublicCompetitionParticipationSerializer(ModelSerializer[CompetitionPartic
 
     def get_rank(self, obj: CompetitionParticipation) -> int | None:
         if obj.competition.show_results:
-            return obj.get_rank()
+            return obj.computed_rank
         return None
 
     def get_score(self, obj: CompetitionParticipation) -> float | None:

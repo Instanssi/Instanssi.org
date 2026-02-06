@@ -16,8 +16,8 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     imagefile_medium_url = SerializerMethodField()
-    rank = SerializerMethodField()
-    score = SerializerMethodField()
+    computed_rank = SerializerMethodField()
+    computed_score = SerializerMethodField()
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
 
     def get_entryfile_url(self, obj: Entry) -> str | None:
@@ -45,11 +45,13 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             return str(self.context["request"].build_absolute_uri(obj.imagefile_thumbnail.url))
         return None
 
-    def get_rank(self, obj: Entry) -> int | None:
-        return obj.get_rank()
+    def get_computed_rank(self, obj: Entry) -> int:
+        """Return the entry's rank. Requires queryset to have with_rank() annotation applied."""
+        return obj.computed_rank
 
-    def get_score(self, obj: Entry) -> float | None:
-        return obj.get_score()
+    def get_computed_score(self, obj: Entry) -> float:
+        """Return the entry's score. Requires queryset to have with_rank() annotation applied."""
+        return obj.computed_score
 
     class Meta:
         model = Entry
@@ -74,8 +76,8 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             "disqualified_reason",
             "archive_score",
             "archive_rank",
-            "score",
-            "rank",
+            "computed_score",
+            "computed_rank",
             "alternate_files",
         )
         read_only_fields = (
@@ -84,8 +86,8 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             "imagefile_original_url",
             "imagefile_thumbnail_url",
             "imagefile_medium_url",
-            "score",
-            "rank",
+            "computed_score",
+            "computed_rank",
             "alternate_files",
         )
         extra_kwargs = {

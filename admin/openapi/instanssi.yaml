@@ -68,7 +68,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this lokimerkintä.
+        description: A unique integer value identifying this log entry.
         required: true
       tags:
       - admin
@@ -828,7 +828,10 @@ paths:
   /api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/:
     get:
       operationId: admin_event_kompomaatti_competition_participations_list
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: query
         name: competition
@@ -885,7 +888,10 @@ paths:
           description: ''
     post:
       operationId: admin_event_kompomaatti_competition_participations_create
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -919,7 +925,10 @@ paths:
   /api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/:
     get:
       operationId: admin_event_kompomaatti_competition_participations_retrieve
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -946,7 +955,10 @@ paths:
           description: ''
     put:
       operationId: admin_event_kompomaatti_competition_participations_update
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -985,7 +997,10 @@ paths:
           description: ''
     patch:
       operationId: admin_event_kompomaatti_competition_participations_partial_update
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1023,7 +1038,10 @@ paths:
           description: ''
     delete:
       operationId: admin_event_kompomaatti_competition_participations_destroy
-      description: Staff viewset for managing competition participations.
+      description: |-
+        Staff viewset for managing competition participations.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1497,6 +1515,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: query
         name: compo
@@ -1557,6 +1576,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1591,6 +1611,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1621,6 +1642,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1660,6 +1682,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1698,6 +1721,7 @@ paths:
         Staff viewset for managing compo entries.
 
         Staff can manage entries without deadline restrictions.
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -1718,6 +1742,30 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/:
+    get:
+      operationId: admin_event_kompomaatti_entries_download_archive_retrieve
+      description: Streams all entry files as a ZIP archive organized by compo directory.
+      summary: Download entry files archive
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+          description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/:
     get:
       operationId: admin_event_kompomaatti_ticket_vote_codes_list
@@ -2486,6 +2534,12 @@ paths:
         required: false
         in: query
         description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
         schema:
           type: string
       tags:
@@ -3593,6 +3647,14 @@ paths:
       operationId: admin_events_list
       description: Staff viewset for managing events.
       parameters:
+      - in: query
+        name: archived
+        schema:
+          type: boolean
+      - in: query
+        name: hidden
+        schema:
+          type: boolean
       - name: limit
         required: false
         in: query
@@ -3773,6 +3835,18 @@ paths:
         name: email
         schema:
           type: string
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: is_staff
+        schema:
+          type: boolean
+      - in: query
+        name: is_superuser
+        schema:
+          type: boolean
       - name: limit
         required: false
         in: query
@@ -3849,7 +3923,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this käyttäjä.
+        description: A unique integer value identifying this user.
         required: true
       tags:
       - admin
@@ -3871,7 +3945,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this käyttäjä.
+        description: A unique integer value identifying this user.
         required: true
       tags:
       - admin
@@ -3905,7 +3979,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this käyttäjä.
+        description: A unique integer value identifying this user.
         required: true
       tags:
       - admin
@@ -3938,7 +4012,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this käyttäjä.
+        description: A unique integer value identifying this user.
         required: true
       tags:
       - admin
@@ -4015,7 +4089,10 @@ paths:
   /api/v2/event/{event_pk}/user/kompomaatti/entries/:
     get:
       operationId: event_user_kompomaatti_entries_list
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: query
         name: compo
@@ -4058,7 +4135,10 @@ paths:
           description: ''
     post:
       operationId: event_user_kompomaatti_entries_create
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -4089,7 +4169,10 @@ paths:
   /api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/:
     get:
       operationId: event_user_kompomaatti_entries_retrieve
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -4116,7 +4199,10 @@ paths:
           description: ''
     put:
       operationId: event_user_kompomaatti_entries_update
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -4152,7 +4238,10 @@ paths:
           description: ''
     patch:
       operationId: event_user_kompomaatti_entries_partial_update
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -4187,7 +4276,10 @@ paths:
           description: ''
     delete:
       operationId: event_user_kompomaatti_entries_destroy
-      description: Manage the current user's own compo entries.
+      description: |-
+        Manage the current user's own compo entries.
+
+        Supports ordering by rank and score.
       parameters:
       - in: path
         name: event_pk
@@ -5364,6 +5456,8 @@ paths:
 
         Only entries from active compos where voting has started (or the event
         is archived) are shown.
+
+        Supports ordering by rank and score when results are visible.
       parameters:
       - in: path
         name: event_pk
@@ -5382,6 +5476,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -5401,6 +5501,8 @@ paths:
 
         Only entries from active compos where voting has started (or the event
         is archived) are shown.
+
+        Supports ordering by rank and score when results are visible.
       parameters:
       - in: path
         name: event_pk
@@ -5790,9 +5892,8 @@ components:
           readOnly: true
         username:
           type: string
-          title: Käyttäjätunnus
-          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
-            @/./+/-/_ ovat sallittuja.
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
       required:
@@ -6050,7 +6151,10 @@ components:
       - start
     CompetitionParticipation:
       type: object
-      description: Staff serializer for competition participations.
+      description: |-
+        Staff serializer for competition participations.
+
+        Requires queryset to have with_rank() annotation applied.
       properties:
         id:
           type: integer
@@ -6080,18 +6184,20 @@ components:
         disqualified_reason:
           type: string
           title: Diskauksen syy
-        rank:
+        computed_rank:
           type: integer
-          nullable: true
           readOnly: true
       required:
       - competition
+      - computed_rank
       - id
-      - rank
       - user
     CompetitionParticipationRequest:
       type: object
-      description: Staff serializer for competition participations.
+      description: |-
+        Staff serializer for competition participations.
+
+        Requires queryset to have with_rank() annotation applied.
       properties:
         competition:
           type: integer
@@ -6453,14 +6559,16 @@ components:
           title: Sijoitus
           description: Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea
             myös pistemääristä automaattisesti.
-        score:
+        computed_score:
           type: number
           format: double
-          nullable: true
+          description: Return the entry's score. Requires queryset to have with_rank()
+            annotation applied.
           readOnly: true
-        rank:
+        computed_rank:
           type: integer
-          nullable: true
+          description: Return the entry's rank. Requires queryset to have with_rank()
+            annotation applied.
           readOnly: true
         alternate_files:
           type: array
@@ -6470,6 +6578,8 @@ components:
       required:
       - alternate_files
       - compo
+      - computed_rank
+      - computed_score
       - creator
       - description
       - entryfile
@@ -6479,8 +6589,6 @@ components:
       - imagefile_original_url
       - imagefile_thumbnail_url
       - name
-      - rank
-      - score
       - sourcefile_url
       - user
     CompoEntryRequest:
@@ -6715,7 +6823,7 @@ components:
           maxLength: 100
         model:
           type: string
-          title: Mallin python-luokan nimi
+          title: Python model class name
           maxLength: 100
       required:
       - app_label
@@ -7329,7 +7437,6 @@ components:
       properties:
         name:
           type: string
-          title: Nimi
           maxLength: 150
       required:
       - name
@@ -7340,7 +7447,6 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
           maxLength: 150
       required:
       - name
@@ -8349,7 +8455,10 @@ components:
           title: Tapahtuma
     PatchedCompetitionParticipationRequest:
       type: object
-      description: Staff serializer for competition participations.
+      description: |-
+        Staff serializer for competition participations.
+
+        Requires queryset to have with_rank() annotation applied.
       properties:
         competition:
           type: integer
@@ -9148,29 +9257,26 @@ components:
         username:
           type: string
           minLength: 1
-          title: Käyttäjätunnus
-          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
-            @/./+/-/_ ovat sallittuja.
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
         first_name:
           type: string
-          title: Etunimi
           maxLength: 150
         last_name:
           type: string
-          title: Sukunimi
           maxLength: 150
         email:
           type: string
           format: email
-          title: Sähköpostiosoite
+          title: Email address
           maxLength: 254
         is_active:
           type: boolean
-          title: Voimassa
-          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
-            käytön poistamatta sitä.
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
     PatchedUserVoteCodeRequestRequest:
       type: object
       description: |-
@@ -9739,12 +9845,12 @@ components:
           type: string
           nullable: true
           readOnly: true
-        score:
+        computed_score:
           type: number
           format: double
           nullable: true
           readOnly: true
-        rank:
+        computed_rank:
           type: integer
           nullable: true
           readOnly: true
@@ -9756,6 +9862,8 @@ components:
       required:
       - alternate_files
       - compo
+      - computed_rank
+      - computed_score
       - creator
       - description
       - disqualified
@@ -9765,8 +9873,6 @@ components:
       - imagefile_original_url
       - imagefile_thumbnail_url
       - name
-      - rank
-      - score
     PublicEvent:
       type: object
       description: Public read-only serializer for events.
@@ -11083,23 +11189,20 @@ components:
           readOnly: true
         username:
           type: string
-          title: Käyttäjätunnus
-          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
-            @/./+/-/_ ovat sallittuja.
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
         first_name:
           type: string
-          title: Etunimi
           maxLength: 150
         last_name:
           type: string
-          title: Sukunimi
           maxLength: 150
         email:
           type: string
           format: email
-          title: Sähköpostiosoite
+          title: Email address
           maxLength: 254
         user_permissions:
           type: array
@@ -11109,14 +11212,13 @@ components:
         is_superuser:
           type: boolean
           readOnly: true
-          title: Pääkäyttäjä
-          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
-            erikseen luetella.
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
         date_joined:
           type: string
           format: date-time
           readOnly: true
-          title: Liittynyt
         groups:
           type: array
           items:
@@ -11124,9 +11226,9 @@ components:
           readOnly: true
         is_active:
           type: boolean
-          title: Voimassa
-          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
-            käytön poistamatta sitä.
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
       required:
       - date_joined
       - groups
@@ -11228,12 +11330,12 @@ components:
           type: string
           nullable: true
           readOnly: true
-        score:
+        computed_score:
           type: number
           format: double
           nullable: true
           readOnly: true
-        rank:
+        computed_rank:
           type: integer
           nullable: true
           readOnly: true
@@ -11245,6 +11347,8 @@ components:
       required:
       - alternate_files
       - compo
+      - computed_rank
+      - computed_score
       - creator
       - description
       - disqualified
@@ -11255,8 +11359,6 @@ components:
       - imagefile_original_url
       - imagefile_thumbnail_url
       - name
-      - rank
-      - score
       - sourcefile_url
     UserCompoEntryRequest:
       type: object
@@ -11328,23 +11430,20 @@ components:
           readOnly: true
         username:
           type: string
-          title: Käyttäjätunnus
-          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
-            @/./+/-/_ ovat sallittuja.
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
         first_name:
           type: string
-          title: Etunimi
           maxLength: 150
         last_name:
           type: string
-          title: Sukunimi
           maxLength: 150
         email:
           type: string
           format: email
-          title: Sähköpostiosoite
+          title: Email address
           maxLength: 254
         user_permissions:
           type: array
@@ -11354,14 +11453,13 @@ components:
         is_superuser:
           type: boolean
           readOnly: true
-          title: Pääkäyttäjä
-          description: Antaa käyttäjälle kaikki oikeudet ilman, että niitä täytyy
-            erikseen luetella.
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
         date_joined:
           type: string
           format: date-time
           readOnly: true
-          title: Liittynyt
       required:
       - date_joined
       - id
@@ -11391,29 +11489,26 @@ components:
         username:
           type: string
           minLength: 1
-          title: Käyttäjätunnus
-          description: Vaaditaan. Enintään 150 merkkiä. Vain kirjaimet, numerot ja
-            @/./+/-/_ ovat sallittuja.
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
         first_name:
           type: string
-          title: Etunimi
           maxLength: 150
         last_name:
           type: string
-          title: Sukunimi
           maxLength: 150
         email:
           type: string
           format: email
-          title: Sähköpostiosoite
+          title: Email address
           maxLength: 254
         is_active:
           type: boolean
-          title: Voimassa
-          description: Määrää, voiko käyttäjä kirjautua sisään. Tällä voi estää käyttäjätilin
-            käytön poistamatta sitä.
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
       required:
       - username
     UserTicketVoteCode:

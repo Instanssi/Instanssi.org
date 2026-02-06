@@ -252,7 +252,7 @@ import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
 import { computed, inject, onMounted, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import {
     boolean as yupBoolean,
@@ -300,6 +300,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const { getEventById } = useEvents();
@@ -497,7 +498,7 @@ async function deleteVariant(variant: StoreItemVariant) {
 }
 
 function goBack() {
-    router.push({ name: "store-items", params: { eventId: props.eventId } });
+    router.push({ name: "store-items", params: { eventId: props.eventId }, query: route.query });
 }
 
 onMounted(async () => {

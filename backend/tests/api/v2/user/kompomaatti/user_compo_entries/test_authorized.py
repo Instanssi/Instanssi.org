@@ -80,8 +80,8 @@ def test_get_user_compo_entry(auth_client, votable_compo_entry):
         "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "disqualified": votable_compo_entry.disqualified,
         "disqualified_reason": votable_compo_entry.disqualified_reason,
-        "score": None,
-        "rank": None,
+        "computed_score": None,
+        "computed_rank": None,
         "alternate_files": [],
     }
 
@@ -125,8 +125,8 @@ def test_patch_user_compo_entry(auth_client, editable_compo_entry):
         "youtube_url": None,
         "disqualified": None,
         "disqualified_reason": None,
-        "score": None,
-        "rank": None,
+        "computed_score": None,
+        "computed_rank": None,
         "alternate_files": [],
     }
 
@@ -174,8 +174,8 @@ def test_put_user_compo_entry(auth_client, editable_compo_entry, entry_zip2, sou
         "youtube_url": None,
         "disqualified": None,
         "disqualified_reason": None,
-        "score": None,
-        "rank": None,
+        "computed_score": None,
+        "computed_rank": None,
         "alternate_files": [],
     }
 

@@ -1,6 +1,5 @@
 from typing import Any, Optional
 
-import orjson
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Field
@@ -35,7 +34,9 @@ class YoutubeVideoField(models.JSONField):
 
     def value_to_string(self, obj):
         value = self.value_from_object(obj)
-        return orjson.dumps(dict(video_id=value.video_id, start=value.start)).decode()
+        if not value:
+            return ""
+        return str(value)
 
     def validate(self, value, model_instance):
         if value is None:

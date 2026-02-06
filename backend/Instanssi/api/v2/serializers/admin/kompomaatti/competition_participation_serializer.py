@@ -5,12 +5,15 @@ from Instanssi.kompomaatti.models import CompetitionParticipation
 
 
 class CompetitionParticipationSerializer(ModelSerializer[CompetitionParticipation]):
-    """Staff serializer for competition participations."""
+    """Staff serializer for competition participations.
 
-    rank = SerializerMethodField()
+    Requires queryset to have with_rank() annotation applied.
+    """
 
-    def get_rank(self, obj: CompetitionParticipation) -> int | None:
-        return obj.get_rank()
+    computed_rank = SerializerMethodField()
+
+    def get_computed_rank(self, obj: CompetitionParticipation) -> int:
+        return obj.computed_rank
 
     class Meta:
         model = CompetitionParticipation
@@ -22,9 +25,9 @@ class CompetitionParticipationSerializer(ModelSerializer[CompetitionParticipatio
             "score",
             "disqualified",
             "disqualified_reason",
-            "rank",
+            "computed_rank",
         )
-        read_only_fields = ("rank",)
+        read_only_fields = ("computed_rank",)
         extra_kwargs = {
             "score": {"required": False},
         }

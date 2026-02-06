@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import { useRoute, useRouter } from "vue-router";
 
 import * as api from "@/api";
 import {
@@ -12,6 +13,17 @@ import {
 } from "@/test/helpers/form-test-utils";
 
 import CompetitionEditView from "./CompetitionEditView.vue";
+
+vi.mock("vue-router", () => ({
+    useRouter: vi.fn(() => ({
+        push: vi.fn(),
+        replace: vi.fn(),
+    })),
+    useRoute: vi.fn(() => ({
+        params: { eventId: "1" },
+        query: { page: "2", search: "test", active: "true" },
+    })),
+}));
 
 const vuetify = createVuetify({ components, directives });
 
@@ -470,6 +482,60 @@ describe("CompetitionEditView", () => {
             await submitForm(wrapper);
 
             expect(api.adminEventKompomaattiCompetitionsCreate).toHaveBeenCalled();
+        });
+    });
+
+    describe("navigation", () => {
+        it("goBack preserves query params from route", async () => {
+            const mockPush = vi.fn();
+            vi.mocked(useRouter).mockReturnValue({
+                push: mockPush,
+                replace: vi.fn(),
+            } as never);
+            vi.mocked(useRoute).mockReturnValue({
+                params: { eventId: "1" },
+                query: { page: "2", search: "test", active: "true" },
+            } as never);
+
+            const wrapper = mountComponent({ eventId: "1" });
+            await flushPromises();
+
+            // Click cancel button to trigger goBack
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const cancelButton = buttons.find((b) => b.text().includes("General.cancel"));
+            expect(cancelButton).toBeDefined();
+            await cancelButton!.trigger("click");
+
+            expect(mockPush).toHaveBeenCalledWith({
+                name: "competitions",
+                params: { eventId: "1" },
+                query: { page: "2", search: "test", active: "true" },
+            });
+        });
+
+        it("goBack navigates to list with empty query when no filters", async () => {
+            const mockPush = vi.fn();
+            vi.mocked(useRouter).mockReturnValue({
+                push: mockPush,
+                replace: vi.fn(),
+            } as never);
+            vi.mocked(useRoute).mockReturnValue({
+                params: { eventId: "1" },
+                query: {},
+            } as never);
+
+            const wrapper = mountComponent({ eventId: "1" });
+            await flushPromises();
+
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const cancelButton = buttons.find((b) => b.text().includes("General.cancel"));
+            await cancelButton!.trigger("click");
+
+            expect(mockPush).toHaveBeenCalledWith({
+                name: "competitions",
+                params: { eventId: "1" },
+                query: {},
+            });
         });
     });
 });

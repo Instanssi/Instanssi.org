@@ -320,7 +320,10 @@ When adding tests, consider:
 - Vue Test Utils for component testing
 - Vitest for unit testing (Vite-native)
 - Testing auth flows and permission checks
-- Mocking API calls
+- Prefer the AAA pattern: Arrange, Act, Assert
+- Minimize mock usage — prefer testing with real behavior where possible
+- Add tests to existing test files when applicable, rather than creating new ones
+- Place shared test setup code in `src/test/setup.ts` when feasible
 
 ## Browser Support
 

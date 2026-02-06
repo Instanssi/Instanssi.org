@@ -107,7 +107,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -128,6 +128,7 @@ import { getApiErrorMessage } from "@/utils/http";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
@@ -149,7 +150,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
 
 const tableState = useTableState({
     filterKeys: ["archived", "hidden"],
-    defaultSort: { key: "date", order: "desc" },
+    initialSort: { key: "date", order: "desc" },
 });
 const loading = ref(false);
 const totalItems = ref(0);
@@ -260,10 +261,10 @@ async function deleteEvent(item: Event): Promise<void> {
 }
 
 function editEvent(id: number): void {
-    router.push({ name: "events-edit", params: { id } });
+    router.push({ name: "events-edit", params: { id }, query: route.query });
 }
 
 function createEvent(): void {
-    router.push({ name: "events-new" });
+    router.push({ name: "events-new", query: route.query });
 }
 </script>

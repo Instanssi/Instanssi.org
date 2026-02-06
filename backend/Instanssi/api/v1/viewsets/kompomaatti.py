@@ -191,8 +191,10 @@ class CompoEntryViewSet(ReadOnlyModelViewSet):
     filterset_fields = ("compo",)
 
     def get_queryset(self):
-        return Entry.objects.filter(compo__active=True, compo__event__hidden=False).filter(
-            Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True)
+        return (
+            Entry.objects.filter(compo__active=True, compo__event__hidden=False)
+            .filter(Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True))
+            .with_rank()
         )
 
 

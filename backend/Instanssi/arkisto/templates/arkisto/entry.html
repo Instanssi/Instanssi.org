@@ -42,8 +42,8 @@
                         <li class="fact-disqualified">Diskattu!</li>
 {% else %}
     {% if entry.compo.show_voting_results %}
-                        <li class="fact-rank">{{ entry.get_rank }}. sija</li>
-                        <li class="fact-score">{{ entry.get_score|floatformat:"2" }} pistettä</li>
+                        <li class="fact-rank">{{ entry.computed_rank }}. sija</li>
+                        <li class="fact-score">{{ entry.computed_score|floatformat:"2" }} pistettä</li>
     {% endif %}
 {% endif %}
                     </ul>

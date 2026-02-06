@@ -198,7 +198,7 @@ import { parseInt } from "lodash-es";
 import { type GenericObject, useField, useForm } from "vee-validate";
 import { computed, onMounted, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import {
     boolean as yupBoolean,
@@ -243,6 +243,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const { getEventById } = useEvents();
@@ -464,7 +465,7 @@ async function editItem(itemId: number, values: GenericObject) {
 }
 
 function goBack() {
-    router.push({ name: "entries", params: { eventId: props.eventId } });
+    router.push({ name: "entries", params: { eventId: props.eventId }, query: route.query });
 }
 
 async function loadCompos() {
@@ -508,8 +509,8 @@ onMounted(async () => {
             };
 
             // Set readonly voting results
-            votingScore.value = item.score?.toString() ?? "-";
-            votingRank.value = item.rank?.toString() ?? "-";
+            votingScore.value = item.computed_score?.toString() ?? "-";
+            votingRank.value = item.computed_rank?.toString() ?? "-";
             alternateFiles.value = item.alternate_files ?? [];
 
             setValues({

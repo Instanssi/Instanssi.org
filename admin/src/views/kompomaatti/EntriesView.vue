@@ -30,6 +30,26 @@
                     </template>
                     {{ t("DiplomaGenerator.title") }}
                 </v-btn>
+                <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
+                    <template #activator="{ props: menuProps }">
+                        <v-btn class="ml-4" v-bind="menuProps">
+                            <template #prepend>
+                                <FontAwesomeIcon :icon="faDownload" />
+                            </template>
+                            {{ t("EntriesView.download") }}
+                            <template #append>
+                                <FontAwesomeIcon :icon="faChevronDown" size="sm" />
+                            </template>
+                        </v-btn>
+                    </template>
+                    <v-list density="compact">
+                        <v-list-item @click="downloadArchive">
+                            <v-list-item-title>
+                                {{ t("EntriesView.downloadAllEntries") }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 <v-text-field
                     v-model="tableState.search.value"
                     variant="outlined"
@@ -99,8 +119,11 @@
                     <template #item.compo="{ item }">
                         {{ getCompoName(item.compo) }}
                     </template>
-                    <template #item.rank="{ item }">
-                        {{ item.rank ?? "-" }}
+                    <template #item.computed_score="{ item }">
+                        {{ item.computed_score?.toFixed(2) ?? "-" }}
+                    </template>
+                    <template #item.computed_rank="{ item }">
+                        {{ item.computed_rank ?? "-" }}
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -123,12 +146,17 @@
 </template>
 
 <script setup lang="ts">
-import { faCertificate, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+    faChevronDown,
+    faDownload,
+    faCertificate,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -155,6 +183,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
@@ -175,7 +204,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const tableState = useTableState({
     filterKeys: ["compo", "disqualified"],
-    defaultSort: { key: "id", order: "desc" },
+    initialSort: { key: "id", order: "desc" },
 });
 const totalItems = ref(0);
 const entries: Ref<CompoEntry[]> = ref([]);
@@ -231,8 +260,13 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("EntriesView.headers.rank"),
-        sortable: false,
-        key: "rank",
+        sortable: true,
+        key: "computed_rank",
+    },
+    {
+        title: t("EntriesView.headers.score"),
+        sortable: true,
+        key: "computed_score",
     },
     {
         title: t("EntriesView.headers.actions"),
@@ -343,15 +377,33 @@ async function deleteEntry(item: CompoEntry): Promise<void> {
 }
 
 function editEntry(id: number): void {
-    router.push({ name: "entries-edit", params: { eventId: eventId.value, id } });
+    router.push({
+        name: "entries-edit",
+        params: { eventId: eventId.value, id },
+        query: route.query,
+    });
 }
 
 function createEntry(): void {
-    router.push({ name: "entries-new", params: { eventId: eventId.value } });
+    router.push({ name: "entries-new", params: { eventId: eventId.value }, query: route.query });
 }
 
 function openDiplomaDialog(): void {
     diplomaDialog.value?.open();
+}
+
+/**
+ * Download entry files as a zip archive.
+ * Opens the streaming download URL in a new window.
+ */
+function downloadArchive(): void {
+    const params = new URLSearchParams();
+    if (selectedCompo.value) {
+        params.set("compo", String(selectedCompo.value));
+    }
+    const queryString = params.toString();
+    const url = `/api/v2/admin/event/${eventId.value}/kompomaatti/entries/download-archive/${queryString ? `?${queryString}` : ""}`;
+    window.open(url, "_blank");
 }
 
 interface ResultRow {
@@ -380,21 +432,21 @@ function generateResultsData(allEntries: CompoEntry[]): ResultRow[] {
 
         // Sort by rank (entries without rank go to the end)
         const sorted = [...compoEntries].sort((a, b) => {
-            if (a.rank === null && b.rank === null) return 0;
-            if (a.rank === null) return 1;
-            if (b.rank === null) return -1;
-            return a.rank - b.rank;
+            if (a.computed_rank === null && b.computed_rank === null) return 0;
+            if (a.computed_rank === null) return 1;
+            if (b.computed_rank === null) return -1;
+            return a.computed_rank - b.computed_rank;
         });
 
         // Take top 3
         const top3 = sorted.slice(0, 3);
 
         for (const entry of top3) {
-            if (entry.rank === null) continue; // Skip unranked entries
+            if (entry.computed_rank === null) continue; // Skip unranked entries
             rows.push({
                 entryName: entry.name,
                 creator: entry.creator,
-                rankString: toRomanNumeral(entry.rank),
+                rankString: toRomanNumeral(entry.computed_rank),
                 compoName: compo.name,
             });
         }

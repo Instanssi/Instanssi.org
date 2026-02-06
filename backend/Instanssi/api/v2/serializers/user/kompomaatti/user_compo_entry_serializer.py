@@ -17,8 +17,8 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     imagefile_medium_url = SerializerMethodField()
-    rank = SerializerMethodField()
-    score = SerializerMethodField()
+    computed_rank = SerializerMethodField()
+    computed_score = SerializerMethodField()
     disqualified = SerializerMethodField()
     disqualified_reason = SerializerMethodField()
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
@@ -60,14 +60,14 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
             return obj.disqualified
         return None
 
-    def get_rank(self, obj: Entry) -> int | None:
+    def get_computed_rank(self, obj: Entry) -> int | None:
         if obj.compo.show_voting_results:
-            return obj.get_rank()
+            return obj.computed_rank
         return None
 
-    def get_score(self, obj: Entry) -> float | None:
+    def get_computed_score(self, obj: Entry) -> float | None:
         if obj.compo.show_voting_results:
-            return obj.get_score()
+            return obj.computed_score
         return None
 
     class Meta:
@@ -90,8 +90,8 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
             "youtube_url",
             "disqualified",
             "disqualified_reason",
-            "score",
-            "rank",
+            "computed_score",
+            "computed_rank",
             "alternate_files",
         )
         extra_kwargs = {

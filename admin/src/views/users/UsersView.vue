@@ -97,7 +97,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
 import { type Ref, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -117,6 +117,7 @@ import { getApiErrorMessage } from "@/utils/http";
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
@@ -126,7 +127,7 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: 
 
 const tableState = useTableState({
     filterKeys: ["is_active", "is_staff"],
-    defaultSort: { key: "username", order: "asc" },
+    initialSort: { key: "username", order: "asc" },
 });
 const loading = ref(false);
 
@@ -241,10 +242,10 @@ async function deleteUser(item: User): Promise<void> {
 }
 
 function editUser(id: number): void {
-    router.push({ name: "users-edit", params: { id } });
+    router.push({ name: "users-edit", params: { id }, query: route.query });
 }
 
 function createUser(): void {
-    router.push({ name: "users-new" });
+    router.push({ name: "users-new", query: route.query });
 }
 </script>

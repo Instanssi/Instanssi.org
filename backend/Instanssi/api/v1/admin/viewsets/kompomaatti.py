@@ -30,7 +30,7 @@ class AdminCompoViewSet(AdminReadOnlyViewSet):
 
 
 class AdminCompoEntryViewSet(AdminReadOnlyViewSet):
-    queryset = Entry.objects.all()
+    queryset = Entry.objects.all().with_rank()
     serializer_class = AdminCompoEntrySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (

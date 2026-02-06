@@ -18,7 +18,11 @@ from Instanssi.kompomaatti.enums import (
     MediaCodec,
     MediaContainer,
 )
-from Instanssi.kompomaatti.misc import entrysort, sizeformat
+from Instanssi.kompomaatti.misc import sizeformat
+from Instanssi.kompomaatti.querysets import (
+    CompetitionParticipationQuerySet,
+    EntryQuerySet,
+)
 
 
 class Profile(models.Model):
@@ -426,6 +430,12 @@ class Entry(models.Model):
         blank=True,
     )
 
+    objects = EntryQuerySet.as_manager()
+
+    # Annotation attributes added by EntryQuerySet.with_score() / with_rank()
+    computed_score: float
+    computed_rank: int
+
     def __str__(self) -> str:
         return "{} by {}".format(self.name, self.creator)
 
@@ -444,33 +454,6 @@ class Entry(models.Model):
     @property
     def is_audio(self) -> bool:
         return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
-
-    def get_score(self) -> float:
-        if self.disqualified:  # If disqualified, score will be -1
-            return -1.0
-        elif self.archive_score:  # If entry is archived, the score will be simple to get
-            return self.archive_score
-        else:  # Otherwise the score has to be calculated
-            score = 0.0
-            votes = Vote.objects.filter(entry=self, compo=self.compo)
-            for vote in votes:
-                if vote.rank > 0:
-                    score += 1.0 / vote.rank
-            return score
-
-    def get_rank(self) -> int:
-        # If rank has been predefined, then use that
-        if self.archive_rank:
-            return self.archive_rank
-
-        # Otherwise calculate ranks by score
-        entries = entrysort.sort_by_score(Entry.objects.filter(compo=self.compo))
-        n = 1
-        for e in entries:
-            if e.id == self.id:
-                return n
-            n += 1
-        return n
 
     def get_show_list(self) -> dict:
         show = {"youtube": False, "image": False, "noshow": True}
@@ -651,6 +634,8 @@ class Competition(models.Model):
 
 
 class CompetitionParticipation(models.Model):
+    computed_rank: int  # Set by with_rank() annotation
+
     competition = models.ForeignKey(
         Competition,
         verbose_name="Kilpailu",
@@ -673,6 +658,8 @@ class CompetitionParticipation(models.Model):
         default=False,
     )
     disqualified_reason = models.TextField("Diskauksen syy", blank=True)
+
+    objects = CompetitionParticipationQuerySet.as_manager()
 
     def get_formatted_score(self) -> str:
         return "{} {}".format(self.score, self.competition.score_type)

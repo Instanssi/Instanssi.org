@@ -43,6 +43,7 @@ mastodon-py = "^2.1.4"
 nh3 = "^0.3.0"
 drf-spectacular = "^0.29.0"
 django-cleanup = "^9.0.0"
+stream-zip = "^0.0.84"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^40.1.2"

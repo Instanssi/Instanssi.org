@@ -69,8 +69,8 @@ def test_public_cannot_see_score_rank_before_results_shown(api_client, votable_c
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
     assert req.status_code == 200
-    assert req.data["score"] is None
-    assert req.data["rank"] is None
+    assert req.data["computed_score"] is None
+    assert req.data["computed_rank"] is None
 
 
 @pytest.mark.django_db
@@ -82,8 +82,8 @@ def test_public_can_see_score_rank_after_results_shown(api_client, votable_compo
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
     assert req.status_code == 200
-    assert req.data["score"] is not None
-    assert req.data["rank"] is not None
+    assert req.data["computed_score"] is not None
+    assert req.data["computed_rank"] is not None
 
 
 @pytest.mark.django_db

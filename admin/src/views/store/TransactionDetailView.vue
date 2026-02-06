@@ -403,7 +403,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { parseInt } from "lodash-es";
 import { computed, onMounted, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
@@ -421,6 +421,7 @@ const props = defineProps<{
 }>();
 
 const { t, d } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const { getEventById } = useEvents();
@@ -524,7 +525,11 @@ async function resendReceipt(receiptId: number) {
 }
 
 function goBack() {
-    router.push({ name: "store-transactions", params: { eventId: props.eventId } });
+    router.push({
+        name: "store-transactions",
+        params: { eventId: props.eventId },
+        query: route.query,
+    });
 }
 
 async function loadTransaction() {

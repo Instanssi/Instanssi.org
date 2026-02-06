@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import { useRoute, useRouter } from "vue-router";
 
 import * as api from "@/api";
 import {
@@ -18,6 +19,17 @@ import {
 } from "@/test/helpers/formdata-matchers";
 
 import EntryEditView from "./EntryEditView.vue";
+
+vi.mock("vue-router", () => ({
+    useRouter: vi.fn(() => ({
+        push: vi.fn(),
+        replace: vi.fn(),
+    })),
+    useRoute: vi.fn(() => ({
+        params: { eventId: "1" },
+        query: {},
+    })),
+}));
 
 const vuetify = createVuetify({ components, directives });
 
@@ -323,8 +335,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: "https://example.com/image.png",
                     youtube_url: null,
-                    score: 85.5,
-                    rank: 2,
+                    computed_score: 85.5,
+                    computed_rank: 2,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -356,8 +368,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: null,
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -388,8 +400,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: "https://example.com/image.png",
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -423,8 +435,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: "https://example.com/source.zip",
                     imagefile_original_url: "https://example.com/image.png",
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -466,8 +478,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: "https://example.com/image.png",
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -507,8 +519,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: "https://example.com/old-source.zip",
                     imagefile_original_url: "https://example.com/old-image.png",
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -552,8 +564,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: null,
                     youtube_url: null,
-                    score: 85.5,
-                    rank: 2,
+                    computed_score: 85.5,
+                    computed_rank: 2,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -582,8 +594,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: null,
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [{ url: "https://example.com/entry.mp3", format: "mp3" }],
@@ -780,8 +792,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: null,
                     youtube_url: null,
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -850,8 +862,8 @@ describe("EntryEditView", () => {
                     sourcefile_url: null,
                     imagefile_original_url: null,
                     youtube_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                    score: null,
-                    rank: null,
+                    computed_score: null,
+                    computed_rank: null,
                     disqualified: false,
                     disqualified_reason: "",
                     alternate_files: [],
@@ -1058,6 +1070,33 @@ describe("EntryEditView", () => {
             await submitForm(wrapper);
 
             expect(api.adminEventKompomaattiEntriesCreate).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("navigation", () => {
+        it("goBack preserves query params from route", async () => {
+            const mockPush = vi.fn();
+            vi.mocked(useRouter).mockReturnValue({
+                push: mockPush,
+                replace: vi.fn(),
+            } as never);
+            vi.mocked(useRoute).mockReturnValue({
+                params: { eventId: "1" },
+                query: { compo: "5", disqualified: "false" },
+            } as never);
+
+            const wrapper = mountComponent({ eventId: "1" });
+            await flushPromises();
+
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const cancelButton = buttons.find((b) => b.text().includes("General.cancel"));
+            await cancelButton!.trigger("click");
+
+            expect(mockPush).toHaveBeenCalledWith({
+                name: "entries",
+                params: { eventId: "1" },
+                query: { compo: "5", disqualified: "false" },
+            });
         });
     });
 });

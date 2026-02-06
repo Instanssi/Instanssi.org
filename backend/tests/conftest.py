@@ -2,7 +2,7 @@ import base64
 import secrets
 import tempfile
 from contextlib import contextmanager
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from datetime import timezone as dt_tz
 from decimal import Decimal
 from pathlib import Path
@@ -14,6 +14,7 @@ from django.contrib.auth.models import Permission, User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
+from django.utils import timezone
 from faker import Faker
 from pytest import fixture
 from rest_framework.test import APIClient
@@ -441,6 +442,20 @@ def votable_compo(event) -> Compo:
 
 
 @fixture
+def second_votable_compo(faker, event) -> Compo:
+    return Compo.objects.create(
+        event=event,
+        name="Second Votable Compo",
+        description="Another votable test compo!",
+        adding_end=timezone.now() + timedelta(hours=-6),
+        editing_end=timezone.now() + timedelta(hours=-2),
+        compo_start=timezone.now() + timedelta(hours=-1),
+        voting_start=timezone.now() + timedelta(minutes=-30),
+        voting_end=timezone.now() + timedelta(hours=8),
+    )
+
+
+@fixture
 def closed_compo(event) -> Compo:
     return Compo.objects.create(
         event=event,
@@ -635,6 +650,35 @@ def results_competition(event) -> Competition:
 
 
 @fixture
+def second_competition(event) -> Competition:
+    """A second competition in the same event (for partitioning tests)."""
+    return Competition.objects.create(
+        event=event,
+        name="Second Test Competition",
+        description="<p>Another competition in the same event</p>",
+        participation_end=timezone.now() + timedelta(hours=1),
+        start=timezone.now() + timedelta(hours=2),
+        end=timezone.now() + timedelta(hours=8),
+        score_type="p",
+    )
+
+
+@fixture
+def lower_is_better_competition(event) -> Competition:
+    """Competition where lower scores are better (e.g., time trials)."""
+    return Competition.objects.create(
+        event=event,
+        name="Time Trial",
+        description="<p>Competition where lowest time wins</p>",
+        participation_end=timezone.now() + timedelta(hours=1),
+        start=timezone.now() + timedelta(hours=2),
+        end=timezone.now() + timedelta(hours=8),
+        score_type="sec",
+        score_sort=1,  # Lower is better
+    )
+
+
+@fixture
 def competition_participation(competition, base_user) -> CompetitionParticipation:
     return CompetitionParticipation.objects.create(
         competition=competition, user=base_user, participant_name="Test Participant", score=100.0
@@ -653,6 +697,60 @@ def other_user_competition_participation(started_competition, normal_user) -> Co
     """Participation belonging to another user (normal_user)."""
     return CompetitionParticipation.objects.create(
         competition=started_competition, user=normal_user, participant_name="Other Participant", score=75.0
+    )
+
+
+@fixture
+def normal_user_competition_participation(faker, competition, normal_user) -> CompetitionParticipation:
+    """Participation for normal_user in competition."""
+    return CompetitionParticipation.objects.create(
+        competition=competition, user=normal_user, participant_name=faker.name(), score=0
+    )
+
+
+@fixture
+def staff_competition_participation(faker, competition, staff_user) -> CompetitionParticipation:
+    """Participation for staff_user in competition."""
+    return CompetitionParticipation.objects.create(
+        competition=competition, user=staff_user, participant_name=faker.name(), score=0
+    )
+
+
+@fixture
+def second_competition_participation(faker, second_competition, normal_user) -> CompetitionParticipation:
+    """Participation in the second competition."""
+    return CompetitionParticipation.objects.create(
+        competition=second_competition, user=normal_user, participant_name=faker.name(), score=0
+    )
+
+
+@fixture
+def lower_competition_participation(
+    faker, lower_is_better_competition, base_user
+) -> CompetitionParticipation:
+    """Participation in the lower-is-better competition for base_user."""
+    return CompetitionParticipation.objects.create(
+        competition=lower_is_better_competition, user=base_user, participant_name=faker.name(), score=0
+    )
+
+
+@fixture
+def lower_normal_competition_participation(
+    faker, lower_is_better_competition, normal_user
+) -> CompetitionParticipation:
+    """Participation in the lower-is-better competition for normal_user."""
+    return CompetitionParticipation.objects.create(
+        competition=lower_is_better_competition, user=normal_user, participant_name=faker.name(), score=0
+    )
+
+
+@fixture
+def lower_staff_competition_participation(
+    faker, lower_is_better_competition, staff_user
+) -> CompetitionParticipation:
+    """Participation in the lower-is-better competition for staff_user."""
+    return CompetitionParticipation.objects.create(
+        competition=lower_is_better_competition, user=staff_user, participant_name=faker.name(), score=0
     )
 
 

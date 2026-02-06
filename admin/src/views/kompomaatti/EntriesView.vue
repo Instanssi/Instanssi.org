@@ -32,7 +32,7 @@
                 </v-btn>
                 <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
                     <template #activator="{ props: menuProps }">
-                        <v-btn class="ml-4" v-bind="menuProps">
+                        <v-btn class="ml-4" :loading="archiveLoading" v-bind="menuProps">
                             <template #prepend>
                                 <FontAwesomeIcon :icon="faDownload" />
                             </template>
@@ -142,6 +142,14 @@
             </v-row>
         </v-col>
         <DiplomaGeneratorDialog ref="diplomaDialog" :event-id="eventId" />
+        <ErrorDialog ref="missingFilesErrorDialog" :title="t('EntriesView.missingFilesTitle')">
+            <p class="mb-2">{{ t("EntriesView.missingFilesDescription") }}</p>
+            <v-list density="compact">
+                <v-list-item v-for="entry in missingFileEntries" :key="entry">
+                    {{ entry }}
+                </v-list-item>
+            </v-list>
+        </ErrorDialog>
     </LayoutBase>
 </template>
 
@@ -177,6 +185,7 @@ import type { ConfirmDialogType } from "@/symbols";
 import { toRomanNumeral } from "@/utils/roman";
 import { getApiErrorMessage } from "@/utils/http";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
+import ErrorDialog from "@/components/dialogs/ErrorDialog.vue";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
@@ -192,6 +201,9 @@ const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
 const exportLoading = ref(false);
+const archiveLoading = ref(false);
+const missingFilesErrorDialog: Ref<InstanceType<typeof ErrorDialog> | undefined> = ref(undefined);
+const missingFileEntries: Ref<string[]> = ref([]);
 const diplomaDialog: Ref<InstanceType<typeof DiplomaGeneratorDialog> | undefined> = ref(undefined);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
@@ -394,16 +406,45 @@ function openDiplomaDialog(): void {
 
 /**
  * Download entry files as a zip archive.
- * Opens the streaming download URL in a new window.
+ *
+ * First validates via a lightweight endpoint that all files exist on disk.
+ * On validation success, triggers a native browser download that streams
+ * directly to disk (no buffering in browser memory).
  */
-function downloadArchive(): void {
+async function downloadArchive(): Promise<void> {
+    const compo = selectedCompo.value ?? undefined;
     const params = new URLSearchParams();
-    if (selectedCompo.value) {
-        params.set("compo", String(selectedCompo.value));
+    if (compo) {
+        params.set("compo", String(compo));
     }
-    const queryString = params.toString();
-    const url = `/api/v2/admin/event/${eventId.value}/kompomaatti/entries/download-archive/${queryString ? `?${queryString}` : ""}`;
-    window.open(url, "_blank");
+    const suffix = params.toString() ? `?${params.toString()}` : "";
+
+    archiveLoading.value = true;
+    try {
+        await api.adminEventKompomaattiEntriesValidateArchiveRetrieve({
+            path: { event_pk: eventId.value },
+            query: { compo },
+        });
+
+        // Validation passed — trigger native streaming download
+        const basePath = `/api/v2/admin/event/${eventId.value}/kompomaatti/entries`;
+        window.open(`${basePath}/download-archive/${suffix}`, "_blank");
+    } catch (e) {
+        const err = e as { response?: { status: number; data: { entries?: string[] } } };
+        if (
+            err.response?.status === 400 &&
+            Array.isArray(err.response.data.entries) &&
+            err.response.data.entries.length > 0
+        ) {
+            missingFileEntries.value = err.response.data.entries;
+            missingFilesErrorDialog.value?.open();
+            return;
+        }
+        toast.error(t("EntriesView.downloadFailure"));
+        console.error(e);
+    } finally {
+        archiveLoading.value = false;
+    }
 }
 
 interface ResultRow {

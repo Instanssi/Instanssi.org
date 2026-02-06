@@ -1593,6 +1593,40 @@ def hidden_event_store_item(hidden_event) -> StoreItem:
 
 
 @fixture
+def other_user_entry(normal_user, open_compo, entry_zip, source_zip, image_png) -> Entry:
+    """Entry belonging to another user (normal_user) in the open compo."""
+    return Entry.objects.create(
+        compo=open_compo,
+        user=normal_user,
+        name="Other User Entry",
+        description="An entry by another user",
+        creator="Other Creator",
+        platform="Amiga",
+        entryfile=entry_zip,
+        sourcefile=source_zip,
+        imagefile_original=image_png,
+    )
+
+
+@fixture
+def disqualified_entry(base_user, votable_compo, entry_zip, source_zip, image_png) -> Entry:
+    """A disqualified entry in the votable compo."""
+    return Entry.objects.create(
+        compo=votable_compo,
+        user=base_user,
+        name="Disqualified Entry",
+        description="A disqualified test entry",
+        creator="DQ Creator",
+        platform="PC",
+        entryfile=entry_zip,
+        sourcefile=source_zip,
+        imagefile_original=image_png,
+        disqualified=True,
+        disqualified_reason="Rule violation",
+    )
+
+
+@fixture
 def audio_entry(base_user, open_compo, source_zip, image_png) -> Entry:
     """Entry with an audio file (mp3 extension triggers is_audio=True)."""
     audio_file = SimpleUploadedFile("test_audio.mp3", b"fake audio data", content_type="audio/mpeg")

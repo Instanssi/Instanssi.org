@@ -5,7 +5,7 @@ from typing import cast
 from django.db.models import QuerySet
 from django.http import StreamingHttpResponse
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -86,7 +86,82 @@ class CompoEntryViewSet(PermissionViewSet):
         maybe_copy_entry_to_image(instance)
         self._refresh_with_annotations(serializer)
 
+    def _collect_archive_files(self, event_pk: int) -> tuple[list[tuple[str, Path]], list[str]]:
+        """Collect entry files for archiving and check for missing files.
+
+        Returns a tuple of (files, missing_files) where files is a list of
+        (archive_name, file_path) tuples and missing_files is a list of
+        human-readable descriptions of entries with missing files on disk.
+        """
+        base_queryset = (
+            self.queryset.filter(compo__event_id=event_pk)
+            .filter(disqualified=False)
+            .exclude(entryfile="")
+            .select_related("compo")
+            .with_rank()
+            .only("id", "name", "entryfile", "compo__name")
+        )
+        queryset = self.filter_queryset(base_queryset)
+
+        files: list[tuple[str, Path]] = []
+        missing_files: list[str] = []
+
+        for entry in cast(Iterator[Entry], queryset.iterator()):
+            file_path = Path(entry.entryfile.path)
+            if not file_path.is_file():
+                missing_files.append(f"[{entry.compo.name}] Entry {entry.id}: {entry.name}")
+            else:
+                archive_name = (
+                    f"{clean_filename(entry.compo.name)}/{entry.computed_rank:03d}__{file_path.name}"
+                )
+                files.append((archive_name, file_path))
+
+        return files, missing_files
+
     @extend_schema(
+        parameters=[OpenApiParameter("compo", int, description="Filter by compo ID")],
+        responses={
+            200: inline_serializer(
+                "ValidateArchiveOk",
+                fields={
+                    "ok": serializers.BooleanField(),
+                    "count": serializers.IntegerField(),
+                },
+            ),
+            400: inline_serializer(
+                "ValidateArchiveError",
+                fields={
+                    "error": serializers.CharField(),
+                    "entries": serializers.ListField(child=serializers.CharField()),
+                },
+            ),
+        },
+        summary="Validate entry files archive",
+        description=(
+            "Checks that all entry files exist on disk before downloading. "
+            "Call this before download-archive to get actionable error messages."
+        ),
+    )
+    @action(detail=False, methods=["get"], url_path="validate-archive")
+    def validate_archive(self, request: Request, event_pk: int = 0) -> Response:
+        """Validate that all entry files are present on disk.
+
+        Returns 200 with entry count on success, or 400 with details about
+        missing files. Supports the same query parameters as download-archive.
+        """
+        get_object_or_404(Event, pk=event_pk)
+        files, missing_files = self._collect_archive_files(event_pk)
+
+        if missing_files:
+            return Response(
+                {"error": "Missing entry files on disk", "entries": missing_files},
+                status=400,
+            )
+
+        return Response({"ok": True, "count": len(files)})
+
+    @extend_schema(
+        parameters=[OpenApiParameter("compo", int, description="Filter by compo ID")],
         responses={(200, "application/zip"): bytes},
         summary="Download entry files archive",
         description="Streams all entry files as a ZIP archive organized by compo directory.",
@@ -103,35 +178,7 @@ class CompoEntryViewSet(PermissionViewSet):
             user: Filter by user ID
         """
         event = get_object_or_404(Event, pk=event_pk)
-
-        # Build queryset directly without prefetch_related (not needed for archive)
-        # Use only() to minimize memory usage - we only need these fields
-        # Note: computed_rank is an annotation from with_rank(), not a model field
-        base_queryset = (
-            self.queryset.filter(compo__event_id=event_pk)
-            .filter(disqualified=False)
-            .exclude(entryfile="")
-            .select_related("compo")
-            .with_rank()
-            .only("id", "name", "entryfile", "compo__name")
-        )
-        # Apply any filters from query params (e.g., compo, user)
-        queryset = self.filter_queryset(base_queryset)
-
-        # Build file list and validate in single pass using iterator()
-        # This avoids loading all Entry objects into memory at once
-        files: list[tuple[str, Path]] = []
-        missing_files: list[str] = []
-
-        for entry in cast(Iterator[Entry], queryset.iterator()):
-            file_path = Path(entry.entryfile.path)
-            if not file_path.is_file():
-                missing_files.append(f"Entry {entry.id}: {entry.name}")
-            else:
-                archive_name = (
-                    f"{clean_filename(entry.compo.name)}/{entry.computed_rank:03d}__{file_path.name}"
-                )
-                files.append((archive_name, file_path))
+        files, missing_files = self._collect_archive_files(event_pk)
 
         if missing_files:
             return Response(
@@ -143,6 +190,11 @@ class CompoEntryViewSet(PermissionViewSet):
             generate_zip_stream(files),
             content_type="application/zip",
         )
-        archive_filename = f"entries_{event.tag or event.id}.zip"
+        name_parts = [f"entries_{event.tag or event.id}"]
+        if compo_id := request.query_params.get("compo"):
+            compo = Compo.objects.filter(pk=compo_id, event_id=event_pk).first()
+            if compo:
+                name_parts.append(clean_filename(compo.name))
+        archive_filename = f"{'_'.join(name_parts)}.zip"
         response["Content-Disposition"] = f'attachment; filename="{archive_filename}"'
         return response

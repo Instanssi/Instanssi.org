@@ -274,3 +274,22 @@ def test_store_api_transaction_post_ok_with_save(mocked_payment, transaction_bas
 
     # Transaction is okay to send (valid), and save field was included -- transaction made!
     assert StoreTransaction.objects.filter(email=transaction_base["email"]).count() == 1
+
+
+@pytest.mark.django_db
+def test_store_api_transaction_post_read_terms_false(transaction_base, api_client, store_item):
+    """Submitting a transaction with read_terms=False should fail."""
+    url = "/api/v1/store_transaction/"
+    req = api_client.post(
+        url,
+        data={
+            **transaction_base,
+            "read_terms": False,
+            "payment_method": 1,
+            "items": [
+                {"item_id": store_item.id, "variant_id": None, "amount": 1},
+            ],
+        },
+    )
+    assert req.status_code == 400
+    assert "read_terms" in req.data

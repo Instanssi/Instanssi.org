@@ -110,6 +110,9 @@ import type {
     AdminEventKompomaattiEntriesRetrieveResponses,
     AdminEventKompomaattiEntriesUpdateData,
     AdminEventKompomaattiEntriesUpdateResponses,
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveData,
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses,
     AdminEventKompomaattiTicketVoteCodesListData,
     AdminEventKompomaattiTicketVoteCodesListResponses,
     AdminEventKompomaattiTicketVoteCodesRetrieveData,
@@ -1898,6 +1901,38 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
             },
         ],
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/",
+        ...options,
+    });
+};
+
+/**
+ * Validate entry files archive
+ *
+ * Checks that all entry files exist on disk before downloading. Call this before download-archive to get actionable error messages.
+ */
+export const adminEventKompomaattiEntriesValidateArchiveRetrieve = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AdminEventKompomaattiEntriesValidateArchiveRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses,
+        AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/",
         ...options,
     });
 };

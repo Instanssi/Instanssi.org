@@ -110,3 +110,40 @@ def test_admin_compo_entries_detail_response(staff_api_client, editable_compo_en
         "score": 0.0,
         "rank": 1,
     }
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_admin_compo_entries_filter_by_compo(staff_api_client, editable_compo_entry, votable_compo):
+    """Admin compo entry list should support filtering by compo id."""
+    req = staff_api_client.get(BASE_URL, {"compo": editable_compo_entry.compo_id})
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert editable_compo_entry.id in ids
+
+    # Filtering by a different compo should not include this entry
+    req = staff_api_client.get(BASE_URL, {"compo": votable_compo.id})
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert editable_compo_entry.id not in ids
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_admin_compo_entries_filter_by_disqualified(
+    staff_api_client, editable_compo_entry, disqualified_entry
+):
+    """Admin compo entry list should support filtering by disqualified status."""
+    # Only non-disqualified
+    req = staff_api_client.get(BASE_URL, {"disqualified": "false"})
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert editable_compo_entry.id in ids
+    assert disqualified_entry.id not in ids
+
+    # Only disqualified
+    req = staff_api_client.get(BASE_URL, {"disqualified": "true"})
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert editable_compo_entry.id not in ids
+    assert disqualified_entry.id in ids

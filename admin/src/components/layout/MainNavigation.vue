@@ -150,33 +150,42 @@ function routeToEvents(): void {
 }
 
 /**
- * Initialize event selection from the latest event.
+ * Load events from the backend and sync the event selection.
  */
 async function initEvents() {
     await eventService.refreshEvents();
+    syncEventSelection();
+}
+
+/**
+ * Sync event selection with route params and available events.
+ * Prefers the eventId from the current route so that a page refresh
+ * keeps the correct event selected. Falls back to the current selection
+ * if still valid, then to the latest event.
+ */
+function syncEventSelection() {
+    const allEvents = eventService.getEvents();
+    if (allEvents.length === 0) {
+        event.value = undefined;
+        return;
+    }
+    const routeEventId = Number(route.params.eventId);
+    if (routeEventId && eventService.getEventById(routeEventId)) {
+        event.value = routeEventId;
+        return;
+    }
+    if (event.value && eventService.getEventById(event.value)) {
+        return;
+    }
     const latest = eventService.getLatestEvent();
     if (latest) {
         event.value = latest.id;
     }
 }
 
-/**
- * React to events list changes.
- */
-function onEventsChange() {
-    const allEvents = eventService.getEvents();
-    if (allEvents.length === 0) {
-        event.value = undefined;
-    } else if (!event.value) {
-        const latest = eventService.getLatestEvent();
-        if (latest) {
-            event.value = latest.id;
-        }
-    }
-}
-
 watch(() => authService.isLoggedIn(), initEvents);
-watch(() => eventService.getEvents(), onEventsChange);
+watch(() => eventService.getEvents(), syncEventSelection);
+watch(() => route.params.eventId, syncEventSelection);
 onMounted(initEvents);
 </script>
 

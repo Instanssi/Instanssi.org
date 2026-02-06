@@ -69,69 +69,9 @@
         </template>
     </v-file-input>
 
-    <!-- Image Preview Dialog -->
-    <v-dialog v-model="showImagePreview" max-width="900">
-        <v-card>
-            <v-card-title class="d-flex justify-space-between align-center">
-                <span>{{ t("FileUploadField.imagePreviewTitle") }}</span>
-                <v-btn icon variant="text" density="compact" @click="showImagePreview = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
-            </v-card-title>
-            <v-divider />
-            <v-card-text class="d-flex justify-center pa-4">
-                <v-img :src="previewUrl ?? undefined" max-height="70vh" max-width="100%" />
-            </v-card-text>
-        </v-card>
-    </v-dialog>
-
-    <!-- Video Preview Dialog -->
-    <v-dialog v-model="showVideoPreview" max-width="900">
-        <v-card>
-            <v-card-title class="d-flex justify-space-between align-center">
-                <span>{{ t("FileUploadField.videoPreviewTitle") }}</span>
-                <v-btn icon variant="text" density="compact" @click="showVideoPreview = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
-            </v-card-title>
-            <v-divider />
-            <v-card-text class="d-flex justify-center pa-4">
-                <video
-                    v-if="showVideoPreview && previewUrl"
-                    :src="previewUrl"
-                    controls
-                    autoplay
-                    class="video-player"
-                >
-                    {{ t("FileUploadField.videoNotSupported") }}
-                </video>
-            </v-card-text>
-        </v-card>
-    </v-dialog>
-
-    <!-- Audio Preview Dialog -->
-    <v-dialog v-model="showAudioPreview" max-width="500">
-        <v-card>
-            <v-card-title class="d-flex justify-space-between align-center">
-                <span>{{ t("FileUploadField.audioPreviewTitle") }}</span>
-                <v-btn icon variant="text" density="compact" @click="showAudioPreview = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
-            </v-card-title>
-            <v-divider />
-            <v-card-text class="d-flex justify-center pa-4">
-                <audio
-                    v-if="showAudioPreview && previewUrl"
-                    :src="previewUrl"
-                    controls
-                    autoplay
-                    class="audio-player"
-                >
-                    {{ t("FileUploadField.audioNotSupported") }}
-                </audio>
-            </v-card-text>
-        </v-card>
-    </v-dialog>
+    <ImagePreviewDialog v-model="showImagePreview" :src="previewUrl" />
+    <VideoPreviewDialog v-model="showVideoPreview" :src="previewUrl" />
+    <AudioPreviewDialog v-model="showAudioPreview" :src="previewUrl" />
 </template>
 
 <script setup lang="ts">
@@ -140,12 +80,14 @@ import {
     faDownload,
     faUpload,
     faVolumeHigh,
-    faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
+import AudioPreviewDialog from "@/components/dialogs/AudioPreviewDialog.vue";
+import ImagePreviewDialog from "@/components/dialogs/ImagePreviewDialog.vue";
+import VideoPreviewDialog from "@/components/dialogs/VideoPreviewDialog.vue";
 import { type FileValue, getFile } from "@/utils/file";
 
 // File type detection based on extension or MIME type
@@ -321,15 +263,5 @@ function handleClear() {
 .file-preview:focus {
     outline: 2px solid rgb(var(--v-theme-primary));
     outline-offset: 1px;
-}
-
-.video-player {
-    max-width: 100%;
-    max-height: 70vh;
-}
-
-.audio-player {
-    width: 100%;
-    min-width: 300px;
 }
 </style>

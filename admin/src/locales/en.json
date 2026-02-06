@@ -16,13 +16,18 @@
     }
   },
   "translations": {
+    "PreviewDialog": {
+      "imageTitle": "Image Preview",
+      "videoTitle": "Video Preview",
+      "audioTitle": "Audio Preview",
+      "videoNotSupported": "Your browser does not support video playback.",
+      "audioNotSupported": "Your browser does not support audio playback."
+    },
     "ImageUploadField": {
-      "clickToPreview": "Click to preview",
-      "previewTitle": "Image Preview"
+      "clickToPreview": "Click to preview"
     },
     "ImageCell": {
       "clickToPreview": "Click to preview",
-      "previewTitle": "Image Preview",
       "download": "Download file"
     },
     "LongTextCell": {
@@ -31,12 +36,7 @@
     },
     "MediaCell": {
       "clickToPreview": "Click to preview",
-      "download": "Download file",
-      "imagePreviewTitle": "Image Preview",
-      "videoPreviewTitle": "Video Preview",
-      "audioPreviewTitle": "Audio Preview",
-      "videoNotSupported": "Your browser does not support video playback.",
-      "audioNotSupported": "Your browser does not support audio playback."
+      "download": "Download file"
     },
     "SocialLinksCell": {
       "home": "Website",
@@ -48,12 +48,7 @@
     },
     "FileUploadField": {
       "clickToPreview": "Click to preview",
-      "download": "Download file",
-      "imagePreviewTitle": "Image Preview",
-      "videoPreviewTitle": "Video Preview",
-      "audioPreviewTitle": "Audio Preview",
-      "videoNotSupported": "Your browser does not support video playback.",
-      "audioNotSupported": "Your browser does not support audio playback."
+      "download": "Download file"
     },
     "Toasts": {
       "errors": {

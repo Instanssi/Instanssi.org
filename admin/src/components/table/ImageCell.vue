@@ -12,20 +12,7 @@
             <v-img :src="url" :width="size" :height="size" cover class="rounded pa-0 ma-0" />
         </div>
 
-        <v-dialog v-model="showPreview" max-width="900">
-            <v-card>
-                <v-card-title class="d-flex justify-space-between align-center">
-                    <span>{{ t("ImageCell.previewTitle") }}</span>
-                    <v-btn icon variant="text" density="compact" @click="showPreview = false">
-                        <FontAwesomeIcon :icon="faXmark" />
-                    </v-btn>
-                </v-card-title>
-                <v-divider />
-                <v-card-text class="d-flex justify-center pa-4">
-                    <v-img :src="url" max-height="70vh" max-width="100%" />
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        <ImagePreviewDialog v-model="showPreview" :src="url" />
     </div>
     <div v-else class="image-placeholder" :style="{ width: `${size}px`, height: `${size}px` }">
         <FontAwesomeIcon :icon="faImage" class="placeholder-icon" />
@@ -33,10 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import { faImage, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+
+import ImagePreviewDialog from "@/components/dialogs/ImagePreviewDialog.vue";
 
 withDefaults(
     defineProps<{

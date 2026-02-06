@@ -184,6 +184,7 @@ import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { toRomanNumeral } from "@/utils/roman";
 import { getApiErrorMessage } from "@/utils/http";
+import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import ErrorDialog from "@/components/dialogs/ErrorDialog.vue";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
@@ -200,7 +201,10 @@ const auth = useAuth();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
-const exportLoading = ref(false);
+const { loading: exportLoading, run: runExport } = useAsyncAction({
+    successMessage: t("EntriesView.exportSuccess"),
+    failureMessage: t("EntriesView.exportFailure"),
+});
 const archiveLoading = ref(false);
 const missingFilesErrorDialog: Ref<InstanceType<typeof ErrorDialog> | undefined> = ref(undefined);
 const missingFileEntries: Ref<string[]> = ref([]);
@@ -500,8 +504,7 @@ function generateResultsData(allEntries: CompoEntry[]): ResultRow[] {
  * Generate and download spreadsheet with top 3 entries per compo for diploma generation
  */
 async function downloadResults(format: SpreadsheetFormat): Promise<void> {
-    exportLoading.value = true;
-    try {
+    await runExport(async () => {
         const response = await api.adminEventKompomaattiEntriesList({
             path: { event_pk: eventId.value },
             query: { limit: 10000 },
@@ -514,13 +517,7 @@ async function downloadResults(format: SpreadsheetFormat): Promise<void> {
             row.compoName,
         ]);
         downloadSpreadsheet(data, "instanssi_entries", format, "Results");
-        toast.success(t("EntriesView.exportSuccess"));
-    } catch (e) {
-        toast.error(t("EntriesView.exportFailure"));
-        console.error(e);
-    } finally {
-        exportLoading.value = false;
-    }
+    });
 }
 
 onMounted(() => {

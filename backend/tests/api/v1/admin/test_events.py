@@ -80,3 +80,13 @@ def test_admin_events_detail_response(staff_api_client, event):
         "archived": False,
         "mainurl": "http://localhost:8000/2025/",
     }
+
+
+@pytest.mark.django_db
+def test_admin_events_includes_hidden(staff_api_client, event, hidden_event):
+    """Admin event list should include hidden events."""
+    req = staff_api_client.get(BASE_URL)
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert event.id in ids
+    assert hidden_event.id in ids

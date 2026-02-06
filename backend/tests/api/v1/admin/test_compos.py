@@ -128,3 +128,19 @@ def test_admin_compos_detail_response(staff_api_client, votable_compo):
         "is_votable": True,
         "thumbnail_pref": 2,
     }
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_admin_compos_filter_by_event(staff_api_client, votable_compo, other_event):
+    """Admin compo list should support filtering by event id."""
+    req = staff_api_client.get(BASE_URL, {"event": votable_compo.event_id})
+    assert req.status_code == 200
+    ids = [c["id"] for c in req.data]
+    assert votable_compo.id in ids
+
+    # Filtering by a different event should not include this compo
+    req = staff_api_client.get(BASE_URL, {"event": other_event.id})
+    assert req.status_code == 200
+    ids = [c["id"] for c in req.data]
+    assert votable_compo.id not in ids

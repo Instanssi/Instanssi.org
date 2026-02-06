@@ -659,3 +659,230 @@ def test_auth_user_vote_instance(auth_client, entry_vote_group):
         "compo": entry_vote_group.compo_id,
         "entries": [],
     }
+
+
+# --- User data isolation tests ---
+
+
+@pytest.mark.django_db
+def test_auth_user_entries_cannot_see_other_users_entries(
+    auth_client, editable_compo_entry, other_user_entry
+):
+    """Authenticated user should only see their own entries, not another user's."""
+    url = "/api/v1/user_entries/"
+    req = auth_client.get(url)
+    assert req.status_code == 200
+    ids = [e["id"] for e in req.data]
+    assert editable_compo_entry.id in ids
+    assert other_user_entry.id not in ids
+
+
+@pytest.mark.django_db
+def test_auth_user_participations_cannot_see_other_users(
+    auth_client, competition_participation, normal_user_competition_participation
+):
+    """Authenticated user should only see their own participations."""
+    url = "/api/v1/user_participations/"
+    req = auth_client.get(url)
+    assert req.status_code == 200
+    ids = [p["id"] for p in req.data]
+    assert competition_participation.id in ids
+    assert normal_user_competition_participation.id not in ids
+
+
+@pytest.mark.django_db
+def test_auth_user_vote_codes_cannot_see_other_users(
+    auth_client, ticket_vote_code, other_user_ticket_vote_code
+):
+    """Authenticated user should only see their own vote codes."""
+    url = "/api/v1/user_vote_codes/"
+    req = auth_client.get(url)
+    assert req.status_code == 200
+    ids = [vc["id"] for vc in req.data]
+    assert ticket_vote_code.id in ids
+    assert other_user_ticket_vote_code.id not in ids
+
+
+@pytest.mark.django_db
+def test_auth_user_votes_cannot_see_other_users(auth_client, entry_vote_group, other_user_vote_group):
+    """Authenticated user should only see their own vote groups."""
+    url = "/api/v1/user_votes/"
+    req = auth_client.get(url)
+    assert req.status_code == 200
+    assert len(req.data) == 1
+    assert req.data[0]["compo"] == entry_vote_group.compo_id
+
+
+@pytest.mark.django_db
+def test_auth_user_vote_code_requests_cannot_see_other_users(
+    auth_client, vote_code_request, other_user_vote_code_request
+):
+    """Authenticated user should only see their own vote code requests."""
+    url = "/api/v1/user_vote_code_requests/"
+    req = auth_client.get(url)
+    assert req.status_code == 200
+    ids = [r["id"] for r in req.data]
+    assert vote_code_request.id in ids
+    assert other_user_vote_code_request.id not in ids
+
+
+# --- Time-window validation tests ---
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_post_fail_voting_ended(auth_client, closed_compo_entry, ticket_vote_code):
+    """Voting after the voting window closes should fail."""
+    url = "/api/v1/user_votes/"
+    req = auth_client.post(
+        url, data={"compo": closed_compo_entry.compo_id, "entries": [closed_compo_entry.id]}
+    )
+    assert req.status_code == 400
+    assert req.data == {"non_field_errors": ["Kompon äänestysaika ei ole voimassa"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_entries_post_fail_adding_closed(auth_client, votable_compo, entry_zip, image_png):
+    """Submitting an entry after adding_end should fail."""
+    url = "/api/v1/user_entries/"
+    req = auth_client.post(
+        url,
+        format="multipart",
+        data={
+            "compo": votable_compo.id,
+            "name": "Late Entry",
+            "description": "Too late",
+            "creator": "Late Creator",
+            "entryfile": entry_zip,
+            "imagefile_original": image_png,
+        },
+    )
+    assert req.status_code == 400
+    assert req.data == {"non_field_errors": ["Kompon lisäysaika on päättynyt"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_entries_delete_fail_editing_closed(auth_client, closed_compo_entry):
+    """Deleting an entry after editing_end should fail."""
+    instance_url = f"/api/v1/user_entries/{closed_compo_entry.id}/"
+    req = auth_client.delete(instance_url)
+    assert req.status_code == 400
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_entries_put_fail_editing_closed(auth_client, closed_compo_entry, entry_zip2, image_png2):
+    """Updating an entry after editing_end should fail."""
+    instance_url = f"/api/v1/user_entries/{closed_compo_entry.id}/"
+    req = auth_client.put(
+        instance_url,
+        format="multipart",
+        data={
+            "compo": closed_compo_entry.compo_id,
+            "name": "Updated Entry",
+            "description": "Updated desc",
+            "creator": "Updated Creator",
+            "entryfile": entry_zip2,
+            "imagefile_original": image_png2,
+        },
+    )
+    assert req.status_code == 400
+    assert req.data == {"non_field_errors": ["Kompon muokkausaika on päättynyt"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_participation_delete_fail_closed(auth_client, started_competition_participation):
+    """Deleting participation after participation_end should fail."""
+    instance_url = f"/api/v1/user_participations/{started_competition_participation.id}/"
+    req = auth_client.delete(instance_url)
+    assert req.status_code == 400
+
+
+# --- Vote code validation edge cases ---
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_code_post_unpaid_ticket(auth_client, event, unpaid_ticket):
+    """Claiming an unpaid ticket should fail."""
+    url = "/api/v1/user_vote_codes/"
+    req = auth_client.post(url, data={"event": event.id, "ticket_key": unpaid_ticket.key})
+    assert req.status_code == 400
+    assert req.data == {"ticket_key": ["Pyydettyä lippuavainta ei ole olemassa!"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_code_post_non_ticket_item(auth_client, event, non_ticket_transaction_item):
+    """Claiming a non-ticket item should fail."""
+    url = "/api/v1/user_vote_codes/"
+    req = auth_client.post(url, data={"event": event.id, "ticket_key": non_ticket_transaction_item.key})
+    assert req.status_code == 400
+    assert req.data == {"ticket_key": ["Pyydettyä lippuavainta ei ole olemassa!"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_code_post_nonexistent_key(auth_client, event):
+    """Claiming a completely bogus ticket key should fail."""
+    url = "/api/v1/user_vote_codes/"
+    req = auth_client.post(url, data={"event": event.id, "ticket_key": "zzzzzzzzzzzzzzzz"})
+    assert req.status_code == 400
+    assert req.data == {"ticket_key": ["Pyydettyä lippuavainta ei ole olemassa!"]}
+
+
+# --- Vote validation edge cases ---
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_post_fail_duplicate_entries(auth_client, votable_compo_entry, ticket_vote_code):
+    """Voting for the same entry twice should fail."""
+    url = "/api/v1/user_votes/"
+    req = auth_client.post(
+        url,
+        data={
+            "compo": votable_compo_entry.compo_id,
+            "entries": [votable_compo_entry.id, votable_compo_entry.id],
+        },
+    )
+    assert req.status_code == 400
+    assert req.data == {"entries": ["Voit äänestää entryä vain kerran"]}
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_post_fail_wrong_compo_entry(
+    auth_client, votable_compo, editable_compo_entry, ticket_vote_code
+):
+    """Voting for an entry from a different compo should fail."""
+    url = "/api/v1/user_votes/"
+    req = auth_client.post(
+        url,
+        data={
+            "compo": votable_compo.id,
+            "entries": [editable_compo_entry.id],
+        },
+    )
+    assert req.status_code == 400
+    assert "entries" in req.data
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_auth_user_vote_post_fail_disqualified_entry(
+    auth_client, votable_compo, disqualified_entry, ticket_vote_code
+):
+    """Voting for a disqualified entry should fail (filtered by queryset)."""
+    url = "/api/v1/user_votes/"
+    req = auth_client.post(
+        url,
+        data={
+            "compo": votable_compo.id,
+            "entries": [disqualified_entry.id],
+        },
+    )
+    assert req.status_code == 400

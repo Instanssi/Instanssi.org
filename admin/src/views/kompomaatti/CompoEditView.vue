@@ -95,39 +95,27 @@
                         </v-row>
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="formatsArray"
-                                    :items="commonEntryFormats"
-                                    :error-messages="formats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="formats.value.value"
+                                    :suggestions="commonEntryFormats"
+                                    :error-message="formats.errorMessage.value"
                                     :label="t('CompoEditView.labels.formats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="sourceFormatsArray"
-                                    :items="commonSourceFormats"
-                                    :error-messages="sourceFormats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="sourceFormats.value.value"
+                                    :suggestions="commonSourceFormats"
+                                    :error-message="sourceFormats.errorMessage.value"
                                     :label="t('CompoEditView.labels.sourceFormats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="imageFormatsArray"
-                                    :items="commonImageFormats"
-                                    :error-messages="imageFormats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="imageFormats.value.value"
+                                    :suggestions="commonImageFormats"
+                                    :error-message="imageFormats.errorMessage.value"
                                     :label="t('CompoEditView.labels.imageFormats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                         </v-row>
@@ -265,6 +253,7 @@ import {
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FileSizeInputField from "@/components/form/FileSizeInputField.vue";
+import FormatComboboxField from "@/components/form/FormatComboboxField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
@@ -376,30 +365,6 @@ const thumbnailPrefOptions = [
 const commonEntryFormats = ["zip", "7z", "rar", "tar.gz", "exe", "com", "prg", "d64", "sid"];
 const commonSourceFormats = ["zip", "7z", "rar", "tar.gz"];
 const commonImageFormats = ["png", "jpg", "jpeg", "gif", "webp", "bmp"];
-
-// Computed properties for format arrays (pipe-separated string <-> array)
-const formatsArray = computed({
-    get: () => (formats.value.value ? formats.value.value.split("|").filter(Boolean) : []),
-    set: (val: string[]) => {
-        formats.value.value = val.join("|");
-    },
-});
-
-const sourceFormatsArray = computed({
-    get: () =>
-        sourceFormats.value.value ? sourceFormats.value.value.split("|").filter(Boolean) : [],
-    set: (val: string[]) => {
-        sourceFormats.value.value = val.join("|");
-    },
-});
-
-const imageFormatsArray = computed({
-    get: () =>
-        imageFormats.value.value ? imageFormats.value.value.split("|").filter(Boolean) : [],
-    set: (val: string[]) => {
-        imageFormats.value.value = val.join("|");
-    },
-});
 
 // Form validation
 const validationSchema = yupObject({

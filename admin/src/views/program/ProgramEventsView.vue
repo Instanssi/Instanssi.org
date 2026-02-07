@@ -93,6 +93,9 @@
                     <template #item.active="{ item }">
                         <BooleanIcon :value="item.active" />
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" :sanitized-html="true" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.PROGRAMME_EVENT)"
@@ -120,16 +123,16 @@ import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTable } from "vuetify/components";
-
 import * as api from "@/api";
 import type { ProgramEvent } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import SocialLinksCell from "@/components/table/SocialLinksCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useResponsiveHeaders } from "@/composables/useResponsiveHeaders";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -137,8 +140,6 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { getApiErrorMessage } from "@/utils/http";
-
-type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
@@ -182,7 +183,7 @@ const eventTypeFilterOptions = [
     { title: t("ProgramEventsView.eventTypes.1"), value: 1 },
 ];
 
-const headers: ReadonlyHeaders = [
+const headers = useResponsiveHeaders([
     {
         title: t("ProgramEventsView.headers.id"),
         sortable: true,
@@ -193,12 +194,14 @@ const headers: ReadonlyHeaders = [
         sortable: false,
         key: "icon_small_url",
         width: 60,
+        minBreakpoint: "lg",
     },
     {
         title: t("ProgramEventsView.headers.icon2"),
         sortable: false,
         key: "icon2_small_url",
         width: 60,
+        minBreakpoint: "lg",
     },
     {
         title: t("ProgramEventsView.headers.title"),
@@ -214,21 +217,25 @@ const headers: ReadonlyHeaders = [
         title: t("ProgramEventsView.headers.end"),
         sortable: true,
         key: "end",
+        minBreakpoint: "md",
     },
     {
         title: t("ProgramEventsView.headers.place"),
         sortable: false,
         key: "place",
+        minBreakpoint: "lg",
     },
     {
         title: t("ProgramEventsView.headers.socialLinks"),
         sortable: false,
         key: "social_links",
+        minBreakpoint: "xl",
     },
     {
         title: t("ProgramEventsView.headers.eventType"),
         sortable: true,
         key: "event_type",
+        minBreakpoint: "lg",
     },
     {
         title: t("ProgramEventsView.headers.active"),
@@ -236,12 +243,18 @@ const headers: ReadonlyHeaders = [
         key: "active",
     },
     {
+        title: t("ProgramEventsView.headers.description"),
+        sortable: false,
+        key: "description",
+        minBreakpoint: "lg",
+    },
+    {
         title: t("ProgramEventsView.headers.actions"),
         sortable: false,
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function flushData() {
     if (lastLoadArgs.value) {

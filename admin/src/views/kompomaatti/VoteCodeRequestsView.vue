@@ -35,6 +35,9 @@
                     <template #item.user="{ item }">
                         {{ item.user }}
                     </template>
+                    <template #item.text="{ item }">
+                        <LongTextCell :value="item.text" />
+                    </template>
                     <template #item.status="{ item }">
                         <v-chip :color="getStatusColor(item.status ?? 0)" size="small">
                             {{ getStatusText(item.status ?? 0) }}
@@ -106,6 +109,7 @@ import * as api from "@/api";
 import type { StatusEnum, VoteCodeRequest } from "@/api";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";

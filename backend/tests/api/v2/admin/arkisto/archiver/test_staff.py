@@ -7,6 +7,7 @@ from Instanssi.kompomaatti.models import (
     Vote,
     VoteGroup,
 )
+from Instanssi.users.models import User
 
 
 def get_base_url(event_id):
@@ -221,7 +222,8 @@ def test_transfer_rights_blocked_for_ongoing_event(staff_api_client, event, open
 @pytest.mark.django_db
 def test_transfer_rights_requires_archive_user(staff_api_client, past_event, past_compo_entry):
     """Test that transfer rights fails if archive user doesn't exist."""
-    # Don't create the archive_user fixture
+    # The arkisto user is created by migration; delete it to test the error path
+    User.objects.filter(username="arkisto").delete()
     url = get_base_url(past_event.id) + "transfer-rights/"
     req = staff_api_client.post(url)
     assert req.status_code == 404

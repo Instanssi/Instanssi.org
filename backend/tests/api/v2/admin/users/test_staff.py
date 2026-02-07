@@ -16,21 +16,21 @@ def test_users_get_users(super_api_client, super_user):
     result = super_api_client.get(BASE_URL)
     assert result.status_code == 200
     # We test output once here -- no point in testing serializer in other tests again.
-    assert result.data == [
-        {
-            "id": super_user.id,
-            "first_name": super_user.first_name,
-            "last_name": super_user.last_name,
-            "date_joined": super_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
-            "email": super_user.email,
-            "username": super_user.username,
-            "user_permissions": [],
-            "groups": [],
-            "is_superuser": super_user.is_superuser,
-            "is_active": super_user.is_active,
-            "is_system": super_user.is_system,
-        }
-    ]
+    # The arkisto system user is always present (created by migration), so filter it out.
+    users_by_id = {u["id"]: u for u in result.data}
+    assert users_by_id[super_user.id] == {
+        "id": super_user.id,
+        "first_name": super_user.first_name,
+        "last_name": super_user.last_name,
+        "date_joined": super_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
+        "email": super_user.email,
+        "username": super_user.username,
+        "user_permissions": [],
+        "groups": [],
+        "is_superuser": super_user.is_superuser,
+        "is_active": super_user.is_active,
+        "is_system": super_user.is_system,
+    }
 
 
 @pytest.mark.django_db

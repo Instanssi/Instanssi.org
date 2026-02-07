@@ -140,6 +140,16 @@ describe("useTableState", () => {
             expect(state.sortOrder.value).toBe("asc");
         });
 
+        it("defaults sortOrder to asc when sortBy is in URL but sortOrder is not", () => {
+            mockQuery = { sortBy: "name" };
+            const state = useTableState({
+                initialSort: { key: "id", order: "desc" },
+            });
+
+            expect(state.sortBy.value).toBe("name");
+            expect(state.sortOrder.value).toBe("asc");
+        });
+
         it("reads custom filter values from URL", () => {
             mockQuery = { status: "active", category: "5" };
             const state = useTableState({

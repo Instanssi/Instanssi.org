@@ -44,6 +44,13 @@
                             :error-messages="isActive.errorMessage.value"
                             :label="isActiveLabel"
                         />
+                        <v-switch
+                            v-if="isEditMode"
+                            v-model="isSystem"
+                            readonly
+                            disabled
+                            :label="isSystemLabel"
+                        />
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
@@ -105,10 +112,14 @@ const loading = ref(false);
 const saving = ref(false);
 const userName = ref<string>("");
 const dateJoined = ref<string>("");
+const isSystem = ref(false);
 const isEditMode = computed(() => props.id !== undefined);
 
 const isActiveLabel = computed(() =>
     isActive.value.value ? t("UserDialog.labels.isActive") : t("UserDialog.labels.isNotActive")
+);
+const isSystemLabel = computed(() =>
+    isSystem.value ? t("UserDialog.labels.isSystem") : t("UserDialog.labels.isNotSystem")
 );
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
@@ -210,6 +221,7 @@ onMounted(async () => {
             const item = response.data!;
             userName.value = item.username;
             dateJoined.value = d(item.date_joined, "long");
+            isSystem.value = item.is_system ?? false;
             setValues({
                 firstName: item.first_name ?? "",
                 lastName: item.last_name ?? "",

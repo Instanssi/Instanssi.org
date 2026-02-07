@@ -3887,6 +3887,10 @@ paths:
         name: is_superuser
         schema:
           type: boolean
+      - in: query
+        name: is_system
+        schema:
+          type: boolean
       - name: limit
         required: false
         in: query
@@ -11269,11 +11273,15 @@ components:
           title: Active
           description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
+        is_system:
+          type: boolean
+          readOnly: true
       required:
       - date_joined
       - groups
       - id
       - is_superuser
+      - is_system
       - user_permissions
       - username
     UserCompetitionParticipation:

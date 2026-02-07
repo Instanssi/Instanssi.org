@@ -17,7 +17,7 @@ class UserViewSet(PermissionViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer  # type: ignore[assignment]
     ordering_fields = ("id", "username", "first_name", "last_name", "email", "date_joined")
-    filterset_fields = ("email", "username", "is_active", "is_superuser", "is_staff")
+    filterset_fields = ("email", "username", "is_active", "is_superuser", "is_staff", "is_system")
     search_fields = ("username", "first_name", "last_name", "email")
 
     def _check_not_system_user(self) -> None:

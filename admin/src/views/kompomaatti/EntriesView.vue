@@ -125,6 +125,12 @@
                     <template #item.computed_rank="{ item }">
                         {{ item.computed_rank ?? "-" }}
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" />
+                    </template>
+                    <template #item.disqualified_reason="{ item }">
+                        <LongTextCell :value="item.disqualified_reason" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.ENTRY)"
@@ -173,6 +179,7 @@ import type { Compo, CompoEntry } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
@@ -283,6 +290,16 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.score"),
         sortable: true,
         key: "computed_score",
+    },
+    {
+        title: t("EntriesView.headers.description"),
+        sortable: false,
+        key: "description",
+    },
+    {
+        title: t("EntriesView.headers.disqualifiedReason"),
+        sortable: false,
+        key: "disqualified_reason",
     },
     {
         title: t("EntriesView.headers.actions"),

@@ -93,6 +93,9 @@
                     <template #item.active="{ item }">
                         <BooleanIcon :value="item.active" />
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" :sanitized-html="true" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.PROGRAMME_EVENT)"
@@ -128,6 +131,7 @@ import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import SocialLinksCell from "@/components/table/SocialLinksCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
@@ -234,6 +238,11 @@ const headers: ReadonlyHeaders = [
         title: t("ProgramEventsView.headers.active"),
         sortable: false,
         key: "active",
+    },
+    {
+        title: t("ProgramEventsView.headers.description"),
+        sortable: false,
+        key: "description",
     },
     {
         title: t("ProgramEventsView.headers.actions"),

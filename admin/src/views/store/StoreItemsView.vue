@@ -96,6 +96,9 @@
                     <template #item.is_ticket="{ item }">
                         <BooleanIcon :value="item.is_ticket" />
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" :sanitized-html="true" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.STORE_ITEM)"
@@ -130,6 +133,7 @@ import type { StoreItem } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import PriceCell from "@/components/table/PriceCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
@@ -214,6 +218,11 @@ const headers: ReadonlyHeaders = [
         title: t("StoreItemsView.headers.isTicket"),
         sortable: false,
         key: "is_ticket",
+    },
+    {
+        title: t("StoreItemsView.headers.description"),
+        sortable: false,
+        key: "description",
     },
     {
         title: t("StoreItemsView.headers.actions"),

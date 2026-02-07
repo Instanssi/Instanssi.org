@@ -100,6 +100,9 @@
                     <template #item.computed_rank="{ item }">
                         {{ item.computed_rank ?? "-" }}
                     </template>
+                    <template #item.disqualified_reason="{ item }">
+                        <LongTextCell :value="item.disqualified_reason" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.COMPETITION_PARTICIPATION)"
@@ -134,6 +137,7 @@ import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
 import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -228,6 +232,11 @@ const headers: ReadonlyHeaders = [
         title: t("CompetitionParticipationsView.headers.score"),
         sortable: true,
         key: "score",
+    },
+    {
+        title: t("CompetitionParticipationsView.headers.disqualifiedReason"),
+        sortable: false,
+        key: "disqualified_reason",
     },
     {
         title: t("CompetitionParticipationsView.headers.actions"),

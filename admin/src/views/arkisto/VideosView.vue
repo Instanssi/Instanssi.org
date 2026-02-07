@@ -58,6 +58,9 @@
                     <template #item.youtube_url="{ item }">
                         <YoutubeCell :value="item.youtube_url" />
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.OTHER_VIDEO)"
@@ -90,6 +93,7 @@ import type { VDataTable } from "vuetify/components";
 import * as api from "@/api";
 import type { OtherVideo, OtherVideoCategory } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import YoutubeCell from "@/components/table/YoutubeCell.vue";
 import { useTableState } from "@/composables/useTableState";
@@ -158,6 +162,11 @@ const headers: ReadonlyHeaders = [
         title: t("VideosView.headers.youtube"),
         sortable: false,
         key: "youtube_url",
+    },
+    {
+        title: t("VideosView.headers.description"),
+        sortable: false,
+        key: "description",
     },
     {
         title: t("VideosView.headers.actions"),

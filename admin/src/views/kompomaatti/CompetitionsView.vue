@@ -67,6 +67,9 @@
                     <template #item.end="{ item }">
                         <DateTimeCell :value="item.end" />
                     </template>
+                    <template #item.description="{ item }">
+                        <LongTextCell :value="item.description" :sanitized-html="true" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.COMPETITION)"
@@ -101,6 +104,7 @@ import type { Competition } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -170,6 +174,11 @@ const headers: ReadonlyHeaders = [
         title: t("CompetitionsView.headers.active"),
         sortable: true,
         key: "active",
+    },
+    {
+        title: t("CompetitionsView.headers.description"),
+        sortable: false,
+        key: "description",
     },
     {
         title: t("CompetitionsView.headers.actions"),

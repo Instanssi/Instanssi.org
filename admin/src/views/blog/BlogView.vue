@@ -48,6 +48,9 @@
                     <template #item.date="{ item }">
                         <DateTimeCell :value="item.date" />
                     </template>
+                    <template #item.text="{ item }">
+                        <LongTextCell :value="item.text" :sanitized-html="true" />
+                    </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.BLOG_ENTRY)"
@@ -82,6 +85,7 @@ import type { BlogEntry } from "@/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -141,6 +145,11 @@ const headers: ReadonlyHeaders = [
         title: t("BlogEditorView.headers.isPublic"),
         sortable: true,
         key: "public",
+    },
+    {
+        title: t("BlogEditorView.headers.text"),
+        sortable: false,
+        key: "text",
     },
     {
         title: t("BlogEditorView.headers.actions"),

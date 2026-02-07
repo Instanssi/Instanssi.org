@@ -201,6 +201,7 @@
         "createdAt": "Created at",
         "createdBy": "Created by",
         "isPublic": "Is public",
+        "text": "Content",
         "actions": "Actions"
       },
       "loadFailure": "Failed to load blog posts; try again later.",
@@ -244,6 +245,7 @@
         "votingStart": "Voting start",
         "votingEnd": "Voting end",
         "active": "Active",
+        "description": "Description",
         "actions": "Actions"
       },
       "filterByStatus": "Status",
@@ -396,6 +398,8 @@
         "disqualified": "Disqualified",
         "rank": "Rank",
         "score": "Score",
+        "description": "Description",
+        "disqualifiedReason": "DQ Reason",
         "actions": "Actions"
       }
     },
@@ -452,6 +456,7 @@
         "start": "Start",
         "end": "End",
         "active": "Active",
+        "description": "Description",
         "actions": "Actions"
       },
       "filterByStatus": "Status",
@@ -532,6 +537,7 @@
         "score": "Score",
         "disqualified": "Disqualified",
         "rank": "Rank",
+        "disqualifiedReason": "DQ Reason",
         "actions": "Actions"
       }
     },
@@ -717,6 +723,7 @@
         "max": "Max",
         "isAvailable": "Is Available",
         "isTicket": "Is Ticket",
+        "description": "Description",
         "actions": "Actions"
       },
       "filterByAvailability": "Availability",
@@ -960,6 +967,7 @@
         "name": "Name",
         "category": "Category",
         "youtube": "YouTube",
+        "description": "Description",
         "actions": "Actions"
       }
     },
@@ -1056,6 +1064,7 @@
         "socialLinks": "Links",
         "eventType": "Type",
         "active": "Active",
+        "description": "Description",
         "actions": "Actions"
       },
       "eventTypes": {

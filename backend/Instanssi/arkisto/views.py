@@ -58,8 +58,8 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
                     "compo_id": c.pk,
                     "entry_name": e.name,
                     "entry_author": e.creator,
-                    "entry_score": round(e.computed_score, 2),
-                    "entry_rank": e.computed_rank,
+                    "entry_score": round(e.computed_score, 2) if hasattr(e, "computed_score") else 0,
+                    "entry_rank": e.computed_rank if hasattr(e, "computed_rank") else 0,
                     "entry_result_url": request.build_absolute_uri(e.entryfile.url),
                     "entry_source_url": (
                         request.build_absolute_uri(e.sourcefile.url) if e.sourcefile else None

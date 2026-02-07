@@ -534,7 +534,6 @@
       "headers": {
         "id": "ID",
         "participantName": "Participant name",
-        "user": "User",
         "competition": "Competition",
         "score": "Score",
         "disqualified": "Disqualified",

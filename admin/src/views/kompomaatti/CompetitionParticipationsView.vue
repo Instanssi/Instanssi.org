@@ -86,9 +86,6 @@
                     <template #item.competition="{ item }">
                         {{ getCompetitionName(item.competition) }}
                     </template>
-                    <template #item.user="{ item }">
-                        {{ getUserName(item.user) }}
-                    </template>
                     <template #item.disqualified="{ item }">
                         <DisqualifiedCell
                             :disqualified="item.disqualified"
@@ -126,14 +123,13 @@ import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTable } from "vuetify/components";
-
 import * as api from "@/api";
-import type { Competition, CompetitionParticipation, User } from "@/api";
+import type { Competition, CompetitionParticipation } from "@/api";
 import DisqualifiedCell from "@/components/table/DisqualifiedCell.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import { useResponsiveHeaders } from "@/composables/useResponsiveHeaders";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -145,8 +141,6 @@ import { toRomanNumeral } from "@/utils/roman";
 import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
-
-type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
@@ -179,7 +173,6 @@ const tableState = useTableState({
 const totalItems = ref(0);
 const participations: Ref<CompetitionParticipation[]> = ref([]);
 const competitions: Ref<Competition[]> = ref([]);
-const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const selectedCompetition = computed({
@@ -192,7 +185,7 @@ const selectedCompetition = computed({
 
 const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
-const headers: ReadonlyHeaders = [
+const headers = useResponsiveHeaders([
     {
         title: t("CompetitionParticipationsView.headers.id"),
         sortable: true,
@@ -204,11 +197,6 @@ const headers: ReadonlyHeaders = [
         key: "participant_name",
     },
     {
-        title: t("CompetitionParticipationsView.headers.user"),
-        sortable: false,
-        key: "user",
-    },
-    {
         title: t("CompetitionParticipationsView.headers.competition"),
         sortable: false,
         key: "competition",
@@ -217,6 +205,7 @@ const headers: ReadonlyHeaders = [
         title: t("CompetitionParticipationsView.headers.disqualified"),
         sortable: false,
         key: "disqualified",
+        minBreakpoint: "md",
     },
     {
         title: t("CompetitionParticipationsView.headers.rank"),
@@ -227,6 +216,7 @@ const headers: ReadonlyHeaders = [
         title: t("CompetitionParticipationsView.headers.score"),
         sortable: true,
         key: "score",
+        minBreakpoint: "md",
     },
     {
         title: t("CompetitionParticipationsView.headers.actions"),
@@ -234,7 +224,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 const competitionOptions = computed(() => [
     { title: t("CompetitionParticipationsView.allCompetitions"), value: null },
@@ -244,11 +234,6 @@ const competitionOptions = computed(() => [
 function getCompetitionName(competitionId: number): string {
     const competition = competitions.value.find((c) => c.id === competitionId);
     return competition?.name ?? `#${competitionId}`;
-}
-
-function getUserName(userId: number): string {
-    const user = users.value.find((u) => u.id === userId);
-    return user?.username ?? `#${userId}`;
 }
 
 function flushData() {
@@ -266,17 +251,6 @@ async function loadCompetitions() {
         competitions.value = response.data!.results;
     } catch (e) {
         console.error("Failed to load competitions:", e);
-    }
-}
-
-async function loadUsers() {
-    try {
-        const response = await api.adminUsersList({
-            query: { limit: 1000 },
-        });
-        users.value = response.data!.results;
-    } catch (e) {
-        console.error("Failed to load users:", e);
     }
 }
 
@@ -442,6 +416,5 @@ async function downloadResults(format: SpreadsheetFormat): Promise<void> {
 
 onMounted(() => {
     loadCompetitions();
-    loadUsers();
 });
 </script>

@@ -88,14 +88,13 @@ import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTable } from "vuetify/components";
-
 import * as api from "@/api";
 import type { OtherVideo, OtherVideoCategory } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import YoutubeCell from "@/components/table/YoutubeCell.vue";
+import { useResponsiveHeaders } from "@/composables/useResponsiveHeaders";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -103,8 +102,6 @@ import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { getApiErrorMessage } from "@/utils/http";
-
-type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
@@ -142,7 +139,7 @@ const selectedCategory = computed({
     },
 });
 
-const headers: ReadonlyHeaders = [
+const headers = useResponsiveHeaders([
     {
         title: t("VideosView.headers.id"),
         sortable: true,
@@ -167,6 +164,7 @@ const headers: ReadonlyHeaders = [
         title: t("VideosView.headers.description"),
         sortable: false,
         key: "description",
+        minBreakpoint: "md",
     },
     {
         title: t("VideosView.headers.actions"),
@@ -174,7 +172,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 const categoryOptions = computed(() => [
     { title: t("VideosView.allCategories"), value: null },

@@ -174,8 +174,6 @@ import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { VDataTable } from "vuetify/components";
-
 import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
 import DisqualifiedCell from "@/components/table/DisqualifiedCell.vue";
@@ -186,6 +184,7 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import YoutubeCell from "@/components/table/YoutubeCell.vue";
+import { useResponsiveHeaders } from "@/composables/useResponsiveHeaders";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -198,8 +197,6 @@ import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import ErrorDialog from "@/components/dialogs/ErrorDialog.vue";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
-
-type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
@@ -247,7 +244,7 @@ const selectedCompo = computed({
 
 const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
-const headers: ReadonlyHeaders = [
+const headers = useResponsiveHeaders([
     {
         title: t("EntriesView.headers.id"),
         sortable: true,
@@ -258,6 +255,7 @@ const headers: ReadonlyHeaders = [
         sortable: false,
         key: "imagefile_thumbnail_url",
         width: 60,
+        minBreakpoint: "md",
     },
     {
         title: t("EntriesView.headers.name"),
@@ -268,6 +266,7 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.creator"),
         sortable: true,
         key: "creator",
+        minBreakpoint: "sm",
     },
     {
         title: t("EntriesView.headers.entryfile"),
@@ -278,11 +277,13 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.sourcefile"),
         sortable: false,
         key: "sourcefile_url",
+        minBreakpoint: "lg",
     },
     {
         title: t("EntriesView.headers.youtube"),
         sortable: false,
         key: "youtube_url",
+        minBreakpoint: "lg",
     },
     {
         title: t("EntriesView.headers.compo"),
@@ -293,6 +294,7 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.disqualified"),
         sortable: false,
         key: "disqualified",
+        minBreakpoint: "md",
     },
     {
         title: t("EntriesView.headers.rank"),
@@ -303,11 +305,13 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.score"),
         sortable: true,
         key: "computed_score",
+        minBreakpoint: "md",
     },
     {
         title: t("EntriesView.headers.description"),
         sortable: false,
         key: "description",
+        minBreakpoint: "lg",
     },
     {
         title: t("EntriesView.headers.actions"),
@@ -315,7 +319,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 const compoOptions = computed(() => [
     { title: t("EntriesView.allCompos"), value: null },

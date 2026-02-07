@@ -96,4 +96,24 @@ describe("ContentDialog", () => {
         const cardText = wrapper.findComponent({ name: "VCardText" });
         expect(cardText.classes()).not.toContain("pa-0");
     });
+
+    it("renders title-actions slot content in title bar", () => {
+        const wrapper = mount(ContentDialog, {
+            props: { modelValue: true, title: "Title" },
+            slots: {
+                default: "<p>Body</p>",
+                "title-actions": '<button class="custom-action">Action</button>',
+            },
+            global: {
+                plugins: [vuetify],
+                stubs: {
+                    FontAwesomeIcon: true,
+                    VDialog: VDialogStub,
+                },
+            },
+        });
+        const action = wrapper.find(".custom-action");
+        expect(action.exists()).toBe(true);
+        expect(action.text()).toBe("Action");
+    });
 });

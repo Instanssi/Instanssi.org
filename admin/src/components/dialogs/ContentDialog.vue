@@ -2,7 +2,10 @@
     <v-dialog v-model="visible" :max-width="maxWidth" :scrollable="scrollable">
         <v-card>
             <v-card-title class="d-flex justify-space-between align-center">
-                <span>{{ title }}</span>
+                <div class="d-flex align-center">
+                    <span>{{ title }}</span>
+                    <slot name="title-actions" />
+                </div>
                 <v-btn icon variant="text" density="compact" @click="visible = false">
                     <FontAwesomeIcon :icon="faXmark" />
                 </v-btn>

@@ -38,6 +38,10 @@
       "clickToPreview": "Click to preview",
       "download": "Download file"
     },
+    "YoutubeCell": {
+      "clickToPreview": "Click to preview",
+      "dialogTitle": "YouTube"
+    },
     "SocialLinksCell": {
       "home": "Website",
       "twitter": "Twitter/X",

@@ -1,12 +1,34 @@
 <template>
-    <span v-if="videoId">
-        <a href="#" @click.prevent="showDialog = true">{{ videoId }}</a>
-        <span v-if="startTime"> @ {{ formattedTime }}</span>
-        <a :href="value!" target="_blank" rel="noopener" class="external-link">
-            <FontAwesomeIcon :icon="faExternalLinkAlt" />
-        </a>
+    <div v-if="videoId">
+        <v-btn
+            icon
+            variant="text"
+            size="small"
+            :title="t('YoutubeCell.clickToPreview')"
+            @click="showDialog = true"
+        >
+            <FontAwesomeIcon :icon="faYoutube" size="lg" />
+        </v-btn>
 
-        <ContentDialog v-model="showDialog" :title="videoId" :max-width="800">
+        <ContentDialog
+            v-model="showDialog"
+            :title="dialogTitle"
+            :max-width="800"
+            content-class="pa-0"
+        >
+            <template #title-actions>
+                <a
+                    :href="value ?? ''"
+                    target="_blank"
+                    rel="noopener"
+                    class="youtube-link"
+                    :title="t('YoutubeCell.openOnYoutube')"
+                >
+                    <v-btn icon variant="text" density="compact" tag="span">
+                        <FontAwesomeIcon :icon="faExternalLinkAlt" />
+                    </v-btn>
+                </a>
+            </template>
             <div class="video-container">
                 <iframe
                     v-if="showDialog"
@@ -24,22 +46,24 @@
                 />
             </div>
         </ContentDialog>
-    </span>
+    </div>
     <span v-else>{{ fallback }}</span>
 </template>
 
 <script setup lang="ts">
 /**
  * YoutubeCell - Display YouTube URLs in data tables
- * Shows video ID and start time (if present) as a clickable link.
- * Clicking opens a dialog with the embedded video.
+ * Shows a YouTube icon button that opens a dialog with the embedded video.
  */
+import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import ContentDialog from "@/components/dialogs/ContentDialog.vue";
 
+const { t } = useI18n();
 const showDialog = ref(false);
 
 const props = withDefaults(
@@ -92,9 +116,12 @@ const parsed = computed(() => {
 const videoId = computed(() => parsed.value.videoId);
 const startTime = computed(() => parsed.value.startTime);
 
-const formattedTime = computed(() => {
-    if (!startTime.value) return "";
-    return formatTime(startTime.value);
+const dialogTitle = computed(() => {
+    const base = t("YoutubeCell.dialogTitle");
+    if (startTime.value) {
+        return `${base} (@ ${formatTime(startTime.value)})`;
+    }
+    return base;
 });
 
 const embedUrl = computed(() => {
@@ -123,13 +150,8 @@ const embedUrl = computed(() => {
     height: 100%;
 }
 
-.external-link {
-    margin-left: 0.5em;
-    opacity: 0.6;
-    font-size: 0.85em;
-}
-
-.external-link:hover {
-    opacity: 1;
+.youtube-link {
+    color: inherit;
+    text-decoration: none;
 }
 </style>

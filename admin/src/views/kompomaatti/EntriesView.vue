@@ -109,6 +109,12 @@
                     <template #item.entryfile_url="{ item }">
                         <MediaCell :url="item.entryfile_url" />
                     </template>
+                    <template #item.sourcefile_url="{ item }">
+                        <MediaCell :url="item.sourcefile_url" />
+                    </template>
+                    <template #item.youtube_url="{ item }">
+                        <YoutubeCell :value="item.youtube_url" />
+                    </template>
                     <template #item.disqualified="{ item }">
                         <BooleanIcon
                             :value="item.disqualified"
@@ -183,6 +189,7 @@ import LongTextCell from "@/components/table/LongTextCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import MediaCell from "@/components/table/MediaCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
+import YoutubeCell from "@/components/table/YoutubeCell.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
@@ -270,6 +277,16 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.entryfile"),
         sortable: false,
         key: "entryfile_url",
+    },
+    {
+        title: t("EntriesView.headers.sourcefile"),
+        sortable: false,
+        key: "sourcefile_url",
+    },
+    {
+        title: t("EntriesView.headers.youtube"),
+        sortable: false,
+        key: "youtube_url",
     },
     {
         title: t("EntriesView.headers.compo"),

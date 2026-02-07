@@ -112,9 +112,9 @@ describe("MediaCell", () => {
             expect(buttons.length).toBeGreaterThan(0);
         });
 
-        it("shows filename next to play button", () => {
+        it("does not show filename link (download is in dialog)", () => {
             const wrapper = mountComponent({ url: "https://example.com/video.webm" });
-            expect(wrapper.text()).toContain("video.webm");
+            expect(wrapper.find(".filename-link").exists()).toBe(false);
         });
 
         it("opens video preview dialog on button click", async () => {
@@ -141,9 +141,9 @@ describe("MediaCell", () => {
             expect(buttons.length).toBeGreaterThan(0);
         });
 
-        it("shows filename next to audio button", () => {
+        it("does not show filename link (download is in dialog)", () => {
             const wrapper = mountComponent({ url: "https://example.com/music.ogg" });
-            expect(wrapper.text()).toContain("music.ogg");
+            expect(wrapper.find(".filename-link").exists()).toBe(false);
         });
 
         it("opens audio preview dialog on button click", async () => {
@@ -163,40 +163,46 @@ describe("MediaCell", () => {
     });
 
     describe("other media type", () => {
-        it("renders download link for non-media files", () => {
+        it("renders icon button for non-media files", () => {
             const wrapper = mountComponent({ url: "https://example.com/document.pdf" });
-            const link = wrapper.find("a");
-            expect(link.exists()).toBe(true);
-            expect(link.attributes("href")).toBe("https://example.com/document.pdf");
-            expect(link.attributes("target")).toBe("_blank");
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            expect(buttons.length).toBeGreaterThan(0);
         });
 
-        it("shows filename in download link", () => {
+        it("does not show filename link (download is in dialog)", () => {
             const wrapper = mountComponent({ url: "https://example.com/archive.zip" });
-            expect(wrapper.text()).toContain("archive.zip");
+            expect(wrapper.find(".filename-link").exists()).toBe(false);
         });
 
-        it("shows download icon for non-media files", () => {
+        it("opens file preview dialog on button click", async () => {
             const wrapper = mountComponent({ url: "https://example.com/data.json" });
-            const icon = wrapper.findComponent({ name: "FontAwesomeIcon" });
-            expect(icon.exists()).toBe(true);
+            const button = wrapper.findComponent({ name: "VBtn" });
+            await button.trigger("click");
+
+            const dialogs = wrapper.findAll(".v-dialog-stub");
+            const fileDialog = dialogs.find((d) => d.attributes("data-max-width") === "500");
+            expect(fileDialog?.attributes("data-model-value")).toBe("true");
         });
     });
 
     describe("filename override", () => {
-        it("uses custom filename when provided", () => {
+        it("uses custom filename when provided", async () => {
             const wrapper = mountComponent({
                 url: "https://example.com/uuid-123.pdf",
                 filename: "report.pdf",
             });
+            const button = wrapper.findComponent({ name: "VBtn" });
+            await button.trigger("click");
             expect(wrapper.text()).toContain("report.pdf");
             expect(wrapper.text()).not.toContain("uuid-123");
         });
 
-        it("extracts filename from URL when not provided", () => {
+        it("extracts filename from URL when not provided", async () => {
             const wrapper = mountComponent({
                 url: "https://example.com/path/to/document.txt",
             });
+            const button = wrapper.findComponent({ name: "VBtn" });
+            await button.trigger("click");
             expect(wrapper.text()).toContain("document.txt");
         });
     });

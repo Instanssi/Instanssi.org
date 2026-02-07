@@ -2,13 +2,13 @@
     <v-dialog v-model="visible" :max-width="maxWidth" :scrollable="scrollable">
         <v-card>
             <v-card-title class="d-flex justify-space-between align-center">
-                <div class="d-flex align-center">
-                    <span>{{ title }}</span>
+                <span>{{ title }}</span>
+                <div class="d-flex align-center ga-1">
                     <slot name="title-actions" />
+                    <v-btn icon variant="text" density="compact" @click="visible = false">
+                        <FontAwesomeIcon :icon="faXmark" />
+                    </v-btn>
                 </div>
-                <v-btn icon variant="text" density="compact" @click="visible = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
             </v-card-title>
             <v-divider />
             <v-card-text :class="contentClass">

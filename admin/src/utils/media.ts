@@ -2,9 +2,25 @@
  * Shared media utilities for file type detection
  */
 
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faFile, faFileLines, faFileZipper } from "@fortawesome/free-solid-svg-icons";
+
 export const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "ico"];
 export const VIDEO_EXTENSIONS = ["mp4", "mkv", "webm", "avi", "mov", "wmv", "flv", "ogv"];
 export const AUDIO_EXTENSIONS = ["mp3", "ogg", "opus", "aac", "wav", "flac", "m4a", "wma"];
+export const ARCHIVE_EXTENSIONS = ["zip", "7z", "rar", "tar", "gz", "bz2", "xz", "tgz"];
+export const TEXT_EXTENSIONS = [
+    "pdf",
+    "txt",
+    "log",
+    "csv",
+    "json",
+    "xml",
+    "html",
+    "htm",
+    "md",
+    "rtf",
+];
 
 export type MediaType = "image" | "video" | "audio" | "other";
 
@@ -51,4 +67,16 @@ export function detectMediaType(url: string | null): MediaType {
     if (AUDIO_EXTENSIONS.includes(ext)) return "audio";
 
     return "other";
+}
+
+/**
+ * Get an appropriate file icon based on the file extension in the URL.
+ * Returns a more specific icon for archive and text/document files,
+ * or a generic file icon for everything else.
+ */
+export function getFileIcon(url: string | null): IconDefinition {
+    const ext = getExtension(getFilenameFromUrl(url));
+    if (ext && ARCHIVE_EXTENSIONS.includes(ext)) return faFileZipper;
+    if (ext && TEXT_EXTENSIONS.includes(ext)) return faFileLines;
+    return faFile;
 }

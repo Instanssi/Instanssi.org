@@ -147,25 +147,26 @@ describe("YoutubeCell", () => {
     });
 
     describe("external link in dialog title", () => {
-        it("dialog contains external link icon to original URL", async () => {
+        it("dialog contains YouTube link button to original URL", async () => {
             const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             const wrapper = mountComponent({ value: url });
             const btn = wrapper.findComponent({ name: "VBtn" });
             await btn.trigger("click");
-            const link = wrapper.find("a.youtube-link");
-            expect(link.exists()).toBe(true);
-            expect(link.attributes("href")).toBe(url);
-            expect(link.attributes("target")).toBe("_blank");
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const youtubeBtn = buttons.find((b) => b.text().includes("YouTube"));
+            expect(youtubeBtn).toBeDefined();
+            expect(youtubeBtn!.attributes("href")).toBe(url);
         });
 
-        it("external link has tooltip title", async () => {
+        it("YouTube link button shows label text", async () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
             const btn = wrapper.findComponent({ name: "VBtn" });
             await btn.trigger("click");
-            const link = wrapper.find("a.youtube-link");
-            expect(link.attributes("title")).toBe("YoutubeCell.openOnYoutube");
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const youtubeBtn = buttons.find((b) => b.text().includes("YouTube"));
+            expect(youtubeBtn).toBeDefined();
         });
     });
 });

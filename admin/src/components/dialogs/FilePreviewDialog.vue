@@ -1,8 +1,8 @@
 <template>
     <ContentDialog
         v-model="visible"
-        :title="t('PreviewDialog.imageTitle')"
-        :max-width="900"
+        :title="t('PreviewDialog.fileTitle')"
+        :max-width="500"
         content-class="pa-0"
     >
         <template v-if="downloadUrl" #title-actions>
@@ -19,8 +19,9 @@
                 {{ t("PreviewDialog.download") }}
             </v-btn>
         </template>
-        <div class="d-flex justify-center">
-            <v-img :src="src ?? undefined" max-height="70vh" max-width="100%" />
+        <div class="d-flex flex-column align-center justify-center pa-8">
+            <FontAwesomeIcon :icon="fileIcon" size="6x" class="file-icon" />
+            <span v-if="filename" class="mt-4 text-body-2">{{ filename }}</span>
         </div>
     </ContentDialog>
 </template>
@@ -28,20 +29,29 @@
 <script setup lang="ts">
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ContentDialog from "@/components/dialogs/ContentDialog.vue";
+import { getFileIcon } from "@/utils/media";
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
-        src: string | null | undefined;
-        downloadUrl?: string | null;
+        downloadUrl: string;
+        filename?: string | null;
     }>(),
     {
-        downloadUrl: null,
+        filename: null,
     }
 );
 
 const { t } = useI18n();
 const visible = defineModel<boolean>({ default: false });
+const fileIcon = computed(() => getFileIcon(props.downloadUrl));
 </script>
+
+<style scoped>
+.file-icon {
+    opacity: 0.4;
+}
+</style>

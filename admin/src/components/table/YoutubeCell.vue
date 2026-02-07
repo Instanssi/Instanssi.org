@@ -17,17 +17,18 @@
             content-class="pa-0"
         >
             <template #title-actions>
-                <a
+                <v-btn
                     :href="value ?? ''"
                     target="_blank"
                     rel="noopener"
-                    class="youtube-link"
-                    :title="t('YoutubeCell.openOnYoutube')"
+                    variant="text"
+                    size="small"
+                    color="primary"
+                    tag="a"
                 >
-                    <v-btn icon variant="text" density="compact" tag="span">
-                        <FontAwesomeIcon :icon="faExternalLinkAlt" />
-                    </v-btn>
-                </a>
+                    <FontAwesomeIcon :icon="faYoutube" class="mr-1" />
+                    YouTube
+                </v-btn>
             </template>
             <div class="video-container">
                 <iframe
@@ -56,7 +57,6 @@
  * Shows a YouTube icon button that opens a dialog with the embedded video.
  */
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -148,10 +148,5 @@ const embedUrl = computed(() => {
     left: 0;
     width: 100%;
     height: 100%;
-}
-
-.youtube-link {
-    color: inherit;
-    text-decoration: none;
 }
 </style>

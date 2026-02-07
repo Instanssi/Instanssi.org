@@ -20,6 +20,8 @@
       "imageTitle": "Image Preview",
       "videoTitle": "Video Preview",
       "audioTitle": "Audio Preview",
+      "fileTitle": "File",
+      "download": "Download file",
       "videoNotSupported": "Your browser does not support video playback.",
       "audioNotSupported": "Your browser does not support audio playback."
     },

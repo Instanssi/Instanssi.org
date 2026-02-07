@@ -14,7 +14,7 @@
                 <v-img :src="url" :width="size" :height="size" cover class="rounded" />
             </div>
 
-            <ImagePreviewDialog v-model="showImagePreview" :src="url" />
+            <ImagePreviewDialog v-model="showImagePreview" :src="url" :download-url="url" />
         </template>
 
         <!-- Video: play icon button + player dialog -->
@@ -29,7 +29,7 @@
                 <FontAwesomeIcon :icon="faCirclePlay" size="lg" />
             </v-btn>
 
-            <VideoPreviewDialog v-model="showVideoPreview" :src="url" />
+            <VideoPreviewDialog v-model="showVideoPreview" :src="url" :download-url="url" />
         </template>
 
         <!-- Audio: audio icon button + player dialog -->
@@ -44,32 +44,42 @@
                 <FontAwesomeIcon :icon="faVolumeHigh" size="lg" />
             </v-btn>
 
-            <AudioPreviewDialog v-model="showAudioPreview" :src="url" />
+            <AudioPreviewDialog v-model="showAudioPreview" :src="url" :download-url="url" />
         </template>
 
-        <!-- Other: just download icon -->
+        <!-- Other: file icon button + preview dialog -->
         <template v-else>
-            <FontAwesomeIcon :icon="faDownload" class="other-icon ma-3" />
-        </template>
+            <v-btn
+                icon
+                variant="text"
+                size="small"
+                :title="t('MediaCell.clickToPreview')"
+                @click="showFilePreview = true"
+            >
+                <FontAwesomeIcon :icon="fileIcon" size="lg" />
+            </v-btn>
 
-        <!-- Always show filename as download link -->
-        <a :href="url" target="_blank" class="filename-link" :title="t('MediaCell.download')">
-            {{ displayFilename }}
-        </a>
+            <FilePreviewDialog
+                v-model="showFilePreview"
+                :download-url="url"
+                :filename="displayFilename"
+            />
+        </template>
     </div>
     <span v-else>{{ fallback }}</span>
 </template>
 
 <script setup lang="ts">
-import { faCirclePlay, faDownload, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import AudioPreviewDialog from "@/components/dialogs/AudioPreviewDialog.vue";
+import FilePreviewDialog from "@/components/dialogs/FilePreviewDialog.vue";
 import ImagePreviewDialog from "@/components/dialogs/ImagePreviewDialog.vue";
 import VideoPreviewDialog from "@/components/dialogs/VideoPreviewDialog.vue";
-import { detectMediaType, getFilenameFromUrl } from "@/utils/media";
+import { detectMediaType, getFileIcon, getFilenameFromUrl } from "@/utils/media";
 
 const props = withDefaults(
     defineProps<{
@@ -89,8 +99,10 @@ const { t } = useI18n();
 const showImagePreview = ref(false);
 const showVideoPreview = ref(false);
 const showAudioPreview = ref(false);
+const showFilePreview = ref(false);
 
 const mediaType = computed(() => detectMediaType(props.url));
+const fileIcon = computed(() => getFileIcon(props.url));
 
 const displayFilename = computed(() => {
     if (props.filename) return props.filename;
@@ -102,6 +114,7 @@ const displayFilename = computed(() => {
 .media-cell {
     display: inline-flex;
     align-items: center;
+    vertical-align: middle;
     gap: 8px;
 }
 
@@ -110,8 +123,6 @@ const displayFilename = computed(() => {
     border-radius: 4px;
     transition: opacity 0.2s;
     flex-shrink: 0;
-    margin-top: 1px;
-    margin-bottom: 3px;
 }
 
 .image-thumbnail:hover {
@@ -121,13 +132,5 @@ const displayFilename = computed(() => {
 .image-thumbnail:focus {
     outline: 2px solid rgb(var(--v-theme-primary));
     outline-offset: 1px;
-}
-
-.filename-link {
-    word-break: break-all;
-}
-
-.other-icon {
-    opacity: 0.7;
 }
 </style>

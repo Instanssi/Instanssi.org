@@ -81,6 +81,7 @@ import PriceCell from "@/components/table/PriceCell.vue";
 import { useTableState } from "@/composables/useTableState";
 import { useEvents } from "@/services/events";
 import { type LoadArgs, getLoadArgs } from "@/services/utils/query_tools";
+import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
@@ -91,7 +92,10 @@ const toast = useToast();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
-const exportLoading = ref(false);
+const { loading: exportLoading, run: runExport } = useAsyncAction({
+    successMessage: t("TransactionItemsView.exportSuccess"),
+    failureMessage: t("TransactionItemsView.exportFailure"),
+});
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -239,8 +243,7 @@ function refresh() {
 watch(eventId, refresh);
 
 async function exportData(format: SpreadsheetFormat): Promise<void> {
-    exportLoading.value = true;
-    try {
+    await runExport(async () => {
         // Fetch all data for export
         const [itemsResponse, transactionsResponse, txItemsResponse] = await Promise.all([
             api.adminEventStoreItemsList({
@@ -348,13 +351,7 @@ async function exportData(format: SpreadsheetFormat): Promise<void> {
         }
 
         downloadSpreadsheet(data, "instanssi_transaction_items", format, "Transaction Items");
-        toast.success(t("TransactionItemsView.exportSuccess"));
-    } catch (e) {
-        toast.error(t("TransactionItemsView.exportFailure"));
-        console.error(e);
-    } finally {
-        exportLoading.value = false;
-    }
+    });
 }
 
 onMounted(() => {

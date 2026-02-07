@@ -3,9 +3,12 @@
         <v-card>
             <v-card-title class="d-flex justify-space-between align-center">
                 <span>{{ title }}</span>
-                <v-btn icon variant="text" density="compact" @click="visible = false">
-                    <FontAwesomeIcon :icon="faXmark" />
-                </v-btn>
+                <div class="d-flex align-center ga-1">
+                    <slot name="title-actions" />
+                    <v-btn icon variant="text" density="compact" @click="visible = false">
+                        <FontAwesomeIcon :icon="faXmark" />
+                    </v-btn>
+                </div>
             </v-card-title>
             <v-divider />
             <v-card-text :class="contentClass">

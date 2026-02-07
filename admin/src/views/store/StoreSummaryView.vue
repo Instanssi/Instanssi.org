@@ -92,6 +92,7 @@ import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.
 import StatCard from "@/components/dashboard/StatCard.vue";
 import { useEvents } from "@/services/events";
 import { ADMIN_TIMEZONE } from "@/utils/datetime";
+import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
@@ -108,7 +109,10 @@ const { t } = useI18n();
 const toast = useToast();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
-const exportLoading = ref(false);
+const { loading: exportLoading, run: runExport } = useAsyncAction({
+    successMessage: t("StoreSummaryView.exportSuccess"),
+    failureMessage: t("StoreSummaryView.exportFailure"),
+});
 
 const storeItems: Ref<StoreItem[]> = ref([]);
 const transactions: Ref<StoreTransaction[]> = ref([]);
@@ -265,8 +269,7 @@ async function loadData() {
 }
 
 function exportData(format: SpreadsheetFormat): void {
-    exportLoading.value = true;
-    try {
+    runExport(() => {
         const data: Array<Array<string | number>> = [
             ["Item", "Variant", "Quantity Sold", "Revenue (EUR)"],
         ];
@@ -280,12 +283,6 @@ function exportData(format: SpreadsheetFormat): void {
         data.push(["TOTAL", "", totalItemsSold.value, totalRevenue.value.toFixed(2)]);
 
         downloadSpreadsheet(data, "instanssi_sales_summary", format, "Sales Summary");
-        toast.success(t("StoreSummaryView.exportSuccess"));
-    } catch (e) {
-        toast.error(t("StoreSummaryView.exportFailure"));
-        console.error(e);
-    } finally {
-        exportLoading.value = false;
-    }
+    });
 }
 </script>

@@ -88,9 +88,7 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         // Page
         if (query.page && typeof query.page === "string") {
             const parsed = parseInt(query.page, 10);
-            if (!isNaN(parsed) && parsed > 0) {
-                page.value = parsed;
-            }
+            page.value = !isNaN(parsed) && parsed > 0 ? parsed : 1;
         } else {
             page.value = 1;
         }
@@ -98,9 +96,8 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         // Items per page
         if (query.perPage && typeof query.perPage === "string") {
             const parsed = parseInt(query.perPage, 10);
-            if (!isNaN(parsed) && pageSizeOptions.includes(parsed)) {
-                perPage.value = parsed;
-            }
+            perPage.value =
+                !isNaN(parsed) && pageSizeOptions.includes(parsed) ? parsed : defaultPerPage;
         } else {
             perPage.value = defaultPerPage;
         }
@@ -115,18 +112,16 @@ export function useTableState(options: TableStateOptions = {}): TableState {
         // Sort - only apply initialSort on first load when no URL params
         if (query.sortBy && typeof query.sortBy === "string") {
             sortBy.value = query.sortBy;
-        } else if (isInitialLoad && initialSort) {
-            sortBy.value = initialSort.key;
-        } else {
-            sortBy.value = null;
-        }
-        if (query.sortOrder && typeof query.sortOrder === "string") {
             if (query.sortOrder === "asc" || query.sortOrder === "desc") {
                 sortOrder.value = query.sortOrder;
+            } else {
+                sortOrder.value = "asc";
             }
         } else if (isInitialLoad && initialSort) {
+            sortBy.value = initialSort.key;
             sortOrder.value = initialSort.order;
         } else {
+            sortBy.value = null;
             sortOrder.value = "asc";
         }
 

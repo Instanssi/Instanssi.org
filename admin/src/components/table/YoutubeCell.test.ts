@@ -36,85 +36,50 @@ describe("YoutubeCell", () => {
         });
     });
 
-    describe("video ID parsing", () => {
-        it("parses video ID from YouTube URL", () => {
+    describe("icon button rendering", () => {
+        it("renders icon button for valid YouTube URL", () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            expect(wrapper.text()).toContain("dQw4w9WgXcQ");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            expect(btn.exists()).toBe(true);
         });
 
-        it("displays video ID as clickable link", () => {
+        it("does not show video ID as text in the cell", () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            const link = wrapper.find("a");
-            expect(link.exists()).toBe(true);
-            expect(link.text()).toBe("dQw4w9WgXcQ");
-        });
-    });
-
-    describe("start time", () => {
-        it("parses and displays start time", () => {
-            const wrapper = mountComponent({
-                value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&start=90",
-            });
-            expect(wrapper.text()).toContain("@ 1:30");
+            expect(wrapper.text()).not.toContain("dQw4w9WgXcQ");
         });
 
-        it("formats start time as m:ss", () => {
-            const wrapper = mountComponent({
-                value: "https://www.youtube.com/watch?v=abc123&start=65",
-            });
-            expect(wrapper.text()).toContain("@ 1:05");
-        });
-
-        it("formats start time as h:mm:ss", () => {
-            const wrapper = mountComponent({
-                value: "https://www.youtube.com/watch?v=abc123&start=3661",
-            });
-            expect(wrapper.text()).toContain("@ 1:01:01");
-        });
-
-        it("does not show time when start is absent", () => {
+        it("button has title attribute for accessibility", () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            expect(wrapper.text()).not.toContain("@");
-        });
-    });
-
-    describe("external link", () => {
-        it("external link points to original URL", () => {
-            const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-            const wrapper = mountComponent({ value: url });
-            const externalLink = wrapper.find("a.external-link");
-            expect(externalLink.exists()).toBe(true);
-            expect(externalLink.attributes("href")).toBe(url);
-            expect(externalLink.attributes("target")).toBe("_blank");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            expect(btn.attributes("title")).toBe("YoutubeCell.clickToPreview");
         });
     });
 
     describe("dialog behavior", () => {
-        it("opens dialog on video ID click", async () => {
+        it("opens dialog on button click", async () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            const videoLink = wrapper.find("a[href='#']");
-            await videoLink.trigger("click");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
             const dialog = wrapper.find(".v-dialog-stub");
             expect(dialog.attributes("data-model-value")).toBe("true");
         });
 
-        it("dialog receives video ID as title", async () => {
+        it("dialog uses max-width 800", async () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            const videoLink = wrapper.find("a[href='#']");
-            await videoLink.trigger("click");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
             const dialog = wrapper.find(".v-dialog-stub");
-            // ContentDialog title prop receives videoId; it renders in v-card-title
-            expect(dialog.text()).toContain("dQw4w9WgXcQ");
+            expect(dialog.attributes("data-max-width")).toBe("800");
         });
 
         it("does not render iframe when dialog is closed", () => {
@@ -128,8 +93,8 @@ describe("YoutubeCell", () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            const videoLink = wrapper.find("a[href='#']");
-            await videoLink.trigger("click");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
             const iframe = wrapper.find("iframe");
             expect(iframe.exists()).toBe(true);
             expect(iframe.attributes("src")).toBe("https://www.youtube.com/embed/dQw4w9WgXcQ");
@@ -139,22 +104,69 @@ describe("YoutubeCell", () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&start=30",
             });
-            const videoLink = wrapper.find("a[href='#']");
-            await videoLink.trigger("click");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
             const iframe = wrapper.find("iframe");
             expect(iframe.attributes("src")).toBe(
                 "https://www.youtube.com/embed/dQw4w9WgXcQ?start=30"
             );
         });
+    });
 
-        it("dialog uses max-width 800", async () => {
+    describe("dialog title with start time", () => {
+        it("dialog title shows base title without start time", async () => {
             const wrapper = mountComponent({
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
-            const videoLink = wrapper.find("a[href='#']");
-            await videoLink.trigger("click");
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
             const dialog = wrapper.find(".v-dialog-stub");
-            expect(dialog.attributes("data-max-width")).toBe("800");
+            expect(dialog.text()).toContain("YoutubeCell.dialogTitle");
+            expect(dialog.text()).not.toContain("@");
+        });
+
+        it("dialog title includes formatted start time", async () => {
+            const wrapper = mountComponent({
+                value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ&start=90",
+            });
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
+            const dialog = wrapper.find(".v-dialog-stub");
+            expect(dialog.text()).toContain("@ 1:30");
+        });
+
+        it("dialog title formats hours for large start times", async () => {
+            const wrapper = mountComponent({
+                value: "https://www.youtube.com/watch?v=abc123&start=3661",
+            });
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
+            const dialog = wrapper.find(".v-dialog-stub");
+            expect(dialog.text()).toContain("@ 1:01:01");
+        });
+    });
+
+    describe("external link in dialog title", () => {
+        it("dialog contains YouTube link button to original URL", async () => {
+            const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            const wrapper = mountComponent({ value: url });
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const youtubeBtn = buttons.find((b) => b.text().includes("YouTube"));
+            expect(youtubeBtn).toBeDefined();
+            expect(youtubeBtn!.attributes("href")).toBe(url);
+        });
+
+        it("YouTube link button shows label text", async () => {
+            const wrapper = mountComponent({
+                value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            });
+            const btn = wrapper.findComponent({ name: "VBtn" });
+            await btn.trigger("click");
+            const buttons = wrapper.findAllComponents({ name: "VBtn" });
+            const youtubeBtn = buttons.find((b) => b.text().includes("YouTube"));
+            expect(youtubeBtn).toBeDefined();
         });
     });
 });

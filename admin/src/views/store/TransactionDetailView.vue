@@ -7,212 +7,134 @@
             <v-row>
                 <!-- Customer Information -->
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("TransactionDetailView.sections.customer") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-table density="compact">
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.firstname") }}
-                                        </td>
-                                        <td>{{ transaction.firstname }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.lastname") }}
-                                        </td>
-                                        <td>{{ transaction.lastname }}</td>
-                                    </tr>
-                                    <tr v-if="transaction.company">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.company") }}
-                                        </td>
-                                        <td>{{ transaction.company }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.email") }}
-                                        </td>
-                                        <td>{{ transaction.email }}</td>
-                                    </tr>
-                                    <tr v-if="transaction.telephone">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.telephone") }}
-                                        </td>
-                                        <td>{{ transaction.telephone }}</td>
-                                    </tr>
-                                    <tr v-if="transaction.mobile">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.mobile") }}
-                                        </td>
-                                        <td>{{ transaction.mobile }}</td>
-                                    </tr>
-                                </tbody>
-                            </v-table>
-                        </v-card-text>
-                    </v-card>
+                    <InfoCard :title="t('TransactionDetailView.sections.customer')">
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.firstname')"
+                            :value="transaction.firstname"
+                        />
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.lastname')"
+                            :value="transaction.lastname"
+                        />
+                        <InfoRow
+                            v-if="transaction.company"
+                            :label="t('TransactionDetailView.labels.company')"
+                            :value="transaction.company"
+                        />
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.email')"
+                            :value="transaction.email"
+                        />
+                        <InfoRow
+                            v-if="transaction.telephone"
+                            :label="t('TransactionDetailView.labels.telephone')"
+                            :value="transaction.telephone"
+                        />
+                        <InfoRow
+                            v-if="transaction.mobile"
+                            :label="t('TransactionDetailView.labels.mobile')"
+                            :value="transaction.mobile"
+                        />
+                    </InfoCard>
                 </v-col>
 
                 <!-- Address -->
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("TransactionDetailView.sections.address") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-table density="compact">
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.street") }}
-                                        </td>
-                                        <td>{{ transaction.street }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.postalcode") }}
-                                        </td>
-                                        <td>{{ transaction.postalcode }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.city") }}
-                                        </td>
-                                        <td>{{ transaction.city }}</td>
-                                    </tr>
-                                    <tr v-if="transaction.country">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.country") }}
-                                        </td>
-                                        <td>{{ transaction.country }}</td>
-                                    </tr>
-                                </tbody>
-                            </v-table>
-                        </v-card-text>
-                    </v-card>
+                    <InfoCard :title="t('TransactionDetailView.sections.address')">
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.street')"
+                            :value="transaction.street"
+                        />
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.postalcode')"
+                            :value="transaction.postalcode"
+                        />
+                        <InfoRow
+                            :label="t('TransactionDetailView.labels.city')"
+                            :value="transaction.city"
+                        />
+                        <InfoRow
+                            v-if="transaction.country"
+                            :label="t('TransactionDetailView.labels.country')"
+                            :value="transaction.country"
+                        />
+                    </InfoCard>
                 </v-col>
             </v-row>
 
             <v-row>
                 <!-- Status -->
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("TransactionDetailView.sections.status") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-table density="compact">
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.timeCreated") }}
-                                        </td>
-                                        <td>
-                                            {{ formatDateTime(transaction.time_created) }}
-                                            <v-chip
-                                                v-if="
-                                                    transaction.time_created &&
-                                                    !transaction.time_pending &&
-                                                    !transaction.time_paid &&
-                                                    !transaction.time_cancelled
-                                                "
-                                                color="grey"
-                                                size="small"
-                                                class="ml-2"
-                                            >
-                                                {{ t("TransactionsView.statuses.created") }}
-                                            </v-chip>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="transaction.time_pending">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.timePending") }}
-                                        </td>
-                                        <td>
-                                            {{ formatDateTime(transaction.time_pending) }}
-                                            <v-chip color="warning" size="small" class="ml-2">
-                                                {{ t("TransactionsView.statuses.pending") }}
-                                            </v-chip>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="transaction.time_paid">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.timePaid") }}
-                                        </td>
-                                        <td>
-                                            {{ formatDateTime(transaction.time_paid) }}
-                                            <v-chip color="success" size="small" class="ml-2">
-                                                {{ t("TransactionsView.statuses.paid") }}
-                                            </v-chip>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="transaction.time_cancelled">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.timeCancelled") }}
-                                        </td>
-                                        <td>
-                                            {{ formatDateTime(transaction.time_cancelled) }}
-                                            <v-chip color="error" size="small" class="ml-2">
-                                                {{ t("TransactionsView.statuses.cancelled") }}
-                                            </v-chip>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </v-table>
-                        </v-card-text>
-                    </v-card>
+                    <InfoCard :title="t('TransactionDetailView.sections.status')">
+                        <InfoRow :label="t('TransactionDetailView.labels.timeCreated')">
+                            {{ formatDateTime(transaction.time_created) }}
+                            <v-chip
+                                v-if="
+                                    transaction.time_created &&
+                                    !transaction.time_pending &&
+                                    !transaction.time_paid &&
+                                    !transaction.time_cancelled
+                                "
+                                color="grey"
+                                size="small"
+                                class="ml-2"
+                            >
+                                {{ t("TransactionsView.statuses.created") }}
+                            </v-chip>
+                        </InfoRow>
+                        <InfoRow
+                            v-if="transaction.time_pending"
+                            :label="t('TransactionDetailView.labels.timePending')"
+                        >
+                            {{ formatDateTime(transaction.time_pending) }}
+                            <v-chip color="warning" size="small" class="ml-2">
+                                {{ t("TransactionsView.statuses.pending") }}
+                            </v-chip>
+                        </InfoRow>
+                        <InfoRow
+                            v-if="transaction.time_paid"
+                            :label="t('TransactionDetailView.labels.timePaid')"
+                        >
+                            {{ formatDateTime(transaction.time_paid) }}
+                            <v-chip color="success" size="small" class="ml-2">
+                                {{ t("TransactionsView.statuses.paid") }}
+                            </v-chip>
+                        </InfoRow>
+                        <InfoRow
+                            v-if="transaction.time_cancelled"
+                            :label="t('TransactionDetailView.labels.timeCancelled')"
+                        >
+                            {{ formatDateTime(transaction.time_cancelled) }}
+                            <v-chip color="error" size="small" class="ml-2">
+                                {{ t("TransactionsView.statuses.cancelled") }}
+                            </v-chip>
+                        </InfoRow>
+                    </InfoCard>
                 </v-col>
 
                 <!-- Payment Details -->
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>
-                            {{ t("TransactionDetailView.sections.payment") }}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-table density="compact">
-                                <tbody>
-                                    <tr v-if="transaction.payment_method_name">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.paymentMethod") }}
-                                        </td>
-                                        <td>{{ transaction.payment_method_name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.total") }}
-                                        </td>
-                                        <td>{{ transaction.total_price }} &euro;</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.key") }}
-                                        </td>
-                                        <td>
-                                            <code>{{ transaction.key }}</code>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.token") }}
-                                        </td>
-                                        <td>
-                                            <code>{{ transaction.token }}</code>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="transaction.information">
-                                        <td class="font-weight-bold">
-                                            {{ t("TransactionDetailView.labels.information") }}
-                                        </td>
-                                        <td>{{ transaction.information }}</td>
-                                    </tr>
-                                </tbody>
-                            </v-table>
-                        </v-card-text>
-                    </v-card>
+                    <InfoCard :title="t('TransactionDetailView.sections.payment')">
+                        <InfoRow
+                            v-if="transaction.payment_method_name"
+                            :label="t('TransactionDetailView.labels.paymentMethod')"
+                            :value="transaction.payment_method_name"
+                        />
+                        <InfoRow :label="t('TransactionDetailView.labels.total')">
+                            {{ transaction.total_price }} &euro;
+                        </InfoRow>
+                        <InfoRow :label="t('TransactionDetailView.labels.key')">
+                            <code>{{ transaction.key }}</code>
+                        </InfoRow>
+                        <InfoRow :label="t('TransactionDetailView.labels.token')">
+                            <code>{{ transaction.token }}</code>
+                        </InfoRow>
+                        <InfoRow
+                            v-if="transaction.information"
+                            :label="t('TransactionDetailView.labels.information')"
+                            :value="transaction.information"
+                        />
+                    </InfoCard>
                 </v-col>
             </v-row>
 
@@ -396,6 +318,8 @@ import * as api from "@/api";
 import ContentDialog from "@/components/dialogs/ContentDialog.vue";
 import type { StoreTransaction, StoreItem, TransactionItem } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import InfoCard from "@/components/table/InfoCard.vue";
+import InfoRow from "@/components/table/InfoRow.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 

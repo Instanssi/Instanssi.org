@@ -143,6 +143,7 @@ import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { getApiErrorMessage } from "@/utils/http";
 import { toRomanNumeral } from "@/utils/roman";
+import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
 
@@ -158,7 +159,10 @@ const auth = useAuth();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
 const loading = ref(false);
-const exportLoading = ref(false);
+const { loading: exportLoading, run: runExport } = useAsyncAction({
+    successMessage: t("CompetitionParticipationsView.exportSuccess"),
+    failureMessage: t("CompetitionParticipationsView.exportFailure"),
+});
 const diplomaDialog: Ref<InstanceType<typeof DiplomaGeneratorDialog> | undefined> = ref(undefined);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
@@ -422,8 +426,7 @@ function generateResultsData(allParticipations: CompetitionParticipation[]): Res
  * Generate and download spreadsheet with top 3 participations per competition
  */
 async function downloadResults(format: SpreadsheetFormat): Promise<void> {
-    exportLoading.value = true;
-    try {
+    await runExport(async () => {
         const response = await api.adminEventKompomaattiCompetitionParticipationsList({
             path: { event_pk: eventId.value },
             query: { limit: 10000 },
@@ -435,13 +438,7 @@ async function downloadResults(format: SpreadsheetFormat): Promise<void> {
             row.competitionName,
         ]);
         downloadSpreadsheet(data, "instanssi_competition_results", format, "Results");
-        toast.success(t("CompetitionParticipationsView.exportSuccess"));
-    } catch (e) {
-        toast.error(t("CompetitionParticipationsView.exportFailure"));
-        console.error(e);
-    } finally {
-        exportLoading.value = false;
-    }
+    });
 }
 
 onMounted(() => {

@@ -1,11 +1,16 @@
 import { describe, it, expect } from "vitest";
+import { faFile, faFileLines, faFileZipper } from "@fortawesome/free-solid-svg-icons";
+
 import {
     IMAGE_EXTENSIONS,
     VIDEO_EXTENSIONS,
     AUDIO_EXTENSIONS,
+    ARCHIVE_EXTENSIONS,
+    TEXT_EXTENSIONS,
     getFilenameFromUrl,
     getExtension,
     detectMediaType,
+    getFileIcon,
 } from "./media";
 
 describe("media utilities", () => {
@@ -31,6 +36,22 @@ describe("media utilities", () => {
             expect(AUDIO_EXTENSIONS).toContain("ogg");
             expect(AUDIO_EXTENSIONS).toContain("wav");
             expect(AUDIO_EXTENSIONS).toContain("flac");
+        });
+
+        it("contains common archive extensions", () => {
+            expect(ARCHIVE_EXTENSIONS).toContain("zip");
+            expect(ARCHIVE_EXTENSIONS).toContain("7z");
+            expect(ARCHIVE_EXTENSIONS).toContain("rar");
+            expect(ARCHIVE_EXTENSIONS).toContain("tar");
+            expect(ARCHIVE_EXTENSIONS).toContain("gz");
+        });
+
+        it("contains common text/document extensions", () => {
+            expect(TEXT_EXTENSIONS).toContain("pdf");
+            expect(TEXT_EXTENSIONS).toContain("txt");
+            expect(TEXT_EXTENSIONS).toContain("json");
+            expect(TEXT_EXTENSIONS).toContain("csv");
+            expect(TEXT_EXTENSIONS).toContain("md");
         });
     });
 
@@ -184,6 +205,37 @@ describe("media utilities", () => {
 
         it("handles relative URLs", () => {
             expect(detectMediaType("/media/uploads/video.mp4")).toBe("video");
+        });
+    });
+
+    describe("getFileIcon", () => {
+        it("returns faFileZipper for archive extensions", () => {
+            expect(getFileIcon("https://example.com/archive.zip")).toBe(faFileZipper);
+            expect(getFileIcon("https://example.com/archive.7z")).toBe(faFileZipper);
+            expect(getFileIcon("https://example.com/archive.rar")).toBe(faFileZipper);
+            expect(getFileIcon("https://example.com/archive.tar")).toBe(faFileZipper);
+            expect(getFileIcon("https://example.com/archive.gz")).toBe(faFileZipper);
+        });
+
+        it("returns faFileLines for text/document extensions", () => {
+            expect(getFileIcon("https://example.com/doc.pdf")).toBe(faFileLines);
+            expect(getFileIcon("https://example.com/doc.txt")).toBe(faFileLines);
+            expect(getFileIcon("https://example.com/data.json")).toBe(faFileLines);
+            expect(getFileIcon("https://example.com/data.csv")).toBe(faFileLines);
+            expect(getFileIcon("https://example.com/readme.md")).toBe(faFileLines);
+        });
+
+        it("returns faFile for unknown extensions", () => {
+            expect(getFileIcon("https://example.com/program.exe")).toBe(faFile);
+            expect(getFileIcon("https://example.com/file.xyz")).toBe(faFile);
+        });
+
+        it("returns faFile for null URL", () => {
+            expect(getFileIcon(null)).toBe(faFile);
+        });
+
+        it("returns faFile for URL with no extension", () => {
+            expect(getFileIcon("https://example.com/")).toBe(faFile);
         });
     });
 });

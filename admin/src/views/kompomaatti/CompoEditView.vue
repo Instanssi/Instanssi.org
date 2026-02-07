@@ -79,79 +79,43 @@
                         </FormSection>
                         <v-row>
                             <v-col cols="12" md="6">
-                                <div class="d-flex ga-2">
-                                    <v-text-field
-                                        v-model.number="entrySizeValue"
-                                        type="number"
-                                        min="0"
-                                        :error-messages="entrySizelimit.errorMessage.value"
-                                        variant="outlined"
-                                        :label="t('CompoEditView.labels.entrySizelimit')"
-                                        class="flex-grow-1"
-                                    />
-                                    <v-select
-                                        v-model="entrySizeUnit"
-                                        :items="sizeUnitOptions"
-                                        variant="outlined"
-                                        style="max-width: 100px"
-                                    />
-                                </div>
+                                <FileSizeInputField
+                                    v-model="entrySizelimit.value.value"
+                                    :error-message="entrySizelimit.errorMessage.value"
+                                    :label="t('CompoEditView.labels.entrySizelimit')"
+                                />
                             </v-col>
                             <v-col cols="12" md="6">
-                                <div class="d-flex ga-2">
-                                    <v-text-field
-                                        v-model.number="sourceSizeValue"
-                                        type="number"
-                                        min="0"
-                                        :error-messages="sourceSizelimit.errorMessage.value"
-                                        variant="outlined"
-                                        :label="t('CompoEditView.labels.sourceSizelimit')"
-                                        class="flex-grow-1"
-                                    />
-                                    <v-select
-                                        v-model="sourceSizeUnit"
-                                        :items="sizeUnitOptions"
-                                        variant="outlined"
-                                        style="max-width: 100px"
-                                    />
-                                </div>
+                                <FileSizeInputField
+                                    v-model="sourceSizelimit.value.value"
+                                    :error-message="sourceSizelimit.errorMessage.value"
+                                    :label="t('CompoEditView.labels.sourceSizelimit')"
+                                />
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="formatsArray"
-                                    :items="commonEntryFormats"
-                                    :error-messages="formats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="formats.value.value"
+                                    :suggestions="commonEntryFormats"
+                                    :error-message="formats.errorMessage.value"
                                     :label="t('CompoEditView.labels.formats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="sourceFormatsArray"
-                                    :items="commonSourceFormats"
-                                    :error-messages="sourceFormats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="sourceFormats.value.value"
+                                    :suggestions="commonSourceFormats"
+                                    :error-message="sourceFormats.errorMessage.value"
                                     :label="t('CompoEditView.labels.sourceFormats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                             <v-col cols="12" md="4">
-                                <v-combobox
-                                    v-model="imageFormatsArray"
-                                    :items="commonImageFormats"
-                                    :error-messages="imageFormats.errorMessage.value"
-                                    variant="outlined"
+                                <FormatComboboxField
+                                    v-model="imageFormats.value.value"
+                                    :suggestions="commonImageFormats"
+                                    :error-message="imageFormats.errorMessage.value"
                                     :label="t('CompoEditView.labels.imageFormats')"
-                                    multiple
-                                    chips
-                                    closable-chips
                                 />
                             </v-col>
                         </v-row>
@@ -288,6 +252,8 @@ import {
 
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
+import FileSizeInputField from "@/components/form/FileSizeInputField.vue";
+import FormatComboboxField from "@/components/form/FormatComboboxField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
@@ -395,83 +361,10 @@ const thumbnailPrefOptions = [
     },
 ];
 
-// Size unit options and conversion
-type SizeUnit = "B" | "KB" | "MB" | "GB";
-const sizeUnitOptions: SizeUnit[] = ["B", "KB", "MB", "GB"];
-const sizeMultipliers: Record<SizeUnit, number> = {
-    B: 1,
-    KB: 1024,
-    MB: 1024 * 1024,
-    GB: 1024 * 1024 * 1024,
-};
-
-const entrySizeUnit = ref<SizeUnit>("MB");
-const sourceSizeUnit = ref<SizeUnit>("MB");
-
-// Convert bytes to display value based on unit
-function bytesToUnit(bytes: number | null, unit: SizeUnit): number | null {
-    if (bytes === null || bytes === undefined) return null;
-    return Math.round((bytes / sizeMultipliers[unit]) * 100) / 100;
-}
-
-// Convert display value to bytes based on unit
-function unitToBytes(value: number | null, unit: SizeUnit): number | null {
-    if (value === null || value === undefined) return null;
-    return Math.round(value * sizeMultipliers[unit]);
-}
-
-// Determine best unit for a byte value
-function bestUnitForBytes(bytes: number | null): SizeUnit {
-    if (bytes === null || bytes === undefined || bytes === 0) return "MB";
-    if (bytes >= sizeMultipliers.GB) return "GB";
-    if (bytes >= sizeMultipliers.MB) return "MB";
-    if (bytes >= sizeMultipliers.KB) return "KB";
-    return "B";
-}
-
-// Computed properties for size values
-const entrySizeValue = computed({
-    get: () => bytesToUnit(entrySizelimit.value.value, entrySizeUnit.value),
-    set: (val) => {
-        entrySizelimit.value.value = unitToBytes(val, entrySizeUnit.value);
-    },
-});
-
-const sourceSizeValue = computed({
-    get: () => bytesToUnit(sourceSizelimit.value.value, sourceSizeUnit.value),
-    set: (val) => {
-        sourceSizelimit.value.value = unitToBytes(val, sourceSizeUnit.value);
-    },
-});
-
 // Common file formats
 const commonEntryFormats = ["zip", "7z", "rar", "tar.gz", "exe", "com", "prg", "d64", "sid"];
 const commonSourceFormats = ["zip", "7z", "rar", "tar.gz"];
 const commonImageFormats = ["png", "jpg", "jpeg", "gif", "webp", "bmp"];
-
-// Computed properties for format arrays (pipe-separated string <-> array)
-const formatsArray = computed({
-    get: () => (formats.value.value ? formats.value.value.split("|").filter(Boolean) : []),
-    set: (val: string[]) => {
-        formats.value.value = val.join("|");
-    },
-});
-
-const sourceFormatsArray = computed({
-    get: () =>
-        sourceFormats.value.value ? sourceFormats.value.value.split("|").filter(Boolean) : [],
-    set: (val: string[]) => {
-        sourceFormats.value.value = val.join("|");
-    },
-});
-
-const imageFormatsArray = computed({
-    get: () =>
-        imageFormats.value.value ? imageFormats.value.value.split("|").filter(Boolean) : [],
-    set: (val: string[]) => {
-        imageFormats.value.value = val.join("|");
-    },
-});
 
 // Form validation
 const validationSchema = yupObject({
@@ -634,9 +527,6 @@ onMounted(async () => {
             });
             const item = response.data!;
             compoName.value = item.name;
-            // Set appropriate units for file sizes
-            entrySizeUnit.value = bestUnitForBytes(item.entry_sizelimit ?? null);
-            sourceSizeUnit.value = bestUnitForBytes(item.source_sizelimit ?? null);
             setValues({
                 name: item.name,
                 description: item.description ?? "",

@@ -45,6 +45,8 @@ MEDIA_PROGRAMME_IMAGES: str = "programme/images"
 MEDIA_STORE_IMAGES: str = "store/images"
 MEDIA_UPLOAD_FILES: str = "files"
 
+AUTH_USER_MODEL = "users.User"
+
 LOGIN_URL = "/users/login/"
 
 # Shorten session expiration (default is 2 weeks)
@@ -152,7 +154,7 @@ INSTALLED_APPS = (
     "Instanssi.main2024",
     "Instanssi.main2026",
     "Instanssi.admin_upload",
-    "Instanssi.users",
+    "Instanssi.users.apps.UsersConfig",
     "Instanssi.kompomaatti",
     "Instanssi.ext_blog",
     "Instanssi.ext_programme",

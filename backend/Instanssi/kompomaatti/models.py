@@ -3,7 +3,6 @@ from typing import Iterable, List, Optional
 
 from auditlog.registry import auditlog
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from imagekit.models import ImageSpecField
@@ -26,7 +25,7 @@ from Instanssi.kompomaatti.querysets import (
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Käyttäjä", on_delete=models.CASCADE)
     otherinfo = models.TextField(
         "Muut yhteystiedot", help_text="Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne."
     )
@@ -76,7 +75,7 @@ class VoteCodeRequest(models.Model):
         on_delete=models.PROTECT,
     )
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         verbose_name="Käyttäjä",
         help_text="Pyynnön esittänyt käyttäjä",
         on_delete=models.CASCADE,
@@ -103,7 +102,7 @@ class TicketVoteCode(models.Model):
         on_delete=models.PROTECT,
     )
     associated_to = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         verbose_name="Käyttäjä",
         help_text="Käyttäjä jolle avain on assosioitu",
         on_delete=models.CASCADE,
@@ -355,7 +354,7 @@ def generate_entry_image_path(entry: "Entry", filename: str) -> str:
 
 class Entry(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         verbose_name="käyttäjä",
         help_text="Käyttäjä jolle entry kuuluu",
         on_delete=models.PROTECT,
@@ -529,7 +528,7 @@ class AlternateEntryFile(models.Model):
 
 
 class VoteGroup(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="käyttäjä", on_delete=models.CASCADE)
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
 
     @property
@@ -555,7 +554,7 @@ class VoteGroup(models.Model):
 
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, verbose_name="käyttäjä", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="käyttäjä", on_delete=models.CASCADE)
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, verbose_name="tuotos", on_delete=models.CASCADE)
     rank = models.IntegerField("Sijoitus")
@@ -643,7 +642,7 @@ class CompetitionParticipation(models.Model):
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
-        User, verbose_name="Käyttäjä", help_text="Osallistuja", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name="Käyttäjä", help_text="Osallistuja", on_delete=models.CASCADE
     )
     participant_name = models.CharField(
         "Osallistujan nimi",

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import QuerySet
 from django.utils import timezone
@@ -16,6 +15,7 @@ from Instanssi.api.v2.serializers.user.kompomaatti.user_ticket_vote_code_seriali
 )
 from Instanssi.kompomaatti.models import Event, TicketVoteCode
 from Instanssi.store.models import TransactionItem
+from Instanssi.users.models import User
 
 
 class UserTicketVoteCodeViewSet(

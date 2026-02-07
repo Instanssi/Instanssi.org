@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
@@ -15,6 +14,7 @@ from Instanssi.api.v2.utils.entry_file_validation import (
     validate_entry_files,
 )
 from Instanssi.kompomaatti.models import Compo, Entry
+from Instanssi.users.models import User
 
 
 class UserCompoEntryViewSet(ModelViewSet[Entry]):

@@ -4,7 +4,8 @@ from unittest.mock import ANY
 
 import pytest
 from django.conf import settings
-from django.contrib.auth.models import User
+
+from Instanssi.users.models import User
 
 BASE_URL = "/api/v2/admin/users/"
 

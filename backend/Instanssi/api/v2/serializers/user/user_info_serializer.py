@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema_field
 from rest_framework.serializers import (
     CharField,
@@ -6,6 +5,8 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
 )
+
+from Instanssi.users.models import User
 
 
 class UserInfoSerializer(ModelSerializer[User]):

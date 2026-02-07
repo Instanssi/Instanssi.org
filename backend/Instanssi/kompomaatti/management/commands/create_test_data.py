@@ -2,7 +2,6 @@ from pathlib import Path
 from secrets import token_hex
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError, transaction
@@ -32,6 +31,7 @@ from Instanssi.store.models import (
     StoreTransactionEvent,
     TransactionItem,
 )
+from Instanssi.users.models import User
 
 from .fixtures.blog_entries import blog_entries
 from .fixtures.competitions import competition_participations, competitions

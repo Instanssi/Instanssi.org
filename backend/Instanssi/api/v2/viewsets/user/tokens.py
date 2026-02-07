@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from drf_spectacular.utils import extend_schema
 from knox.crypto import create_token_string, hash_token
@@ -19,6 +18,7 @@ from Instanssi.api.v2.serializers.user.token_serializer import (
     AuthTokenSerializer,
 )
 from Instanssi.api.v2.utils.base import FullDjangoModelPermissions
+from Instanssi.users.models import User
 
 
 class UserTokenViewSet(DestroyModelMixin, ListModelMixin, GenericViewSet[AuthToken]):

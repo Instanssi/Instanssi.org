@@ -1,7 +1,8 @@
 import logging
 
-from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer
+
+from Instanssi.users.models import User
 
 logger = logging.getLogger(__name__)
 

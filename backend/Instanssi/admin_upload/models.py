@@ -3,7 +3,6 @@ from pathlib import Path
 
 from auditlog.registry import auditlog
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -24,7 +23,9 @@ def generate_file_path(entry: "UploadedFile", filename: str) -> str:
 
 class UploadedFile(models.Model):
     event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
-    user = models.ForeignKey(User, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name="Käyttäjä", on_delete=models.SET_NULL, null=True
+    )
     description = models.TextField(
         "Kuvaus", help_text="Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.", blank=True
     )

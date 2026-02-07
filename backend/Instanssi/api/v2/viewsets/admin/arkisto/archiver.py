@@ -1,6 +1,5 @@
 import logging
 
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
@@ -21,6 +20,7 @@ from Instanssi.kompomaatti.models import (
     Vote,
     VoteGroup,
 )
+from Instanssi.users.models import User
 
 logger = logging.getLogger(__name__)
 

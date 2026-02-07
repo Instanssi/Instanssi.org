@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
@@ -12,6 +11,7 @@ from Instanssi.api.v2.serializers.user.kompomaatti.user_competition_participatio
     UserCompetitionParticipationSerializer,
 )
 from Instanssi.kompomaatti.models import Competition, CompetitionParticipation
+from Instanssi.users.models import User
 
 
 class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]):

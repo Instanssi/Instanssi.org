@@ -10,7 +10,7 @@ from shutil import rmtree
 from typing import Any, Callable, Dict
 from uuid import uuid4
 
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
@@ -44,6 +44,7 @@ from Instanssi.store.models import (
     TransactionItem,
 )
 from Instanssi.store.utils.receipt import ReceiptParams
+from Instanssi.users.models import User
 
 # All time-sensitive fixtures use datetimes relative to this frozen time.
 # Tests that check time-dependent behavior should use @freeze_time(FROZEN_TIME).

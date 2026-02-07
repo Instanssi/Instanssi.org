@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
@@ -18,6 +17,7 @@ from Instanssi.api.v2.serializers.user.kompomaatti.user_vote_code_request_serial
     UserVoteCodeRequestSerializer,
 )
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest
+from Instanssi.users.models import User
 
 
 class UserVoteCodeRequestViewSet(

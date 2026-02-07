@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
@@ -20,6 +19,7 @@ from Instanssi.kompomaatti.models import (
     VoteCodeRequest,
     VoteGroup,
 )
+from Instanssi.users.models import User
 
 
 class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet[VoteGroup]):

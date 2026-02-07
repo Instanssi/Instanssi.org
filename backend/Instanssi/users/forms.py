@@ -2,11 +2,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
 from django import forms
 from django.contrib import auth
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from Instanssi.common.misc import get_url_local_path
 from Instanssi.kompomaatti.models import Profile
+from Instanssi.users.models import User
 
 
 class DjangoLoginForm(forms.Form):

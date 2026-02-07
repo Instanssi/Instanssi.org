@@ -1,9 +1,10 @@
 from typing import Any
 
 from auditlog.models import LogEntry
-from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
+
+from Instanssi.users.models import User
 
 
 class ContentTypeSerializer(serializers.ModelSerializer[ContentType]):
@@ -18,7 +19,7 @@ class ActorSerializer(serializers.ModelSerializer):  # type: ignore[type-arg]
     """Serializer for the actor (user) who made the change."""
 
     class Meta:
-        model = get_user_model()
+        model = User
         fields = ("id", "username")
 
 

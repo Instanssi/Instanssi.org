@@ -2,7 +2,6 @@ import logging
 import os
 from typing import List, Optional
 
-from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.db import transaction
 from django.db.models import QuerySet
@@ -28,6 +27,7 @@ from Instanssi.kompomaatti.models import (
     VoteGroup,
 )
 from Instanssi.store.models import TransactionItem
+from Instanssi.users.models import User
 
 logger = logging.getLogger(__name__)
 

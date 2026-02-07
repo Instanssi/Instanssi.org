@@ -13,12 +13,13 @@ class UserSerializer(UserInfoSerializer):
         fields = UserInfoSerializer.Meta.fields + (  # type: ignore[assignment]
             "groups",
             "is_active",
+            "is_staff",
             "is_system",
         )
-        read_only_fields = UserInfoSerializer.Meta.read_only_fields + ("is_system",)  # type: ignore[assignment]
+        read_only_fields = UserInfoSerializer.Meta.read_only_fields + ("is_staff", "is_system")  # type: ignore[assignment]
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         request = self.context.get("request")
-        if not request or not request.user.is_superuser:
-            self.fields["is_staff"].read_only = True
+        if request and request.user.is_superuser:
+            self.fields["is_staff"].read_only = False

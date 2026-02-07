@@ -172,7 +172,7 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
-        "superuser": "Superuser",
+        "staff": "Staff",
         "active": "Active",
         "system": "System",
         "dateJoined": "Date joined",

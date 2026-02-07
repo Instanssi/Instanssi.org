@@ -28,6 +28,7 @@ def test_users_get_users(super_api_client, super_user):
         "user_permissions": [],
         "groups": [],
         "is_superuser": super_user.is_superuser,
+        "is_staff": super_user.is_staff,
         "is_active": super_user.is_active,
         "is_system": super_user.is_system,
     }
@@ -56,6 +57,7 @@ def test_users_post_new(super_api_client):
     assert result.json() == {
         "id": ANY,
         "is_superuser": False,
+        "is_staff": False,
         "is_system": False,
         "user_permissions": [],
         "date_joined": ANY,
@@ -94,6 +96,7 @@ def test_users_put_old(super_api_client, base_user):
     assert result.json() == {
         "id": base_user.id,
         "is_superuser": base_user.is_superuser,
+        "is_staff": base_user.is_staff,
         "is_system": base_user.is_system,
         "user_permissions": [],
         "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),

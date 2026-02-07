@@ -81,8 +81,8 @@
                     :loading-text="t('UsersView.loadingUsers')"
                     @update:options="onTableOptionsUpdate"
                 >
-                    <template #item.is_superuser="{ item }">
-                        <BooleanIcon :value="item.is_superuser" />
+                    <template #item.is_staff="{ item }">
+                        <BooleanIcon :value="item.is_staff" />
                     </template>
                     <template #item.is_active="{ item }">
                         <BooleanIcon :value="item.is_active" />
@@ -180,9 +180,9 @@ const headers: ReadonlyHeaders = [
         key: "email",
     },
     {
-        title: t("UsersView.headers.superuser"),
+        title: t("UsersView.headers.staff"),
         sortable: false,
-        key: "is_superuser",
+        key: "is_staff",
     },
     {
         title: t("UsersView.headers.active"),

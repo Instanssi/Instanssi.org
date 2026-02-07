@@ -46,7 +46,7 @@
                         <DateTimeCell :value="item.date" />
                     </template>
                     <template #item.file="{ item }">
-                        <MediaCell :url="item.file" />
+                        <MediaCell :url="item.file" class="upload-media-cell" />
                     </template>
                     <template #item.actions="{ item }">
                         <v-btn
@@ -243,3 +243,9 @@ function createItem(): void {
     router.push({ name: "uploads-new", params: { eventId: eventId.value }, query: route.query });
 }
 </script>
+
+<style scoped>
+.upload-media-cell {
+    margin: 3px 0;
+}
+</style>

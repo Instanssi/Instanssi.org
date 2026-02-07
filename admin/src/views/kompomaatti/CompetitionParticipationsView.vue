@@ -90,18 +90,13 @@
                         {{ getUserName(item.user) }}
                     </template>
                     <template #item.disqualified="{ item }">
-                        <FontAwesomeIcon
-                            v-if="item.disqualified"
-                            :icon="faCheck"
-                            class="text-red"
+                        <DisqualifiedCell
+                            :disqualified="item.disqualified"
+                            :disqualified-reason="item.disqualified_reason"
                         />
-                        <FontAwesomeIcon v-else :icon="faXmark" class="text-green" />
                     </template>
                     <template #item.computed_rank="{ item }">
                         {{ item.computed_rank ?? "-" }}
-                    </template>
-                    <template #item.disqualified_reason="{ item }">
-                        <LongTextCell :value="item.disqualified_reason" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -124,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { faCertificate, faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCertificate, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
@@ -135,9 +130,9 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Competition, CompetitionParticipation, User } from "@/api";
+import DisqualifiedCell from "@/components/table/DisqualifiedCell.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
-import LongTextCell from "@/components/table/LongTextCell.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";
 import { PermissionTarget, useAuth } from "@/services/auth";
@@ -232,11 +227,6 @@ const headers: ReadonlyHeaders = [
         title: t("CompetitionParticipationsView.headers.score"),
         sortable: true,
         key: "score",
-    },
-    {
-        title: t("CompetitionParticipationsView.headers.disqualifiedReason"),
-        sortable: false,
-        key: "disqualified_reason",
     },
     {
         title: t("CompetitionParticipationsView.headers.actions"),

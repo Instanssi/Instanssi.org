@@ -116,10 +116,9 @@
                         <YoutubeCell :value="item.youtube_url" />
                     </template>
                     <template #item.disqualified="{ item }">
-                        <BooleanIcon
-                            :value="item.disqualified"
-                            true-class="text-red"
-                            false-class="text-green"
+                        <DisqualifiedCell
+                            :disqualified="item.disqualified"
+                            :disqualified-reason="item.disqualified_reason"
                         />
                     </template>
                     <template #item.compo="{ item }">
@@ -133,9 +132,6 @@
                     </template>
                     <template #item.description="{ item }">
                         <LongTextCell :value="item.description" />
-                    </template>
-                    <template #item.disqualified_reason="{ item }">
-                        <LongTextCell :value="item.disqualified_reason" />
                     </template>
                     <template #item.actions="{ item }">
                         <TableActionButtons
@@ -182,7 +178,7 @@ import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
 import type { Compo, CompoEntry } from "@/api";
-import BooleanIcon from "@/components/table/BooleanIcon.vue";
+import DisqualifiedCell from "@/components/table/DisqualifiedCell.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";
@@ -312,11 +308,6 @@ const headers: ReadonlyHeaders = [
         title: t("EntriesView.headers.description"),
         sortable: false,
         key: "description",
-    },
-    {
-        title: t("EntriesView.headers.disqualifiedReason"),
-        sortable: false,
-        key: "disqualified_reason",
     },
     {
         title: t("EntriesView.headers.actions"),

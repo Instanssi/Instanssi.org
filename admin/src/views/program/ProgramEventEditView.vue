@@ -16,13 +16,13 @@
                             variant="outlined"
                             :label="t('ProgramEventEditView.labels.title') + ' *'"
                         />
-                        <v-textarea
-                            v-model="description.value.value"
-                            :error-messages="description.errorMessage.value"
-                            variant="outlined"
-                            :label="t('ProgramEventEditView.labels.description')"
-                            rows="4"
-                        />
+                        <VuetifyTiptap v-model="description.value.value" />
+                        <div
+                            v-if="description.errorMessage.value"
+                            class="text-error text-caption mb-4"
+                        >
+                            {{ description.errorMessage.value }}
+                        </div>
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field

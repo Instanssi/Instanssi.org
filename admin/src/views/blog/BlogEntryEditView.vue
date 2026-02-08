@@ -17,7 +17,7 @@
                             {{ t("BlogPostDialog.labels.text") }} *
                         </div>
                         <VuetifyTiptap v-model="text.value.value" />
-                        <div v-if="text.errorMessage.value" class="text-error text-caption">
+                        <div v-if="text.errorMessage.value" class="text-error text-caption mb-4">
                             {{ text.errorMessage.value }}
                         </div>
                         <v-switch

@@ -4,6 +4,7 @@ from unittest.mock import ANY
 
 import pytest
 from django.conf import settings
+from django.contrib.auth.models import Group
 
 from Instanssi.users.models import User
 
@@ -45,14 +46,16 @@ def test_users_get_entry_by_id(super_api_client, base_user):
 @pytest.mark.django_db
 def test_users_post_new(super_api_client):
     """Make sure POST works"""
-    req = dict(
-        first_name="first_name",
-        last_name="last_name",
-        username="username",
-        email="email@test.com",
-        groups=[],
+    result = super_api_client.post(
+        BASE_URL,
+        dict(
+            first_name="first_name",
+            last_name="last_name",
+            username="username",
+            email="email@test.com",
+            group_ids=[],
+        ),
     )
-    result = super_api_client.post(BASE_URL, req)
     assert result.status_code == 201
     assert result.json() == {
         "id": ANY,
@@ -62,7 +65,11 @@ def test_users_post_new(super_api_client):
         "user_permissions": [],
         "date_joined": ANY,
         "is_active": True,
-        **req,
+        "first_name": "first_name",
+        "last_name": "last_name",
+        "username": "username",
+        "email": "email@test.com",
+        "groups": [],
     }
 
 
@@ -84,14 +91,16 @@ def test_users_patch_old(super_api_client, base_user):
 @pytest.mark.django_db
 def test_users_put_old(super_api_client, base_user):
     """Make sure PUT works"""
-    req = dict(
-        first_name="new_first_name",
-        last_name="new_last_name",
-        username="new_username",
-        email="new_email@test.com",
-        groups=[],
+    result = super_api_client.put(
+        f"{BASE_URL}{base_user.id}/",
+        dict(
+            first_name="new_first_name",
+            last_name="new_last_name",
+            username="new_username",
+            email="new_email@test.com",
+            group_ids=[],
+        ),
     )
-    result = super_api_client.put(f"{BASE_URL}{base_user.id}/", req)
     assert result.status_code == 200
     assert result.json() == {
         "id": base_user.id,
@@ -101,7 +110,11 @@ def test_users_put_old(super_api_client, base_user):
         "user_permissions": [],
         "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
         "is_active": base_user.is_active,
-        **req,
+        "first_name": "new_first_name",
+        "last_name": "new_last_name",
+        "username": "new_username",
+        "email": "new_email@test.com",
+        "groups": [],
     }
 
 
@@ -135,7 +148,7 @@ def test_system_user_cannot_be_put(super_api_client, create_user):
             last_name="hacked",
             username="hacked",
             email="hacked@test.com",
-            groups=[],
+            group_ids=[],
         ),
     )
     assert result.status_code == 403
@@ -190,3 +203,50 @@ def test_non_superuser_cannot_set_is_staff(api_client, create_user, password, ba
     assert result.status_code == 200
     base_user.refresh_from_db()
     assert base_user.is_staff is False
+
+
+@pytest.mark.django_db
+def test_assign_groups_via_patch(super_api_client, base_user):
+    """Groups can be assigned to a user via group_ids"""
+    group = Group.objects.get(name="staff_defaults")
+    result = super_api_client.patch(
+        f"{BASE_URL}{base_user.id}/",
+        dict(group_ids=[group.id]),
+        format="json",
+    )
+    assert result.status_code == 200
+    assert result.data["groups"] == [{"id": group.id, "name": "staff_defaults"}]
+    base_user.refresh_from_db()
+    assert list(base_user.groups.values_list("name", flat=True)) == ["staff_defaults"]
+
+
+@pytest.mark.django_db
+def test_assign_multiple_groups(super_api_client, base_user):
+    """Multiple groups can be assigned at once"""
+    groups = Group.objects.filter(name__in=["staff_defaults", "store"])
+    group_ids = list(groups.values_list("id", flat=True))
+    result = super_api_client.patch(
+        f"{BASE_URL}{base_user.id}/",
+        dict(group_ids=group_ids),
+        format="json",
+    )
+    assert result.status_code == 200
+    assert len(result.data["groups"]) == 2
+    base_user.refresh_from_db()
+    assert set(base_user.groups.values_list("name", flat=True)) == {"staff_defaults", "store"}
+
+
+@pytest.mark.django_db
+def test_remove_groups_via_patch(super_api_client, base_user):
+    """Groups can be removed by sending an empty group_ids list"""
+    group = Group.objects.get(name="staff_defaults")
+    base_user.groups.add(group)
+    result = super_api_client.patch(
+        f"{BASE_URL}{base_user.id}/",
+        dict(group_ids=[]),
+        format="json",
+    )
+    assert result.status_code == 200
+    assert result.data["groups"] == []
+    base_user.refresh_from_db()
+    assert base_user.groups.count() == 0

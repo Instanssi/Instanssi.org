@@ -75,6 +75,16 @@
                             :hint-off="t('UserDialog.labels.isSystemHintOff')"
                             color="success"
                         />
+                        <v-select
+                            v-model="selectedGroupIds"
+                            :items="groupOptions"
+                            :label="t('UserDialog.labels.groups')"
+                            variant="outlined"
+                            multiple
+                            chips
+                            closable-chips
+                            :disabled="isSystem"
+                        />
                     </v-form>
                 </v-card-text>
                 <v-card-actions class="justify-end">
@@ -111,6 +121,7 @@ import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import type { Group } from "@/api";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useAuth } from "@/services/auth";
@@ -142,6 +153,8 @@ const userName = ref<string>("");
 const dateJoined = ref<string>("");
 const isSystem = ref(false);
 const isEditMode = computed(() => props.id !== undefined);
+const selectedGroupIds = ref<number[]>([]);
+const groupOptions = ref<{ title: string; value: number }[]>([]);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const items: BreadcrumbItem[] = [{ title: t("UsersView.title"), to: { name: "users" } }];
@@ -202,6 +215,7 @@ function buildBody(values: GenericObject) {
         username: values.username,
         is_active: values.isActive,
         is_staff: values.isStaff,
+        group_ids: selectedGroupIds.value,
     };
 }
 
@@ -236,10 +250,23 @@ function goBack() {
     router.push({ name: "users", query: route.query });
 }
 
+async function loadGroups() {
+    try {
+        const response = await api.adminGroupsList({ query: { limit: 100 } });
+        groupOptions.value = (response.data?.results ?? []).map((g: Group) => ({
+            title: g.name,
+            value: g.id,
+        }));
+    } catch (e) {
+        console.error("Failed to load groups", e);
+    }
+}
+
 onMounted(async () => {
-    if (isEditMode.value) {
-        loading.value = true;
-        try {
+    loading.value = true;
+    try {
+        await loadGroups();
+        if (isEditMode.value) {
             const response = await api.adminUsersRetrieve({
                 path: { id: parseInt(props.id!, 10) },
             });
@@ -247,6 +274,7 @@ onMounted(async () => {
             userName.value = item.username;
             dateJoined.value = d(item.date_joined, "long");
             isSystem.value = item.is_system ?? false;
+            selectedGroupIds.value = (item.groups ?? []).map((g: Group) => g.id);
             setValues({
                 firstName: item.first_name ?? "",
                 lastName: item.last_name ?? "",
@@ -255,13 +283,13 @@ onMounted(async () => {
                 isActive: item.is_active ?? true,
                 isStaff: item.is_staff ?? false,
             });
-        } catch (e) {
-            toast.error(t("UserEditView.loadFailure"));
-            console.error(e);
-            goBack();
-        } finally {
-            loading.value = false;
         }
+    } catch (e) {
+        toast.error(t("UserEditView.loadFailure"));
+        console.error(e);
+        goBack();
+    } finally {
+        loading.value = false;
     }
 });
 </script>

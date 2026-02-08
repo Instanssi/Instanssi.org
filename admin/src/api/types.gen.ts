@@ -1452,6 +1452,7 @@ export type EventTypeEnum = 0 | 1;
  * Serializer for user groups (used in user info responses).
  */
 export type Group = {
+    readonly id: number;
     name: string;
 };
 
@@ -1639,6 +1640,13 @@ export type PaginatedEventList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Event>;
+};
+
+export type PaginatedGroupList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Group>;
 };
 
 export type PaginatedLogEntryList = {
@@ -2703,12 +2711,6 @@ export type PatchedUserRequest = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
-    /**
-     * Staff status
-     *
-     * Designates whether the user can log into this admin site.
-     */
-    is_staff?: boolean;
 };
 
 /**
@@ -4274,7 +4276,7 @@ export type User = {
      *
      * Designates whether the user can log into this admin site.
      */
-    is_staff?: boolean;
+    readonly is_staff: boolean;
     readonly is_system: boolean;
 };
 
@@ -4443,12 +4445,6 @@ export type UserRequest = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
-    /**
-     * Staff status
-     *
-     * Designates whether the user can log into this admin site.
-     */
-    is_staff?: boolean;
 };
 
 /**
@@ -5046,6 +5042,13 @@ export type EventWritable = {
 };
 
 /**
+ * Serializer for user groups (used in user info responses).
+ */
+export type GroupWritable = {
+    name: string;
+};
+
+/**
  * Serializer for audit log entries.
  */
 export type LogEntryWritable = {
@@ -5164,6 +5167,29 @@ export type PatchedUserCompoEntryRequestWritable = {
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
+};
+
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
+export type PatchedUserRequestWritable = {
+    /**
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     */
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+    /**
+     * Email address
+     */
+    email?: string;
+    group_ids?: Array<number>;
+    /**
+     * Active
+     *
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+     */
+    is_active?: boolean;
 };
 
 /**
@@ -6047,12 +6073,6 @@ export type UserWritable = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
-    /**
-     * Staff status
-     *
-     * Designates whether the user can log into this admin site.
-     */
-    is_staff?: boolean;
 };
 
 /**
@@ -6174,6 +6194,29 @@ export type UserInfoWritable = {
      * Email address
      */
     email?: string;
+};
+
+/**
+ * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ */
+export type UserRequestWritable = {
+    /**
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     */
+    username: string;
+    first_name?: string;
+    last_name?: string;
+    /**
+     * Email address
+     */
+    email?: string;
+    group_ids?: Array<number>;
+    /**
+     * Active
+     *
+     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+     */
+    is_active?: boolean;
 };
 
 /**
@@ -8658,6 +8701,55 @@ export type AdminEventsUpdateResponses = {
 export type AdminEventsUpdateResponse =
     AdminEventsUpdateResponses[keyof AdminEventsUpdateResponses];
 
+export type AdminGroupsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/admin/groups/";
+};
+
+export type AdminGroupsListResponses = {
+    200: PaginatedGroupList;
+};
+
+export type AdminGroupsListResponse = AdminGroupsListResponses[keyof AdminGroupsListResponses];
+
+export type AdminGroupsRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this group.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/groups/{id}/";
+};
+
+export type AdminGroupsRetrieveResponses = {
+    200: Group;
+};
+
+export type AdminGroupsRetrieveResponse =
+    AdminGroupsRetrieveResponses[keyof AdminGroupsRetrieveResponses];
+
 export type AdminUsersListData = {
     body?: never;
     path?: never;
@@ -8695,7 +8787,7 @@ export type AdminUsersListResponses = {
 export type AdminUsersListResponse = AdminUsersListResponses[keyof AdminUsersListResponses];
 
 export type AdminUsersCreateData = {
-    body: UserRequest;
+    body: UserRequestWritable;
     path?: never;
     query?: never;
     url: "/api/v2/admin/users/";
@@ -8749,7 +8841,7 @@ export type AdminUsersRetrieveResponse =
     AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
 
 export type AdminUsersPartialUpdateData = {
-    body?: PatchedUserRequest;
+    body?: PatchedUserRequestWritable;
     path: {
         /**
          * A unique integer value identifying this user.
@@ -8768,7 +8860,7 @@ export type AdminUsersPartialUpdateResponse =
     AdminUsersPartialUpdateResponses[keyof AdminUsersPartialUpdateResponses];
 
 export type AdminUsersUpdateData = {
-    body: UserRequest;
+    body: UserRequestWritable;
     path: {
         /**
          * A unique integer value identifying this user.

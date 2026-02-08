@@ -3866,6 +3866,70 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v2/admin/groups/:
+    get:
+      operationId: admin_groups_list
+      description: Read-only viewset for listing groups.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+          description: ''
+  /api/v2/admin/groups/{id}/:
+    get:
+      operationId: admin_groups_retrieve
+      description: Read-only viewset for listing groups.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
   /api/v2/admin/users/:
     get:
       operationId: admin_users_list
@@ -7479,10 +7543,14 @@ components:
       type: object
       description: Serializer for user groups (used in user info responses).
       properties:
+        id:
+          type: integer
+          readOnly: true
         name:
           type: string
           maxLength: 150
       required:
+      - id
       - name
     GroupRequest:
       type: object
@@ -7828,6 +7896,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Event'
+    PaginatedGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
     PaginatedLogEntryList:
       type: object
       required:
@@ -9316,15 +9407,17 @@ components:
           format: email
           title: Email address
           maxLength: 254
+        group_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
         is_active:
           type: boolean
           title: Active
           description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
-        is_staff:
-          type: boolean
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
     PatchedUserVoteCodeRequestRequest:
       type: object
       description: |-
@@ -11279,6 +11372,7 @@ components:
             this instead of deleting accounts.
         is_staff:
           type: boolean
+          readOnly: true
           title: Staff status
           description: Designates whether the user can log into this admin site.
         is_system:
@@ -11288,6 +11382,7 @@ components:
       - date_joined
       - groups
       - id
+      - is_staff
       - is_superuser
       - is_system
       - user_permissions
@@ -11560,15 +11655,17 @@ components:
           format: email
           title: Email address
           maxLength: 254
+        group_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
         is_active:
           type: boolean
           title: Active
           description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
-        is_staff:
-          type: boolean
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
       required:
       - username
     UserTicketVoteCode:

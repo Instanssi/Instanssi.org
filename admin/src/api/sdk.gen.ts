@@ -227,6 +227,10 @@ import type {
     AdminEventUploadsFilesRetrieveResponses,
     AdminEventUploadsFilesUpdateData,
     AdminEventUploadsFilesUpdateResponses,
+    AdminGroupsListData,
+    AdminGroupsListResponses,
+    AdminGroupsRetrieveData,
+    AdminGroupsRetrieveResponses,
     AdminUsersCreateData,
     AdminUsersCreateResponses,
     AdminUsersDestroyData,
@@ -3652,6 +3656,54 @@ export const adminEventsUpdate = <ThrowOnError extends boolean = false>(
             "Content-Type": "application/json",
             ...options.headers,
         },
+    });
+};
+
+/**
+ * Read-only viewset for listing groups.
+ */
+export const adminGroupsList = <ThrowOnError extends boolean = false>(
+    options?: Options<AdminGroupsListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<AdminGroupsListResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/groups/",
+        ...options,
+    });
+};
+
+/**
+ * Read-only viewset for listing groups.
+ */
+export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<AdminGroupsRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<AdminGroupsRetrieveResponses, unknown, ThrowOnError>({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/groups/{id}/",
+        ...options,
     });
 };
 

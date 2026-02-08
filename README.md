@@ -7,7 +7,7 @@ of the comments and language used is in Finnish, because the programmers weren't
 internationalization :D
 
 This project has been originally developed for Instanssi 2012. Project is still alive and current development
-focus is to provide web site for Instanssi 2024.
+focus is to provide web site for the next upcoming event.
 
 License
 -------

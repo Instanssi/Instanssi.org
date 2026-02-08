@@ -626,7 +626,8 @@
         "isSystemOn": "System user",
         "isSystemOff": "Regular user",
         "isSystemHintOn": "This is a system-managed account. It cannot be modified or deleted.",
-        "isSystemHintOff": "This is a regular user account."
+        "isSystemHintOff": "This is a regular user account.",
+        "groups": "Groups"
       },
       "editFailure": "Failed to edit user; try again later.",
       "createFailure": "Failed to create user; try again later.",

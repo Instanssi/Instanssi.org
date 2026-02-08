@@ -9,6 +9,7 @@ from Instanssi.api.v2.viewsets.admin.arkisto import (
 from Instanssi.api.v2.viewsets.admin.auditlog import AuditLogViewSet
 from Instanssi.api.v2.viewsets.admin.blog_entries import BlogEntryViewSet
 from Instanssi.api.v2.viewsets.admin.events import EventViewSet
+from Instanssi.api.v2.viewsets.admin.groups import GroupViewSet
 from Instanssi.api.v2.viewsets.admin.kompomaatti.competition_participations import (
     CompetitionParticipationViewSet,
 )
@@ -41,6 +42,7 @@ admin_router = routers.SimpleRouter()
 admin_router.register("auditlog", AuditLogViewSet, basename="admin_auditlog")
 admin_router.register("blog", BlogEntryViewSet, basename="admin_blog")
 admin_router.register("events", EventViewSet, basename="admin_events")
+admin_router.register("groups", GroupViewSet, basename="admin_groups")
 admin_router.register("users", UserViewSet, basename="admin_users")
 
 # /api/v2/admin/event/<event_pk>/kompomaatti/...

@@ -8,7 +8,6 @@ from Instanssi.kompomaatti.models import (
     Compo,
     Entry,
     Event,
-    Profile,
     TicketVoteCode,
     Vote,
     VoteCodeRequest,
@@ -66,7 +65,6 @@ admin.site.register(Vote)
 admin.site.register(VoteGroup)
 admin.site.register(TicketVoteCode, TicketVoteCodeAdmin)
 admin.site.register(VoteCodeRequest, VoteCodeRequestAdmin)
-admin.site.register(Profile)
 admin.site.register(Competition)
 admin.site.register(CompetitionParticipation)
 admin.site.register(AlternateEntryFile, AlternateEntryFileAdmin)

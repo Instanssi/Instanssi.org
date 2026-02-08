@@ -56,12 +56,12 @@ def profile(request):
     from social_django.models import DjangoStorage
 
     if request.method == "POST":
-        profileform = ProfileForm(request.POST, instance=request.user, user=request.user)
+        profileform = ProfileForm(request.POST, instance=request.user)
         if profileform.is_valid():
             profileform.save()
             return HttpResponseRedirect(reverse("users:profile"))
     else:
-        profileform = ProfileForm(instance=request.user, user=request.user)
+        profileform = ProfileForm(instance=request.user)
 
     # Get all active providers for this user
     active_providers = []

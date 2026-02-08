@@ -5,7 +5,6 @@ from django.contrib import auth
 from django.core.exceptions import ValidationError
 
 from Instanssi.common.misc import get_url_local_path
-from Instanssi.kompomaatti.models import Profile
 from Instanssi.users.models import User
 
 
@@ -59,18 +58,8 @@ class ProfileForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        # Init
-        self.user = kwargs.pop("user", None)
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-        # Find profile
-        try:
-            self.profile = Profile.objects.get(user=self.user)
-        except Profile.DoesNotExist:
-            self.profile = Profile(user=self.user, otherinfo="")
-            self.profile.save()
-
-        # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
@@ -88,13 +77,7 @@ class ProfileForm(forms.ModelForm):
         self.fields["last_name"].label = "Sukunimi"
         self.fields["email"].label = "Sähköposti"
         self.fields["email"].required = True
-        self.fields["otherinfo"].initial = self.profile.otherinfo
-
-    def save(self, commit=True):
-        super(ProfileForm, self).save()
-        self.profile.otherinfo = self.cleaned_data["otherinfo"]
-        self.profile.save()
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email")
+        fields = ("first_name", "last_name", "email", "otherinfo")

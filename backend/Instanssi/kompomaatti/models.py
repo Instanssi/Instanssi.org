@@ -24,20 +24,6 @@ from Instanssi.kompomaatti.querysets import (
 )
 
 
-class Profile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Käyttäjä", on_delete=models.CASCADE)
-    otherinfo = models.TextField(
-        "Muut yhteystiedot", help_text="Muita yhteystietoja, mm. IRC-tunnus (verkon kera), jne."
-    )
-
-    def __str__(self) -> str:
-        return self.user.username
-
-    class Meta:
-        verbose_name = "profiili"
-        verbose_name_plural = "profiilit"
-
-
 class Event(models.Model):
     name = models.CharField("Nimi", max_length=64, help_text="Tapahtuman nimi", unique=True)
     tag = models.CharField(
@@ -696,7 +682,6 @@ auditlog.register(CompetitionParticipation)
 auditlog.register(Vote)
 auditlog.register(VoteGroup)
 auditlog.register(VoteCodeRequest)
-auditlog.register(Profile)
 auditlog.register(Event)
 auditlog.register(TicketVoteCode)
 auditlog.register(AlternateEntryFile)

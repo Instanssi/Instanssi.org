@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.6.1",
+  "packageManager": "pnpm@10.29.1",
   "pnpm": {
     "onlyBuiltDependencies": [],
     "onlyBuiltDependenciesFile": "",

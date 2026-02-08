@@ -4,6 +4,9 @@
             <v-progress-circular indeterminate size="64" />
         </v-col>
         <v-col v-else>
+            <v-alert v-if="isSystem" type="warning" variant="elevated" class="mb-4">
+                {{ t("UserEditView.systemUserWarning") }}
+            </v-alert>
             <v-card>
                 <v-card-text>
                     <v-form @submit.prevent="submit">
@@ -25,29 +28,38 @@
                             v-model="email.value.value"
                             :error-messages="email.errorMessage.value"
                             variant="outlined"
+                            :disabled="isSystem"
                             :label="t('UserDialog.labels.email') + ' *'"
                         />
                         <v-text-field
                             v-model="firstName.value.value"
                             :error-messages="firstName.errorMessage.value"
                             variant="outlined"
+                            :disabled="isSystem"
                             :label="t('UserDialog.labels.firstName')"
                         />
                         <v-text-field
                             v-model="lastName.value.value"
                             :error-messages="lastName.errorMessage.value"
                             variant="outlined"
+                            :disabled="isSystem"
                             :label="t('UserDialog.labels.lastName')"
                         />
                         <v-switch
                             v-model="isActive.value.value"
                             :error-messages="isActive.errorMessage.value"
+                            :disabled="isSystem"
                             :label="isActiveLabel"
                         />
                         <v-switch
+                            v-model="isStaff.value.value"
+                            :error-messages="isStaff.errorMessage.value"
+                            :disabled="isSystem || !auth.isSuperUser()"
+                            :label="isStaffLabel"
+                        />
+                        <v-switch
                             v-if="isEditMode"
-                            v-model="isSystem"
-                            readonly
+                            :model-value="isSystem"
                             disabled
                             :label="isSystemLabel"
                         />
@@ -61,7 +73,7 @@
                         variant="elevated"
                         color="primary"
                         :loading="saving"
-                        :disabled="!meta.valid"
+                        :disabled="!meta.valid || isSystem"
                         @click="submit"
                     >
                         <template #prepend>
@@ -88,6 +100,7 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 
 import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
+import { useAuth } from "@/services/auth";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */
@@ -97,6 +110,7 @@ const API_FIELD_MAPPING: FieldMapping = {
     first_name: "firstName",
     last_name: "lastName",
     is_active: "isActive",
+    is_staff: "isStaff",
 };
 
 const props = defineProps<{
@@ -107,6 +121,7 @@ const { t, d } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
+const auth = useAuth();
 
 const loading = ref(false);
 const saving = ref(false);
@@ -117,6 +132,9 @@ const isEditMode = computed(() => props.id !== undefined);
 
 const isActiveLabel = computed(() =>
     isActive.value.value ? t("UserDialog.labels.isActive") : t("UserDialog.labels.isNotActive")
+);
+const isStaffLabel = computed(() =>
+    isStaff.value.value ? t("UserDialog.labels.isStaff") : t("UserDialog.labels.isNotStaff")
 );
 const isSystemLabel = computed(() =>
     isSystem.value ? t("UserDialog.labels.isSystem") : t("UserDialog.labels.isNotSystem")
@@ -139,6 +157,7 @@ const validationSchema = yupObject({
     username: yupString().required().min(1).max(150),
     email: yupString().email().required().min(1).max(254),
     isActive: yupBoolean(),
+    isStaff: yupBoolean(),
 });
 const { handleSubmit, setValues, setErrors, meta } = useForm({
     validationSchema,
@@ -148,6 +167,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         username: "",
         email: "",
         isActive: true,
+        isStaff: false,
     },
 });
 const firstName = useField<string>("firstName");
@@ -155,6 +175,7 @@ const lastName = useField<string>("lastName");
 const username = useField<string>("username");
 const email = useField<string>("email");
 const isActive = useField<boolean>("isActive");
+const isStaff = useField<boolean>("isStaff");
 
 const submit = handleSubmit(async (values) => {
     saving.value = true;
@@ -177,6 +198,7 @@ function buildBody(values: GenericObject) {
         email: values.email,
         username: values.username,
         is_active: values.isActive,
+        is_staff: values.isStaff,
     };
 }
 
@@ -228,6 +250,7 @@ onMounted(async () => {
                 email: item.email ?? "",
                 username: item.username,
                 isActive: item.is_active ?? true,
+                isStaff: item.is_staff ?? false,
             });
         } catch (e) {
             toast.error(t("UserEditView.loadFailure"));

@@ -96,7 +96,7 @@
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.USER)"
-                            :can-delete="auth.canDelete(PermissionTarget.USER)"
+                            :can-delete="auth.canDelete(PermissionTarget.USER) && !item.is_system"
                             @edit="editUser(item.id)"
                             @delete="deleteUser(item)"
                         />

@@ -617,6 +617,8 @@
         "dateJoined": "Date joined",
         "isActive": "User account is active",
         "isNotActive": "User account is disabled",
+        "isStaff": "User has staff access",
+        "isNotStaff": "User does not have staff access",
         "isSystem": "System user",
         "isNotSystem": "Not a system user"
       },
@@ -627,7 +629,8 @@
     },
     "UserEditView": {
       "newTitle": "New User",
-      "loadFailure": "Failed to load user; try again later."
+      "loadFailure": "Failed to load user; try again later.",
+      "systemUserWarning": "This is a system user and cannot be modified."
     },
     "EventDialog": {
       "title": "Event",

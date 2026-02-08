@@ -115,6 +115,10 @@ export function useAuth() {
         return hasPermission("add", name);
     }
 
+    function isSuperUser(): boolean {
+        return userInfo.value.isSuperUser;
+    }
+
     async function getUserData(): Promise<CurrentUserInfo> {
         return userInfo.value;
     }
@@ -133,6 +137,7 @@ export function useAuth() {
 
     return {
         isLoggedIn,
+        isSuperUser,
         login,
         logout,
         getSocialAuthURLs,

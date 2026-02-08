@@ -53,10 +53,10 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     ],
                     emits: ["update:modelValue"],
                 },
-                VuetifyTiptap: {
+                RichTextEditor: {
                     template:
                         '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
-                    props: ["modelValue"],
+                    props: ["modelValue", "eventId"],
                     emits: ["update:modelValue"],
                 },
                 FontAwesomeIcon: true,

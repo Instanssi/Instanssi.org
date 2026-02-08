@@ -26,7 +26,6 @@ import {
     TextAlign,
     Underline,
     Video,
-    Image,
 } from "vuetify-pro-tiptap";
 import "vuetify-pro-tiptap/style.css";
 
@@ -56,7 +55,6 @@ export const vuetifyTipTap = createVuetifyProTipTap({
         TaskList,
         Indent.configure({ divider: true }),
         Link,
-        Image,
         Video,
         Table.configure({ divider: true }),
         Blockquote,

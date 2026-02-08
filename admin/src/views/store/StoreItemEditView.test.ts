@@ -71,10 +71,10 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     ],
                     emits: ["update:modelValue"],
                 },
-                VuetifyTiptap: {
+                RichTextEditor: {
                     template:
                         '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
-                    props: ["modelValue"],
+                    props: ["modelValue", "eventId"],
                     emits: ["update:modelValue"],
                 },
                 FontAwesomeIcon: true,
@@ -589,7 +589,7 @@ describe("StoreItemEditView", () => {
             expect(textFields.length).toBeGreaterThan(1);
         });
 
-        it("uses VuetifyTiptap for rich text description", async () => {
+        it("uses RichTextEditor for rich text description", async () => {
             const wrapper = mountComponent({ eventId: "1" });
             await flushPromises();
 

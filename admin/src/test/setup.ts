@@ -168,5 +168,6 @@ vi.mock("vuetify-pro-tiptap", () => ({
         props: ["modelValue"],
         emits: ["update:modelValue"],
     },
+    Image: { configure: (opts: Record<string, unknown>) => ({ name: "image", options: opts }) },
     createVuetifyProTipTap: vi.fn(() => ({})),
 }));

@@ -1268,6 +1268,11 @@
         "unknown": "Unknown"
       }
     },
+    "RichTextEditor": {
+      "switchToHtml": "Edit HTML",
+      "switchToVisual": "Visual editor",
+      "uploadFailure": "Failed to upload image"
+    },
     "DiplomaGenerator": {
       "title": "Diplomas",
       "backgroundImage": "Background image",

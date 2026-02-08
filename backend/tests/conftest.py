@@ -1359,13 +1359,8 @@ def other_event_uploaded_file(other_event, staff_user, test_zip) -> UploadedFile
 
 @fixture
 def archive_user() -> User:
-    """The archive user that owns archived entries."""
-    return User.objects.create_user(
-        username="arkisto",
-        email="arkisto@instanssi.org",
-        password=None,
-        is_active=False,
-    )
+    """The archive user that owns archived entries (created by migration)."""
+    return User.objects.get(username="arkisto")
 
 
 @fixture

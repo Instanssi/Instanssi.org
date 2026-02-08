@@ -2,6 +2,7 @@
     <v-switch
         :model-value="modelValue"
         :error-messages="errorMessage"
+        :disabled="disabled"
         :label="currentLabel"
         :hint="currentHint"
         :persistent-hint="!!currentHint"
@@ -19,6 +20,7 @@ const props = withDefaults(
     defineProps<{
         modelValue: boolean;
         errorMessage?: string;
+        disabled?: boolean;
         labelOn: string;
         labelOff: string;
         hintOn?: string;
@@ -29,6 +31,7 @@ const props = withDefaults(
     }>(),
     {
         errorMessage: undefined,
+        disabled: false,
         hintOn: undefined,
         hintOff: undefined,
         color: undefined,

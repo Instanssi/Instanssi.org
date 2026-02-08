@@ -172,8 +172,9 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
-        "superuser": "Superuser",
+        "staff": "Staff",
         "active": "Active",
+        "system": "System",
         "dateJoined": "Date joined",
         "actions": "Actions"
       },
@@ -182,12 +183,16 @@
       "deleteSuccess": "User deleted!",
       "filterByStatus": "Status",
       "filterByType": "Type",
+      "filterBySystem": "System",
       "allStatuses": "All",
       "activeOnly": "Active",
       "inactiveOnly": "Inactive",
       "allTypes": "All",
       "staffOnly": "Staff",
-      "regularOnly": "Regular"
+      "regularOnly": "Regular",
+      "allSystem": "All",
+      "systemOnly": "System",
+      "nonSystemOnly": "Non-system"
     },
     "BlogEditorView": {
       "title": "Blog",
@@ -610,8 +615,18 @@
         "lastName": "Last name",
         "email": "Email address",
         "dateJoined": "Date joined",
-        "isActive": "User account is active",
-        "isNotActive": "User account is disabled"
+        "isActiveOn": "Account is active",
+        "isActiveOff": "Account is disabled",
+        "isActiveHintOn": "User can log in and use the site normally.",
+        "isActiveHintOff": "User is blocked from logging in. Disable instead of deleting accounts.",
+        "isStaffOn": "Staff access enabled",
+        "isStaffOff": "No staff access",
+        "isStaffHintOn": "User can access the administration panel. Only superusers can change this.",
+        "isStaffHintOff": "User has no access to the administration panel. Only superusers can change this.",
+        "isSystemOn": "System user",
+        "isSystemOff": "Regular user",
+        "isSystemHintOn": "This is a system-managed account. It cannot be modified or deleted.",
+        "isSystemHintOff": "This is a regular user account."
       },
       "editFailure": "Failed to edit user; try again later.",
       "createFailure": "Failed to create user; try again later.",
@@ -620,7 +635,8 @@
     },
     "UserEditView": {
       "newTitle": "New User",
-      "loadFailure": "Failed to load user; try again later."
+      "loadFailure": "Failed to load user; try again later.",
+      "systemUserWarning": "This is a system user and cannot be modified."
     },
     "EventDialog": {
       "title": "Event",

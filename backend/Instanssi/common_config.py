@@ -188,7 +188,7 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.github.GithubOAuth2",
     "social_core.backends.steam.SteamOpenId",
-    "django.contrib.auth.backends.ModelBackend",
+    "Instanssi.users.backends.SystemUserAwareModelBackend",
 )
 
 # Log handlers, insert our own database log handler

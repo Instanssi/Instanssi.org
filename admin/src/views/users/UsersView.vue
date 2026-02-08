@@ -47,6 +47,19 @@
                     style="max-width: 200px"
                     class="ma-0 pa-0 ml-4"
                 />
+                <v-select
+                    v-model="filterIsSystem"
+                    :items="[
+                        { title: t('UsersView.allSystem'), value: null },
+                        { title: t('UsersView.systemOnly'), value: true },
+                        { title: t('UsersView.nonSystemOnly'), value: false },
+                    ]"
+                    variant="outlined"
+                    density="compact"
+                    :label="t('UsersView.filterBySystem')"
+                    style="max-width: 200px"
+                    class="ma-0 pa-0 ml-4"
+                />
             </v-row>
         </v-col>
         <v-col>
@@ -68,11 +81,14 @@
                     :loading-text="t('UsersView.loadingUsers')"
                     @update:options="onTableOptionsUpdate"
                 >
-                    <template #item.is_superuser="{ item }">
-                        <BooleanIcon :value="item.is_superuser" />
+                    <template #item.is_staff="{ item }">
+                        <BooleanIcon :value="item.is_staff" />
                     </template>
                     <template #item.is_active="{ item }">
                         <BooleanIcon :value="item.is_active" />
+                    </template>
+                    <template #item.is_system="{ item }">
+                        <BooleanIcon :value="item.is_system" />
                     </template>
                     <template #item.date_joined="{ item }">
                         <DateTimeCell :value="item.date_joined" />
@@ -80,7 +96,7 @@
                     <template #item.actions="{ item }">
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.USER)"
-                            :can-delete="auth.canDelete(PermissionTarget.USER)"
+                            :can-delete="auth.canDelete(PermissionTarget.USER) && !item.is_system"
                             @edit="editUser(item.id)"
                             @delete="deleteUser(item)"
                         />
@@ -126,13 +142,14 @@ const auth = useAuth();
 const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
 
 const tableState = useTableState({
-    filterKeys: ["is_active", "is_staff"],
+    filterKeys: ["is_active", "is_staff", "is_system"],
     initialSort: { key: "username", order: "asc" },
 });
 const loading = ref(false);
 
 const filterIsActive = tableState.useBooleanFilter("is_active");
 const filterIsStaff = tableState.useBooleanFilter("is_staff");
+const filterIsSystem = tableState.useBooleanFilter("is_system");
 const totalItems = ref(0);
 const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
@@ -163,14 +180,19 @@ const headers: ReadonlyHeaders = [
         key: "email",
     },
     {
-        title: t("UsersView.headers.superuser"),
-        sortable: false,
-        key: "is_superuser",
+        title: t("UsersView.headers.staff"),
+        sortable: true,
+        key: "is_staff",
     },
     {
         title: t("UsersView.headers.active"),
-        sortable: false,
+        sortable: true,
         key: "is_active",
+    },
+    {
+        title: t("UsersView.headers.system"),
+        sortable: true,
+        key: "is_system",
     },
     {
         title: t("UsersView.headers.dateJoined"),
@@ -200,6 +222,7 @@ async function load(args: LoadArgs) {
                 ...getLoadArgs(args),
                 ...(filterIsActive.value !== null ? { is_active: filterIsActive.value } : {}),
                 ...(filterIsStaff.value !== null ? { is_staff: filterIsStaff.value } : {}),
+                ...(filterIsSystem.value !== null ? { is_system: filterIsSystem.value } : {}),
             },
         });
         users.value = response.data!.results;
@@ -213,7 +236,7 @@ async function load(args: LoadArgs) {
 }
 
 // Reload when filters change
-watch([filterIsActive, filterIsStaff], () => {
+watch([filterIsActive, filterIsStaff, filterIsSystem], () => {
     if (lastLoadArgs.value) {
         debouncedLoad({ ...lastLoadArgs.value, page: 1 });
     }

@@ -2703,6 +2703,12 @@ export type PatchedUserRequest = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
+    /**
+     * Staff status
+     *
+     * Designates whether the user can log into this admin site.
+     */
+    is_staff?: boolean;
 };
 
 /**
@@ -4263,6 +4269,13 @@ export type User = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
+    /**
+     * Staff status
+     *
+     * Designates whether the user can log into this admin site.
+     */
+    is_staff?: boolean;
+    readonly is_system: boolean;
 };
 
 /**
@@ -4430,6 +4443,12 @@ export type UserRequest = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
+    /**
+     * Staff status
+     *
+     * Designates whether the user can log into this admin site.
+     */
+    is_staff?: boolean;
 };
 
 /**
@@ -6028,6 +6047,12 @@ export type UserWritable = {
      * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
      */
     is_active?: boolean;
+    /**
+     * Staff status
+     *
+     * Designates whether the user can log into this admin site.
+     */
+    is_staff?: boolean;
 };
 
 /**
@@ -8641,6 +8666,7 @@ export type AdminUsersListData = {
         is_active?: boolean;
         is_staff?: boolean;
         is_superuser?: boolean;
+        is_system?: boolean;
         /**
          * Number of results to return per page.
          */

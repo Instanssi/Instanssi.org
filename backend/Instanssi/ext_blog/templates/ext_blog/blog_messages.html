@@ -4,7 +4,7 @@
     <div class="message" id="{{ entry.id }}">
         <a style="text-decoration: none;" href="#{{ entry.id }}"><h2>{{ entry.title }}</h2></a>
         <time datetime="{{ entry.date|date:"Y-m-d\TH:i" }}" class="date">{{ entry.date|date:"d.m.Y H:i" }}</time>
-        <div class="content">{{ entry.text|safe }}</div>
+        <div class="content ck-content">{{ entry.text|safe }}</div>
     </div>
 {% endfor %}
 </div>

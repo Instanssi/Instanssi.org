@@ -23,7 +23,7 @@
         <h2>{{ ta_item.item.name }}{% if ta_item.variant %}, {{ ta_item.variant.name }}{% endif %}</h2>
         <span class="item-key">{% if ta_item.item.is_ticket %}LIPPUKOODI{% else %}TUOTEKOODI{% endif %}: {{ ta_item.key }}</span>
     </div>
-    <div class="item-description">{{ ta_item.item.description|safe }}</div>
+    <div class="item-description ck-content">{{ ta_item.item.description|safe }}</div>
 
     {% if ta_item.is_delivered %}
     <div class="delivered-stamp">

@@ -1,0 +1,343 @@
+// CKEditor 5 content styles — trimmed to the plugins we actually use.
+// Source: ckeditor5/dist/ckeditor5-content.css (v47.4.0)
+//
+// Included in pages that render SanitizedHtmlField content.  The HTML must be
+// wrapped in an element with class="ck-content" for these rules to apply.
+
+// ── CSS custom properties ──────────────────────────────────────────────
+
+:root {
+    --ck-content-font-size-tiny: 0.7em;
+    --ck-content-font-size-small: 0.85em;
+    --ck-content-font-size-big: 1.4em;
+    --ck-content-font-size-huge: 1.8em;
+    --ck-content-image-style-spacing: 1.5em;
+    --ck-content-inline-image-style-spacing: calc(var(--ck-content-image-style-spacing) / 2);
+    --ck-content-color-image-caption-background: hsl(0, 0%, 97%);
+    --ck-content-color-image-caption-text: hsl(0, 0%, 20%);
+    --ck-content-color-table-caption-background: hsl(0, 0%, 97%);
+    --ck-content-color-table-caption-text: hsl(0, 0%, 20%);
+    --ck-content-table-style-spacing: 1.5em;
+}
+
+// ── Inline code ────────────────────────────────────────────────────────
+
+.ck-content code {
+    background-color: hsla(0, 0%, 78%, 0.3);
+    padding: .15em;
+    border-radius: 2px;
+}
+
+// ── Blockquote ─────────────────────────────────────────────────────────
+
+.ck-content blockquote {
+    overflow: hidden;
+    padding-right: 1.5em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: solid 5px hsl(0, 0%, 80%);
+}
+
+// ── Code blocks ────────────────────────────────────────────────────────
+
+.ck-content pre {
+    padding: 1em;
+    color: hsl(0, 0%, 20.8%);
+    background: hsla(0, 0%, 78%, 0.3);
+    border: 1px solid hsl(0, 0%, 77%);
+    border-radius: 2px;
+    text-align: left;
+    direction: ltr;
+    tab-size: 4;
+    white-space: pre-wrap;
+    font-style: normal;
+    min-width: 200px;
+}
+
+.ck-content pre code {
+    background: unset;
+    padding: 0;
+    border-radius: 0;
+}
+
+// ── Font size presets ──────────────────────────────────────────────────
+
+.ck-content .text-tiny  { font-size: var(--ck-content-font-size-tiny); }
+.ck-content .text-small { font-size: var(--ck-content-font-size-small); }
+.ck-content .text-big   { font-size: var(--ck-content-font-size-big); }
+.ck-content .text-huge  { font-size: var(--ck-content-font-size-huge); }
+
+// ── Horizontal rule ────────────────────────────────────────────────────
+
+.ck-content hr {
+    margin: 15px 0;
+    height: 4px;
+    background: hsl(0, 0%, 87%);
+    border: 0;
+}
+
+// ── Images ─────────────────────────────────────────────────────────────
+
+.ck-content .image > figcaption {
+    display: table-caption;
+    caption-side: bottom;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    break-before: avoid;
+    color: var(--ck-content-color-image-caption-text);
+    background-color: var(--ck-content-color-image-caption-background);
+    padding: .6em;
+    font-size: .75em;
+    outline-offset: -1px;
+}
+
+.ck-content img.image_resized {
+    height: auto;
+}
+
+.ck-content .image.image_resized {
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.ck-content .image.image_resized img {
+    width: 100%;
+}
+
+.ck-content .image.image_resized > figcaption {
+    display: block;
+}
+
+.ck-content .image.image-style-block-align-left,
+.ck-content .image.image-style-block-align-right {
+    max-width: calc(100% - var(--ck-content-image-style-spacing));
+}
+
+.ck-content .image.image-style-align-left,
+.ck-content .image.image-style-align-right {
+    clear: none;
+}
+
+.ck-content .image.image-style-side {
+    float: right;
+    margin-left: var(--ck-content-image-style-spacing);
+    max-width: 50%;
+}
+
+.ck-content .image.image-style-align-left {
+    float: left;
+    margin-right: var(--ck-content-image-style-spacing);
+}
+
+.ck-content .image.image-style-align-right {
+    float: right;
+    margin-left: var(--ck-content-image-style-spacing);
+}
+
+.ck-content .image.image-style-block-align-right {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.ck-content .image.image-style-block-align-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.ck-content .image-style-align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ck-content .image-style-align-left {
+    float: left;
+    margin-right: var(--ck-content-image-style-spacing);
+}
+
+.ck-content .image-style-align-right {
+    float: right;
+    margin-left: var(--ck-content-image-style-spacing);
+}
+
+.ck-content p + .image.image-style-align-left,
+.ck-content p + .image.image-style-align-right,
+.ck-content p + .image.image-style-side {
+    margin-top: 0;
+}
+
+.ck-content .image-inline.image-style-align-left,
+.ck-content .image-inline.image-style-align-right {
+    margin-top: var(--ck-content-inline-image-style-spacing);
+    margin-bottom: var(--ck-content-inline-image-style-spacing);
+}
+
+.ck-content .image-inline.image-style-align-left {
+    margin-right: var(--ck-content-inline-image-style-spacing);
+}
+
+.ck-content .image-inline.image-style-align-right {
+    margin-left: var(--ck-content-inline-image-style-spacing);
+}
+
+.ck-content .image {
+    display: table;
+    clear: both;
+    text-align: center;
+    margin: 0.9em auto;
+    min-width: 50px;
+}
+
+.ck-content .image img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    min-width: 100%;
+    height: auto;
+}
+
+.ck-content .image-inline {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: flex-start;
+}
+
+.ck-content .image-inline picture {
+    display: flex;
+}
+
+.ck-content .image-inline picture,
+.ck-content .image-inline img {
+    flex-grow: 1;
+    flex-shrink: 1;
+    max-width: 100%;
+}
+
+// ── Lists ──────────────────────────────────────────────────────────────
+
+.ck-content li > p:first-of-type  { margin-top: 0; }
+.ck-content li > p:only-of-type   { margin-top: 0; margin-bottom: 0; }
+
+.ck-content ol     { list-style-type: decimal; }
+.ck-content ol ol  { list-style-type: lower-latin; }
+.ck-content ol ol ol { list-style-type: lower-roman; }
+.ck-content ol ol ol ol { list-style-type: upper-latin; }
+.ck-content ol ol ol ol ol { list-style-type: upper-roman; }
+
+.ck-content ul        { list-style-type: disc; }
+.ck-content ul ul     { list-style-type: circle; }
+.ck-content ul ul ul  { list-style-type: square; }
+
+// ── Media embed ────────────────────────────────────────────────────────
+
+.ck-content .media {
+    clear: both;
+    margin: 0.9em 0;
+    display: block;
+    min-width: 15em;
+}
+
+// ── Tables ─────────────────────────────────────────────────────────────
+
+.ck-content .table th {
+    text-align: left;
+}
+
+.ck-content figure.table {
+    display: table;
+}
+
+.ck-content figure.table > table {
+    width: 100%;
+    height: 100%;
+}
+
+.ck-content .table {
+    margin: 0.9em auto;
+}
+
+.ck-content table.table,
+.ck-content figure.table > table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px double hsl(0, 0%, 70%);
+}
+
+.ck-content table.table th,
+.ck-content figure.table > table th {
+    font-weight: bold;
+    background: hsla(0, 0%, 0%, 0.05);
+}
+
+.ck-content table.table td,
+.ck-content figure.table > table td,
+.ck-content table.table th,
+.ck-content figure.table > table th {
+    min-width: 2em;
+    padding: 0.4em;
+    border: 1px solid hsl(0, 0%, 75%);
+}
+
+.ck-content table.table td > p:first-of-type,
+.ck-content figure.table > table td > p:first-of-type,
+.ck-content table.table th > p:first-of-type,
+.ck-content figure.table > table th > p:first-of-type {
+    margin-top: 0;
+}
+
+.ck-content table.table td > p:last-of-type,
+.ck-content figure.table > table td > p:last-of-type,
+.ck-content table.table th > p:last-of-type,
+.ck-content figure.table > table th > p:last-of-type {
+    margin-bottom: 0;
+}
+
+.ck-content .table > figcaption,
+.ck-content figure.table > table > caption {
+    display: table-caption;
+    caption-side: top;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+    color: var(--ck-content-color-table-caption-text);
+    background-color: var(--ck-content-color-table-caption-background);
+    padding: .6em;
+    font-size: .75em;
+    outline-offset: -1px;
+}
+
+.ck-content .table .ck-table-resized {
+    table-layout: fixed;
+}
+
+.ck-content .table td,
+.ck-content .table th {
+    overflow-wrap: break-word;
+}
+
+.ck-content .table.table-style-align-left {
+    float: left;
+    margin-right: var(--ck-content-table-style-spacing);
+}
+
+.ck-content .table.table-style-align-right {
+    float: right;
+    margin-left: var(--ck-content-table-style-spacing);
+}
+
+.ck-content .table.table-style-align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ck-content .table.table-style-block-align-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.ck-content .table.table-style-block-align-right {
+    margin-left: auto;
+    margin-right: 0;
+}

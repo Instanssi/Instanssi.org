@@ -2,7 +2,7 @@
 <h2>Kompot</h2>
 {% for compo in compos %}
 <h3 id="{{ compo.id }}">{{ compo.name }}</h3>
-{{ compo.description|safe }}
+<div class="ck-content">{{ compo.description|safe }}</div>
 {% endfor %}
 {% else %}
 {% endif %}

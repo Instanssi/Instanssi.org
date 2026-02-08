@@ -65,6 +65,7 @@ $brand-primary: $theme-color-bright;
 
 
 @import './bootstrap.scss';
+@import './ckeditor-content';
 
 @mixin awesome-glyph($code) {
     font: normal normal normal 1em/1 FontAwesome;

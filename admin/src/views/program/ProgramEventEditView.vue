@@ -16,7 +16,7 @@
                             variant="outlined"
                             :label="t('ProgramEventEditView.labels.title') + ' *'"
                         />
-                        <VuetifyTiptap v-model="description.value.value" />
+                        <HtmlEditor v-model="description.value.value" />
                         <div
                             v-if="description.errorMessage.value"
                             class="text-error text-caption mb-4"
@@ -230,6 +230,7 @@ import {
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
+import HtmlEditor from "@/components/form/HtmlEditor.vue";
 import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";

@@ -159,14 +159,13 @@ vi.mock("@/symbols", () => ({
     confirmDialogKey: Symbol("confirmDialog"),
 }));
 
-// Mock VuetifyTiptap component
-vi.mock("vuetify-pro-tiptap", () => ({
-    VuetifyTiptap: {
-        name: "VuetifyTiptap",
+// Mock CKEditor component
+vi.mock("@/components/form/HtmlEditor.vue", () => ({
+    default: {
+        name: "HtmlEditor",
         template:
-            '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)"></textarea>',
+            '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="html-editor"></textarea>',
         props: ["modelValue"],
         emits: ["update:modelValue"],
     },
-    createVuetifyProTipTap: vi.fn(() => ({})),
 }));

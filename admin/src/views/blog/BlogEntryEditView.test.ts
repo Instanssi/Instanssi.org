@@ -39,9 +39,9 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     props: ["breadcrumbs"],
                 },
                 FontAwesomeIcon: true,
-                VuetifyTiptap: {
+                HtmlEditor: {
                     template:
-                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
+                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="html-editor"></textarea>',
                     props: ["modelValue"],
                     emits: ["update:modelValue"],
                 },
@@ -62,8 +62,8 @@ describe("BlogEntryEditView", () => {
 
             // Should have title text field
             expect(wrapper.findComponent({ name: "VTextField" }).exists()).toBe(true);
-            // Should have tiptap editor
-            expect(wrapper.find('[data-testid="tiptap"]').exists()).toBe(true);
+            // Should have HTML editor
+            expect(wrapper.find('[data-testid="html-editor"]').exists()).toBe(true);
             // Should have public switch
             expect(wrapper.findComponent({ name: "VSwitch" }).exists()).toBe(true);
         });
@@ -76,9 +76,9 @@ describe("BlogEntryEditView", () => {
             const titleInput = wrapper.find("input");
             await titleInput.setValue("Test Blog Post");
 
-            // Fill text (tiptap editor)
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("<p>Blog content here</p>");
+            // Fill text (HTML editor)
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("<p>Blog content here</p>");
 
             await flushPromises();
 
@@ -101,8 +101,8 @@ describe("BlogEntryEditView", () => {
             const titleInput = wrapper.find("input");
             await titleInput.setValue("Test Blog Post");
 
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("Content");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("Content");
 
             // Toggle public switch
             const switchInput = wrapper.find('.v-switch input[type="checkbox"]');
@@ -185,8 +185,8 @@ describe("BlogEntryEditView", () => {
             const titleInput = wrapper.find("input");
             await titleInput.setValue("a");
 
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("b");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("b");
             await flushPromises();
 
             await submitForm(wrapper);
@@ -208,8 +208,8 @@ describe("BlogEntryEditView", () => {
 
             const titleInput = wrapper.find("input");
             await titleInput.setValue("Title");
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("Content");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("Content");
             await flushPromises();
 
             await submitForm(wrapper);
@@ -225,8 +225,8 @@ describe("BlogEntryEditView", () => {
 
             const titleInput = wrapper.find("input");
             await titleInput.setValue("Test Title");
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("Content");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("Content");
             await flushPromises();
 
             await submitForm(wrapper);
@@ -236,13 +236,13 @@ describe("BlogEntryEditView", () => {
     });
 
     describe("special features", () => {
-        it("uses VuetifyTiptap for rich text editing", async () => {
+        it("uses HtmlEditor for rich text editing", async () => {
             const wrapper = mountComponent({ eventId: "1" });
             await flushPromises();
 
-            // Tiptap editor should be rendered
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            expect(tiptap.exists()).toBe(true);
+            // HTML editor should be rendered
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            expect(editor.exists()).toBe(true);
         });
 
         it("has dynamic switch label based on public state", async () => {
@@ -261,8 +261,8 @@ describe("BlogEntryEditView", () => {
             await flushPromises();
 
             // Only fill text, not title
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("Content");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("Content");
 
             await submitForm(wrapper);
 

@@ -11,7 +11,6 @@ import { setupIcons } from "@/icons";
 import router from "@/router";
 import { setupClient } from "@/client";
 import { useAuth } from "@/services/auth";
-import { vuetifyTipTap } from "@/tiptap";
 
 function init() {
     const app = createApp(App);
@@ -29,7 +28,6 @@ function init() {
     setupIcons(app);
     app.use(router);
     app.use(vuetify);
-    app.use(vuetifyTipTap);
     app.use(i18n);
     app.use(toast, toastOptions);
     app.mount("#app");

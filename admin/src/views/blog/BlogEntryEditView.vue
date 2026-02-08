@@ -16,7 +16,7 @@
                         <div class="text-subtitle-2 mb-1">
                             {{ t("BlogPostDialog.labels.text") }} *
                         </div>
-                        <VuetifyTiptap v-model="text.value.value" />
+                        <HtmlEditor v-model="text.value.value" />
                         <div v-if="text.errorMessage.value" class="text-error text-caption mb-4">
                             {{ text.errorMessage.value }}
                         </div>
@@ -70,6 +70,7 @@ import { boolean as yupBoolean, object as yupObject, string as yupString } from 
 
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
+import HtmlEditor from "@/components/form/HtmlEditor.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { handleApiError, type FieldMapping } from "@/utils/http";

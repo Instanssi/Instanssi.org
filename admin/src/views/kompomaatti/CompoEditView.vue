@@ -13,7 +13,7 @@
                             variant="outlined"
                             :label="t('CompoEditView.labels.name') + ' *'"
                         />
-                        <VuetifyTiptap v-model="description.value.value" />
+                        <HtmlEditor v-model="description.value.value" />
                         <div
                             v-if="description.errorMessage.value"
                             class="text-error text-caption mb-4"
@@ -253,6 +253,7 @@ import {
 import * as api from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FileSizeInputField from "@/components/form/FileSizeInputField.vue";
+import HtmlEditor from "@/components/form/HtmlEditor.vue";
 import FormatComboboxField from "@/components/form/FormatComboboxField.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

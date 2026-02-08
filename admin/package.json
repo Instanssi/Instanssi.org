@@ -26,6 +26,7 @@
     "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-vue": "^7.3.0",
     "@fontsource/exo-2": "^5.2.8",
     "@fontsource/fira-mono": "^5.2.7",
     "@fontsource/open-sans": "^5.2.7",
@@ -37,6 +38,7 @@
     "@pdf-lib/fontkit": "^1.1.1",
     "axios": "^1.13.5",
     "chart.js": "^4.5.1",
+    "ckeditor5": "^47.4.0",
     "lodash-es": "^4.17.23",
     "pdf-lib": "^1.17.1",
     "temporal-polyfill": "^0.3.0",
@@ -47,7 +49,6 @@
     "vue-router": "^4.6.4",
     "vue-toastification": "2.0.0-rc.5",
     "vuetify": "^3.11.8",
-    "vuetify-pro-tiptap": "^2.8.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
     "yup": "^1.7.1"
   },

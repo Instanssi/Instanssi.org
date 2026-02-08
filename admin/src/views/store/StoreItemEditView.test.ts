@@ -71,9 +71,9 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     ],
                     emits: ["update:modelValue"],
                 },
-                VuetifyTiptap: {
+                HtmlEditor: {
                     template:
-                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
+                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="html-editor"></textarea>',
                     props: ["modelValue"],
                     emits: ["update:modelValue"],
                 },
@@ -102,8 +102,8 @@ describe("StoreItemEditView", () => {
                 1
             );
 
-            // Description tiptap
-            expect(wrapper.find('[data-testid="tiptap"]').exists()).toBe(true);
+            // Description HTML editor
+            expect(wrapper.find('[data-testid="html-editor"]').exists()).toBe(true);
 
             // File input for image
             expect(wrapper.findComponent({ name: "VFileInput" }).exists()).toBe(true);
@@ -589,12 +589,12 @@ describe("StoreItemEditView", () => {
             expect(textFields.length).toBeGreaterThan(1);
         });
 
-        it("uses VuetifyTiptap for rich text description", async () => {
+        it("uses HtmlEditor for rich text description", async () => {
             const wrapper = mountComponent({ eventId: "1" });
             await flushPromises();
 
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            expect(tiptap.exists()).toBe(true);
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            expect(editor.exists()).toBe(true);
         });
 
         it("has price field with step=0.01 for cents", async () => {
@@ -614,9 +614,9 @@ describe("StoreItemEditView", () => {
             const textFields = wrapper.findAllComponents({ name: "VTextField" });
             await textFields[0]!.find("input").setValue("Store Item Name");
 
-            // Set description via tiptap
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("<p>Item description</p>");
+            // Set description via HTML editor
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("<p>Item description</p>");
 
             const numberInputs = wrapper.findAll('input[type="number"]');
             await numberInputs[0]!.setValue("19.99"); // price

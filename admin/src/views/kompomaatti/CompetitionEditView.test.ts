@@ -53,9 +53,9 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     ],
                     emits: ["update:modelValue"],
                 },
-                VuetifyTiptap: {
+                HtmlEditor: {
                     template:
-                        '<div class="vuetify-tiptap-stub"><textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /></div>',
+                        '<div class="html-editor-stub"><textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /></div>',
                     props: ["modelValue"],
                     emits: ["update:modelValue"],
                 },
@@ -363,9 +363,9 @@ describe("CompetitionEditView", () => {
             const textInputs = wrapper.findAll('input[type="text"]');
             await textInputs[0]!.setValue("Test Competition");
 
-            // Set description via tiptap editor stub
-            const tiptapStub = wrapper.find(".vuetify-tiptap-stub textarea");
-            await tiptapStub.setValue("Competition description");
+            // Set description via HTML editor stub
+            const editorStub = wrapper.find(".html-editor-stub textarea");
+            await editorStub.setValue("Competition description");
 
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
             await datetimeInputs[0]!.setValue("2024-03-15T18:00");

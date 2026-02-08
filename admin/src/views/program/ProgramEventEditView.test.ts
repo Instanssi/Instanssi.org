@@ -60,9 +60,9 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     emits: ["update:modelValue"],
                 },
                 FontAwesomeIcon: true,
-                VuetifyTiptap: {
+                HtmlEditor: {
                     template:
-                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
+                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="html-editor"></textarea>',
                     props: ["modelValue"],
                     emits: ["update:modelValue"],
                 },
@@ -90,8 +90,8 @@ describe("ProgramEventEditView", () => {
                 1
             );
 
-            // Description (tiptap editor)
-            expect(wrapper.find('[data-testid="tiptap"]').exists()).toBe(true);
+            // Description (HTML editor)
+            expect(wrapper.find('[data-testid="html-editor"]').exists()).toBe(true);
 
             // Datetime fields
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
@@ -523,8 +523,8 @@ describe("ProgramEventEditView", () => {
             const textFields = wrapper.findAllComponents({ name: "VTextField" });
             await textFields[0]!.find("input").setValue("Program Event Title");
 
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("Event description");
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("Event description");
 
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
             await datetimeInputs[0]!.setValue("2024-03-16T10:00");

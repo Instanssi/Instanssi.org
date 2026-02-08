@@ -53,9 +53,9 @@ function mountComponent(props: { eventId: string; id?: string }) {
                     ],
                     emits: ["update:modelValue"],
                 },
-                VuetifyTiptap: {
+                HtmlEditor: {
                     template:
-                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="tiptap"></textarea>',
+                        '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" data-testid="html-editor"></textarea>',
                     props: ["modelValue"],
                     emits: ["update:modelValue"],
                 },
@@ -79,7 +79,7 @@ describe("CompoEditView", () => {
             expect(wrapper.findComponent({ name: "VTextField" }).exists()).toBe(true);
 
             // Tiptap editor for description
-            expect(wrapper.find('[data-testid="tiptap"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="html-editor"]').exists()).toBe(true);
 
             // Datetime fields (5 total)
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
@@ -418,9 +418,9 @@ describe("CompoEditView", () => {
             const textInputs = wrapper.findAll('input[type="text"]');
             await textInputs[0]!.setValue("Demo Compo");
 
-            // Set description via tiptap
-            const tiptap = wrapper.find('[data-testid="tiptap"]');
-            await tiptap.setValue("<p>Compo description</p>");
+            // Set description via HTML editor
+            const editor = wrapper.find('[data-testid="html-editor"]');
+            await editor.setValue("<p>Compo description</p>");
 
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");

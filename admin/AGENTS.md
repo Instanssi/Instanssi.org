@@ -13,7 +13,7 @@ This document provides AI coding assistants with comprehensive context about the
 - **Routing**: Vue Router 4
 - **State Management**: Composables pattern with Vue reactivity
 - **API Client**: Auto-generated from OpenAPI spec using @hey-api/openapi-ts
-- **Rich Text Editor**: vuetify-pro-tiptap
+- **Rich Text Editor**: CKEditor 5
 - **Form Validation**: vee-validate + yup
 - **HTTP Client**: Axios
 - **Internationalization**: vue-i18n
@@ -44,7 +44,7 @@ admin/
 │   ├── main.ts           # App entry point
 │   ├── router.ts         # Route configuration
 │   ├── symbols.ts        # Vue injection symbols
-│   └── tiptap.ts         # Rich text editor configuration
+│   └── ckeditor.ts       # Rich text editor configuration
 ├── openapi/              # OpenAPI spec storage
 ├── public/               # Public static files
 ├── package.json

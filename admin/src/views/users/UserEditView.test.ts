@@ -26,6 +26,12 @@ vi.mock("vue-router", () => ({
     })),
 }));
 
+vi.mock("@/services/auth", () => ({
+    useAuth: vi.fn(() => ({
+        isSuperUser: vi.fn(() => true),
+    })),
+}));
+
 const vuetify = createVuetify({ components, directives });
 
 function mountComponent(props: { id?: string }) {
@@ -77,6 +83,7 @@ describe("UserEditView", () => {
                 first_name: "John",
                 last_name: "Doe",
                 is_active: true,
+                is_staff: false,
             });
         });
 

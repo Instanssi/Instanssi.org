@@ -45,23 +45,35 @@
                             :disabled="isSystem"
                             :label="t('UserDialog.labels.lastName')"
                         />
-                        <v-switch
+                        <ToggleSwitch
                             v-model="isActive.value.value"
-                            :error-messages="isActive.errorMessage.value"
+                            :error-message="isActive.errorMessage.value"
                             :disabled="isSystem"
-                            :label="isActiveLabel"
+                            :label-on="t('UserDialog.labels.isActiveOn')"
+                            :label-off="t('UserDialog.labels.isActiveOff')"
+                            :hint-on="t('UserDialog.labels.isActiveHintOn')"
+                            :hint-off="t('UserDialog.labels.isActiveHintOff')"
+                            color="success"
                         />
-                        <v-switch
+                        <ToggleSwitch
                             v-model="isStaff.value.value"
-                            :error-messages="isStaff.errorMessage.value"
+                            :error-message="isStaff.errorMessage.value"
                             :disabled="isSystem || !auth.isSuperUser()"
-                            :label="isStaffLabel"
+                            :label-on="t('UserDialog.labels.isStaffOn')"
+                            :label-off="t('UserDialog.labels.isStaffOff')"
+                            :hint-on="t('UserDialog.labels.isStaffHintOn')"
+                            :hint-off="t('UserDialog.labels.isStaffHintOff')"
+                            color="success"
                         />
-                        <v-switch
+                        <ToggleSwitch
                             v-if="isEditMode"
                             :model-value="isSystem"
                             disabled
-                            :label="isSystemLabel"
+                            :label-on="t('UserDialog.labels.isSystemOn')"
+                            :label-off="t('UserDialog.labels.isSystemOff')"
+                            :hint-on="t('UserDialog.labels.isSystemHintOn')"
+                            :hint-off="t('UserDialog.labels.isSystemHintOff')"
+                            color="success"
                         />
                     </v-form>
                 </v-card-text>
@@ -99,6 +111,7 @@ import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useAuth } from "@/services/auth";
 import { handleApiError, type FieldMapping } from "@/utils/http";
@@ -129,16 +142,6 @@ const userName = ref<string>("");
 const dateJoined = ref<string>("");
 const isSystem = ref(false);
 const isEditMode = computed(() => props.id !== undefined);
-
-const isActiveLabel = computed(() =>
-    isActive.value.value ? t("UserDialog.labels.isActive") : t("UserDialog.labels.isNotActive")
-);
-const isStaffLabel = computed(() =>
-    isStaff.value.value ? t("UserDialog.labels.isStaff") : t("UserDialog.labels.isNotStaff")
-);
-const isSystemLabel = computed(() =>
-    isSystem.value ? t("UserDialog.labels.isSystem") : t("UserDialog.labels.isNotSystem")
-);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     const items: BreadcrumbItem[] = [{ title: t("UsersView.title"), to: { name: "users" } }];

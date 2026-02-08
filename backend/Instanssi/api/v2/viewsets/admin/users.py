@@ -16,7 +16,17 @@ class UserViewSet(PermissionViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer  # type: ignore[assignment]
-    ordering_fields = ("id", "username", "first_name", "last_name", "email", "date_joined")
+    ordering_fields = (
+        "id",
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "date_joined",
+        "is_active",
+        "is_staff",
+        "is_system",
+    )
     filterset_fields = ("email", "username", "is_active", "is_superuser", "is_staff", "is_system")
     search_fields = ("username", "first_name", "last_name", "email")
 

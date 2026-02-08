@@ -181,17 +181,17 @@ const headers: ReadonlyHeaders = [
     },
     {
         title: t("UsersView.headers.staff"),
-        sortable: false,
+        sortable: true,
         key: "is_staff",
     },
     {
         title: t("UsersView.headers.active"),
-        sortable: false,
+        sortable: true,
         key: "is_active",
     },
     {
         title: t("UsersView.headers.system"),
-        sortable: false,
+        sortable: true,
         key: "is_system",
     },
     {

@@ -31,7 +31,8 @@ class StoreSummaryViewSet(GenericViewSet[StoreItem]):
     def list(self, request: Request, **kwargs: Any) -> Response:
         event_pk = int(self.kwargs["event_pk"])
 
-        # Base queryset: only items from paid transactions for this event
+        # Base queryset: only items from paid transactions for this event.
+        # StoreTransaction.is_paid is a property that checks time_paid is not None.
         base_qs = TransactionItem.objects.filter(
             item__event_id=event_pk,
             transaction__time_paid__isnull=False,

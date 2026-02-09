@@ -39,7 +39,7 @@ def test_empty_event_returns_zeros(summary_staff_api_client, event):
     response = summary_staff_api_client.get(url)
     assert response.status_code == 200
     assert response.data["total_items_sold"] == 0
-    assert response.data["total_revenue"] == "0"
+    assert Decimal(response.data["total_revenue"]) == Decimal(0)
     assert response.data["items"] == []
     assert response.data["sales_per_day"] == []
     assert response.data["sales_per_hour"] == []
@@ -71,7 +71,7 @@ def test_excludes_unpaid_transactions(summary_staff_api_client, unpaid_ticket, e
     response = summary_staff_api_client.get(url)
     assert response.status_code == 200
     assert response.data["total_items_sold"] == 0
-    assert response.data["total_revenue"] == "0"
+    assert Decimal(response.data["total_revenue"]) == Decimal(0)
 
 
 @pytest.mark.django_db

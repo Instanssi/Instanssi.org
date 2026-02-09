@@ -10,7 +10,7 @@ class StoreSummaryItemRow(serializers.Serializer[Any]):
     variant_id = serializers.IntegerField(allow_null=True)
     variant_name = serializers.CharField(allow_null=True)
     quantity = serializers.IntegerField()
-    revenue = serializers.CharField()
+    revenue = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class StoreSummaryDayRow(serializers.Serializer[Any]):
@@ -26,7 +26,7 @@ class StoreSummaryHourRow(serializers.Serializer[Any]):
 @extend_schema_serializer(many=False)
 class StoreSummarySerializer(serializers.Serializer[Any]):
     total_items_sold = serializers.IntegerField()
-    total_revenue = serializers.CharField()
+    total_revenue = serializers.DecimalField(max_digits=10, decimal_places=2)
     items = StoreSummaryItemRow(many=True)
     sales_per_day = StoreSummaryDayRow(many=True)
     sales_per_hour = StoreSummaryHourRow(many=True)

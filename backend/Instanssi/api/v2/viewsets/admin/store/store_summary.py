@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -55,7 +56,7 @@ class StoreSummaryViewSet(GenericViewSet[StoreItem]):
                 "variant_id": row["variant__id"],
                 "variant_name": row["variant__name"],
                 "quantity": row["quantity"],
-                "revenue": str(row["revenue"]),
+                "revenue": row["revenue"],
             }
             for row in items_qs
         ]
@@ -80,7 +81,7 @@ class StoreSummaryViewSet(GenericViewSet[StoreItem]):
 
         data = {
             "total_items_sold": totals["total_items_sold"] or 0,
-            "total_revenue": str(totals["total_revenue"] or 0),
+            "total_revenue": totals["total_revenue"] or Decimal(0),
             "items": items,
             "sales_per_day": sales_per_day,
             "sales_per_hour": sales_per_hour,

@@ -10906,6 +10906,8 @@ components:
           type: integer
         total_revenue:
           type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
         items:
           type: array
           items:
@@ -10962,6 +10964,8 @@ components:
           type: integer
         revenue:
           type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
       required:
       - item_id
       - item_name

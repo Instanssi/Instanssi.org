@@ -16,6 +16,9 @@ vi.mock("@/api", () => ({
     adminUsersRetrieve: vi.fn().mockResolvedValue({ data: {} }),
     adminUsersList: vi.fn().mockResolvedValue({ data: { results: [] } }),
 
+    // Groups
+    adminGroupsList: vi.fn().mockResolvedValue({ data: { results: [], count: 0 } }),
+
     // Events
     adminEventsCreate: vi.fn().mockResolvedValue({ data: { id: 1 } }),
     adminEventsPartialUpdate: vi.fn().mockResolvedValue({ data: { id: 1 } }),

@@ -54,7 +54,7 @@
     img {
         max-width: 100%;
         height: auto;
-        margin: 0.5em;
+        margin: 0 !important;
     }
 
     img[data-display="inline"] {
@@ -67,14 +67,12 @@
 
     img[data-display="left"] {
         float: left;
-        margin-right: 12px;
-        margin-bottom: 8px;
+        margin: 0 12px 8px 0 !important;
     }
 
     img[data-display="right"] {
         float: right;
-        margin-left: 12px;
-        margin-bottom: 8px;
+        margin: 0 0 8px 12px !important;
     }
 
     ul[data-type="taskList"] {

@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { faCode, faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { Image } from "vuetify-pro-tiptap";
@@ -62,7 +62,7 @@ watch(htmlMode, () => {
     editorContent.value = props.modelValue;
 });
 
-const imageExtensions = computed(() => [
+const imageExtensions = [
     Image.configure({
         upload: async (file: File): Promise<string> => {
             try {
@@ -78,5 +78,5 @@ const imageExtensions = computed(() => [
             }
         },
     }),
-]);
+];
 </script>

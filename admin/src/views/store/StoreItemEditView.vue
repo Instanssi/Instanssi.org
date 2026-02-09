@@ -16,7 +16,7 @@
                             variant="outlined"
                             :label="t('StoreItemEditView.labels.name') + ' *'"
                         />
-                        <VuetifyTiptap v-model="description.value.value" />
+                        <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div
                             v-if="description.errorMessage.value"
                             class="text-error text-caption mb-4"
@@ -267,6 +267,7 @@ import type { StoreItemVariant } from "@/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import ImageUploadField from "@/components/form/ImageUploadField.vue";
+import RichTextEditor from "@/components/form/RichTextEditor.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";

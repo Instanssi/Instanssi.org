@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import AllowAny, DjangoModelPermissions
+from rest_framework.permissions import AllowAny, DjangoModelPermissions, IsAdminUser
 from rest_framework.viewsets import (
     GenericViewSet,
     ModelViewSet,
@@ -73,8 +73,8 @@ class FullDjangoModelPermissions(DjangoModelPermissions):
 class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
     """Read-only viewset that requires Django model view permissions.
 
-    Provides list and retrieve actions only. Users must have the
-    {app}.view_{model} permission to access any endpoint.
+    Provides list and retrieve actions only. Users must have is_staff=True
+    and the {app}.view_{model} permission to access any endpoint.
 
     Use for data that should only be readable by staff with explicit permissions.
     Includes LimitOffsetPagination and standard filter backends by default.
@@ -83,7 +83,7 @@ class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
     can override this by setting their own `ordering` attribute.
     """
 
-    permission_classes = [FullDjangoModelPermissions]
+    permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
     filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering = ("-id",)
@@ -93,7 +93,7 @@ class PermissionViewSet(ModelViewSet[Model]):
     """Full CRUD viewset that requires Django model permissions.
 
     Provides list, retrieve, create, update, partial_update, and destroy actions.
-    Each action requires the corresponding Django model permission.
+    Each action requires the corresponding Django model permission and is_staff=True.
 
     This is the standard base class for staff-only API endpoints.
     Includes LimitOffsetPagination and standard filter backends by default.
@@ -103,7 +103,7 @@ class PermissionViewSet(ModelViewSet[Model]):
     can override this by setting their own `ordering` attribute.
     """
 
-    permission_classes = [FullDjangoModelPermissions]
+    permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
     filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     ordering = ("-id",)

@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 
 from django.db.models import Count, Sum
 from django.db.models.functions import ExtractHour, TruncDate
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -23,7 +24,7 @@ class StoreSummaryViewSet(GenericViewSet[StoreItem]):
     Permission is derived from StoreItem (store.view_storeitem).
     """
 
-    permission_classes = [FullDjangoModelPermissions]
+    permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     queryset = StoreItem.objects.all()
     serializer_class = StoreSummarySerializer
     pagination_class = None

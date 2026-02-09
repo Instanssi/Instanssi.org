@@ -6,25 +6,18 @@ def get_base_url(event_id):
 
 
 @pytest.mark.django_db
-def test_unauthorized_status_endpoint(auth_client, past_event):
-    """Test that authenticated users without permissions can still get status."""
-    # Status endpoint only requires IsAuthenticated, not specific permissions
-    url = get_base_url(past_event.id) + "status/"
-    assert auth_client.get(url).status_code == 200
-
-
-@pytest.mark.django_db
 @pytest.mark.parametrize(
-    "endpoint,method,status",
+    "endpoint,method",
     [
-        ("show/", "POST", 403),
-        ("hide/", "POST", 403),
-        ("optimize-scores/", "POST", 403),
-        ("remove-old-votes/", "POST", 403),
-        ("transfer-rights/", "POST", 403),
+        ("status/", "GET"),
+        ("show/", "POST"),
+        ("hide/", "POST"),
+        ("optimize-scores/", "POST"),
+        ("remove-old-votes/", "POST"),
+        ("transfer-rights/", "POST"),
     ],
 )
-def test_unauthorized_archiver_action_endpoints(auth_client, past_event, endpoint, method, status):
-    """Test unauthorized access to archiver action endpoints (Logged in without permissions)."""
+def test_unauthorized_archiver_endpoints(auth_client, past_event, endpoint, method):
+    """Test that non-staff users are denied access to all archiver endpoints."""
     url = get_base_url(past_event.id) + endpoint
-    assert auth_client.generic(method, url).status_code == status
+    assert auth_client.generic(method, url).status_code == 403

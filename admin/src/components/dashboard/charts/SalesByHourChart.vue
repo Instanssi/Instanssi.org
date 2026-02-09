@@ -17,7 +17,6 @@ import {
     LinearScale,
     Tooltip,
 } from "chart.js";
-import { Temporal } from "temporal-polyfill";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { Bar } from "vue-chartjs";
@@ -27,7 +26,7 @@ import ChartCard from "@/components/dashboard/ChartCard.vue";
 ChartJS.register(BarElement, CategoryScale, Legend, LinearScale, Tooltip);
 
 const props = defineProps<{
-    paidTimes: Temporal.ZonedDateTime[];
+    salesPerHour: Array<{ hour: number; count: number }>;
 }>();
 
 const { t } = useI18n();
@@ -51,15 +50,14 @@ const chartOptions = {
 };
 
 const chartData = computed(() => {
-    if (props.paidTimes.length === 0) {
+    if (props.salesPerHour.length === 0) {
         return { labels: [], datasets: [] };
     }
 
-    // Group sales by hour (in Helsinki timezone)
+    // Build hour -> count map from pre-aggregated data
     const salesByHour = new Array(24).fill(0);
-    for (const paidTime of props.paidTimes) {
-        const hour = paidTime.hour;
-        salesByHour[hour]++;
+    for (const row of props.salesPerHour) {
+        salesByHour[row.hour] = row.count;
     }
 
     const labels: string[] = [];

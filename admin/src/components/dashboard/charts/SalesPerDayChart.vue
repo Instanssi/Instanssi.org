@@ -27,7 +27,7 @@ import ChartCard from "@/components/dashboard/ChartCard.vue";
 ChartJS.register(BarElement, CategoryScale, Legend, LinearScale, Tooltip);
 
 const props = defineProps<{
-    paidTimes: Temporal.ZonedDateTime[];
+    salesPerDay: Array<{ date: string; count: number }>;
 }>();
 
 const { t } = useI18n();
@@ -51,30 +51,26 @@ const chartOptions = {
 };
 
 const chartData = computed(() => {
-    if (props.paidTimes.length === 0) {
+    if (props.salesPerDay.length === 0) {
         return { labels: [], datasets: [] };
     }
 
-    // Group sales by date (in Helsinki timezone)
+    // Build a map from the pre-aggregated data
     const salesByDate = new Map<string, number>();
-    for (const paidTime of props.paidTimes) {
-        const dateKey = paidTime.toPlainDate().toString();
-        salesByDate.set(dateKey, (salesByDate.get(dateKey) ?? 0) + 1);
+    for (const row of props.salesPerDay) {
+        salesByDate.set(row.date, row.count);
     }
 
     // Get date range and fill in all days
     const sortedDates = Array.from(salesByDate.keys()).sort();
-    if (sortedDates.length === 0) {
-        return { labels: [], datasets: [] };
-    }
-
-    const labels: string[] = [];
-    const data: number[] = [];
     const firstDate = sortedDates[0];
     const lastDate = sortedDates[sortedDates.length - 1];
     if (!firstDate || !lastDate) {
         return { labels: [], datasets: [] };
     }
+
+    const labels: string[] = [];
+    const data: number[] = [];
 
     // Iterate through date range using Temporal
     let currentDate = Temporal.PlainDate.from(firstDate);

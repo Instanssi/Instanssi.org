@@ -189,6 +189,8 @@ import type {
     AdminEventStoreReceiptsRetrieveResponses,
     AdminEventStoreReceiptsUpdateData,
     AdminEventStoreReceiptsUpdateResponses,
+    AdminEventStoreSummaryListData,
+    AdminEventStoreSummaryListResponses,
     AdminEventStoreTransactionItemsCreateData,
     AdminEventStoreTransactionItemsCreateResponses,
     AdminEventStoreTransactionItemsDestroyData,
@@ -2945,6 +2947,38 @@ export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean
             "Content-Type": "application/json",
             ...options.headers,
         },
+    });
+};
+
+/**
+ * Staff viewset for aggregated store sales summary.
+ *
+ * Returns pre-aggregated statistics (totals, per-item breakdown,
+ * sales per day, sales per hour) without exposing any PII.
+ * Permission is derived from StoreItem (store.view_storeitem).
+ */
+export const adminEventStoreSummaryList = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreSummaryListData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventStoreSummaryListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/summary/",
+        ...options,
     });
 };
 

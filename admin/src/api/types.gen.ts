@@ -3871,6 +3871,33 @@ export type StoreItemVariantRequest = {
     name: string;
 };
 
+export type StoreSummary = {
+    total_items_sold: number;
+    total_revenue: string;
+    items: Array<StoreSummaryItemRow>;
+    sales_per_day: Array<StoreSummaryDayRow>;
+    sales_per_hour: Array<StoreSummaryHourRow>;
+};
+
+export type StoreSummaryDayRow = {
+    date: string;
+    count: number;
+};
+
+export type StoreSummaryHourRow = {
+    hour: number;
+    count: number;
+};
+
+export type StoreSummaryItemRow = {
+    item_id: number;
+    item_name: string;
+    variant_id: number | null;
+    variant_name: string | null;
+    quantity: number;
+    revenue: string;
+};
+
 /**
  * Serializer for StoreTransaction model (staff access).
  */
@@ -8173,6 +8200,22 @@ export type AdminEventStoreReceiptsResendCreateResponses = {
 
 export type AdminEventStoreReceiptsResendCreateResponse =
     AdminEventStoreReceiptsResendCreateResponses[keyof AdminEventStoreReceiptsResendCreateResponses];
+
+export type AdminEventStoreSummaryListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/store/summary/";
+};
+
+export type AdminEventStoreSummaryListResponses = {
+    200: Array<StoreSummary>;
+};
+
+export type AdminEventStoreSummaryListResponse =
+    AdminEventStoreSummaryListResponses[keyof AdminEventStoreSummaryListResponses];
 
 export type AdminEventStoreTransactionItemsListData = {
     body?: never;

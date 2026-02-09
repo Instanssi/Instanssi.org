@@ -420,7 +420,7 @@ const router = createRouter({
             name: "store-summary",
             meta: {
                 requireAuth: true,
-                requireViewPermission: PermissionTarget.TRANSACTION_ITEM,
+                requireViewPermission: PermissionTarget.STORE_ITEM,
             },
             props: true,
             component: () => import("@/views/store/StoreSummaryView.vue"),

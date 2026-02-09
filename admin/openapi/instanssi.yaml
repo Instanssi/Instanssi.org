@@ -3026,6 +3026,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Receipt'
           description: ''
+  /api/v2/admin/event/{event_pk}/store/summary/:
+    get:
+      operationId: admin_event_store_summary_list
+      description: |-
+        Staff viewset for aggregated store sales summary.
+
+        Returns pre-aggregated statistics (totals, per-item breakdown,
+        sales per day, sales per hour) without exposing any PII.
+        Permission is derived from StoreItem (store.view_storeitem).
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreSummary'
+          description: ''
   /api/v2/admin/event/{event_pk}/store/transaction_items/:
     get:
       operationId: admin_event_store_transaction_items_list
@@ -4174,8 +4201,12 @@ paths:
   /api/v2/auth/social_urls/:
     get:
       operationId: get_social_auth_urls
-      description: Returns a list of URLs that can be used to begin a social authentication
-        process.
+      description: |-
+        Returns a list of URLs that can be used to begin a social authentication process.
+
+        Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
+        Without this, the first login attempt in a fresh browser session would fail
+        because no Django template renders {% csrf_token %} to trigger cookie creation.
       parameters:
       - in: query
         name: next
@@ -10868,6 +10899,80 @@ components:
       required:
       - item
       - name
+    StoreSummary:
+      type: object
+      properties:
+        total_items_sold:
+          type: integer
+        total_revenue:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreSummaryItemRow'
+        sales_per_day:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreSummaryDayRow'
+        sales_per_hour:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreSummaryHourRow'
+      required:
+      - items
+      - sales_per_day
+      - sales_per_hour
+      - total_items_sold
+      - total_revenue
+    StoreSummaryDayRow:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        count:
+          type: integer
+      required:
+      - count
+      - date
+    StoreSummaryHourRow:
+      type: object
+      properties:
+        hour:
+          type: integer
+        count:
+          type: integer
+      required:
+      - count
+      - hour
+    StoreSummaryItemRow:
+      type: object
+      properties:
+        item_id:
+          type: integer
+        item_name:
+          type: string
+        variant_id:
+          type: integer
+          nullable: true
+        variant_name:
+          type: string
+          nullable: true
+        quantity:
+          type: integer
+        revenue:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - item_id
+      - item_name
+      - quantity
+      - revenue
+      - variant_id
+      - variant_name
     StoreTransaction:
       type: object
       description: Serializer for StoreTransaction model (staff access).

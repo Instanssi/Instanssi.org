@@ -133,7 +133,7 @@ const primaryLinks: NavigationLinks = [
                 title: t("App.nav.storeSummary"),
                 icon: faChartPie,
                 to: "store-summary",
-                requirePerm: PermissionTarget.TRANSACTION_ITEM,
+                requirePerm: PermissionTarget.STORE_ITEM,
             },
             {
                 title: t("App.nav.storeItems"),

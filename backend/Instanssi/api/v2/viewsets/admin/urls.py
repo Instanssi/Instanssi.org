@@ -28,6 +28,7 @@ from Instanssi.api.v2.viewsets.admin.store.store_item_variants import (
     StoreItemVariantViewSet,
 )
 from Instanssi.api.v2.viewsets.admin.store.store_items import StoreItemViewSet
+from Instanssi.api.v2.viewsets.admin.store.store_summary import StoreSummaryViewSet
 from Instanssi.api.v2.viewsets.admin.store.store_transactions import (
     StoreTransactionViewSet,
 )
@@ -69,6 +70,7 @@ store_router.register("item_variants", StoreItemVariantViewSet, basename="admin_
 store_router.register("transactions", StoreTransactionViewSet, basename="admin_store_transactions")
 store_router.register("transaction_items", TransactionItemViewSet, basename="admin_store_transaction_items")
 store_router.register("receipts", ReceiptViewSet, basename="admin_store_receipts")
+store_router.register("summary", StoreSummaryViewSet, basename="admin_store_summary")
 
 # /api/v2/admin/event/<event_pk>/program/...
 program_router = routers.SimpleRouter()

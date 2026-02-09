@@ -189,6 +189,8 @@ import type {
     AdminEventStoreReceiptsRetrieveResponses,
     AdminEventStoreReceiptsUpdateData,
     AdminEventStoreReceiptsUpdateResponses,
+    AdminEventStoreSummaryListData,
+    AdminEventStoreSummaryListResponses,
     AdminEventStoreTransactionItemsCreateData,
     AdminEventStoreTransactionItemsCreateResponses,
     AdminEventStoreTransactionItemsDestroyData,
@@ -2949,6 +2951,38 @@ export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean
 };
 
 /**
+ * Staff viewset for aggregated store sales summary.
+ *
+ * Returns pre-aggregated statistics (totals, per-item breakdown,
+ * sales per day, sales per hour) without exposing any PII.
+ * Permission is derived from StoreItem (store.view_storeitem).
+ */
+export const adminEventStoreSummaryList = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreSummaryListData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventStoreSummaryListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/summary/",
+        ...options,
+    });
+};
+
+/**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsList = <ThrowOnError extends boolean = false>(
@@ -3918,6 +3952,10 @@ export const logout = <ThrowOnError extends boolean = false>(
 
 /**
  * Returns a list of URLs that can be used to begin a social authentication process.
+ *
+ * Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
+ * Without this, the first login attempt in a fresh browser session would fail
+ * because no Django template renders {% csrf_token %} to trigger cookie creation.
  */
 export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
     options?: Options<GetSocialAuthUrlsData, ThrowOnError>

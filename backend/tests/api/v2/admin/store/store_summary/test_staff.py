@@ -4,6 +4,8 @@ from decimal import Decimal
 
 import pytest
 
+from Instanssi.store.models import TransactionItem
+
 
 def get_base_url(event_id):
     return f"/api/v2/admin/event/{event_id}/store/summary/"
@@ -118,14 +120,25 @@ def test_no_pii_in_response(summary_staff_api_client, transaction_item_a, event)
 @pytest.mark.django_db
 def test_variant_breakdown(
     summary_staff_api_client,
-    non_ticket_transaction_item,
+    variant_item,
+    store_item_variant,
+    store_transaction,
     event,
 ):
     """Items with variants show the variant name in the breakdown."""
+    TransactionItem.objects.create(
+        key="cccc1111dddd2222eeee3333ffff4444",
+        item=variant_item,
+        variant=store_item_variant,
+        transaction=store_transaction,
+        purchase_price=variant_item.price,
+        original_price=variant_item.price,
+    )
     url = get_base_url(event.id)
     response = summary_staff_api_client.get(url)
     assert response.status_code == 200
     assert response.data["total_items_sold"] == 1
-    # non_ticket_transaction_item has no variant (variant is None in the fixture)
-    # but it's for variant_item which is a non-ticket item
     assert len(response.data["items"]) == 1
+    row = response.data["items"][0]
+    assert row["variant_id"] == store_item_variant.id
+    assert row["variant_name"] == "XXL"

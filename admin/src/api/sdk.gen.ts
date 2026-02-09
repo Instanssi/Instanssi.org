@@ -3952,6 +3952,10 @@ export const logout = <ThrowOnError extends boolean = false>(
 
 /**
  * Returns a list of URLs that can be used to begin a social authentication process.
+ *
+ * Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
+ * Without this, the first login attempt in a fresh browser session would fail
+ * because no Django template renders {% csrf_token %} to trigger cookie creation.
  */
 export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
     options?: Options<GetSocialAuthUrlsData, ThrowOnError>

@@ -166,8 +166,7 @@ async function loadData() {
         const response = await api.adminEventStoreSummaryList({
             path: { event_pk: eventId.value },
         });
-        // The API returns a single object (not an array despite the generated type)
-        summary.value = response.data as unknown as StoreSummary;
+        summary.value = response.data ?? null;
     } catch (e) {
         toast.error(t("StoreSummaryView.loadFailure"));
         console.error(e);

@@ -3051,9 +3051,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/StoreSummary'
+                $ref: '#/components/schemas/StoreSummary'
           description: ''
   /api/v2/admin/event/{event_pk}/store/transaction_items/:
     get:
@@ -4203,8 +4201,12 @@ paths:
   /api/v2/auth/social_urls/:
     get:
       operationId: get_social_auth_urls
-      description: Returns a list of URLs that can be used to begin a social authentication
-        process.
+      description: |-
+        Returns a list of URLs that can be used to begin a social authentication process.
+
+        Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
+        Without this, the first login attempt in a fresh browser session would fail
+        because no Django template renders {% csrf_token %} to trigger cookie creation.
       parameters:
       - in: query
         name: next

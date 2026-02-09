@@ -8211,7 +8211,7 @@ export type AdminEventStoreSummaryListData = {
 };
 
 export type AdminEventStoreSummaryListResponses = {
-    200: Array<StoreSummary>;
+    200: StoreSummary;
 };
 
 export type AdminEventStoreSummaryListResponse =

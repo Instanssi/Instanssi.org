@@ -1,5 +1,6 @@
 from typing import Any
 
+from drf_spectacular.utils import extend_schema_serializer
 from rest_framework import serializers
 
 
@@ -22,6 +23,7 @@ class StoreSummaryHourRow(serializers.Serializer[Any]):
     count = serializers.IntegerField()
 
 
+@extend_schema_serializer(many=False)
 class StoreSummarySerializer(serializers.Serializer[Any]):
     total_items_sold = serializers.IntegerField()
     total_revenue = serializers.CharField()

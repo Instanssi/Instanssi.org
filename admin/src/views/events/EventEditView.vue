@@ -11,7 +11,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('EventDialog.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <v-text-field
                             v-model="tag.value.value"

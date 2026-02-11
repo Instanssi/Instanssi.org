@@ -110,7 +110,7 @@ const headers: ReadonlyHeaders = [
         key: "token_key",
     },
     {
-        title: t("TokensView.headers.created"),
+        title: t("General.created"),
         sortable: true,
         key: "created",
     },
@@ -120,7 +120,7 @@ const headers: ReadonlyHeaders = [
         key: "expiry",
     },
     {
-        title: t("TokensView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

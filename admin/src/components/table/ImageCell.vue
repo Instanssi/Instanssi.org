@@ -4,7 +4,7 @@
             class="image-thumbnail"
             role="button"
             tabindex="0"
-            :title="t('ImageCell.clickToPreview')"
+            :title="t('General.clickToPreview')"
             @click="showPreview = true"
             @keydown.enter="showPreview = true"
             @keydown.space.prevent="showPreview = true"

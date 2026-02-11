@@ -144,12 +144,12 @@ const lastLoadArgs = ref<LoadArgs | null>(null);
 
 const headers: ReadonlyHeaders = [
     {
-        title: t("VoteCodeRequestsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("VoteCodeRequestsView.headers.user"),
+        title: t("General.user"),
         sortable: true,
         key: "user",
     },
@@ -159,12 +159,12 @@ const headers: ReadonlyHeaders = [
         key: "text",
     },
     {
-        title: t("VoteCodeRequestsView.headers.status"),
+        title: t("General.status"),
         sortable: true,
         key: "status",
     },
     {
-        title: t("VoteCodeRequestsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

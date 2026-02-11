@@ -150,7 +150,7 @@ const headers: ReadonlyHeaders = [
         sortable: true,
     },
     {
-        title: t("AuditLogView.headers.user"),
+        title: t("General.user"),
         key: "actor",
         sortable: false,
     },

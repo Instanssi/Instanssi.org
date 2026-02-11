@@ -18,7 +18,7 @@
                             v-model="description.value.value"
                             :error-messages="description.errorMessage.value"
                             variant="outlined"
-                            :label="t('UploadEditView.labels.description')"
+                            :label="t('General.description')"
                             rows="3"
                         />
                     </v-form>

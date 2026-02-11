@@ -57,7 +57,7 @@ describe("YoutubeCell", () => {
                 value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             });
             const btn = wrapper.findComponent({ name: "VBtn" });
-            expect(btn.attributes("title")).toBe("YoutubeCell.clickToPreview");
+            expect(btn.attributes("title")).toBe("General.clickToPreview");
         });
     });
 

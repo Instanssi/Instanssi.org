@@ -11,7 +11,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('CompoEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div

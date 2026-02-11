@@ -155,7 +155,7 @@ const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
-        title: t("UsersView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -185,7 +185,7 @@ const headers: ReadonlyHeaders = [
         key: "is_staff",
     },
     {
-        title: t("UsersView.headers.active"),
+        title: t("General.active"),
         sortable: true,
         key: "is_active",
     },
@@ -200,7 +200,7 @@ const headers: ReadonlyHeaders = [
         key: "date_joined",
     },
     {
-        title: t("UsersView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

@@ -71,7 +71,7 @@ const voteCodes: Ref<TicketVoteCode[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 const headers: ReadonlyHeaders = [
     {
-        title: t("VoteCodesView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },

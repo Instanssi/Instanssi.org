@@ -39,7 +39,7 @@
                             {{ t("StoreSummaryView.title") }}
                             <v-spacer />
                             <ExportButton
-                                :label="t('StoreSummaryView.export')"
+                                :label="t('General.export')"
                                 :loading="exportLoading"
                                 size="small"
                                 @export="exportData"

@@ -6,7 +6,7 @@
                 class="image-thumbnail"
                 role="button"
                 tabindex="0"
-                :title="t('MediaCell.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click="showImagePreview = true"
                 @keydown.enter="showImagePreview = true"
                 @keydown.space.prevent="showImagePreview = true"
@@ -23,7 +23,7 @@
                 icon
                 variant="text"
                 size="small"
-                :title="t('MediaCell.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click="showVideoPreview = true"
             >
                 <FontAwesomeIcon :icon="faCirclePlay" size="lg" />
@@ -38,7 +38,7 @@
                 icon
                 variant="text"
                 size="small"
-                :title="t('MediaCell.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click="showAudioPreview = true"
             >
                 <FontAwesomeIcon :icon="faVolumeHigh" size="lg" />
@@ -53,7 +53,7 @@
                 icon
                 variant="text"
                 size="small"
-                :title="t('MediaCell.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click="showFilePreview = true"
             >
                 <FontAwesomeIcon :icon="fileIcon" size="lg" />

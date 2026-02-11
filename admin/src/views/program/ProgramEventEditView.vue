@@ -14,7 +14,7 @@
                             v-model="title.value.value"
                             :error-messages="title.errorMessage.value"
                             variant="outlined"
-                            :label="t('ProgramEventEditView.labels.title') + ' *'"
+                            :label="t('General.title') + ' *'"
                         />
                         <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div
@@ -107,7 +107,7 @@
                                         v-model="email.value.value"
                                         :error-messages="email.errorMessage.value"
                                         variant="outlined"
-                                        :label="t('ProgramEventEditView.labels.email')"
+                                        :label="t('General.email')"
                                         type="email"
                                     />
                                 </v-col>

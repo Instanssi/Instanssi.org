@@ -21,7 +21,7 @@
                 class="file-preview"
                 role="button"
                 tabindex="0"
-                :title="t('FileUploadField.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click.stop="showImagePreview = true"
                 @keydown.enter="showImagePreview = true"
                 @keydown.space.prevent="showImagePreview = true"
@@ -35,7 +35,7 @@
                 icon
                 variant="text"
                 size="x-small"
-                :title="t('FileUploadField.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click.stop="showVideoPreview = true"
             >
                 <FontAwesomeIcon :icon="faCirclePlay" size="lg" />
@@ -47,7 +47,7 @@
                 icon
                 variant="text"
                 size="x-small"
-                :title="t('FileUploadField.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click.stop="showAudioPreview = true"
             >
                 <FontAwesomeIcon :icon="faVolumeHigh" size="lg" />
@@ -61,7 +61,7 @@
                 size="x-small"
                 :href="previewUrl"
                 target="_blank"
-                :title="t('FileUploadField.download')"
+                :title="t('General.downloadFile')"
                 @click.stop
             >
                 <FontAwesomeIcon :icon="faDownload" size="lg" />

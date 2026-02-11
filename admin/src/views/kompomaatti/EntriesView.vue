@@ -246,19 +246,19 @@ const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
 const headers = useResponsiveHeaders([
     {
-        title: t("EntriesView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("EntriesView.headers.image"),
+        title: t("General.image"),
         sortable: false,
         key: "imagefile_thumbnail_url",
         width: 60,
         minBreakpoint: "md",
     },
     {
-        title: t("EntriesView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
@@ -297,24 +297,24 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "md",
     },
     {
-        title: t("EntriesView.headers.rank"),
+        title: t("General.rank"),
         sortable: true,
         key: "computed_rank",
     },
     {
-        title: t("EntriesView.headers.score"),
+        title: t("General.score"),
         sortable: true,
         key: "computed_score",
         minBreakpoint: "md",
     },
     {
-        title: t("EntriesView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "lg",
     },
     {
-        title: t("EntriesView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

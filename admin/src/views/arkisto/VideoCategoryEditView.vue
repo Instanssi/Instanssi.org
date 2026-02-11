@@ -11,7 +11,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('VideoCategoryEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                     </v-form>
                 </v-card-text>

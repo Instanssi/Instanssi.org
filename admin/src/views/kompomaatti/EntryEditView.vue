@@ -13,7 +13,7 @@
                                     v-model="name.value.value"
                                     :error-messages="name.errorMessage.value"
                                     variant="outlined"
-                                    :label="t('EntryEditView.labels.name') + ' *'"
+                                    :label="t('General.name') + ' *'"
                                 />
                             </v-col>
                             <v-col cols="12" md="6">
@@ -30,7 +30,7 @@
                             v-model="description.value.value"
                             :error-messages="description.errorMessage.value"
                             variant="outlined"
-                            :label="t('EntryEditView.labels.description')"
+                            :label="t('General.description')"
                             rows="3"
                         />
 
@@ -59,7 +59,7 @@
                                     :items="userOptions"
                                     :error-messages="user.errorMessage.value"
                                     variant="outlined"
-                                    :label="t('EntryEditView.labels.user') + ' *'"
+                                    :label="t('General.user') + ' *'"
                                     :disabled="isEditMode"
                                 />
                             </v-col>
@@ -116,13 +116,13 @@
                         <v-row v-if="isEditMode">
                             <v-col cols="6" md="3">
                                 <div class="text-body-2 text-medium-emphasis">
-                                    {{ t("EntryEditView.labels.score") }}
+                                    {{ t("General.score") }}
                                 </div>
                                 <div class="text-h6">{{ votingScore }}</div>
                             </v-col>
                             <v-col cols="6" md="3">
                                 <div class="text-body-2 text-medium-emphasis">
-                                    {{ t("EntryEditView.labels.rank") }}
+                                    {{ t("General.rank") }}
                                 </div>
                                 <div class="text-h6">{{ votingRank }}</div>
                             </v-col>

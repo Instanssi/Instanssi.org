@@ -185,7 +185,7 @@ const eventTypeFilterOptions = [
 
 const headers = useResponsiveHeaders([
     {
-        title: t("ProgramEventsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -204,7 +204,7 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "lg",
     },
     {
-        title: t("ProgramEventsView.headers.title"),
+        title: t("General.title"),
         sortable: true,
         key: "title",
     },
@@ -238,18 +238,18 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "lg",
     },
     {
-        title: t("ProgramEventsView.headers.active"),
+        title: t("General.active"),
         sortable: false,
         key: "active",
     },
     {
-        title: t("ProgramEventsView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "lg",
     },
     {
-        title: t("ProgramEventsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

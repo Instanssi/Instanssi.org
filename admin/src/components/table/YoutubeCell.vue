@@ -4,7 +4,7 @@
             icon
             variant="text"
             size="small"
-            :title="t('YoutubeCell.clickToPreview')"
+            :title="t('General.clickToPreview')"
             @click="showDialog = true"
         >
             <FontAwesomeIcon :icon="faYoutube" size="lg" />

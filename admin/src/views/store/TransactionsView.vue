@@ -110,7 +110,7 @@ const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const headers: ReadonlyHeaders = [
     {
-        title: t("TransactionsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -120,17 +120,17 @@ const headers: ReadonlyHeaders = [
         key: "full_name",
     },
     {
-        title: t("TransactionsView.headers.email"),
+        title: t("General.email"),
         sortable: true,
         key: "email",
     },
     {
-        title: t("TransactionsView.headers.created"),
+        title: t("General.created"),
         sortable: true,
         key: "time_created",
     },
     {
-        title: t("TransactionsView.headers.status"),
+        title: t("General.status"),
         sortable: false,
         key: "status",
     },
@@ -145,7 +145,7 @@ const headers: ReadonlyHeaders = [
         key: "information",
     },
     {
-        title: t("TransactionsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

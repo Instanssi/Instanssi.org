@@ -21,13 +21,13 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('VideoEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <v-textarea
                             v-model="description.value.value"
                             :error-messages="description.errorMessage.value"
                             variant="outlined"
-                            :label="t('VideoEditView.labels.description')"
+                            :label="t('General.description')"
                             rows="4"
                         />
 

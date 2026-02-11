@@ -16,7 +16,7 @@
                 tag="a"
             >
                 <FontAwesomeIcon :icon="faDownload" class="mr-1" />
-                {{ t("PreviewDialog.download") }}
+                {{ t("General.downloadFile") }}
             </v-btn>
         </template>
         <div class="d-flex flex-column align-center justify-center pa-8">

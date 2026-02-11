@@ -919,6 +919,9 @@
         "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
+    "LanguageSelector": {
+      "label": "Language"
+    },
     "LoginView": {
       "title": "Sign in",
       "subtitle": "Sign in using username and password, or by using one of the SSO methods.",

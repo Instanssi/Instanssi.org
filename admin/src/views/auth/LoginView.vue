@@ -39,7 +39,8 @@
                                 :label="t('LoginView.password')"
                             />
                         </v-row>
-                        <v-row dense no-gutters class="justify-end">
+                        <v-row dense no-gutters class="justify-space-between align-center">
+                            <LanguageSelector />
                             <v-btn type="submit" color="primary" variant="elevated">
                                 <template #prepend>
                                     <FontAwesomeIcon :icon="faRightToBracket" />
@@ -66,6 +67,7 @@ import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
 import type { SocialAuthUrl } from "@/api";
+import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
 const authService = useAuth();

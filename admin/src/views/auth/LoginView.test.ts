@@ -33,6 +33,7 @@ describe("LoginView - auth service integration", () => {
                         user_permissions: ["view_event"],
                         is_superuser: false,
                         date_joined: "2024-01-01",
+                        language: "",
                     },
                 ],
             } as never);
@@ -57,6 +58,7 @@ describe("LoginView - auth service integration", () => {
                         user_permissions: ["view_user"], // No view_event
                         is_superuser: false,
                         date_joined: "2024-01-01",
+                        language: "",
                     },
                 ],
             } as never);
@@ -90,6 +92,7 @@ describe("LoginView - auth service integration", () => {
                         user_permissions: [], // No explicit permissions
                         is_superuser: true,
                         date_joined: "2024-01-01",
+                        language: "",
                     },
                 ],
             } as never);
@@ -115,6 +118,7 @@ describe("LoginView - auth service integration", () => {
                         user_permissions: ["view_event"],
                         is_superuser: false,
                         date_joined: "2024-01-01",
+                        language: "",
                     },
                 ],
             } as never);

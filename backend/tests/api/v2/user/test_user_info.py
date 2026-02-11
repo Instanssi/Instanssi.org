@@ -26,6 +26,7 @@ def test_authenticated_user_info(auth_client, base_user):
             "user_permissions": [],
             "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
             "is_superuser": base_user.is_superuser,
+            "language": "",
         }
     ]
 
@@ -45,3 +46,48 @@ def test_user_info_includes_group_permissions(auth_client, base_user):
     assert response.status_code == 200
     permissions = response.data[0]["user_permissions"]
     assert permissions == ["add_event"]
+
+
+@pytest.mark.django_db
+def test_unauthenticated_patch(api_client):
+    """Test that unauthenticated PATCH is rejected."""
+    assert api_client.patch(BASE_URL, {"language": "fi"}).status_code == 401
+
+
+@pytest.mark.django_db
+def test_patch_language(auth_client, base_user):
+    """Test setting language preference via PATCH."""
+    response = auth_client.patch(BASE_URL, {"language": "fi"}, format="json")
+    assert response.status_code == 200
+    assert response.data["language"] == "fi"
+    base_user.refresh_from_db()
+    assert base_user.language == "fi"
+
+
+@pytest.mark.django_db
+def test_patch_language_clear(auth_client, base_user):
+    """Test clearing language preference via PATCH."""
+    base_user.language = "fi"
+    base_user.save()
+
+    response = auth_client.patch(BASE_URL, {"language": ""}, format="json")
+    assert response.status_code == 200
+    assert response.data["language"] == ""
+    base_user.refresh_from_db()
+    assert base_user.language == ""
+
+
+@pytest.mark.django_db
+def test_patch_language_invalid(auth_client):
+    """Test that invalid language values are rejected."""
+    response = auth_client.patch(BASE_URL, {"language": "xx"}, format="json")
+    assert response.status_code == 400
+
+
+@pytest.mark.django_db
+def test_patch_does_not_change_read_only_fields(auth_client, base_user):
+    """Test that PATCH cannot change read-only fields like is_superuser."""
+    response = auth_client.patch(BASE_URL, {"is_superuser": True}, format="json")
+    assert response.status_code == 200
+    base_user.refresh_from_db()
+    assert base_user.is_superuser is False

@@ -919,6 +919,9 @@
         "youtubeUrlHint": "Syötä YouTube-URL (esim. https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
+    "LanguageSelector": {
+      "label": "Kieli"
+    },
     "LoginView": {
       "title": "Kirjaudu sisään",
       "subtitle": "Kirjaudu käyttäjätunnuksella ja salasanalla tai käyttämällä jotain SSO-menetelmää.",

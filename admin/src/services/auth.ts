@@ -2,6 +2,7 @@ import { type Ref, ref } from "vue";
 
 import * as api from "@/api";
 import type { SocialAuthUrl, UserInfo } from "@/api";
+import { isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
     firstName: string;
@@ -9,6 +10,7 @@ export type CurrentUserInfo = {
     email: string;
     permissions: Set<string>;
     isSuperUser: boolean;
+    language: string;
 };
 
 const loggedIn: Ref<boolean> = ref(false);
@@ -18,6 +20,7 @@ const userInfo: Ref<CurrentUserInfo> = ref({
     email: "",
     permissions: new Set(),
     isSuperUser: false,
+    language: "",
 });
 
 type PermissionType = "add" | "change" | "delete" | "view";
@@ -88,8 +91,20 @@ export function useAuth() {
             email: info?.email || "",
             permissions: new Set(info?.user_permissions || []),
             isSuperUser: info?.is_superuser || false,
+            language: info?.language || "",
         };
+        if (info?.language && isSupportedLocale(info.language)) {
+            setLocale(info.language);
+        }
         return loggedIn.value;
+    }
+
+    async function updateLanguage(locale: SupportedLocale): Promise<void> {
+        setLocale(locale);
+        if (loggedIn.value) {
+            await api.userInfoPartialUpdate({ body: { language: locale } });
+            userInfo.value = { ...userInfo.value, language: locale };
+        }
     }
 
     function hasPermission(type: PermissionType, target: PermissionTarget): boolean {
@@ -132,6 +147,7 @@ export function useAuth() {
             email: "",
             permissions: new Set(),
             isSuperUser: false,
+            language: "",
         };
     }
 
@@ -143,6 +159,7 @@ export function useAuth() {
         getSocialAuthURLs,
         refreshStatus,
         getUserData,
+        updateLanguage,
         canView,
         canChange,
         canDelete,

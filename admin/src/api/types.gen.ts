@@ -89,6 +89,8 @@ export type AuthTokenCreateResponse = {
     expiry: string;
 };
 
+export type BlankEnum = "";
+
 /**
  * Serializer for staff - includes all fields.
  *
@@ -1464,6 +1466,13 @@ export type GroupRequest = {
 };
 
 /**
+ * * `` - Not set
+ * * `en` - English
+ * * `fi` - Finnish
+ */
+export type LanguageEnum = "en" | "fi";
+
+/**
  * Serializer for audit log entries.
  */
 export type LogEntry = {
@@ -2692,6 +2701,23 @@ export type PatchedUserCompoEntryRequest = {
 };
 
 /**
+ * Serializer for the authenticated user's own profile and permissions.
+ */
+export type PatchedUserInfoRequest = {
+    /**
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     */
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+    /**
+     * Email address
+     */
+    email?: string;
+    language?: LanguageEnum | BlankEnum;
+};
+
+/**
  * Staff serializer for users, extends UserInfoSerializer with groups and active status.
  */
 export type PatchedUserRequest = {
@@ -2705,6 +2731,7 @@ export type PatchedUserRequest = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
     /**
      * Active
      *
@@ -4291,6 +4318,7 @@ export type User = {
      */
     readonly is_superuser: boolean;
     readonly date_joined: string;
+    language?: LanguageEnum | BlankEnum;
     readonly groups: Array<Group>;
     /**
      * Active
@@ -4442,6 +4470,7 @@ export type UserInfo = {
      */
     readonly is_superuser: boolean;
     readonly date_joined: string;
+    language?: LanguageEnum | BlankEnum;
 };
 
 /**
@@ -4466,6 +4495,7 @@ export type UserRequest = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
     /**
      * Active
      *
@@ -5210,6 +5240,7 @@ export type PatchedUserRequestWritable = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
     group_ids?: Array<number>;
     /**
      * Active
@@ -6094,6 +6125,7 @@ export type UserWritable = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
     /**
      * Active
      *
@@ -6221,6 +6253,7 @@ export type UserInfoWritable = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
 };
 
 /**
@@ -6237,6 +6270,7 @@ export type UserRequestWritable = {
      * Email address
      */
     email?: string;
+    language?: LanguageEnum | BlankEnum;
     group_ids?: Array<number>;
     /**
      * Active
@@ -10033,3 +10067,17 @@ export type UserInfoResponses = {
 };
 
 export type UserInfoResponse = UserInfoResponses[keyof UserInfoResponses];
+
+export type UserInfoPartialUpdateData = {
+    body?: PatchedUserInfoRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/user_info/";
+};
+
+export type UserInfoPartialUpdateResponses = {
+    200: UserInfo;
+};
+
+export type UserInfoPartialUpdateResponse =
+    UserInfoPartialUpdateResponses[keyof UserInfoPartialUpdateResponses];

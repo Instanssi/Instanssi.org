@@ -345,6 +345,8 @@ import type {
     TokensListData,
     TokensListResponses,
     UserInfoData,
+    UserInfoPartialUpdateData,
+    UserInfoPartialUpdateResponses,
     UserInfoResponses,
     UserTokensCreateTokenData,
     UserTokensCreateTokenResponses,
@@ -5273,7 +5275,7 @@ export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Retrieve the current authenticated user's profile and permissions.
+ * Retrieve and update the current authenticated user's profile and permissions.
  */
 export const userInfo = <ThrowOnError extends boolean = false>(
     options?: Options<UserInfoData, ThrowOnError>
@@ -5294,4 +5296,34 @@ export const userInfo = <ThrowOnError extends boolean = false>(
         url: "/api/v2/user_info/",
         ...options,
     });
+};
+
+/**
+ * Retrieve and update the current authenticated user's profile and permissions.
+ */
+export const userInfoPartialUpdate = <ThrowOnError extends boolean = false>(
+    options?: Options<UserInfoPartialUpdateData, ThrowOnError>
+) => {
+    return (options?.client ?? client).patch<UserInfoPartialUpdateResponses, unknown, ThrowOnError>(
+        {
+            responseType: "json",
+            security: [
+                {
+                    name: "Authorization",
+                    type: "apiKey",
+                },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/user_info/",
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                ...options?.headers,
+            },
+        }
+    );
 };

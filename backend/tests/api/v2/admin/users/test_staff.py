@@ -32,6 +32,7 @@ def test_users_get_users(super_api_client, super_user):
         "is_staff": super_user.is_staff,
         "is_active": super_user.is_active,
         "is_system": super_user.is_system,
+        "language": "",
     }
 
 
@@ -70,6 +71,7 @@ def test_users_post_new(super_api_client):
         "username": "username",
         "email": "email@test.com",
         "groups": [],
+        "language": "",
     }
 
 
@@ -115,6 +117,7 @@ def test_users_put_old(super_api_client, base_user):
         "username": "new_username",
         "email": "new_email@test.com",
         "groups": [],
+        "language": "",
     }
 
 

@@ -10,7 +10,7 @@ from Instanssi.users.models import User
 
 
 class UserInfoViewSet(ViewSet):
-    """Retrieve the current authenticated user's profile and permissions."""
+    """Retrieve and update the current authenticated user's profile and permissions."""
 
     permission_classes = [IsAuthenticated]
 
@@ -26,3 +26,17 @@ class UserInfoViewSet(ViewSet):
         obj = User.objects.filter(pk=user.pk)
         data = UserInfoSerializer(obj, many=True).data
         return Response(data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        operation_id="user_info_partial_update",
+        request=UserInfoSerializer,
+        responses={
+            200: UserInfoSerializer,
+        },
+    )
+    def partial_update_self(self, request: Request) -> Response:
+        user: User = request.user  # type: ignore[assignment]
+        serializer = UserInfoSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)

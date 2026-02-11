@@ -74,7 +74,7 @@ poetry run pytest tests/store/test_models.py
   - **users/**: User authentication and profiles
   - **api/**: REST APIs with v1 (legacy) and v2 (current) versions
   - **ext_\***: External integrations (ext_blog, ext_mastodon, ext_programme)
-  - **main20XX/**: Year-specific landing pages (e.g., main2024, main2025)
+  - **main20XX/**: Year-specific landing pages
   - **infodesk/**: Infodesk/ticket validation interface
   - **common_config.py**: Shared Django settings
   - **settings.py**: Local configuration (never committed)

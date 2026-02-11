@@ -10,7 +10,6 @@ urlpatterns = [
     path("qr/", include("qr_code.urls", namespace="qr_code")),
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),
     path("api/v2/", include("Instanssi.api.v2.urls", namespace="api-v2")),
-    path("2024/", include("Instanssi.main2024.urls", namespace="main2024")),
     path("2026/", include("Instanssi.main2026.urls", namespace="main2026")),
     path("users/", include("Instanssi.users.urls", namespace="users")),
     path("blog/", include("Instanssi.ext_blog.urls", namespace="ext-blog")),

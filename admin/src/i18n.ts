@@ -1,6 +1,7 @@
 import { createI18n } from "vue-i18n";
 
 import enLocale from "@/locales/en.json";
+import fiLocale from "@/locales/fi.json";
 
 type DateTimeFormatOptions = Record<string, Intl.DateTimeFormatOptions>;
 
@@ -25,8 +26,10 @@ export const i18n = createI18n({
     fallbackLocale: "en",
     messages: {
         en: enLocale["translations"],
+        fi: fiLocale["translations"],
     },
     datetimeFormats: {
         en: datetimeFormatsWithTimezone,
+        fi: datetimeFormatsWithTimezone,
     },
 });

@@ -137,8 +137,8 @@ async function saveProfile(values: GenericObject): Promise<boolean> {
         return true;
     } catch (e) {
         handleApiError(e, setErrors, toast, t("ProfileView.saveFailure"), API_FIELD_MAPPING);
+        return false;
     }
-    return false;
 }
 
 onMounted(async () => {

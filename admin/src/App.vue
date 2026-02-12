@@ -37,6 +37,7 @@ import {
     faTicket,
     faTrophy,
     faUpload,
+    faUser,
     faUsers,
     faVideo,
 } from "@fortawesome/free-solid-svg-icons";
@@ -203,6 +204,12 @@ const secondaryLinks = computed(
             to: "auditlog",
             noEventId: true,
             requirePerm: PermissionTarget.LOG_ENTRY,
+        },
+        {
+            title: t("App.nav.profile"),
+            icon: faUser,
+            to: "profile",
+            noEventId: true,
         },
         {
             title: t("App.nav.logout"),

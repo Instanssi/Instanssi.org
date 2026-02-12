@@ -52,10 +52,6 @@
                 class="flex-0-0"
                 @navigate="onNavigate"
             />
-            <v-divider />
-            <div class="d-flex justify-center align-center pa-2 flex-0-0">
-                <LanguageSelector />
-            </div>
         </div>
     </v-navigation-drawer>
 </template>
@@ -69,7 +65,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import logoImage from "@/assets/icon.png";
-import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import NavigationList, { type NavigationLinks } from "@/components/layout/NavigationList.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";

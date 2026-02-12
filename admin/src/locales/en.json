@@ -124,7 +124,8 @@
         "arkistoCategories": "Video Categories",
         "arkistoVideos": "Videos",
         "apiTokens": "API Tokens",
-        "auditLog": "Audit Log"
+        "auditLog": "Audit Log",
+        "profile": "Profile"
       }
     },
     "MainNavigation": {
@@ -920,8 +921,22 @@
         "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
-    "LanguageSelector": {
-      "label": "Language"
+    "ProfileView": {
+      "title": "Profile",
+      "sections": {
+        "account": "Account Information"
+      },
+      "labels": {
+        "username": "Username",
+        "email": "Email",
+        "dateJoined": "Date joined",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "language": "Language"
+      },
+      "loadFailure": "Failed to load profile; try again later.",
+      "saveSuccess": "Profile saved!",
+      "saveFailure": "Failed to save profile; try again later."
     },
     "LoginView": {
       "title": "Sign in",

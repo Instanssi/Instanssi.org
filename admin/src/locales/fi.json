@@ -76,7 +76,8 @@
         "generic": "Palvelimella tapahtui virhe! Yritä myöhemmin uudelleen.",
         "teapot": "Palvelin on tullut hulluksi ja kruunannut itsensä teekannu-kuninkaaksi!",
         "timeout": "Palvelin ei vastannut ajoissa; yritä (myöhemmin) uudelleen.",
-        "sessionTimedOut": "Istuntosi on vanhentunut. Kirjaudu ulos ja sitten takaisin sisään."
+        "sessionTimedOut": "Istuntosi on vanhentunut. Kirjaudu ulos ja sitten takaisin sisään.",
+        "languageSaveFailure": "Kieliasetuksen tallennus epäonnistui."
       }
     },
     "RefreshControl": {

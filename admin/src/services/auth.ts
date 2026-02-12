@@ -1,8 +1,9 @@
 import { type Ref, ref } from "vue";
+import { useToast } from "vue-toastification";
 
 import * as api from "@/api";
 import type { SocialAuthUrl, UserInfo } from "@/api";
-import { isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
+import { i18n, isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
     id: number;
@@ -102,10 +103,17 @@ export function useAuth() {
     }
 
     async function updateLanguage(locale: SupportedLocale): Promise<void> {
+        const previousLocale = i18n.global.locale.value;
         setLocale(locale);
         if (loggedIn.value && userInfo.value.id) {
-            await api.userInfoPartialUpdate({ body: { language: locale } });
-            userInfo.value = { ...userInfo.value, language: locale };
+            try {
+                await api.userInfoPartialUpdate({ body: { language: locale } });
+                userInfo.value = { ...userInfo.value, language: locale };
+            } catch {
+                setLocale(previousLocale as SupportedLocale);
+                const toast = useToast();
+                toast.error(i18n.global.t("Toasts.errors.languageSaveFailure"));
+            }
         }
     }
 

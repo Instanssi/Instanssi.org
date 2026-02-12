@@ -76,7 +76,8 @@
         "generic": "Server encountered a problem! Please try again later.",
         "teapot": "Server has gone mad and crowned itself as the one true teapot king!",
         "timeout": "Server took too long to respond; please try again (later).",
-        "sessionTimedOut": "Your login session timed out. Please log out and then log back in."
+        "sessionTimedOut": "Your login session timed out. Please log out and then log back in.",
+        "languageSaveFailure": "Failed to save language preference."
       }
     },
     "RefreshControl": {

@@ -178,12 +178,12 @@ const filterEventType = computed({
 
 const filterActive = tableState.useBooleanFilter("active");
 
-const eventTypeFilterOptions = [
+const eventTypeFilterOptions = computed(() => [
     { title: t("ProgramEventsView.eventTypes.0"), value: 0 },
     { title: t("ProgramEventsView.eventTypes.1"), value: 1 },
-];
+]);
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

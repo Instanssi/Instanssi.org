@@ -171,7 +171,7 @@ const filterAvailable = tableState.useBooleanFilter("available");
 const filterIsTicket = tableState.useBooleanFilter("is_ticket");
 const filterIsSecret = tableState.useBooleanFilter("is_secret");
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

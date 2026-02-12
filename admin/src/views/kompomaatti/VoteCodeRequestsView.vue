@@ -142,7 +142,7 @@ const totalItems = ref(0);
 const requests: Ref<VoteCodeRequest[]> = ref([]);
 const lastLoadArgs = ref<LoadArgs | null>(null);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -169,7 +169,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function getStatusColor(status: number): string {
     switch (status) {

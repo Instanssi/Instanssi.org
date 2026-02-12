@@ -13,12 +13,13 @@ export type ResponsiveHeader = HeaderItem & {
 /**
  * Returns a computed headers array that hides columns below their specified breakpoint.
  * Headers without `minBreakpoint` are always shown.
+ * Accepts a getter function so that translated titles are re-evaluated reactively.
  */
-export function useResponsiveHeaders(allHeaders: ResponsiveHeader[]) {
+export function useResponsiveHeaders(allHeaders: () => ResponsiveHeader[]) {
     const display = useDisplay();
 
     return computed<ReadonlyHeaders>(() =>
-        allHeaders.filter((h) => {
+        allHeaders().filter((h) => {
             if (!h.minBreakpoint) return true;
             switch (h.minBreakpoint) {
                 case "sm":

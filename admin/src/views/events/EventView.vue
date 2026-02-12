@@ -159,7 +159,7 @@ const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const filterArchived = tableState.useBooleanFilter("archived");
 const filterHidden = tableState.useBooleanFilter("hidden");
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -201,7 +201,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 async function flushData() {
     if (lastLoadArgs.value) {

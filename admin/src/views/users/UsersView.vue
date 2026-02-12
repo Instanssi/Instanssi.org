@@ -111,7 +111,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref, watch } from "vue";
+import { type Ref, computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -139,7 +139,9 @@ const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
 const auth = useAuth();
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: t("UsersView.title"), disabled: true }];
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    { title: t("UsersView.title"), disabled: true },
+]);
 
 const tableState = useTableState({
     filterKeys: ["is_active", "is_staff", "is_system"],
@@ -153,7 +155,7 @@ const filterIsSystem = tableState.useBooleanFilter("is_system");
 const totalItems = ref(0);
 const users: Ref<User[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -205,7 +207,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function flushData() {
     if (lastLoadArgs.value) {

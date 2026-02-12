@@ -117,7 +117,7 @@ const tableState = useTableState({ initialSort: { key: "date", order: "desc" } }
 const totalItems = ref(0);
 const blogPosts: Ref<BlogEntry[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

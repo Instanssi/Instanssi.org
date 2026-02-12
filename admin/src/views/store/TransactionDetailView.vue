@@ -360,7 +360,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
 ]);
 
-const itemHeaders: ReadonlyHeaders = [
+const itemHeaders = computed<ReadonlyHeaders>(() => [
     {
         title: t("TransactionDetailView.items.name"),
         key: "item",
@@ -381,7 +381,7 @@ const itemHeaders: ReadonlyHeaders = [
         title: t("TransactionDetailView.items.delivered"),
         key: "is_delivered",
     },
-];
+]);
 
 function formatDateTime(dateStr: string | null | undefined): string {
     if (!dateStr) return "-";

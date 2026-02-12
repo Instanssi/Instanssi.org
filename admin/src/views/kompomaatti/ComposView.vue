@@ -141,7 +141,7 @@ const compos: Ref<Compo[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const filterActive = tableState.useBooleanFilter("active");
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

@@ -108,7 +108,7 @@ const totalItems = ref(0);
 const transactions: Ref<StoreTransaction[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -150,7 +150,7 @@ const headers: ReadonlyHeaders = [
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function getStatusColor(transaction: StoreTransaction): string {
     if (transaction.is_paid) return "success";

@@ -185,7 +185,7 @@ const selectedCompetition = computed({
 
 const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

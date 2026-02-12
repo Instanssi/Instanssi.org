@@ -122,7 +122,7 @@ const selectedItem = computed({
     },
 });
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -158,7 +158,7 @@ const headers: ReadonlyHeaders = [
         sortable: false,
         key: "is_delivered",
     },
-];
+]);
 
 const itemOptions = computed(() => [
     { title: t("TransactionItemsView.allItems"), value: null },

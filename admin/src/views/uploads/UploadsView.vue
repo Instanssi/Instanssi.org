@@ -124,7 +124,7 @@ const totalItems = ref(0);
 const items: Ref<UploadedFile[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
         title: t("General.id"),
         sortable: true,

@@ -69,7 +69,7 @@ const tableState = useTableState({ initialSort: { key: "id", order: "desc" } });
 const totalItems = ref(0);
 const voteCodes: Ref<TicketVoteCode[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("General.id"),
         sortable: true,
@@ -90,7 +90,7 @@ const headers: ReadonlyHeaders = [
         sortable: true,
         key: "time",
     },
-];
+]);
 
 async function load(args: LoadArgs) {
     loading.value = true;

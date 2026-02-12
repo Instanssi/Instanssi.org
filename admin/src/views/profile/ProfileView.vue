@@ -65,7 +65,7 @@ import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import InfoCard from "@/components/table/InfoCard.vue";
 import InfoRow from "@/components/table/InfoRow.vue";
-import { SUPPORTED_LOCALES, isSupportedLocale, type SupportedLocale } from "@/i18n";
+import { LOCALE_NAMES, SUPPORTED_LOCALES, isSupportedLocale } from "@/i18n";
 import { useAuth } from "@/services/auth";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
@@ -88,13 +88,8 @@ const dateJoined = ref("");
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [{ title: t("ProfileView.title") }]);
 
-const localeNames: Record<SupportedLocale, string> = {
-    en: "English",
-    fi: "Suomi",
-};
-
 const languageOptions = SUPPORTED_LOCALES.map((loc) => ({
-    title: localeNames[loc],
+    title: LOCALE_NAMES[loc],
     value: loc,
 }));
 

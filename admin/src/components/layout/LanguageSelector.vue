@@ -5,7 +5,7 @@
                 <template #prepend>
                     <FontAwesomeIcon :icon="faLanguage" />
                 </template>
-                {{ localeNames[locale as SupportedLocale] ?? locale }}
+                {{ LOCALE_NAMES[locale as SupportedLocale] ?? locale }}
             </v-btn>
         </template>
         <v-list density="compact">
@@ -15,7 +15,7 @@
                 :active="locale === loc"
                 @click="selectLocale(loc)"
             >
-                <v-list-item-title>{{ localeNames[loc] }}</v-list-item-title>
+                <v-list-item-title>{{ LOCALE_NAMES[loc] }}</v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>
@@ -26,16 +26,11 @@ import { faLanguage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useI18n } from "vue-i18n";
 
-import { SUPPORTED_LOCALES, type SupportedLocale } from "@/i18n";
+import { LOCALE_NAMES, SUPPORTED_LOCALES, type SupportedLocale } from "@/i18n";
 import { useAuth } from "@/services/auth";
 
 const { locale } = useI18n();
 const authService = useAuth();
-
-const localeNames: Record<SupportedLocale, string> = {
-    en: "English",
-    fi: "Suomi",
-};
 
 function selectLocale(loc: SupportedLocale): void {
     authService.updateLanguage(loc);

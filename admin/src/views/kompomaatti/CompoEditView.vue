@@ -11,7 +11,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('CompoEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div
@@ -321,7 +321,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     return items;
 });
 
-const entryViewTypeOptions = [
+const entryViewTypeOptions = computed(() => [
     {
         title: t("CompoEditView.entryViewTypes.0.title"),
         description: t("CompoEditView.entryViewTypes.0.description"),
@@ -337,9 +337,9 @@ const entryViewTypeOptions = [
         description: t("CompoEditView.entryViewTypes.2.description"),
         value: 2,
     },
-];
+]);
 
-const thumbnailPrefOptions = [
+const thumbnailPrefOptions = computed(() => [
     {
         title: t("CompoEditView.thumbnailPrefs.0.title"),
         description: t("CompoEditView.thumbnailPrefs.0.description"),
@@ -360,7 +360,7 @@ const thumbnailPrefOptions = [
         description: t("CompoEditView.thumbnailPrefs.3.description"),
         value: 3,
     },
-];
+]);
 
 // Common file formats
 const commonEntryFormats = ["zip", "7z", "rar", "tar.gz", "exe", "com", "prg", "d64", "sid"];

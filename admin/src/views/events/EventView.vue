@@ -159,14 +159,14 @@ const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const filterArchived = tableState.useBooleanFilter("archived");
 const filterHidden = tableState.useBooleanFilter("hidden");
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
-        title: t("EventView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("EventView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
@@ -196,12 +196,12 @@ const headers: ReadonlyHeaders = [
         key: "mainurl",
     },
     {
-        title: t("EventView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",
     },
-];
+]);
 
 async function flushData() {
     if (lastLoadArgs.value) {

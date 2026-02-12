@@ -11,7 +11,7 @@
                             v-model="title.value.value"
                             :error-messages="title.errorMessage.value"
                             variant="outlined"
-                            :label="t('BlogPostDialog.labels.title') + ' *'"
+                            :label="t('General.title') + ' *'"
                         />
                         <div class="text-subtitle-2 mb-1">
                             {{ t("BlogPostDialog.labels.text") }} *

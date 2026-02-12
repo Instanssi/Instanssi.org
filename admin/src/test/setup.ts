@@ -5,7 +5,8 @@ vi.mock("@/api", () => ({
     // Auth endpoints
     login: vi.fn(),
     logout: vi.fn(),
-    userInfo: vi.fn(),
+    userInfoRetrieve: vi.fn(),
+    userInfoPartialUpdate: vi.fn().mockResolvedValue({ data: {} }),
 
     // Audit log
     adminAuditlogList: vi.fn().mockResolvedValue({ data: { results: [], count: 0 } }),
@@ -120,11 +121,23 @@ vi.mock("vue-toastification", () => ({
 }));
 
 // Mock vue-i18n
-vi.mock("vue-i18n", () => ({
-    useI18n: () => ({
-        t: (key: string) => key,
-        d: (date: string) => date,
-    }),
+vi.mock("vue-i18n", async () => {
+    const { ref } = await import("vue");
+    return {
+        useI18n: () => ({
+            t: (key: string) => key,
+            d: (date: string) => date,
+            locale: ref("en"),
+        }),
+    };
+});
+
+// Mock i18n utilities
+vi.mock("@/i18n", () => ({
+    i18n: { global: { locale: { value: "en" } } },
+    SUPPORTED_LOCALES: ["en", "fi"],
+    isSupportedLocale: (v: string) => ["en", "fi"].includes(v),
+    setLocale: vi.fn(),
 }));
 
 // Mock events service
@@ -147,6 +160,7 @@ vi.mock("@/services/auth", () => ({
         login: vi.fn(),
         logout: vi.fn(),
         refreshStatus: vi.fn(),
+        updateLanguage: vi.fn(),
     }),
     PermissionTarget: {
         EVENT: "event",

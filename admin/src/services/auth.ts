@@ -1,23 +1,29 @@
 import { type Ref, ref } from "vue";
+import { useToast } from "vue-toastification";
 
 import * as api from "@/api";
 import type { SocialAuthUrl, UserInfo } from "@/api";
+import { i18n, isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
+    id: number;
     firstName: string;
     lastName: string;
     email: string;
     permissions: Set<string>;
     isSuperUser: boolean;
+    language: string;
 };
 
 const loggedIn: Ref<boolean> = ref(false);
 const userInfo: Ref<CurrentUserInfo> = ref({
+    id: 0,
     firstName: "",
     lastName: "",
     email: "",
     permissions: new Set(),
     isSuperUser: false,
+    language: "",
 });
 
 type PermissionType = "add" | "change" | "delete" | "view";
@@ -70,10 +76,9 @@ export function useAuth() {
 
     async function tryFetchUserData(): Promise<UserInfo | undefined> {
         try {
-            const result = await api.userInfo();
+            const result = await api.userInfoRetrieve();
             if (result.data === undefined) return undefined;
-            if (result.data.length === 0) return undefined;
-            return result.data[0];
+            return result.data;
         } catch {
             return undefined;
         }
@@ -83,13 +88,33 @@ export function useAuth() {
         const info = await tryFetchUserData();
         loggedIn.value = info !== undefined;
         userInfo.value = {
+            id: info?.id || 0,
             firstName: info?.first_name || "",
             lastName: info?.last_name || "",
             email: info?.email || "",
             permissions: new Set(info?.user_permissions || []),
             isSuperUser: info?.is_superuser || false,
+            language: info?.language || "",
         };
+        if (info?.language && isSupportedLocale(info.language)) {
+            setLocale(info.language);
+        }
         return loggedIn.value;
+    }
+
+    async function updateLanguage(locale: SupportedLocale): Promise<void> {
+        const previousLocale = i18n.global.locale.value;
+        setLocale(locale);
+        if (loggedIn.value && userInfo.value.id) {
+            try {
+                await api.userInfoPartialUpdate({ body: { language: locale } });
+                userInfo.value = { ...userInfo.value, language: locale };
+            } catch {
+                setLocale(previousLocale as SupportedLocale);
+                const toast = useToast();
+                toast.error(i18n.global.t("Toasts.errors.languageSaveFailure"));
+            }
+        }
     }
 
     function hasPermission(type: PermissionType, target: PermissionTarget): boolean {
@@ -127,11 +152,13 @@ export function useAuth() {
         await api.logout();
         loggedIn.value = false;
         userInfo.value = {
+            id: 0,
             firstName: "",
             lastName: "",
             email: "",
             permissions: new Set(),
             isSuperUser: false,
+            language: "",
         };
     }
 
@@ -143,6 +170,7 @@ export function useAuth() {
         getSocialAuthURLs,
         refreshStatus,
         getUserData,
+        updateLanguage,
         canView,
         canChange,
         canDelete,

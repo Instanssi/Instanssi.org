@@ -95,7 +95,9 @@ const { t } = useI18n();
 const toast = useToast();
 const { actionLabel: getActionLabel, actionColor } = useAuditLogUtils();
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: t("AuditLogView.title"), disabled: true }];
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    { title: t("AuditLogView.title"), disabled: true },
+]);
 
 // Wrapper to use AuditLogView translations
 function actionLabel(action: number): string {
@@ -103,7 +105,7 @@ function actionLabel(action: number): string {
 }
 
 // Available models for filtering
-const modelOptions: ModelOption[] = [
+const modelOptions = computed<ModelOption[]>(() => [
     { label: t("AuditLogView.models.user"), value: "users.user" },
     { label: t("AuditLogView.models.event"), value: "kompomaatti.event" },
     { label: t("AuditLogView.models.blogEntry"), value: "ext_blog.blogentry" },
@@ -120,7 +122,7 @@ const modelOptions: ModelOption[] = [
     { label: t("AuditLogView.models.uploadedFile"), value: "admin_upload.uploadedfile" },
     { label: t("AuditLogView.models.otherVideo"), value: "arkisto.othervideo" },
     { label: t("AuditLogView.models.otherVideoCategory"), value: "arkisto.othervideocategory" },
-];
+]);
 
 const loading = ref(false);
 const tableState = useTableState({
@@ -142,7 +144,7 @@ const selectedModel = computed({
     },
 });
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     { title: "", key: "data-table-expand", width: 50 },
     {
         title: t("AuditLogView.headers.timestamp"),
@@ -150,7 +152,7 @@ const headers: ReadonlyHeaders = [
         sortable: true,
     },
     {
-        title: t("AuditLogView.headers.user"),
+        title: t("General.user"),
         key: "actor",
         sortable: false,
     },
@@ -170,7 +172,7 @@ const headers: ReadonlyHeaders = [
         key: "object_repr",
         sortable: false,
     },
-];
+]);
 
 function onFilterChange() {
     // Reset to page 1 when filter changes

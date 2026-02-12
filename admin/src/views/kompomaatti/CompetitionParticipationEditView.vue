@@ -27,9 +27,7 @@
                                     :items="userOptions"
                                     :error-messages="user.errorMessage.value"
                                     variant="outlined"
-                                    :label="
-                                        t('CompetitionParticipationEditView.labels.user') + ' *'
-                                    "
+                                    :label="t('General.user') + ' *'"
                                     :disabled="isEditMode"
                                 />
                             </v-col>
@@ -52,14 +50,14 @@
                                     type="number"
                                     :error-messages="score.errorMessage.value"
                                     variant="outlined"
-                                    :label="t('CompetitionParticipationEditView.labels.score')"
+                                    :label="t('General.score')"
                                 />
                             </v-col>
                             <v-col v-if="isEditMode" cols="12" md="6">
                                 <v-text-field
                                     :model-value="rankDisplay"
                                     variant="outlined"
-                                    :label="t('CompetitionParticipationEditView.labels.rank')"
+                                    :label="t('General.rank')"
                                     readonly
                                 />
                             </v-col>

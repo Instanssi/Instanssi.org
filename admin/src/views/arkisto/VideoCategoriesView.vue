@@ -109,24 +109,24 @@ const totalItems = ref(0);
 const items: Ref<OtherVideoCategory[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
-        title: t("VideoCategoriesView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("VideoCategoriesView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
     {
-        title: t("VideoCategoriesView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function flushData() {
     if (lastLoadArgs.value) {

@@ -141,14 +141,14 @@ const competitions: Ref<Competition[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
 const filterActive = tableState.useBooleanFilter("active");
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("CompetitionsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("CompetitionsView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
@@ -171,18 +171,18 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "md",
     },
     {
-        title: t("CompetitionsView.headers.active"),
+        title: t("General.active"),
         sortable: true,
         key: "active",
     },
     {
-        title: t("CompetitionsView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "lg",
     },
     {
-        title: t("CompetitionsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

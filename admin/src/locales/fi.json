@@ -1,0 +1,1194 @@
+{
+  "datetimeFormats": {
+    "short": {
+      "year": "numeric",
+      "month": "short",
+      "day": "numeric"
+    },
+    "long": {
+      "year": "numeric",
+      "month": "short",
+      "day": "numeric",
+      "weekday": "short",
+      "hour": "numeric",
+      "minute": "numeric",
+      "hour12": false
+    }
+  },
+  "translations": {
+    "General": {
+      "ok": "OK",
+      "cancel": "Peruuta",
+      "search": "Haku",
+      "save": "Tallenna",
+      "edit": "Muokkaa",
+      "delete": "Poista",
+      "view": "Näytä",
+      "export": "Vie",
+      "confirm": "Vahvista",
+      "id": "ID",
+      "name": "Nimi",
+      "title": "Otsikko",
+      "description": "Kuvaus",
+      "actions": "Toiminnot",
+      "active": "Aktiivinen",
+      "status": "Tila",
+      "image": "Kuva",
+      "email": "Sähköposti",
+      "user": "Käyttäjä",
+      "created": "Luotu",
+      "price": "Hinta",
+      "score": "Pisteet",
+      "rank": "Sijoitus",
+      "clickToPreview": "Esikatsele klikkaamalla",
+      "downloadFile": "Lataa tiedosto",
+      "disqualifiedOn": "Hylätty",
+      "disqualifiedOff": "Ei hylätty"
+    },
+    "PreviewDialog": {
+      "imageTitle": "Kuvan esikatselu",
+      "videoTitle": "Videon esikatselu",
+      "audioTitle": "Äänen esikatselu",
+      "fileTitle": "Tiedosto",
+      "videoNotSupported": "Selaimesi ei tue videon toistoa.",
+      "audioNotSupported": "Selaimesi ei tue äänen toistoa."
+    },
+    "LongTextCell": {
+      "clickToView": "Näytä klikkaamalla",
+      "dialogTitle": "Tiedot"
+    },
+    "YoutubeCell": {
+      "dialogTitle": "YouTube"
+    },
+    "SocialLinksCell": {
+      "home": "Verkkosivu",
+      "twitter": "Twitter/X",
+      "github": "GitHub",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "wikipedia": "Wikipedia"
+    },
+    "Toasts": {
+      "errors": {
+        "conflict": "Toiminto epäonnistui tietojen eheyden tarkistuksen vuoksi.",
+        "ise": "Palvelimella tapahtui virhe! Ilmoita asiasta ylläpitäjälle!",
+        "gateway": "Palvelin on ylikuormitettu tai huollossa; yritä myöhemmin uudelleen!",
+        "generic": "Palvelimella tapahtui virhe! Yritä myöhemmin uudelleen.",
+        "teapot": "Palvelin on tullut hulluksi ja kruunannut itsensä teekannu-kuninkaaksi!",
+        "timeout": "Palvelin ei vastannut ajoissa; yritä (myöhemmin) uudelleen.",
+        "sessionTimedOut": "Istuntosi on vanhentunut. Kirjaudu ulos ja sitten takaisin sisään.",
+        "languageSaveFailure": "Kieliasetuksen tallennus epäonnistui."
+      }
+    },
+    "RefreshControl": {
+      "lastRefresh": "Viimeisin päivitys"
+    },
+    "Breadcrumbs": {
+      "newPost": "Uusi artikkeli",
+      "newEvent": "Uusi tapahtuma",
+      "newCompo": "Uusi kompo",
+      "newEntry": "Uusi tuotos",
+      "newCompetition": "Uusi kilpailu",
+      "newParticipation": "Uusi osallistuminen",
+      "newStoreItem": "Uusi tuote",
+      "newVideoCategory": "Uusi kategoria",
+      "newVideo": "Uusi video",
+      "newProgramEvent": "Uusi ohjelmanumero",
+      "newUpload": "Uusi tiedosto"
+    },
+    "App": {
+      "nav": {
+        "dashboard": "Kojelauta",
+        "site": "Sivusto",
+        "blog": "Blogi",
+        "content": "Sisältö",
+        "program": "Ohjelma",
+        "uploads": "Tiedostot",
+        "events": "Tapahtumat",
+        "users": "Käyttäjät",
+        "logout": "Kirjaudu ulos",
+        "kompomaatti": "Kompomaatti",
+        "compos": "Kompot",
+        "entries": "Tuotokset",
+        "competitions": "Kilpailut",
+        "competitionParticipations": "Osallistumiset",
+        "voteCodes": "Lippu-äänikoodit",
+        "voteCodeRequests": "Äänikoodipyynnöt",
+        "store": "Kauppa",
+        "storeItems": "Tuotteet",
+        "transactions": "Tilaukset",
+        "transactionItems": "Tilausrivit",
+        "storeSummary": "Myyntiyhteenveto",
+        "arkisto": "Arkisto",
+        "arkistoArchiver": "Arkistointi",
+        "arkistoCategories": "Videokategoriat",
+        "arkistoVideos": "Videot",
+        "apiTokens": "API-avaimet",
+        "auditLog": "Muutosloki"
+      }
+    },
+    "MainNavigation": {
+      "title": "Instanssi",
+      "event": "Tapahtuma",
+      "publicEvents": "Julkiset",
+      "hiddenEvents": "Piilotetut",
+      "confirmEventChange": "Haluatko varmasti vaihtaa tapahtumaa? Sinut ohjataan uuden tapahtuman kojelaudalle ja tallentamattomat muutokset menetetään."
+    },
+    "EventView": {
+      "title": "Tapahtumat",
+      "newEvent": "Uusi tapahtuma",
+      "loadingEvents": "Ladataan tapahtumia ...",
+      "noEventsFound": "Tapahtumia ei löytynyt.",
+      "confirmDelete": "Haluatko varmasti poistaa tapahtuman '{name}'?",
+      "headers": {
+        "tag": "Tunniste",
+        "date": "Alkamispäivä",
+        "archived": "Arkistoitu",
+        "hidden": "Piilotettu",
+        "mainUrl": "Pää-URL"
+      },
+      "loadFailure": "Tapahtumien lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteFailure": "Tapahtuman poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Tapahtuma poistettu!",
+      "filterByArchived": "Arkisto",
+      "filterByVisibility": "Näkyvyys",
+      "allEvents": "Kaikki",
+      "archivedOnly": "Arkistoidut",
+      "notArchivedOnly": "Ei arkistoidut",
+      "allVisibility": "Kaikki",
+      "hiddenOnly": "Piilotetut",
+      "visibleOnly": "Näkyvät"
+    },
+    "UsersView": {
+      "title": "Käyttäjät",
+      "newUser": "Uusi käyttäjä",
+      "loadingUsers": "Ladataan käyttäjiä ...",
+      "noUsersFound": "Käyttäjiä ei löytynyt.",
+      "confirmDelete": "Haluatko varmasti poistaa käyttäjän '{username}'?",
+      "headers": {
+        "userName": "Käyttäjänimi",
+        "firstName": "Etunimi",
+        "lastName": "Sukunimi",
+        "email": "Sähköpostiosoite",
+        "staff": "Henkilökunta",
+        "system": "Järjestelmä",
+        "dateJoined": "Liittymispäivä"
+      },
+      "loadFailure": "Käyttäjien lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteFailure": "Käyttäjän poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Käyttäjä poistettu!",
+      "filterByStatus": "Tila",
+      "filterByType": "Tyyppi",
+      "filterBySystem": "Järjestelmä",
+      "allStatuses": "Kaikki",
+      "activeOnly": "Aktiiviset",
+      "inactiveOnly": "Ei-aktiiviset",
+      "allTypes": "Kaikki",
+      "staffOnly": "Henkilökunta",
+      "regularOnly": "Tavalliset",
+      "allSystem": "Kaikki",
+      "systemOnly": "Järjestelmä",
+      "nonSystemOnly": "Ei-järjestelmä"
+    },
+    "BlogEditorView": {
+      "title": "Blogi",
+      "newBlogPost": "Uusi blogiartikkeli",
+      "loadingBlogPosts": "Ladataan blogiartikkeleita ...",
+      "noBlogPostsFound": "Blogiartikkeleita ei löytynyt.",
+      "confirmDelete": "Haluatko varmasti poistaa blogiartikkelin '{title}'?",
+      "headers": {
+        "createdAt": "Luotu",
+        "createdBy": "Luonut",
+        "isPublic": "Julkinen",
+        "text": "Sisältö"
+      },
+      "loadFailure": "Blogiartikkelien lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteFailure": "Blogiartikkelin poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Blogiartikkeli poistettu!"
+    },
+    "BlogPostDialog": {
+      "title": "Blogiartikkeli",
+      "labels": {
+        "text": "Sisältö",
+        "postIsVisible": "Artikkeli on kaikkien nähtävissä",
+        "postNotVisible": "Artikkeli on yksityinen; vain ylläpitäjät näkevät sen"
+      },
+      "editFailure": "Blogiartikkelin muokkaus epäonnistui; yritä myöhemmin uudelleen.",
+      "createFailure": "Blogiartikkelin luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Blogiartikkeli muokattu!",
+      "createSuccess": "Blogiartikkeli luotu!"
+    },
+    "BlogEntryEditView": {
+      "newTitle": "Uusi blogiartikkeli",
+      "editTitle": "Muokkaa blogiartikkelia",
+      "loadFailure": "Blogiartikkelin lataus epäonnistui; yritä myöhemmin uudelleen."
+    },
+    "ComposView": {
+      "title": "Kompot",
+      "newCompo": "Uusi kompo",
+      "confirmDelete": "Haluatko varmasti poistaa kompon '{name}'?",
+      "loadFailure": "Kompojen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Kompo poistettu!",
+      "deleteFailure": "Kompon poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noComposFound": "Kompoja ei löytynyt.",
+      "loadingCompos": "Ladataan kompoja ...",
+      "headers": {
+        "addingEnd": "Lähetystakaraja",
+        "votingStart": "Äänestyksen alku",
+        "votingEnd": "Äänestyksen loppu"
+      },
+      "filterByStatus": "Tila",
+      "allStatuses": "Kaikki",
+      "activeOnly": "Aktiiviset",
+      "inactiveOnly": "Ei-aktiiviset"
+    },
+    "CompoEditView": {
+      "newTitle": "Uusi kompo",
+      "editTitle": "Muokkaa kompoa",
+      "loadFailure": "Kompon lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Kompo luotu!",
+      "createFailure": "Kompon luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Kompo päivitetty!",
+      "editFailure": "Kompon päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "schedule": "Aikataulu",
+        "fileSettings": "Tiedostoasetukset",
+        "displaySettings": "Näyttöasetukset",
+        "visibility": "Näkyvyys ja tila"
+      },
+      "labels": {
+        "addingEnd": "Lähetystakaraja",
+        "editingEnd": "Muokkaustakaraja",
+        "compoStart": "Kompon alkamisaika",
+        "votingStart": "Äänestyksen alkamisaika",
+        "votingEnd": "Äänestyksen päättymisaika",
+        "entrySizelimit": "Tuotoksen enimmäiskoko (tavua)",
+        "sourceSizelimit": "Lähdekoodin enimmäiskoko (tavua)",
+        "formats": "Tuotosmuodot (esim. png|jpg)",
+        "sourceFormats": "Lähdekoodimuodot",
+        "imageFormats": "Kuvamuodot",
+        "activeOn": "Kompo on aktiivinen",
+        "activeOff": "Kompo on piilotettu",
+        "activeHintOn": "Kompo on julkisesti näkyvissä; käyttäjät voivat lähettää ja muokata tuotoksia sekä äänestää",
+        "activeHintOff": "Kompo on piilotettu; tuotosten lähetys, muokkaus ja äänestys on estetty",
+        "showVotingResultsOn": "Äänestystulokset ovat näkyvissä",
+        "showVotingResultsOff": "Äänestystulokset ovat piilossa",
+        "showVotingResultsHintOn": "Pisteet, sijoitukset ja tuotostiedostot ovat julkisesti näkyvissä",
+        "showVotingResultsHintOff": "Pisteet ja sijoitukset ovat piilossa; tuotostiedostot piilotettu ennen äänestyksen alkua",
+        "isVotableOn": "Äänestys on käytössä",
+        "isVotableOff": "Äänestys on pois käytöstä",
+        "isVotableHintOn": "Käyttäjät voivat äänestää tuotoksia äänestysaikana",
+        "isVotableHintOff": "Äänestys on kokonaan pois käytöstä; käytä ulkoisesti arvioitavissa kompoissa (esim. Robocoding)",
+        "entryViewType": "Tuotoksen näkymätyyppi",
+        "thumbnailPref": "Pienoiskuva-asetus",
+        "hideFromArchiveOn": "Piilotettu arkistosta",
+        "hideFromArchiveOff": "Näkyvissä arkistossa",
+        "hideFromArchiveHintOn": "Tämä kompo näkyy julkisessa arkistossa kun tapahtuma on arkistoitu",
+        "hideFromArchiveHintOff": "Tämä kompo on piilotettu arkistosta vaikka tapahtuma olisi arkistoitu",
+        "hideFromFrontpageOn": "Piilotettu etusivulta",
+        "hideFromFrontpageOff": "Näkyvissä etusivulla",
+        "hideFromFrontpageHintOn": "Kompon nimi ja kuvaus näkyvät tapahtuman etusivulla",
+        "hideFromFrontpageHintOff": "Piilotettu tapahtuman etusivulta; käytä kun kompon tietoja vielä viimeistellään"
+      },
+      "entryViewTypes": {
+        "0": {
+          "title": "Ei esikatselua",
+          "description": "Älä näytä mediaesikatselua (YouTube tai kuva) julkisella tuotossivulla"
+        },
+        "1": {
+          "title": "YouTube, sitten kuva",
+          "description": "Näytä YouTube-video jos saatavilla, muuten käytä ladattua kuvaa"
+        },
+        "2": {
+          "title": "Vain kuva",
+          "description": "Näytä vain ladattu kuvaesikatselu, ohita YouTube-URL"
+        }
+      },
+      "thumbnailPrefs": {
+        "0": {
+          "title": "Pakollinen",
+          "description": "Osallistujien on ladattava erillinen kuvatiedosto (skaalataan 160x100 ja 640x400 pienoiskuviksi)"
+        },
+        "1": {
+          "title": "Tuotostiedostosta",
+          "description": "Tuotostiedosto itse on kuva; tuotosmuotojen on oltava vain png/jpg"
+        },
+        "2": {
+          "title": "Valinnainen",
+          "description": "Osallistujat voivat ladata kuvatiedoston pienoiskuvaksi, mutta se ei ole pakollinen"
+        },
+        "3": {
+          "title": "Ei sallittu",
+          "description": "Kuvatiedostojen lataus ei ole sallittua; tuotoksilla ei ole pienoiskuvia"
+        }
+      },
+      "sizeUnits": {
+        "B": "t",
+        "KB": "kt",
+        "MB": "Mt",
+        "GB": "Gt"
+      },
+      "commonFormats": {
+        "entry": [
+          "zip",
+          "7z",
+          "rar",
+          "tar.gz",
+          "exe",
+          "com",
+          "prg",
+          "d64"
+        ],
+        "source": [
+          "zip",
+          "7z",
+          "rar",
+          "tar.gz"
+        ],
+        "image": [
+          "png",
+          "jpg",
+          "jpeg",
+          "gif",
+          "webp"
+        ]
+      }
+    },
+    "EntriesView": {
+      "title": "Tuotokset",
+      "newEntry": "Uusi tuotos",
+      "exportResults": "Vie tulokset",
+      "download": "Lataa",
+      "downloadAllEntries": "Kaikki tuotokset (.zip)",
+      "confirmDelete": "Haluatko varmasti poistaa tuotoksen '{name}'?",
+      "loadFailure": "Tuotosten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Tuotos poistettu!",
+      "deleteFailure": "Tuotoksen poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "exportSuccess": "Tulokset viety!",
+      "exportFailure": "Tulosten vienti epäonnistui; yritä myöhemmin uudelleen.",
+      "downloadFailure": "Tuotosarkiston lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "missingFilesTitle": "Puuttuvat tuotostiedostot",
+      "missingFilesDescription": "Seuraavat tuotostiedostot puuttuvat palvelimelta eikä niitä voi sisällyttää arkistoon:",
+      "noEntriesFound": "Tuotoksia ei löytynyt.",
+      "loadingEntries": "Ladataan tuotoksia ...",
+      "filterByCompo": "Suodata kompon mukaan",
+      "allCompos": "Kaikki kompot",
+      "filterByDisqualified": "Tila",
+      "allStatuses": "Kaikki",
+      "headers": {
+        "creator": "Tekijä",
+        "entryfile": "Tuotos",
+        "sourcefile": "Lähdekoodi",
+        "youtube": "Youtube",
+        "compo": "Kompo",
+        "disqualified": "Hylätty",
+        "disqualifiedReason": "Hylkäyssyy"
+      }
+    },
+    "EntryEditView": {
+      "newTitle": "Uusi tuotos",
+      "editTitle": "Muokkaa tuotosta",
+      "loadFailure": "Tuotoksen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Tuotos luotu!",
+      "createFailure": "Tuotoksen luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Tuotos päivitetty!",
+      "editFailure": "Tuotoksen päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "entryFileRequired": "Valitse tuotostiedosto.",
+      "imageFileRequired": "Valitse kuvatiedosto (pakollinen tässä kompossa).",
+      "sections": {
+        "files": "Tiedostot",
+        "uploadFiles": "Lataa tiedostoja",
+        "media": "Media",
+        "ranking": "Sijoitus",
+        "disqualification": "Hylkäys",
+        "alternateFiles": "Vaihtoehtoiset tiedostot"
+      },
+      "labels": {
+        "creator": "Tekijä",
+        "platform": "Alusta",
+        "compo": "Kompo",
+        "entryfile": "Tuotostiedosto",
+        "sourcefile": "Lähdekooditiedosto",
+        "imagefile": "Kuvatiedosto",
+        "youtubeUrl": "YouTube-URL",
+        "disqualifiedOn": "Tuotos on hylätty",
+        "disqualifiedOff": "Tuotosta ei ole hylätty",
+        "disqualifiedReason": "Syy"
+      },
+      "noAlternateFiles": "Vaihtoehtoisia tiedostoja ei ole saatavilla."
+    },
+    "CompetitionsView": {
+      "title": "Kilpailut",
+      "newCompetition": "Uusi kilpailu",
+      "confirmDelete": "Haluatko varmasti poistaa kilpailun '{name}'?",
+      "loadFailure": "Kilpailujen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Kilpailu poistettu!",
+      "deleteFailure": "Kilpailun poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noCompetitionsFound": "Kilpailuja ei löytynyt.",
+      "loadingCompetitions": "Ladataan kilpailuja ...",
+      "headers": {
+        "participationEnd": "Ilmoittautumistakaraja",
+        "start": "Alkaa",
+        "end": "Päättyy"
+      },
+      "filterByStatus": "Tila",
+      "allStatuses": "Kaikki",
+      "activeOnly": "Aktiiviset",
+      "inactiveOnly": "Ei-aktiiviset"
+    },
+    "CompetitionEditView": {
+      "newTitle": "Uusi kilpailu",
+      "editTitle": "Muokkaa kilpailua",
+      "loadFailure": "Kilpailun lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Kilpailu luotu!",
+      "createFailure": "Kilpailun luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Kilpailu päivitetty!",
+      "editFailure": "Kilpailun päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "schedule": "Aikataulu",
+        "scoring": "Pisteytys",
+        "settings": "Asetukset"
+      },
+      "labels": {
+        "participationEnd": "Ilmoittautumistakaraja",
+        "start": "Alkamisaika",
+        "end": "Päättymisaika",
+        "scoreType": "Pistetyyppi (esim. km, sek)",
+        "scoreSort": "Pistejärjestys",
+        "showResults": "Näytä tulokset",
+        "activeOn": "Kilpailu on aktiivinen",
+        "activeOff": "Kilpailu on piilotettu",
+        "activeHintOn": "Kilpailu on julkisesti näkyvissä; käyttäjät voivat ilmoittautua",
+        "activeHintOff": "Kilpailu on piilotettu; ilmoittautuminen on estetty",
+        "showResultsOn": "Tulokset ovat näkyvissä",
+        "showResultsOff": "Tulokset ovat piilossa",
+        "showResultsHintOn": "Pisteet, sijoitukset ja hylkäystiedot ovat julkisesti näkyvissä",
+        "showResultsHintOff": "Pisteet ja sijoitukset ovat piilossa kunnes tämä otetaan käyttöön",
+        "hideFromArchiveOn": "Piilotettu arkistosta",
+        "hideFromArchiveOff": "Näkyvissä arkistossa",
+        "hideFromArchiveHintOn": "Tämä kilpailu näkyy julkisessa arkistossa kun tapahtuma on arkistoitu",
+        "hideFromArchiveHintOff": "Tämä kilpailu on piilotettu arkistosta vaikka tapahtuma olisi arkistoitu"
+      },
+      "scoreSortOptions": {
+        "highestFirst": "Suurin ensin",
+        "lowestFirst": "Pienin ensin"
+      },
+      "commonScoreTypes": [
+        "pst",
+        "sek",
+        "min",
+        "m",
+        "km",
+        "kg",
+        "kpl"
+      ]
+    },
+    "CompetitionParticipationsView": {
+      "title": "Kilpailuosallistumiset",
+      "newParticipation": "Uusi osallistuminen",
+      "confirmDelete": "Haluatko varmasti poistaa osallistumisen '{name}'?",
+      "loadFailure": "Osallistumisten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Osallistuminen poistettu!",
+      "deleteFailure": "Osallistumisen poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noParticipationsFound": "Osallistumisia ei löytynyt.",
+      "loadingParticipations": "Ladataan osallistumisia ...",
+      "filterByCompetition": "Suodata kilpailun mukaan",
+      "allCompetitions": "Kaikki kilpailut",
+      "filterByDisqualified": "Tila",
+      "allStatuses": "Kaikki",
+      "exportResults": "Vie tulokset",
+      "exportSuccess": "Tulokset viety!",
+      "exportFailure": "Tulosten vienti epäonnistui.",
+      "headers": {
+        "participantName": "Osallistujan nimi",
+        "competition": "Kilpailu",
+        "disqualified": "Hylätty",
+        "disqualifiedReason": "Hylkäyssyy"
+      }
+    },
+    "CompetitionParticipationEditView": {
+      "newTitle": "Uusi osallistuminen",
+      "editTitle": "Muokkaa osallistumista",
+      "loadFailure": "Osallistumisen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Osallistuminen luotu!",
+      "createFailure": "Osallistumisen luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Osallistuminen päivitetty!",
+      "editFailure": "Osallistumisen päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "scoring": "Pisteytys",
+        "disqualification": "Hylkäys"
+      },
+      "labels": {
+        "competition": "Kilpailu",
+        "participantName": "Osallistujan nimi",
+        "disqualifiedOn": "Osallistuja on hylätty",
+        "disqualifiedOff": "Osallistujaa ei ole hylätty",
+        "disqualifiedReason": "Syy"
+      }
+    },
+    "VoteCodesView": {
+      "title": "Lippu-äänikoodit",
+      "loadFailure": "Äänikoodien lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "noVoteCodesFound": "Äänikoodeja ei löytynyt.",
+      "loadingVoteCodes": "Ladataan äänikoodeja ...",
+      "headers": {
+        "associatedTo": "Liitetty käyttäjään",
+        "ticket": "Lippu",
+        "time": "Aika"
+      }
+    },
+    "VoteCodeRequestsView": {
+      "title": "Äänikoodipyynnöt",
+      "loadFailure": "Äänikoodipyyntöjen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "noRequestsFound": "Äänikoodipyyntöjä ei löytynyt.",
+      "loadingRequests": "Ladataan äänikoodipyyntöjä ...",
+      "confirmDelete": "Haluatko varmasti poistaa tämän äänikoodipyynnön?",
+      "deleteSuccess": "Äänikoodipyyntö poistettu!",
+      "deleteFailure": "Äänikoodipyynnön poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "updateSuccess": "Äänikoodipyyntö päivitetty!",
+      "updateFailure": "Äänikoodipyynnön päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "headers": {
+        "text": "Pyyntöteksti"
+      },
+      "statuses": {
+        "pending": "Odottaa",
+        "approved": "Hyväksytty",
+        "rejected": "Hylätty"
+      },
+      "accept": "Hyväksy",
+      "reject": "Hylkää"
+    },
+    "UserDialog": {
+      "title": "Käyttäjä",
+      "labels": {
+        "userName": "Käyttäjänimi",
+        "firstName": "Etunimi",
+        "lastName": "Sukunimi",
+        "email": "Sähköpostiosoite",
+        "dateJoined": "Liittymispäivä",
+        "isActiveOn": "Tili on aktiivinen",
+        "isActiveOff": "Tili on pois käytöstä",
+        "isActiveHintOn": "Käyttäjä voi kirjautua sisään ja käyttää sivustoa normaalisti.",
+        "isActiveHintOff": "Käyttäjän kirjautuminen on estetty. Poista tili käytöstä poistamisen sijaan.",
+        "isStaffOn": "Henkilökunta-oikeudet käytössä",
+        "isStaffOff": "Ei henkilökunta-oikeuksia",
+        "isStaffHintOn": "Käyttäjä pääsee hallintapaneeliin. Vain pääkäyttäjät voivat muuttaa tätä.",
+        "isStaffHintOff": "Käyttäjällä ei ole pääsyä hallintapaneeliin. Vain pääkäyttäjät voivat muuttaa tätä.",
+        "isSystemOn": "Järjestelmäkäyttäjä",
+        "isSystemOff": "Tavallinen käyttäjä",
+        "isSystemHintOn": "Tämä on järjestelmän hallitsema tili. Sitä ei voi muokata tai poistaa.",
+        "isSystemHintOff": "Tämä on tavallinen käyttäjätili.",
+        "groups": "Ryhmät"
+      },
+      "editFailure": "Käyttäjän muokkaus epäonnistui; yritä myöhemmin uudelleen.",
+      "createFailure": "Käyttäjän luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Käyttäjä muokattu!",
+      "createSuccess": "Käyttäjä luotu!"
+    },
+    "UserEditView": {
+      "newTitle": "Uusi käyttäjä",
+      "loadFailure": "Käyttäjän lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "systemUserWarning": "Tämä on järjestelmäkäyttäjä eikä sitä voi muokata."
+    },
+    "EventDialog": {
+      "title": "Tapahtuma",
+      "labels": {
+        "tag": "Tunniste",
+        "date": "Alkamispäivä",
+        "mainUrl": "Pää-URL",
+        "isArchived": "Tapahtuma on arkistoitu",
+        "isNotArchived": "Tapahtumaa ei ole arkistoitu",
+        "archivedHintOn": "Tämä tapahtuma näkyy julkisessa arkisto-osiossa.",
+        "archivedHintOff": "Ota käyttöön näyttääksesi tapahtuman julkisessa arkisto-osiossa.",
+        "isHidden": "Tapahtuma on piilotettu julkisuudelta",
+        "isNotHidden": "Tapahtuma on julkisesti näkyvissä",
+        "hiddenHintOn": "Tämä tapahtuma on piilotettu julkisista ja käyttäjärajapinnoista.",
+        "hiddenHintOff": "Tämä tapahtuma on näkyvissä julkisissa ja käyttäjärajapinnoissa."
+      },
+      "editFailure": "Tapahtuman muokkaus epäonnistui; yritä myöhemmin uudelleen.",
+      "createFailure": "Tapahtuman luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Tapahtuma muokattu!",
+      "createSuccess": "Tapahtuma luotu!"
+    },
+    "EventEditView": {
+      "loadFailure": "Tapahtuman lataus epäonnistui; yritä myöhemmin uudelleen."
+    },
+    "MainView": {
+      "title": "Kojelauta",
+      "noEvent": "Tapahtumaa ei valittu",
+      "archived": "Arkistoitu",
+      "eventDate": "Tapahtuman päivämäärä",
+      "countdown": "Lähtölaskenta",
+      "daysUntil": "{days} päivää tapahtumaan",
+      "daysAgo": "{days} päivää sitten",
+      "today": "Tänään!",
+      "visitSite": "Avaa sivusto",
+      "unknown": "Tuntematon",
+      "quickActions": "Pikatoiminnot",
+      "actions": {
+        "newBlogPost": "Uusi blogiartikkeli",
+        "manageEvents": "Hallitse tapahtumia",
+        "manageUsers": "Hallitse käyttäjiä"
+      },
+      "stats": {
+        "blogPosts": "Blogiartikkeleita",
+        "public": "julkisia",
+        "draft": "luonnoksia",
+        "compoEntries": "Kompotuotoksia",
+        "compos": "kompoa",
+        "competitionParticipants": "Kilpailuosallistujia",
+        "competitions": "kilpailua",
+        "programEvents": "Ohjelmanumeroa",
+        "transactions": "Tilauksia",
+        "paid": "maksettuja",
+        "storeItems": "Tuotetta",
+        "pendingVoteRequests": "Odottavia äänikoodipyyntöjä",
+        "totalRequests": "pyyntöjä yhteensä",
+        "participants": "Osallistujia"
+      },
+      "charts": {
+        "entriesPerCompo": "Tuotoksia per kompo",
+        "competitionParticipants": "Kilpailuosallistujat",
+        "noData": "Ei tietoja saatavilla"
+      },
+      "recentActivity": {
+        "blogPosts": "Viimeisimmät blogiartikkelit",
+        "compoEntries": "Viimeisimmät kompotuotokset",
+        "transactions": "Viimeisimmät tilaukset",
+        "noRecentPosts": "Ei viimeaikaisia blogiartikkeleita",
+        "noRecentEntries": "Ei viimeaikaisia kompotuotoksia",
+        "noRecentTransactions": "Ei viimeaikaisia tilauksia"
+      },
+      "transactions": {
+        "paid": "Maksettu",
+        "cancelled": "Peruutettu",
+        "paidStatus": "Maksettu",
+        "pending": "Odottaa",
+        "createdStatus": "Luotu"
+      }
+    },
+    "StoreItemsView": {
+      "title": "Tuotteet",
+      "newItem": "Uusi tuote",
+      "confirmDelete": "Haluatko varmasti poistaa tuotteen '{name}'?",
+      "loadFailure": "Tuotteiden lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Tuote poistettu!",
+      "deleteFailure": "Tuotteen poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "exportSuccess": "Tuotteet viety!",
+      "exportFailure": "Tuotteiden vienti epäonnistui; yritä myöhemmin uudelleen.",
+      "noItemsFound": "Tuotteita ei löytynyt.",
+      "loadingItems": "Ladataan tuotteita ...",
+      "headers": {
+        "available": "Saatavilla",
+        "max": "Enimmäismäärä",
+        "isAvailable": "Saatavilla",
+        "isTicket": "Lippu"
+      },
+      "filterByAvailability": "Saatavuus",
+      "filterByType": "Tyyppi",
+      "filterByVisibility": "Näkyvyys",
+      "allAvailability": "Kaikki",
+      "inStockOnly": "Varastossa",
+      "outOfStockOnly": "Loppunut",
+      "allTypes": "Kaikki",
+      "ticketsOnly": "Liput",
+      "nonTicketsOnly": "Ei-liput",
+      "allVisibility": "Kaikki",
+      "secretOnly": "Salaiset",
+      "publicOnly": "Julkiset"
+    },
+    "StoreItemEditView": {
+      "newTitle": "Uusi tuote",
+      "editTitle": "Muokkaa tuotetta",
+      "loadFailure": "Tuotteen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Tuote luotu!",
+      "createFailure": "Tuotteen luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Tuote päivitetty!",
+      "editFailure": "Tuotteen päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "basicInfo": "Perustiedot",
+        "image": "Tuotekuva",
+        "pricing": "Hinnoittelu ja alennus",
+        "availability": "Saatavuus",
+        "visibility": "Näkyvyys ja salainen avain",
+        "variants": "Variantit"
+      },
+      "labels": {
+        "max": "Enimmäismäärä",
+        "maxPerOrder": "Enimmäismäärä per tilaus",
+        "sortIndex": "Järjestysindeksi",
+        "discountAmount": "Alennusraja",
+        "discountPercentage": "Alennusprosentti",
+        "imagefile": "Tuotekuva",
+        "availableOn": "Tuote on myynnissä",
+        "availableOff": "Tuote ei ole myynnissä",
+        "availableHintOn": "Tuote näkyy kaupassa",
+        "availableHintOff": "Tuote on piilotettu kaupasta",
+        "isTicketOn": "Tämä on lipputuote",
+        "isTicketOff": "Tämä ei ole lipputuote",
+        "isTicketHintOn": "Voidaan käyttää äänikoodipyyntöihin kompomaatissa",
+        "isTicketHintOff": "Tavallinen tuote ilman lipputoiminnallisuutta",
+        "isSecretOn": "Tuote on salainen",
+        "isSecretOff": "Tuote on julkinen",
+        "isSecretHintOn": "Näkyvissä vain salaisella avaimella URL:ssa",
+        "isSecretHintOff": "Kaikkien nähtävissä kaupassa",
+        "secretKey": "Salainen avain"
+      },
+      "variants": {
+        "title": "Tuotevariantit",
+        "noVariants": "Variantteja ei ole määritelty",
+        "addVariant": "Lisää variantti",
+        "name": "Variantin nimi",
+        "deleteConfirm": "Haluatko varmasti poistaa variantin '{name}'?",
+        "deleteSuccess": "Variantti poistettu!",
+        "deleteFailure": "Variantin poisto epäonnistui; yritä myöhemmin uudelleen.",
+        "createSuccess": "Variantti luotu!",
+        "createFailure": "Variantin luonti epäonnistui; yritä myöhemmin uudelleen."
+      }
+    },
+    "TransactionsView": {
+      "title": "Tilaukset",
+      "confirmDelete": "Haluatko varmasti poistaa tilauksen #{id}?",
+      "loadFailure": "Tilausten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "exportSuccess": "Tilaukset viety!",
+      "exportFailure": "Tilausten vienti epäonnistui; yritä myöhemmin uudelleen.",
+      "noTransactionsFound": "Tilauksia ei löytynyt.",
+      "loadingTransactions": "Ladataan tilauksia ...",
+      "headers": {
+        "fullName": "Koko nimi",
+        "total": "Yhteensä",
+        "information": "Lisätiedot",
+        "informationDialogTitle": "Lisätiedot"
+      },
+      "statuses": {
+        "paid": "Maksettu",
+        "pending": "Odottaa",
+        "cancelled": "Peruutettu",
+        "created": "Luotu"
+      }
+    },
+    "TransactionDetailView": {
+      "title": "Tilauksen tiedot",
+      "loadFailure": "Tilauksen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "customer": "Asiakastiedot",
+        "address": "Osoite",
+        "status": "Tila",
+        "payment": "Maksutiedot",
+        "items": "Tuotteet",
+        "receipts": "Kuitit",
+        "events": "Tapahtumaloki"
+      },
+      "labels": {
+        "firstname": "Etunimi",
+        "lastname": "Sukunimi",
+        "company": "Yritys",
+        "telephone": "Puhelin",
+        "mobile": "Matkapuhelin",
+        "street": "Katuosoite",
+        "postalcode": "Postinumero",
+        "city": "Kaupunki",
+        "country": "Maa",
+        "timeCreated": "Luotu",
+        "timePending": "Odottaa",
+        "timePaid": "Maksettu",
+        "timeCancelled": "Peruutettu",
+        "paymentMethod": "Maksutapa",
+        "total": "Yhteensä",
+        "key": "Avain",
+        "token": "Token",
+        "information": "Lisätiedot"
+      },
+      "items": {
+        "name": "Tuote",
+        "variant": "Variantti",
+        "delivered": "Toimitettu",
+        "key": "Avain"
+      },
+      "receipts": {
+        "noReceipts": "Ei kuitteja",
+        "subject": "Aihe",
+        "to": "Vastaanottaja",
+        "from": "Lähettäjä",
+        "sent": "Lähetetty",
+        "notSent": "Ei lähetetty",
+        "view": "Näytä",
+        "contentTitle": "Kuitin sisältö",
+        "resend": "Lähetä uudelleen",
+        "resendSuccess": "Kuitti lähetetty uudelleen!",
+        "resendFailure": "Kuitin uudelleenlähetys epäonnistui; yritä myöhemmin uudelleen."
+      },
+      "events": {
+        "noEvents": "Ei lokimerkintöjä",
+        "message": "Viesti",
+        "data": "Data",
+        "time": "Aika"
+      }
+    },
+    "TransactionItemsView": {
+      "title": "Tilausrivit",
+      "loadFailure": "Tilausrivien lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "exportSuccess": "Tilausrivit viety!",
+      "exportFailure": "Tilausrivien vienti epäonnistui; yritä myöhemmin uudelleen.",
+      "noItemsFound": "Tilausrivejä ei löytynyt.",
+      "loadingItems": "Ladataan tilausrivejä ...",
+      "filterByItem": "Suodata tuotteen mukaan",
+      "allItems": "Kaikki tuotteet",
+      "headers": {
+        "transactionId": "Tilaus-ID",
+        "item": "Tuote",
+        "variant": "Variantti",
+        "key": "Avain",
+        "delivered": "Toimitettu"
+      }
+    },
+    "StoreSummaryView": {
+      "title": "Myyntiyhteenveto",
+      "loadFailure": "Myyntiyhteenvedon lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "noSalesFound": "Myyntiä ei löytynyt tälle tapahtumalle.",
+      "loading": "Ladataan myyntiyhteenvetoa ...",
+      "exportSuccess": "Myyntiyhteenveto viety!",
+      "exportFailure": "Myyntiyhteenvedon vienti epäonnistui; yritä myöhemmin uudelleen.",
+      "headers": {
+        "item": "Tuote",
+        "variant": "Variantti",
+        "quantity": "Myyty määrä",
+        "revenue": "Tuotto"
+      },
+      "totals": {
+        "title": "Yhteensä",
+        "totalItems": "Myytyjä tuotteita yhteensä",
+        "totalRevenue": "Tuotto yhteensä"
+      },
+      "charts": {
+        "salesPerDay": "Myynti päivittäin",
+        "salesByHour": "Myynti vuorokaudenajan mukaan",
+        "salesCount": "Myynti",
+        "noData": "Ei tietoja saatavilla"
+      }
+    },
+    "VideoCategoriesView": {
+      "title": "Videokategoriat",
+      "newCategory": "Uusi kategoria",
+      "confirmDelete": "Haluatko varmasti poistaa kategorian '{name}'?",
+      "loadFailure": "Videokategorioiden lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Kategoria poistettu!",
+      "deleteFailure": "Kategorian poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noCategoriesFound": "Videokategorioita ei löytynyt.",
+      "loadingCategories": "Ladataan videokategorioita ..."
+    },
+    "VideoCategoryEditView": {
+      "newTitle": "Uusi videokategoria",
+      "editTitle": "Muokkaa videokategoriaa",
+      "loadFailure": "Videokategorian lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Kategoria luotu!",
+      "createFailure": "Kategorian luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Kategoria päivitetty!",
+      "editFailure": "Kategorian päivitys epäonnistui; yritä myöhemmin uudelleen."
+    },
+    "VideosView": {
+      "title": "Videot",
+      "newVideo": "Uusi video",
+      "confirmDelete": "Haluatko varmasti poistaa videon '{name}'?",
+      "loadFailure": "Videoiden lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Video poistettu!",
+      "deleteFailure": "Videon poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noVideosFound": "Videoita ei löytynyt.",
+      "loadingVideos": "Ladataan videoita ...",
+      "filterByCategory": "Suodata kategorian mukaan",
+      "allCategories": "Kaikki kategoriat",
+      "headers": {
+        "category": "Kategoria",
+        "youtube": "YouTube"
+      }
+    },
+    "VideoEditView": {
+      "newTitle": "Uusi video",
+      "editTitle": "Muokkaa videota",
+      "loadFailure": "Videon lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Video luotu!",
+      "createFailure": "Videon luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Video päivitetty!",
+      "editFailure": "Videon päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "basicInfo": "Perustiedot",
+        "youtube": "YouTube"
+      },
+      "labels": {
+        "category": "Kategoria",
+        "youtubeUrl": "YouTube-URL",
+        "youtubeUrlHint": "Syötä YouTube-URL (esim. https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
+      }
+    },
+    "LanguageSelector": {
+      "label": "Kieli"
+    },
+    "LoginView": {
+      "title": "Kirjaudu sisään",
+      "subtitle": "Kirjaudu käyttäjätunnuksella ja salasanalla tai käyttämällä jotain SSO-menetelmää.",
+      "username": "Käyttäjänimi",
+      "password": "Salasana",
+      "login": "Kirjaudu",
+      "auth_failed": "Virheellinen käyttäjänimi tai salasana!",
+      "insufficient_permissions": "Sinulla ei ole tarvittavia oikeuksia tämän paneelin käyttöön."
+    },
+    "ArchiverView": {
+      "title": "Arkistointi",
+      "loadFailure": "Arkistointitilan lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "ongoingWarning": "Tämä tapahtuma on vielä käynnissä. Arkistointitoiminnot ovat pois käytöstä kunnes kaikki kompot ja kilpailut ovat päättyneet.",
+      "visibility": {
+        "title": "Arkistonäkyvyys",
+        "description": "Hallitse näkyykö tämä tapahtuma julkisessa arkistossa.",
+        "visible": "Näkyvissä arkistossa",
+        "hidden": "Piilotettu arkistosta",
+        "showBtn": "Näytä arkistossa",
+        "hideBtn": "Piilota arkistosta",
+        "showSuccess": "Tapahtuma on nyt näkyvissä arkistossa!",
+        "showFailure": "Tapahtuman näyttäminen arkistossa epäonnistui; yritä myöhemmin uudelleen.",
+        "hideSuccess": "Tapahtuma on nyt piilotettu arkistosta!",
+        "hideFailure": "Tapahtuman piilottaminen arkistosta epäonnistui; yritä myöhemmin uudelleen."
+      },
+      "votingData": {
+        "title": "Äänestysdata",
+        "description": "Hallitse tämän tapahtuman äänestyspisteitä ja äänestystietoja.",
+        "scoresStatus": "Pisteet:",
+        "optimized": "Optimoitu",
+        "notOptimized": "Ei optimoitu",
+        "oldVotesStatus": "Vanhat äänet:",
+        "oldVotesFound": "Vanhoja ääniä löydetty",
+        "noOldVotes": "Ei vanhoja ääniä",
+        "optimizeBtn": "Optimoi pisteet",
+        "removeVotesBtn": "Poista vanhat äänet",
+        "optimizeSuccess": "Pisteet optimoitu onnistuneesti!",
+        "optimizeFailure": "Pisteiden optimointi epäonnistui; yritä myöhemmin uudelleen.",
+        "removeVotesConfirm": "Haluatko varmasti poistaa kaikki vanhat äänestystiedot? Tätä toimintoa ei voi perua. Varmista, että pisteet on optimoitu ensin.",
+        "removeVotesSuccess": "Vanhat äänet poistettu onnistuneesti!",
+        "removeVotesFailure": "Vanhojen äänien poisto epäonnistui; yritä myöhemmin uudelleen."
+      },
+      "userRights": {
+        "title": "Käyttäjäoikeudet",
+        "description": "Siirrä tuotosten ja kilpailuosallistumisten omistajuus arkistokäyttäjälle. Tämä poistaa käyttäjäviittaukset tuotoksista säilyttäen tuotostiedot.",
+        "hasNonArchived": "Tuotoksilla on käyttäjäviittauksia",
+        "allTransferred": "Kaikki oikeudet siirretty",
+        "transferBtn": "Siirrä oikeudet",
+        "transferConfirm": "Haluatko varmasti siirtää kaikki tuotosten ja osallistumisten oikeudet arkistokäyttäjälle? Tätä toimintoa ei voi perua.",
+        "transferSuccess": "Oikeudet siirretty onnistuneesti!",
+        "transferFailure": "Oikeuksien siirto epäonnistui; yritä myöhemmin uudelleen."
+      }
+    },
+    "ProgramEventsView": {
+      "title": "Ohjelma",
+      "newProgramEvent": "Uusi ohjelmanumero",
+      "confirmDelete": "Haluatko varmasti poistaa ohjelmanumeron '{title}'?",
+      "loadFailure": "Ohjelman lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Ohjelmanumero poistettu!",
+      "deleteFailure": "Ohjelmanumeron poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noProgramEventsFound": "Ohjelmanumeroita ei löytynyt.",
+      "loadingProgramEvents": "Ladataan ohjelmanumeroita ...",
+      "headers": {
+        "icon": "Kuva 1",
+        "icon2": "Kuva 2",
+        "start": "Alkaa",
+        "end": "Päättyy",
+        "place": "Paikka",
+        "socialLinks": "Linkit",
+        "eventType": "Tyyppi"
+      },
+      "eventTypes": {
+        "0": "Yksinkertainen",
+        "1": "Yksityiskohtainen"
+      },
+      "filterActive": "Suodata tilan mukaan",
+      "filterEventType": "Suodata tyypin mukaan",
+      "allStatuses": "Kaikki tilat",
+      "allTypes": "Kaikki tyypit",
+      "activeOnly": "Vain aktiiviset",
+      "inactiveOnly": "Vain piilotetut"
+    },
+    "ProgramEventEditView": {
+      "newTitle": "Uusi ohjelmanumero",
+      "editTitle": "Muokkaa ohjelmanumeroa",
+      "loadFailure": "Ohjelmanumeron lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Ohjelmanumero luotu!",
+      "createFailure": "Ohjelmanumeron luonti epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Ohjelmanumero päivitetty!",
+      "editFailure": "Ohjelmanumeron päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "basic": "Perustiedot",
+        "presenters": "Esiintyjät",
+        "images": "Kuvat",
+        "links": "Linkit",
+        "settings": "Asetukset"
+      },
+      "labels": {
+        "start": "Alkamisaika",
+        "end": "Päättymisaika",
+        "place": "Paikka",
+        "presenters": "Esiintyjät",
+        "presentersTitles": "Esiintyjien tittelit",
+        "icon1": "Kuva 1",
+        "icon2": "Kuva 2",
+        "homeUrl": "Kotisivun URL",
+        "twitterUrl": "Twitter-URL",
+        "githubUrl": "GitHub-URL",
+        "facebookUrl": "Facebook-URL",
+        "linkedinUrl": "LinkedIn-URL",
+        "wikiUrl": "Wiki-URL",
+        "eventTypeDetailedOn": "Yksityiskohtainen tapahtuma",
+        "eventTypeDetailedOff": "Yksinkertainen tapahtuma",
+        "eventTypeDetailedHintOn": "Näyttää esiintyjätiedot, kuvat ja linkit",
+        "eventTypeDetailedHintOff": "Perustapahtuma jossa vain otsikko, aika ja paikka",
+        "activeOn": "Ohjelmanumero on aktiivinen",
+        "activeOff": "Ohjelmanumero on piilotettu",
+        "activeHintOn": "Ohjelmanumero näkyy ohjelmassa",
+        "activeHintOff": "Ohjelmanumero on piilotettu ohjelmasta"
+      }
+    },
+    "UploadsView": {
+      "title": "Tiedostot",
+      "newUpload": "Uusi tiedosto",
+      "confirmDelete": "Haluatko varmasti poistaa tiedoston '{description}'?",
+      "loadFailure": "Tiedostojen lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Tiedosto poistettu!",
+      "deleteFailure": "Tiedoston poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "noUploadsFound": "Tiedostoja ei löytynyt.",
+      "loadingUploads": "Ladataan tiedostoja ...",
+      "copySuccess": "URL kopioitu leikepöydälle!",
+      "copyFailure": "URL:n kopiointi leikepöydälle epäonnistui.",
+      "headers": {
+        "date": "Päivämäärä",
+        "file": "Tiedostonimi"
+      }
+    },
+    "UploadEditView": {
+      "newTitle": "Uusi tiedosto",
+      "editTitle": "Muokkaa tiedostoa",
+      "loadFailure": "Tiedoston lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "createSuccess": "Tiedosto ladattu!",
+      "createFailure": "Tiedoston lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "editSuccess": "Tiedosto päivitetty!",
+      "editFailure": "Tiedoston päivitys epäonnistui; yritä myöhemmin uudelleen.",
+      "labels": {
+        "file": "Tiedosto",
+        "fileUrl": "Tiedoston URL"
+      },
+      "fileRequired": "Valitse ladattava tiedosto."
+    },
+    "TokensView": {
+      "title": "API-avaimet",
+      "newToken": "Uusi avain",
+      "loadingTokens": "Ladataan avaimia ...",
+      "noTokensFound": "Avaimia ei löytynyt.",
+      "confirmDelete": "Haluatko varmasti poistaa avaimen '{tokenKey}...'?",
+      "headers": {
+        "tokenKey": "Avaimen alku",
+        "expiry": "Vanhenemisaika"
+      },
+      "loadFailure": "Avainten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteFailure": "Avaimen poisto epäonnistui; yritä myöhemmin uudelleen.",
+      "deleteSuccess": "Avain poistettu!"
+    },
+    "TokenCreateDialog": {
+      "title": "Luo API-avain",
+      "create": "Luo avain",
+      "labels": {
+        "expiry": "Vanhenemispäivä ja -aika"
+      },
+      "expiryHint": "Avain vanhenee määritettynä ajankohtana. Oletus on 30 päivää tästä hetkestä.",
+      "expiryRequired": "Valitse vanhenemispäivä.",
+      "createSuccess": "Avain luotu!",
+      "createFailure": "Avaimen luonti epäonnistui; yritä myöhemmin uudelleen."
+    },
+    "TokenCreatedDialog": {
+      "title": "Avain luotu",
+      "warning": "Tämä avain näytetään vain kerran. Kopioi se nyt ja säilytä turvallisesti.",
+      "labels": {
+        "token": "API-avain"
+      },
+      "copyToClipboard": "Kopioi leikepöydälle",
+      "copySuccess": "Avain kopioitu leikepöydälle!",
+      "copyFailure": "Avaimen kopiointi leikepöydälle epäonnistui."
+    },
+    "AuditLogView": {
+      "title": "Muutosloki",
+      "noEntriesFound": "Lokimerkintöjä ei löytynyt.",
+      "loadingEntries": "Ladataan muutoslokia ...",
+      "loadFailure": "Muutoslokin lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "system": "Järjestelmä",
+      "filterByModel": "Suodata tyypin mukaan",
+      "headers": {
+        "timestamp": "Aika",
+        "action": "Toiminto",
+        "model": "Tyyppi",
+        "object": "Kohde"
+      },
+      "actions": {
+        "create": "Luonti",
+        "update": "Päivitys",
+        "delete": "Poisto",
+        "access": "Käyttö",
+        "unknown": "Tuntematon"
+      },
+      "models": {
+        "user": "Käyttäjä",
+        "event": "Tapahtuma",
+        "blogEntry": "Blogiartikkeli",
+        "programmeEvent": "Ohjelmanumero",
+        "compo": "Kompo",
+        "entry": "Tuotos",
+        "competition": "Kilpailu",
+        "competitionParticipation": "Kilpailuosallistuminen",
+        "storeItem": "Tuote",
+        "storeTransaction": "Tilaus",
+        "uploadedFile": "Ladattu tiedosto",
+        "otherVideo": "Video",
+        "otherVideoCategory": "Videokategoria"
+      }
+    },
+    "AuditLogTable": {
+      "title": "Muutoshistoria",
+      "noEntriesFound": "Muutoksia ei ole kirjattu.",
+      "loadingEntries": "Ladataan muutoshistoriaa ...",
+      "loadFailure": "Muutoshistorian lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "noChanges": "Kenttämuutoksia ei ole kirjattu.",
+      "system": "Järjestelmä",
+      "headers": {
+        "timestamp": "Aika",
+        "action": "Toiminto",
+        "object": "Kohde"
+      },
+      "actions": {
+        "create": "Luonti",
+        "update": "Päivitys",
+        "delete": "Poisto",
+        "access": "Käyttö",
+        "unknown": "Tuntematon"
+      }
+    },
+    "RichTextEditor": {
+      "switchToHtml": "Muokkaa HTML:ää",
+      "switchToVisual": "Visuaalinen editori",
+      "uploadFailure": "Kuvan lataus epäonnistui"
+    },
+    "DiplomaGenerator": {
+      "title": "Diplomit",
+      "backgroundImage": "Taustakuva",
+      "selectBackground": "Valitse taustakuva",
+      "noImagesFound": "Kuvatiedostoja ei löytynyt",
+      "includeIn": "Sisällytä diplomeihin",
+      "includeCompos": "Kompotuotokset",
+      "includeCompetitions": "Kilpailuosallistumiset",
+      "mainOrganizer": "Pääjärjestäjän titteli",
+      "mainOrganizerName": "Pääjärjestäjän nimi",
+      "programOrganizer": "Ohjelmajärjestäjän titteli",
+      "programOrganizerName": "Ohjelmajärjestäjän nimi",
+      "preview": "Esikatselu",
+      "generateAll": "Luo kaikki",
+      "generating": "Luodaan {current}/{total}...",
+      "success": "Diplomit luotu",
+      "noEntries": "Sijoitettuja tuotoksia ei löytynyt",
+      "loadFailure": "Tietojen lataus epäonnistui",
+      "generateFailure": "Diplomien luonti epäonnistui"
+    }
+  }
+}

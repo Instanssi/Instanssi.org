@@ -124,9 +124,9 @@ const totalItems = ref(0);
 const items: Ref<UploadedFile[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("UploadsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -141,13 +141,13 @@ const headers = useResponsiveHeaders([
         key: "file",
     },
     {
-        title: t("UploadsView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "lg",
     },
     {
-        title: t("UploadsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

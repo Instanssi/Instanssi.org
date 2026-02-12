@@ -5992,8 +5992,9 @@ paths:
           description: ''
   /api/v2/user_info/:
     get:
-      operationId: user_info
-      description: Retrieve the current authenticated user's profile and permissions.
+      operationId: user_info_retrieve
+      description: Retrieve and update the current authenticated user's profile and
+        permissions.
       tags:
       - user_info
       security:
@@ -6004,9 +6005,34 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/UserInfo'
+          description: ''
+    patch:
+      operationId: user_info_partial_update
+      description: Retrieve and update the current authenticated user's profile and
+        permissions.
+      tags:
+      - user_info
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserInfoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserInfoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserInfoRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
           description: ''
 components:
   schemas:
@@ -6138,6 +6164,9 @@ components:
       - pk
       - token
       - token_key
+    BlankEnum:
+      enum:
+      - ''
     BlogEntry:
       type: object
       description: |-
@@ -7593,6 +7622,15 @@ components:
           maxLength: 150
       required:
       - name
+    LanguageEnum:
+      enum:
+      - en
+      - fi
+      type: string
+      description: |-
+        * `` - Not set
+        * `en` - English
+        * `fi` - Finnish
     LogEntry:
       type: object
       description: Serializer for audit log entries.
@@ -9415,10 +9453,23 @@ components:
         youtube_url:
           type: string
           nullable: true
+    PatchedUserInfoRequest:
+      type: object
+      description: Serializer for the authenticated user's own profile and permissions.
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
     PatchedUserRequest:
       type: object
-      description: Staff serializer for users, extends UserInfoSerializer with groups
-        and active status.
+      description: Staff serializer for users, includes all fields for admin management.
       properties:
         username:
           type: string
@@ -9438,6 +9489,10 @@ components:
           format: email
           title: Email address
           maxLength: 254
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         group_ids:
           type: array
           items:
@@ -11427,8 +11482,7 @@ components:
       - file
     User:
       type: object
-      description: Staff serializer for users, extends UserInfoSerializer with groups
-        and active status.
+      description: Staff serializer for users, includes all fields for admin management.
       properties:
         id:
           type: integer
@@ -11465,6 +11519,10 @@ components:
           type: string
           format: date-time
           readOnly: true
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         groups:
           type: array
           items:
@@ -11686,10 +11744,9 @@ components:
           readOnly: true
         username:
           type: string
+          readOnly: true
           description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
         first_name:
           type: string
           maxLength: 150
@@ -11699,13 +11756,18 @@ components:
         email:
           type: string
           format: email
+          readOnly: true
           title: Email address
-          maxLength: 254
         user_permissions:
           type: array
           items:
             type: string
           readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
         is_superuser:
           type: boolean
           readOnly: true
@@ -11716,9 +11778,15 @@ components:
           type: string
           format: date-time
           readOnly: true
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
       required:
       - date_joined
+      - email
       - id
+      - is_staff
       - is_superuser
       - user_permissions
       - username
@@ -11739,8 +11807,7 @@ components:
       - username
     UserRequest:
       type: object
-      description: Staff serializer for users, extends UserInfoSerializer with groups
-        and active status.
+      description: Staff serializer for users, includes all fields for admin management.
       properties:
         username:
           type: string
@@ -11760,6 +11827,10 @@ components:
           format: email
           title: Email address
           maxLength: 254
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         group_ids:
           type: array
           items:

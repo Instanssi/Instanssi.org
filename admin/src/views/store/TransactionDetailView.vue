@@ -21,10 +21,7 @@
                             :label="t('TransactionDetailView.labels.company')"
                             :value="transaction.company"
                         />
-                        <InfoRow
-                            :label="t('TransactionDetailView.labels.email')"
-                            :value="transaction.email"
-                        />
+                        <InfoRow :label="t('General.email')" :value="transaction.email" />
                         <InfoRow
                             v-if="transaction.telephone"
                             :label="t('TransactionDetailView.labels.telephone')"
@@ -363,7 +360,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     },
 ]);
 
-const itemHeaders: ReadonlyHeaders = [
+const itemHeaders = computed<ReadonlyHeaders>(() => [
     {
         title: t("TransactionDetailView.items.name"),
         key: "item",
@@ -373,7 +370,7 @@ const itemHeaders: ReadonlyHeaders = [
         key: "variant",
     },
     {
-        title: t("TransactionDetailView.items.price"),
+        title: t("General.price"),
         key: "purchase_price",
     },
     {
@@ -384,7 +381,7 @@ const itemHeaders: ReadonlyHeaders = [
         title: t("TransactionDetailView.items.delivered"),
         key: "is_delivered",
     },
-];
+]);
 
 function formatDateTime(dateStr: string | null | undefined): string {
     if (!dateStr) return "-";

@@ -1,9 +1,9 @@
 <template>
     <BaseInfoDialog
         ref="dialog"
-        :title="t('ConfirmDialog.title')"
+        :title="t('General.confirm')"
         :width="500"
-        :ok-text="t('ConfirmDialog.title')"
+        :ok-text="t('General.confirm')"
         :loading="loading"
         :ok-icon="faCheck"
     >

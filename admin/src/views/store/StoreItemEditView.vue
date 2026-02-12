@@ -14,7 +14,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('StoreItemEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div
@@ -43,7 +43,7 @@
                                     v-model="price.value.value"
                                     :error-messages="price.errorMessage.value"
                                     variant="outlined"
-                                    :label="t('StoreItemEditView.labels.price') + ' *'"
+                                    :label="t('General.price') + ' *'"
                                     type="number"
                                     step="0.01"
                                     min="0"

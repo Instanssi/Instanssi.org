@@ -171,25 +171,25 @@ const filterAvailable = tableState.useBooleanFilter("available");
 const filterIsTicket = tableState.useBooleanFilter("is_ticket");
 const filterIsSecret = tableState.useBooleanFilter("is_secret");
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("StoreItemsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("StoreItemsView.headers.image"),
+        title: t("General.image"),
         sortable: false,
         key: "imagefile_thumbnail_url",
         width: 60,
     },
     {
-        title: t("StoreItemsView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
     {
-        title: t("StoreItemsView.headers.price"),
+        title: t("General.price"),
         sortable: true,
         key: "price",
     },
@@ -211,13 +211,13 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "md",
     },
     {
-        title: t("StoreItemsView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "lg",
     },
     {
-        title: t("StoreItemsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

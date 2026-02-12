@@ -117,14 +117,14 @@ const tableState = useTableState({ initialSort: { key: "date", order: "desc" } }
 const totalItems = ref(0);
 const blogPosts: Ref<BlogEntry[]> = ref([]);
 const lastLoadArgs: Ref<LoadArgs | null> = ref(null);
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("BlogEditorView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("BlogEditorView.headers.title"),
+        title: t("General.title"),
         sortable: false,
         key: "title",
     },
@@ -152,7 +152,7 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "lg",
     },
     {
-        title: t("BlogEditorView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

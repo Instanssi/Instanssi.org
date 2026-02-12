@@ -139,14 +139,14 @@ const selectedCategory = computed({
     },
 });
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("VideosView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
     {
-        title: t("VideosView.headers.name"),
+        title: t("General.name"),
         sortable: true,
         key: "name",
     },
@@ -161,13 +161,13 @@ const headers = useResponsiveHeaders([
         key: "youtube_url",
     },
     {
-        title: t("VideosView.headers.description"),
+        title: t("General.description"),
         sortable: false,
         key: "description",
         minBreakpoint: "md",
     },
     {
-        title: t("VideosView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

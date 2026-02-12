@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group
 
-from Instanssi.api.v2.serializers.user import GroupSerializer
+from Instanssi.api.v2.serializers.admin import GroupSerializer
 from Instanssi.api.v2.utils.base import PermissionReadOnlyViewSet
 
 

@@ -3,7 +3,7 @@
         <v-col>
             <v-row>
                 <ExportButton
-                    :label="t('TransactionItemsView.export')"
+                    :label="t('General.export')"
                     :loading="exportLoading"
                     @export="exportData"
                 />
@@ -122,9 +122,9 @@ const selectedItem = computed({
     },
 });
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
-        title: t("TransactionItemsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -144,7 +144,7 @@ const headers: ReadonlyHeaders = [
         key: "variant",
     },
     {
-        title: t("TransactionItemsView.headers.price"),
+        title: t("General.price"),
         sortable: true,
         key: "purchase_price",
     },
@@ -158,7 +158,7 @@ const headers: ReadonlyHeaders = [
         sortable: false,
         key: "is_delivered",
     },
-];
+]);
 
 const itemOptions = computed(() => [
     { title: t("TransactionItemsView.allItems"), value: null },

@@ -11,7 +11,7 @@
                             v-model="name.value.value"
                             :error-messages="name.errorMessage.value"
                             variant="outlined"
-                            :label="t('CompetitionEditView.labels.name') + ' *'"
+                            :label="t('General.name') + ' *'"
                         />
                         <RichTextEditor v-model="description.value.value" :event-id="eventId" />
                         <div
@@ -212,10 +212,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     return items;
 });
 
-const scoreSortOptions = [
+const scoreSortOptions = computed(() => [
     { title: t("CompetitionEditView.scoreSortOptions.highestFirst"), value: 0 },
     { title: t("CompetitionEditView.scoreSortOptions.lowestFirst"), value: 1 },
-];
+]);
 
 // Common score types for combobox
 const commonScoreTypes = ["pts", "sec", "min", "m", "km", "kg", "pcs"];

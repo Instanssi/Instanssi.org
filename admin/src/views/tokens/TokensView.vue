@@ -67,7 +67,7 @@
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce } from "lodash-es";
-import { type Ref, inject, ref } from "vue";
+import { type Ref, computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { type VDataTable } from "vuetify/components";
@@ -92,7 +92,9 @@ const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const toast = useToast();
 const auth = useAuth();
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: t("TokensView.title"), disabled: true }];
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    { title: t("TokensView.title"), disabled: true },
+]);
 
 const loading = ref(false);
 const tableState = useTableState({ initialSort: { key: "created", order: "desc" } });
@@ -103,14 +105,14 @@ const showCreateDialog = ref(false);
 const showCreatedDialog = ref(false);
 const createdToken = ref("");
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("TokensView.headers.tokenKey"),
         sortable: false,
         key: "token_key",
     },
     {
-        title: t("TokensView.headers.created"),
+        title: t("General.created"),
         sortable: true,
         key: "created",
     },
@@ -120,12 +122,12 @@ const headers: ReadonlyHeaders = [
         key: "expiry",
     },
     {
-        title: t("TokensView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",
     },
-];
+]);
 
 function flushData() {
     if (lastLoadArgs.value) {

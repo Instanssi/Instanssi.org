@@ -18,7 +18,7 @@
                 class="image-preview"
                 role="button"
                 tabindex="0"
-                :title="t('ImageUploadField.clickToPreview')"
+                :title="t('General.clickToPreview')"
                 @click.stop="showPreview = true"
                 @keydown.enter="showPreview = true"
                 @keydown.space.prevent="showPreview = true"

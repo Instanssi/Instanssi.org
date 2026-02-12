@@ -185,9 +185,9 @@ const selectedCompetition = computed({
 
 const filterDisqualified = tableState.useBooleanFilter("disqualified");
 
-const headers = useResponsiveHeaders([
+const headers = useResponsiveHeaders(() => [
     {
-        title: t("CompetitionParticipationsView.headers.id"),
+        title: t("General.id"),
         sortable: true,
         key: "id",
     },
@@ -208,18 +208,18 @@ const headers = useResponsiveHeaders([
         minBreakpoint: "md",
     },
     {
-        title: t("CompetitionParticipationsView.headers.rank"),
+        title: t("General.rank"),
         sortable: true,
         key: "computed_rank",
     },
     {
-        title: t("CompetitionParticipationsView.headers.score"),
+        title: t("General.score"),
         sortable: true,
         key: "score",
         minBreakpoint: "md",
     },
     {
-        title: t("CompetitionParticipationsView.headers.actions"),
+        title: t("General.actions"),
         sortable: false,
         key: "actions",
         align: "end",

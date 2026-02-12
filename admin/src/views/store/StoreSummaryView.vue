@@ -39,7 +39,7 @@
                             {{ t("StoreSummaryView.title") }}
                             <v-spacer />
                             <ExportButton
-                                :label="t('StoreSummaryView.export')"
+                                :label="t('General.export')"
                                 :loading="exportLoading"
                                 size="small"
                                 @export="exportData"
@@ -121,7 +121,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { title: t("StoreSummaryView.title"), disabled: true },
 ]);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     {
         title: t("StoreSummaryView.headers.item"),
         key: "item",
@@ -144,7 +144,7 @@ const headers: ReadonlyHeaders = [
         sortable: true,
         align: "end",
     },
-];
+]);
 
 const summaryRows = computed<SummaryRow[]>(() => {
     if (!summary.value) return [];

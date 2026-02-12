@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Ref, ref, watch } from "vue";
+import { type Ref, computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
@@ -88,13 +88,13 @@ const currentPage = ref(1);
 const entries: Ref<LogEntry[]> = ref([]);
 const expanded: Ref<string[]> = ref([]);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     { title: "", key: "data-table-expand", width: 50 },
     { title: t("AuditLogTable.headers.timestamp"), key: "timestamp", sortable: true },
     { title: t("AuditLogTable.headers.user"), key: "actor", sortable: false },
     { title: t("AuditLogTable.headers.action"), key: "action", sortable: false, width: 100 },
     { title: t("AuditLogTable.headers.object"), key: "object_repr", sortable: false },
-];
+]);
 
 async function loadData(options: LoadOptions) {
     loading.value = true;

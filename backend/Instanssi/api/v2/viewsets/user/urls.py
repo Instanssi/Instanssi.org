@@ -20,8 +20,7 @@ from Instanssi.api.v2.viewsets.user.tokens import UserTokenViewSet
 from Instanssi.api.v2.viewsets.user.user_info import UserInfoViewSet
 
 # /api/v2/user_info/
-user_info_router = routers.SimpleRouter()
-user_info_router.register("user_info", UserInfoViewSet, basename="user_info")
+user_info_view = UserInfoViewSet.as_view({"get": "retrieve", "patch": "partial_update"})
 
 # /api/v2/tokens/
 tokens_router = routers.SimpleRouter()
@@ -42,7 +41,7 @@ kompomaatti_router.register(
 kompomaatti_router.register("votes", UserVoteGroupViewSet, basename="event_user_kompomaatti_votes")
 
 urlpatterns: list[URLPattern | URLResolver] = [
-    path("", include(user_info_router.urls)),
+    path("user_info/", user_info_view, name="user_info"),
     path("", include(tokens_router.urls)),
     path("event/<int:event_pk>/user/kompomaatti/", include(kompomaatti_router.urls)),
 ]

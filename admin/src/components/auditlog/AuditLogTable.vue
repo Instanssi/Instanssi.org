@@ -90,13 +90,13 @@ const currentPage = ref(1);
 const entries: Ref<LogEntry[]> = ref([]);
 const expanded: Ref<string[]> = ref([]);
 
-const headers: ReadonlyHeaders = [
+const headers = computed<ReadonlyHeaders>(() => [
     { title: "", key: "data-table-expand", width: 50 },
     { title: t("AuditLogTable.headers.timestamp"), key: "timestamp", sortable: true },
-    { title: t("AuditLogTable.headers.user"), key: "actor", sortable: false },
+    { title: t("General.user"), key: "actor", sortable: false },
     { title: t("AuditLogTable.headers.action"), key: "action", sortable: false, width: 100 },
     { title: t("AuditLogTable.headers.object"), key: "object_repr", sortable: false },
-];
+]);
 
 async function load(options: LoadOptions) {
     if (!hasPermission.value) return;

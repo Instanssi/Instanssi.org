@@ -4,7 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from Instanssi.api.v2.serializers.user import UserSerializer
+from Instanssi.api.v2.serializers.admin import UserSerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
 from Instanssi.users.models import User
 

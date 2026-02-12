@@ -5,7 +5,7 @@ vi.mock("@/api", () => ({
     // Auth endpoints
     login: vi.fn(),
     logout: vi.fn(),
-    userInfo: vi.fn(),
+    userInfoRetrieve: vi.fn(),
     userInfoPartialUpdate: vi.fn().mockResolvedValue({ data: {} }),
 
     // Audit log

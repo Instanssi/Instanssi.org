@@ -29,8 +29,17 @@ class UserInfoSerializer(ModelSerializer[User]):
             "last_name",
             "email",
             "user_permissions",
+            "is_staff",
             "is_superuser",
             "date_joined",
             "language",
         )
-        read_only_fields = ("date_joined", "is_superuser")
+        read_only_fields = (
+            "id",
+            "username",
+            "email",
+            "user_permissions",
+            "is_staff",
+            "date_joined",
+            "is_superuser",
+        )

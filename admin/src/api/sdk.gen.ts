@@ -344,10 +344,10 @@ import type {
     TokensDestroyResponses,
     TokensListData,
     TokensListResponses,
-    UserInfoData,
     UserInfoPartialUpdateData,
     UserInfoPartialUpdateResponses,
-    UserInfoResponses,
+    UserInfoRetrieveData,
+    UserInfoRetrieveResponses,
     UserTokensCreateTokenData,
     UserTokensCreateTokenResponses,
 } from "./types.gen";
@@ -5277,10 +5277,10 @@ export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
 /**
  * Retrieve and update the current authenticated user's profile and permissions.
  */
-export const userInfo = <ThrowOnError extends boolean = false>(
-    options?: Options<UserInfoData, ThrowOnError>
+export const userInfoRetrieve = <ThrowOnError extends boolean = false>(
+    options?: Options<UserInfoRetrieveData, ThrowOnError>
 ) => {
-    return (options?.client ?? client).get<UserInfoResponses, unknown, ThrowOnError>({
+    return (options?.client ?? client).get<UserInfoRetrieveResponses, unknown, ThrowOnError>({
         responseType: "json",
         security: [
             {

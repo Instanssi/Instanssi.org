@@ -2704,21 +2704,13 @@ export type PatchedUserCompoEntryRequest = {
  * Serializer for the authenticated user's own profile and permissions.
  */
 export type PatchedUserInfoRequest = {
-    /**
-     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-     */
-    username?: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type PatchedUserRequest = {
     /**
@@ -4296,7 +4288,7 @@ export type UploadedFileRequest = {
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type User = {
     readonly id: number;
@@ -4455,14 +4447,20 @@ export type UserInfo = {
     /**
      * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
-    username: string;
+    readonly username: string;
     first_name?: string;
     last_name?: string;
     /**
      * Email address
      */
-    email?: string;
+    readonly email: string;
     readonly user_permissions: Array<string>;
+    /**
+     * Staff status
+     *
+     * Designates whether the user can log into this admin site.
+     */
+    readonly is_staff: boolean;
     /**
      * Superuser status
      *
@@ -4482,7 +4480,7 @@ export type UserLoginRequest = {
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type UserRequest = {
     /**
@@ -5227,7 +5225,7 @@ export type PatchedUserCompoEntryRequestWritable = {
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type PatchedUserRequestWritable = {
     /**
@@ -6112,7 +6110,7 @@ export type UploadedFileWritable = {
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type UserWritable = {
     /**
@@ -6243,21 +6241,13 @@ export type UserCompoEntryRequestWritable = {
  * Serializer for the authenticated user's own profile and permissions.
  */
 export type UserInfoWritable = {
-    /**
-     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-     */
-    username: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
 };
 
 /**
- * Staff serializer for users, extends UserInfoSerializer with groups and active status.
+ * Staff serializer for users, includes all fields for admin management.
  */
 export type UserRequestWritable = {
     /**
@@ -10055,18 +10045,18 @@ export type UserTokensCreateTokenResponses = {
 export type UserTokensCreateTokenResponse =
     UserTokensCreateTokenResponses[keyof UserTokensCreateTokenResponses];
 
-export type UserInfoData = {
+export type UserInfoRetrieveData = {
     body?: never;
     path?: never;
     query?: never;
     url: "/api/v2/user_info/";
 };
 
-export type UserInfoResponses = {
-    200: Array<UserInfo>;
+export type UserInfoRetrieveResponses = {
+    200: UserInfo;
 };
 
-export type UserInfoResponse = UserInfoResponses[keyof UserInfoResponses];
+export type UserInfoRetrieveResponse = UserInfoRetrieveResponses[keyof UserInfoRetrieveResponses];
 
 export type UserInfoPartialUpdateData = {
     body?: PatchedUserInfoRequest;

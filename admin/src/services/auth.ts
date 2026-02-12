@@ -5,6 +5,7 @@ import type { SocialAuthUrl, UserInfo } from "@/api";
 import { isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
+    id: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -15,6 +16,7 @@ export type CurrentUserInfo = {
 
 const loggedIn: Ref<boolean> = ref(false);
 const userInfo: Ref<CurrentUserInfo> = ref({
+    id: 0,
     firstName: "",
     lastName: "",
     email: "",
@@ -73,10 +75,9 @@ export function useAuth() {
 
     async function tryFetchUserData(): Promise<UserInfo | undefined> {
         try {
-            const result = await api.userInfo();
+            const result = await api.userInfoRetrieve();
             if (result.data === undefined) return undefined;
-            if (result.data.length === 0) return undefined;
-            return result.data[0];
+            return result.data;
         } catch {
             return undefined;
         }
@@ -86,6 +87,7 @@ export function useAuth() {
         const info = await tryFetchUserData();
         loggedIn.value = info !== undefined;
         userInfo.value = {
+            id: info?.id || 0,
             firstName: info?.first_name || "",
             lastName: info?.last_name || "",
             email: info?.email || "",
@@ -101,7 +103,7 @@ export function useAuth() {
 
     async function updateLanguage(locale: SupportedLocale): Promise<void> {
         setLocale(locale);
-        if (loggedIn.value) {
+        if (loggedIn.value && userInfo.value.id) {
             await api.userInfoPartialUpdate({ body: { language: locale } });
             userInfo.value = { ...userInfo.value, language: locale };
         }
@@ -142,6 +144,7 @@ export function useAuth() {
         await api.logout();
         loggedIn.value = false;
         userInfo.value = {
+            id: 0,
             firstName: "",
             lastName: "",
             email: "",

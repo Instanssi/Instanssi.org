@@ -8,6 +8,12 @@ type DateTimeFormatOptions = Record<string, Intl.DateTimeFormatOptions>;
 export const SUPPORTED_LOCALES = ["en", "fi"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 const DEFAULT_LOCALE = "en";
+
+/** Human-readable names for each supported locale. */
+export const LOCALE_NAMES: Record<SupportedLocale, string> = {
+    en: "English",
+    fi: "Suomi",
+};
 const ADMIN_TIMEZONE = "Europe/Helsinki";
 
 /** Pick the best supported locale from the browser's language preferences. */

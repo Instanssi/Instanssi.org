@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { faFloppyDisk as faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { type GenericObject, useField, useForm } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
@@ -65,7 +65,7 @@ import * as api from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import InfoCard from "@/components/table/InfoCard.vue";
 import InfoRow from "@/components/table/InfoRow.vue";
-import { SUPPORTED_LOCALES, isSupportedLocale, type SupportedLocale } from "@/i18n";
+import { LOCALE_NAMES, SUPPORTED_LOCALES, isSupportedLocale, type SupportedLocale } from "@/i18n";
 import { useAuth } from "@/services/auth";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
@@ -88,13 +88,8 @@ const dateJoined = ref("");
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [{ title: t("ProfileView.title") }]);
 
-const localeNames: Record<SupportedLocale, string> = {
-    en: "English",
-    fi: "Suomi",
-};
-
 const languageOptions = SUPPORTED_LOCALES.map((loc) => ({
-    title: localeNames[loc],
+    title: LOCALE_NAMES[loc],
     value: loc,
 }));
 
@@ -129,21 +124,27 @@ const submit = handleSubmit(async (values) => {
     }
 });
 
-async function saveProfile(values: GenericObject): Promise<boolean> {
+interface ProfileFormValues {
+    firstName: string;
+    lastName: string;
+    language: string;
+}
+
+async function saveProfile(values: ProfileFormValues): Promise<boolean> {
     try {
         await api.userInfoPartialUpdate({
             body: {
                 first_name: values.firstName,
                 last_name: values.lastName,
-                language: values.language,
+                language: values.language as SupportedLocale,
             },
         });
         toast.success(t("ProfileView.saveSuccess"));
         return true;
     } catch (e) {
         handleApiError(e, setErrors, toast, t("ProfileView.saveFailure"), API_FIELD_MAPPING);
+        return false;
     }
-    return false;
 }
 
 onMounted(async () => {

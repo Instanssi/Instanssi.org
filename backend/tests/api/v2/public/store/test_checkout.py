@@ -1,8 +1,11 @@
 """Tests for the public store checkout endpoint (/api/v2/public/store/checkout/)."""
 
+from unittest import mock
+
 import pytest
 
 from Instanssi.store.models import StoreTransaction
+from Instanssi.store.utils.paytrail import NewPaymentResponse
 
 CHECKOUT_URL = "/api/v2/public/store/checkout/"
 
@@ -126,7 +129,11 @@ def test_checkout_creates_transaction_when_confirm_true(api_client, valid_checko
     """Test that checkout creates transaction when confirm=True."""
     valid_checkout_data["confirm"] = True
     initial_count = StoreTransaction.objects.count()
-    req = api_client.post(CHECKOUT_URL, valid_checkout_data, format="json")
+    with mock.patch("Instanssi.store.methods.paytrail.create_payment") as mock_create:
+        mock_create.return_value = NewPaymentResponse(
+            href="http://localhost/pay/test", request_id="req-1", transaction_id="ta-1"
+        )
+        req = api_client.post(CHECKOUT_URL, valid_checkout_data, format="json")
     assert req.status_code == 201
     assert "url" in req.data
     assert StoreTransaction.objects.count() == initial_count + 1

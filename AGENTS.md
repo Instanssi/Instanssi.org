@@ -24,6 +24,9 @@ pnpm run type-check && pnpm run lint && pnpm run format
 When backend API changes affect the frontend:
 
 ```bash
-# From admin/, with the backend dev server running on port 8000
-pnpm run fetch-apidoc && pnpm run generate-api
+# 1. Generate the OpenAPI spec (from backend/)
+make openapi
+
+# 2. Regenerate the TypeScript client (from admin/)
+pnpm run generate-api
 ```

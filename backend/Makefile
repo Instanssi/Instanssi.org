@@ -35,6 +35,9 @@ coverage:
 django-check:
 	poetry run python manage.py check
 
+openapi:
+	poetry run python manage.py spectacular --lang en --file openapi.yaml
+
 format: black isort
 check: black isort mypy pytest-parallel django-check
 checks: check

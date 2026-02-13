@@ -25,3 +25,4 @@ backend/!content/static/index.html
 backend/!content/uploads/index.html
 backend/Instanssi/settings.py
 backend/testing/output/*
+backend/openapi.yaml

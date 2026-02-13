@@ -48,6 +48,12 @@ make start-server
 make start-celery
 ```
 
+### OpenAPI Spec Generation
+```bash
+# Generate openapi.yaml at the backend root (used by the admin frontend)
+make openapi
+```
+
 ### Testing
 ```bash
 # Run all tests
@@ -169,7 +175,8 @@ Authentication:
 - Knox token authentication (64-char tokens, 7-day TTL, 3 tokens per user)
 - Session authentication (for browsable API)
 
-Access OpenAPI schema at `/api/v2/schema/` (when served).
+Generate the OpenAPI spec with `make openapi` (outputs `openapi.yaml` at the backend root).
+Access OpenAPI schema at `/api/v2/openapi/` when the dev server is running (DEBUG mode only).
 
 ### Testing
 

@@ -1526,6 +1526,20 @@ export type NestedReceipt = {
     readonly content: string | null;
 };
 
+export type NotificationPreference = {
+    notify_vote_code_requests?: boolean;
+    notify_programme_events?: boolean;
+    notify_compo_starts?: boolean;
+    notify_competition_starts?: boolean;
+};
+
+export type NotificationPreferenceRequest = {
+    notify_vote_code_requests?: boolean;
+    notify_programme_events?: boolean;
+    notify_compo_starts?: boolean;
+    notify_competition_starts?: boolean;
+};
+
 /**
  * Staff serializer for archive videos.
  */
@@ -3601,6 +3615,20 @@ export type PublicStoreTransactionCheckoutRequest = {
     confirm?: boolean;
 };
 
+export type PushSubscription = {
+    readonly id: number;
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+    readonly created_at: string;
+};
+
+export type PushSubscriptionRequest = {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+};
+
 /**
  * Serializer for Receipt model (staff access).
  */
@@ -4630,6 +4658,10 @@ export type ValidateArchiveError = {
 export type ValidateArchiveOk = {
     ok: boolean;
     count: number;
+};
+
+export type VapidPublicKey = {
+    readonly vapid_public_key: string;
 };
 
 /**
@@ -5829,6 +5861,12 @@ export type PublicStoreItemVariantWritable = {
      * Tuotevariantin nimi
      */
     name: string;
+};
+
+export type PushSubscriptionWritable = {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
 };
 
 /**
@@ -8817,6 +8855,84 @@ export type AdminGroupsRetrieveResponses = {
 export type AdminGroupsRetrieveResponse =
     AdminGroupsRetrieveResponses[keyof AdminGroupsRetrieveResponses];
 
+export type AdminNotificationsPreferencesRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/notifications/preferences/";
+};
+
+export type AdminNotificationsPreferencesRetrieveResponses = {
+    200: NotificationPreference;
+};
+
+export type AdminNotificationsPreferencesRetrieveResponse =
+    AdminNotificationsPreferencesRetrieveResponses[keyof AdminNotificationsPreferencesRetrieveResponses];
+
+export type AdminNotificationsPreferencesCreateData = {
+    body?: NotificationPreferenceRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/notifications/preferences/";
+};
+
+export type AdminNotificationsPreferencesCreateResponses = {
+    200: NotificationPreference;
+};
+
+export type AdminNotificationsPreferencesCreateResponse =
+    AdminNotificationsPreferencesCreateResponses[keyof AdminNotificationsPreferencesCreateResponses];
+
+export type AdminNotificationsSubscriptionsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/notifications/subscriptions/";
+};
+
+export type AdminNotificationsSubscriptionsListResponses = {
+    200: Array<PushSubscription>;
+};
+
+export type AdminNotificationsSubscriptionsListResponse =
+    AdminNotificationsSubscriptionsListResponses[keyof AdminNotificationsSubscriptionsListResponses];
+
+export type AdminNotificationsSubscriptionsCreateData = {
+    body: PushSubscriptionRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/admin/notifications/subscriptions/";
+};
+
+export type AdminNotificationsSubscriptionsCreateResponses = {
+    201: PushSubscription;
+};
+
+export type AdminNotificationsSubscriptionsCreateResponse =
+    AdminNotificationsSubscriptionsCreateResponses[keyof AdminNotificationsSubscriptionsCreateResponses];
+
+export type AdminNotificationsSubscriptionsDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this push subscription.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/notifications/subscriptions/{id}/";
+};
+
+export type AdminNotificationsSubscriptionsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AdminNotificationsSubscriptionsDestroyResponse =
+    AdminNotificationsSubscriptionsDestroyResponses[keyof AdminNotificationsSubscriptionsDestroyResponses];
+
 export type AdminUsersListData = {
     body?: never;
     path?: never;
@@ -9922,6 +10038,20 @@ export type PublicEventsRetrieveResponses = {
 
 export type PublicEventsRetrieveResponse =
     PublicEventsRetrieveResponses[keyof PublicEventsRetrieveResponses];
+
+export type PublicNotificationsVapidKeyRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/public/notifications/vapid-key/";
+};
+
+export type PublicNotificationsVapidKeyRetrieveResponses = {
+    200: VapidPublicKey;
+};
+
+export type PublicNotificationsVapidKeyRetrieveResponse =
+    PublicNotificationsVapidKeyRetrieveResponses[keyof PublicNotificationsVapidKeyRetrieveResponses];
 
 export type PublicStoreCheckoutCreateData = {
     body: PublicStoreTransactionCheckoutRequest;

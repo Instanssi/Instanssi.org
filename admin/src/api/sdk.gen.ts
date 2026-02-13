@@ -233,6 +233,16 @@ import type {
     AdminGroupsListResponses,
     AdminGroupsRetrieveData,
     AdminGroupsRetrieveResponses,
+    AdminNotificationsPreferencesCreateData,
+    AdminNotificationsPreferencesCreateResponses,
+    AdminNotificationsPreferencesRetrieveData,
+    AdminNotificationsPreferencesRetrieveResponses,
+    AdminNotificationsSubscriptionsCreateData,
+    AdminNotificationsSubscriptionsCreateResponses,
+    AdminNotificationsSubscriptionsDestroyData,
+    AdminNotificationsSubscriptionsDestroyResponses,
+    AdminNotificationsSubscriptionsListData,
+    AdminNotificationsSubscriptionsListResponses,
     AdminUsersCreateData,
     AdminUsersCreateResponses,
     AdminUsersDestroyData,
@@ -334,6 +344,8 @@ import type {
     PublicEventsListResponses,
     PublicEventsRetrieveData,
     PublicEventsRetrieveResponses,
+    PublicNotificationsVapidKeyRetrieveData,
+    PublicNotificationsVapidKeyRetrieveResponses,
     PublicStoreCheckoutCreateData,
     PublicStoreCheckoutCreateResponses,
     PublicStoreItemsListData,
@@ -3744,6 +3756,159 @@ export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Retrieve the current user's notification preferences.
+ */
+export const adminNotificationsPreferencesRetrieve = <ThrowOnError extends boolean = false>(
+    options?: Options<AdminNotificationsPreferencesRetrieveData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AdminNotificationsPreferencesRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/notifications/preferences/",
+        ...options,
+    });
+};
+
+/**
+ * Partial update of notification preferences via POST.
+ */
+export const adminNotificationsPreferencesCreate = <ThrowOnError extends boolean = false>(
+    options?: Options<AdminNotificationsPreferencesCreateData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AdminNotificationsPreferencesCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/notifications/preferences/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Staff viewset for managing push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const adminNotificationsSubscriptionsList = <ThrowOnError extends boolean = false>(
+    options?: Options<AdminNotificationsSubscriptionsListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AdminNotificationsSubscriptionsListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/notifications/subscriptions/",
+        ...options,
+    });
+};
+
+/**
+ * Create or update a push subscription (upsert by endpoint).
+ */
+export const adminNotificationsSubscriptionsCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminNotificationsSubscriptionsCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminNotificationsSubscriptionsCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/notifications/subscriptions/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Staff viewset for managing push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const adminNotificationsSubscriptionsDestroy = <ThrowOnError extends boolean = false>(
+    options: Options<AdminNotificationsSubscriptionsDestroyData, ThrowOnError>
+) => {
+    return (options.client ?? client).delete<
+        AdminNotificationsSubscriptionsDestroyResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/notifications/subscriptions/{id}/",
+        ...options,
+    });
+};
+
+/**
  * Staff viewset for managing users.
  */
 export const adminUsersList = <ThrowOnError extends boolean = false>(
@@ -5123,6 +5288,34 @@ export const publicEventsRetrieve = <ThrowOnError extends boolean = false>(
     return (options.client ?? client).get<PublicEventsRetrieveResponses, unknown, ThrowOnError>({
         responseType: "json",
         url: "/api/v2/public/events/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Returns the VAPID public key for push subscriptions.
+ */
+export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean = false>(
+    options?: Options<PublicNotificationsVapidKeyRetrieveData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        PublicNotificationsVapidKeyRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/public/notifications/vapid-key/",
         ...options,
     });
 };

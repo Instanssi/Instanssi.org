@@ -22,8 +22,7 @@
     "format-check": "prettier -c vite.config.ts vitest.config.ts env.d.ts src/**/*.ts src/**/*.vue",
     "test": "vitest run",
     "test:watch": "vitest",
-    "generate-api": "openapi-ts -i ./openapi/instanssi.yaml -c @hey-api/client-axios --name APIClient -o src/api/",
-    "fetch-apidoc": "curl -o ./openapi/instanssi.yaml http://localhost:8000/api/v2/openapi/"
+    "generate-api": "openapi-ts -i ../backend/openapi.yaml -c @hey-api/client-axios --name APIClient -o src/api/ && prettier --write src/api/"
   },
   "dependencies": {
     "@fontsource/exo-2": "^5.2.8",

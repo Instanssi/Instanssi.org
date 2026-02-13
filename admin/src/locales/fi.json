@@ -937,7 +937,29 @@
       },
       "loadFailure": "Profiilin lataus epäonnistui; yritä myöhemmin uudelleen.",
       "saveSuccess": "Profiili tallennettu!",
-      "saveFailure": "Profiilin tallennus epäonnistui; yritä myöhemmin uudelleen."
+      "saveFailure": "Profiilin tallennus epäonnistui; yritä myöhemmin uudelleen.",
+      "notifications": {
+        "title": "Push-ilmoitukset",
+        "enable": "Ota push-ilmoitukset käyttöön",
+        "enableHint": "Tämä ominaisuus on testauksessa. Valitse haluamasi ilmoitustyypit yllä olevasta profiilin lomakkeesta.",
+        "unsupported": "Push-ilmoituksia ei tueta tässä selaimessa.",
+        "denied": "Ilmoituslupa evättiin. Ota se käyttöön selaimen asetuksista.",
+        "subscribeFailure": "Push-ilmoitusten tilaus epäonnistui.",
+        "unsubscribeFailure": "Push-ilmoitusten peruutus epäonnistui.",
+        "preferencesTitle": "Ilmoitusasetukset",
+        "voteCodeRequestsOn": "Äänestyskoodipyyntöilmoitukset käytössä",
+        "voteCodeRequestsOff": "Äänestyskoodipyyntöilmoitukset pois käytöstä",
+        "voteCodeRequestsHint": "Ilmoittaa kun käyttäjä pyytää äänestyskoodia. Edellyttää, että push-ilmoitukset ovat käytössä.",
+        "programEventsOn": "Ohjelmailmoitukset käytössä",
+        "programEventsOff": "Ohjelmailmoitukset pois käytöstä",
+        "programEventsHint": "Ilmoittaa 15 minuuttia ennen ohjelmatapahtuman alkua. Edellyttää, että push-ilmoitukset ovat käytössä.",
+        "compoStartsOn": "Kompoilmoitukset käytössä",
+        "compoStartsOff": "Kompoilmoitukset pois käytöstä",
+        "compoStartsHint": "Ilmoittaa 15 minuuttia ennen kompon alkua. Edellyttää, että push-ilmoitukset ovat käytössä.",
+        "competitionStartsOn": "Kilpailuilmoitukset käytössä",
+        "competitionStartsOff": "Kilpailuilmoitukset pois käytöstä",
+        "competitionStartsHint": "Ilmoittaa 15 minuuttia ennen kilpailun alkua. Edellyttää, että push-ilmoitukset ovat käytössä."
+      }
     },
     "LoginView": {
       "title": "Kirjaudu sisään",

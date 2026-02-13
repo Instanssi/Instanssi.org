@@ -233,16 +233,6 @@ import type {
     AdminGroupsListResponses,
     AdminGroupsRetrieveData,
     AdminGroupsRetrieveResponses,
-    AdminNotificationsPreferencesCreateData,
-    AdminNotificationsPreferencesCreateResponses,
-    AdminNotificationsPreferencesRetrieveData,
-    AdminNotificationsPreferencesRetrieveResponses,
-    AdminNotificationsSubscriptionsCreateData,
-    AdminNotificationsSubscriptionsCreateResponses,
-    AdminNotificationsSubscriptionsDestroyData,
-    AdminNotificationsSubscriptionsDestroyResponses,
-    AdminNotificationsSubscriptionsListData,
-    AdminNotificationsSubscriptionsListResponses,
     AdminUsersCreateData,
     AdminUsersCreateResponses,
     AdminUsersDestroyData,
@@ -308,6 +298,12 @@ import type {
     LoginResponses,
     LogoutData,
     LogoutResponses,
+    NotificationsSubscriptionsCreateData,
+    NotificationsSubscriptionsCreateResponses,
+    NotificationsSubscriptionsDestroyData,
+    NotificationsSubscriptionsDestroyResponses,
+    NotificationsSubscriptionsListData,
+    NotificationsSubscriptionsListResponses,
     PublicBlogEntriesListData,
     PublicBlogEntriesListResponses,
     PublicBlogEntriesRetrieveData,
@@ -3756,159 +3752,6 @@ export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Retrieve the current user's notification preferences.
- */
-export const adminNotificationsPreferencesRetrieve = <ThrowOnError extends boolean = false>(
-    options?: Options<AdminNotificationsPreferencesRetrieveData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<
-        AdminNotificationsPreferencesRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/notifications/preferences/",
-        ...options,
-    });
-};
-
-/**
- * Partial update of notification preferences via POST.
- */
-export const adminNotificationsPreferencesCreate = <ThrowOnError extends boolean = false>(
-    options?: Options<AdminNotificationsPreferencesCreateData, ThrowOnError>
-) => {
-    return (options?.client ?? client).post<
-        AdminNotificationsPreferencesCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/notifications/preferences/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options?.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing push notification subscriptions.
- *
- * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
- * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
- */
-export const adminNotificationsSubscriptionsList = <ThrowOnError extends boolean = false>(
-    options?: Options<AdminNotificationsSubscriptionsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<
-        AdminNotificationsSubscriptionsListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/notifications/subscriptions/",
-        ...options,
-    });
-};
-
-/**
- * Create or update a push subscription (upsert by endpoint).
- */
-export const adminNotificationsSubscriptionsCreate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminNotificationsSubscriptionsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminNotificationsSubscriptionsCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/notifications/subscriptions/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing push notification subscriptions.
- *
- * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
- * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
- */
-export const adminNotificationsSubscriptionsDestroy = <ThrowOnError extends boolean = false>(
-    options: Options<AdminNotificationsSubscriptionsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
-        AdminNotificationsSubscriptionsDestroyResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/notifications/subscriptions/{id}/",
-        ...options,
-    });
-};
-
-/**
  * Staff viewset for managing users.
  */
 export const adminUsersList = <ThrowOnError extends boolean = false>(
@@ -4977,6 +4820,105 @@ export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean =
 };
 
 /**
+ * Viewset for managing the current user's push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const notificationsSubscriptionsList = <ThrowOnError extends boolean = false>(
+    options?: Options<NotificationsSubscriptionsListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        NotificationsSubscriptionsListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/",
+        ...options,
+    });
+};
+
+/**
+ * Create or update a push subscription (upsert by endpoint).
+ *
+ * A push endpoint is a browser-level resource — the same physical push channel
+ * regardless of which user subscribed. The lookup uses endpoint alone (matching
+ * the model's unique constraint) so that if a different user subscribes from the
+ * same browser, the subscription is reassigned to them rather than creating a
+ * duplicate that would cause the browser to show the same notification twice.
+ */
+export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = false>(
+    options: Options<NotificationsSubscriptionsCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        NotificationsSubscriptionsCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Viewset for managing the current user's push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const notificationsSubscriptionsDestroy = <ThrowOnError extends boolean = false>(
+    options: Options<NotificationsSubscriptionsDestroyData, ThrowOnError>
+) => {
+    return (options.client ?? client).delete<
+        NotificationsSubscriptionsDestroyResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/{id}/",
+        ...options,
+    });
+};
+
+/**
  * Public read-only endpoint for blog entries. Only public entries are shown.
  */
 export const publicBlogEntriesList = <ThrowOnError extends boolean = false>(
@@ -5304,17 +5246,6 @@ export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean
         ThrowOnError
     >({
         responseType: "json",
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
         url: "/api/v2/public/notifications/vapid-key/",
         ...options,
     });

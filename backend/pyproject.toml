@@ -44,6 +44,7 @@ nh3 = "^0.3.0"
 drf-spectacular = "^0.29.0"
 django-cleanup = "^9.0.0"
 stream-zip = "^0.0.84"
+pywebpush = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^40.1.2"
@@ -120,6 +121,7 @@ module = [
     "Instanssi.users.*",
     "Instanssi.common_config",
     "Instanssi.celery",
+    "Instanssi.notifications.*",
 ]
 ignore_missing_imports = true
 ignore_errors = true

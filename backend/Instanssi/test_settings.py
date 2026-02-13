@@ -65,6 +65,11 @@ PAYTRAIL_V2_API_URL = "http://localhost:8000"
 MASTODON_ACCESS_TOKEN = None
 MASTODON_BASE_URL = None
 
+# Web Push VAPID keys — fake values for testing (webpush is always mocked)
+VAPID_PUBLIC_KEY = "fake-vapid-public-key-for-testing"
+VAPID_PRIVATE_KEY = "fake-vapid-private-key-for-testing"
+VAPID_CLAIMS_EMAIL = "test@instanssi.org"
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"
@@ -77,6 +82,7 @@ CACHES = make_cache_conf(DEBUG)
 
 # Initializes celery config
 CELERY_BROKER_URL, CELERY_BROKER_TRANSPORT_OPTIONS = make_celery_conf(DEBUG)
+CELERY_TASK_ALWAYS_EAGER = True
 
 # Internal ip addresses
 INTERNAL_IPS = ("127.0.0.1",)

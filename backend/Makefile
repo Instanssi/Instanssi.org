@@ -8,11 +8,17 @@ start-server:
 start-celery:
 	poetry run python -m celery -A Instanssi worker -l info --autoscale 2,1
 
+start-celery-beat:
+	poetry run python -m celery -A Instanssi beat -l info
+
 migrate:
 	poetry run python manage.py migrate
 
 create-admin:
 	poetry run python manage.py createsuperuser --username admin --email admin@invalid.inv --skip-checks
+
+create-test-data:
+	poetry run python manage.py create_test_data
 
 black:
 	poetry run black .

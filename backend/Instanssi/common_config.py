@@ -35,6 +35,16 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BEAT_SCHEDULE = {
+    "check-upcoming-events": {
+        "task": "Instanssi.notifications.tasks.check_upcoming_events",
+        "schedule": timedelta(minutes=5),
+    },
+    "cleanup-old-sent-notifications": {
+        "task": "Instanssi.notifications.tasks.cleanup_old_sent_notifications",
+        "schedule": timedelta(days=1),
+    },
+}
 
 # Specific media directories (under MEDIA_ROOT)
 MEDIA_COMPO_ALTERNATES: str = "kompomaatti/alternates"
@@ -62,6 +72,11 @@ COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
 
 SENTRY_DSN = ""
+
+# VAPID keys for Web Push notifications
+VAPID_PUBLIC_KEY = ""
+VAPID_PRIVATE_KEY = ""
+VAPID_CLAIMS_EMAIL = "admin@instanssi.org"
 
 REST_KNOX = {
     "AUTH_TOKEN_CHARACTER_LENGTH": 64,
@@ -159,6 +174,7 @@ INSTALLED_APPS = (
     "Instanssi.ext_programme",
     "Instanssi.ext_mastodon",
     "Instanssi.store",
+    "Instanssi.notifications",
     "Instanssi.infodesk",
     "imagekit",
     "rest_framework",

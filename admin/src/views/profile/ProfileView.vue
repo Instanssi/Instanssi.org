@@ -62,10 +62,11 @@ import { useToast } from "vue-toastification";
 import { object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
+import type { BlankEnum, LanguageEnum } from "@/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import InfoCard from "@/components/table/InfoCard.vue";
 import InfoRow from "@/components/table/InfoRow.vue";
-import { LOCALE_NAMES, SUPPORTED_LOCALES, isSupportedLocale, type SupportedLocale } from "@/i18n";
+import { LOCALE_NAMES, SUPPORTED_LOCALES } from "@/i18n";
 import { useAuth } from "@/services/auth";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
@@ -88,18 +89,21 @@ const dateJoined = ref("");
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [{ title: t("ProfileView.title") }]);
 
-const languageOptions = SUPPORTED_LOCALES.map((loc) => ({
-    title: LOCALE_NAMES[loc],
-    value: loc,
-}));
+const languageOptions = [
+    { title: t("ProfileView.labels.browserDefault"), value: "" },
+    ...SUPPORTED_LOCALES.map((loc) => ({
+        title: LOCALE_NAMES[loc],
+        value: loc,
+    })),
+];
 
 // Form validation
 const validationSchema = yupObject({
     firstName: yupString().max(150),
     lastName: yupString().max(150),
     language: yupString()
-        .required()
-        .oneOf([...SUPPORTED_LOCALES]),
+        .defined()
+        .oneOf(["", ...SUPPORTED_LOCALES]),
 });
 
 const { handleSubmit, setValues, setErrors, meta } = useForm({
@@ -107,7 +111,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
     initialValues: {
         firstName: "",
         lastName: "",
-        language: "en",
+        language: "",
     },
 });
 
@@ -136,7 +140,7 @@ async function saveProfile(values: ProfileFormValues): Promise<boolean> {
             body: {
                 first_name: values.firstName,
                 last_name: values.lastName,
-                language: values.language as SupportedLocale,
+                language: values.language as LanguageEnum | BlankEnum,
             },
         });
         toast.success(t("ProfileView.saveSuccess"));
@@ -155,11 +159,10 @@ onMounted(async () => {
         username.value = data.username;
         email.value = data.email;
         dateJoined.value = d(data.date_joined, "long");
-        const lang = data.language;
         setValues({
             firstName: data.first_name ?? "",
             lastName: data.last_name ?? "",
-            language: lang && isSupportedLocale(lang) ? lang : "en",
+            language: data.language ?? "",
         });
     } catch (e) {
         toast.error(t("ProfileView.loadFailure"));

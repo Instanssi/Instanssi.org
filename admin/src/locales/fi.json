@@ -932,7 +932,8 @@
         "dateJoined": "Liittymispäivä",
         "firstName": "Etunimi",
         "lastName": "Sukunimi",
-        "language": "Kieli"
+        "language": "Kieli",
+        "browserDefault": "Selaimen oletus"
       },
       "loadFailure": "Profiilin lataus epäonnistui; yritä myöhemmin uudelleen.",
       "saveSuccess": "Profiili tallennettu!",

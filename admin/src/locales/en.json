@@ -932,7 +932,8 @@
         "dateJoined": "Date joined",
         "firstName": "First name",
         "lastName": "Last name",
-        "language": "Language"
+        "language": "Language",
+        "browserDefault": "Browser default"
       },
       "loadFailure": "Failed to load profile; try again later.",
       "saveSuccess": "Profile saved!",

@@ -74,6 +74,7 @@ def _send_push_to_staff(
                 data=payload,
                 vapid_private_key=settings.VAPID_PRIVATE_KEY,
                 vapid_claims={"sub": f"mailto:{settings.VAPID_CLAIMS_EMAIL}"},
+                ttl=43200,
             )
         except WebPushException as e:
             status_code = None

@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --emptyOutDir",
-    "build:production": "vite build",
+    "build:production": "vite build -l error",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint src/ --fix",

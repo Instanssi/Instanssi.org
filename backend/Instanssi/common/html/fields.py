@@ -174,8 +174,9 @@ _cleaner = nh3.Cleaner(
 )
 
 
-class SanitizedHtmlField(TextField):
+class SanitizedHtmlField(TextField):  # type: ignore[type-arg]
     def to_python(self, value: Any) -> str | None:
-        if value := super().to_python(value):
-            value = _cleaner.clean(value)
-        return value
+        result: str | None = super().to_python(value)
+        if result:
+            result = _cleaner.clean(result)
+        return result

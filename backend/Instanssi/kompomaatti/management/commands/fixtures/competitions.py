@@ -1,8 +1,9 @@
 """Test competitions for kompomaatti"""
 
 from datetime import UTC, datetime
+from typing import Any
 
-competitions = [
+competitions: list[dict[str, Any]] = [
     # Active competition for 2026
     {
         "event_pk": 25,  # Instanssi 2026
@@ -52,7 +53,7 @@ Kaikki käyttävät samaa platformia ja versiota.</p>
     },
 ]
 
-competition_participations = [
+competition_participations: list[dict[str, Any]] = [
     # Speed Coding participations (2026 - no scores yet)
     {
         "competition_name": "Speed Coding",

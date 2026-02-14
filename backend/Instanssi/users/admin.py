@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from Instanssi.users.models import User
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseUserAdmin):  # type: ignore[type-arg]
     readonly_fields = (*BaseUserAdmin.readonly_fields, "is_system")
     fieldsets = (
         (None, {"fields": ("username", "password")}),

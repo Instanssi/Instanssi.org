@@ -1,8 +1,9 @@
 # This should preferable match the production data
 
 from datetime import date
+from typing import Any
 
-events = [
+events: list[dict[str, Any]] = [
     {
         "pk": 1,
         "name": "Instanssi 2011",

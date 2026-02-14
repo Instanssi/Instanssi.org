@@ -1,8 +1,9 @@
 """Test blog entries for events"""
 
 from datetime import UTC, datetime
+from typing import Any
 
-blog_entries = [
+blog_entries: list[dict[str, Any]] = [
     # Blog entries for Instanssi 2026 (upcoming event) - Many entries for pagination testing
     {
         "event_pk": 25,

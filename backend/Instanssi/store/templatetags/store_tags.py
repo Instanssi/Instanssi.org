@@ -1,12 +1,15 @@
+from typing import Any
+
 from django import template
+from django.http import HttpRequest
 from tabulate import tabulate
 
 register = template.Library()
 
 
 @register.simple_tag
-def render_product_list(products):
-    return tabulate(
+def render_product_list(products: list[dict[str, Any]]) -> str:
+    result: str = tabulate(
         tabular_data=products,
         tablefmt="simple",
         headers={
@@ -18,8 +21,9 @@ def render_product_list(products):
             "tax": "Alv.",
         },
     )
+    return result
 
 
 @register.filter
-def absolute_url(path, request):
+def absolute_url(path: str, request: HttpRequest) -> str:
     return request.build_absolute_uri(path)

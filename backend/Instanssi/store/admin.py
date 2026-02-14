@@ -11,7 +11,7 @@ from Instanssi.store.models import (
 )
 
 
-class StoreTransactionAdmin(admin.ModelAdmin):
+class StoreTransactionAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -27,7 +27,7 @@ class StoreTransactionAdmin(admin.ModelAdmin):
     ]
 
 
-class StoreTransactionEventAdmin(admin.ModelAdmin):
+class StoreTransactionEventAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -38,7 +38,7 @@ class StoreTransactionEventAdmin(admin.ModelAdmin):
     ]
 
 
-class TransactionItemAdmin(admin.ModelAdmin):
+class TransactionItemAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -50,7 +50,7 @@ class TransactionItemAdmin(admin.ModelAdmin):
     ]
 
 
-class ReceiptAdmin(admin.ModelAdmin):
+class ReceiptAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     actions = [csvexport]
     list_per_page = 200
     list_display = [
@@ -62,7 +62,7 @@ class ReceiptAdmin(admin.ModelAdmin):
     ]
 
 
-class StoreItemAdmin(admin.ModelAdmin):
+class StoreItemAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     actions = [csvexport]
     list_display = [
         "name",

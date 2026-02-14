@@ -38,5 +38,7 @@ jobs:
       run: poetry run isort --check-only Instanssi
     - name: Run black
       run: poetry run black --check --diff Instanssi
+    - name: Run mypy
+      run: poetry run mypy -p Instanssi
     - name: Run pytest
       run: poetry run pytest -n auto

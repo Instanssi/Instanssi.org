@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
+from typing import Any
 
 # Programme events fixture data
 # event_type: 0 = Simple (Yksinkertainen), 1 = Detailed (Yksityiskohtainen)
 
-programme_events = [
+programme_events: list[dict[str, Any]] = [
     # === Instanssi 2024 - Simple events ===
     {
         "event_pk": 23,

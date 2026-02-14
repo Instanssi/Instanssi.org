@@ -412,6 +412,8 @@ def test_auth_current_user(auth_client, base_user):
         "email": base_user.email,
     }
     assert auth_client.post(url).status_code == 405
+    assert auth_client.put(url, data={}).status_code == 405
+    assert auth_client.patch(url, data={}).status_code == 405
     assert auth_client.options(url).status_code == 200
 
 

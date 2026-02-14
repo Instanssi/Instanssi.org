@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -15,7 +15,7 @@ AUTH_METHODS = [
 ]
 
 
-def login(request):
+def login(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:profile"))
 
@@ -47,12 +47,12 @@ def login(request):
     )
 
 
-def loggedout(request):
+def loggedout(request: HttpRequest) -> HttpResponse:
     return render(request, "users/loggedout.html")
 
 
 @user_access_required
-def profile(request):
+def profile(request: HttpRequest) -> HttpResponse:
     from social_django.models import DjangoStorage
 
     if request.method == "POST":
@@ -65,7 +65,7 @@ def profile(request):
 
     # Get all active providers for this user
     active_providers = []
-    for social_auth in DjangoStorage.user.get_social_auth_for_user(request.user):
+    for social_auth in DjangoStorage.user.get_social_auth_for_user(request.user):  # type: ignore[no-untyped-call]
         active_providers.append(social_auth.provider)
 
     # Providers list
@@ -80,6 +80,6 @@ def profile(request):
     )
 
 
-def logout(request):
+def logout(request: HttpRequest) -> HttpResponse:
     auth.logout(request)
     return HttpResponseRedirect(reverse("users:loggedout"))

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.db import migrations
 from django.db.models import Q
 
@@ -97,7 +99,7 @@ GROUP_PERMISSIONS: dict[str, list[tuple[str, str]]] = {
 }
 
 
-def forwards(apps, schema_editor):
+def forwards(apps: Any, schema_editor: Any) -> None:
     Group = apps.get_model("auth", "Group")
     Permission = apps.get_model("auth", "Permission")
 
@@ -110,7 +112,7 @@ def forwards(apps, schema_editor):
             group.permissions.set(Permission.objects.filter(q))
 
 
-def backwards(apps, schema_editor):
+def backwards(apps: Any, schema_editor: Any) -> None:
     Group = apps.get_model("auth", "Group")
     Group.objects.filter(name__in=GROUP_PERMISSIONS.keys()).delete()
 

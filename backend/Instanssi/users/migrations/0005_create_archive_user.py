@@ -1,7 +1,9 @@
+from typing import Any
+
 from django.db import migrations
 
 
-def forwards(apps, schema_editor):
+def forwards(apps: Any, schema_editor: Any) -> None:
     User = apps.get_model("users", "User")
     user, created = User.objects.get_or_create(
         username="arkisto",
@@ -18,7 +20,7 @@ def forwards(apps, schema_editor):
         user.save(update_fields=["is_system", "is_active", "email"])
 
 
-def backwards(apps, schema_editor):
+def backwards(apps: Any, schema_editor: Any) -> None:
     pass
 
 

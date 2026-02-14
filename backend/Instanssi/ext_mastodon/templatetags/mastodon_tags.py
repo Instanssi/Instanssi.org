@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from typing import Final, List, TypedDict
+from typing import Any, Final, TypedDict
 
 import nh3
 from django import template
@@ -26,7 +26,7 @@ class Toot(TypedDict):
     created_at: datetime
 
 
-def filter_toots(toot: dict) -> bool:
+def filter_toots(toot: dict[str, Any]) -> bool:
     if toot.get("sensitive"):
         return False
     if toot.get("visibility") != "public":
@@ -34,7 +34,7 @@ def filter_toots(toot: dict) -> bool:
     return True
 
 
-def map_toots(obj: dict) -> Toot:
+def map_toots(obj: dict[str, Any]) -> Toot:
     return dict(
         username=obj["account"]["display_name"],
         user_url=obj["account"]["url"],
@@ -44,14 +44,14 @@ def map_toots(obj: dict) -> Toot:
     )
 
 
-def init_mastodon():
+def init_mastodon() -> Mastodon:
     return Mastodon(
         access_token=settings.MASTODON_ACCESS_TOKEN,
         api_base_url=settings.MASTODON_BASE_URL,
     )
 
 
-def fetch_timeline(limit: int) -> List[dict]:
+def fetch_timeline(limit: int) -> list[dict[str, Any]]:
     if not settings.MASTODON_BASE_URL:
         return []
     try:
@@ -66,8 +66,8 @@ def fetch_timeline(limit: int) -> List[dict]:
 
 
 @register.inclusion_tag("ext_mastodon/timeline.html", name="mastodon_timeline")
-def render_mastodon_timeline(limit: int = 10, timeout: int = 60 * 30) -> dict:
-    timeline: List[Toot] = cache.get(MASTODON_CACHE_KEY)
+def render_mastodon_timeline(limit: int = 10, timeout: int = 60 * 30) -> dict[str, Any]:
+    timeline: list[Toot] = cache.get(MASTODON_CACHE_KEY)
     if not timeline:
         timeline = list(map(map_toots, filter(filter_toots, fetch_timeline(limit))))
         cache.set(MASTODON_CACHE_KEY, timeline, timeout)

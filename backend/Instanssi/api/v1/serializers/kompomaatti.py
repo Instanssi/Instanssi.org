@@ -1,10 +1,11 @@
 import logging
 import os
-from typing import List, Optional
+from typing import Any
 
 from django.core.files.uploadedfile import UploadedFile
 from django.db import transaction
 from django.db.models import QuerySet
+from django.http import HttpRequest
 from django.utils import timezone
 from rest_framework.serializers import (
     CharField,
@@ -32,29 +33,29 @@ from Instanssi.users.models import User
 logger = logging.getLogger(__name__)
 
 
-class CompoForeignKey(PrimaryKeyRelatedField):
-    def get_queryset(self) -> QuerySet:
+class CompoForeignKey(PrimaryKeyRelatedField[Compo]):
+    def get_queryset(self) -> QuerySet[Compo]:
         return Compo.objects.filter(active=True, event__hidden=False)
 
 
-class CompetitionForeignKey(PrimaryKeyRelatedField):
-    def get_queryset(self) -> QuerySet:
+class CompetitionForeignKey(PrimaryKeyRelatedField[Competition]):
+    def get_queryset(self) -> QuerySet[Competition]:
         return Competition.objects.filter(active=True, event__hidden=False)
 
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer[User]):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "email")
 
 
-class EventSerializer(ModelSerializer):
+class EventSerializer(ModelSerializer[Event]):
     class Meta:
         model = Event
         fields = ("id", "name", "date", "mainurl")
 
 
-class CompetitionSerializer(ModelSerializer):
+class CompetitionSerializer(ModelSerializer[Competition]):
     class Meta:
         model = Competition
         fields = (
@@ -69,31 +70,31 @@ class CompetitionSerializer(ModelSerializer):
             "score_sort",
             "show_results",
         )
-        extra_kwargs = {}
+        extra_kwargs: dict[str, dict[str, object]] = {}
 
 
-class CompetitionParticipationSerializer(ModelSerializer):
+class CompetitionParticipationSerializer(ModelSerializer[CompetitionParticipation]):
     rank = SerializerMethodField()
     score = SerializerMethodField()
     disqualified = SerializerMethodField()
     disqualified_reason = SerializerMethodField()
 
-    def get_disqualified_reason(self, obj: CompetitionParticipation) -> Optional[str]:
+    def get_disqualified_reason(self, obj: CompetitionParticipation) -> str | None:
         if obj.competition.show_results:
             return obj.disqualified_reason
         return None
 
-    def get_disqualified(self, obj: CompetitionParticipation) -> Optional[bool]:
+    def get_disqualified(self, obj: CompetitionParticipation) -> bool | None:
         if obj.competition.show_results:
             return obj.disqualified
         return None
 
-    def get_rank(self, obj: CompetitionParticipation) -> Optional[int]:
+    def get_rank(self, obj: CompetitionParticipation) -> int | None:
         if obj.competition.show_results:
             return obj.get_rank()
         return None
 
-    def get_score(self, obj: CompetitionParticipation) -> Optional[str]:
+    def get_score(self, obj: CompetitionParticipation) -> str | None:
         if obj.competition.show_results:
             return obj.get_formatted_score()
         return None
@@ -109,10 +110,10 @@ class CompetitionParticipationSerializer(ModelSerializer):
             "disqualified",
             "disqualified_reason",
         )
-        extra_kwargs = {}
+        extra_kwargs: dict[str, dict[str, object]] = {}
 
 
-class CompoSerializer(ModelSerializer):
+class CompoSerializer(ModelSerializer[Compo]):
     class Meta:
         model = Compo
         fields = (
@@ -137,15 +138,16 @@ class CompoSerializer(ModelSerializer):
             "is_imagefile_allowed",
             "is_imagefile_required",
         )
-        extra_kwargs = {}
+        extra_kwargs: dict[str, dict[str, object]] = {}
 
 
-class AlternateEntryFileSerializer(ModelSerializer):
+class AlternateEntryFileSerializer(ModelSerializer[AlternateEntryFile]):
     url = SerializerMethodField()
     format = SerializerMethodField()
 
     def get_url(self, obj: AlternateEntryFile) -> str:
-        return self.context["request"].build_absolute_uri(obj.file.url)
+        request: HttpRequest = self.context["request"]
+        return request.build_absolute_uri(obj.file.url)
 
     def get_format(self, obj: AlternateEntryFile) -> str:
         return obj.mime_format
@@ -158,7 +160,7 @@ class AlternateEntryFileSerializer(ModelSerializer):
         )
 
 
-class CompoEntrySerializer(ModelSerializer):
+class CompoEntrySerializer(ModelSerializer[Entry]):
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
     imagefile_original_url = SerializerMethodField()
@@ -171,54 +173,60 @@ class CompoEntrySerializer(ModelSerializer):
     disqualified_reason = SerializerMethodField()
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
 
-    def get_entryfile_url(self, obj: Entry) -> Optional[str]:
+    def get_entryfile_url(self, obj: Entry) -> str | None:
         if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started()):
-            return self.context["request"].build_absolute_uri(obj.entryfile.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.entryfile.url)
         return None
 
-    def get_sourcefile_url(self, obj: Entry) -> Optional[str]:
+    def get_sourcefile_url(self, obj: Entry) -> str | None:
         if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.has_voting_started()):
-            return self.context["request"].build_absolute_uri(obj.sourcefile.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.sourcefile.url)
         return None
 
-    def get_imagefile_original_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_original_url(self, obj: Entry) -> str | None:
         if obj.imagefile_original:
-            return self.context["request"].build_absolute_uri(obj.imagefile_original.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_original.url)
         return None
 
-    def get_imagefile_medium_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_medium_url(self, obj: Entry) -> str | None:
         if obj.imagefile_medium:
-            return self.context["request"].build_absolute_uri(obj.imagefile_medium.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_medium.url)
         return None
 
-    def get_imagefile_thumbnail_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_thumbnail_url(self, obj: Entry) -> str | None:
         if obj.imagefile_thumbnail:
-            return self.context["request"].build_absolute_uri(obj.imagefile_thumbnail.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_thumbnail.url)
         return None
 
-    def get_disqualified_reason(self, obj: Entry) -> Optional[str]:
+    def get_disqualified_reason(self, obj: Entry) -> str | None:
         if obj.compo.has_voting_started():
             return obj.disqualified_reason
         return None
 
-    def get_disqualified(self, obj: Entry) -> Optional[bool]:
+    def get_disqualified(self, obj: Entry) -> bool | None:
         if obj.compo.has_voting_started():
             return obj.disqualified
         return None
 
-    def get_rank(self, obj: Entry) -> Optional[int]:
+    def get_rank(self, obj: Entry) -> int | None:
         if obj.compo.show_voting_results:
             return obj.computed_rank
         return None
 
-    def get_score(self, obj: Entry) -> Optional[float]:
+    def get_score(self, obj: Entry) -> float | None:
         if obj.compo.show_voting_results:
             return obj.computed_score
         return None
 
-    def get_youtube_url(self, obj: Entry) -> Optional[str]:
+    def get_youtube_url(self, obj: Entry) -> str | None:
         if obj.youtube_url:
-            return obj.youtube_url.link_url
+            url: str = obj.youtube_url.link_url
+            return url
         return None
 
     class Meta:
@@ -242,10 +250,10 @@ class CompoEntrySerializer(ModelSerializer):
             "rank",
             "alternate_files",
         )
-        extra_kwargs = {}
+        extra_kwargs: dict[str, dict[str, object]] = {}
 
 
-class UserCompetitionParticipationSerializer(ModelSerializer):
+class UserCompetitionParticipationSerializer(ModelSerializer[CompetitionParticipation]):
     competition = CompetitionForeignKey()
 
     def validate_competition(self, competition: Competition) -> Competition:
@@ -255,9 +263,10 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
             raise ValidationError("Kilpailu ei ole aktiivinen")
         return competition
 
-    def validate(self, data: dict) -> dict:
+    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
         competition = data.get("competition")
         if not competition:
+            assert self.instance is not None  # DRF guarantees instance is set during update
             competition = self.instance.competition
 
         # Check competition edits and additions
@@ -283,7 +292,7 @@ class UserCompetitionParticipationSerializer(ModelSerializer):
         }
 
 
-class UserCompoEntrySerializer(ModelSerializer):
+class UserCompoEntrySerializer(ModelSerializer[Entry]):
     compo = CompoForeignKey()
     entryfile_url = SerializerMethodField()
     sourcefile_url = SerializerMethodField()
@@ -291,29 +300,34 @@ class UserCompoEntrySerializer(ModelSerializer):
     imagefile_thumbnail_url = SerializerMethodField()
     imagefile_medium_url = SerializerMethodField()
 
-    def get_entryfile_url(self, obj: Entry) -> Optional[str]:
+    def get_entryfile_url(self, obj: Entry) -> str | None:
         if obj.entryfile:
-            return self.context["request"].build_absolute_uri(obj.entryfile.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.entryfile.url)
         return None
 
-    def get_sourcefile_url(self, obj: Entry) -> Optional[str]:
+    def get_sourcefile_url(self, obj: Entry) -> str | None:
         if obj.sourcefile:
-            return self.context["request"].build_absolute_uri(obj.sourcefile.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.sourcefile.url)
         return None
 
-    def get_imagefile_original_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_original_url(self, obj: Entry) -> str | None:
         if obj.imagefile_original:
-            return self.context["request"].build_absolute_uri(obj.imagefile_original.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_original.url)
         return None
 
-    def get_imagefile_medium_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_medium_url(self, obj: Entry) -> str | None:
         if obj.imagefile_medium:
-            return self.context["request"].build_absolute_uri(obj.imagefile_medium.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_medium.url)
         return None
 
-    def get_imagefile_thumbnail_url(self, obj: Entry) -> Optional[str]:
+    def get_imagefile_thumbnail_url(self, obj: Entry) -> str | None:
         if obj.imagefile_thumbnail:
-            return self.context["request"].build_absolute_uri(obj.imagefile_thumbnail.url)
+            request: HttpRequest = self.context["request"]
+            return request.build_absolute_uri(obj.imagefile_thumbnail.url)
         return None
 
     def validate_compo(self, compo: Compo) -> Compo:
@@ -326,28 +340,32 @@ class UserCompoEntrySerializer(ModelSerializer):
     @staticmethod
     def _validate_file(
         file: UploadedFile,
-        accept_formats: List[str],
+        accept_formats: list[str],
         accept_formats_readable: str,
         max_size: int,
-        max_readable_size: int,
-    ) -> List[str]:
+        max_readable_size: str,
+    ) -> list[str]:
         errors = []
 
         # Make sure the file size is within limits
-        if file.size > max_size:
+        if file.size is None or file.size > max_size:
             errors.append(f"Maksimi sallittu tiedostokoko on {max_readable_size}")
 
         # Make sure the file extension seems correct
-        ext = os.path.splitext(file.name)[1][1:]
-        if ext.lower() not in accept_formats:
+        if file.name is None:
             errors.append(f"Sallitut tiedostotyypit ovat {accept_formats_readable}")
+        else:
+            ext = os.path.splitext(file.name)[1][1:]
+            if ext.lower() not in accept_formats:
+                errors.append(f"Sallitut tiedostotyypit ovat {accept_formats_readable}")
 
         return errors
 
-    def validate(self, data: dict) -> dict:
+    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
         data = super(UserCompoEntrySerializer, self).validate(data)
-        compo = data.get("compo")
+        compo: Compo | None = data.get("compo")
         if not compo:
+            assert self.instance is not None  # DRF guarantees instance is set during update
             compo = self.instance.compo
 
         # Check adding & editing time
@@ -365,8 +383,8 @@ class UserCompoEntrySerializer(ModelSerializer):
             raise ValidationError({"imagefile_original": ["Kuvatiedostoa ei tarvita tälle kompolle"]})
 
         # Required validation function arguments for each field
-        errors = {}
-        check_files_on = {
+        errors: dict[str, list[str]] = {}
+        check_files_on: dict[str, tuple[list[str], str, int, str]] = {
             "entryfile": (
                 compo.entry_format_list,
                 compo.readable_entry_formats,
@@ -408,12 +426,12 @@ class UserCompoEntrySerializer(ModelSerializer):
             name = os.path.basename(instance.entryfile.name)
             instance.imagefile_original.save(name, instance.entryfile)
 
-    def create(self, validated_data: dict) -> Entry:
+    def create(self, validated_data: dict[str, Any]) -> Entry:
         instance = super(UserCompoEntrySerializer, self).create(validated_data)
         self._maybe_copy_entry_to_image(instance)
         return instance
 
-    def update(self, instance: Entry, validated_data: dict) -> Entry:
+    def update(self, instance: Entry, validated_data: dict[str, Any]) -> Entry:
         instance = super(UserCompoEntrySerializer, self).update(instance, validated_data)
         self._maybe_copy_entry_to_image(instance)
         return instance
@@ -453,10 +471,10 @@ class UserCompoEntrySerializer(ModelSerializer):
         }
 
 
-class TicketVoteCodeSerializer(ModelSerializer):
+class TicketVoteCodeSerializer(ModelSerializer[TicketVoteCode]):
     ticket_key = CharField(min_length=8, trim_whitespace=True, source="key")
 
-    def validate(self, data: dict) -> dict:
+    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
         data = super(TicketVoteCodeSerializer, self).validate(data)
 
         event = data["event"]
@@ -489,9 +507,9 @@ class TicketVoteCodeSerializer(ModelSerializer):
         return data
 
     @transaction.atomic
-    def create(self, validated_data: dict) -> TicketVoteCode:
+    def create(self, validated_data: dict[str, Any]) -> TicketVoteCode:
         ticket_key = validated_data.pop("key")
-        instance = super(TicketVoteCodeSerializer, self).create(validated_data)
+        instance: TicketVoteCode = super(TicketVoteCodeSerializer, self).create(validated_data)
         instance.ticket = TransactionItem.objects.get(
             item__event=validated_data["event"], item__is_ticket=True, key__startswith=ticket_key
         )
@@ -505,10 +523,14 @@ class TicketVoteCodeSerializer(ModelSerializer):
         extra_kwargs = {"event": {"required": True}, "time": {"read_only": True}}
 
 
-class VoteCodeRequestSerializer(ModelSerializer):
-    def validate(self, data: dict) -> dict:
-        event = data.get("event")
+class VoteCodeRequestSerializer(ModelSerializer[VoteCodeRequest]):
+    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
+        event: Event | None = data.get("event")
         if not event:
+            if self.instance is None:
+                raise ValueError("Expected instance to be set during update")
+            if self.instance.event is None:
+                raise ValueError("Expected instance event to be set")
             event = self.instance.event
 
         if event.hidden:
@@ -517,7 +539,11 @@ class VoteCodeRequestSerializer(ModelSerializer):
         data = super(VoteCodeRequestSerializer, self).validate(data)
 
         # If content has changed or is new, make sure to test for uniqueness
-        has_changed = self.instance and self.instance.event.id != event.id
+        has_changed = (
+            self.instance is not None
+            and self.instance.event is not None
+            and self.instance.event.id != event.id
+        )
         if not self.instance or has_changed:
             obj = VoteCodeRequest.objects.filter(event=event, user=self.context["request"].user).first()
             if obj:
@@ -535,20 +561,22 @@ class VoteCodeRequestSerializer(ModelSerializer):
         }
 
 
-class VoteGroupSerializer(ModelSerializer):
+class VoteGroupSerializer(ModelSerializer[VoteGroup]):
     entries = ListField(
         min_length=1,
-        child=PrimaryKeyRelatedField(queryset=Entry.objects.filter(compo__active=True, disqualified=False)),
+        child=PrimaryKeyRelatedField[Entry](
+            queryset=Entry.objects.filter(compo__active=True, disqualified=False)
+        ),
     )
 
-    def validate_entries(self, entries: List[Entry]) -> List[Entry]:
+    def validate_entries(self, entries: list[Entry]) -> list[Entry]:
         # Fail if not unique entries
         ids = [entry.id for entry in entries]
         if len(ids) > len(set(ids)):
             raise ValidationError("Voit äänestää entryä vain kerran")
         return entries
 
-    def validate(self, data: dict) -> dict:
+    def validate(self, data: dict[str, Any]) -> dict[str, Any]:
         data = super(VoteGroupSerializer, self).validate(data)
         compo = data["compo"]
         entries = data["entries"]
@@ -579,7 +607,7 @@ class VoteGroupSerializer(ModelSerializer):
         return data
 
     @transaction.atomic
-    def create(self, validated_data: dict) -> VoteGroup:
+    def create(self, validated_data: dict[str, Any]) -> VoteGroup:
         entries = validated_data.pop("entries")
         compo = validated_data["compo"]
         user = validated_data["user"]

@@ -1,7 +1,9 @@
 """Test video categories and videos for events"""
 
+from typing import Any
+
 # Video categories for archived events
-video_categories = [
+video_categories: list[dict[str, Any]] = [
     # Instanssi 2024
     {
         "event_pk": 23,
@@ -32,7 +34,7 @@ video_categories = [
 ]
 
 # Videos linked to categories
-videos = [
+videos: list[dict[str, Any]] = [
     # Instanssi 2024 - Seminaarit
     {
         "category_event_pk": 23,

@@ -1,5 +1,6 @@
 from pathlib import Path
 from secrets import token_hex
+from typing import Any
 
 from django.conf import settings
 from django.core.files import File
@@ -67,18 +68,18 @@ class Command(BaseCommand):
     Entry.save() method that normally triggers async tasks for generating alternate audio files.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.created_users = {}
-        self.created_events = {}
-        self.created_compos = {}
-        self.created_entries = {}
-        self.created_vote_groups = []
-        self.created_competitions = {}
-        self.created_store_items = {}
-        self.created_transactions = {}
-        self.created_transaction_items = {}
-        self.created_video_categories = {}
+        self.created_users: dict[Any, User] = {}
+        self.created_events: dict[Any, Event] = {}
+        self.created_compos: dict[Any, Compo] = {}
+        self.created_entries: dict[Any, Entry] = {}
+        self.created_vote_groups: list[VoteGroup] = []
+        self.created_competitions: dict[Any, Competition] = {}
+        self.created_store_items: dict[Any, StoreItem] = {}
+        self.created_transactions: dict[Any, StoreTransaction] = {}
+        self.created_transaction_items: dict[Any, dict[Any, list[TransactionItem]]] = {}
+        self.created_video_categories: dict[Any, OtherVideoCategory] = {}
 
     def setup_users(self) -> None:
         """Create test users - password is same as username"""
@@ -153,7 +154,7 @@ class Command(BaseCommand):
             self.created_compos[(event_pk, compo_name)] = compo
             self.stdout.write(f"  Created compo: {compo.name} for {event.name}")
 
-    def get_test_file(self, file_type: str) -> File:
+    def get_test_file(self, file_type: str) -> File[Any]:
         """Get a test file of the specified type"""
         if file_type == "image":
             filepath = get_random_image_filename()
@@ -593,6 +594,7 @@ class Command(BaseCommand):
                 continue
 
             events_created = 0
+            assert transaction.time_created is not None
 
             # Event 1: Transaction created
             StoreTransactionEvent.objects.create(
@@ -784,7 +786,7 @@ class Command(BaseCommand):
             active_str = "" if prog_data["active"] else " (inactive)"
             self.stdout.write(f"  Created programme event: {title} ({event_type_str}){active_str}")
 
-    def handle(self, *args, **options) -> None:
+    def handle(self, *args: Any, **options: Any) -> None:
         if not settings.DEBUG:
             self.stderr.write("Command disabled in production! settings.DEBUG must be True.")
             return

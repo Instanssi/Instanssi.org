@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Final
 
 import arrow
@@ -57,10 +58,12 @@ def order_search_ac(request: HttpRequest) -> HttpResponse:
     transactions = StoreTransaction.objects.filter(ta_fuzzy_query(term))
     items = TransactionItem.objects.filter(ti_fuzzy_query(term))
 
-    def fmt_t(t):
-        return arrow.get(t).to(settings.TIME_ZONE).format("DD.MM.YYYY HH:mm")
+    def fmt_t(t: datetime | None) -> str:
+        if t is None:
+            return ""
+        return str(arrow.get(t).to(settings.TIME_ZONE).format("DD.MM.YYYY HH:mm"))
 
-    def format_transaction(t):
+    def format_transaction(t: StoreTransaction) -> str:
         return "%s, %s (%s)" % (t.lastname, t.firstname, fmt_t(t.time_created))
 
     results = [
@@ -82,7 +85,7 @@ def order_search_ac(request: HttpRequest) -> HttpResponse:
 
 
 @infodesk_access_required
-def order_search(request):
+def order_search(request: HttpRequest) -> HttpResponse:
     """Search view that finds transactions, items and customers."""
     term = request.GET.get("term")
     transactions = None
@@ -124,6 +127,7 @@ def item_check(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = ItemKeyScanForm(request.POST)
         if form.is_valid():
+            assert form.item is not None
             return HttpResponseRedirect(reverse("infodesk:item_info", args=(form.item.id,)))
     else:
         form = ItemKeyScanForm()
@@ -136,6 +140,7 @@ def transaction_check(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = TransactionKeyScanForm(request.POST)
         if form.is_valid():
+            assert form.transaction is not None
             return HttpResponseRedirect(reverse("infodesk:transaction_info", args=(form.transaction.id,)))
     else:
         form = TransactionKeyScanForm()

@@ -7,7 +7,7 @@ from Instanssi.ext_programme.models import ProgrammeEvent
 logger = logging.getLogger(__name__)
 
 
-class ProgrammeEventSerializer(ModelSerializer):
+class ProgrammeEventSerializer(ModelSerializer[ProgrammeEvent]):
     class Meta:
         model = ProgrammeEvent
         fields = (
@@ -21,4 +21,4 @@ class ProgrammeEventSerializer(ModelSerializer):
             "presenters_titles",
             "place",
         )
-        extra_kwargs = {}
+        extra_kwargs: dict[str, dict[str, object]] = {}

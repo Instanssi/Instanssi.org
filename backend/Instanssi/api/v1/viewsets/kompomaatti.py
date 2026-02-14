@@ -34,6 +34,7 @@ from Instanssi.kompomaatti.models import (
     VoteCodeRequest,
     VoteGroup,
 )
+from Instanssi.notifications.tasks import notify_new_vote_code_request
 
 logger = logging.getLogger(__name__)
 
@@ -303,7 +304,8 @@ class VoteCodeRequestViewSet(ReadWriteUpdateModelViewSet):
         return VoteCodeRequest.objects.filter(user=self.request.user, event__hidden=False)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        instance = serializer.save(user=self.request.user)
+        notify_new_vote_code_request.delay(instance.id)
 
 
 class TicketVoteCodeViewSet(ReadWriteModelViewSet):

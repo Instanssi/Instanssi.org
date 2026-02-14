@@ -2707,6 +2707,10 @@ export type PatchedUserInfoRequest = {
     first_name?: string;
     last_name?: string;
     language?: LanguageEnum | BlankEnum;
+    notify_vote_code_requests?: boolean;
+    notify_program_events?: boolean;
+    notify_compo_starts?: boolean;
+    notify_competition_starts?: boolean;
 };
 
 /**
@@ -3601,6 +3605,20 @@ export type PublicStoreTransactionCheckoutRequest = {
     confirm?: boolean;
 };
 
+export type PushSubscription = {
+    readonly id: number;
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+    readonly created_at: string;
+};
+
+export type PushSubscriptionRequest = {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+};
+
 /**
  * Serializer for Receipt model (staff access).
  */
@@ -4469,6 +4487,10 @@ export type UserInfo = {
     readonly is_superuser: boolean;
     readonly date_joined: string;
     language?: LanguageEnum | BlankEnum;
+    notify_vote_code_requests?: boolean;
+    notify_program_events?: boolean;
+    notify_compo_starts?: boolean;
+    notify_competition_starts?: boolean;
 };
 
 /**
@@ -4630,6 +4652,10 @@ export type ValidateArchiveError = {
 export type ValidateArchiveOk = {
     ok: boolean;
     count: number;
+};
+
+export type VapidPublicKey = {
+    readonly vapid_public_key: string;
 };
 
 /**
@@ -5831,6 +5857,12 @@ export type PublicStoreItemVariantWritable = {
     name: string;
 };
 
+export type PushSubscriptionWritable = {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+};
+
 /**
  * Serializer for Receipt model (staff access).
  */
@@ -6244,6 +6276,10 @@ export type UserInfoWritable = {
     first_name?: string;
     last_name?: string;
     language?: LanguageEnum | BlankEnum;
+    notify_vote_code_requests?: boolean;
+    notify_program_events?: boolean;
+    notify_compo_starts?: boolean;
+    notify_competition_starts?: boolean;
 };
 
 /**
@@ -9503,6 +9539,56 @@ export type EventUserKompomaattiVotesRetrieveResponses = {
 export type EventUserKompomaattiVotesRetrieveResponse =
     EventUserKompomaattiVotesRetrieveResponses[keyof EventUserKompomaattiVotesRetrieveResponses];
 
+export type NotificationsSubscriptionsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/notifications/subscriptions/";
+};
+
+export type NotificationsSubscriptionsListResponses = {
+    200: Array<PushSubscription>;
+};
+
+export type NotificationsSubscriptionsListResponse =
+    NotificationsSubscriptionsListResponses[keyof NotificationsSubscriptionsListResponses];
+
+export type NotificationsSubscriptionsCreateData = {
+    body: PushSubscriptionRequest;
+    path?: never;
+    query?: never;
+    url: "/api/v2/notifications/subscriptions/";
+};
+
+export type NotificationsSubscriptionsCreateResponses = {
+    201: PushSubscription;
+};
+
+export type NotificationsSubscriptionsCreateResponse =
+    NotificationsSubscriptionsCreateResponses[keyof NotificationsSubscriptionsCreateResponses];
+
+export type NotificationsSubscriptionsDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this push subscription.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/notifications/subscriptions/{id}/";
+};
+
+export type NotificationsSubscriptionsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type NotificationsSubscriptionsDestroyResponse =
+    NotificationsSubscriptionsDestroyResponses[keyof NotificationsSubscriptionsDestroyResponses];
+
 export type PublicBlogEntriesListData = {
     body?: never;
     path?: never;
@@ -9922,6 +10008,20 @@ export type PublicEventsRetrieveResponses = {
 
 export type PublicEventsRetrieveResponse =
     PublicEventsRetrieveResponses[keyof PublicEventsRetrieveResponses];
+
+export type PublicNotificationsVapidKeyRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/public/notifications/vapid-key/";
+};
+
+export type PublicNotificationsVapidKeyRetrieveResponses = {
+    200: VapidPublicKey;
+};
+
+export type PublicNotificationsVapidKeyRetrieveResponse =
+    PublicNotificationsVapidKeyRetrieveResponses[keyof PublicNotificationsVapidKeyRetrieveResponses];
 
 export type PublicStoreCheckoutCreateData = {
     body: PublicStoreTransactionCheckoutRequest;

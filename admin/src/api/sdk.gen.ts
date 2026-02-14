@@ -298,6 +298,12 @@ import type {
     LoginResponses,
     LogoutData,
     LogoutResponses,
+    NotificationsSubscriptionsCreateData,
+    NotificationsSubscriptionsCreateResponses,
+    NotificationsSubscriptionsDestroyData,
+    NotificationsSubscriptionsDestroyResponses,
+    NotificationsSubscriptionsListData,
+    NotificationsSubscriptionsListResponses,
     PublicBlogEntriesListData,
     PublicBlogEntriesListResponses,
     PublicBlogEntriesRetrieveData,
@@ -334,6 +340,8 @@ import type {
     PublicEventsListResponses,
     PublicEventsRetrieveData,
     PublicEventsRetrieveResponses,
+    PublicNotificationsVapidKeyRetrieveData,
+    PublicNotificationsVapidKeyRetrieveResponses,
     PublicStoreCheckoutCreateData,
     PublicStoreCheckoutCreateResponses,
     PublicStoreItemsListData,
@@ -4812,6 +4820,105 @@ export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean =
 };
 
 /**
+ * Viewset for managing the current user's push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const notificationsSubscriptionsList = <ThrowOnError extends boolean = false>(
+    options?: Options<NotificationsSubscriptionsListData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        NotificationsSubscriptionsListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/",
+        ...options,
+    });
+};
+
+/**
+ * Create or update a push subscription (upsert by endpoint).
+ *
+ * A push endpoint is a browser-level resource — the same physical push channel
+ * regardless of which user subscribed. The lookup uses endpoint alone (matching
+ * the model's unique constraint) so that if a different user subscribes from the
+ * same browser, the subscription is reassigned to them rather than creating a
+ * duplicate that would cause the browser to show the same notification twice.
+ */
+export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = false>(
+    options: Options<NotificationsSubscriptionsCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        NotificationsSubscriptionsCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Viewset for managing the current user's push notification subscriptions.
+ *
+ * Supports create (subscribe), destroy (unsubscribe), and list (view subscriptions).
+ * Subscriptions are scoped to the current user. Create performs upsert by endpoint.
+ */
+export const notificationsSubscriptionsDestroy = <ThrowOnError extends boolean = false>(
+    options: Options<NotificationsSubscriptionsDestroyData, ThrowOnError>
+) => {
+    return (options.client ?? client).delete<
+        NotificationsSubscriptionsDestroyResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/notifications/subscriptions/{id}/",
+        ...options,
+    });
+};
+
+/**
  * Public read-only endpoint for blog entries. Only public entries are shown.
  */
 export const publicBlogEntriesList = <ThrowOnError extends boolean = false>(
@@ -5123,6 +5230,23 @@ export const publicEventsRetrieve = <ThrowOnError extends boolean = false>(
     return (options.client ?? client).get<PublicEventsRetrieveResponses, unknown, ThrowOnError>({
         responseType: "json",
         url: "/api/v2/public/events/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Returns the VAPID public key for push subscriptions.
+ */
+export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean = false>(
+    options?: Options<PublicNotificationsVapidKeyRetrieveData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        PublicNotificationsVapidKeyRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/public/notifications/vapid-key/",
         ...options,
     });
 };

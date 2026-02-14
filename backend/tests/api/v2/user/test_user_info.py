@@ -27,6 +27,10 @@ def test_authenticated_user_info(auth_client, base_user):
         "is_superuser": base_user.is_superuser,
         "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
         "language": "",
+        "notify_vote_code_requests": True,
+        "notify_program_events": True,
+        "notify_compo_starts": True,
+        "notify_competition_starts": True,
     }
 
 
@@ -110,3 +114,32 @@ def test_patch_does_not_change_read_only_fields(auth_client, base_user):
     assert base_user.is_superuser is False
     assert base_user.username == original_username
     assert base_user.email == original_email
+
+
+# --- Notification preference tests ---
+
+
+@pytest.mark.django_db
+def test_user_sees_notification_fields(auth_client):
+    """All authenticated users should see notification preference fields in the response."""
+    response = auth_client.get(BASE_URL)
+    assert response.status_code == 200
+    assert response.data["notify_vote_code_requests"] is True
+    assert response.data["notify_program_events"] is True
+    assert response.data["notify_compo_starts"] is True
+    assert response.data["notify_competition_starts"] is True
+
+
+@pytest.mark.django_db
+def test_can_patch_notification_preferences(auth_client, base_user):
+    """Authenticated users can update notification preferences via PATCH."""
+    response = auth_client.patch(
+        BASE_URL,
+        {"notify_vote_code_requests": False},
+        format="json",
+    )
+    assert response.status_code == 200
+    assert response.data["notify_vote_code_requests"] is False
+    assert response.data["notify_program_events"] is True
+    base_user.refresh_from_db()
+    assert base_user.notify_vote_code_requests is False

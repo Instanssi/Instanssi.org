@@ -17,6 +17,7 @@ from Instanssi.api.v2.serializers.user.kompomaatti.user_vote_code_request_serial
     UserVoteCodeRequestSerializer,
 )
 from Instanssi.kompomaatti.models import Event, VoteCodeRequest
+from Instanssi.notifications.tasks import notify_new_vote_code_request
 from Instanssi.users.models import User
 
 
@@ -65,4 +66,5 @@ class UserVoteCodeRequestViewSet(
                 {"non_field_errors": ["You have already requested a vote code for this event"]}
             )
 
-        serializer.save(user=user, event=event)
+        instance = serializer.save(user=user, event=event)
+        notify_new_vote_code_request.delay(instance.id)

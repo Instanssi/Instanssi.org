@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 
 
@@ -31,19 +33,26 @@ def test_get_own_request(auth_client, vote_code_request):
 
 @pytest.mark.django_db
 def test_create_request(auth_client, event):
-    """Test that users can create a vote code request."""
+    """Test that users can create a vote code request and notification task runs."""
+    from Instanssi.notifications.models import SentNotification
+
     base_url = get_base_url(event.id)
-    req = auth_client.post(
-        base_url,
-        data={
-            "event": event.id,
-            "text": "Please give me a vote code, I promise to vote responsibly!",
-        },
-    )
+    with patch("Instanssi.notifications.tasks.webpush"):
+        req = auth_client.post(
+            base_url,
+            data={
+                "event": event.id,
+                "text": "Please give me a vote code, I promise to vote responsibly!",
+            },
+        )
     assert req.status_code == 201
     assert req.data["event"] == event.id
     assert req.data["text"] == "Please give me a vote code, I promise to vote responsibly!"
     assert req.data["status"] == 0  # Pending by default
+
+    # Verify the notification task ran and created a dedup record
+    vcr_id = req.data["id"]
+    assert SentNotification.objects.filter(notification_key=f"vcr:{vcr_id}").exists()
 
 
 @pytest.mark.django_db

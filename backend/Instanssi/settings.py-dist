@@ -62,6 +62,11 @@ MASTODON_ACCESS_TOKEN = None
 MASTODON_BASE_URL = None
 MASTODON_ACCOUNT_NAME = None
 
+# Web Push VAPID keys (generate with: vapid --gen)
+VAPID_PUBLIC_KEY = ""
+VAPID_PRIVATE_KEY = ""
+VAPID_CLAIMS_EMAIL = "admin@instanssi.org"
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"

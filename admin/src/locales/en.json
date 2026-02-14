@@ -937,7 +937,29 @@
       },
       "loadFailure": "Failed to load profile; try again later.",
       "saveSuccess": "Profile saved!",
-      "saveFailure": "Failed to save profile; try again later."
+      "saveFailure": "Failed to save profile; try again later.",
+      "notifications": {
+        "title": "Push Notifications",
+        "enable": "Enable push notifications",
+        "enableHint": "This feature is in testing. Select which notification types you want to receive in the profile form above.",
+        "unsupported": "Push notifications are not supported in this browser.",
+        "denied": "Notification permission was denied. Please enable it in your browser settings.",
+        "subscribeFailure": "Failed to subscribe to push notifications.",
+        "unsubscribeFailure": "Failed to unsubscribe from push notifications.",
+        "preferencesTitle": "Notification Preferences",
+        "voteCodeRequestsOn": "Vote code request notifications enabled",
+        "voteCodeRequestsOff": "Vote code request notifications disabled",
+        "voteCodeRequestsHint": "Notifies when a user requests a vote code. Requires push notifications to be enabled.",
+        "programEventsOn": "Program event notifications enabled",
+        "programEventsOff": "Program event notifications disabled",
+        "programEventsHint": "Notifies 15 minutes before a program event starts. Requires push notifications to be enabled.",
+        "compoStartsOn": "Compo start notifications enabled",
+        "compoStartsOff": "Compo start notifications disabled",
+        "compoStartsHint": "Notifies 15 minutes before a compo starts. Requires push notifications to be enabled.",
+        "competitionStartsOn": "Competition start notifications enabled",
+        "competitionStartsOff": "Competition start notifications disabled",
+        "competitionStartsHint": "Notifies 15 minutes before a competition starts. Requires push notifications to be enabled."
+      }
     },
     "LoginView": {
       "title": "Sign in",

@@ -16,6 +16,7 @@ from Instanssi.api.v2.viewsets.user.kompomaatti.user_vote_code_requests import (
 from Instanssi.api.v2.viewsets.user.kompomaatti.user_vote_groups import (
     UserVoteGroupViewSet,
 )
+from Instanssi.api.v2.viewsets.user.notifications import UserPushSubscriptionViewSet
 from Instanssi.api.v2.viewsets.user.tokens import UserTokenViewSet
 from Instanssi.api.v2.viewsets.user.user_info import UserInfoViewSet
 
@@ -25,6 +26,12 @@ user_info_view = UserInfoViewSet.as_view({"get": "retrieve", "patch": "partial_u
 # /api/v2/tokens/
 tokens_router = routers.SimpleRouter()
 tokens_router.register("tokens", UserTokenViewSet, basename="user_tokens")
+
+# /api/v2/notifications/subscriptions/
+notifications_router = routers.SimpleRouter()
+notifications_router.register(
+    "notifications/subscriptions", UserPushSubscriptionViewSet, basename="user_notifications_subscriptions"
+)
 
 # /api/v2/event/<event_pk>/user/kompomaatti/...
 kompomaatti_router = routers.SimpleRouter()
@@ -43,5 +50,6 @@ kompomaatti_router.register("votes", UserVoteGroupViewSet, basename="event_user_
 urlpatterns: list[URLPattern | URLResolver] = [
     path("user_info/", user_info_view, name="user_info"),
     path("", include(tokens_router.urls)),
+    path("", include(notifications_router.urls)),
     path("event/<int:event_pk>/user/kompomaatti/", include(kompomaatti_router.urls)),
 ]

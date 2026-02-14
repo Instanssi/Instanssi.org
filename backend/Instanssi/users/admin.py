@@ -27,6 +27,17 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (
+            _("Notifications"),
+            {
+                "fields": (
+                    "notify_vote_code_requests",
+                    "notify_program_events",
+                    "notify_compo_starts",
+                    "notify_competition_starts",
+                ),
+            },
+        ),
     )
 
     def has_change_permission(self, request: HttpRequest, obj: Any = None) -> bool:

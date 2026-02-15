@@ -1,17 +1,19 @@
+from typing import Any
+
 import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.utils.timezone
 from django.db import migrations, models
 
 
-def update_content_type(apps, schema_editor):
+def update_content_type(apps: Any, schema_editor: Any) -> None:
     ContentType = apps.get_model("contenttypes", "ContentType")
     ContentType.objects.filter(app_label="auth", model="user").update(
         app_label="users",
     )
 
 
-def reverse_content_type(apps, schema_editor):
+def reverse_content_type(apps: Any, schema_editor: Any) -> None:
     ContentType = apps.get_model("contenttypes", "ContentType")
     ContentType.objects.filter(app_label="users", model="user").update(
         app_label="auth",

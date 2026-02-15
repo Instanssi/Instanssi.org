@@ -1,6 +1,8 @@
 """Test entries for kompomaatti"""
 
-entries = [
+from typing import Any
+
+entries: list[dict[str, Any]] = [
     # Graphics entries for 2024 (archived event with results)
     {
         "compo_name": "Graphics",

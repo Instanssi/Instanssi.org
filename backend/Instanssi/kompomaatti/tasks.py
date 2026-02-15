@@ -27,7 +27,7 @@ FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
 }
 
 
-@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})
+@shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})  # type: ignore[untyped-decorator]
 def generate_alternate_audio_files(entry_id: int, codec_index: int, container_index: int) -> None:
     output_codec = MediaCodec(codec_index)
     output_codec_name = output_codec.name.lower()

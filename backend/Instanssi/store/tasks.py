@@ -8,7 +8,7 @@ from .models import Receipt, StoreTransactionEvent
 log = logging.getLogger(__name__)
 
 
-@shared_task(
+@shared_task(  # type: ignore[untyped-decorator]
     autoretry_for=(SMTPServerDisconnected, SMTPConnectError, Receipt.DoesNotExist),
     retry_backoff=60,
     retry_kwargs={"max_retries": 10},

@@ -1,6 +1,8 @@
 """Test users for kompomaatti"""
 
-users = [
+from typing import Any
+
+users: list[dict[str, Any]] = [
     {
         "username": "testuser1",
         "email": "testuser1@example.com",

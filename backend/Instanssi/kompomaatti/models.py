@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Any, Iterable
 
 from auditlog.registry import auditlog
 from django.conf import settings
@@ -122,13 +122,13 @@ class TicketVoteCode(models.Model):
     )
 
     @property
-    def key(self) -> Optional[str]:
+    def key(self) -> str | None:
         if self.ticket:
             return self.ticket.key
         return None
 
     @property
-    def associated_username(self) -> Optional[str]:
+    def associated_username(self) -> str | None:
         if self.associated_to:
             return self.associated_to.username
         return None
@@ -277,15 +277,15 @@ class Compo(models.Model):
         return False
 
     @property
-    def entry_format_list(self) -> List[str]:
+    def entry_format_list(self) -> list[str]:
         return self.formats.lower().split("|")
 
     @property
-    def source_format_list(self) -> List[str]:
+    def source_format_list(self) -> list[str]:
         return self.source_formats.lower().split("|")
 
     @property
-    def image_format_list(self) -> List[str]:
+    def image_format_list(self) -> list[str]:
         return self.image_formats.lower().split("|")
 
     @property
@@ -454,7 +454,7 @@ class Entry(models.Model):
     def is_audio(self) -> bool:
         return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
 
-    def get_show_list(self) -> dict:
+    def get_show_list(self) -> dict[str, bool]:
         show = {"youtube": False, "image": False, "noshow": True}
 
         state = self.compo.entry_view_type
@@ -479,7 +479,7 @@ class Entry(models.Model):
             clean_filename(self.creator) if self.creator else None,
             clean_filename(self.name),
         ]
-        return "__".join(filter(lambda x: bool(x), file_pieces))
+        return "__".join(p for p in file_pieces if p)
 
     def generate_alternates(self) -> None:
         """Trigger generating additional formats"""
@@ -491,7 +491,7 @@ class Entry(models.Model):
                     countdown=1, args=[self.id, int(codec), int(container)]
                 )
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         """Save and force regeneration of alternate files"""
         super().save(*args, **kwargs)
         self.generate_alternates()
@@ -520,7 +520,7 @@ class AlternateEntryFile(models.Model):
         return MediaContainer(self.container).name.lower()
 
     @property
-    def mime_format(self):
+    def mime_format(self) -> str:
         return f"audio/{self.container_name};codecs={self.codec_name}"
 
     def __str__(self) -> str:
@@ -532,7 +532,7 @@ class VoteGroup(models.Model):
     compo = models.ForeignKey(Compo, verbose_name="kompo", on_delete=models.CASCADE)
 
     @property
-    def entries(self) -> List[Entry]:
+    def entries(self) -> list[Entry]:
         return [v.entry for v in self.votes.order_by("rank")]
 
     def delete_votes(self) -> None:

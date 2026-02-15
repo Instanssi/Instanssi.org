@@ -2,9 +2,10 @@
 
 from datetime import UTC, datetime
 from decimal import Decimal
+from typing import Any
 
 # Store items for Instanssi 2026 (active event)
-store_items_2026 = [
+store_items_2026: list[dict[str, Any]] = [
     {
         "event_pk": 25,  # Instanssi 2026
         "name": "Instanssi 2026 - Viikonloppulippu",
@@ -123,7 +124,7 @@ Saatavilla vain salaisella linkillä!""",
 ]
 
 # Store items for Instanssi 2024 (archived event)
-store_items_2024 = [
+store_items_2024: list[dict[str, Any]] = [
     {
         "event_pk": 23,  # Instanssi 2024
         "name": "Instanssi 2024 - Viikonloppulippu",
@@ -159,7 +160,7 @@ store_items_2024 = [
 ]
 
 # Store items for Instanssi 2023
-store_items_2023 = [
+store_items_2023: list[dict[str, Any]] = [
     {
         "event_pk": 22,  # Instanssi 2023
         "name": "Instanssi 2023 - Viikonloppulippu",
@@ -179,7 +180,7 @@ store_items_2023 = [
 ]
 
 # Store item variants (sizes for t-shirts)
-store_item_variants = [
+store_item_variants: list[dict[str, Any]] = [
     # Variants for 2026 T-shirt (index 2 in store_items_2026)
     {"item_event_pk": 25, "item_name": "Instanssi 2026 T-paita", "variant_name": "S"},
     {"item_event_pk": 25, "item_name": "Instanssi 2026 T-paita", "variant_name": "M"},

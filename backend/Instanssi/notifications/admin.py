@@ -4,7 +4,7 @@ from Instanssi.notifications.models import PushSubscription, SentNotification
 
 
 @admin.register(PushSubscription)
-class PushSubscriptionAdmin(admin.ModelAdmin):
+class PushSubscriptionAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ("user", "endpoint", "created_at")
     list_filter = ("created_at",)
     search_fields = ("user__username", "endpoint")
@@ -12,7 +12,7 @@ class PushSubscriptionAdmin(admin.ModelAdmin):
 
 
 @admin.register(SentNotification)
-class SentNotificationAdmin(admin.ModelAdmin):
+class SentNotificationAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ("notification_key", "sent_at")
     list_filter = ("sent_at",)
     search_fields = ("notification_key",)

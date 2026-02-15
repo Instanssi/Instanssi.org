@@ -1,6 +1,6 @@
-from typing import Callable
+from typing import Any, Callable
 
-EndpointType = tuple[str, str, str, Callable]
+EndpointType = tuple[str, str, str, Callable[..., Any]]
 
 
 def preprocessor_hook(endpoints: list[EndpointType]) -> list[EndpointType]:

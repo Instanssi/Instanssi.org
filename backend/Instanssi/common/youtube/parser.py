@@ -1,5 +1,4 @@
 import re
-from typing import Optional
 
 from yarl import URL
 
@@ -20,7 +19,7 @@ class InvalidStartTimeError(ValueError):
 
 
 class YoutubeURL:
-    def __init__(self, video_id: str, start: Optional[int] = None) -> None:
+    def __init__(self, video_id: str, start: int | None = None) -> None:
         if not isinstance(video_id, str):
             raise InvalidVideoIdError("video_id must be a string")
         if not VIDEO_ID_PATTERN.match(video_id):
@@ -30,7 +29,7 @@ class YoutubeURL:
         if start is not None and not isinstance(start, int):
             raise InvalidStartTimeError("start must be an integer or null")
         self.video_id: str = video_id
-        self.start: Optional[int] = start
+        self.start: int | None = start
 
     def __str__(self) -> str:
         """Return a YouTube URL that can be parsed back by from_url()."""
@@ -51,7 +50,7 @@ class YoutubeURL:
         return URL(f"https://{value}")
 
     @staticmethod
-    def _find_video_id(url: URL) -> Optional[str]:
+    def _find_video_id(url: URL) -> str | None:
         if len(url.parts) < 2:  # Path components must be set!
             return None
         if url.host == "youtu.be":  # Shortened url
@@ -69,7 +68,7 @@ class YoutubeURL:
         return None
 
     @staticmethod
-    def _parse_time_string(time_str: str) -> Optional[int]:
+    def _parse_time_string(time_str: str) -> int | None:
         """Parse YouTube time format strings like '30', '30s', '1m30s', '1h2m30s'."""
         if not time_str:
             return None
@@ -106,8 +105,8 @@ class YoutubeURL:
         return total_seconds if total_seconds > 0 else None
 
     @staticmethod
-    def _find_video_start(url: URL) -> Optional[int]:
-        start_str: Optional[str] = None
+    def _find_video_start(url: URL) -> int | None:
+        start_str: str | None = None
         if "t" in url.query:
             start_str = url.query["t"]
         elif "start" in url.query:
@@ -125,9 +124,9 @@ class YoutubeURL:
         start = cls._find_video_start(parsed)
         return YoutubeURL(video_id, start)
 
-    def embed_obj(self, autoplay: Optional[bool] = None, origin: Optional[str] = None) -> URL:
+    def embed_obj(self, autoplay: bool | None = None, origin: str | None = None) -> URL:
         base = URL("https://www.youtube.com") / "embed" / self.video_id
-        args = dict()
+        args: dict[str, str | int] = dict()
         if self.start:
             args["start"] = self.start
         if autoplay is not None:

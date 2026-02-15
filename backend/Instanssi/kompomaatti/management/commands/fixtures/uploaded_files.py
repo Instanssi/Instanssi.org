@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
+from typing import Any
 
 # Uploaded files fixture data
 # Each entry references an event_pk and user_username, with a description and file type
 
-uploaded_files = [
+uploaded_files: list[dict[str, Any]] = [
     {
         "event_pk": 23,  # Instanssi 2024
         "user_username": "admin",

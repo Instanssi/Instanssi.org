@@ -2,10 +2,11 @@
 
 from datetime import UTC, datetime
 from decimal import Decimal
+from typing import Any
 
 # Store transactions - format includes customer info
 # Note: key and token will be auto-generated in the command
-store_transactions = [
+store_transactions: list[dict[str, Any]] = [
     # Paid transactions for 2024 event (completed)
     {
         "transaction_id": "tx_2024_testuser1",
@@ -203,7 +204,7 @@ store_transactions = [
 
 # Transaction items - what was bought in each transaction
 # Note: key will be auto-generated in the command
-transaction_items = [
+transaction_items: list[dict[str, Any]] = [
     # testuser1's 2024 purchases
     {
         "transaction_id": "tx_2024_testuser1",
@@ -357,7 +358,7 @@ transaction_items = [
 
 # Ticket vote codes - link paid tickets to users for voting rights
 # Only for paid transactions with ticket items
-ticket_vote_codes = [
+ticket_vote_codes: list[dict[str, Any]] = [
     # 2024 event tickets (all associated)
     {
         "transaction_id": "tx_2024_testuser1",

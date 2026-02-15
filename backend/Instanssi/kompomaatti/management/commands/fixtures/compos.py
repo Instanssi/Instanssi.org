@@ -1,9 +1,10 @@
 """Test compos for kompomaatti"""
 
 from datetime import UTC, datetime
+from typing import Any
 
 # Compos for the active event (2026)
-compos_2026 = [
+compos_2026: list[dict[str, Any]] = [
     {
         "event_pk": 25,  # Instanssi 2026
         "name": "Graphics",
@@ -91,7 +92,7 @@ mainitse ne kuvauksessa.""",
 ]
 
 # Archived compos from past events with voting closed
-compos_2024 = [
+compos_2024: list[dict[str, Any]] = [
     {
         "event_pk": 23,  # Instanssi 2024 (Event date: Feb 29)
         "name": "Graphics",
@@ -139,7 +140,7 @@ compos_2024 = [
 ]
 
 # Archived compos from 2023
-compos_2023 = [
+compos_2023: list[dict[str, Any]] = [
     {
         "event_pk": 22,  # Instanssi 2023 (Event date: March 3)
         "name": "Graphics",
@@ -209,7 +210,7 @@ compos_2023 = [
 ]
 
 # Archived compos from 2021
-compos_2021 = [
+compos_2021: list[dict[str, Any]] = [
     {
         "event_pk": 19,  # Instanssi 2021 (Event date: March 5)
         "name": "Graphics",

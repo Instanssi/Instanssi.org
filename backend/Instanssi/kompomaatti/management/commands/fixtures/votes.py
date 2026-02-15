@@ -1,7 +1,9 @@
 """Test votes for kompomaatti"""
 
+from typing import Any
+
 # Vote groups - each represents one user's votes for one compo
-vote_groups = [
+vote_groups: list[dict[str, Any]] = [
     {
         "user_username": "voter1",
         "compo_name": "Graphics",
@@ -31,7 +33,7 @@ vote_groups = [
 
 # Individual votes - rankings within each group
 # Format: (group_index, entry_name, rank)
-votes = [
+votes: list[dict[str, Any]] = [
     # voter1's votes for Graphics compo (event 23)
     {
         "group_index": 0,  # References vote_groups[0]

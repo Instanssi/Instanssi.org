@@ -42,7 +42,7 @@ class EntryQuerySet(QuerySet["Entry"]):
         )
 
         return self.annotate(
-            computed_score=Case(
+            computed_score=Case(  # type: ignore[no-redef]
                 When(disqualified=True, then=Value(-1.0, output_field=FloatField())),
                 When(archive_score__isnull=False, then=F("archive_score")),
                 default=Coalesce(Subquery(vote_score), Value(0.0, output_field=FloatField())),
@@ -59,7 +59,7 @@ class EntryQuerySet(QuerySet["Entry"]):
           (uses dense rank so ties get same rank but next rank is sequential, not skipped)
         """
         return self.with_score().annotate(
-            computed_rank=Case(
+            computed_rank=Case(  # type: ignore[no-redef]
                 When(archive_rank__isnull=False, then=F("archive_rank")),
                 default=Window(
                     expression=DenseRank(),
@@ -95,7 +95,7 @@ class CompetitionParticipationQuerySet(QuerySet["CompetitionParticipation"]):
             output_field=FloatField(),
         )
         return self.annotate(
-            computed_rank=Window(
+            computed_rank=Window(  # type: ignore[no-redef]
                 expression=DenseRank(),
                 partition_by=[F("competition_id")],
                 order_by=normalized_score.desc(),

@@ -89,7 +89,7 @@ def _send_push_to_staff(
             log.exception("Unexpected error sending push to %s", subscription.endpoint)
 
 
-@shared_task
+@shared_task  # type: ignore[untyped-decorator]
 def notify_new_vote_code_request(vote_code_request_id: int) -> None:
     """Notify staff about a newly submitted vote code request.
 
@@ -105,14 +105,14 @@ def notify_new_vote_code_request(vote_code_request_id: int) -> None:
 
     _send_push_to_staff(
         title="New vote code request",
-        body=f"{vcr.user.username} requested a vote code for {vcr.event.name}",
+        body=f"{vcr.user.username} requested a vote code for {vcr.event.name if vcr.event else 'unknown event'}",
         url="/management/",
         notification_key=f"vcr:{vcr.id}",
         user_wants_notification=lambda u: u.notify_vote_code_requests,
     )
 
 
-@shared_task
+@shared_task  # type: ignore[untyped-decorator]
 def check_upcoming_events() -> None:
     """Send reminders for program events, compos, and competitions starting soon.
 
@@ -177,7 +177,7 @@ def check_upcoming_events() -> None:
         )
 
 
-@shared_task
+@shared_task  # type: ignore[untyped-decorator]
 def cleanup_old_sent_notifications() -> None:
     """Purge ``SentNotification`` records older than 7 days.
 

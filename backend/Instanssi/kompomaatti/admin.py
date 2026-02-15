@@ -16,7 +16,7 @@ from Instanssi.kompomaatti.models import (
 )
 
 
-class TicketVoteCodeAdmin(admin.ModelAdmin):
+class TicketVoteCodeAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "associated_to",
         "event",
@@ -25,7 +25,7 @@ class TicketVoteCodeAdmin(admin.ModelAdmin):
     ]
 
 
-class VoteCodeRequestAdmin(admin.ModelAdmin):
+class VoteCodeRequestAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "user",
         "event",
@@ -34,7 +34,7 @@ class VoteCodeRequestAdmin(admin.ModelAdmin):
     ]
 
 
-class EntryAdmin(admin.ModelAdmin):
+class EntryAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "created_at",
         "name",
@@ -48,7 +48,7 @@ class EntryAdmin(admin.ModelAdmin):
     admin_thumbnail = AdminThumbnail(image_field="imagefile_thumbnail")
 
 
-class AlternateEntryFileAdmin(admin.ModelAdmin):
+class AlternateEntryFileAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "entry",
         "codec",

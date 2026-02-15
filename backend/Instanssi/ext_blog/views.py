@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional
+from typing import TYPE_CHECKING
 
 from django.contrib.syndication.views import Feed
 
@@ -16,13 +16,19 @@ class RSSEntry:
     event_url: str
 
 
-class BlogFeed(Feed):
+if TYPE_CHECKING:
+    _FeedBase = Feed[RSSEntry, None]
+else:
+    _FeedBase = Feed
+
+
+class BlogFeed(_FeedBase):
     title = "Instanssi.org Blogi"
     link = "https://instanssi.org"
     description = "Instanssi-demopartyn uusimmat uutiset."
 
     @staticmethod
-    def item_to_rss(entry: BlogEntry, url: Optional[str] = None) -> RSSEntry:
+    def item_to_rss(entry: BlogEntry, url: str | None = None) -> RSSEntry:
         return RSSEntry(
             id=entry.id,
             date=entry.date,
@@ -43,5 +49,5 @@ class BlogFeed(Feed):
     def item_link(self, item: RSSEntry) -> str:
         return f"{item.event_url}#{item.id}"
 
-    def items(self) -> List[RSSEntry]:
+    def items(self) -> list[RSSEntry]:
         return [self.item_to_rss(entry) for entry in BlogEntry.get_latest()[:25]]

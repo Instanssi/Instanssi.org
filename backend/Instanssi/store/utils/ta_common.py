@@ -65,7 +65,7 @@ def handle_payment(request: HttpRequest, ta: StoreTransaction) -> None:
     for item, variant, purchase_price in ta.get_distinct_store_items_and_prices():
         i_amount = ta.get_store_item_count(item, variant=variant, purchase_price=purchase_price)
         i_name = f"{item.name}, {variant.name}" if variant else item.name
-        i_id = f"{item.id}:{variant.id}" if variant else item.id
+        i_id = f"{item.id}:{variant.id}" if variant else str(item.id)
         params.add_item(i_id, i_name, purchase_price, i_amount, "0%")
 
     receipt = Receipt.create(

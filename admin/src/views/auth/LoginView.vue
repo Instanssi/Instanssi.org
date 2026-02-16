@@ -22,11 +22,11 @@
                     <v-container class="ma-0 pa-0">
                         <v-row dense no-gutters class="mb-2 mt-2">
                             <v-text-field
-                                v-model="username.value.value"
-                                :error-messages="username.errorMessage.value"
+                                v-model="email.value.value"
+                                :error-messages="email.errorMessage.value"
                                 density="compact"
                                 variant="outlined"
-                                :label="t('LoginView.username')"
+                                :label="t('LoginView.email')"
                             />
                         </v-row>
                         <v-row dense no-gutters class="mb-2 mt-2">
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
@@ -76,7 +76,6 @@ const { t } = useI18n();
 
 const socialIcons: Record<string, IconDefinition> = {
     google: faGoogle,
-    steam: faSteam,
     github: faGithub,
 };
 
@@ -84,18 +83,18 @@ const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);
 
 // Field validation rules
 const validationSchema = yupObject({
-    username: yupString().required().min(1),
+    email: yupString().required().min(1),
     password: yupString().required().min(1),
 });
 const { handleSubmit, setErrors } = useForm({ validationSchema });
-const username = useField("username");
+const email = useField("email");
 const password = useField("password");
 
 const submit = handleSubmit(async (values) => {
-    const loginOk = await authService.login(values.username, values.password);
+    const loginOk = await authService.login(values.email, values.password);
     if (!loginOk) {
         setErrors({
-            username: t("LoginView.auth_failed"),
+            email: t("LoginView.auth_failed"),
             password: t("LoginView.auth_failed"),
         });
         return;
@@ -103,7 +102,7 @@ const submit = handleSubmit(async (values) => {
     if (!authService.canView(PermissionTarget.EVENT)) {
         await authService.logout();
         setErrors({
-            username: t("LoginView.insufficient_permissions"),
+            email: t("LoginView.insufficient_permissions"),
             password: t("LoginView.insufficient_permissions"),
         });
         return;

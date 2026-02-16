@@ -963,11 +963,11 @@
     },
     "LoginView": {
       "title": "Kirjaudu sisään",
-      "subtitle": "Kirjaudu käyttäjätunnuksella ja salasanalla tai käyttämällä jotain SSO-menetelmää.",
-      "username": "Käyttäjänimi",
+      "subtitle": "Kirjaudu sähköpostilla ja salasanalla tai käyttämällä jotain SSO-menetelmää.",
+      "email": "Sähköposti",
       "password": "Salasana",
       "login": "Kirjaudu",
-      "auth_failed": "Virheellinen käyttäjänimi tai salasana!",
+      "auth_failed": "Virheellinen sähköposti tai salasana!",
       "insufficient_permissions": "Sinulla ei ole tarvittavia oikeuksia tämän paneelin käyttöön."
     },
     "ArchiverView": {

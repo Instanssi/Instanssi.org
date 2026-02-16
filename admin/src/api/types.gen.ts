@@ -4494,10 +4494,10 @@ export type UserInfo = {
 };
 
 /**
- * Serializer for username/password login credentials.
+ * Serializer for email/password login credentials.
  */
 export type UserLoginRequest = {
-    username: string;
+    email: string;
     password: string;
 };
 

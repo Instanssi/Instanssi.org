@@ -3911,7 +3911,7 @@ export const adminUsersUpdate = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Authenticate a user with username and password.
+ * Authenticate a user with email and password.
  */
 export const login = <ThrowOnError extends boolean = false>(
     options: Options<LoginData, ThrowOnError>

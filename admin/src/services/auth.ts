@@ -60,8 +60,8 @@ export function useAuth() {
         return loggedIn.value;
     }
 
-    async function login(username: string, password: string): Promise<boolean> {
-        const response = await api.login({ body: { username, password } });
+    async function login(email: string, password: string): Promise<boolean> {
+        const response = await api.login({ body: { email, password } });
         if (response.status === 200) {
             await refreshStatus();
             return true;

@@ -1,13 +1,13 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
-from Instanssi.users.views import loggedout, login, logout, profile
+from Instanssi.users.views import profile
 
 app_name = "users"
 
 
 urlpatterns = [
     path("profile/", profile, name="profile"),
-    path("login/", login, name="login"),
-    path("logout/", logout, name="logout"),
-    path("loggedout/", loggedout, name="loggedout"),
+    path("login/", RedirectView.as_view(pattern_name="account_login"), name="login"),
+    path("logout/", RedirectView.as_view(pattern_name="account_logout"), name="logout"),
 ]

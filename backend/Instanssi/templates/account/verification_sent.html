@@ -1,0 +1,14 @@
+{% extends "allauth/layouts/base.html" %}
+
+{% block title %}Vahvistusviesti lähetetty - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Tarkista sähköpostisi</h2>
+
+<p>Olemme lähettäneet vahvistusviestin sähköpostiisi. Klikkaa viestissä olevaa linkkiä aktivoidaksesi tilisi.</p>
+<p>Jos et saa viestiä, tarkista roskapostikansio.</p>
+
+<p class="text-center mt-3 mb-0">
+    <a href="{% url 'account_login' %}">Takaisin kirjautumiseen</a>
+</p>
+{% endblock %}

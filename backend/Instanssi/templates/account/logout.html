@@ -1,0 +1,20 @@
+{% extends "allauth/layouts/base.html" %}
+
+{% block title %}Kirjaudu ulos - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Kirjaudu ulos</h2>
+
+<p>Haluatko varmasti kirjautua ulos?</p>
+
+<form method="post" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Kirjaudu ulos</button>
+    </div>
+</form>
+
+<p class="text-center mt-3 mb-0">
+    <a href="/">Takaisin etusivulle</a>
+</p>
+{% endblock %}

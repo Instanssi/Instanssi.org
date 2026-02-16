@@ -43,18 +43,17 @@ LANGUAGE_CODE = "fi-FI"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"
 
-# Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ""
-
-# Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
-
-# Github
-SOCIAL_AUTH_GITHUB_KEY = ""
-SOCIAL_AUTH_GITHUB_SECRET = ""
-SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+# Social auth providers (django-allauth)
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {"client_id": "", "secret": ""},
+        "SCOPE": ["email"],
+    },
+    "github": {
+        "APP": {"client_id": "", "secret": ""},
+        "SCOPE": ["email"],
+    },
+}
 
 # Paytrail APIv2
 PAYTRAIL_V2_ID = ""
@@ -74,7 +73,8 @@ VAPID_CLAIMS_EMAIL = "test@instanssi.org"
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 
-# Initialize email configuration
+# Email configuration
+DEFAULT_FROM_EMAIL = "noreply@instanssi.org"
 EMAIL_BACKEND = make_email_conf(DEBUG)
 
 # Initialize cache configuration

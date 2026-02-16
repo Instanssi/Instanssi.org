@@ -5,7 +5,7 @@ from rest_framework.serializers import Serializer
 
 
 class UserLoginSerializer(Serializer[dict[str, Any]]):
-    """Serializer for username/password login credentials."""
+    """Serializer for email/password login credentials."""
 
-    username = CharField(min_length=0, max_length=255)
+    email = CharField(min_length=0, max_length=255)
     password = CharField(min_length=0, max_length=255)

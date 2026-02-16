@@ -1,0 +1,30 @@
+{% extends "allauth/layouts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Kirjaudu sisään - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Kirjaudu sisään</h2>
+
+<div class="d-grid gap-2 mb-3">
+    <a class="btn btn-social btn-outline-light" href="/accounts/google/login/?process=login{% if redirect_field_value %}&next={{ redirect_field_value }}{% endif %}"><i class="fa-brands fa-google me-2"></i>Google</a>
+    <a class="btn btn-social btn-outline-light" href="/accounts/github/login/?process=login{% if redirect_field_value %}&next={{ redirect_field_value }}{% endif %}"><i class="fa-brands fa-github me-2"></i>Github</a>
+</div>
+
+<div class="divider my-3"><span>tai</span></div>
+
+<form method="post" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+    {% endif %}
+    {{ form|crispy:"bootstrap5" }}
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Kirjaudu</button>
+    </div>
+</form>
+
+<p class="text-center mt-3 mb-0">
+    Eikö sinulla ole tiliä? <a href="{% url 'account_signup' %}">Rekisteröidy</a>
+</p>
+{% endblock %}

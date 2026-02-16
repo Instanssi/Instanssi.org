@@ -13,7 +13,12 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from Instanssi.api.v2.serializers.auth import SocialAuthURLSerializer
-from Instanssi.users.views import AUTH_METHODS
+
+# (method_key, allauth_provider_id, display_name)
+AUTH_METHODS = [
+    ("google", "google", "Google"),
+    ("github", "github", "Github"),
+]
 
 
 class SocialAuthUrlsViewSet(ViewSet):
@@ -41,15 +46,10 @@ class SocialAuthUrlsViewSet(ViewSet):
     )
     def list(self, request: Request) -> Response:
         methods = []
-        default_next = reverse("users:login")
+        default_next = reverse("account_login")
         found_next = request.query_params.get("next", default_next)
         for method in AUTH_METHODS:
-            url = yarl.URL(
-                reverse(
-                    viewname="social:begin",
-                    args=(method[1],),
-                )
-            ).update_query(next=found_next)
+            url = yarl.URL(f"/accounts/{method[1]}/login/").update_query(process="login", next=found_next)
             methods.append(
                 dict(
                     method=method[0],

@@ -275,9 +275,6 @@ ul#crumbpath a:hover {
 .login-facebook::before {
     @include awesome-glyph('\f09a');
 }
-.login-steam::before {
-    @include awesome-glyph('\f1b7');
-}
 .login-google::before {
     @include awesome-glyph('\f1a0');
 }

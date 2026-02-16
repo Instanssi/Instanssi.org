@@ -8,7 +8,7 @@ def test_login_wrong_user(api_client):
     response = api_client.post(
         BASE_URL,
         {
-            "username": "test",
+            "email": "nonexistent@example.com",
             "password": "<PASSWORD>",
         },
     )
@@ -26,7 +26,7 @@ def test_login_ok(api_client, super_user, password):
     response = api_client.post(
         BASE_URL,
         {
-            "username": super_user.username,
+            "email": super_user.email,
             "password": password,
         },
     )

@@ -1,17 +1,7 @@
 {% extends "base_layout/base.html" %}
-{% load static %}
 
 {% block title %}Käyttäjäprofiili{% endblock %}
 {% block headername %}<a href="{% url 'users:profile' %}">Käyttäjäprofiili</a>{% endblock %}
-
-{% block head %}
-    <!-- Users page specific -->
-    <link rel="stylesheet" type="text/css" href="{% static "users/css/style.css" %}" />
-{% endblock %}
-
-{% block jquery %}
-    $('.ui-widget').css('font-size','14px');
-{% endblock %}
 
 {% block headernav %}
 {{ block.super }}

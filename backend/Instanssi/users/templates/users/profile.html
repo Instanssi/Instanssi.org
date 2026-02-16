@@ -1,15 +1,6 @@
 {% extends "users/base.html" %}
-{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }} - Profiili{% endblock %}
-
-{% block head %}
-{{ block.super }}
-{% endblock %}
-
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
 
 {% block crumbs %}
 {{ block.super }}
@@ -25,16 +16,33 @@
         se palvelun olevan jo sidottu Instanssi.org-tiliin.
     </p>
     <p>
-    {% for method in AUTH_METHODS %}
-        {% if method.3 %}
-            <button class="btn btn-primary login-button login-{{ method.0 }}" disabled="disabled">{{ method.2 }}</button>
+    {% for provider_id, provider_name, is_connected in providers %}
+        {% if is_connected %}
+            <button class="btn btn-primary login-button login-{{ provider_id }}" disabled="disabled">{{ provider_name }}</button>
         {% else %}
-            <a class="btn btn-primary login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">Sido {{ method.2 }}</a>
+            <a class="btn btn-primary login-button login-{{ provider_id }}" href="/accounts/{{ provider_id }}/login/?process=connect&next={% url 'users:profile' %}">Sido {{ provider_name }}</a>
         {% endif %}
     {% endfor %}
     </p>
 
     <h2>Profiili</h2>
     <p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
-    {% crispy profileform profileform.helper %}
+    <form method="post" action="{% url 'users:profile' %}">
+        {% csrf_token %}
+        {% for field in profileform %}
+        <div style="margin-bottom: 12px;">
+            <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong></label><br>
+            {{ field }}
+            {% if field.help_text %}<br><small>{{ field.help_text }}</small>{% endif %}
+            {% if field.errors %}
+            <ul class="errorlist">
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" name="submit-profile">Tallenna</button>
+    </form>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "allauth/layouts/base.html" %}
+
+{% block title %}Kirjautuminen peruutettu - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Kirjautuminen peruutettu</h2>
+
+<p>Kirjautuminen ulkoisella palvelulla peruutettiin.</p>
+
+<div class="d-grid mt-3">
+    <a href="{% url 'account_login' %}" class="btn btn-primary">Takaisin kirjautumiseen</a>
+</div>
+{% endblock %}

@@ -57,7 +57,17 @@ MEDIA_UPLOAD_FILES: str = "files"
 
 AUTH_USER_MODEL = "users.User"
 
-LOGIN_URL = "/users/login/"
+LOGIN_URL = "/accounts/login/"
+
+# django-allauth settings
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_SIGNUP_FIELDS = ["email*", "first_name", "last_name", "password1*", "password2*"]
+ACCOUNT_ADAPTER = "Instanssi.users.adapters.CustomAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "Instanssi.users.adapters.CustomSocialAccountAdapter"
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # Shorten session expiration (default is 2 weeks)
 SESSION_COOKIE_AGE = 24 * 3600
@@ -137,8 +147,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "Instanssi.common.context.settings_export",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -158,6 +166,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
 ]
 
@@ -183,7 +192,12 @@ INSTALLED_APPS = (
     "django_filters",
     "crispy_forms",
     "crispy_bootstrap3",
-    "social_django",
+    "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -200,10 +214,8 @@ INSTALLED_APPS = (
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.github.GithubOAuth2",
-    "social_core.backends.steam.SteamOpenId",
     "Instanssi.users.backends.SystemUserAwareModelBackend",
+    "Instanssi.users.backends.SystemUserAwareAllAuthBackend",
 )
 
 # Log handlers, insert our own database log handler

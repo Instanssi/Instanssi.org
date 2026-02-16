@@ -9,7 +9,7 @@ from Instanssi.api.v2.utils.base import EnforceCSRFViewSet
 
 
 class LoginViewSet(EnforceCSRFViewSet):
-    """Authenticate a user with username and password."""
+    """Authenticate a user with email and password."""
 
     @extend_schema(
         operation_id="login",
@@ -23,9 +23,9 @@ class LoginViewSet(EnforceCSRFViewSet):
     def create(self, request: Request) -> Response:
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
-            username = serializer.validated_data["username"]
+            email = serializer.validated_data["email"]
             password = serializer.validated_data["password"]
-            user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(email=email, password=password)
             if user and user.is_active:
                 auth.login(request, user)
                 return Response({}, status=status.HTTP_200_OK)

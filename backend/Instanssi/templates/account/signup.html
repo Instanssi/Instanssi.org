@@ -1,0 +1,23 @@
+{% extends "allauth/layouts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Rekisteröidy - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Rekisteröidy</h2>
+
+<form method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+    {% endif %}
+    {{ form|crispy:"bootstrap5" }}
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Rekisteröidy</button>
+    </div>
+</form>
+
+<p class="text-center mt-3 mb-0">
+    Onko sinulla jo tili? <a href="{% url 'account_login' %}">Kirjaudu sisään</a>
+</p>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "allauth/layouts/base.html" %}
+
+{% block title %}Vahvista sähköposti - Instanssi.org{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3 fs-5">Vahvista sähköposti</h2>
+
+{% if confirmation %}
+<p>Vahvista sähköpostiosoite <strong>{{ confirmation.email_address.email }}</strong>.</p>
+
+<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+    {% csrf_token %}
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Vahvista</button>
+    </div>
+</form>
+{% else %}
+<p>Virheellinen tai vanhentunut vahvistuslinkki.</p>
+<p class="text-center mt-3 mb-0">
+    <a href="{% url 'account_login' %}">Kirjaudu sisään</a>
+</p>
+{% endif %}
+{% endblock %}

@@ -4160,7 +4160,7 @@ paths:
   /api/v2/auth/login/:
     post:
       operationId: login
-      description: Authenticate a user with username and password.
+      description: Authenticate a user with email and password.
       tags:
       - auth
       requestBody:
@@ -5227,7 +5227,14 @@ paths:
           description: ''
     post:
       operationId: notifications_subscriptions_create
-      description: Create or update a push subscription (upsert by endpoint).
+      description: |-
+        Create or update a push subscription (upsert by endpoint).
+
+        A push endpoint is a browser-level resource — the same physical push channel
+        regardless of which user subscribed. The lookup uses endpoint alone (matching
+        the model's unique constraint) so that if a different user subscribes from the
+        same browser, the subscription is reassigned to them rather than creating a
+        duplicate that would cause the browser to show the same notification twice.
       tags:
       - notifications
       requestBody:
@@ -5871,10 +5878,6 @@ paths:
       description: Returns the VAPID public key for push subscriptions.
       tags:
       - public
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -9558,7 +9561,7 @@ components:
           - $ref: '#/components/schemas/BlankEnum'
         notify_vote_code_requests:
           type: boolean
-        notify_programme_events:
+        notify_program_events:
           type: boolean
         notify_compo_starts:
           type: boolean
@@ -11925,7 +11928,7 @@ components:
           - $ref: '#/components/schemas/BlankEnum'
         notify_vote_code_requests:
           type: boolean
-        notify_programme_events:
+        notify_program_events:
           type: boolean
         notify_compo_starts:
           type: boolean
@@ -11941,9 +11944,9 @@ components:
       - username
     UserLoginRequest:
       type: object
-      description: Serializer for username/password login credentials.
+      description: Serializer for email/password login credentials.
       properties:
-        username:
+        email:
           type: string
           minLength: 1
           maxLength: 255
@@ -11952,8 +11955,8 @@ components:
           minLength: 1
           maxLength: 255
       required:
+      - email
       - password
-      - username
     UserRequest:
       type: object
       description: Staff serializer for users, includes all fields for admin management.

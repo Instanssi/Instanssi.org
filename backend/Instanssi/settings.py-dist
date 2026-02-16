@@ -39,18 +39,17 @@ SECRET_KEY = ""
 # Set this to True in production for https-only cookies
 SESSION_COOKIE_SECURE = False
 
-# Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ""
-
-# Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
-
-# Github
-SOCIAL_AUTH_GITHUB_KEY = ""
-SOCIAL_AUTH_GITHUB_SECRET = ""
-SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+# Social auth providers (django-allauth)
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {"client_id": "", "secret": ""},
+        "SCOPE": ["email"],
+    },
+    "github": {
+        "APP": {"client_id": "", "secret": ""},
+        "SCOPE": ["email"],
+    },
+}
 
 # Paytrail APIv2
 PAYTRAIL_V2_ID = "375917"  # Test ID
@@ -71,7 +70,8 @@ VAPID_CLAIMS_EMAIL = "admin@instanssi.org"
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 
-# Initialize email configuration
+# Email configuration
+DEFAULT_FROM_EMAIL = "noreply@instanssi.org"
 EMAIL_BACKEND = make_email_conf(DEBUG)
 
 # Initialize cache configuration

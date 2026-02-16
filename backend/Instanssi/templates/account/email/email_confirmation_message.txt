@@ -1,0 +1,9 @@
+Hei,
+
+Vahvista sähköpostiosoitteesi klikkaamalla alla olevaa linkkiä:
+
+{{ activate_url }}
+
+Jos et luonut tiliä Instanssi.org-palveluun, voit jättää tämän viestin huomiotta.
+
+-- Instanssi.org

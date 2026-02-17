@@ -1,34 +1,27 @@
 from auditlog.registry import auditlog
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from Instanssi.common.youtube import YoutubeVideoField
 from Instanssi.kompomaatti.models import Event
 
 
 class OtherVideoCategory(models.Model):
-    event = models.ForeignKey(Event, verbose_name="Tapahtuma", on_delete=models.PROTECT)
-    name = models.CharField("Nimi", max_length=64, help_text="Kategorian nimi")
+    event = models.ForeignKey(Event, verbose_name=_("Event"), on_delete=models.PROTECT)
+    name = models.CharField(_("Name"), max_length=64)
 
     def __str__(self) -> str:
         return self.name
-
-    class Meta:
-        verbose_name = "videokategoria"
-        verbose_name_plural = "videokategoriat"
 
 
 class OtherVideo(models.Model):
-    category = models.ForeignKey(OtherVideoCategory, verbose_name="Kategoria", on_delete=models.CASCADE)
-    name = models.CharField("Nimi", max_length=64, help_text="Videon nimi.")
-    description = models.TextField("Kuvaus", help_text="Videon kuvaus.")
-    youtube_url = YoutubeVideoField("Youtube URL", help_text="Linkki teoksen Youtube-versioon.")
+    category = models.ForeignKey(OtherVideoCategory, verbose_name=_("Category"), on_delete=models.CASCADE)
+    name = models.CharField(_("Name"), max_length=64)
+    description = models.TextField(_("Description"))
+    youtube_url = YoutubeVideoField(_("Youtube URL"))
 
     def __str__(self) -> str:
         return self.name
-
-    class Meta:
-        verbose_name = "muu video"
-        verbose_name_plural = "muut videot"
 
 
 auditlog.register(OtherVideoCategory)

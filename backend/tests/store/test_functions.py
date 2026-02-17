@@ -1,8 +1,9 @@
 import json
+from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
-import arrow
 import pytest
 from django.conf import settings
 from freezegun import freeze_time
@@ -18,7 +19,7 @@ from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreItem, TransactionItem
 from Instanssi.store.utils.receipt import ReceiptParams
 
-FAKE_NOW = arrow.Arrow(year=2022, month=12, day=6, hour=10, timezone=settings.TIME_ZONE).datetime
+FAKE_NOW = datetime(2022, 12, 6, 10, tzinfo=ZoneInfo(settings.TIME_ZONE))
 
 
 @pytest.mark.django_db
@@ -64,8 +65,9 @@ def test_create_receipt_fields_sent_is_set(receipt):
 def test_create_receipt_email_content(receipt, receipt_params):
     receipt.refresh_from_db()
     params = receipt_params.params
-    order_date = arrow.get(params["order_date"]).to(settings.TIME_ZONE).datetime
-    receipt_date = arrow.get(params["receipt_date"]).to(settings.TIME_ZONE).datetime
+    tz = ZoneInfo(settings.TIME_ZONE)
+    order_date = params["order_date"].astimezone(tz)
+    receipt_date = params["receipt_date"].astimezone(tz)
     assert receipt.content == (
         "Hei,\n"
         "\n"
@@ -112,7 +114,7 @@ def test_create_receipt_email_content(receipt, receipt_params):
         "1001  Test product 1            1        1               1  0%\n"
         "1002  Test product 2            2        2               4  0%\n"
         "\n"
-        "Yhteensä: 5,00 EUR (Alv 0%, AVL 4§)\n"
+        "Yhteensä: 5.00 EUR (Alv 0%, AVL 4§)\n"
         "\n"
         "Tuotteiden nouto & liput:\n"
         "-------------------------\n"

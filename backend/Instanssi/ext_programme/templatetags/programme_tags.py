@@ -2,10 +2,10 @@ import datetime
 import time
 from typing import Any
 
-import arrow
 from django import template
-from django.conf import settings
 from django.urls import reverse
+from django.utils.formats import date_format
+from django.utils.translation import override as translation_override
 
 from Instanssi.ext_programme.models import ProgrammeEvent
 from Instanssi.kompomaatti.models import Competition, Compo
@@ -24,6 +24,7 @@ def render_programme(event_id: int) -> dict[str, Any]:
 
 
 @register.inclusion_tag("ext_programme/tags/calendar.html")
+@translation_override("fi")
 def render_calendar(event_id: int) -> dict[str, Any]:
     compos = Compo.objects.filter(event_id=event_id, active=True)
     progs = ProgrammeEvent.objects.filter(event_id=event_id, active=True)
@@ -138,20 +139,10 @@ def render_calendar(event_id: int) -> dict[str, Any]:
     # Final list for template
     events = []
     for key in keys:
-        days = [
-            "Maanantai",
-            "Tiistai",
-            "Keskiviikko",
-            "Torstai",
-            "Perjantai",
-            "Lauantai",
-            "Sunnuntai",
-        ]
-        dt = arrow.get(key).to(settings.TIME_ZONE).format("DD.MM.")
         events.append(
             {
                 "items": grouped_events[key],
-                "title": "{} {}".format(days[key.weekday()], dt),
+                "title": date_format(key, "l d.m."),
             }
         )
 

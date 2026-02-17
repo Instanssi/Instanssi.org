@@ -163,9 +163,7 @@ def test_store_api_transaction_post_zero_item_count(
         "items": [
             {
                 "amount": [
-                    ErrorDetail(
-                        string="Tämän luvun on oltava suurempi tai yhtä suuri kuin 1.", code="min_value"
-                    )
+                    ErrorDetail(string="Ensure this value is greater than or equal to 1.", code="min_value")
                 ]
             }
         ]

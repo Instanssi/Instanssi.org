@@ -2,6 +2,7 @@ import os
 from typing import Any
 
 from django.core.files.uploadedfile import UploadedFile
+from django.utils.translation import gettext as _
 from rest_framework.exceptions import ValidationError
 
 from Instanssi.kompomaatti.models import Compo, Entry
@@ -17,11 +18,11 @@ def validate_entry_files(data: dict[str, Any], compo: Compo, instance: Entry | N
     image_file = data.get("imagefile_original")
     if not image_file and not (instance and instance.imagefile_original):
         if compo.is_imagefile_required:
-            raise ValidationError({"imagefile_original": ["Image file is required for this compo"]})
+            raise ValidationError({"imagefile_original": [_("Image file is required for this compo")]})
 
     # Check if image file is provided but not allowed
     if image_file and not compo.is_imagefile_allowed:
-        raise ValidationError({"imagefile_original": ["Image file is not allowed for this compo"]})
+        raise ValidationError({"imagefile_original": [_("Image file is not allowed for this compo")]})
 
     # File validation configuration per field
     check_files_on = {
@@ -76,12 +77,12 @@ def _validate_file(
 
     # Check file size
     if file.size is not None and file.size > max_size:
-        errors.append(f"Maximum allowed file size is {max_readable_size}")
+        errors.append(_("Maximum allowed file size is %(size)s") % {"size": max_readable_size})
 
     # Check file extension
     if file.name:
         ext = os.path.splitext(file.name)[1][1:]
         if ext.lower() not in accept_formats:
-            errors.append(f"Allowed file types are {accept_formats_readable}")
+            errors.append(_("Allowed file types are %(types)s") % {"types": accept_formats_readable})
 
     return errors

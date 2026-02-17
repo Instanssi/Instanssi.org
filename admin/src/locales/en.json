@@ -933,7 +933,9 @@
         "firstName": "First name",
         "lastName": "Last name",
         "language": "Language",
-        "browserDefault": "Browser default"
+        "browserDefault": "Browser default",
+        "otherinfo": "Other contact info",
+        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc."
       },
       "loadFailure": "Failed to load profile; try again later.",
       "saveSuccess": "Profile saved!",

@@ -1,5 +1,6 @@
 from typing import Any, cast
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -8,7 +9,7 @@ from Instanssi.api.v2.serializers.admin import UserSerializer
 from Instanssi.api.v2.utils.base import PermissionViewSet
 from Instanssi.users.models import User
 
-SYSTEM_USER_ERROR = "System users cannot be modified."
+SYSTEM_USER_ERROR = _("System users cannot be modified.")
 
 
 class UserViewSet(PermissionViewSet):

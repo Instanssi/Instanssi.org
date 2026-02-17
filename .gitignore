@@ -30,3 +30,5 @@ backend/openapi.yaml
 # Other misc
 db_dumps/
 
+# Translations
+*.mo

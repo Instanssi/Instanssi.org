@@ -25,14 +25,6 @@ from Instanssi.kompomaatti.querysets import (
 )
 
 
-class Profile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
-    otherinfo = models.TextField(_("Other contact info"))
-
-    def __str__(self) -> str:
-        return self.user.username
-
-
 class Event(models.Model):
     name = models.CharField(_("Name"), max_length=64, unique=True)
     tag = models.CharField(_("Short tag"), max_length=8, null=True, unique=True)
@@ -553,7 +545,6 @@ auditlog.register(CompetitionParticipation)
 auditlog.register(Vote)
 auditlog.register(VoteGroup)
 auditlog.register(VoteCodeRequest)
-auditlog.register(Profile)
 auditlog.register(Event)
 auditlog.register(TicketVoteCode)
 auditlog.register(AlternateEntryFile)

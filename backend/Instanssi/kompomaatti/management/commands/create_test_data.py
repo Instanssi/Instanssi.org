@@ -18,7 +18,6 @@ from Instanssi.kompomaatti.models import (
     Compo,
     Entry,
     Event,
-    Profile,
     TicketVoteCode,
     Vote,
     VoteCodeRequest,
@@ -46,7 +45,6 @@ from .fixtures.files import (
     get_random_tshirt_product_image_filename,
     get_random_video_filename,
 )
-from .fixtures.profiles import profiles
 from .fixtures.programme_events import programme_events
 from .fixtures.store_items import store_item_variants, store_items
 from .fixtures.store_transactions import (
@@ -99,26 +97,10 @@ class Command(BaseCommand):
                 last_name=user_data["last_name"],
                 is_staff=user_data["is_staff"],
                 is_superuser=user_data["is_superuser"],
+                otherinfo=user_data.get("otherinfo", ""),
             )
             self.created_users[username] = user
             self.stdout.write(f"  Created user: {username} (password: {username})")
-
-    def setup_profiles(self) -> None:
-        """Create user profiles"""
-        self.stdout.write("Creating profiles...")
-        for profile_data in profiles:
-            username = profile_data["user_username"]
-            user = self.created_users.get(username)
-            if not user:
-                self.stderr.write(f"  User {username} not found, skipping profile...")
-                continue
-
-            if Profile.objects.filter(user=user).exists():
-                self.stdout.write(f"  Profile for {username} already exists, skipping...")
-                continue
-
-            Profile.objects.create(user=user, otherinfo=profile_data["otherinfo"])
-            self.stdout.write(f"  Created profile for: {username}")
 
     def setup_events(self) -> None:
         """Create events"""
@@ -794,7 +776,6 @@ class Command(BaseCommand):
         try:
             with transaction.atomic():
                 self.setup_users()
-                self.setup_profiles()
                 self.setup_events()
                 self.setup_compos()
                 self.setup_entries()

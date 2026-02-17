@@ -10,6 +10,7 @@ users: list[dict[str, Any]] = [
         "last_name": "User",
         "is_staff": False,
         "is_superuser": False,
+        "otherinfo": "IRC: testuser1 @ IRCNet\nDiscord: testuser#1234",
     },
     {
         "username": "testuser2",
@@ -18,6 +19,7 @@ users: list[dict[str, Any]] = [
         "last_name": "Tester",
         "is_staff": False,
         "is_superuser": False,
+        "otherinfo": "IRC: testuser2 @ QuakeNet\nMatrix: @testuser2:matrix.org",
     },
     {
         "username": "admin",
@@ -34,6 +36,7 @@ users: list[dict[str, Any]] = [
         "last_name": "One",
         "is_staff": False,
         "is_superuser": False,
+        "otherinfo": "IRC: voter1 @ IRCNet",
     },
     {
         "username": "voter2",
@@ -42,5 +45,6 @@ users: list[dict[str, Any]] = [
         "last_name": "Two",
         "is_staff": False,
         "is_superuser": False,
+        "otherinfo": "Discord: voter2#5678",
     },
 ]

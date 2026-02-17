@@ -27,6 +27,7 @@ def test_authenticated_user_info(auth_client, base_user):
         "is_superuser": base_user.is_superuser,
         "date_joined": base_user.date_joined.astimezone(settings.ZONE_INFO).isoformat(),
         "language": "",
+        "otherinfo": "",
         "notify_vote_code_requests": True,
         "notify_program_events": True,
         "notify_compo_starts": True,

@@ -933,7 +933,9 @@
         "firstName": "Etunimi",
         "lastName": "Sukunimi",
         "language": "Kieli",
-        "browserDefault": "Selaimen oletus"
+        "browserDefault": "Selaimen oletus",
+        "otherinfo": "Muut yhteystiedot",
+        "otherinfoHint": "Muut yhteystiedot, esim. IRC-nick ja -verkko, Discord-tunnus jne."
       },
       "loadFailure": "Profiilin lataus epäonnistui; yritä myöhemmin uudelleen.",
       "saveSuccess": "Profiili tallennettu!",

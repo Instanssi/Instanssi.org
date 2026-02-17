@@ -17,10 +17,6 @@ class PushSubscription(models.Model):
     def __str__(self) -> str:
         return f"PushSubscription({self.user}, {self.endpoint[:50]})"
 
-    class Meta:
-        verbose_name = "push subscription"
-        verbose_name_plural = "push subscriptions"
-
 
 class SentNotification(models.Model):
     notification_key = models.CharField(max_length=255, unique=True)
@@ -28,7 +24,3 @@ class SentNotification(models.Model):
 
     def __str__(self) -> str:
         return f"SentNotification({self.notification_key})"
-
-    class Meta:
-        verbose_name = "sent notification"
-        verbose_name_plural = "sent notifications"

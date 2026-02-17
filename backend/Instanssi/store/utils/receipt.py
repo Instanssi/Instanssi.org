@@ -7,7 +7,6 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-import arrow
 from django.template.loader import render_to_string
 from django_countries.fields import Country
 
@@ -15,7 +14,7 @@ from django_countries.fields import Country
 class ReceiptEncoder(json.JSONEncoder):
     def default(self, o: Any) -> Any:
         if isinstance(o, datetime):
-            return arrow.get(o).isoformat()
+            return o.isoformat()
         if isinstance(o, Decimal):
             return str(o)
         if isinstance(o, Country):
@@ -67,8 +66,8 @@ class ReceiptParams:
         return dict(
             order_number=src["order_number"],
             receipt_number=src["receipt_number"],
-            receipt_date=arrow.get(src["receipt_date"]).datetime,
-            order_date=arrow.get(src["order_date"]).datetime,
+            receipt_date=datetime.fromisoformat(src["receipt_date"]),
+            order_date=datetime.fromisoformat(src["order_date"]),
             first_name=src["first_name"],
             last_name=src["last_name"],
             mobile=src["mobile"],

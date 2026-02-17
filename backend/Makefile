@@ -44,6 +44,12 @@ django-check:
 openapi:
 	poetry run python manage.py spectacular --lang en --file openapi.yaml
 
+messages:
+	poetry run python manage.py makemessages -l fi --no-obsolete
+
+compilemessages:
+	poetry run python manage.py compilemessages
+
 format: black isort
 check: black isort mypy pytest-parallel django-check
 checks: check

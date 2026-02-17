@@ -15,6 +15,13 @@ USE_I18N = True
 USE_L10N = False  # Disable to keep default timestamps
 USE_TZ = True
 
+LANGUAGES = [
+    ("en", "English"),
+    ("fi", "Finnish"),
+]
+LANGUAGE_CODE = "en"
+LOCALE_PATHS = [PROJECT_DIR / "locale"]
+
 # Files
 MEDIA_ROOT = BASE_DIR / "content" / "uploads"
 MEDIA_URL = "/uploads/"
@@ -156,6 +163,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "Instanssi.common.middleware.UserLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "auditlog.middleware.AuditlogMiddleware",

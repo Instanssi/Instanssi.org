@@ -1831,6 +1831,7 @@ export type PatchedUserInfoRequest = {
     first_name?: string;
     last_name?: string;
     language?: LanguageEnum | BlankEnum;
+    otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
     notify_compo_starts?: boolean;
@@ -2979,6 +2980,7 @@ export type UserInfo = {
     readonly is_superuser: boolean;
     readonly date_joined: string;
     language?: LanguageEnum | BlankEnum;
+    otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
     notify_compo_starts?: boolean;
@@ -4013,6 +4015,7 @@ export type UserInfoWritable = {
     first_name?: string;
     last_name?: string;
     language?: LanguageEnum | BlankEnum;
+    otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
     notify_compo_starts?: boolean;

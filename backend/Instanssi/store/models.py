@@ -11,6 +11,7 @@ from django.db import models
 from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
@@ -38,69 +39,31 @@ def generate_image_path(item: "StoreItem", filename: str) -> str:
 class StoreItem(models.Model):
     event = models.ForeignKey(
         Event,
-        verbose_name="Tapahtuma",
-        help_text="Tapahtuma johon tuote liittyy.",
+        verbose_name=_("Event"),
         blank=True,
         null=True,
         on_delete=models.PROTECT,
     )
-    name = models.CharField("Tuotteen nimi", help_text="Tuotteen lyhyt nimi.", max_length=255)
-    description = SanitizedHtmlField("Tuotteen kuvaus", help_text="Tuotteen pitkä kuvaus.")
-    price = models.DecimalField(
-        "Tuotteen hinta", help_text="Tuotteen hinta.", max_digits=5, decimal_places=2
-    )
-    max = models.IntegerField(
-        "Kappaletta saatavilla",
-        help_text="Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.",
-    )
-    available = models.BooleanField(
-        "Ostettavissa", default=False, help_text="Ilmoittaa, näkyykö tuote kaupassa."
-    )
+    name = models.CharField(_("Product name"), max_length=255)
+    description = SanitizedHtmlField(_("Product description"))
+    price = models.DecimalField(_("Product price"), max_digits=5, decimal_places=2)
+    max = models.IntegerField(_("Available quantity"))
+    available = models.BooleanField(_("Available for purchase"), default=False)
     imagefile_original = models.ImageField(
-        "Tuotekuva",
+        _("Product image"),
         max_length=255,
         upload_to=generate_image_path,
-        help_text="Edustava kuva tuotteelle.",
         blank=True,
         null=True,
     )
     imagefile_thumbnail = ImageSpecField([ResizeToFill(64, 64)], source="imagefile_original", format="PNG")
-    max_per_order = models.IntegerField(
-        "Maksimi per tilaus",
-        default=10,
-        help_text="Kuinka monta kappaletta voidaan ostaa kerralla.",
-    )
-    sort_index = models.IntegerField(
-        "Järjestysarvo",
-        default=0,
-        help_text="Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.",
-    )
-    discount_amount = models.IntegerField(
-        "Alennusmäärä",
-        default=-1,
-        help_text="Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)",
-    )
-    discount_percentage = models.IntegerField(
-        "Alennusprosentti",
-        default=0,
-        help_text="Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.",
-    )
-    is_ticket = models.BooleanField(
-        "Tuote on lipputuote",
-        default=False,
-        help_text="Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen",
-    )
-    is_secret = models.BooleanField(
-        "Tuote on salainen",
-        default=False,
-        help_text="Tuote näkyy kaupassa vain salaisella linkillä",
-    )
-    secret_key = models.CharField(
-        "Salasana",
-        blank=True,
-        max_length=255,
-        help_text="Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa",
-    )
+    max_per_order = models.IntegerField(_("Maximum per order"), default=10)
+    sort_index = models.IntegerField(_("Sort order"), default=0)
+    discount_amount = models.IntegerField(_("Discount threshold"), default=-1)
+    discount_percentage = models.IntegerField(_("Discount percentage"), default=0)
+    is_ticket = models.BooleanField(_("Product is a ticket"), default=False)
+    is_secret = models.BooleanField(_("Product is secret"), default=False)
+    secret_key = models.CharField(_("Secret key"), blank=True, max_length=255)
 
     def is_discount_available(self) -> bool:
         """Returns True if a discount exists for this item."""
@@ -172,59 +135,39 @@ class StoreItem(models.Model):
     def __str__(self) -> str:
         return self.name
 
-    class Meta:
-        verbose_name = "tuote"
-        verbose_name_plural = "tuotteet"
-
 
 class StoreItemVariant(models.Model):
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
-    name = models.CharField("Tuotevariantin nimi", max_length=32, blank=False, null=False)
+    name = models.CharField(_("Variant name"), max_length=32, blank=False, null=False)
 
     def __str__(self) -> str:
         return "{}: {}".format(self.item.name, self.name)
 
-    class Meta:
-        verbose_name = "tuotevariantti"
-        verbose_name_plural = "tuotevariantit"
-
 
 class StoreTransaction(models.Model):
-    token = models.CharField(
-        "Palvelutunniste", help_text="Maksupalvelun maksukohtainen tunniste", max_length=255
-    )
-    time_created = models.DateTimeField("Luontiaika", null=True, blank=True, db_index=True)
-    time_paid = models.DateTimeField("Maksun varmistumisaika", null=True, blank=True)
-    time_pending = models.DateTimeField("Maksun maksuaika", null=True, blank=True)
-    time_cancelled = models.DateTimeField("Peruutusaika", null=True, blank=True)
+    token = models.CharField(_("Service token"), max_length=255)
+    time_created = models.DateTimeField(_("Created at"), null=True, blank=True, db_index=True)
+    time_paid = models.DateTimeField(_("Payment confirmed at"), null=True, blank=True)
+    time_pending = models.DateTimeField(_("Payment initiated at"), null=True, blank=True)
+    time_cancelled = models.DateTimeField(_("Cancelled at"), null=True, blank=True)
     payment_method_name = models.CharField(
-        "Maksutapa", help_text="Tapa jolla tilaus maksettiin", max_length=32, blank=True, default=""
-    )
-    key = models.CharField(
-        "Avain", max_length=40, unique=True, help_text="Paikallinen maksukohtainen tunniste"
-    )
-    firstname = models.CharField("Etunimi", max_length=64)
-    lastname = models.CharField("Sukunimi", max_length=64)
-    company = models.CharField("Yritys", max_length=128, blank=True)
-    email = models.EmailField(
-        "Sähköposti",
-        max_length=255,
-        help_text="Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen "
-        "tarvittavat koodit lähetetään sinne.",
-    )
-    telephone = models.CharField("Puhelinnumero", max_length=64, blank=True)
-    mobile = models.CharField("Matkapuhelin", max_length=64, blank=True)
-    street = models.CharField(
-        "Katuosoite", max_length=128, help_text="Katusoite tarvitaan maksupalvelun vaatimuksesta."
-    )
-    postalcode = models.CharField("Postinumero", max_length=16)
-    city = models.CharField("Postitoimipaikka", max_length=64)
-    country = CountryField(verbose_name="Maa", default="FI")
-    information = models.TextField(
-        "Lisätiedot",
-        help_text="Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.",
+        _("Payment method"),
+        max_length=32,
         blank=True,
+        default="",
     )
+    key = models.CharField(_("Key"), max_length=40, unique=True)
+    firstname = models.CharField(_("First name"), max_length=64)
+    lastname = models.CharField(_("Last name"), max_length=64)
+    company = models.CharField(_("Company"), max_length=128, blank=True)
+    email = models.EmailField(_("Email"), max_length=255)
+    telephone = models.CharField(_("Telephone"), max_length=64, blank=True)
+    mobile = models.CharField(_("Mobile phone"), max_length=64, blank=True)
+    street = models.CharField(_("Street address"), max_length=128)
+    postalcode = models.CharField(_("Postal code"), max_length=16)
+    city = models.CharField(_("City"), max_length=64)
+    country = CountryField(verbose_name=_("Country"), default="FI")
+    information = models.TextField(_("Additional information"), blank=True)
 
     @property
     def is_paid(self) -> bool:
@@ -312,8 +255,7 @@ class StoreTransaction(models.Model):
         return self.full_name
 
     class Meta:
-        verbose_name = "transaktio"
-        verbose_name_plural = "transaktiot"
+        pass
         # permissions = (("view_storetransaction", "Can view store transactions"),)
         # default_permissions = ('add', 'change', 'delete',)
 
@@ -322,9 +264,9 @@ class StoreTransactionEvent(models.Model):
     """Data log for transaction events (such as when payment events arrive from payment processor)"""
 
     transaction = models.ForeignKey(StoreTransaction, on_delete=models.CASCADE)
-    message = models.CharField("Tapahtuman viesti", max_length=255, null=False)
-    data = models.JSONField("Tapahtuman data", null=True)
-    created = models.DateTimeField("Luontiaika", null=False, default=timezone.now)
+    message = models.CharField(_("Event message"), max_length=255, null=False)
+    data = models.JSONField(_("Event data"), null=True)
+    created = models.DateTimeField(_("Created at"), null=False, default=timezone.now)
 
     @classmethod
     def log(cls, transaction: StoreTransaction, message: str, data: dict[str, Any]) -> None:
@@ -333,19 +275,18 @@ class StoreTransactionEvent(models.Model):
 
 
 class TransactionItem(models.Model):
-    key = models.CharField("Avain", max_length=40, unique=True, help_text="Lippuavain")
-    item = models.ForeignKey(StoreItem, verbose_name="Tuote", on_delete=models.PROTECT)
+    key = models.CharField(_("Key"), max_length=40, unique=True)
+    item = models.ForeignKey(StoreItem, verbose_name=_("Product"), on_delete=models.PROTECT)
     variant = models.ForeignKey(
-        StoreItemVariant, verbose_name="Tuotevariantti", null=True, on_delete=models.PROTECT
+        StoreItemVariant, verbose_name=_("Product variant"), null=True, on_delete=models.PROTECT
     )
-    transaction = models.ForeignKey(StoreTransaction, verbose_name="Ostotapahtuma", on_delete=models.CASCADE)
-    time_delivered = models.DateTimeField("Toimitusaika", null=True, blank=True)
-    purchase_price = models.DecimalField(
-        "Tuotteen hinta", help_text="Tuotteen hinta ostoshetkellä", max_digits=5, decimal_places=2
+    transaction = models.ForeignKey(
+        StoreTransaction, verbose_name=_("Transaction"), on_delete=models.CASCADE
     )
+    time_delivered = models.DateTimeField(_("Delivery time"), null=True, blank=True)
+    purchase_price = models.DecimalField(_("Product price"), max_digits=5, decimal_places=2)
     original_price = models.DecimalField(
-        "Tuotteen alkuperäinen hinta",
-        help_text="Tuotteen hinta ostoshetkellä ilman alennuksia",
+        _("Original product price"),
         max_digits=5,
         decimal_places=2,
     )
@@ -361,19 +302,15 @@ class TransactionItem(models.Model):
     def __str__(self) -> str:
         return "{} for {}".format(self.item.name, self.transaction.full_name)
 
-    class Meta:
-        verbose_name = "transaktiotuote"
-        verbose_name_plural = "transaktiotuotteet"
-
 
 class Receipt(models.Model):
     transaction = models.ForeignKey(StoreTransaction, on_delete=models.SET_NULL, null=True, default=None)
-    subject = models.CharField("Aihe", max_length=256)
-    mail_to = models.CharField("Vastaanottajan osoite", max_length=256)
-    mail_from = models.CharField("Lähettäjän osoite", max_length=256)
-    sent = models.DateTimeField("Lähetysaika", default=None, null=True)
-    params = models.TextField("Lähetysparametrit", default=None, null=True)
-    content = models.TextField("Kuitin sisältö", default=None, null=True)
+    subject = models.CharField(_("Subject"), max_length=256)
+    mail_to = models.CharField(_("Recipient address"), max_length=256)
+    mail_from = models.CharField(_("Sender address"), max_length=256)
+    sent = models.DateTimeField(_("Sent at"), default=None, null=True)
+    params = models.TextField(_("Send parameters"), default=None, null=True)
+    content = models.TextField(_("Receipt content"), default=None, null=True)
 
     def __str__(self) -> str:
         return "{}: {}".format(self.mail_to, self.subject)
@@ -414,10 +351,6 @@ class Receipt(models.Model):
         self.sent = timezone.now()
         send_mail(self.subject, self.content, self.mail_from, (self.mail_to,))
         self.save()
-
-    class Meta:
-        verbose_name = "kuitti"
-        verbose_name_plural = "kuitit"
 
 
 auditlog.register(StoreItem)

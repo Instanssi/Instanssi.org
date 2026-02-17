@@ -98,33 +98,11 @@ export type BlankEnum = "";
  */
 export type BlogEntry = {
     readonly id: number;
-    /**
-     * Käyttäjä
-     */
     readonly user: number | null;
-    /**
-     * Aika
-     */
     readonly date: string;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title: string;
-    /**
-     * Teksti
-     */
     text: string;
-    /**
-     * Julkinen
-     *
-     * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
-     */
     public?: boolean;
-    /**
-     * Tapahtuma
-     */
     event: number;
     readonly created_by: string;
 };
@@ -135,25 +113,9 @@ export type BlogEntry = {
  * The user field is read-only and set automatically to the current user on create.
  */
 export type BlogEntryRequest = {
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title: string;
-    /**
-     * Teksti
-     */
     text: string;
-    /**
-     * Julkinen
-     *
-     * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
-     */
     public?: boolean;
-    /**
-     * Tapahtuma
-     */
     event: number;
 };
 
@@ -162,72 +124,28 @@ export type BlogEntryRequest = {
  */
 export type Competition = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kilpailu kuuluu
-     */
     readonly event: number;
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
-    /**
-     * Aktiivinen
-     *
-     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
-     */
     hide_from_archive?: boolean;
 };
 
@@ -238,38 +156,13 @@ export type Competition = {
  */
 export type CompetitionParticipation = {
     readonly id: number;
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition: number;
-    /**
-     * Käyttäjä
-     *
-     * Osallistuja
-     */
     user: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
-    /**
-     * Pisteet
-     *
-     * Kilpailijan saavuttamat pisteet
-     */
     score?: number;
-    /**
-     * Diskattu
-     *
-     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
-     */
     disqualified?: boolean;
     /**
-     * Diskauksen syy
+     * Disqualification reason
      */
     disqualified_reason?: string;
     readonly computed_rank: number;
@@ -281,38 +174,13 @@ export type CompetitionParticipation = {
  * Requires queryset to have with_rank() annotation applied.
  */
 export type CompetitionParticipationRequest = {
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition: number;
-    /**
-     * Käyttäjä
-     *
-     * Osallistuja
-     */
     user: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
-    /**
-     * Pisteet
-     *
-     * Kilpailijan saavuttamat pisteet
-     */
     score?: number;
-    /**
-     * Diskattu
-     *
-     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
-     */
     disqualified?: boolean;
     /**
-     * Diskauksen syy
+     * Disqualification reason
      */
     disqualified_reason?: string;
 };
@@ -321,66 +189,27 @@ export type CompetitionParticipationRequest = {
  * Staff serializer for competitions.
  */
 export type CompetitionRequest = {
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
-    /**
-     * Aktiivinen
-     *
-     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
-     */
     hide_from_archive?: boolean;
 };
 
@@ -389,80 +218,47 @@ export type CompetitionRequest = {
  */
 export type Compo = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kompo kuuluu
-     */
     readonly event: number;
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end: string;
     /**
-     * Kokoraja entryille
-     *
-     * Kokoraja entrytiedostoille (tavua).
+     * Entry size limit
      */
     entry_sizelimit?: number;
     /**
-     * Kokoraja sorsille
-     *
-     * Kokoraja sorsatiedostoille (tavua).
+     * Source size limit
      */
     source_sizelimit?: number;
     /**
-     * Sallitut tiedostopäätteet
-     *
-     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     * Allowed file extensions
      */
     formats?: string;
     /**
-     * Sallitut lähdekoodipaketin päätteet
-     *
-     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed source package extensions
      */
     source_formats?: string;
     /**
-     * Sallitut kuvatiedoston päätteet
-     *
-     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed image file extensions
      */
     image_formats?: string;
     readonly max_source_size: number;
@@ -470,56 +266,26 @@ export type Compo = {
     readonly source_format_list: Array<string>;
     readonly entry_format_list: Array<string>;
     readonly image_format_list: Array<string>;
-    /**
-     * Aktiivinen
-     *
-     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
     /**
-     * Näytä tulokset
-     *
-     * Näytä äänestustulokset.
+     * Show results
      */
     show_voting_results?: boolean;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
-     */
     hide_from_archive?: boolean;
     /**
-     * Piilotus etusivulta
-     *
-     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     * Hide from front page
      */
     hide_from_frontpage?: boolean;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
     /**
-     * Pikkukuvan asetukset
-     *
-     * Pikkukuvan luonti ja asettaminen.
-     *
-     * * `0` - Vaadi erillinen pikkukuva.
-     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-     * * `2` - Salli pikkukuva (ei vaadittu).
-     * * `3` - Älä salli pikkukuvaa.
+     * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
 };
@@ -529,58 +295,22 @@ export type Compo = {
  */
 export type CompoEntry = {
     readonly id: number;
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle entry kuuluu
-     */
     user: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile: string;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: string | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: string | null;
     readonly entryfile_url: string | null;
@@ -589,28 +319,17 @@ export type CompoEntry = {
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
     youtube_url?: string | null;
-    /**
-     * Diskattu
-     *
-     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
-     */
     disqualified?: boolean;
     /**
-     * Syy diskaukseen
-     *
-     * Diskauksen syy.
+     * Disqualification reason
      */
     disqualified_reason?: string;
     /**
-     * Pisteet
-     *
-     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     * Score
      */
     archive_score?: number | null;
     /**
-     * Sijoitus
-     *
-     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     * Rank
      */
     archive_rank?: number | null;
     /**
@@ -628,83 +347,36 @@ export type CompoEntry = {
  * Staff serializer for compo entries.
  */
 export type CompoEntryRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle entry kuuluu
-     */
     user: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile: Blob | File;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: Blob | File | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
-    /**
-     * Diskattu
-     *
-     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
-     */
     disqualified?: boolean;
     /**
-     * Syy diskaukseen
-     *
-     * Diskauksen syy.
+     * Disqualification reason
      */
     disqualified_reason?: string;
     /**
-     * Pisteet
-     *
-     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     * Score
      */
     archive_score?: number | null;
     /**
-     * Sijoitus
-     *
-     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     * Rank
      */
     archive_rank?: number | null;
 };
@@ -713,126 +385,68 @@ export type CompoEntryRequest = {
  * Staff serializer for compos.
  */
 export type CompoRequest = {
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end: string;
     /**
-     * Kokoraja entryille
-     *
-     * Kokoraja entrytiedostoille (tavua).
+     * Entry size limit
      */
     entry_sizelimit?: number;
     /**
-     * Kokoraja sorsille
-     *
-     * Kokoraja sorsatiedostoille (tavua).
+     * Source size limit
      */
     source_sizelimit?: number;
     /**
-     * Sallitut tiedostopäätteet
-     *
-     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     * Allowed file extensions
      */
     formats?: string;
     /**
-     * Sallitut lähdekoodipaketin päätteet
-     *
-     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed source package extensions
      */
     source_formats?: string;
     /**
-     * Sallitut kuvatiedoston päätteet
-     *
-     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed image file extensions
      */
     image_formats?: string;
-    /**
-     * Aktiivinen
-     *
-     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
     /**
-     * Näytä tulokset
-     *
-     * Näytä äänestustulokset.
+     * Show results
      */
     show_voting_results?: boolean;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
-     */
     hide_from_archive?: boolean;
     /**
-     * Piilotus etusivulta
-     *
-     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     * Hide from front page
      */
     hide_from_frontpage?: boolean;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
     /**
-     * Pikkukuvan asetukset
-     *
-     * Pikkukuvan luonti ja asettaminen.
-     *
-     * * `0` - Vaadi erillinen pikkukuva.
-     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-     * * `2` - Salli pikkukuva (ei vaadittu).
-     * * `3` - Älä salli pikkukuvaa.
+     * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
 };
@@ -1352,9 +966,9 @@ export type CountryEnum =
     | "ZW";
 
 /**
- * * `0` - Ei mitään
- * * `1` - Youtube ensin, sitten kuva
- * * `2` - Vain kuva
+ * * `0` - Nothing
+ * * `1` - Youtube first, then image
+ * * `2` - Image only
  * * `3` - (deprecated)
  */
 export type EntryViewTypeEnum = 0 | 1 | 2 | 3;
@@ -1364,40 +978,16 @@ export type EntryViewTypeEnum = 0 | 1 | 2 | 3;
  */
 export type Event = {
     readonly id: number;
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
-    /**
-     * Piilotettu
-     *
-     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
-     */
     hidden?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
@@ -1406,47 +996,23 @@ export type Event = {
  * Staff serializer for events.
  */
 export type EventRequest = {
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
-    /**
-     * Piilotettu
-     *
-     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
-     */
     hidden?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
 
 /**
- * * `0` - Yksinkertainen
- * * `1` - Yksityiskohtainen
+ * * `0` - Simple
+ * * `1` - Detailed
  */
 export type EventTypeEnum = 0 | 1;
 
@@ -1503,25 +1069,22 @@ export type LogEntry = {
  */
 export type NestedReceipt = {
     readonly id: number;
-    /**
-     * Aihe
-     */
     readonly subject: string;
     /**
-     * Vastaanottajan osoite
+     * Recipient address
      */
     readonly mail_to: string;
     /**
-     * Lähettäjän osoite
+     * Sender address
      */
     readonly mail_from: string;
     /**
-     * Lähetysaika
+     * Sent at
      */
     readonly sent: string | null;
     readonly is_sent: boolean;
     /**
-     * Kuitin sisältö
+     * Receipt content
      */
     readonly content: string | null;
 };
@@ -1531,21 +1094,8 @@ export type NestedReceipt = {
  */
 export type OtherVideo = {
     readonly id: number;
-    /**
-     * Kategoria
-     */
     category: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description: string;
     youtube_url: string | null;
 };
@@ -1555,15 +1105,7 @@ export type OtherVideo = {
  */
 export type OtherVideoCategory = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     */
     readonly event: number;
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name: string;
 };
 
@@ -1571,11 +1113,6 @@ export type OtherVideoCategory = {
  * Staff serializer for archive video categories.
  */
 export type OtherVideoCategoryRequest = {
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name: string;
 };
 
@@ -1583,21 +1120,8 @@ export type OtherVideoCategoryRequest = {
  * Staff serializer for archive videos.
  */
 export type OtherVideoRequest = {
-    /**
-     * Kategoria
-     */
     category: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description: string;
     youtube_url: string | null;
 };
@@ -1860,25 +1384,9 @@ export type PaginatedVoteCodeRequestList = {
  * The user field is read-only and set automatically to the current user on create.
  */
 export type PatchedBlogEntryRequest = {
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title?: string;
-    /**
-     * Teksti
-     */
     text?: string;
-    /**
-     * Julkinen
-     *
-     * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
-     */
     public?: boolean;
-    /**
-     * Tapahtuma
-     */
     event?: number;
 };
 
@@ -1888,38 +1396,13 @@ export type PatchedBlogEntryRequest = {
  * Requires queryset to have with_rank() annotation applied.
  */
 export type PatchedCompetitionParticipationRequest = {
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition?: number;
-    /**
-     * Käyttäjä
-     *
-     * Osallistuja
-     */
     user?: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
-    /**
-     * Pisteet
-     *
-     * Kilpailijan saavuttamat pisteet
-     */
     score?: number;
-    /**
-     * Diskattu
-     *
-     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
-     */
     disqualified?: boolean;
     /**
-     * Diskauksen syy
+     * Disqualification reason
      */
     disqualified_reason?: string;
 };
@@ -1928,66 +1411,27 @@ export type PatchedCompetitionParticipationRequest = {
  * Staff serializer for competitions.
  */
 export type PatchedCompetitionRequest = {
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name?: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end?: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start?: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type?: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
-    /**
-     * Aktiivinen
-     *
-     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
-     */
     hide_from_archive?: boolean;
 };
 
@@ -1995,83 +1439,36 @@ export type PatchedCompetitionRequest = {
  * Staff serializer for compo entries.
  */
 export type PatchedCompoEntryRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle entry kuuluu
-     */
     user?: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo?: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name?: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description?: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator?: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile?: Blob | File;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: Blob | File | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
-    /**
-     * Diskattu
-     *
-     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
-     */
     disqualified?: boolean;
     /**
-     * Syy diskaukseen
-     *
-     * Diskauksen syy.
+     * Disqualification reason
      */
     disqualified_reason?: string;
     /**
-     * Pisteet
-     *
-     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     * Score
      */
     archive_score?: number | null;
     /**
-     * Sijoitus
-     *
-     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     * Rank
      */
     archive_rank?: number | null;
 };
@@ -2080,126 +1477,68 @@ export type PatchedCompoEntryRequest = {
  * Staff serializer for compos.
  */
 export type PatchedCompoRequest = {
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name?: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end?: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end?: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start?: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start?: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end?: string;
     /**
-     * Kokoraja entryille
-     *
-     * Kokoraja entrytiedostoille (tavua).
+     * Entry size limit
      */
     entry_sizelimit?: number;
     /**
-     * Kokoraja sorsille
-     *
-     * Kokoraja sorsatiedostoille (tavua).
+     * Source size limit
      */
     source_sizelimit?: number;
     /**
-     * Sallitut tiedostopäätteet
-     *
-     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     * Allowed file extensions
      */
     formats?: string;
     /**
-     * Sallitut lähdekoodipaketin päätteet
-     *
-     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed source package extensions
      */
     source_formats?: string;
     /**
-     * Sallitut kuvatiedoston päätteet
-     *
-     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed image file extensions
      */
     image_formats?: string;
-    /**
-     * Aktiivinen
-     *
-     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
     /**
-     * Näytä tulokset
-     *
-     * Näytä äänestustulokset.
+     * Show results
      */
     show_voting_results?: boolean;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
-     */
     hide_from_archive?: boolean;
     /**
-     * Piilotus etusivulta
-     *
-     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     * Hide from front page
      */
     hide_from_frontpage?: boolean;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
     /**
-     * Pikkukuvan asetukset
-     *
-     * Pikkukuvan luonti ja asettaminen.
-     *
-     * * `0` - Vaadi erillinen pikkukuva.
-     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-     * * `2` - Salli pikkukuva (ei vaadittu).
-     * * `3` - Älä salli pikkukuvaa.
+     * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
 };
@@ -2208,40 +1547,16 @@ export type PatchedCompoRequest = {
  * Staff serializer for events.
  */
 export type PatchedEventRequest = {
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name?: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date?: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
-    /**
-     * Piilotettu
-     *
-     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
-     */
     hidden?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
@@ -2250,11 +1565,6 @@ export type PatchedEventRequest = {
  * Staff serializer for archive video categories.
  */
 export type PatchedOtherVideoCategoryRequest = {
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name?: string;
 };
 
@@ -2262,21 +1572,8 @@ export type PatchedOtherVideoCategoryRequest = {
  * Staff serializer for archive videos.
  */
 export type PatchedOtherVideoRequest = {
-    /**
-     * Kategoria
-     */
     category?: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name?: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description?: string;
     youtube_url?: string | null;
 };
@@ -2285,114 +1582,47 @@ export type PatchedOtherVideoRequest = {
  * Staff serializer for programme events.
  */
 export type PatchedProgramEventRequest = {
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start?: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title?: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
     /**
-     * Kuva 1
-     *
-     * Kuva 1 tapahtumalle.
+     * Image 1
      */
     icon_original?: Blob | File;
     /**
-     * Kuva 2
-     *
-     * Kuva 2 tapahtumalle.
+     * Image 2
      */
     icon2_original?: Blob | File;
-    /**
-     * Sähköposti
-     *
-     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
-     */
     email?: string;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
-    /**
-     * Aktiivinen
-     *
-     * Deaktivoidut piilotetaan.
-     */
     active?: boolean;
 };
 
@@ -2401,24 +1631,21 @@ export type PatchedProgramEventRequest = {
  */
 export type PatchedReceiptRequest = {
     transaction?: number | null;
-    /**
-     * Aihe
-     */
     subject?: string;
     /**
-     * Vastaanottajan osoite
+     * Recipient address
      */
     mail_to?: string;
     /**
-     * Lähettäjän osoite
+     * Sender address
      */
     mail_from?: string;
     /**
-     * Lähetysparametrit
+     * Send parameters
      */
     params?: string | null;
     /**
-     * Kuitin sisältö
+     * Receipt content
      */
     content?: string | null;
 };
@@ -2428,82 +1655,50 @@ export type PatchedReceiptRequest = {
  */
 export type PatchedStoreItemRequest = {
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name?: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description?: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price?: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max?: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     /**
-     * Tuotekuva
-     *
-     * Edustava kuva tuotteelle.
+     * Product image
      */
     imagefile_original?: Blob | File | null;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
     /**
-     * Tuote on lipputuote
-     *
-     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     * Product is a ticket
      */
     is_ticket?: boolean;
     /**
-     * Tuote on salainen
-     *
-     * Tuote näkyy kaupassa vain salaisella linkillä
+     * Product is secret
      */
     is_secret?: boolean;
-    /**
-     * Salasana
-     *
-     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
-     */
     secret_key?: string;
 };
 
@@ -2513,7 +1708,7 @@ export type PatchedStoreItemRequest = {
 export type PatchedStoreItemVariantRequest = {
     item?: number;
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name?: string;
 };
@@ -2523,75 +1718,52 @@ export type PatchedStoreItemVariantRequest = {
  */
 export type PatchedStoreTransactionRequest = {
     /**
-     * Luontiaika
+     * Created at
      */
     time_created?: string | null;
     /**
-     * Maksun varmistumisaika
+     * Payment confirmed at
      */
     time_paid?: string | null;
     /**
-     * Maksun maksuaika
+     * Payment initiated at
      */
     time_pending?: string | null;
     /**
-     * Peruutusaika
+     * Cancelled at
      */
     time_cancelled?: string | null;
     /**
-     * Maksutapa
-     *
-     * Tapa jolla tilaus maksettiin
+     * Payment method
      */
     payment_method_name?: string;
     /**
-     * Etunimi
+     * First name
      */
     firstname?: string;
     /**
-     * Sukunimi
+     * Last name
      */
     lastname?: string;
-    /**
-     * Yritys
-     */
     company?: string;
-    /**
-     * Sähköposti
-     *
-     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
-     */
     email?: string;
-    /**
-     * Puhelinnumero
-     */
     telephone?: string;
     /**
-     * Matkapuhelin
+     * Mobile phone
      */
     mobile?: string;
     /**
-     * Katuosoite
-     *
-     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     * Street address
      */
     street?: string;
     /**
-     * Postinumero
+     * Postal code
      */
     postalcode?: string;
-    /**
-     * Postitoimipaikka
-     */
     city?: string;
-    /**
-     * Maa
-     */
     country?: CountryEnum;
     /**
-     * Lisätiedot
-     *
-     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     * Additional information
      */
     information?: string;
 };
@@ -2601,31 +1773,24 @@ export type PatchedStoreTransactionRequest = {
  */
 export type PatchedTransactionItemRequest = {
     /**
-     * Tuote
+     * Product
      */
     item?: number;
     /**
-     * Tuotevariantti
+     * Product variant
      */
     variant?: number | null;
-    /**
-     * Ostotapahtuma
-     */
     transaction?: number;
     /**
-     * Toimitusaika
+     * Delivery time
      */
     time_delivered?: string | null;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta ostoshetkellä
+     * Product price
      */
     purchase_price?: string;
     /**
-     * Tuotteen alkuperäinen hinta
-     *
-     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     * Original product price
      */
     original_price?: string;
 };
@@ -2634,19 +1799,8 @@ export type PatchedTransactionItemRequest = {
  * Staff serializer for uploaded files.
  */
 export type PatchedUploadedFileRequest = {
-    /**
-     * Käyttäjä
-     */
     user?: number | null;
-    /**
-     * Kuvaus
-     *
-     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
-     */
     description?: string;
-    /**
-     * Tiedosto
-     */
     file?: Blob | File;
 };
 
@@ -2655,11 +1809,6 @@ export type PatchedUploadedFileRequest = {
  */
 export type PatchedUserCompetitionParticipationRequest = {
     competition?: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
 };
 
@@ -2667,35 +1816,10 @@ export type PatchedUserCompetitionParticipationRequest = {
  * User serializer for managing own compo entries.
  */
 export type PatchedUserCompoEntryRequest = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo?: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name?: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description?: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator?: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     youtube_url?: string | null;
 };
@@ -2750,9 +1874,7 @@ export type PatchedUserRequest = {
  */
 export type PatchedUserVoteCodeRequestRequest = {
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text?: string;
 };
@@ -2761,21 +1883,11 @@ export type PatchedUserVoteCodeRequestRequest = {
  * Staff serializer for vote code requests.
  */
 export type PatchedVoteCodeRequestRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Pyynnön esittänyt käyttäjä
-     */
     user?: number;
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text?: string;
-    /**
-     * Tila
-     */
     status?: StatusEnum;
 };
 
@@ -2790,54 +1902,19 @@ export type PaymentMethodEnum = -1 | 1;
  */
 export type ProgramEvent = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     */
     readonly event: number;
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
     /**
-     * Kuva 1
-     *
-     * Kuva 1 tapahtumalle.
+     * Image 1
      */
     icon_original?: string;
     /**
@@ -2845,71 +1922,36 @@ export type ProgramEvent = {
      */
     readonly icon_small_url: string | null;
     /**
-     * Kuva 2
-     *
-     * Kuva 2 tapahtumalle.
+     * Image 2
      */
     icon2_original?: string;
     /**
      * Return URL for small icon2 thumbnail, or None if no icon2 exists.
      */
     readonly icon2_small_url: string | null;
-    /**
-     * Sähköposti
-     *
-     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
-     */
     email?: string;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
-    /**
-     * Aktiivinen
-     *
-     * Deaktivoidut piilotetaan.
-     */
     active?: boolean;
 };
 
@@ -2917,114 +1959,47 @@ export type ProgramEvent = {
  * Staff serializer for programme events.
  */
 export type ProgramEventRequest = {
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
     /**
-     * Kuva 1
-     *
-     * Kuva 1 tapahtumalle.
+     * Image 1
      */
     icon_original?: Blob | File;
     /**
-     * Kuva 2
-     *
-     * Kuva 2 tapahtumalle.
+     * Image 2
      */
     icon2_original?: Blob | File;
-    /**
-     * Sähköposti
-     *
-     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
-     */
     email?: string;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
-    /**
-     * Aktiivinen
-     *
-     * Deaktivoidut piilotetaan.
-     */
     active?: boolean;
 };
 
@@ -3041,23 +2016,9 @@ export type PublicAlternateEntryFile = {
  */
 export type PublicBlogEntry = {
     readonly id: number;
-    /**
-     * Aika
-     */
     date?: string;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title: string;
-    /**
-     * Teksti
-     */
     text: string;
-    /**
-     * Tapahtuma
-     */
     event: number;
 };
 
@@ -3066,60 +2027,26 @@ export type PublicBlogEntry = {
  */
 export type PublicCompetition = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kilpailu kuuluu
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
 };
 
@@ -3131,17 +2058,7 @@ export type PublicCompetition = {
  */
 export type PublicCompetitionParticipation = {
     readonly id: number;
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
     readonly score: number | null;
     readonly disqualified: boolean | null;
@@ -3154,67 +2071,35 @@ export type PublicCompetitionParticipation = {
  */
 export type PublicCompo = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kompo kuuluu
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end: string;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
 };
@@ -3230,35 +2115,10 @@ export type PublicCompo = {
  */
 export type PublicCompoEntry = {
     readonly id: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
@@ -3276,34 +2136,15 @@ export type PublicCompoEntry = {
  */
 export type PublicEvent = {
     readonly id: number;
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
@@ -3313,21 +2154,8 @@ export type PublicEvent = {
  */
 export type PublicOtherVideo = {
     readonly id: number;
-    /**
-     * Kategoria
-     */
     category: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description: string;
     readonly youtube_url: string | null;
 };
@@ -3337,15 +2165,7 @@ export type PublicOtherVideo = {
  */
 export type PublicOtherVideoCategory = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name: string;
 };
 
@@ -3354,96 +2174,40 @@ export type PublicOtherVideoCategory = {
  */
 export type PublicProgramEvent = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     */
     event: number;
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
     readonly icon_small_url: string | null;
     readonly icon2_small_url: string | null;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
 };
 
@@ -3455,67 +2219,41 @@ export type PublicProgramEvent = {
  */
 export type PublicStoreItem = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon tuote liittyy.
-     */
     event?: number | null;
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
     /**
      * Returns True if a discount exists for this item.
@@ -3534,7 +2272,7 @@ export type PublicStoreItem = {
 export type PublicStoreItemVariant = {
     readonly id: number;
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name: string;
 };
@@ -3625,28 +2363,25 @@ export type PushSubscriptionRequest = {
 export type Receipt = {
     readonly id: number;
     transaction?: number | null;
-    /**
-     * Aihe
-     */
     subject: string;
     /**
-     * Vastaanottajan osoite
+     * Recipient address
      */
     mail_to: string;
     /**
-     * Lähettäjän osoite
+     * Sender address
      */
     mail_from: string;
     /**
-     * Lähetysaika
+     * Sent at
      */
     readonly sent: string | null;
     /**
-     * Lähetysparametrit
+     * Send parameters
      */
     params?: string | null;
     /**
-     * Kuitin sisältö
+     * Receipt content
      */
     content?: string | null;
     readonly is_sent: boolean;
@@ -3657,31 +2392,28 @@ export type Receipt = {
  */
 export type ReceiptRequest = {
     transaction?: number | null;
-    /**
-     * Aihe
-     */
     subject: string;
     /**
-     * Vastaanottajan osoite
+     * Recipient address
      */
     mail_to: string;
     /**
-     * Lähettäjän osoite
+     * Sender address
      */
     mail_from: string;
     /**
-     * Lähetysparametrit
+     * Send parameters
      */
     params?: string | null;
     /**
-     * Kuitin sisältö
+     * Receipt content
      */
     content?: string | null;
 };
 
 /**
- * * `0` - Korkein tulos ensin
- * * `1` - Matalin tulos ensin
+ * * `0` - Highest score first
+ * * `1` - Lowest score first
  */
 export type ScoreSortEnum = 0 | 1;
 
@@ -3695,9 +2427,9 @@ export type SocialAuthUrl = {
 };
 
 /**
- * * `0` - Odottaa hyväksyntää
- * * `1` - Hyväksytty
- * * `2` - Hylätty
+ * * `0` - Pending approval
+ * * `1` - Approved
+ * * `2` - Rejected
  */
 export type StatusEnum = 0 | 1 | 2;
 
@@ -3706,73 +2438,45 @@ export type StatusEnum = 0 | 1 | 2;
  */
 export type StoreItem = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon tuote liittyy.
-     */
     readonly event: number | null;
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     /**
-     * Tuotekuva
-     *
-     * Edustava kuva tuotteelle.
+     * Product image
      */
     imagefile_original?: string | null;
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
     /**
      * Returns True if a discount exists for this item.
@@ -3781,22 +2485,13 @@ export type StoreItem = {
     readonly discount_factor: number;
     readonly num_available: number;
     /**
-     * Tuote on lipputuote
-     *
-     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     * Product is a ticket
      */
     is_ticket?: boolean;
     /**
-     * Tuote on salainen
-     *
-     * Tuote näkyy kaupassa vain salaisella linkillä
+     * Product is secret
      */
     is_secret?: boolean;
-    /**
-     * Salasana
-     *
-     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
-     */
     secret_key?: string;
     readonly variants: Array<StoreItemVariant>;
 };
@@ -3806,82 +2501,50 @@ export type StoreItem = {
  */
 export type StoreItemRequest = {
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     /**
-     * Tuotekuva
-     *
-     * Edustava kuva tuotteelle.
+     * Product image
      */
     imagefile_original?: Blob | File | null;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
     /**
-     * Tuote on lipputuote
-     *
-     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     * Product is a ticket
      */
     is_ticket?: boolean;
     /**
-     * Tuote on salainen
-     *
-     * Tuote näkyy kaupassa vain salaisella linkillä
+     * Product is secret
      */
     is_secret?: boolean;
-    /**
-     * Salasana
-     *
-     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
-     */
     secret_key?: string;
 };
 
@@ -3892,7 +2555,7 @@ export type StoreItemVariant = {
     readonly id: number;
     item: number;
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name: string;
 };
@@ -3903,7 +2566,7 @@ export type StoreItemVariant = {
 export type StoreItemVariantRequest = {
     item: number;
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name: string;
 };
@@ -3941,87 +2604,57 @@ export type StoreSummaryItemRow = {
 export type StoreTransaction = {
     readonly id: number;
     /**
-     * Palvelutunniste
-     *
-     * Maksupalvelun maksukohtainen tunniste
+     * Service token
      */
     readonly token: string;
     /**
-     * Luontiaika
+     * Created at
      */
     time_created?: string | null;
     /**
-     * Maksun varmistumisaika
+     * Payment confirmed at
      */
     time_paid?: string | null;
     /**
-     * Maksun maksuaika
+     * Payment initiated at
      */
     time_pending?: string | null;
     /**
-     * Peruutusaika
+     * Cancelled at
      */
     time_cancelled?: string | null;
     /**
-     * Maksutapa
-     *
-     * Tapa jolla tilaus maksettiin
+     * Payment method
      */
     payment_method_name?: string;
-    /**
-     * Avain
-     *
-     * Paikallinen maksukohtainen tunniste
-     */
     readonly key: string;
     /**
-     * Etunimi
+     * First name
      */
     firstname: string;
     /**
-     * Sukunimi
+     * Last name
      */
     lastname: string;
-    /**
-     * Yritys
-     */
     company?: string;
-    /**
-     * Sähköposti
-     *
-     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
-     */
     email: string;
-    /**
-     * Puhelinnumero
-     */
     telephone?: string;
     /**
-     * Matkapuhelin
+     * Mobile phone
      */
     mobile?: string;
     /**
-     * Katuosoite
-     *
-     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     * Street address
      */
     street: string;
     /**
-     * Postinumero
+     * Postal code
      */
     postalcode: string;
-    /**
-     * Postitoimipaikka
-     */
     city: string;
-    /**
-     * Maa
-     */
     country?: CountryEnum;
     /**
-     * Lisätiedot
-     *
-     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     * Additional information
      */
     information?: string;
     readonly is_paid: boolean;
@@ -4041,15 +2674,15 @@ export type StoreTransaction = {
 export type StoreTransactionEvent = {
     readonly id: number;
     /**
-     * Tapahtuman viesti
+     * Event message
      */
     readonly message: string;
     /**
-     * Tapahtuman data
+     * Event data
      */
     readonly data: unknown;
     /**
-     * Luontiaika
+     * Created at
      */
     readonly created: string;
 };
@@ -4059,84 +2692,61 @@ export type StoreTransactionEvent = {
  */
 export type StoreTransactionRequest = {
     /**
-     * Luontiaika
+     * Created at
      */
     time_created?: string | null;
     /**
-     * Maksun varmistumisaika
+     * Payment confirmed at
      */
     time_paid?: string | null;
     /**
-     * Maksun maksuaika
+     * Payment initiated at
      */
     time_pending?: string | null;
     /**
-     * Peruutusaika
+     * Cancelled at
      */
     time_cancelled?: string | null;
     /**
-     * Maksutapa
-     *
-     * Tapa jolla tilaus maksettiin
+     * Payment method
      */
     payment_method_name?: string;
     /**
-     * Etunimi
+     * First name
      */
     firstname: string;
     /**
-     * Sukunimi
+     * Last name
      */
     lastname: string;
-    /**
-     * Yritys
-     */
     company?: string;
-    /**
-     * Sähköposti
-     *
-     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
-     */
     email: string;
-    /**
-     * Puhelinnumero
-     */
     telephone?: string;
     /**
-     * Matkapuhelin
+     * Mobile phone
      */
     mobile?: string;
     /**
-     * Katuosoite
-     *
-     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     * Street address
      */
     street: string;
     /**
-     * Postinumero
+     * Postal code
      */
     postalcode: string;
-    /**
-     * Postitoimipaikka
-     */
     city: string;
-    /**
-     * Maa
-     */
     country?: CountryEnum;
     /**
-     * Lisätiedot
-     *
-     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     * Additional information
      */
     information?: string;
 };
 
 /**
- * * `0` - Vaadi erillinen pikkukuva.
- * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
- * * `2` - Salli pikkukuva (ei vaadittu).
- * * `3` - Älä salli pikkukuvaa.
+ * * `0` - Require separate thumbnail.
+ * * `1` - Use entry file as thumbnail (only works for png/jpg files).
+ * * `2` - Allow thumbnail (not required).
+ * * `3` - Do not allow thumbnail.
  */
 export type ThumbnailPrefEnum = 0 | 1 | 2 | 3;
 
@@ -4145,28 +2755,17 @@ export type ThumbnailPrefEnum = 0 | 1 | 2 | 3;
  */
 export type TicketVoteCode = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma, johon äänestysavain on assosioitu
-     */
     readonly event: number | null;
     /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle avain on assosioitu
+     * User
      */
     associated_to?: number | null;
     /**
-     * Lipputuote
-     *
-     * Lipputuote jonka avainta käytetään äänestysavaimena
+     * Ticket item
      */
     ticket?: number | null;
     /**
-     * Aikaleima
-     *
-     * Aika jolloin avain assosioitiin käyttäjälle.
+     * Timestamp
      */
     time?: string | null;
     readonly associated_username: string | null;
@@ -4177,38 +2776,26 @@ export type TicketVoteCode = {
  */
 export type TransactionItem = {
     readonly id: number;
-    /**
-     * Avain
-     *
-     * Lippuavain
-     */
     readonly key: string;
     /**
-     * Tuote
+     * Product
      */
     item: number;
     /**
-     * Tuotevariantti
+     * Product variant
      */
     variant?: number | null;
-    /**
-     * Ostotapahtuma
-     */
     transaction: number;
     /**
-     * Toimitusaika
+     * Delivery time
      */
     time_delivered?: string | null;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta ostoshetkellä
+     * Product price
      */
     purchase_price: string;
     /**
-     * Tuotteen alkuperäinen hinta
-     *
-     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     * Original product price
      */
     original_price: string;
     readonly is_delivered: boolean;
@@ -4219,31 +2806,24 @@ export type TransactionItem = {
  */
 export type TransactionItemRequest = {
     /**
-     * Tuote
+     * Product
      */
     item: number;
     /**
-     * Tuotevariantti
+     * Product variant
      */
     variant?: number | null;
-    /**
-     * Ostotapahtuma
-     */
     transaction: number;
     /**
-     * Toimitusaika
+     * Delivery time
      */
     time_delivered?: string | null;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta ostoshetkellä
+     * Product price
      */
     purchase_price: string;
     /**
-     * Tuotteen alkuperäinen hinta
-     *
-     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     * Original product price
      */
     original_price: string;
 };
@@ -4253,23 +2833,9 @@ export type TransactionItemRequest = {
  */
 export type UploadedFile = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     */
     readonly event: number;
-    /**
-     * Käyttäjä
-     */
     user?: number | null;
-    /**
-     * Kuvaus
-     *
-     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
-     */
     description?: string;
-    /**
-     * Tiedosto
-     */
     file: string;
     /**
      * Return absolute URL for the file.
@@ -4279,9 +2845,6 @@ export type UploadedFile = {
      * Return just the filename without path.
      */
     readonly filename: string;
-    /**
-     * Aika
-     */
     readonly date: string;
 };
 
@@ -4289,19 +2852,8 @@ export type UploadedFile = {
  * Staff serializer for uploaded files.
  */
 export type UploadedFileRequest = {
-    /**
-     * Käyttäjä
-     */
     user?: number | null;
-    /**
-     * Kuvaus
-     *
-     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
-     */
     description?: string;
-    /**
-     * Tiedosto
-     */
     file: Blob | File;
 };
 
@@ -4351,11 +2903,6 @@ export type User = {
 export type UserCompetitionParticipation = {
     readonly id: number;
     competition: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
 };
 
@@ -4364,11 +2911,6 @@ export type UserCompetitionParticipation = {
  */
 export type UserCompetitionParticipationRequest = {
     competition: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
 };
 
@@ -4377,35 +2919,10 @@ export type UserCompetitionParticipationRequest = {
  */
 export type UserCompoEntry = {
     readonly id: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     readonly entryfile_url: string | null;
     readonly sourcefile_url: string | null;
@@ -4424,35 +2941,10 @@ export type UserCompoEntry = {
  * User serializer for managing own compo entries.
  */
 export type UserCompoEntryRequest = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     youtube_url?: string | null;
 };
@@ -4533,16 +3025,9 @@ export type UserRequest = {
  */
 export type UserTicketVoteCode = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma, johon äänestysavain on assosioitu
-     */
     readonly event: number | null;
     /**
-     * Aikaleima
-     *
-     * Aika jolloin avain assosioitiin käyttäjälle.
+     * Timestamp
      */
     readonly time: string | null;
 };
@@ -4572,21 +3057,11 @@ export type UserTicketVoteCodeRequest = {
  */
 export type UserVoteCodeRequest = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma, johon äänestysoikeutta pyydetään
-     */
     readonly event: number | null;
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
-    /**
-     * Tila
-     */
     status: StatusEnum;
 };
 
@@ -4604,9 +3079,7 @@ export type UserVoteCodeRequest = {
  */
 export type UserVoteCodeRequestRequest = {
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
 };
@@ -4620,9 +3093,6 @@ export type UserVoteCodeRequestRequest = {
  */
 export type UserVoteGroup = {
     readonly id: number;
-    /**
-     * Kompo
-     */
     compo: number;
     /**
      * Return the list of entry IDs in ranked order.
@@ -4638,9 +3108,6 @@ export type UserVoteGroup = {
  * Re-submitting votes replaces previous votes for the same compo.
  */
 export type UserVoteGroupRequest = {
-    /**
-     * Kompo
-     */
     compo: number;
 };
 
@@ -4663,27 +3130,12 @@ export type VapidPublicKey = {
  */
 export type VoteCodeRequest = {
     readonly id: number;
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma, johon äänestysoikeutta pyydetään
-     */
     readonly event: number | null;
-    /**
-     * Käyttäjä
-     *
-     * Pyynnön esittänyt käyttäjä
-     */
     user: number;
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
-    /**
-     * Tila
-     */
     status?: StatusEnum;
 };
 
@@ -4691,21 +3143,11 @@ export type VoteCodeRequest = {
  * Staff serializer for vote code requests.
  */
 export type VoteCodeRequestRequest = {
-    /**
-     * Käyttäjä
-     *
-     * Pyynnön esittänyt käyttäjä
-     */
     user: number;
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
-    /**
-     * Tila
-     */
     status?: StatusEnum;
 };
 
@@ -4725,25 +3167,9 @@ export type ActorWritable = {
  * The user field is read-only and set automatically to the current user on create.
  */
 export type BlogEntryWritable = {
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title: string;
-    /**
-     * Teksti
-     */
     text: string;
-    /**
-     * Julkinen
-     *
-     * Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman sivuille että RSS-syötteeseen.
-     */
     public?: boolean;
-    /**
-     * Tapahtuma
-     */
     event: number;
 };
 
@@ -4751,66 +3177,27 @@ export type BlogEntryWritable = {
  * Staff serializer for competitions.
  */
 export type CompetitionWritable = {
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
-    /**
-     * Aktiivinen
-     *
-     * Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa eventin asetuksen.
-     */
     hide_from_archive?: boolean;
 };
 
@@ -4820,38 +3207,13 @@ export type CompetitionWritable = {
  * Requires queryset to have with_rank() annotation applied.
  */
 export type CompetitionParticipationWritable = {
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition: number;
-    /**
-     * Käyttäjä
-     *
-     * Osallistuja
-     */
     user: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
-    /**
-     * Pisteet
-     *
-     * Kilpailijan saavuttamat pisteet
-     */
     score?: number;
-    /**
-     * Diskattu
-     *
-     * Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
-     */
     disqualified?: boolean;
     /**
-     * Diskauksen syy
+     * Disqualification reason
      */
     disqualified_reason?: string;
 };
@@ -4860,126 +3222,68 @@ export type CompetitionParticipationWritable = {
  * Staff serializer for compos.
  */
 export type CompoWritable = {
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end: string;
     /**
-     * Kokoraja entryille
-     *
-     * Kokoraja entrytiedostoille (tavua).
+     * Entry size limit
      */
     entry_sizelimit?: number;
     /**
-     * Kokoraja sorsille
-     *
-     * Kokoraja sorsatiedostoille (tavua).
+     * Source size limit
      */
     source_sizelimit?: number;
     /**
-     * Sallitut tiedostopäätteet
-     *
-     * Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna, esim. "png|jpg".
+     * Allowed file extensions
      */
     formats?: string;
     /**
-     * Sallitut lähdekoodipaketin päätteet
-     *
-     * Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed source package extensions
      */
     source_formats?: string;
     /**
-     * Sallitut kuvatiedoston päätteet
-     *
-     * Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla eroteltuna
+     * Allowed image file extensions
      */
     image_formats?: string;
-    /**
-     * Aktiivinen
-     *
-     * Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
-     */
     active?: boolean;
     /**
-     * Näytä tulokset
-     *
-     * Näytä äänestustulokset.
+     * Show results
      */
     show_voting_results?: boolean;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Piilotus arkistosta
-     *
-     * Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman tiedoissa valitun asetuksen.
-     */
     hide_from_archive?: boolean;
     /**
-     * Piilotus etusivulta
-     *
-     * Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta. Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+     * Hide from front page
      */
     hide_from_frontpage?: boolean;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
     /**
-     * Pikkukuvan asetukset
-     *
-     * Pikkukuvan luonti ja asettaminen.
-     *
-     * * `0` - Vaadi erillinen pikkukuva.
-     * * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-     * * `2` - Salli pikkukuva (ei vaadittu).
-     * * `3` - Älä salli pikkukuvaa.
+     * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
 };
@@ -4988,83 +3292,36 @@ export type CompoWritable = {
  * Staff serializer for compo entries.
  */
 export type CompoEntryWritable = {
-    /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle entry kuuluu
-     */
     user: number;
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile: string;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: string | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: string | null;
     youtube_url?: string | null;
-    /**
-     * Diskattu
-     *
-     * Entry on diskattu sääntörikon tai teknisten ongelmien takia. DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
-     */
     disqualified?: boolean;
     /**
-     * Syy diskaukseen
-     *
-     * Diskauksen syy.
+     * Disqualification reason
      */
     disqualified_reason?: string;
     /**
-     * Pisteet
-     *
-     * Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei määritetä, lasketaan pisteet suoraan äänestystuloksista.
+     * Score
      */
     archive_score?: number | null;
     /**
-     * Sijoitus
-     *
-     * Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea myös pistemääristä automaattisesti.
+     * Rank
      */
     archive_rank?: number | null;
 };
@@ -5084,40 +3341,16 @@ export type ContentTypeWritable = {
  * Staff serializer for events.
  */
 export type EventWritable = {
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
-    /**
-     * Piilotettu
-     *
-     * Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
-     */
     hidden?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
@@ -5150,21 +3383,8 @@ export type LogEntryWritable = {
  * Staff serializer for archive videos.
  */
 export type OtherVideoWritable = {
-    /**
-     * Kategoria
-     */
     category: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description: string;
     youtube_url: string | null;
 };
@@ -5173,11 +3393,6 @@ export type OtherVideoWritable = {
  * Staff serializer for archive video categories.
  */
 export type OtherVideoCategoryWritable = {
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name: string;
 };
 
@@ -5199,52 +3414,21 @@ export type PaginatedUserTicketVoteCodeListWritable = {
  * User serializer for managing own compo entries.
  */
 export type PatchedUserCompoEntryRequestWritable = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo?: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name?: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description?: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator?: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile?: Blob | File;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: Blob | File | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
@@ -5278,114 +3462,47 @@ export type PatchedUserRequestWritable = {
  * Staff serializer for programme events.
  */
 export type ProgramEventWritable = {
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
     /**
-     * Kuva 1
-     *
-     * Kuva 1 tapahtumalle.
+     * Image 1
      */
     icon_original?: string;
     /**
-     * Kuva 2
-     *
-     * Kuva 2 tapahtumalle.
+     * Image 2
      */
     icon2_original?: string;
-    /**
-     * Sähköposti
-     *
-     * Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
-     */
     email?: string;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
-    /**
-     * Aktiivinen
-     *
-     * Deaktivoidut piilotetaan.
-     */
     active?: boolean;
 };
 
@@ -5393,23 +3510,9 @@ export type ProgramEventWritable = {
  * Serializer for public blog entries - excludes user, public, and created_by fields
  */
 export type PublicBlogEntryWritable = {
-    /**
-     * Aika
-     */
     date?: string;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko entrylle.
-     */
     title: string;
-    /**
-     * Teksti
-     */
     text: string;
-    /**
-     * Tapahtuma
-     */
     event: number;
 };
 
@@ -5417,60 +3520,26 @@ export type PublicBlogEntryWritable = {
  * Public read-only serializer for competitions.
  */
 export type PublicCompetitionWritable = {
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kilpailu kuuluu
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kilpailun nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline osallistumiselle.
-     *
-     * Tämän jälkeen kilpailuun ei voi enää osallistua.
+     * Participation deadline
      */
     participation_end: string;
     /**
-     * Kilpailun alku
-     *
-     * Kilpailun aloitusaika.
+     * Competition start
      */
     start: string;
     /**
-     * Kilpailun loppu
-     *
-     * Kilpailun päättymisaika.
+     * Competition end
      */
     end?: string | null;
-    /**
-     * Pisteiden tyyppi
-     *
-     * Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
-     */
     score_type: string;
     /**
-     * Pisteiden järjestely
-     *
-     * Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-     *
-     * * `0` - Korkein tulos ensin
-     * * `1` - Matalin tulos ensin
+     * Score sorting
      */
     score_sort?: ScoreSortEnum;
-    /**
-     * Näytä tulokset
-     *
-     * Näytä kilpailun tulokset.
-     */
     show_results?: boolean;
 };
 
@@ -5481,17 +3550,7 @@ export type PublicCompetitionWritable = {
  * Rank/score/disqualified are shown only when competition.show_results is True.
  */
 export type PublicCompetitionParticipationWritable = {
-    /**
-     * Kilpailu
-     *
-     * Kilpailu johon osallistuttu
-     */
     competition: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
 };
 
@@ -5499,67 +3558,35 @@ export type PublicCompetitionParticipationWritable = {
  * Public read-only serializer for compos.
  */
 export type PublicCompoWritable = {
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon kompo kuuluu
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kompon nimi (max 32 merkkiä).
-     */
     name: string;
-    /**
-     * Kuvaus
-     */
     description: string;
     /**
-     * Deadline entryjen lisäyksille
-     *
-     * Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus toimii vielä.
+     * Entry adding deadline
      */
     adding_end: string;
     /**
-     * Deadline entryjen muokkauksille
-     *
-     * Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi enää muokata.
+     * Entry editing deadline
      */
     editing_end: string;
     /**
-     * Kompon aloitusaika
-     *
-     * Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+     * Compo start time
      */
     compo_start: string;
     /**
-     * Äänestyksen alkamisaika
-     *
-     * Alkamisaika entryjen äänestykselle.
+     * Voting start time
      */
     voting_start: string;
     /**
-     * Äänestyksen päättymisaika
-     *
-     * Päättymisaika entryjen äänestykselle.
+     * Voting end time
      */
     voting_end: string;
     /**
-     * Entryesittely
-     *
-     * Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-     *
-     * * `0` - Ei mitään
-     * * `1` - Youtube ensin, sitten kuva
-     * * `2` - Vain kuva
-     * * `3` - (deprecated)
+     * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
     /**
-     * Äänestettävissä
-     *
-     * Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+     * Votable
      */
     is_votable?: boolean;
 };
@@ -5574,35 +3601,10 @@ export type PublicCompoWritable = {
  * Rank/score are shown only when compo.show_voting_results is True.
  */
 export type PublicCompoEntryWritable = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     youtube_url?: string | null;
 };
@@ -5611,34 +3613,15 @@ export type PublicCompoEntryWritable = {
  * Public read-only serializer for events.
  */
 export type PublicEventWritable = {
-    /**
-     * Nimi
-     *
-     * Tapahtuman nimi
-     */
     name: string;
     /**
-     * Lyhyt esitys
-     *
-     * Lyhyt nimi, eg. vuosi
+     * Short tag
      */
     tag?: string | null;
-    /**
-     * Päivämäärä
-     *
-     * Tapahtuman päivämäärä (alku)
-     */
     date: string;
-    /**
-     * Arkistoitu
-     *
-     * Saa näyttää arkistossa
-     */
     archived?: boolean;
     /**
-     * Tapahtuman pääsivu
-     *
-     * URL Tapahtuman pääsivustolle
+     * Event main page
      */
     mainurl?: string;
 };
@@ -5647,21 +3630,8 @@ export type PublicEventWritable = {
  * Public read-only serializer for archive videos.
  */
 export type PublicOtherVideoWritable = {
-    /**
-     * Kategoria
-     */
     category: number;
-    /**
-     * Nimi
-     *
-     * Videon nimi.
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Videon kuvaus.
-     */
     description: string;
 };
 
@@ -5669,15 +3639,7 @@ export type PublicOtherVideoWritable = {
  * Public read-only serializer for archive video categories.
  */
 export type PublicOtherVideoCategoryWritable = {
-    /**
-     * Tapahtuma
-     */
     event: number;
-    /**
-     * Nimi
-     *
-     * Kategorian nimi
-     */
     name: string;
 };
 
@@ -5685,94 +3647,38 @@ export type PublicOtherVideoCategoryWritable = {
  * Public read-only serializer for programme events.
  */
 export type PublicProgramEventWritable = {
-    /**
-     * Tapahtuma
-     */
     event: number;
-    /**
-     * Alku
-     *
-     * Tapahtuman alkamisaika.
-     */
     start: string;
-    /**
-     * Loppu
-     *
-     * Tapahtuman loppumisaika.
-     */
     end?: string | null;
-    /**
-     * Otsikko
-     *
-     * Lyhyt otsikko.
-     */
     title: string;
-    /**
-     * Kuvaus
-     */
     description?: string;
-    /**
-     * Henkilöt
-     *
-     * Esityksen pitäjät tms.
-     */
     presenters?: string;
     /**
-     * Nimikkeet
-     *
-     * Henkilön arvo-, ammatti- tai virkanimike.
+     * Titles
      */
     presenters_titles?: string;
-    /**
-     * Paikka
-     *
-     * Tarkka paikka tapahtuma-areenalla
-     */
     place?: string;
-    /**
-     * Kotiurli
-     *
-     * Tapahtumaan liittyvä URL.
-     */
     home_url?: string;
     /**
      * Twitter
-     *
-     * Tapahtumaan liittyvä Twitter-url.
      */
     twitter_url?: string;
     /**
      * Github
-     *
-     * Tapahtumaan liittyvä Github-url
      */
     github_url?: string;
     /**
      * Facebook
-     *
-     * Tapahtumaan liittyvä facebook-url.
      */
     facebook_url?: string;
     /**
      * LinkedIn
-     *
-     * Tapahtumaan liittyvä LinkedIn-url.
      */
     linkedin_url?: string;
     /**
      * Wikipedia
-     *
-     * Tapahtumaan liittyvä Wikipedia-url.
      */
     wiki_url?: string;
-    /**
-     * Tapahtuman tyyppi
-     *
-     * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-     *
-     * * `0` - Yksinkertainen
-     * * `1` - Yksityiskohtainen
-     */
     event_type?: EventTypeEnum;
 };
 
@@ -5783,65 +3689,39 @@ export type PublicProgramEventWritable = {
  * It does NOT expose sensitive fields like is_secret, secret_key, or is_ticket.
  */
 export type PublicStoreItemWritable = {
-    /**
-     * Tapahtuma
-     *
-     * Tapahtuma johon tuote liittyy.
-     */
     event?: number | null;
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
 };
 
@@ -5852,7 +3732,7 @@ export type PublicStoreItemWritable = {
  */
 export type PublicStoreItemVariantWritable = {
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name: string;
 };
@@ -5868,24 +3748,21 @@ export type PushSubscriptionWritable = {
  */
 export type ReceiptWritable = {
     transaction?: number | null;
-    /**
-     * Aihe
-     */
     subject: string;
     /**
-     * Vastaanottajan osoite
+     * Recipient address
      */
     mail_to: string;
     /**
-     * Lähettäjän osoite
+     * Sender address
      */
     mail_from: string;
     /**
-     * Lähetysparametrit
+     * Send parameters
      */
     params?: string | null;
     /**
-     * Kuitin sisältö
+     * Receipt content
      */
     content?: string | null;
 };
@@ -5895,82 +3772,50 @@ export type ReceiptWritable = {
  */
 export type StoreItemWritable = {
     /**
-     * Tuotteen nimi
-     *
-     * Tuotteen lyhyt nimi.
+     * Product name
      */
     name: string;
     /**
-     * Tuotteen kuvaus
-     *
-     * Tuotteen pitkä kuvaus.
+     * Product description
      */
     description: string;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta.
+     * Product price
      */
     price: string;
     /**
-     * Kappaletta saatavilla
-     *
-     * Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+     * Available quantity
      */
     max: number;
     /**
-     * Ostettavissa
-     *
-     * Ilmoittaa, näkyykö tuote kaupassa.
+     * Available for purchase
      */
     available?: boolean;
     /**
-     * Tuotekuva
-     *
-     * Edustava kuva tuotteelle.
+     * Product image
      */
     imagefile_original?: string | null;
     /**
-     * Maksimi per tilaus
-     *
-     * Kuinka monta kappaletta voidaan ostaa kerralla.
+     * Maximum per order
      */
     max_per_order?: number;
     /**
-     * Järjestysarvo
-     *
-     * Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä, pienempilukuiset ensin.
+     * Sort order
      */
     sort_index?: number;
     /**
-     * Alennusmäärä
-     *
-     * Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei mitään)
+     * Discount threshold
      */
     discount_amount?: number;
-    /**
-     * Alennusprosentti
-     *
-     * Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa alennusmäärän.
-     */
     discount_percentage?: number;
     /**
-     * Tuote on lipputuote
-     *
-     * Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa äänestysoikeuden hankkimiseen
+     * Product is a ticket
      */
     is_ticket?: boolean;
     /**
-     * Tuote on salainen
-     *
-     * Tuote näkyy kaupassa vain salaisella linkillä
+     * Product is secret
      */
     is_secret?: boolean;
-    /**
-     * Salasana
-     *
-     * Salaisen linkin avain. Jos salasana on kissa, salainen tuote näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
-     */
     secret_key?: string;
 };
 
@@ -5980,7 +3825,7 @@ export type StoreItemWritable = {
 export type StoreItemVariantWritable = {
     item: number;
     /**
-     * Tuotevariantin nimi
+     * Variant name
      */
     name: string;
 };
@@ -5990,75 +3835,52 @@ export type StoreItemVariantWritable = {
  */
 export type StoreTransactionWritable = {
     /**
-     * Luontiaika
+     * Created at
      */
     time_created?: string | null;
     /**
-     * Maksun varmistumisaika
+     * Payment confirmed at
      */
     time_paid?: string | null;
     /**
-     * Maksun maksuaika
+     * Payment initiated at
      */
     time_pending?: string | null;
     /**
-     * Peruutusaika
+     * Cancelled at
      */
     time_cancelled?: string | null;
     /**
-     * Maksutapa
-     *
-     * Tapa jolla tilaus maksettiin
+     * Payment method
      */
     payment_method_name?: string;
     /**
-     * Etunimi
+     * First name
      */
     firstname: string;
     /**
-     * Sukunimi
+     * Last name
      */
     lastname: string;
-    /**
-     * Yritys
-     */
     company?: string;
-    /**
-     * Sähköposti
-     *
-     * Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden lunastukseen tarvittavat koodit lähetetään sinne.
-     */
     email: string;
-    /**
-     * Puhelinnumero
-     */
     telephone?: string;
     /**
-     * Matkapuhelin
+     * Mobile phone
      */
     mobile?: string;
     /**
-     * Katuosoite
-     *
-     * Katusoite tarvitaan maksupalvelun vaatimuksesta.
+     * Street address
      */
     street: string;
     /**
-     * Postinumero
+     * Postal code
      */
     postalcode: string;
-    /**
-     * Postitoimipaikka
-     */
     city: string;
-    /**
-     * Maa
-     */
     country?: CountryEnum;
     /**
-     * Lisätiedot
-     *
-     * Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+     * Additional information
      */
     information?: string;
 };
@@ -6068,21 +3890,15 @@ export type StoreTransactionWritable = {
  */
 export type TicketVoteCodeWritable = {
     /**
-     * Käyttäjä
-     *
-     * Käyttäjä jolle avain on assosioitu
+     * User
      */
     associated_to?: number | null;
     /**
-     * Lipputuote
-     *
-     * Lipputuote jonka avainta käytetään äänestysavaimena
+     * Ticket item
      */
     ticket?: number | null;
     /**
-     * Aikaleima
-     *
-     * Aika jolloin avain assosioitiin käyttäjälle.
+     * Timestamp
      */
     time?: string | null;
 };
@@ -6092,31 +3908,24 @@ export type TicketVoteCodeWritable = {
  */
 export type TransactionItemWritable = {
     /**
-     * Tuote
+     * Product
      */
     item: number;
     /**
-     * Tuotevariantti
+     * Product variant
      */
     variant?: number | null;
-    /**
-     * Ostotapahtuma
-     */
     transaction: number;
     /**
-     * Toimitusaika
+     * Delivery time
      */
     time_delivered?: string | null;
     /**
-     * Tuotteen hinta
-     *
-     * Tuotteen hinta ostoshetkellä
+     * Product price
      */
     purchase_price: string;
     /**
-     * Tuotteen alkuperäinen hinta
-     *
-     * Tuotteen hinta ostoshetkellä ilman alennuksia
+     * Original product price
      */
     original_price: string;
 };
@@ -6125,19 +3934,8 @@ export type TransactionItemWritable = {
  * Staff serializer for uploaded files.
  */
 export type UploadedFileWritable = {
-    /**
-     * Käyttäjä
-     */
     user?: number | null;
-    /**
-     * Kuvaus
-     *
-     * Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
-     */
     description?: string;
-    /**
-     * Tiedosto
-     */
     file: string;
 };
 
@@ -6169,11 +3967,6 @@ export type UserWritable = {
  */
 export type UserCompetitionParticipationWritable = {
     competition: number;
-    /**
-     * Osallistujan nimi
-     *
-     * Nimimerkki jolla haluat osallistua.
-     */
     participant_name?: string;
 };
 
@@ -6181,35 +3974,10 @@ export type UserCompetitionParticipationWritable = {
  * User serializer for managing own compo entries.
  */
 export type UserCompoEntryWritable = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     youtube_url?: string | null;
 };
@@ -6218,52 +3986,21 @@ export type UserCompoEntryWritable = {
  * User serializer for managing own compo entries.
  */
 export type UserCompoEntryRequestWritable = {
-    /**
-     * Kompo
-     *
-     * Kompo johon osallistutaan
-     */
     compo: number;
-    /**
-     * Nimi
-     *
-     * Nimi tuotokselle
-     */
     name: string;
-    /**
-     * Kuvaus
-     *
-     * Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
-     */
     description: string;
-    /**
-     * Tekijä
-     *
-     * Tuotoksen tekijän tai tekijäryhmän nimi
-     */
     creator: string;
-    /**
-     * Alusta
-     *
-     * Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei sisällä ajettavaa koodia.
-     */
     platform?: string | null;
     /**
-     * Tiedosto
-     *
-     * Tuotospaketti.
+     * File
      */
     entryfile: Blob | File;
     /**
-     * Lähdekoodi
-     *
-     * Lähdekoodipaketti.
+     * Source code
      */
     sourcefile?: Blob | File | null;
     /**
-     * Kuva
-     *
-     * Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+     * Image
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
@@ -6320,9 +4057,7 @@ export type UserRequestWritable = {
  */
 export type UserVoteCodeRequestWritable = {
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
 };
@@ -6335,9 +4070,6 @@ export type UserVoteCodeRequestWritable = {
  * Re-submitting votes replaces previous votes for the same compo.
  */
 export type UserVoteGroupWritable = {
-    /**
-     * Kompo
-     */
     compo: number;
 };
 
@@ -6349,9 +4081,6 @@ export type UserVoteGroupWritable = {
  * Re-submitting votes replaces previous votes for the same compo.
  */
 export type UserVoteGroupRequestWritable = {
-    /**
-     * Kompo
-     */
     compo: number;
     /**
      * List of entry IDs in order of preference (first = highest rank)
@@ -6363,21 +4092,11 @@ export type UserVoteGroupRequestWritable = {
  * Staff serializer for vote code requests.
  */
 export type VoteCodeRequestWritable = {
-    /**
-     * Käyttäjä
-     *
-     * Pyynnön esittänyt käyttäjä
-     */
     user: number;
     /**
-     * Kuvaus
-     *
-     * Lyhyt aneluteksti admineille :)
+     * Description
      */
     text: string;
-    /**
-     * Tila
-     */
     status?: StatusEnum;
 };
 
@@ -6479,7 +4198,7 @@ export type AdminBlogDestroyData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this entry.
+         * A unique integer value identifying this blog entry.
          */
         id: number;
     };
@@ -6500,7 +4219,7 @@ export type AdminBlogRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this entry.
+         * A unique integer value identifying this blog entry.
          */
         id: number;
     };
@@ -6519,7 +4238,7 @@ export type AdminBlogPartialUpdateData = {
     body?: PatchedBlogEntryRequest;
     path: {
         /**
-         * A unique integer value identifying this entry.
+         * A unique integer value identifying this blog entry.
          */
         id: number;
     };
@@ -6538,7 +4257,7 @@ export type AdminBlogUpdateData = {
     body: BlogEntryRequest;
     path: {
         /**
-         * A unique integer value identifying this entry.
+         * A unique integer value identifying this blog entry.
          */
         id: number;
     };
@@ -6702,7 +4421,7 @@ export type AdminEventArkistoVideoCategoriesDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this videokategoria.
+         * A unique integer value identifying this other video category.
          */
         id: number;
     };
@@ -6725,7 +4444,7 @@ export type AdminEventArkistoVideoCategoriesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this videokategoria.
+         * A unique integer value identifying this other video category.
          */
         id: number;
     };
@@ -6745,7 +4464,7 @@ export type AdminEventArkistoVideoCategoriesPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this videokategoria.
+         * A unique integer value identifying this other video category.
          */
         id: number;
     };
@@ -6765,7 +4484,7 @@ export type AdminEventArkistoVideoCategoriesUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this videokategoria.
+         * A unique integer value identifying this other video category.
          */
         id: number;
     };
@@ -6835,7 +4554,7 @@ export type AdminEventArkistoVideosDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this muu video.
+         * A unique integer value identifying this other video.
          */
         id: number;
     };
@@ -6858,7 +4577,7 @@ export type AdminEventArkistoVideosRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this muu video.
+         * A unique integer value identifying this other video.
          */
         id: number;
     };
@@ -6878,7 +4597,7 @@ export type AdminEventArkistoVideosPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this muu video.
+         * A unique integer value identifying this other video.
          */
         id: number;
     };
@@ -6898,7 +4617,7 @@ export type AdminEventArkistoVideosUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this muu video.
+         * A unique integer value identifying this other video.
          */
         id: number;
     };
@@ -6970,7 +4689,7 @@ export type AdminEventKompomaattiCompetitionParticipationsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -6993,7 +4712,7 @@ export type AdminEventKompomaattiCompetitionParticipationsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -7013,7 +4732,7 @@ export type AdminEventKompomaattiCompetitionParticipationsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -7033,7 +4752,7 @@ export type AdminEventKompomaattiCompetitionParticipationsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -7105,7 +4824,7 @@ export type AdminEventKompomaattiCompetitionsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kilpailu.
+         * A unique integer value identifying this competition.
          */
         id: number;
     };
@@ -7128,7 +4847,7 @@ export type AdminEventKompomaattiCompetitionsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kilpailu.
+         * A unique integer value identifying this competition.
          */
         id: number;
     };
@@ -7148,7 +4867,7 @@ export type AdminEventKompomaattiCompetitionsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kilpailu.
+         * A unique integer value identifying this competition.
          */
         id: number;
     };
@@ -7168,7 +4887,7 @@ export type AdminEventKompomaattiCompetitionsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kilpailu.
+         * A unique integer value identifying this competition.
          */
         id: number;
     };
@@ -7242,7 +4961,7 @@ export type AdminEventKompomaattiComposDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kompo.
+         * A unique integer value identifying this compo.
          */
         id: number;
     };
@@ -7265,7 +4984,7 @@ export type AdminEventKompomaattiComposRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kompo.
+         * A unique integer value identifying this compo.
          */
         id: number;
     };
@@ -7285,7 +5004,7 @@ export type AdminEventKompomaattiComposPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kompo.
+         * A unique integer value identifying this compo.
          */
         id: number;
     };
@@ -7305,7 +5024,7 @@ export type AdminEventKompomaattiComposUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kompo.
+         * A unique integer value identifying this compo.
          */
         id: number;
     };
@@ -7377,7 +5096,7 @@ export type AdminEventKompomaattiEntriesDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -7400,7 +5119,7 @@ export type AdminEventKompomaattiEntriesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -7420,7 +5139,7 @@ export type AdminEventKompomaattiEntriesPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -7440,7 +5159,7 @@ export type AdminEventKompomaattiEntriesUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -7540,7 +5259,7 @@ export type AdminEventKompomaattiTicketVoteCodesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this lippuäänestusavain.
+         * A unique integer value identifying this ticket vote code.
          */
         id: number;
     };
@@ -7578,11 +5297,9 @@ export type AdminEventKompomaattiVoteCodeRequestsListData = {
          */
         search?: string;
         /**
-         * Tila
-         *
-         * * `0` - Odottaa hyväksyntää
-         * * `1` - Hyväksytty
-         * * `2` - Hylätty
+         * * `0` - Pending approval
+         * * `1` - Approved
+         * * `2` - Rejected
          */
         status?: 0 | 1 | 2;
         user?: number;
@@ -7618,7 +5335,7 @@ export type AdminEventKompomaattiVoteCodeRequestsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -7641,7 +5358,7 @@ export type AdminEventKompomaattiVoteCodeRequestsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -7661,7 +5378,7 @@ export type AdminEventKompomaattiVoteCodeRequestsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -7681,7 +5398,7 @@ export type AdminEventKompomaattiVoteCodeRequestsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -7704,12 +5421,8 @@ export type AdminEventProgramEventsListData = {
     query?: {
         active?: boolean;
         /**
-         * Tapahtuman tyyppi
-         *
-         * Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-         *
-         * * `0` - Yksinkertainen
-         * * `1` - Yksityiskohtainen
+         * * `0` - Simple
+         * * `1` - Detailed
          */
         event_type?: 0 | 1;
         /**
@@ -7760,7 +5473,7 @@ export type AdminEventProgramEventsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ohjelmatapahtuma.
+         * A unique integer value identifying this programme event.
          */
         id: number;
     };
@@ -7783,7 +5496,7 @@ export type AdminEventProgramEventsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ohjelmatapahtuma.
+         * A unique integer value identifying this programme event.
          */
         id: number;
     };
@@ -7803,7 +5516,7 @@ export type AdminEventProgramEventsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ohjelmatapahtuma.
+         * A unique integer value identifying this programme event.
          */
         id: number;
     };
@@ -7823,7 +5536,7 @@ export type AdminEventProgramEventsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ohjelmatapahtuma.
+         * A unique integer value identifying this programme event.
          */
         id: number;
     };
@@ -7893,7 +5606,7 @@ export type AdminEventStoreItemVariantsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotevariantti.
+         * A unique integer value identifying this store item variant.
          */
         id: number;
     };
@@ -7916,7 +5629,7 @@ export type AdminEventStoreItemVariantsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotevariantti.
+         * A unique integer value identifying this store item variant.
          */
         id: number;
     };
@@ -7936,7 +5649,7 @@ export type AdminEventStoreItemVariantsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotevariantti.
+         * A unique integer value identifying this store item variant.
          */
         id: number;
     };
@@ -7956,7 +5669,7 @@ export type AdminEventStoreItemVariantsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotevariantti.
+         * A unique integer value identifying this store item variant.
          */
         id: number;
     };
@@ -8029,7 +5742,7 @@ export type AdminEventStoreItemsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuote.
+         * A unique integer value identifying this store item.
          */
         id: number;
     };
@@ -8052,7 +5765,7 @@ export type AdminEventStoreItemsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuote.
+         * A unique integer value identifying this store item.
          */
         id: number;
     };
@@ -8072,7 +5785,7 @@ export type AdminEventStoreItemsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuote.
+         * A unique integer value identifying this store item.
          */
         id: number;
     };
@@ -8092,7 +5805,7 @@ export type AdminEventStoreItemsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuote.
+         * A unique integer value identifying this store item.
          */
         id: number;
     };
@@ -8163,7 +5876,7 @@ export type AdminEventStoreReceiptsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kuitti.
+         * A unique integer value identifying this receipt.
          */
         id: number;
     };
@@ -8186,7 +5899,7 @@ export type AdminEventStoreReceiptsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kuitti.
+         * A unique integer value identifying this receipt.
          */
         id: number;
     };
@@ -8206,7 +5919,7 @@ export type AdminEventStoreReceiptsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kuitti.
+         * A unique integer value identifying this receipt.
          */
         id: number;
     };
@@ -8226,7 +5939,7 @@ export type AdminEventStoreReceiptsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kuitti.
+         * A unique integer value identifying this receipt.
          */
         id: number;
     };
@@ -8246,7 +5959,7 @@ export type AdminEventStoreReceiptsResendCreateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kuitti.
+         * A unique integer value identifying this receipt.
          */
         id: number;
     };
@@ -8334,7 +6047,7 @@ export type AdminEventStoreTransactionItemsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktiotuote.
+         * A unique integer value identifying this transaction item.
          */
         id: number;
     };
@@ -8357,7 +6070,7 @@ export type AdminEventStoreTransactionItemsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktiotuote.
+         * A unique integer value identifying this transaction item.
          */
         id: number;
     };
@@ -8377,7 +6090,7 @@ export type AdminEventStoreTransactionItemsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktiotuote.
+         * A unique integer value identifying this transaction item.
          */
         id: number;
     };
@@ -8397,7 +6110,7 @@ export type AdminEventStoreTransactionItemsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktiotuote.
+         * A unique integer value identifying this transaction item.
          */
         id: number;
     };
@@ -8468,7 +6181,7 @@ export type AdminEventStoreTransactionsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktio.
+         * A unique integer value identifying this store transaction.
          */
         id: number;
     };
@@ -8491,7 +6204,7 @@ export type AdminEventStoreTransactionsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktio.
+         * A unique integer value identifying this store transaction.
          */
         id: number;
     };
@@ -8511,7 +6224,7 @@ export type AdminEventStoreTransactionsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktio.
+         * A unique integer value identifying this store transaction.
          */
         id: number;
     };
@@ -8531,7 +6244,7 @@ export type AdminEventStoreTransactionsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this transaktio.
+         * A unique integer value identifying this store transaction.
          */
         id: number;
     };
@@ -8601,7 +6314,7 @@ export type AdminEventUploadsFilesDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tiedosto.
+         * A unique integer value identifying this uploaded file.
          */
         id: number;
     };
@@ -8624,7 +6337,7 @@ export type AdminEventUploadsFilesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tiedosto.
+         * A unique integer value identifying this uploaded file.
          */
         id: number;
     };
@@ -8644,7 +6357,7 @@ export type AdminEventUploadsFilesPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tiedosto.
+         * A unique integer value identifying this uploaded file.
          */
         id: number;
     };
@@ -8664,7 +6377,7 @@ export type AdminEventUploadsFilesUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tiedosto.
+         * A unique integer value identifying this uploaded file.
          */
         id: number;
     };
@@ -8729,7 +6442,7 @@ export type AdminEventsDestroyData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this tapahtuma.
+         * A unique integer value identifying this event.
          */
         id: number;
     };
@@ -8751,7 +6464,7 @@ export type AdminEventsRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this tapahtuma.
+         * A unique integer value identifying this event.
          */
         id: number;
     };
@@ -8770,7 +6483,7 @@ export type AdminEventsPartialUpdateData = {
     body?: PatchedEventRequest;
     path: {
         /**
-         * A unique integer value identifying this tapahtuma.
+         * A unique integer value identifying this event.
          */
         id: number;
     };
@@ -8789,7 +6502,7 @@ export type AdminEventsUpdateData = {
     body: EventRequest;
     path: {
         /**
-         * A unique integer value identifying this tapahtuma.
+         * A unique integer value identifying this event.
          */
         id: number;
     };
@@ -9086,7 +6799,7 @@ export type EventUserKompomaattiEntriesDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -9109,7 +6822,7 @@ export type EventUserKompomaattiEntriesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -9129,7 +6842,7 @@ export type EventUserKompomaattiEntriesPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -9149,7 +6862,7 @@ export type EventUserKompomaattiEntriesUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -9215,7 +6928,7 @@ export type EventUserKompomaattiParticipationsDestroyData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -9238,7 +6951,7 @@ export type EventUserKompomaattiParticipationsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -9258,7 +6971,7 @@ export type EventUserKompomaattiParticipationsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -9278,7 +6991,7 @@ export type EventUserKompomaattiParticipationsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -9344,7 +7057,7 @@ export type EventUserKompomaattiTicketVoteCodesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this lippuäänestusavain.
+         * A unique integer value identifying this ticket vote code.
          */
         id: number;
     };
@@ -9379,11 +7092,9 @@ export type EventUserKompomaattiVoteCodeRequestsListData = {
          */
         ordering?: string;
         /**
-         * Tila
-         *
-         * * `0` - Odottaa hyväksyntää
-         * * `1` - Hyväksytty
-         * * `2` - Hylätty
+         * * `0` - Pending approval
+         * * `1` - Approved
+         * * `2` - Rejected
          */
         status?: 0 | 1 | 2;
     };
@@ -9418,7 +7129,7 @@ export type EventUserKompomaattiVoteCodeRequestsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -9438,7 +7149,7 @@ export type EventUserKompomaattiVoteCodeRequestsPartialUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -9458,7 +7169,7 @@ export type EventUserKompomaattiVoteCodeRequestsUpdateData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this äänestyskoodipyyntö.
+         * A unique integer value identifying this vote code request.
          */
         id: number;
     };
@@ -9524,7 +7235,7 @@ export type EventUserKompomaattiVotesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ääniryhmä.
+         * A unique integer value identifying this vote group.
          */
         id: number;
     };
@@ -9625,7 +7336,7 @@ export type PublicBlogEntriesRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this entry.
+         * A unique integer value identifying this blog entry.
          */
         id: number;
     };
@@ -9670,7 +7381,7 @@ export type PublicEventArchiveVideoCategoriesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this videokategoria.
+         * A unique integer value identifying this other video category.
          */
         id: number;
     };
@@ -9715,7 +7426,7 @@ export type PublicEventArchiveVideosRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this muu video.
+         * A unique integer value identifying this other video.
          */
         id: number;
     };
@@ -9760,7 +7471,7 @@ export type PublicEventKompomaattiCompetitionParticipationsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ilmoittautuminen.
+         * A unique integer value identifying this competition participation.
          */
         id: number;
     };
@@ -9805,7 +7516,7 @@ export type PublicEventKompomaattiCompetitionsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kilpailu.
+         * A unique integer value identifying this competition.
          */
         id: number;
     };
@@ -9850,7 +7561,7 @@ export type PublicEventKompomaattiComposRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this kompo.
+         * A unique integer value identifying this compo.
          */
         id: number;
     };
@@ -9899,7 +7610,7 @@ export type PublicEventKompomaattiEntriesRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this tuotos.
+         * A unique integer value identifying this entry.
          */
         id: number;
     };
@@ -9944,7 +7655,7 @@ export type PublicEventProgramEventsRetrieveData = {
     path: {
         event_pk: number;
         /**
-         * A unique integer value identifying this ohjelmatapahtuma.
+         * A unique integer value identifying this programme event.
          */
         id: number;
     };
@@ -9994,7 +7705,7 @@ export type PublicEventsRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this tapahtuma.
+         * A unique integer value identifying this event.
          */
         id: number;
     };
@@ -10069,7 +7780,7 @@ export type PublicStoreItemsRetrieveData = {
     body?: never;
     path: {
         /**
-         * A unique integer value identifying this tuote.
+         * A unique integer value identifying this store item.
          */
         id: number;
     };

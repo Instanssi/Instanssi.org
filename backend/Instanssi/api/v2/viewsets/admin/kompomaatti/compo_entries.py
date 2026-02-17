@@ -5,6 +5,7 @@ from typing import cast
 from django.db.models import QuerySet
 from django.http import StreamingHttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.decorators import action
@@ -61,7 +62,7 @@ class CompoEntryViewSet(PermissionViewSet):
         """Validate that compo belongs to the event in the URL."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
-            raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+            raise serializers.ValidationError({"compo": [_("Compo does not belong to this event")]})
 
     def _refresh_with_annotations(self, serializer: BaseSerializer[Entry]) -> None:
         """Refresh the serializer instance with score/rank annotations."""
@@ -80,7 +81,7 @@ class CompoEntryViewSet(PermissionViewSet):
         assert serializer.instance is not None
         if new_compo := serializer.validated_data.get("compo"):
             if new_compo.id != serializer.instance.compo_id:
-                raise serializers.ValidationError({"compo": ["Cannot change compo after creation"]})
+                raise serializers.ValidationError({"compo": [_("Cannot change compo after creation")]})
         validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)

@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -59,11 +60,11 @@ class UserVoteCodeRequestViewSet(
 
         event = Event.objects.filter(id=event_id, hidden=False).first()
         if not event:
-            raise serializers.ValidationError({"event": ["Event not found."]})
+            raise serializers.ValidationError({"event": [_("Event not found.")]})
 
         if VoteCodeRequest.objects.filter(event_id=event_id, user=user).exists():
             raise serializers.ValidationError(
-                {"non_field_errors": ["You have already requested a vote code for this event"]}
+                {"non_field_errors": [_("You have already requested a vote code for this event")]}
             )
 
         instance = serializer.save(user=user, event=event)

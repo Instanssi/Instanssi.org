@@ -167,7 +167,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this entry.
+        description: A unique integer value identifying this blog entry.
         required: true
       tags:
       - admin
@@ -189,7 +189,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this entry.
+        description: A unique integer value identifying this blog entry.
         required: true
       tags:
       - admin
@@ -223,7 +223,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this entry.
+        description: A unique integer value identifying this blog entry.
         required: true
       tags:
       - admin
@@ -256,7 +256,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this entry.
+        description: A unique integer value identifying this blog entry.
         required: true
       tags:
       - admin
@@ -500,7 +500,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this videokategoria.
+        description: A unique integer value identifying this other video category.
         required: true
       tags:
       - admin
@@ -527,7 +527,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this videokategoria.
+        description: A unique integer value identifying this other video category.
         required: true
       tags:
       - admin
@@ -566,7 +566,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this videokategoria.
+        description: A unique integer value identifying this other video category.
         required: true
       tags:
       - admin
@@ -604,7 +604,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this videokategoria.
+        description: A unique integer value identifying this other video category.
         required: true
       tags:
       - admin
@@ -711,7 +711,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this muu video.
+        description: A unique integer value identifying this other video.
         required: true
       tags:
       - admin
@@ -738,7 +738,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this muu video.
+        description: A unique integer value identifying this other video.
         required: true
       tags:
       - admin
@@ -777,7 +777,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this muu video.
+        description: A unique integer value identifying this other video.
         required: true
       tags:
       - admin
@@ -815,7 +815,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this muu video.
+        description: A unique integer value identifying this other video.
         required: true
       tags:
       - admin
@@ -939,7 +939,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - admin
@@ -969,7 +969,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - admin
@@ -1011,7 +1011,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - admin
@@ -1052,7 +1052,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - admin
@@ -1167,7 +1167,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kilpailu.
+        description: A unique integer value identifying this competition.
         required: true
       tags:
       - admin
@@ -1194,7 +1194,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kilpailu.
+        description: A unique integer value identifying this competition.
         required: true
       tags:
       - admin
@@ -1233,7 +1233,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kilpailu.
+        description: A unique integer value identifying this competition.
         required: true
       tags:
       - admin
@@ -1271,7 +1271,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kilpailu.
+        description: A unique integer value identifying this competition.
         required: true
       tags:
       - admin
@@ -1394,7 +1394,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kompo.
+        description: A unique integer value identifying this compo.
         required: true
       tags:
       - admin
@@ -1421,7 +1421,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kompo.
+        description: A unique integer value identifying this compo.
         required: true
       tags:
       - admin
@@ -1460,7 +1460,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kompo.
+        description: A unique integer value identifying this compo.
         required: true
       tags:
       - admin
@@ -1498,7 +1498,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kompo.
+        description: A unique integer value identifying this compo.
         required: true
       tags:
       - admin
@@ -1622,7 +1622,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - admin
@@ -1653,7 +1653,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - admin
@@ -1693,7 +1693,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - admin
@@ -1732,7 +1732,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - admin
@@ -1868,7 +1868,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this lippuäänestusavain.
+        description: A unique integer value identifying this ticket vote code.
         required: true
       tags:
       - admin
@@ -1920,15 +1920,14 @@ paths:
         name: status
         schema:
           type: integer
-          title: Tila
           enum:
           - 0
           - 1
           - 2
         description: |-
-          * `0` - Odottaa hyväksyntää
-          * `1` - Hyväksytty
-          * `2` - Hylätty
+          * `0` - Pending approval
+          * `1` - Approved
+          * `2` - Rejected
       - in: query
         name: user
         schema:
@@ -1992,7 +1991,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - admin
@@ -2019,7 +2018,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - admin
@@ -2058,7 +2057,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - admin
@@ -2096,7 +2095,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - admin
@@ -2124,15 +2123,12 @@ paths:
         name: event_type
         schema:
           type: integer
-          title: Tapahtuman tyyppi
           enum:
           - 0
           - 1
         description: |-
-          Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-
-          * `0` - Yksinkertainen
-          * `1` - Yksityiskohtainen
+          * `0` - Simple
+          * `1` - Detailed
       - name: limit
         required: false
         in: query
@@ -2213,7 +2209,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ohjelmatapahtuma.
+        description: A unique integer value identifying this programme event.
         required: true
       tags:
       - admin
@@ -2240,7 +2236,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ohjelmatapahtuma.
+        description: A unique integer value identifying this programme event.
         required: true
       tags:
       - admin
@@ -2276,7 +2272,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ohjelmatapahtuma.
+        description: A unique integer value identifying this programme event.
         required: true
       tags:
       - admin
@@ -2311,7 +2307,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ohjelmatapahtuma.
+        description: A unique integer value identifying this programme event.
         required: true
       tags:
       - admin
@@ -2418,7 +2414,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotevariantti.
+        description: A unique integer value identifying this store item variant.
         required: true
       tags:
       - admin
@@ -2445,7 +2441,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotevariantti.
+        description: A unique integer value identifying this store item variant.
         required: true
       tags:
       - admin
@@ -2484,7 +2480,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotevariantti.
+        description: A unique integer value identifying this store item variant.
         required: true
       tags:
       - admin
@@ -2522,7 +2518,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotevariantti.
+        description: A unique integer value identifying this store item variant.
         required: true
       tags:
       - admin
@@ -2638,7 +2634,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuote.
+        description: A unique integer value identifying this store item.
         required: true
       tags:
       - admin
@@ -2665,7 +2661,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuote.
+        description: A unique integer value identifying this store item.
         required: true
       tags:
       - admin
@@ -2701,7 +2697,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuote.
+        description: A unique integer value identifying this store item.
         required: true
       tags:
       - admin
@@ -2736,7 +2732,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuote.
+        description: A unique integer value identifying this store item.
         required: true
       tags:
       - admin
@@ -2860,7 +2856,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kuitti.
+        description: A unique integer value identifying this receipt.
         required: true
       tags:
       - admin
@@ -2891,7 +2887,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kuitti.
+        description: A unique integer value identifying this receipt.
         required: true
       tags:
       - admin
@@ -2934,7 +2930,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kuitti.
+        description: A unique integer value identifying this receipt.
         required: true
       tags:
       - admin
@@ -2976,7 +2972,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kuitti.
+        description: A unique integer value identifying this receipt.
         required: true
       tags:
       - admin
@@ -3000,7 +2996,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kuitti.
+        description: A unique integer value identifying this receipt.
         required: true
       tags:
       - admin
@@ -3158,7 +3154,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktiotuote.
+        description: A unique integer value identifying this transaction item.
         required: true
       tags:
       - admin
@@ -3185,7 +3181,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktiotuote.
+        description: A unique integer value identifying this transaction item.
         required: true
       tags:
       - admin
@@ -3224,7 +3220,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktiotuote.
+        description: A unique integer value identifying this transaction item.
         required: true
       tags:
       - admin
@@ -3262,7 +3258,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktiotuote.
+        description: A unique integer value identifying this transaction item.
         required: true
       tags:
       - admin
@@ -3375,7 +3371,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktio.
+        description: A unique integer value identifying this store transaction.
         required: true
       tags:
       - admin
@@ -3402,7 +3398,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktio.
+        description: A unique integer value identifying this store transaction.
         required: true
       tags:
       - admin
@@ -3441,7 +3437,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktio.
+        description: A unique integer value identifying this store transaction.
         required: true
       tags:
       - admin
@@ -3479,7 +3475,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this transaktio.
+        description: A unique integer value identifying this store transaction.
         required: true
       tags:
       - admin
@@ -3592,7 +3588,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tiedosto.
+        description: A unique integer value identifying this uploaded file.
         required: true
       tags:
       - admin
@@ -3622,7 +3618,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tiedosto.
+        description: A unique integer value identifying this uploaded file.
         required: true
       tags:
       - admin
@@ -3661,7 +3657,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tiedosto.
+        description: A unique integer value identifying this uploaded file.
         required: true
       tags:
       - admin
@@ -3699,7 +3695,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tiedosto.
+        description: A unique integer value identifying this uploaded file.
         required: true
       tags:
       - admin
@@ -3794,7 +3790,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tapahtuma.
+        description: A unique integer value identifying this event.
         required: true
       tags:
       - admin
@@ -3816,7 +3812,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tapahtuma.
+        description: A unique integer value identifying this event.
         required: true
       tags:
       - admin
@@ -3850,7 +3846,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tapahtuma.
+        description: A unique integer value identifying this event.
         required: true
       tags:
       - admin
@@ -3883,7 +3879,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tapahtuma.
+        description: A unique integer value identifying this event.
         required: true
       tags:
       - admin
@@ -4322,7 +4318,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - event
@@ -4352,7 +4348,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - event
@@ -4391,7 +4387,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - event
@@ -4429,7 +4425,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - event
@@ -4542,7 +4538,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - event
@@ -4573,7 +4569,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - event
@@ -4616,7 +4612,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - event
@@ -4658,7 +4654,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - event
@@ -4792,7 +4788,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this lippuäänestusavain.
+        description: A unique integer value identifying this ticket vote code.
         required: true
       tags:
       - event
@@ -4853,15 +4849,14 @@ paths:
         name: status
         schema:
           type: integer
-          title: Tila
           enum:
           - 0
           - 1
           - 2
         description: |-
-          * `0` - Odottaa hyväksyntää
-          * `1` - Hyväksytty
-          * `2` - Hylätty
+          * `0` - Pending approval
+          * `1` - Approved
+          * `2` - Rejected
       tags:
       - event
       security:
@@ -4943,7 +4938,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - event
@@ -4981,7 +4976,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - event
@@ -5031,7 +5026,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this äänestyskoodipyyntö.
+        description: A unique integer value identifying this vote code request.
         required: true
       tags:
       - event
@@ -5189,7 +5184,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ääniryhmä.
+        description: A unique integer value identifying this vote group.
         required: true
       tags:
       - event
@@ -5227,7 +5222,14 @@ paths:
           description: ''
     post:
       operationId: notifications_subscriptions_create
-      description: Create or update a push subscription (upsert by endpoint).
+      description: |-
+        Create or update a push subscription (upsert by endpoint).
+
+        A push endpoint is a browser-level resource — the same physical push channel
+        regardless of which user subscribed. The lookup uses endpoint alone (matching
+        the model's unique constraint) so that if a different user subscribes from the
+        same browser, the subscription is reassigned to them rather than creating a
+        duplicate that would cause the browser to show the same notification twice.
       tags:
       - notifications
       requestBody:
@@ -5330,7 +5332,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this entry.
+        description: A unique integer value identifying this blog entry.
         required: true
       tags:
       - public
@@ -5396,7 +5398,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this videokategoria.
+        description: A unique integer value identifying this other video category.
         required: true
       tags:
       - public
@@ -5458,7 +5460,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this muu video.
+        description: A unique integer value identifying this other video.
         required: true
       tags:
       - public
@@ -5524,7 +5526,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ilmoittautuminen.
+        description: A unique integer value identifying this competition participation.
         required: true
       tags:
       - public
@@ -5586,7 +5588,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kilpailu.
+        description: A unique integer value identifying this competition.
         required: true
       tags:
       - public
@@ -5646,7 +5648,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this kompo.
+        description: A unique integer value identifying this compo.
         required: true
       tags:
       - public
@@ -5724,7 +5726,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuotos.
+        description: A unique integer value identifying this entry.
         required: true
       tags:
       - public
@@ -5786,7 +5788,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this ohjelmatapahtuma.
+        description: A unique integer value identifying this programme event.
         required: true
       tags:
       - public
@@ -5852,7 +5854,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tapahtuma.
+        description: A unique integer value identifying this event.
         required: true
       tags:
       - public
@@ -5871,10 +5873,6 @@ paths:
       description: Returns the VAPID public key for push subscriptions.
       tags:
       - public
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -5970,7 +5968,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: A unique integer value identifying this tuote.
+        description: A unique integer value identifying this store item.
         required: true
       tags:
       - public
@@ -6270,28 +6268,19 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Käyttäjä
         date:
           type: string
           format: date-time
           readOnly: true
-          title: Aika
         title:
           type: string
-          title: Otsikko
-          description: Lyhyt otsikko entrylle.
           maxLength: 128
         text:
           type: string
-          title: Teksti
         public:
           type: boolean
-          title: Julkinen
-          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
-            sivuille että RSS-syötteeseen.
         event:
           type: integer
-          title: Tapahtuma
         created_by:
           type: string
           readOnly: true
@@ -6313,21 +6302,14 @@ components:
         title:
           type: string
           minLength: 1
-          title: Otsikko
-          description: Lyhyt otsikko entrylle.
           maxLength: 128
         text:
           type: string
           minLength: 1
-          title: Teksti
         public:
           type: boolean
-          title: Julkinen
-          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
-            sivuille että RSS-syötteeseen.
         event:
           type: integer
-          title: Tapahtuma
       required:
       - event
       - text
@@ -6342,62 +6324,39 @@ components:
         event:
           type: integer
           readOnly: true
-          title: Tapahtuma
-          description: Tapahtuma johon kilpailu kuuluu
         name:
           type: string
-          title: Nimi
-          description: Kilpailun nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
-          title: Kuvaus
         participation_end:
           type: string
           format: date-time
-          title: Deadline osallistumiselle.
-          description: Tämän jälkeen kilpailuun ei voi enää osallistua.
+          title: Participation deadline
         start:
           type: string
           format: date-time
-          title: Kilpailun alku
-          description: Kilpailun aloitusaika.
+          title: Competition start
         end:
           type: string
           format: date-time
           nullable: true
-          title: Kilpailun loppu
-          description: Kilpailun päättymisaika.
+          title: Competition end
         score_type:
           type: string
-          title: Pisteiden tyyppi
-          description: Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
           maxLength: 8
         score_sort:
           allOf:
           - $ref: '#/components/schemas/ScoreSortEnum'
-          title: Pisteiden järjestely
-          description: |-
-            Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-
-            * `0` - Korkein tulos ensin
-            * `1` - Matalin tulos ensin
+          title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         show_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä kilpailun tulokset.
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa
-            kaikille.
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa
-            eventin asetuksen.
       required:
       - description
       - event
@@ -6418,29 +6377,19 @@ components:
           readOnly: true
         competition:
           type: integer
-          title: Kilpailu
-          description: Kilpailu johon osallistuttu
         user:
           type: integer
-          title: Käyttäjä
-          description: Osallistuja
         participant_name:
           type: string
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
         score:
           type: number
           format: double
-          title: Pisteet
-          description: Kilpailijan saavuttamat pisteet
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
         disqualified_reason:
           type: string
-          title: Diskauksen syy
+          title: Disqualification reason
         computed_rank:
           type: integer
           readOnly: true
@@ -6458,30 +6407,20 @@ components:
       properties:
         competition:
           type: integer
-          title: Kilpailu
-          description: Kilpailu johon osallistuttu
         user:
           type: integer
-          title: Käyttäjä
-          description: Osallistuja
         participant_name:
           type: string
           minLength: 1
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
         score:
           type: number
           format: double
-          title: Pisteet
-          description: Kilpailijan saavuttamat pisteet
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
         disqualified_reason:
           type: string
-          title: Diskauksen syy
+          title: Disqualification reason
       required:
       - competition
       - user
@@ -6492,60 +6431,39 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kilpailun nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
           minLength: 1
-          title: Kuvaus
         participation_end:
           type: string
           format: date-time
-          title: Deadline osallistumiselle.
-          description: Tämän jälkeen kilpailuun ei voi enää osallistua.
+          title: Participation deadline
         start:
           type: string
           format: date-time
-          title: Kilpailun alku
-          description: Kilpailun aloitusaika.
+          title: Competition start
         end:
           type: string
           format: date-time
           nullable: true
-          title: Kilpailun loppu
-          description: Kilpailun päättymisaika.
+          title: Competition end
         score_type:
           type: string
           minLength: 1
-          title: Pisteiden tyyppi
-          description: Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
           maxLength: 8
         score_sort:
           allOf:
           - $ref: '#/components/schemas/ScoreSortEnum'
-          title: Pisteiden järjestely
-          description: |-
-            Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-
-            * `0` - Korkein tulos ensin
-            * `1` - Matalin tulos ensin
+          title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         show_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä kilpailun tulokset.
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa
-            kaikille.
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa
-            eventin asetuksen.
       required:
       - description
       - name
@@ -6562,74 +6480,54 @@ components:
         event:
           type: integer
           readOnly: true
-          title: Tapahtuma
-          description: Tapahtuma johon kompo kuuluu
         name:
           type: string
-          title: Nimi
-          description: Kompon nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
-          title: Kuvaus
         adding_end:
           type: string
           format: date-time
-          title: Deadline entryjen lisäyksille
-          description: Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus
-            toimii vielä.
+          title: Entry adding deadline
         editing_end:
           type: string
           format: date-time
-          title: Deadline entryjen muokkauksille
-          description: Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi
-            enää muokata.
+          title: Entry editing deadline
         compo_start:
           type: string
           format: date-time
-          title: Kompon aloitusaika
-          description: Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+          title: Compo start time
         voting_start:
           type: string
           format: date-time
-          title: Äänestyksen alkamisaika
-          description: Alkamisaika entryjen äänestykselle.
+          title: Voting start time
         voting_end:
           type: string
           format: date-time
-          title: Äänestyksen päättymisaika
-          description: Päättymisaika entryjen äänestykselle.
+          title: Voting end time
         entry_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja entryille
-          description: Kokoraja entrytiedostoille (tavua).
+          title: Entry size limit
         source_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja sorsille
-          description: Kokoraja sorsatiedostoille (tavua).
+          title: Source size limit
         formats:
           type: string
-          title: Sallitut tiedostopäätteet
-          description: Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna,
-            esim. "png|jpg".
+          title: Allowed file extensions
           maxLength: 128
         source_formats:
           type: string
-          title: Sallitut lähdekoodipaketin päätteet
-          description: Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed source package extensions
           maxLength: 128
         image_formats:
           type: string
-          title: Sallitut kuvatiedoston päätteet
-          description: Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed image file extensions
           maxLength: 128
         max_source_size:
           type: integer
@@ -6654,50 +6552,27 @@ components:
           readOnly: true
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
         show_voting_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä äänestustulokset.
+          title: Show results
         entry_view_type:
           allOf:
           - $ref: '#/components/schemas/EntryViewTypeEnum'
-          title: Entryesittely
-          description: |-
-            Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-
-            * `0` - Ei mitään
-            * `1` - Youtube ensin, sitten kuva
-            * `2` - Vain kuva
-            * `3` - (deprecated)
+          title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman
-            tiedoissa valitun asetuksen.
         hide_from_frontpage:
           type: boolean
-          title: Piilotus etusivulta
-          description: Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta.
-            Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+          title: Hide from front page
         is_votable:
           type: boolean
-          title: Äänestettävissä
-          description: Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
-          title: Pikkukuvan asetukset
-          description: |-
-            Pikkukuvan luonti ja asettaminen.
-
-            * `0` - Vaadi erillinen pikkukuva.
-            * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-            * `2` - Salli pikkukuva (ei vaadittu).
-            * `3` - Älä salli pikkukuvaa.
+          title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -6724,50 +6599,34 @@ components:
           readOnly: true
         user:
           type: integer
-          title: Käyttäjä
-          description: Käyttäjä jolle entry kuuluu
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile:
           type: string
           format: uri
-          title: Tiedosto
-          description: Tuotospaketti.
+          title: File
         sourcefile:
           type: string
           format: uri
           nullable: true
-          title: Lähdekoodi
-          description: Lähdekoodipaketti.
+          title: Source code
         imagefile_original:
           type: string
           format: uri
           nullable: true
-          title: Kuva
-          description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+          title: Image
         entryfile_url:
           type: string
           nullable: true
@@ -6793,29 +6652,21 @@ components:
           nullable: true
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Entry on diskattu sääntörikon tai teknisten ongelmien takia.
-            DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
         disqualified_reason:
           type: string
-          title: Syy diskaukseen
-          description: Diskauksen syy.
+          title: Disqualification reason
         archive_score:
           type: number
           format: double
           nullable: true
-          title: Pisteet
-          description: Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei
-            määritetä, lasketaan pisteet suoraan äänestystuloksista.
+          title: Score
         archive_rank:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
           nullable: true
-          title: Sijoitus
-          description: Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea
-            myös pistemääristä automaattisesti.
+          title: Rank
         computed_score:
           type: number
           format: double
@@ -6854,81 +6705,57 @@ components:
       properties:
         user:
           type: integer
-          title: Käyttäjä
-          description: Käyttäjä jolle entry kuuluu
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
           minLength: 1
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile:
           type: string
           format: binary
-          title: Tiedosto
-          description: Tuotospaketti.
+          title: File
         sourcefile:
           type: string
           format: binary
           nullable: true
-          title: Lähdekoodi
-          description: Lähdekoodipaketti.
+          title: Source code
         imagefile_original:
           type: string
           format: binary
           nullable: true
-          title: Kuva
-          description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+          title: Image
         youtube_url:
           type: string
           nullable: true
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Entry on diskattu sääntörikon tai teknisten ongelmien takia.
-            DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
         disqualified_reason:
           type: string
-          title: Syy diskaukseen
-          description: Diskauksen syy.
+          title: Disqualification reason
         archive_score:
           type: number
           format: double
           nullable: true
-          title: Pisteet
-          description: Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei
-            määritetä, lasketaan pisteet suoraan äänestystuloksista.
+          title: Score
         archive_rank:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
           nullable: true
-          title: Sijoitus
-          description: Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea
-            myös pistemääristä automaattisesti.
+          title: Rank
       required:
       - compo
       - creator
@@ -6943,121 +6770,80 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kompon nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
           minLength: 1
-          title: Kuvaus
         adding_end:
           type: string
           format: date-time
-          title: Deadline entryjen lisäyksille
-          description: Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus
-            toimii vielä.
+          title: Entry adding deadline
         editing_end:
           type: string
           format: date-time
-          title: Deadline entryjen muokkauksille
-          description: Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi
-            enää muokata.
+          title: Entry editing deadline
         compo_start:
           type: string
           format: date-time
-          title: Kompon aloitusaika
-          description: Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+          title: Compo start time
         voting_start:
           type: string
           format: date-time
-          title: Äänestyksen alkamisaika
-          description: Alkamisaika entryjen äänestykselle.
+          title: Voting start time
         voting_end:
           type: string
           format: date-time
-          title: Äänestyksen päättymisaika
-          description: Päättymisaika entryjen äänestykselle.
+          title: Voting end time
         entry_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja entryille
-          description: Kokoraja entrytiedostoille (tavua).
+          title: Entry size limit
         source_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja sorsille
-          description: Kokoraja sorsatiedostoille (tavua).
+          title: Source size limit
         formats:
           type: string
           minLength: 1
-          title: Sallitut tiedostopäätteet
-          description: Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna,
-            esim. "png|jpg".
+          title: Allowed file extensions
           maxLength: 128
         source_formats:
           type: string
           minLength: 1
-          title: Sallitut lähdekoodipaketin päätteet
-          description: Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed source package extensions
           maxLength: 128
         image_formats:
           type: string
           minLength: 1
-          title: Sallitut kuvatiedoston päätteet
-          description: Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed image file extensions
           maxLength: 128
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
         show_voting_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä äänestustulokset.
+          title: Show results
         entry_view_type:
           allOf:
           - $ref: '#/components/schemas/EntryViewTypeEnum'
-          title: Entryesittely
-          description: |-
-            Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-
-            * `0` - Ei mitään
-            * `1` - Youtube ensin, sitten kuva
-            * `2` - Vain kuva
-            * `3` - (deprecated)
+          title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman
-            tiedoissa valitun asetuksen.
         hide_from_frontpage:
           type: boolean
-          title: Piilotus etusivulta
-          description: Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta.
-            Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+          title: Hide from front page
         is_votable:
           type: boolean
-          title: Äänestettävissä
-          description: Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
-          title: Pikkukuvan asetukset
-          description: |-
-            Pikkukuvan luonti ja asettaminen.
-
-            * `0` - Vaadi erillinen pikkukuva.
-            * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-            * `2` - Salli pikkukuva (ei vaadittu).
-            * `3` - Älä salli pikkukuvaa.
+          title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -7596,9 +7382,9 @@ components:
       - 3
       type: integer
       description: |-
-        * `0` - Ei mitään
-        * `1` - Youtube ensin, sitten kuva
-        * `2` - Vain kuva
+        * `0` - Nothing
+        * `1` - Youtube first, then image
+        * `2` - Image only
         * `3` - (deprecated)
     Event:
       type: object
@@ -7609,33 +7395,23 @@ components:
           readOnly: true
         name:
           type: string
-          title: Nimi
-          description: Tapahtuman nimi
           maxLength: 64
         tag:
           type: string
           nullable: true
-          title: Lyhyt esitys
-          description: Lyhyt nimi, eg. vuosi
+          title: Short tag
           maxLength: 8
         date:
           type: string
           format: date
-          title: Päivämäärä
-          description: Tapahtuman päivämäärä (alku)
         archived:
           type: boolean
-          title: Arkistoitu
-          description: Saa näyttää arkistossa
         hidden:
           type: boolean
-          title: Piilotettu
-          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri
-          title: Tapahtuman pääsivu
-          description: URL Tapahtuman pääsivustolle
+          title: Event main page
           maxLength: 200
       required:
       - date
@@ -7648,34 +7424,24 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Tapahtuman nimi
           maxLength: 64
         tag:
           type: string
           nullable: true
           minLength: 1
-          title: Lyhyt esitys
-          description: Lyhyt nimi, eg. vuosi
+          title: Short tag
           maxLength: 8
         date:
           type: string
           format: date
-          title: Päivämäärä
-          description: Tapahtuman päivämäärä (alku)
         archived:
           type: boolean
-          title: Arkistoitu
-          description: Saa näyttää arkistossa
         hidden:
           type: boolean
-          title: Piilotettu
-          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri
-          title: Tapahtuman pääsivu
-          description: URL Tapahtuman pääsivustolle
+          title: Event main page
           maxLength: 200
       required:
       - date
@@ -7686,8 +7452,8 @@ components:
       - 1
       type: integer
       description: |-
-        * `0` - Yksinkertainen
-        * `1` - Yksityiskohtainen
+        * `0` - Simple
+        * `1` - Detailed
     Group:
       type: object
       description: Serializer for user groups (used in user info responses).
@@ -7776,21 +7542,20 @@ components:
         subject:
           type: string
           readOnly: true
-          title: Aihe
         mail_to:
           type: string
           readOnly: true
-          title: Vastaanottajan osoite
+          title: Recipient address
         mail_from:
           type: string
           readOnly: true
-          title: Lähettäjän osoite
+          title: Sender address
         sent:
           type: string
           format: date-time
           readOnly: true
           nullable: true
-          title: Lähetysaika
+          title: Sent at
         is_sent:
           type: boolean
           readOnly: true
@@ -7798,7 +7563,7 @@ components:
           type: string
           readOnly: true
           nullable: true
-          title: Kuitin sisältö
+          title: Receipt content
       required:
       - content
       - id
@@ -7816,16 +7581,11 @@ components:
           readOnly: true
         category:
           type: integer
-          title: Kategoria
         name:
           type: string
-          title: Nimi
-          description: Videon nimi.
           maxLength: 64
         description:
           type: string
-          title: Kuvaus
-          description: Videon kuvaus.
         youtube_url:
           type: string
           nullable: true
@@ -7845,11 +7605,8 @@ components:
         event:
           type: integer
           readOnly: true
-          title: Tapahtuma
         name:
           type: string
-          title: Nimi
-          description: Kategorian nimi
           maxLength: 64
       required:
       - event
@@ -7862,8 +7619,6 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kategorian nimi
           maxLength: 64
       required:
       - name
@@ -7873,18 +7628,13 @@ components:
       properties:
         category:
           type: integer
-          title: Kategoria
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Videon nimi.
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Videon kuvaus.
         youtube_url:
           type: string
           nullable: true
@@ -8731,21 +8481,14 @@ components:
         title:
           type: string
           minLength: 1
-          title: Otsikko
-          description: Lyhyt otsikko entrylle.
           maxLength: 128
         text:
           type: string
           minLength: 1
-          title: Teksti
         public:
           type: boolean
-          title: Julkinen
-          description: Mikäli entry on julkinen, tulee se näkyviin sekä tapahtuman
-            sivuille että RSS-syötteeseen.
         event:
           type: integer
-          title: Tapahtuma
     PatchedCompetitionParticipationRequest:
       type: object
       description: |-
@@ -8755,30 +8498,20 @@ components:
       properties:
         competition:
           type: integer
-          title: Kilpailu
-          description: Kilpailu johon osallistuttu
         user:
           type: integer
-          title: Käyttäjä
-          description: Osallistuja
         participant_name:
           type: string
           minLength: 1
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
         score:
           type: number
           format: double
-          title: Pisteet
-          description: Kilpailijan saavuttamat pisteet
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Suoritus on diskattu sääntörikon tai teknisten virheiden takia.
         disqualified_reason:
           type: string
-          title: Diskauksen syy
+          title: Disqualification reason
     PatchedCompetitionRequest:
       type: object
       description: Staff serializer for competitions.
@@ -8786,141 +8519,96 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kilpailun nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
           minLength: 1
-          title: Kuvaus
         participation_end:
           type: string
           format: date-time
-          title: Deadline osallistumiselle.
-          description: Tämän jälkeen kilpailuun ei voi enää osallistua.
+          title: Participation deadline
         start:
           type: string
           format: date-time
-          title: Kilpailun alku
-          description: Kilpailun aloitusaika.
+          title: Competition start
         end:
           type: string
           format: date-time
           nullable: true
-          title: Kilpailun loppu
-          description: Kilpailun päättymisaika.
+          title: Competition end
         score_type:
           type: string
           minLength: 1
-          title: Pisteiden tyyppi
-          description: Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
           maxLength: 8
         score_sort:
           allOf:
           - $ref: '#/components/schemas/ScoreSortEnum'
-          title: Pisteiden järjestely
-          description: |-
-            Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-
-            * `0` - Korkein tulos ensin
-            * `1` - Matalin tulos ensin
+          title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         show_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä kilpailun tulokset.
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kilpailu aktiivinen, eli näytetäänkö se kompomaatissa
-            kaikille.
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilotetaanko kilpailun tulokset arkistosta ? Tämä ylikirjoittaa
-            eventin asetuksen.
     PatchedCompoEntryRequest:
       type: object
       description: Staff serializer for compo entries.
       properties:
         user:
           type: integer
-          title: Käyttäjä
-          description: Käyttäjä jolle entry kuuluu
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
           minLength: 1
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile:
           type: string
           format: binary
-          title: Tiedosto
-          description: Tuotospaketti.
+          title: File
         sourcefile:
           type: string
           format: binary
           nullable: true
-          title: Lähdekoodi
-          description: Lähdekoodipaketti.
+          title: Source code
         imagefile_original:
           type: string
           format: binary
           nullable: true
-          title: Kuva
-          description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+          title: Image
         youtube_url:
           type: string
           nullable: true
         disqualified:
           type: boolean
-          title: Diskattu
-          description: Entry on diskattu sääntörikon tai teknisten ongelmien takia.
-            DISKAUS ON TEHTÄVÄ ENNEN ÄÄNESTYKSEN ALKUA!
         disqualified_reason:
           type: string
-          title: Syy diskaukseen
-          description: Diskauksen syy.
+          title: Disqualification reason
         archive_score:
           type: number
           format: double
           nullable: true
-          title: Pisteet
-          description: Arkistoidun entryn kompossa saamat pisteet. Mikäli tätä ei
-            määritetä, lasketaan pisteet suoraan äänestystuloksista.
+          title: Score
         archive_rank:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
           nullable: true
-          title: Sijoitus
-          description: Arkistoidun entryn kompossa saama sijoitus. Tämä voidaan laskea
-            myös pistemääristä automaattisesti.
+          title: Rank
     PatchedCompoRequest:
       type: object
       description: Staff serializer for compos.
@@ -8928,121 +8616,80 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kompon nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
           minLength: 1
-          title: Kuvaus
         adding_end:
           type: string
           format: date-time
-          title: Deadline entryjen lisäyksille
-          description: Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus
-            toimii vielä.
+          title: Entry adding deadline
         editing_end:
           type: string
           format: date-time
-          title: Deadline entryjen muokkauksille
-          description: Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi
-            enää muokata.
+          title: Entry editing deadline
         compo_start:
           type: string
           format: date-time
-          title: Kompon aloitusaika
-          description: Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+          title: Compo start time
         voting_start:
           type: string
           format: date-time
-          title: Äänestyksen alkamisaika
-          description: Alkamisaika entryjen äänestykselle.
+          title: Voting start time
         voting_end:
           type: string
           format: date-time
-          title: Äänestyksen päättymisaika
-          description: Päättymisaika entryjen äänestykselle.
+          title: Voting end time
         entry_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja entryille
-          description: Kokoraja entrytiedostoille (tavua).
+          title: Entry size limit
         source_sizelimit:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kokoraja sorsille
-          description: Kokoraja sorsatiedostoille (tavua).
+          title: Source size limit
         formats:
           type: string
           minLength: 1
-          title: Sallitut tiedostopäätteet
-          description: Entrypaketille sallitut tiedostopäätteet pystyviivalla eroteltuna,
-            esim. "png|jpg".
+          title: Allowed file extensions
           maxLength: 128
         source_formats:
           type: string
           minLength: 1
-          title: Sallitut lähdekoodipaketin päätteet
-          description: Entryn lähdekoodipaketille sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed source package extensions
           maxLength: 128
         image_formats:
           type: string
           minLength: 1
-          title: Sallitut kuvatiedoston päätteet
-          description: Entryn pikkukuvalle sallitut tiedostopäätteet pystyviivalla
-            eroteltuna
+          title: Allowed image file extensions
           maxLength: 128
         active:
           type: boolean
-          title: Aktiivinen
-          description: Onko kompo aktiivinen, eli näytetäänkö se kompomaatissa kaikille.
         show_voting_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä äänestustulokset.
+          title: Show results
         entry_view_type:
           allOf:
           - $ref: '#/components/schemas/EntryViewTypeEnum'
-          title: Entryesittely
-          description: |-
-            Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-
-            * `0` - Ei mitään
-            * `1` - Youtube ensin, sitten kuva
-            * `2` - Vain kuva
-            * `3` - (deprecated)
+          title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         hide_from_archive:
           type: boolean
-          title: Piilotus arkistosta
-          description: Piilottaa kompon tulokset arkistosta. Tämä asetus ohittaa tapahtuman
-            tiedoissa valitun asetuksen.
         hide_from_frontpage:
           type: boolean
-          title: Piilotus etusivulta
-          description: Piilottaa kompon nimen ja kuvauksen tapahtuman etusivulta.
-            Käytä esim. jos kompon kuvaus on vielä suunnitteilla.
+          title: Hide from front page
         is_votable:
           type: boolean
-          title: Äänestettävissä
-          description: Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
-          title: Pikkukuvan asetukset
-          description: |-
-            Pikkukuvan luonti ja asettaminen.
-
-            * `0` - Vaadi erillinen pikkukuva.
-            * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-            * `2` - Salli pikkukuva (ei vaadittu).
-            * `3` - Älä salli pikkukuvaa.
+          title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
     PatchedEventRequest:
@@ -9052,34 +8699,24 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Tapahtuman nimi
           maxLength: 64
         tag:
           type: string
           nullable: true
           minLength: 1
-          title: Lyhyt esitys
-          description: Lyhyt nimi, eg. vuosi
+          title: Short tag
           maxLength: 8
         date:
           type: string
           format: date
-          title: Päivämäärä
-          description: Tapahtuman päivämäärä (alku)
         archived:
           type: boolean
-          title: Arkistoitu
-          description: Saa näyttää arkistossa
         hidden:
           type: boolean
-          title: Piilotettu
-          description: Piilottaa tapahtuman julkisesta ja käyttäjä-API:sta
         mainurl:
           type: string
           format: uri
-          title: Tapahtuman pääsivu
-          description: URL Tapahtuman pääsivustolle
+          title: Event main page
           maxLength: 200
     PatchedOtherVideoCategoryRequest:
       type: object
@@ -9088,8 +8725,6 @@ components:
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Kategorian nimi
           maxLength: 64
     PatchedOtherVideoRequest:
       type: object
@@ -9097,18 +8732,13 @@ components:
       properties:
         category:
           type: integer
-          title: Kategoria
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Videon nimi.
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Videon kuvaus.
         youtube_url:
           type: string
           nullable: true
@@ -9119,105 +8749,74 @@ components:
         start:
           type: string
           format: date-time
-          title: Alku
-          description: Tapahtuman alkamisaika.
         end:
           type: string
           format: date-time
           nullable: true
-          title: Loppu
-          description: Tapahtuman loppumisaika.
         title:
           type: string
           minLength: 1
-          title: Otsikko
-          description: Lyhyt otsikko.
           maxLength: 128
         description:
           type: string
-          title: Kuvaus
         presenters:
           type: string
-          title: Henkilöt
-          description: Esityksen pitäjät tms.
           maxLength: 256
         presenters_titles:
           type: string
-          title: Nimikkeet
-          description: Henkilön arvo-, ammatti- tai virkanimike.
+          title: Titles
           maxLength: 256
         place:
           type: string
-          title: Paikka
-          description: Tarkka paikka tapahtuma-areenalla
           maxLength: 64
         icon_original:
           type: string
           format: binary
-          title: Kuva 1
-          description: Kuva 1 tapahtumalle.
+          title: Image 1
         icon2_original:
           type: string
           format: binary
-          title: Kuva 2
-          description: Kuva 2 tapahtumalle.
+          title: Image 2
         email:
           type: string
           format: email
-          title: Sähköposti
-          description: Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
           maxLength: 254
         home_url:
           type: string
           format: uri
-          title: Kotiurli
-          description: Tapahtumaan liittyvä URL.
           maxLength: 200
         twitter_url:
           type: string
           format: uri
           title: Twitter
-          description: Tapahtumaan liittyvä Twitter-url.
           maxLength: 200
         github_url:
           type: string
           format: uri
           title: Github
-          description: Tapahtumaan liittyvä Github-url
           maxLength: 200
         facebook_url:
           type: string
           format: uri
           title: Facebook
-          description: Tapahtumaan liittyvä facebook-url.
           maxLength: 200
         linkedin_url:
           type: string
           format: uri
           title: LinkedIn
-          description: Tapahtumaan liittyvä LinkedIn-url.
           maxLength: 200
         wiki_url:
           type: string
           format: uri
           title: Wikipedia
-          description: Tapahtumaan liittyvä Wikipedia-url.
           maxLength: 200
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
-          title: Tapahtuman tyyppi
-          description: |-
-            Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-
-            * `0` - Yksinkertainen
-            * `1` - Yksityiskohtainen
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
           type: boolean
-          title: Aktiivinen
-          description: Deaktivoidut piilotetaan.
     PatchedReceiptRequest:
       type: object
       description: Serializer for Receipt model (staff access).
@@ -9228,28 +8827,27 @@ components:
         subject:
           type: string
           minLength: 1
-          title: Aihe
           maxLength: 256
         mail_to:
           type: string
           minLength: 1
-          title: Vastaanottajan osoite
+          title: Recipient address
           maxLength: 256
         mail_from:
           type: string
           minLength: 1
-          title: Lähettäjän osoite
+          title: Sender address
           maxLength: 256
         params:
           type: string
           nullable: true
           minLength: 1
-          title: Lähetysparametrit
+          title: Send parameters
         content:
           type: string
           nullable: true
           minLength: 1
-          title: Kuitin sisältö
+          title: Receipt content
     PatchedStoreItemRequest:
       type: object
       description: Staff serializer for StoreItem model.
@@ -9257,82 +8855,62 @@ components:
         name:
           type: string
           minLength: 1
-          title: Tuotteen nimi
-          description: Tuotteen lyhyt nimi.
+          title: Product name
           maxLength: 255
         description:
           type: string
           minLength: 1
-          title: Tuotteen kuvaus
-          description: Tuotteen pitkä kuvaus.
+          title: Product description
         price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta.
+          title: Product price
         max:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kappaletta saatavilla
-          description: Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+          title: Available quantity
         available:
           type: boolean
-          title: Ostettavissa
-          description: Ilmoittaa, näkyykö tuote kaupassa.
+          title: Available for purchase
         imagefile_original:
           type: string
           format: binary
           nullable: true
-          title: Tuotekuva
-          description: Edustava kuva tuotteelle.
+          title: Product image
         max_per_order:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Maksimi per tilaus
-          description: Kuinka monta kappaletta voidaan ostaa kerralla.
+          title: Maximum per order
         sort_index:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Järjestysarvo
-          description: Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä,
-            pienempilukuiset ensin.
+          title: Sort order
         discount_amount:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusmäärä
-          description: Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei
-            mitään)
+          title: Discount threshold
         discount_percentage:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusprosentti
-          description: Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa
-            alennusmäärän.
         is_ticket:
           type: boolean
-          title: Tuote on lipputuote
-          description: Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa
-            äänestysoikeuden hankkimiseen
+          title: Product is a ticket
         is_secret:
           type: boolean
-          title: Tuote on salainen
-          description: Tuote näkyy kaupassa vain salaisella linkillä
+          title: Product is secret
         secret_key:
           type: string
-          title: Salasana
-          description: Salaisen linkin avain. Jos salasana on kissa, salainen tuote
-            näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
           maxLength: 255
     PatchedStoreItemVariantRequest:
       type: object
@@ -9343,7 +8921,7 @@ components:
         name:
           type: string
           minLength: 1
-          title: Tuotevariantin nimi
+          title: Variant name
           maxLength: 32
     PatchedStoreTransactionRequest:
       type: object
@@ -9353,112 +8931,98 @@ components:
           type: string
           format: date-time
           nullable: true
-          title: Luontiaika
+          title: Created at
         time_paid:
           type: string
           format: date-time
           nullable: true
-          title: Maksun varmistumisaika
+          title: Payment confirmed at
         time_pending:
           type: string
           format: date-time
           nullable: true
-          title: Maksun maksuaika
+          title: Payment initiated at
         time_cancelled:
           type: string
           format: date-time
           nullable: true
-          title: Peruutusaika
+          title: Cancelled at
         payment_method_name:
           type: string
-          title: Maksutapa
-          description: Tapa jolla tilaus maksettiin
+          title: Payment method
           maxLength: 32
         firstname:
           type: string
           minLength: 1
-          title: Etunimi
+          title: First name
           maxLength: 64
         lastname:
           type: string
           minLength: 1
-          title: Sukunimi
+          title: Last name
           maxLength: 64
         company:
           type: string
-          title: Yritys
           maxLength: 128
         email:
           type: string
           format: email
           minLength: 1
-          title: Sähköposti
-          description: Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden
-            lunastukseen tarvittavat koodit lähetetään sinne.
           maxLength: 255
         telephone:
           type: string
-          title: Puhelinnumero
           maxLength: 64
         mobile:
           type: string
-          title: Matkapuhelin
+          title: Mobile phone
           maxLength: 64
         street:
           type: string
           minLength: 1
-          title: Katuosoite
-          description: Katusoite tarvitaan maksupalvelun vaatimuksesta.
+          title: Street address
           maxLength: 128
         postalcode:
           type: string
           minLength: 1
-          title: Postinumero
+          title: Postal code
           maxLength: 16
         city:
           type: string
           minLength: 1
-          title: Postitoimipaikka
           maxLength: 64
         country:
-          allOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          title: Maa
+          $ref: '#/components/schemas/CountryEnum'
         information:
           type: string
-          title: Lisätiedot
-          description: Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+          title: Additional information
     PatchedTransactionItemRequest:
       type: object
       description: Serializer for TransactionItem model (staff access).
       properties:
         item:
           type: integer
-          title: Tuote
+          title: Product
         variant:
           type: integer
           nullable: true
-          title: Tuotevariantti
+          title: Product variant
         transaction:
           type: integer
-          title: Ostotapahtuma
         time_delivered:
           type: string
           format: date-time
           nullable: true
-          title: Toimitusaika
+          title: Delivery time
         purchase_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta ostoshetkellä
+          title: Product price
         original_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen alkuperäinen hinta
-          description: Tuotteen hinta ostoshetkellä ilman alennuksia
+          title: Original product price
     PatchedUploadedFileRequest:
       type: object
       description: Staff serializer for uploaded files.
@@ -9466,15 +9030,11 @@ components:
         user:
           type: integer
           nullable: true
-          title: Käyttäjä
         description:
           type: string
-          title: Kuvaus
-          description: Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
         file:
           type: string
           format: binary
-          title: Tiedosto
     PatchedUserCompetitionParticipationRequest:
       type: object
       description: User serializer for managing own competition participations.
@@ -9484,8 +9044,6 @@ components:
         participant_name:
           type: string
           minLength: 1
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
     PatchedUserCompoEntryRequest:
       type: object
@@ -9493,52 +9051,38 @@ components:
       properties:
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
           minLength: 1
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile:
           type: string
           format: binary
           writeOnly: true
-          title: Tiedosto
-          description: Tuotospaketti.
+          title: File
         sourcefile:
           type: string
           format: binary
           writeOnly: true
           nullable: true
-          title: Lähdekoodi
-          description: Lähdekoodipaketti.
+          title: Source code
         imagefile_original:
           type: string
           format: binary
           writeOnly: true
           nullable: true
-          title: Kuva
-          description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+          title: Image
         youtube_url:
           type: string
           nullable: true
@@ -9558,7 +9102,7 @@ components:
           - $ref: '#/components/schemas/BlankEnum'
         notify_vote_code_requests:
           type: boolean
-        notify_programme_events:
+        notify_program_events:
           type: boolean
         notify_compo_starts:
           type: boolean
@@ -9618,25 +9162,20 @@ components:
         text:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
     PatchedVoteCodeRequestRequest:
       type: object
       description: Staff serializer for vote code requests.
       properties:
         user:
           type: integer
-          title: Käyttäjä
-          description: Pyynnön esittänyt käyttäjä
         text:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
-          title: Tila
           minimum: -9223372036854775808
           maximum: 9223372036854775807
     PaymentMethodEnum:
@@ -9657,46 +9196,32 @@ components:
         event:
           type: integer
           readOnly: true
-          title: Tapahtuma
         start:
           type: string
           format: date-time
-          title: Alku
-          description: Tapahtuman alkamisaika.
         end:
           type: string
           format: date-time
           nullable: true
-          title: Loppu
-          description: Tapahtuman loppumisaika.
         title:
           type: string
-          title: Otsikko
-          description: Lyhyt otsikko.
           maxLength: 128
         description:
           type: string
-          title: Kuvaus
         presenters:
           type: string
-          title: Henkilöt
-          description: Esityksen pitäjät tms.
           maxLength: 256
         presenters_titles:
           type: string
-          title: Nimikkeet
-          description: Henkilön arvo-, ammatti- tai virkanimike.
+          title: Titles
           maxLength: 256
         place:
           type: string
-          title: Paikka
-          description: Tarkka paikka tapahtuma-areenalla
           maxLength: 64
         icon_original:
           type: string
           format: uri
-          title: Kuva 1
-          description: Kuva 1 tapahtumalle.
+          title: Image 1
         icon_small_url:
           type: string
           nullable: true
@@ -9705,8 +9230,7 @@ components:
         icon2_original:
           type: string
           format: uri
-          title: Kuva 2
-          description: Kuva 2 tapahtumalle.
+          title: Image 2
         icon2_small_url:
           type: string
           nullable: true
@@ -9715,60 +9239,43 @@ components:
         email:
           type: string
           format: email
-          title: Sähköposti
-          description: Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
           maxLength: 254
         home_url:
           type: string
           format: uri
-          title: Kotiurli
-          description: Tapahtumaan liittyvä URL.
           maxLength: 200
         twitter_url:
           type: string
           format: uri
           title: Twitter
-          description: Tapahtumaan liittyvä Twitter-url.
           maxLength: 200
         github_url:
           type: string
           format: uri
           title: Github
-          description: Tapahtumaan liittyvä Github-url
           maxLength: 200
         facebook_url:
           type: string
           format: uri
           title: Facebook
-          description: Tapahtumaan liittyvä facebook-url.
           maxLength: 200
         linkedin_url:
           type: string
           format: uri
           title: LinkedIn
-          description: Tapahtumaan liittyvä LinkedIn-url.
           maxLength: 200
         wiki_url:
           type: string
           format: uri
           title: Wikipedia
-          description: Tapahtumaan liittyvä Wikipedia-url.
           maxLength: 200
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
-          title: Tapahtuman tyyppi
-          description: |-
-            Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-
-            * `0` - Yksinkertainen
-            * `1` - Yksityiskohtainen
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
           type: boolean
-          title: Aktiivinen
-          description: Deaktivoidut piilotetaan.
       required:
       - event
       - icon2_small_url
@@ -9783,105 +9290,74 @@ components:
         start:
           type: string
           format: date-time
-          title: Alku
-          description: Tapahtuman alkamisaika.
         end:
           type: string
           format: date-time
           nullable: true
-          title: Loppu
-          description: Tapahtuman loppumisaika.
         title:
           type: string
           minLength: 1
-          title: Otsikko
-          description: Lyhyt otsikko.
           maxLength: 128
         description:
           type: string
-          title: Kuvaus
         presenters:
           type: string
-          title: Henkilöt
-          description: Esityksen pitäjät tms.
           maxLength: 256
         presenters_titles:
           type: string
-          title: Nimikkeet
-          description: Henkilön arvo-, ammatti- tai virkanimike.
+          title: Titles
           maxLength: 256
         place:
           type: string
-          title: Paikka
-          description: Tarkka paikka tapahtuma-areenalla
           maxLength: 64
         icon_original:
           type: string
           format: binary
-          title: Kuva 1
-          description: Kuva 1 tapahtumalle.
+          title: Image 1
         icon2_original:
           type: string
           format: binary
-          title: Kuva 2
-          description: Kuva 2 tapahtumalle.
+          title: Image 2
         email:
           type: string
           format: email
-          title: Sähköposti
-          description: Tapahtumaan liittyvä sähköposti-osoite (esim. esiintyjän).
           maxLength: 254
         home_url:
           type: string
           format: uri
-          title: Kotiurli
-          description: Tapahtumaan liittyvä URL.
           maxLength: 200
         twitter_url:
           type: string
           format: uri
           title: Twitter
-          description: Tapahtumaan liittyvä Twitter-url.
           maxLength: 200
         github_url:
           type: string
           format: uri
           title: Github
-          description: Tapahtumaan liittyvä Github-url
           maxLength: 200
         facebook_url:
           type: string
           format: uri
           title: Facebook
-          description: Tapahtumaan liittyvä facebook-url.
           maxLength: 200
         linkedin_url:
           type: string
           format: uri
           title: LinkedIn
-          description: Tapahtumaan liittyvä LinkedIn-url.
           maxLength: 200
         wiki_url:
           type: string
           format: uri
           title: Wikipedia
-          description: Tapahtumaan liittyvä Wikipedia-url.
           maxLength: 200
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
-          title: Tapahtuman tyyppi
-          description: |-
-            Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-
-            * `0` - Yksinkertainen
-            * `1` - Yksityiskohtainen
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
           type: boolean
-          title: Aktiivinen
-          description: Deaktivoidut piilotetaan.
       required:
       - start
       - title
@@ -9910,18 +9386,13 @@ components:
         date:
           type: string
           format: date-time
-          title: Aika
         title:
           type: string
-          title: Otsikko
-          description: Lyhyt otsikko entrylle.
           maxLength: 128
         text:
           type: string
-          title: Teksti
         event:
           type: integer
-          title: Tapahtuma
       required:
       - event
       - id
@@ -9936,52 +9407,35 @@ components:
           readOnly: true
         event:
           type: integer
-          title: Tapahtuma
-          description: Tapahtuma johon kilpailu kuuluu
         name:
           type: string
-          title: Nimi
-          description: Kilpailun nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
-          title: Kuvaus
         participation_end:
           type: string
           format: date-time
-          title: Deadline osallistumiselle.
-          description: Tämän jälkeen kilpailuun ei voi enää osallistua.
+          title: Participation deadline
         start:
           type: string
           format: date-time
-          title: Kilpailun alku
-          description: Kilpailun aloitusaika.
+          title: Competition start
         end:
           type: string
           format: date-time
           nullable: true
-          title: Kilpailun loppu
-          description: Kilpailun päättymisaika.
+          title: Competition end
         score_type:
           type: string
-          title: Pisteiden tyyppi
-          description: Pisteiden tyyppi (km, m, sek, ...). Maksimipituus 8 merkkiä.
           maxLength: 8
         score_sort:
           allOf:
           - $ref: '#/components/schemas/ScoreSortEnum'
-          title: Pisteiden järjestely
-          description: |-
-            Onko suurimman vai pienimmän tuloksen saavuttanut voittaja?
-
-            * `0` - Korkein tulos ensin
-            * `1` - Matalin tulos ensin
+          title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         show_results:
           type: boolean
-          title: Näytä tulokset
-          description: Näytä kilpailun tulokset.
       required:
       - description
       - event
@@ -10003,12 +9457,8 @@ components:
           readOnly: true
         competition:
           type: integer
-          title: Kilpailu
-          description: Kilpailu johon osallistuttu
         participant_name:
           type: string
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
         score:
           type: number
@@ -10043,60 +9493,40 @@ components:
           readOnly: true
         event:
           type: integer
-          title: Tapahtuma
-          description: Tapahtuma johon kompo kuuluu
         name:
           type: string
-          title: Nimi
-          description: Kompon nimi (max 32 merkkiä).
           maxLength: 32
         description:
           type: string
-          title: Kuvaus
         adding_end:
           type: string
           format: date-time
-          title: Deadline entryjen lisäyksille
-          description: Tämän jälkeen kompoon ei voi enää lähettää uusia entryjä. Muokkaus
-            toimii vielä.
+          title: Entry adding deadline
         editing_end:
           type: string
           format: date-time
-          title: Deadline entryjen muokkauksille
-          description: Tämän jälkeen entryjen tiedostoja tai muita tietoja ei voi
-            enää muokata.
+          title: Entry editing deadline
         compo_start:
           type: string
           format: date-time
-          title: Kompon aloitusaika
-          description: Kompon alkamisaika tapahtumassa (tapahtumakalenteria varten).
+          title: Compo start time
         voting_start:
           type: string
           format: date-time
-          title: Äänestyksen alkamisaika
-          description: Alkamisaika entryjen äänestykselle.
+          title: Voting start time
         voting_end:
           type: string
           format: date-time
-          title: Äänestyksen päättymisaika
-          description: Päättymisaika entryjen äänestykselle.
+          title: Voting end time
         entry_view_type:
           allOf:
           - $ref: '#/components/schemas/EntryViewTypeEnum'
-          title: Entryesittely
-          description: |-
-            Ilmoittaa millainen näkymä näytetään entryn tiedoissa. Latauslinkki näytetään aina.
-
-            * `0` - Ei mitään
-            * `1` - Youtube ensin, sitten kuva
-            * `2` - Vain kuva
-            * `3` - (deprecated)
+          title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         is_votable:
           type: boolean
-          title: Äänestettävissä
-          description: Teosta voi ylipäätään äänestää (Pois esim. robocodelle).
+          title: Votable
       required:
       - adding_end
       - compo_start
@@ -10123,28 +9553,17 @@ components:
           readOnly: true
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         imagefile_original_url:
           type: string
@@ -10206,29 +9625,21 @@ components:
           readOnly: true
         name:
           type: string
-          title: Nimi
-          description: Tapahtuman nimi
           maxLength: 64
         tag:
           type: string
           nullable: true
-          title: Lyhyt esitys
-          description: Lyhyt nimi, eg. vuosi
+          title: Short tag
           maxLength: 8
         date:
           type: string
           format: date
-          title: Päivämäärä
-          description: Tapahtuman päivämäärä (alku)
         archived:
           type: boolean
-          title: Arkistoitu
-          description: Saa näyttää arkistossa
         mainurl:
           type: string
           format: uri
-          title: Tapahtuman pääsivu
-          description: URL Tapahtuman pääsivustolle
+          title: Event main page
           maxLength: 200
       required:
       - date
@@ -10243,16 +9654,11 @@ components:
           readOnly: true
         category:
           type: integer
-          title: Kategoria
         name:
           type: string
-          title: Nimi
-          description: Videon nimi.
           maxLength: 64
         description:
           type: string
-          title: Kuvaus
-          description: Videon kuvaus.
         youtube_url:
           type: string
           nullable: true
@@ -10272,11 +9678,8 @@ components:
           readOnly: true
         event:
           type: integer
-          title: Tapahtuma
         name:
           type: string
-          title: Nimi
-          description: Kategorian nimi
           maxLength: 64
       required:
       - event
@@ -10291,40 +9694,27 @@ components:
           readOnly: true
         event:
           type: integer
-          title: Tapahtuma
         start:
           type: string
           format: date-time
-          title: Alku
-          description: Tapahtuman alkamisaika.
         end:
           type: string
           format: date-time
           nullable: true
-          title: Loppu
-          description: Tapahtuman loppumisaika.
         title:
           type: string
-          title: Otsikko
-          description: Lyhyt otsikko.
           maxLength: 128
         description:
           type: string
-          title: Kuvaus
         presenters:
           type: string
-          title: Henkilöt
-          description: Esityksen pitäjät tms.
           maxLength: 256
         presenters_titles:
           type: string
-          title: Nimikkeet
-          description: Henkilön arvo-, ammatti- tai virkanimike.
+          title: Titles
           maxLength: 256
         place:
           type: string
-          title: Paikka
-          description: Tarkka paikka tapahtuma-areenalla
           maxLength: 64
         icon_small_url:
           type: string
@@ -10337,48 +9727,35 @@ components:
         home_url:
           type: string
           format: uri
-          title: Kotiurli
-          description: Tapahtumaan liittyvä URL.
           maxLength: 200
         twitter_url:
           type: string
           format: uri
           title: Twitter
-          description: Tapahtumaan liittyvä Twitter-url.
           maxLength: 200
         github_url:
           type: string
           format: uri
           title: Github
-          description: Tapahtumaan liittyvä Github-url
           maxLength: 200
         facebook_url:
           type: string
           format: uri
           title: Facebook
-          description: Tapahtumaan liittyvä facebook-url.
           maxLength: 200
         linkedin_url:
           type: string
           format: uri
           title: LinkedIn
-          description: Tapahtumaan liittyvä LinkedIn-url.
           maxLength: 200
         wiki_url:
           type: string
           format: uri
           title: Wikipedia
-          description: Tapahtumaan liittyvä Wikipedia-url.
           maxLength: 200
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
-          title: Tapahtuman tyyppi
-          description: |-
-            Määrittää tapahtuman tyypin. Yksityiskohtaiset tapahtumat näkyvät etusivun tapahtumalistassa.
-
-            * `0` - Yksinkertainen
-            * `1` - Yksityiskohtainen
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -10402,34 +9779,27 @@ components:
         event:
           type: integer
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma johon tuote liittyy.
         name:
           type: string
-          title: Tuotteen nimi
-          description: Tuotteen lyhyt nimi.
+          title: Product name
           maxLength: 255
         description:
           type: string
-          title: Tuotteen kuvaus
-          description: Tuotteen pitkä kuvaus.
+          title: Product description
         price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta.
+          title: Product price
         max:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kappaletta saatavilla
-          description: Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+          title: Available quantity
         available:
           type: boolean
-          title: Ostettavissa
-          description: Ilmoittaa, näkyykö tuote kaupassa.
+          title: Available for purchase
         imagefile_original_url:
           type: string
           nullable: true
@@ -10443,32 +9813,24 @@ components:
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Maksimi per tilaus
-          description: Kuinka monta kappaletta voidaan ostaa kerralla.
+          title: Maximum per order
         sort_index:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Järjestysarvo
-          description: Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä,
-            pienempilukuiset ensin.
+          title: Sort order
         discount_amount:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusmäärä
-          description: Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei
-            mitään)
+          title: Discount threshold
         discount_percentage:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusprosentti
-          description: Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa
-            alennusmäärän.
         is_discount_available:
           type: boolean
           description: Returns True if a discount exists for this item.
@@ -10509,7 +9871,7 @@ components:
           readOnly: true
         name:
           type: string
-          title: Tuotevariantin nimi
+          title: Variant name
           maxLength: 32
       required:
       - id
@@ -10745,30 +10107,29 @@ components:
           nullable: true
         subject:
           type: string
-          title: Aihe
           maxLength: 256
         mail_to:
           type: string
-          title: Vastaanottajan osoite
+          title: Recipient address
           maxLength: 256
         mail_from:
           type: string
-          title: Lähettäjän osoite
+          title: Sender address
           maxLength: 256
         sent:
           type: string
           format: date-time
           readOnly: true
           nullable: true
-          title: Lähetysaika
+          title: Sent at
         params:
           type: string
           nullable: true
-          title: Lähetysparametrit
+          title: Send parameters
         content:
           type: string
           nullable: true
-          title: Kuitin sisältö
+          title: Receipt content
         is_sent:
           type: boolean
           readOnly: true
@@ -10789,28 +10150,27 @@ components:
         subject:
           type: string
           minLength: 1
-          title: Aihe
           maxLength: 256
         mail_to:
           type: string
           minLength: 1
-          title: Vastaanottajan osoite
+          title: Recipient address
           maxLength: 256
         mail_from:
           type: string
           minLength: 1
-          title: Lähettäjän osoite
+          title: Sender address
           maxLength: 256
         params:
           type: string
           nullable: true
           minLength: 1
-          title: Lähetysparametrit
+          title: Send parameters
         content:
           type: string
           nullable: true
           minLength: 1
-          title: Kuitin sisältö
+          title: Receipt content
       required:
       - mail_from
       - mail_to
@@ -10821,8 +10181,8 @@ components:
       - 1
       type: integer
       description: |-
-        * `0` - Korkein tulos ensin
-        * `1` - Matalin tulos ensin
+        * `0` - Highest score first
+        * `1` - Lowest score first
     SocialAuthURL:
       type: object
       description: Serializer for social authentication provider URLs.
@@ -10844,9 +10204,9 @@ components:
       - 2
       type: integer
       description: |-
-        * `0` - Odottaa hyväksyntää
-        * `1` - Hyväksytty
-        * `2` - Hylätty
+        * `0` - Pending approval
+        * `1` - Approved
+        * `2` - Rejected
     StoreItem:
       type: object
       description: Staff serializer for StoreItem model.
@@ -10858,40 +10218,32 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma johon tuote liittyy.
         name:
           type: string
-          title: Tuotteen nimi
-          description: Tuotteen lyhyt nimi.
+          title: Product name
           maxLength: 255
         description:
           type: string
-          title: Tuotteen kuvaus
-          description: Tuotteen pitkä kuvaus.
+          title: Product description
         price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta.
+          title: Product price
         max:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kappaletta saatavilla
-          description: Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+          title: Available quantity
         available:
           type: boolean
-          title: Ostettavissa
-          description: Ilmoittaa, näkyykö tuote kaupassa.
+          title: Available for purchase
         imagefile_original:
           type: string
           format: uri
           nullable: true
-          title: Tuotekuva
-          description: Edustava kuva tuotteelle.
+          title: Product image
         imagefile_original_url:
           type: string
           nullable: true
@@ -10905,32 +10257,24 @@ components:
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Maksimi per tilaus
-          description: Kuinka monta kappaletta voidaan ostaa kerralla.
+          title: Maximum per order
         sort_index:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Järjestysarvo
-          description: Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä,
-            pienempilukuiset ensin.
+          title: Sort order
         discount_amount:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusmäärä
-          description: Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei
-            mitään)
+          title: Discount threshold
         discount_percentage:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusprosentti
-          description: Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa
-            alennusmäärän.
         is_discount_available:
           type: boolean
           description: Returns True if a discount exists for this item.
@@ -10944,18 +10288,12 @@ components:
           readOnly: true
         is_ticket:
           type: boolean
-          title: Tuote on lipputuote
-          description: Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa
-            äänestysoikeuden hankkimiseen
+          title: Product is a ticket
         is_secret:
           type: boolean
-          title: Tuote on salainen
-          description: Tuote näkyy kaupassa vain salaisella linkillä
+          title: Product is secret
         secret_key:
           type: string
-          title: Salasana
-          description: Salaisen linkin avain. Jos salasana on kissa, salainen tuote
-            näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
           maxLength: 255
         variants:
           type: array
@@ -10982,82 +10320,62 @@ components:
         name:
           type: string
           minLength: 1
-          title: Tuotteen nimi
-          description: Tuotteen lyhyt nimi.
+          title: Product name
           maxLength: 255
         description:
           type: string
           minLength: 1
-          title: Tuotteen kuvaus
-          description: Tuotteen pitkä kuvaus.
+          title: Product description
         price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta.
+          title: Product price
         max:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Kappaletta saatavilla
-          description: Kuinka monta kappaletta on ostettavissa ennen myynnin lopettamista.
+          title: Available quantity
         available:
           type: boolean
-          title: Ostettavissa
-          description: Ilmoittaa, näkyykö tuote kaupassa.
+          title: Available for purchase
         imagefile_original:
           type: string
           format: binary
           nullable: true
-          title: Tuotekuva
-          description: Edustava kuva tuotteelle.
+          title: Product image
         max_per_order:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Maksimi per tilaus
-          description: Kuinka monta kappaletta voidaan ostaa kerralla.
+          title: Maximum per order
         sort_index:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Järjestysarvo
-          description: Tuotteet esitetään kaupassa tämän luvun mukaan järjestettynä,
-            pienempilukuiset ensin.
+          title: Sort order
         discount_amount:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusmäärä
-          description: Pienin määrä tuotteita joka oikeuttaa alennukseen (-1 = ei
-            mitään)
+          title: Discount threshold
         discount_percentage:
           type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-          title: Alennusprosentti
-          description: Alennuksen määrä prosentteina kun tuotteiden määrä saavuttaa
-            alennusmäärän.
         is_ticket:
           type: boolean
-          title: Tuote on lipputuote
-          description: Tuote on lipputuote, ja sitä voi käyttää esim. kompomaatissa
-            äänestysoikeuden hankkimiseen
+          title: Product is a ticket
         is_secret:
           type: boolean
-          title: Tuote on salainen
-          description: Tuote näkyy kaupassa vain salaisella linkillä
+          title: Product is secret
         secret_key:
           type: string
-          title: Salasana
-          description: Salaisen linkin avain. Jos salasana on kissa, salainen tuote
-            näkyy vain osoitteessa https://instanssi.org/store/order/?secret_key=kissa
           maxLength: 255
       required:
       - description
@@ -11075,7 +10393,7 @@ components:
           type: integer
         name:
           type: string
-          title: Tuotevariantin nimi
+          title: Variant name
           maxLength: 32
       required:
       - id
@@ -11090,7 +10408,7 @@ components:
         name:
           type: string
           minLength: 1
-          title: Tuotevariantin nimi
+          title: Variant name
           maxLength: 32
       required:
       - item
@@ -11179,86 +10497,72 @@ components:
         token:
           type: string
           readOnly: true
-          title: Palvelutunniste
-          description: Maksupalvelun maksukohtainen tunniste
+          title: Service token
         time_created:
           type: string
           format: date-time
           nullable: true
-          title: Luontiaika
+          title: Created at
         time_paid:
           type: string
           format: date-time
           nullable: true
-          title: Maksun varmistumisaika
+          title: Payment confirmed at
         time_pending:
           type: string
           format: date-time
           nullable: true
-          title: Maksun maksuaika
+          title: Payment initiated at
         time_cancelled:
           type: string
           format: date-time
           nullable: true
-          title: Peruutusaika
+          title: Cancelled at
         payment_method_name:
           type: string
-          title: Maksutapa
-          description: Tapa jolla tilaus maksettiin
+          title: Payment method
           maxLength: 32
         key:
           type: string
           readOnly: true
-          title: Avain
-          description: Paikallinen maksukohtainen tunniste
         firstname:
           type: string
-          title: Etunimi
+          title: First name
           maxLength: 64
         lastname:
           type: string
-          title: Sukunimi
+          title: Last name
           maxLength: 64
         company:
           type: string
-          title: Yritys
           maxLength: 128
         email:
           type: string
           format: email
-          title: Sähköposti
-          description: Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden
-            lunastukseen tarvittavat koodit lähetetään sinne.
           maxLength: 255
         telephone:
           type: string
-          title: Puhelinnumero
           maxLength: 64
         mobile:
           type: string
-          title: Matkapuhelin
+          title: Mobile phone
           maxLength: 64
         street:
           type: string
-          title: Katuosoite
-          description: Katusoite tarvitaan maksupalvelun vaatimuksesta.
+          title: Street address
           maxLength: 128
         postalcode:
           type: string
-          title: Postinumero
+          title: Postal code
           maxLength: 16
         city:
           type: string
-          title: Postitoimipaikka
           maxLength: 64
         country:
-          allOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          title: Maa
+          $ref: '#/components/schemas/CountryEnum'
         information:
           type: string
-          title: Lisätiedot
-          description: Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+          title: Additional information
         is_paid:
           type: boolean
           readOnly: true
@@ -11319,16 +10623,16 @@ components:
         message:
           type: string
           readOnly: true
-          title: Tapahtuman viesti
+          title: Event message
         data:
           readOnly: true
           nullable: true
-          title: Tapahtuman data
+          title: Event data
         created:
           type: string
           format: date-time
           readOnly: true
-          title: Luontiaika
+          title: Created at
       required:
       - created
       - data
@@ -11342,81 +10646,70 @@ components:
           type: string
           format: date-time
           nullable: true
-          title: Luontiaika
+          title: Created at
         time_paid:
           type: string
           format: date-time
           nullable: true
-          title: Maksun varmistumisaika
+          title: Payment confirmed at
         time_pending:
           type: string
           format: date-time
           nullable: true
-          title: Maksun maksuaika
+          title: Payment initiated at
         time_cancelled:
           type: string
           format: date-time
           nullable: true
-          title: Peruutusaika
+          title: Cancelled at
         payment_method_name:
           type: string
-          title: Maksutapa
-          description: Tapa jolla tilaus maksettiin
+          title: Payment method
           maxLength: 32
         firstname:
           type: string
           minLength: 1
-          title: Etunimi
+          title: First name
           maxLength: 64
         lastname:
           type: string
           minLength: 1
-          title: Sukunimi
+          title: Last name
           maxLength: 64
         company:
           type: string
-          title: Yritys
           maxLength: 128
         email:
           type: string
           format: email
           minLength: 1
-          title: Sähköposti
-          description: Sähköpostiosoitteen on oltava toimiva, sillä liput ja tuotteiden
-            lunastukseen tarvittavat koodit lähetetään sinne.
           maxLength: 255
         telephone:
           type: string
-          title: Puhelinnumero
           maxLength: 64
         mobile:
           type: string
-          title: Matkapuhelin
+          title: Mobile phone
           maxLength: 64
         street:
           type: string
           minLength: 1
-          title: Katuosoite
-          description: Katusoite tarvitaan maksupalvelun vaatimuksesta.
+          title: Street address
           maxLength: 128
         postalcode:
           type: string
           minLength: 1
-          title: Postinumero
+          title: Postal code
           maxLength: 16
         city:
           type: string
           minLength: 1
-          title: Postitoimipaikka
           maxLength: 64
         country:
-          allOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          title: Maa
+          $ref: '#/components/schemas/CountryEnum'
         information:
           type: string
-          title: Lisätiedot
-          description: Mikäli tilaukseen kuuluu T-paitoja, määritä niiden koot tässä.
+          title: Additional information
       required:
       - city
       - email
@@ -11432,10 +10725,10 @@ components:
       - 3
       type: integer
       description: |-
-        * `0` - Vaadi erillinen pikkukuva.
-        * `1` - Käytä pikkukuvana teoksen tiedostoa (Toimii vain png/jpg-tiedostoille).
-        * `2` - Salli pikkukuva (ei vaadittu).
-        * `3` - Älä salli pikkukuvaa.
+        * `0` - Require separate thumbnail.
+        * `1` - Use entry file as thumbnail (only works for png/jpg files).
+        * `2` - Allow thumbnail (not required).
+        * `3` - Do not allow thumbnail.
     TicketVoteCode:
       type: object
       description: Staff serializer for ticket vote codes.
@@ -11447,24 +10740,19 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma, johon äänestysavain on assosioitu
         associated_to:
           type: integer
           nullable: true
-          title: Käyttäjä
-          description: Käyttäjä jolle avain on assosioitu
+          title: User
         ticket:
           type: integer
           nullable: true
-          title: Lipputuote
-          description: Lipputuote jonka avainta käytetään äänestysavaimena
+          title: Ticket item
         time:
           type: string
           format: date-time
           nullable: true
-          title: Aikaleima
-          description: Aika jolloin avain assosioitiin käyttäjälle.
+          title: Timestamp
         associated_username:
           type: string
           nullable: true
@@ -11483,35 +10771,30 @@ components:
         key:
           type: string
           readOnly: true
-          title: Avain
-          description: Lippuavain
         item:
           type: integer
-          title: Tuote
+          title: Product
         variant:
           type: integer
           nullable: true
-          title: Tuotevariantti
+          title: Product variant
         transaction:
           type: integer
-          title: Ostotapahtuma
         time_delivered:
           type: string
           format: date-time
           nullable: true
-          title: Toimitusaika
+          title: Delivery time
         purchase_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta ostoshetkellä
+          title: Product price
         original_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen alkuperäinen hinta
-          description: Tuotteen hinta ostoshetkellä ilman alennuksia
+          title: Original product price
         is_delivered:
           type: boolean
           readOnly: true
@@ -11529,31 +10812,28 @@ components:
       properties:
         item:
           type: integer
-          title: Tuote
+          title: Product
         variant:
           type: integer
           nullable: true
-          title: Tuotevariantti
+          title: Product variant
         transaction:
           type: integer
-          title: Ostotapahtuma
         time_delivered:
           type: string
           format: date-time
           nullable: true
-          title: Toimitusaika
+          title: Delivery time
         purchase_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen hinta
-          description: Tuotteen hinta ostoshetkellä
+          title: Product price
         original_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          title: Tuotteen alkuperäinen hinta
-          description: Tuotteen hinta ostoshetkellä ilman alennuksia
+          title: Original product price
       required:
       - item
       - original_price
@@ -11569,19 +10849,14 @@ components:
         event:
           type: integer
           readOnly: true
-          title: Tapahtuma
         user:
           type: integer
           nullable: true
-          title: Käyttäjä
         description:
           type: string
-          title: Kuvaus
-          description: Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
         file:
           type: string
           format: uri
-          title: Tiedosto
         file_url:
           type: string
           nullable: true
@@ -11595,7 +10870,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-          title: Aika
       required:
       - date
       - event
@@ -11610,15 +10884,11 @@ components:
         user:
           type: integer
           nullable: true
-          title: Käyttäjä
         description:
           type: string
-          title: Kuvaus
-          description: Lyhyt kuvaus siitä, mihin/missä tiedostoa käytetään.
         file:
           type: string
           format: binary
-          title: Tiedosto
       required:
       - file
     User:
@@ -11702,8 +10972,6 @@ components:
           type: integer
         participant_name:
           type: string
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
       required:
       - competition
@@ -11717,8 +10985,6 @@ components:
         participant_name:
           type: string
           minLength: 1
-          title: Osallistujan nimi
-          description: Nimimerkki jolla haluat osallistua.
           maxLength: 32
       required:
       - competition
@@ -11731,28 +10997,17 @@ components:
           readOnly: true
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile_url:
           type: string
@@ -11821,52 +11076,38 @@ components:
       properties:
         compo:
           type: integer
-          title: Kompo
-          description: Kompo johon osallistutaan
         name:
           type: string
           minLength: 1
-          title: Nimi
-          description: Nimi tuotokselle
           maxLength: 64
         description:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Voi sisältää mm. tietoja käytetyistä tekniikoista, muuta sanottavaa.
         creator:
           type: string
           minLength: 1
-          title: Tekijä
-          description: Tuotoksen tekijän tai tekijäryhmän nimi
           maxLength: 64
         platform:
           type: string
           nullable: true
-          title: Alusta
-          description: Alusta jolla entry toimii. Voit jättää tyhjäksi jos entry ei
-            sisällä ajettavaa koodia.
           maxLength: 128
         entryfile:
           type: string
           format: binary
           writeOnly: true
-          title: Tiedosto
-          description: Tuotospaketti.
+          title: File
         sourcefile:
           type: string
           format: binary
           writeOnly: true
           nullable: true
-          title: Lähdekoodi
-          description: Lähdekoodipaketti.
+          title: Source code
         imagefile_original:
           type: string
           format: binary
           writeOnly: true
           nullable: true
-          title: Kuva
-          description: Edustava kuva teokselle. Ei pakollinen, mutta suositeltava.
+          title: Image
         youtube_url:
           type: string
           nullable: true
@@ -11925,7 +11166,7 @@ components:
           - $ref: '#/components/schemas/BlankEnum'
         notify_vote_code_requests:
           type: boolean
-        notify_programme_events:
+        notify_program_events:
           type: boolean
         notify_compo_starts:
           type: boolean
@@ -12009,15 +11250,12 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma, johon äänestysavain on assosioitu
         time:
           type: string
           format: date-time
           readOnly: true
           nullable: true
-          title: Aikaleima
-          description: Aika jolloin avain assosioitiin käyttäjälle.
+          title: Timestamp
       required:
       - event
       - id
@@ -12058,17 +11296,13 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma, johon äänestysoikeutta pyydetään
         text:
           type: string
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
-          title: Tila
       required:
       - event
       - id
@@ -12091,8 +11325,7 @@ components:
         text:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
       required:
       - text
     UserVoteGroup:
@@ -12109,7 +11342,6 @@ components:
           readOnly: true
         compo:
           type: integer
-          title: Kompo
         voted_entries:
           type: array
           items:
@@ -12131,7 +11363,6 @@ components:
       properties:
         compo:
           type: integer
-          title: Kompo
         entries:
           type: array
           items:
@@ -12183,20 +11414,14 @@ components:
           type: integer
           readOnly: true
           nullable: true
-          title: Tapahtuma
-          description: Tapahtuma, johon äänestysoikeutta pyydetään
         user:
           type: integer
-          title: Käyttäjä
-          description: Pyynnön esittänyt käyttäjä
         text:
           type: string
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
-          title: Tila
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -12210,17 +11435,13 @@ components:
       properties:
         user:
           type: integer
-          title: Käyttäjä
-          description: Pyynnön esittänyt käyttäjä
         text:
           type: string
           minLength: 1
-          title: Kuvaus
-          description: Lyhyt aneluteksti admineille :)
+          title: Description
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
-          title: Tila
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:

@@ -1,27 +1,9 @@
 {% extends "users/base.html" %}
-{% load static %}
+{% load i18n %}
 
-{% block title %}{{ block.super }} - Uloskirjautuminen{% endblock %}
+{% block title %}Instanssi.org - {% trans "Logged out" %}{% endblock %}
+{% block subtitle %}{% trans "Logged out" %}{% endblock %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
-
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li>Uloskirjautuminen</li>
-{% endblock %}
-
-{% block content %}
-{{ block.super }}
-<h2>Uloskirjautuminen</h2>
-<p>Kirjauduit ulos.</p>
-<ul>
-    <li><a href="/">Instanssi.org</a></li>
-    <li><a href="{% url 'km:eventselect' %}">Kompomaatti</a></li>
-</ul>
+{% block card_content %}
+    <p><i class="fa-solid fa-check me-2 text-success"></i>{% trans "You have been logged out." %}</p>
 {% endblock %}

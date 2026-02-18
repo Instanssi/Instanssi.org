@@ -1,35 +1,41 @@
-{% extends "base_layout/base.html" %}
-{% load static %}
-
-{% block title %}Käyttäjäprofiili{% endblock %}
-{% block headername %}<a href="{% url 'users:profile' %}">Käyttäjäprofiili</a>{% endblock %}
-
-{% block head %}
-    <!-- Users page specific -->
-    <link rel="stylesheet" type="text/css" href="{% static "users/css/style.css" %}" />
-{% endblock %}
-
-{% block jquery %}
-    $('.ui-widget').css('font-size','14px');
-{% endblock %}
-
-{% block headernav %}
-{{ block.super }}
-        <ul id="header_nav_left">
-{% if user.is_authenticated %}
-            <li class="menuitem"><a href="{% url 'users:profile' %}">Profiili</a></li>
-{% endif %}
-        </ul>
-        <ul id="header_nav_right">
-            <li class="menuitem"><a href="{% url 'archive:index' %}">Arkisto</a></li>
-            <li class="menuitem"><a href="{% url 'km:eventselect' %}">Kompomaatti</a></li>
-            <li class="menuitem"><a href="{% url 'store:index' %}">Kauppa</a></li>
-        </ul>
-{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li><a href="{% url 'users:profile' %}">Käyttäjäprofiili</a></li>
-{% endblock %}
-
-{% block content %}{% endblock %}
+{% load static i18n %}{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Instanssi.org{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'libs/bootstrap-5.3.8/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-free-7.2.0/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/exo-2/latin-600.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/exo-2/latin-900.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/open-sans/latin-400.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fira-mono/latin-400.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="users-bg">
+    <div class="users-container">
+        <div class="users-card {% block card_class %}{% endblock %}">
+            <nav class="card-nav">
+                <div class="card-nav-left">
+                    <a href="/">{% trans "Index" %}</a>
+                    <a href="{% url 'km:eventselect' %}">{% trans "Compomatic" %}</a>
+                    <a href="{% url 'archive:index' %}">{% trans "Archive" %}</a>
+                </div>
+                <div class="card-nav-right">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'users:profile' %}">{% trans "Profile" %}</a>
+                        <a href="{% url 'users:logout' %}">{% trans "Log out" %}</a>
+                    {% else %}
+                        <a href="{% url 'users:login' %}">{% trans "Login" %}</a>
+                    {% endif %}
+                </div>
+            </nav>
+            <h1 class="card-title">Instanssi.org</h1>
+            <div class="card-subtitle">{% block subtitle %}{% endblock %}</div>
+            {% block card_content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

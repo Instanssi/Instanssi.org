@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
+from crispy_forms.layout import Column, Div, Layout, Row, Submit
 from django import forms
 from django.contrib import auth
 from django.core.exceptions import ValidationError
@@ -24,15 +24,17 @@ class DjangoLoginForm(forms.Form):
         self.logged_user: User | None = None
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
         self.fields["next"].initial = self.next_page
+        self.fields["username"].widget.attrs["placeholder"] = self.fields["username"].label
+        self.fields["username"].label = False
+        self.fields["password"].widget.attrs["placeholder"] = self.fields["password"].label
+        self.fields["password"].label = False
         self.helper = FormHelper()
+        self.helper.template_pack = "bootstrap5"
         self.helper.layout = Layout(
-            Fieldset(
-                _("Login with credentials"),
-                "username",
-                "password",
-                "next",
-                ButtonHolder(Submit("submit", _("Login"))),
-            )
+            "username",
+            "password",
+            "next",
+            Submit("submit", _("Login"), css_class="w-100 mt-2"),
         )
 
     def clean_next(self) -> str:
@@ -61,25 +63,24 @@ class ProfileForm(forms.ModelForm):  # type: ignore[type-arg]
         super(ProfileForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.template_pack = "bootstrap5"
         self.helper.layout = Layout(
-            Fieldset(
-                _("User profile"),
-                "first_name",
-                "last_name",
-                "email",
-                "otherinfo",
-                ButtonHolder(Submit("submit-profile", _("Save"))),
-            )
+            Row(
+                Column("first_name", css_class="col-md-6"),
+                Column("last_name", css_class="col-md-6"),
+            ),
+            "email",
+            "language",
+            "otherinfo",
+            Div(Submit("submit-profile", _("Save")), css_class="text-end mt-2"),
         )
 
-        self.fields["first_name"].label = _("First name")
-        self.fields["last_name"].label = _("Last name")
-        self.fields["email"].label = _("Email")
         self.fields["email"].required = True
         self.fields["otherinfo"].label = _("Other contact info")
         self.fields["otherinfo"].help_text = _("Other contact information, e.g. IRC nick & network, etc.")
         self.fields["otherinfo"].required = False
+        self.fields["otherinfo"].widget.attrs["rows"] = 3
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email", "otherinfo")
+        fields = ("first_name", "last_name", "email", "language", "otherinfo")

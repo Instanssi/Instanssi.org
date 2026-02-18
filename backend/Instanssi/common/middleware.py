@@ -2,6 +2,7 @@ from collections.abc import Callable
 
 from django.http import HttpRequest, HttpResponse
 from django.utils import translation
+from django.utils.cache import patch_vary_headers
 
 
 class UserLanguageMiddleware:
@@ -17,4 +18,6 @@ class UserLanguageMiddleware:
         translation.activate(language)
         request.LANGUAGE_CODE = translation.get_language()
         response = self.get_response(request)
+        response["Content-Language"] = translation.get_language()
+        patch_vary_headers(response, ("Accept-Language", "Cookie"))
         return response

@@ -838,6 +838,25 @@ django = ">=3.2"
 django-crispy-forms = ">=1.14.0"
 
 [[package]]
+name = "crispy-bootstrap5"
+version = "2024.10"
+description = "Bootstrap5 template pack for django-crispy-forms"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "crispy_bootstrap5-2024.10-py3-none-any.whl", hash = "sha256:59e91dac5e45a8c954af3fbcaa6804cd5aef4402f027af2f99a352b096c4016f"},
+    {file = "crispy_bootstrap5-2024.10.tar.gz", hash = "sha256:55b442fe675dd95ad280123c7fe464f454186e90b8e5642e751f436c87627c44"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+django-crispy-forms = ">=2.3"
+
+[package.extras]
+test = ["pytest", "pytest-django"]
+
+[[package]]
 name = "cryptography"
 version = "46.0.5"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -4616,4 +4635,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "5d54f0a4c824615ce02343eae31c0dd0c49d5302620b374234561e49c3ffd167"
+content-hash = "166ddc77542d84b7f43f75be383901b9a802dda2e285114c21954a2cd9abb44e"

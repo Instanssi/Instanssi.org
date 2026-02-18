@@ -5,6 +5,8 @@ This is a monorepo for Instanssi.org, a Finnish demoparty event management syste
 - **backend/** - Django REST Framework backend. See @./backend/AGENTS.md
 - **admin/** - Vue 3 + Vuetify administration panel. See @./admin/AGENTS.md
 
+For visual design guidelines (fonts, colors, icons, CSS frameworks), see @./STYLE_GUIDE.md.
+
 ## Quick Reference
 
 ### Running All Checks

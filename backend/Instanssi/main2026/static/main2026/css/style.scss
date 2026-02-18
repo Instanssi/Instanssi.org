@@ -106,8 +106,9 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
 
         .sponsors-container {
             padding-left: 8px; // match sitemap items
+            display: flex;
+            flex-wrap: wrap;
             .sponsor {
-                display: inline-block;
                 float: none;
             }
         }

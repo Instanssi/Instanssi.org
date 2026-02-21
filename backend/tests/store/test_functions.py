@@ -114,7 +114,7 @@ def test_create_receipt_email_content(receipt, receipt_params):
         "1001  Test product 1            1        1               1  0%\n"
         "1002  Test product 2            2        2               4  0%\n"
         "\n"
-        "Yhteensä: 5.00 EUR (Alv 0%, AVL 4§)\n"
+        "Yhteensä: 5,00 EUR (Alv 0%, AVL 4§)\n"
         "\n"
         "Tuotteiden nouto & liput:\n"
         "-------------------------\n"

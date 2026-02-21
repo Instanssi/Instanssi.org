@@ -8,6 +8,7 @@ from decimal import Decimal
 from typing import Any
 
 from django.template.loader import render_to_string
+from django.utils import translation
 from django_countries.fields import Country
 
 
@@ -150,4 +151,5 @@ class ReceiptParams:
 
     def get_body(self) -> str:
         """Returns a formatted receipt"""
-        return render_to_string("store/receipt.email", self.params)
+        with translation.override("fi"):
+            return render_to_string("store/receipt.email", self.params)

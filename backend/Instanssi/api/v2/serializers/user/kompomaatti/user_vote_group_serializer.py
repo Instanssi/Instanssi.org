@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework.serializers import (
     ListField,
     ModelSerializer,
@@ -20,7 +21,7 @@ class UserVoteGroupSerializer(ModelSerializer[VoteGroup]):
         min_length=1,
         child=PrimaryKeyRelatedField(queryset=Entry.objects.all()),
         write_only=True,
-        help_text="List of entry IDs in order of preference (first = highest rank)",
+        help_text=_("List of entry IDs in order of preference (first = highest rank)"),
     )
     voted_entries = SerializerMethodField(read_only=True)
 

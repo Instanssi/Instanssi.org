@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
@@ -38,7 +39,9 @@ class CompetitionParticipationViewSet(PermissionViewSet):
         """Validate that the competition belongs to the event from the URL."""
         event_id = int(self.kwargs["event_pk"])
         if competition.event_id != event_id:
-            raise serializers.ValidationError({"competition": ["Competition does not belong to this event"]})
+            raise serializers.ValidationError(
+                {"competition": [_("Competition does not belong to this event")]}
+            )
 
     def _refresh_with_annotations(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
         """Refresh the serializer instance with rank annotation."""
@@ -57,7 +60,7 @@ class CompetitionParticipationViewSet(PermissionViewSet):
         if new_competition := serializer.validated_data.get("competition"):
             if new_competition.id != serializer.instance.competition_id:
                 raise serializers.ValidationError(
-                    {"competition": ["Cannot change competition after creation"]}
+                    {"competition": [_("Cannot change competition after creation")]}
                 )
         super().perform_update(serializer)  # type: ignore[arg-type]
         self._refresh_with_annotations(serializer)

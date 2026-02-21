@@ -2,8 +2,6 @@ import logging
 from datetime import datetime
 from typing import Final
 
-import arrow
-from django.conf import settings
 from django.db.models import Q
 from django.http import (
     Http404,
@@ -15,6 +13,7 @@ from django.http import (
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.formats import date_format
 
 from Instanssi.common.auth import infodesk_access_required
 from Instanssi.infodesk.forms import ItemKeyScanForm, TransactionKeyScanForm
@@ -61,7 +60,7 @@ def order_search_ac(request: HttpRequest) -> HttpResponse:
     def fmt_t(t: datetime | None) -> str:
         if t is None:
             return ""
-        return str(arrow.get(t).to(settings.TIME_ZONE).format("DD.MM.YYYY HH:mm"))
+        return date_format(timezone.localtime(t), "d.m.Y H:i")
 
     def format_transaction(t: StoreTransaction) -> str:
         return "%s, %s (%s)" % (t.lastname, t.firstname, fmt_t(t.time_created))

@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
@@ -49,7 +50,11 @@ class CompoViewSet(PermissionViewSet):
             format_list = [f.strip().lower() for f in formats.split("|") if f.strip()]
             if not all(f in IMAGE_FORMATS for f in format_list):
                 raise serializers.ValidationError(
-                    {"thumbnail_pref": ["Automatic thumbnails require image-only entry formats (png, jpg)."]}
+                    {
+                        "thumbnail_pref": [
+                            _("Automatic thumbnails require image-only entry formats (png, jpg).")
+                        ]
+                    }
                 )
 
     def perform_create(self, serializer: BaseSerializer[Compo]) -> None:  # type: ignore[override]
@@ -71,5 +76,5 @@ class CompoViewSet(PermissionViewSet):
     def perform_destroy(self, instance: Compo) -> None:  # type: ignore[override]
         """Prevent deletion of compos that have entries."""
         if Entry.objects.filter(compo=instance).exists():
-            raise serializers.ValidationError({"detail": "Cannot delete a compo that has entries."})
+            raise serializers.ValidationError({"detail": _("Cannot delete a compo that has entries.")})
         super().perform_destroy(instance)

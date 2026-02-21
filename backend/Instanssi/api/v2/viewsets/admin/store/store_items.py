@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.serializers import BaseSerializer
@@ -30,5 +31,7 @@ class StoreItemViewSet(PermissionViewSet):
     def perform_destroy(self, instance: StoreItem) -> None:  # type: ignore[override]
         """Prevent deletion of store items that have been sold."""
         if instance.num_sold() > 0:
-            raise serializers.ValidationError({"detail": "Cannot delete a store item that has sold units."})
+            raise serializers.ValidationError(
+                {"detail": _("Cannot delete a store item that has sold units.")}
+            )
         super().perform_destroy(instance)

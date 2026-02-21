@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -48,16 +49,16 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
         """Validate that compo belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if compo.event_id != event_id:
-            raise serializers.ValidationError({"compo": ["Compo does not belong to this event"]})
+            raise serializers.ValidationError({"compo": [_("Compo does not belong to this event")]})
         if compo.event.hidden:
-            raise serializers.ValidationError({"compo": ["Compo not found or not active"]})
+            raise serializers.ValidationError({"compo": [_("Compo not found or not active")]})
 
     def _validate_editing_allowed(self, compo: Compo) -> None:
         """Validate that the compo is active and editing is still open."""
         if not compo.active:
-            raise serializers.ValidationError({"compo": ["Compo is not active"]})
+            raise serializers.ValidationError({"compo": [_("Compo is not active")]})
         if not compo.is_editing_open():
-            raise serializers.ValidationError({"compo": ["Compo edit time has ended"]})
+            raise serializers.ValidationError({"compo": [_("Compo edit time has ended")]})
 
     def _refresh_with_annotations(self, serializer: BaseSerializer[Entry]) -> None:
         """Refresh the serializer instance with score/rank annotations."""
@@ -69,10 +70,10 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
             self.validate_compo_belongs_to_event(compo)
 
             if not compo.active:
-                raise serializers.ValidationError({"compo": ["Compo not found or not active"]})
+                raise serializers.ValidationError({"compo": [_("Compo not found or not active")]})
 
             if not compo.is_adding_open():
-                raise serializers.ValidationError({"compo": ["Compo entry adding time has ended"]})
+                raise serializers.ValidationError({"compo": [_("Compo entry adding time has ended")]})
 
             validate_entry_files(serializer.validated_data, compo)
 

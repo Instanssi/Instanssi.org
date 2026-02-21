@@ -31,7 +31,7 @@ GOOGLE_API_KEY = ""
 # Generic stuff
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 TIME_ZONE = "Europe/Helsinki"
-LANGUAGE_CODE = "fi-FI"
+LANGUAGE_CODE = "en"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ""

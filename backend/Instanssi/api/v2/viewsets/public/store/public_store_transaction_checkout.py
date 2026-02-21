@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.utils.translation import gettext as _
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
@@ -38,12 +39,12 @@ class PublicStoreTransactionCheckoutViewSet(WriteOnlyModelViewSet):
         """Validate checkout business rules after deserialization."""
         if not data["read_terms"]:
             raise ValidationError(
-                {"read_terms": ["Terms and conditions must be accepted before proceeding with the order"]}
+                {"read_terms": [_("Terms and conditions must be accepted before proceeding with the order")]}
             )
 
         items = data.get("items")
         if not items:
-            raise ValidationError({"items": ["Shopping cart must contain at least one item"]})
+            raise ValidationError({"items": [_("Shopping cart must contain at least one item")]})
 
         try:
             for item in items:

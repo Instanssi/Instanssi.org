@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.serializers import BaseSerializer
 
@@ -29,6 +30,6 @@ class CompetitionViewSet(PermissionViewSet):
         """Prevent deletion of competitions that have participations."""
         if CompetitionParticipation.objects.filter(competition=instance).exists():
             raise serializers.ValidationError(
-                {"detail": "Cannot delete a competition that has participations."}
+                {"detail": _("Cannot delete a competition that has participations.")}
             )
         super().perform_destroy(instance)

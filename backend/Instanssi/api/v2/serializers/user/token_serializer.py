@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import Any
 
+from django.utils.translation import gettext_lazy as _
 from knox.models import AuthToken
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, Serializer
@@ -22,7 +23,7 @@ class AuthTokenCreateSerializer(Serializer[dict[str, Any]]):
 
     def validate_expiry(self, value: datetime) -> datetime:
         if value <= datetime.now(timezone.utc):
-            raise serializers.ValidationError("Expiry must be in the future")
+            raise serializers.ValidationError(_("Expiry must be in the future"))
         return value
 
 

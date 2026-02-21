@@ -266,7 +266,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 1. User lands on app → `useAuth().refreshStatus()` checks login state
 2. If not authenticated → redirect to `/login`
-3. Login via username/password or social auth
+3. Login via email/password or social auth (django-allauth headless API)
 4. After login → fetch user permissions
 5. Router guards check permissions before allowing route access
 
@@ -276,17 +276,19 @@ const onSubmit = handleSubmit(async (values) => {
 // src/client.ts
 export function setupClient() {
   client.setConfig({
-    baseURL: import.meta.env.BASE_URL,
+    throwOnError: true,
+    xsrfCookieName: "csrftoken",
+    xsrfHeaderName: "X-CSRFToken",
+    timeout: 5000,
   });
-  client.instance.interceptors.request.use(addCSRFHeader);
-  client.instance.interceptors.response.use(okResponse, errorResponse);
+  client.instance.interceptors.response.use(null, errorResponseInterceptor);
 }
 ```
 
-Interceptors handle:
-- CSRF token injection
-- Cookie-based authentication
-- Error responses and redirects
+The client handles:
+- CSRF token injection via axios XSRF config
+- Cookie-based session authentication
+- Error response toasts (timeout, 401, 500, etc.) via the error interceptor
 
 ## Common Pitfalls
 

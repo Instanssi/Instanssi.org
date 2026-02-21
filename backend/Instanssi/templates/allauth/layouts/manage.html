@@ -1,0 +1,22 @@
+{% extends "allauth/layouts/base.html" %}
+{% load i18n %}
+{% block card_class %}users-card-wide{% endblock %}
+
+{% block pre_content %}
+<nav class="manage-nav">
+    <div class="manage-nav-left">
+        <a href="{% url 'users:profile' %}" {% if request.path == '/accounts/profile/' %}class="active"{% endif %}>{% trans "Profile" %}</a>
+        <a href="{% url 'account_email' %}" {% if request.path == '/accounts/email/' %}class="active"{% endif %}>{% trans "Email" %}</a>
+        <a href="{% url 'account_change_password' %}" {% if request.path == '/accounts/password/change/' %}class="active"{% endif %}>{% trans "Password" %}</a>
+        <a href="{% url 'socialaccount_connections' %}" {% if request.path == '/accounts/3rdparty/' %}class="active"{% endif %}>{% trans "Connections" %}</a>
+    </div>
+    <div class="manage-nav-right">
+        <a href="/">{% trans "Index" %}</a>
+        <a href="{% url 'km:eventselect' %}">{% trans "Compomatic" %}</a>
+        <a href="{% url 'archive:index' %}">{% trans "Archive" %}</a>
+        <a href="{% url 'account_logout' %}">{% trans "Log out" %}</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}{% endblock %}

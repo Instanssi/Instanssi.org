@@ -4,9 +4,9 @@ import { useToast } from "vue-toastification";
 import { i18n } from "@/i18n";
 
 export function errorResponseInterceptor(error: AxiosError) {
-    // Don't worry about this path -- we handle its errors in auth service.
+    // Don't worry about these paths -- we handle their errors in auth service.
     const path = error.response?.config.url ?? "";
-    if (path.endsWith("/user_info/")) {
+    if (path.endsWith("/user_info/") || path.endsWith("/auth/session")) {
         return Promise.reject(error);
     }
 

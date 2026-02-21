@@ -5,6 +5,7 @@ import {
     formDataBodySerializer,
     type Options as Options2,
     type TDataShape,
+    urlSearchParamsBodySerializer,
 } from "./client";
 import { client } from "./client.gen";
 import type {
@@ -245,6 +246,87 @@ import type {
     AdminUsersRetrieveResponses,
     AdminUsersUpdateData,
     AdminUsersUpdateResponses,
+    AllauthDeleteApiV2AllauthBrowserV1AccountEmailData,
+    AllauthDeleteApiV2AllauthBrowserV1AccountEmailErrors,
+    AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponses,
+    AllauthDeleteApiV2AllauthBrowserV1AccountProvidersData,
+    AllauthDeleteApiV2AllauthBrowserV1AccountProvidersErrors,
+    AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponses,
+    AllauthDeleteApiV2AllauthBrowserV1AuthSessionData,
+    AllauthDeleteApiV2AllauthBrowserV1AuthSessionErrors,
+    AllauthGetApiV2AllauthBrowserV1AccountEmailData,
+    AllauthGetApiV2AllauthBrowserV1AccountEmailErrors,
+    AllauthGetApiV2AllauthBrowserV1AccountEmailResponses,
+    AllauthGetApiV2AllauthBrowserV1AccountPhoneData,
+    AllauthGetApiV2AllauthBrowserV1AccountPhoneErrors,
+    AllauthGetApiV2AllauthBrowserV1AccountPhoneResponses,
+    AllauthGetApiV2AllauthBrowserV1AccountProvidersData,
+    AllauthGetApiV2AllauthBrowserV1AccountProvidersResponses,
+    AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyData,
+    AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyErrors,
+    AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponses,
+    AllauthGetApiV2AllauthBrowserV1AuthPasswordResetData,
+    AllauthGetApiV2AllauthBrowserV1AuthPasswordResetErrors,
+    AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponses,
+    AllauthGetApiV2AllauthBrowserV1AuthProviderSignupData,
+    AllauthGetApiV2AllauthBrowserV1AuthProviderSignupErrors,
+    AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponses,
+    AllauthGetApiV2AllauthBrowserV1AuthSessionData,
+    AllauthGetApiV2AllauthBrowserV1AuthSessionErrors,
+    AllauthGetApiV2AllauthBrowserV1AuthSessionResponses,
+    AllauthGetApiV2AllauthBrowserV1ConfigData,
+    AllauthGetApiV2AllauthBrowserV1ConfigResponses,
+    AllauthPatchApiV2AllauthBrowserV1AccountEmailData,
+    AllauthPatchApiV2AllauthBrowserV1AccountEmailErrors,
+    AllauthPatchApiV2AllauthBrowserV1AccountEmailResponses,
+    AllauthPostApiV2AllauthBrowserV1AccountEmailData,
+    AllauthPostApiV2AllauthBrowserV1AccountEmailErrors,
+    AllauthPostApiV2AllauthBrowserV1AccountEmailResponses,
+    AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeData,
+    AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeErrors,
+    AllauthPostApiV2AllauthBrowserV1AccountPhoneData,
+    AllauthPostApiV2AllauthBrowserV1AccountPhoneErrors,
+    AllauthPostApiV2AllauthBrowserV1AccountPhoneResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmData,
+    AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyData,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendData,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthLoginData,
+    AllauthPostApiV2AllauthBrowserV1AuthLoginErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthLoginResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestData,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordResetData,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordResetErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyData,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendData,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderRedirectData,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderSignupData,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderSignupErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderTokenData,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderTokenErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthReauthenticateData,
+    AllauthPostApiV2AllauthBrowserV1AuthReauthenticateErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponses,
+    AllauthPostApiV2AllauthBrowserV1AuthSignupData,
+    AllauthPostApiV2AllauthBrowserV1AuthSignupErrors,
+    AllauthPostApiV2AllauthBrowserV1AuthSignupResponses,
+    AllauthPutApiV2AllauthBrowserV1AccountEmailData,
+    AllauthPutApiV2AllauthBrowserV1AccountEmailErrors,
+    AllauthPutApiV2AllauthBrowserV1AccountEmailResponses,
     EventUserKompomaattiEntriesCreateData,
     EventUserKompomaattiEntriesCreateResponses,
     EventUserKompomaattiEntriesDestroyData,
@@ -291,13 +373,6 @@ import type {
     EventUserKompomaattiVotesListResponses,
     EventUserKompomaattiVotesRetrieveData,
     EventUserKompomaattiVotesRetrieveResponses,
-    GetSocialAuthUrlsData,
-    GetSocialAuthUrlsResponses,
-    LoginData,
-    LoginErrors,
-    LoginResponses,
-    LogoutData,
-    LogoutResponses,
     NotificationsSubscriptionsCreateData,
     NotificationsSubscriptionsCreateResponses,
     NotificationsSubscriptionsDestroyData,
@@ -3911,73 +3986,6 @@ export const adminUsersUpdate = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Authenticate a user with username and password.
- */
-export const login = <ThrowOnError extends boolean = false>(
-    options: Options<LoginData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/auth/login/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * End the current user session.
- */
-export const logout = <ThrowOnError extends boolean = false>(
-    options?: Options<LogoutData, ThrowOnError>
-) => {
-    return (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/auth/logout/",
-        ...options,
-    });
-};
-
-/**
- * Returns a list of URLs that can be used to begin a social authentication process.
- *
- * Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
- * Without this, the first login attempt in a fresh browser session would fail
- * because no Django template renders {% csrf_token %} to trigger cookie creation.
- */
-export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
-    options?: Options<GetSocialAuthUrlsData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<GetSocialAuthUrlsResponses, unknown, ThrowOnError>({
-        responseType: "json",
-        url: "/api/v2/auth/social_urls/",
-        ...options,
-    });
-};
-
-/**
  * Manage the current user's own compo entries.
  *
  * Supports ordering by rank and score.
@@ -5450,4 +5458,776 @@ export const userInfoPartialUpdate = <ThrowOnError extends boolean = false>(
             },
         }
     );
+};
+
+/**
+ * Get configuration
+ *
+ * There are many configuration options that alter the functionality
+ * and behavior of django-allauth, some of which can also impact the
+ * frontend. Therefore, relevant configuration options are exposed via
+ * this endpoint. The data returned is not user/authentication
+ * dependent. Hence, it suffices to only fetch this data once at boot
+ * time of your application.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1Config = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1ConfigData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1ConfigResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/config",
+        ...options,
+    });
+};
+
+/**
+ * Login
+ *
+ * Login using a username-password or email-password combination.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthLogin = <ThrowOnError extends boolean = false>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthLoginData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthLoginResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthLoginErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/login",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Signup
+ *
+ * Whether or not `username`, `email`, `phone` or combination of those are
+ * required depends on the configuration of django-allauth. Additionally,
+ * if a custom signup form is used there may be other custom properties
+ * required.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthSignup = <ThrowOnError extends boolean = false>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthSignupData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthSignupResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthSignupErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/signup",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Get email verification information
+ *
+ * Obtain email verification information, given the token that was sent to
+ * the user by email.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AuthEmailVerify = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponses,
+        AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/email/verify",
+        ...options,
+    });
+};
+
+/**
+ * Verify an email
+ *
+ * Complete the email verification process. Depending on the configuration,
+ * email addresses are either verified by opening a link that is sent to
+ * their email address, or, by inputting a code that is sent. On the API,
+ * both cases are handled identically. Meaning, the required key is either
+ * the one from the link, or, the code itself.
+ *
+ * Note that a status code of 401 does not imply failure. It indicates that
+ * the email verification was successful, yet, the user is still not signed
+ * in. For example, in case `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` is set to
+ * `False`, a 401 is returned when verifying as part of login/signup.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthEmailVerify = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/email/verify",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Resend email verification code
+ *
+ * Requests a new email verification code.
+ * Requires `ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_RESEND = True`.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthEmailVerifyResend = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/email/verify/resend",
+        ...options,
+    });
+};
+
+/**
+ * Verify a phone number
+ *
+ * Complete the phone number verification process. Note that a status code
+ * of 401 does not imply failure. It merely indicates that the phone number
+ * verification was successful, yet, the user is still not signed in.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthPhoneVerify = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/phone/verify",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Resend phone number verification code
+ *
+ * Requests a new phone number verification code.
+ * Requires `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_RESEND = True`.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResend = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/phone/verify/resend",
+        ...options,
+    });
+};
+
+/**
+ * Reauthenticate
+ *
+ * In order to safeguard the account, some actions require the user to be
+ * recently authenticated.  If you try to perform such an action without
+ * having been recently authenticated, a `401` status is returned, listing
+ * flows that can be performed to reauthenticate. One such flow is the flow
+ * with ID `reauthenticate`, which allows for the user to input the
+ * password. This is the endpoint related towards that flow.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthReauthenticate = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthReauthenticateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthReauthenticateErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/reauthenticate",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Request password
+ *
+ * Initiates the password reset procedure. Depending on whether or not
+ * `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED` is `True`, the procedure is
+ * either stateless or stateful.
+ *
+ * In case codes are used, it is stateful, and a new
+ * `password_reset_by_code` flow is started. In this case, on a successful
+ * password reset request, you will receive a 401 indicating the pending
+ * status of this flow.
+ *
+ * In case password reset is configured to use (stateless) links, you will
+ * receive a 200 on a successful password reset request.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthPasswordRequest = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/password/request",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Get password reset information
+ *
+ * Used to obtain information on and validate a password reset key.  The
+ * key passed is either the key encoded in the password reset URL that the
+ * user has received per email, or, the password reset code in case of
+ * `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED`. Note that in case of a code,
+ * the number of requests you can make is limited (by
+ * `ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS`).
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AuthPasswordReset = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthGetApiV2AllauthBrowserV1AuthPasswordResetData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponses,
+        AllauthGetApiV2AllauthBrowserV1AuthPasswordResetErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/password/reset",
+        ...options,
+    });
+};
+
+/**
+ * Reset password
+ *
+ * Perform the password reset, by handing over the password reset key and
+ * the new password. After successfully completing the password reset, the
+ * user is either logged in (in case `ACCOUNT_LOGIN_ON_PASSWORD_RESET` is
+ * `True`), or, the user will need to proceed to the login page.  In case
+ * of the former, a `200` status code is returned, in case of the latter a
+ * 401.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthPasswordReset = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AuthPasswordResetData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthPasswordResetErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/password/reset",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Provider redirect
+ *
+ * Initiates the third-party provider authentication redirect flow. As calling
+ * this endpoint results in a user facing redirect (302), this call is only
+ * available in a browser, and must be called in a synchronous (non-XHR)
+ * manner.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthProviderRedirect = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthProviderRedirectData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<unknown, unknown, ThrowOnError>({
+        ...urlSearchParamsBodySerializer,
+        url: "/api/v2/allauth/browser/v1/auth/provider/redirect",
+        ...options,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Provider token
+ *
+ * Authenticates with a third-party provider using provider tokens received
+ * by other means. For example, in case of a mobile app, the authentication
+ * flow runs completely on the device itself, without any interaction with
+ * the API. Then, when the (device) authentication completes and the mobile
+ * app receives an access and/or ID token, it can hand over these tokens
+ * via this endpoint to authenticate on the server.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthProviderToken = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthProviderTokenData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthProviderTokenErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/provider/token",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Provider signup information
+ *
+ * If, while signing up using a third-party provider account, there is
+ * insufficient information received from the provider to automatically
+ * complete the signup process, an additional step is needed to complete
+ * the missing data before the user is fully signed up and authenticated.
+ * The information available so far, such as the pending provider account,
+ * can be retrieved via this endpoint.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AuthProviderSignup = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1AuthProviderSignupData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponses,
+        AllauthGetApiV2AllauthBrowserV1AuthProviderSignupErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/provider/signup",
+        ...options,
+    });
+};
+
+/**
+ * Provider signup
+ *
+ * If, while signing up using a third-party provider account, there is
+ * insufficient information received from the provider to automatically
+ * complete the signup process, an additional step is needed to complete
+ * the missing data before the user is fully signed up and authenticated.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthProviderSignup = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthProviderSignupData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthProviderSignupErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/provider/signup",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Confirm login code
+ *
+ * Use this endpoint to pass along the received "special" login code.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AuthCodeConfirm = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponses,
+        AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/code/confirm",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Disconnect a third-party provider account
+ *
+ *
+ * Disconnect a third-party provider account, returning the remaining
+ * accounts that are still connected. The disconnect is not allowed if it
+ * would leave the account unusable. For example, if no password was
+ * set up yet.
+ *
+ */
+export const allauthDeleteApiV2AllauthBrowserV1AccountProviders = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthDeleteApiV2AllauthBrowserV1AccountProvidersData, ThrowOnError>
+) => {
+    return (options?.client ?? client).delete<
+        AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponses,
+        AllauthDeleteApiV2AllauthBrowserV1AccountProvidersErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/providers",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * List the connected third-party provider accounts
+ */
+export const allauthGetApiV2AllauthBrowserV1AccountProviders = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1AccountProvidersData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AccountProvidersResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/providers",
+        ...options,
+    });
+};
+
+/**
+ * Remove an email address
+ *
+ * Used to remove an email address.
+ *
+ */
+export const allauthDeleteApiV2AllauthBrowserV1AccountEmail = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthDeleteApiV2AllauthBrowserV1AccountEmailData, ThrowOnError>
+) => {
+    return (options?.client ?? client).delete<
+        AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponses,
+        AllauthDeleteApiV2AllauthBrowserV1AccountEmailErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/email",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * List email addresses
+ *
+ * Retrieves the list of email addresses of the account.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AccountEmail = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1AccountEmailData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AccountEmailResponses,
+        AllauthGetApiV2AllauthBrowserV1AccountEmailErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/email",
+        ...options,
+    });
+};
+
+/**
+ * Change primary email address
+ *
+ * Used to change primary email address to a different one. Note that only verified email addresses
+ * can be marked as primary.
+ *
+ */
+export const allauthPatchApiV2AllauthBrowserV1AccountEmail = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthPatchApiV2AllauthBrowserV1AccountEmailData, ThrowOnError>
+) => {
+    return (options?.client ?? client).patch<
+        AllauthPatchApiV2AllauthBrowserV1AccountEmailResponses,
+        AllauthPatchApiV2AllauthBrowserV1AccountEmailErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/email",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Add/Change email address
+ *
+ *
+ * The following functionality is available:
+ *
+ * - Adding a new email address for an already signed in user (`ACCOUNT_CHANGE_EMAIL = False`).
+ * - Change to a new email address for an already signed in user   (`ACCOUNT_CHANGE_EMAIL = True`).
+ * - Change to a new email address during the email verification process at signup (`ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_CHANGE = True`).
+ *
+ * In all cases, an email verification mail will be sent containing a link or code that needs to be verified.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AccountEmail = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AccountEmailData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AccountEmailResponses,
+        AllauthPostApiV2AllauthBrowserV1AccountEmailErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/email",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Request email verification
+ *
+ * Requests for (another) email verification email to be sent. Note that
+ * sending emails is rate limited, so when you send too many requests the
+ * email will not be sent.
+ *
+ */
+export const allauthPutApiV2AllauthBrowserV1AccountEmail = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthPutApiV2AllauthBrowserV1AccountEmailData, ThrowOnError>
+) => {
+    return (options?.client ?? client).put<
+        AllauthPutApiV2AllauthBrowserV1AccountEmailResponses,
+        AllauthPutApiV2AllauthBrowserV1AccountEmailErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/email",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Get the phone number
+ *
+ * Retrieves the phone number of the account, if any. Note that while the
+ * endpoint returns a list of phone numbers, at most one entry is returned.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AccountPhone = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1AccountPhoneData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AccountPhoneResponses,
+        AllauthGetApiV2AllauthBrowserV1AccountPhoneErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/phone",
+        ...options,
+    });
+};
+
+/**
+ * Change the phone number
+ *
+ *
+ * The following functionality is available:
+ *
+ * - Initiate the phone number change process for signed in users.
+ * - Change to a new phone number during the phone number verification
+ * process at signup for unauthenticated users. Note that this requires:
+ * `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_CHANGE = True`.
+ *
+ * In both cases, after posting a new phone number, proceed with the phone
+ * verification endpoint to confirm the change of the phone number by
+ * posting the verification code.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AccountPhone = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AccountPhoneData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        AllauthPostApiV2AllauthBrowserV1AccountPhoneResponses,
+        AllauthPostApiV2AllauthBrowserV1AccountPhoneErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/account/phone",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
+};
+
+/**
+ * Logout
+ *
+ * Logs out the user from the current session.
+ *
+ */
+export const allauthDeleteApiV2AllauthBrowserV1AuthSession = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthDeleteApiV2AllauthBrowserV1AuthSessionData, ThrowOnError>
+) => {
+    return (options?.client ?? client).delete<
+        unknown,
+        AllauthDeleteApiV2AllauthBrowserV1AuthSessionErrors,
+        ThrowOnError
+    >({
+        url: "/api/v2/allauth/browser/v1/auth/session",
+        ...options,
+    });
+};
+
+/**
+ * Get authentication status
+ *
+ *
+ * Retrieve information about the authentication status for the current
+ * session.
+ *
+ */
+export const allauthGetApiV2AllauthBrowserV1AuthSession = <ThrowOnError extends boolean = false>(
+    options?: Options<AllauthGetApiV2AllauthBrowserV1AuthSessionData, ThrowOnError>
+) => {
+    return (options?.client ?? client).get<
+        AllauthGetApiV2AllauthBrowserV1AuthSessionResponses,
+        AllauthGetApiV2AllauthBrowserV1AuthSessionErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/allauth/browser/v1/auth/session",
+        ...options,
+    });
+};
+
+/**
+ * Change password
+ *
+ * In order to change the password of an account, the current and new
+ * password must be provider.  However, accounts that were created by
+ * signing up using a third-party provider do not have a password set. In
+ * that case, the current password is not required.
+ *
+ */
+export const allauthPostApiV2AllauthBrowserV1AccountPasswordChange = <
+    ThrowOnError extends boolean = false,
+>(
+    options?: Options<AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeData, ThrowOnError>
+) => {
+    return (options?.client ?? client).post<
+        unknown,
+        AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeErrors,
+        ThrowOnError
+    >({
+        url: "/api/v2/allauth/browser/v1/account/password/change",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });
 };

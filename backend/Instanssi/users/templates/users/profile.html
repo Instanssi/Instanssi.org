@@ -1,37 +1,9 @@
-{% extends "users/base.html" %}
-{% load crispy_forms_tags i18n %}
+{% extends "allauth/layouts/manage.html" %}
+{% load i18n crispy_forms_tags %}
 
-{% block title %}Instanssi.org - {% trans "Profile" %}{% endblock %}
-{% block subtitle %}{% trans "Profile" %}{% endblock %}
-{% block card_class %}users-card-wide{% endblock %}
+{% block head_title %}{% trans "Profile" %}{% endblock %}
+{% block page_title %}{% trans "Edit your profile" %}{% endblock %}
 
-{% block card_content %}
-
-    <h2><i class="fa-solid fa-link me-2"></i>{% trans "Login accounts" %}</h2>
-    <p class="small">
-        {% trans "You can bind other login providers to your account. This allows you to log in using any of the bound providers. If a button is greyed out, it means that provider is already bound to your account." %}
-    </p>
-    <div class="social-buttons mb-3">
-        {% for method in AUTH_METHODS %}
-            {% if method.3 %}
-                <button class="btn btn-outline-light" disabled>
-                    {% if method.0 == "google" %}<i class="fa-brands fa-google me-1"></i>{% endif %}
-                    {% if method.0 == "github" %}<i class="fa-brands fa-github me-1"></i>{% endif %}
-                    {% if method.0 == "steam" %}<i class="fa-brands fa-steam me-1"></i>{% endif %}
-                    {{ method.2 }}
-                </button>
-            {% else %}
-                <a class="btn btn-outline-light" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">
-                    {% if method.0 == "google" %}<i class="fa-brands fa-google me-1"></i>{% endif %}
-                    {% if method.0 == "github" %}<i class="fa-brands fa-github me-1"></i>{% endif %}
-                    {% if method.0 == "steam" %}<i class="fa-brands fa-steam me-1"></i>{% endif %}
-                    {% trans "Bind" %} {{ method.2 }}
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    <h2><i class="fa-solid fa-id-card me-2"></i>{% trans "Profile" %}</h2>
-    <p class="small">{% trans "Please make sure your contact information is correct. The event organizers may need to reach you :) None of the information on this page will be published." %}</p>
-    {% crispy profileform profileform.helper %}
+{% block content %}
+{% crispy form %}
 {% endblock %}

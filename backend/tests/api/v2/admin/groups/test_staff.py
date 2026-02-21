@@ -46,7 +46,7 @@ def test_groups_retrieve(super_api_client):
 def test_groups_staff_with_permission(api_client, create_user, password):
     """Staff users with auth.view_group can list groups"""
     staff = create_user(is_staff=True, permissions=["auth.view_group"])
-    api_client.login(username=staff.username, password=password)
+    api_client.login(email=staff.email, password=password)
     result = api_client.get(BASE_URL)
     assert result.status_code == 200
 
@@ -55,7 +55,7 @@ def test_groups_staff_with_permission(api_client, create_user, password):
 def test_groups_staff_without_permission(api_client, create_user, password):
     """Staff users without auth.view_group cannot list groups"""
     staff = create_user(is_staff=True)
-    api_client.login(username=staff.username, password=password)
+    api_client.login(email=staff.email, password=password)
     result = api_client.get(BASE_URL)
     assert result.status_code == 403
 

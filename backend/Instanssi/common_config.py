@@ -64,7 +64,8 @@ MEDIA_UPLOAD_FILES: str = "files"
 
 AUTH_USER_MODEL = "users.User"
 
-LOGIN_URL = "/users/login/"
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
 
 # Shorten session expiration (default is 2 weeks)
 SESSION_COOKIE_AGE = 24 * 3600
@@ -125,6 +126,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
     "PREPROCESSING_HOOKS": ["Instanssi.api.openapi.preprocessor_hook"],
+    "POSTPROCESSING_HOOKS": ["Instanssi.api.openapi.merge_allauth_spec"],
     "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
 }
 
@@ -144,8 +146,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "Instanssi.common.context.settings_export",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -163,6 +163,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "Instanssi.common.middleware.UserLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -192,7 +193,12 @@ INSTALLED_APPS = (
     "crispy_forms",
     "crispy_bootstrap3",
     "crispy_bootstrap5",
-    "social_django",
+    "allauth",
+    "allauth.account",
+    "allauth.headless",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -208,12 +214,29 @@ INSTALLED_APPS = (
 )
 
 # Authentication backends
-AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.github.GithubOAuth2",
-    "social_core.backends.steam.SteamOpenId",
-    "Instanssi.users.backends.SystemUserAwareModelBackend",
-)
+AUTHENTICATION_BACKENDS = ("Instanssi.users.backends.SystemUserAwareAuthBackend",)
+
+# Allauth settings
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+ACCOUNT_ADAPTER = "Instanssi.users.adapter.AccountAdapter"
+HEADLESS_ONLY = False
+HEADLESS_SERVE_SPECIFICATION = True
+HEADLESS_CLIENTS = ("browser",)
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "/accounts/confirm-email/{key}",
+    "account_reset_password_from_key": "/accounts/password/reset/key/{key}",
+    "socialaccount_login_error": "/accounts/login",
+}
+
+# Social account provider config (actual keys set in settings.py)
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "github": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+}
 
 # Log handlers, insert our own database log handler
 LOGGING = {

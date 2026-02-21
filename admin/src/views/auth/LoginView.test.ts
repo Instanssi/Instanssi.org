@@ -15,13 +15,13 @@ describe("LoginView - auth service integration", () => {
 
     afterEach(async () => {
         // Reset auth state
-        vi.mocked(api.logout).mockResolvedValue({} as never);
+        vi.mocked(api.allauthDeleteApiV2AllauthBrowserV1AuthSession).mockResolvedValue({} as never);
         await authService.logout();
     });
 
     describe("login with permission check", () => {
         it("should allow login when user has view_event permission", async () => {
-            vi.mocked(api.login).mockResolvedValue({ status: 200 } as never);
+            vi.mocked(api.allauthPostApiV2AllauthBrowserV1AuthLogin).mockResolvedValue({} as never);
             vi.mocked(api.userInfoRetrieve).mockResolvedValue({
                 data: {
                     id: 1,
@@ -36,7 +36,7 @@ describe("LoginView - auth service integration", () => {
                 },
             } as never);
 
-            const result = await authService.login("testuser", "password");
+            const result = await authService.login("test@example.com", "password");
 
             expect(result).toBe(true);
             expect(authService.isLoggedIn()).toBe(true);
@@ -44,7 +44,7 @@ describe("LoginView - auth service integration", () => {
         });
 
         it("should deny permission check when user lacks view_event", async () => {
-            vi.mocked(api.login).mockResolvedValue({ status: 200 } as never);
+            vi.mocked(api.allauthPostApiV2AllauthBrowserV1AuthLogin).mockResolvedValue({} as never);
             vi.mocked(api.userInfoRetrieve).mockResolvedValue({
                 data: {
                     id: 1,
@@ -59,7 +59,7 @@ describe("LoginView - auth service integration", () => {
                 },
             } as never);
 
-            const result = await authService.login("testuser", "password");
+            const result = await authService.login("test@example.com", "password");
 
             expect(result).toBe(true);
             expect(authService.isLoggedIn()).toBe(true);
@@ -67,16 +67,18 @@ describe("LoginView - auth service integration", () => {
         });
 
         it("should return false on failed login", async () => {
-            vi.mocked(api.login).mockResolvedValue({ status: 401 } as never);
+            vi.mocked(api.allauthPostApiV2AllauthBrowserV1AuthLogin).mockRejectedValue(
+                new Error("401")
+            );
 
-            const result = await authService.login("testuser", "wrongpassword");
+            const result = await authService.login("test@example.com", "wrongpassword");
 
             expect(result).toBe(false);
             expect(authService.isLoggedIn()).toBe(false);
         });
 
         it("should allow superuser to bypass permission checks", async () => {
-            vi.mocked(api.login).mockResolvedValue({ status: 200 } as never);
+            vi.mocked(api.allauthPostApiV2AllauthBrowserV1AuthLogin).mockResolvedValue({} as never);
             vi.mocked(api.userInfoRetrieve).mockResolvedValue({
                 data: {
                     id: 1,
@@ -91,7 +93,7 @@ describe("LoginView - auth service integration", () => {
                 },
             } as never);
 
-            await authService.login("admin", "password");
+            await authService.login("admin@example.com", "password");
 
             expect(authService.canView(PermissionTarget.EVENT)).toBe(true);
             expect(authService.canView(PermissionTarget.USER)).toBe(true);
@@ -100,7 +102,7 @@ describe("LoginView - auth service integration", () => {
 
         it("should clear state on logout", async () => {
             // First login
-            vi.mocked(api.login).mockResolvedValue({ status: 200 } as never);
+            vi.mocked(api.allauthPostApiV2AllauthBrowserV1AuthLogin).mockResolvedValue({} as never);
             vi.mocked(api.userInfoRetrieve).mockResolvedValue({
                 data: {
                     id: 1,
@@ -114,11 +116,13 @@ describe("LoginView - auth service integration", () => {
                     language: "",
                 },
             } as never);
-            await authService.login("testuser", "password");
+            await authService.login("test@example.com", "password");
             expect(authService.isLoggedIn()).toBe(true);
 
             // Logout
-            vi.mocked(api.logout).mockResolvedValue({} as never);
+            vi.mocked(api.allauthDeleteApiV2AllauthBrowserV1AuthSession).mockResolvedValue(
+                {} as never
+            );
             await authService.logout();
 
             expect(authService.isLoggedIn()).toBe(false);

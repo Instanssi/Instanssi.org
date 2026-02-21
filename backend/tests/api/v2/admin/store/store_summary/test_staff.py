@@ -16,7 +16,7 @@ def summary_staff_api_client(api_client, create_user, password):
     """API client authenticated as a user with only store.view_storeitem permission."""
     permissions = ["store.view_storeitem"]
     user = create_user(is_staff=True, permissions=permissions)
-    api_client.login(username=user.username, password=password)
+    api_client.login(email=user.email, password=password)
     yield api_client
     api_client.logout()
 

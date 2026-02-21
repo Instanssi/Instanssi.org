@@ -17,6 +17,7 @@
 <body class="users-bg">
     <div class="users-container">
         <div class="users-card {% block card_class %}{% endblock %}">
+            {% block card_nav %}
             <nav class="card-nav">
                 <div class="card-nav-left">
                     <a href="/">{% trans "Index" %}</a>
@@ -25,13 +26,13 @@
                 </div>
                 <div class="card-nav-right">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'users:profile' %}">{% trans "Profile" %}</a>
-                        <a href="{% url 'users:logout' %}">{% trans "Log out" %}</a>
+                        <a href="{% url 'account_logout' %}">{% trans "Log out" %}</a>
                     {% else %}
-                        <a href="{% url 'users:login' %}">{% trans "Login" %}</a>
+                        <a href="{% url 'account_login' %}?next={{ request.path|urlencode }}">{% trans "Login" %}</a>
                     {% endif %}
                 </div>
             </nav>
+            {% endblock %}
             <h1 class="card-title">Instanssi.org</h1>
             <div class="card-subtitle">{% block subtitle %}{% endblock %}</div>
             {% block card_content %}{% endblock %}

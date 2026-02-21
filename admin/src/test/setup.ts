@@ -2,9 +2,10 @@ import { vi } from "vitest";
 
 // Mock API - includes all admin endpoints used by form views
 vi.mock("@/api", () => ({
-    // Auth endpoints
-    login: vi.fn(),
-    logout: vi.fn(),
+    // Auth endpoints (allauth headless)
+    allauthPostApiV2AllauthBrowserV1AuthLogin: vi.fn(),
+    allauthDeleteApiV2AllauthBrowserV1AuthSession: vi.fn(),
+    allauthGetApiV2AllauthBrowserV1Config: vi.fn(),
     userInfoRetrieve: vi.fn(),
     userInfoPartialUpdate: vi.fn().mockResolvedValue({ data: {} }),
 

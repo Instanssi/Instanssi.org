@@ -54,6 +54,11 @@ export default defineConfig({
                 changeOrigin: false,
                 secure: false,
             },
+            "/accounts": {
+                target: "http://localhost:8000",
+                changeOrigin: false,
+                secure: false,
+            },
         },
     },
 });

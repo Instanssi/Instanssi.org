@@ -157,13 +157,13 @@ Files are auto-organized with timestamps and cleaned filenames via `common.file_
 
 ### Authentication
 
-Multiple OAuth backends configured via python-social-auth:
-- Google OAuth2
-- GitHub OAuth2
-- Steam OpenID
-- Django's built-in ModelBackend
+Authentication is handled by django-allauth with a custom backend (`SystemUserAwareAuthBackend`):
+- Email-based login (`ACCOUNT_LOGIN_METHODS = {"email"}`)
+- Social login via Google OAuth2 and GitHub OAuth2
+- Headless browser API at `/api/v2/allauth/browser/v1/` (used by the Vue admin SPA)
+- Server-rendered pages at `/accounts/` (login, signup, password reset, email/social management)
 
-Login URL for users is `/users/login/`.
+Login URL for users is `/accounts/login/`.
 
 ### REST API
 

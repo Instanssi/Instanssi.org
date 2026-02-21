@@ -1,11 +1,6 @@
-from typing import Any, Sequence, TypeVar
+from typing import Sequence, TypeVar
 
 from django.db.models import Model
-from django.http import HttpRequest, HttpResponseBase
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import CreateModelMixin
@@ -15,27 +10,9 @@ from rest_framework.viewsets import (
     GenericViewSet,
     ModelViewSet,
     ReadOnlyModelViewSet,
-    ViewSet,
 )
 
 _ModelT = TypeVar("_ModelT", bound=Model)
-
-
-class EnforceCSRFViewSet(ViewSet):
-    """ViewSet base class that enforces CSRF protection.
-
-    Used for authentication endpoints (login) where CSRF protection is critical.
-    Applies three security decorators:
-    - sensitive_post_parameters: Prevents password logging in error reports
-    - csrf_protect: Requires valid CSRF token
-    - never_cache: Prevents caching of responses
-    """
-
-    @method_decorator(sensitive_post_parameters())
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
-        return super().dispatch(request, *args, **kwargs)
 
 
 class FullDjangoModelPermissions(DjangoModelPermissions):

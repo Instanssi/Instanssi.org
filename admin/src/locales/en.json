@@ -965,11 +965,11 @@
     },
     "LoginView": {
       "title": "Sign in",
-      "subtitle": "Sign in using username and password, or by using one of the SSO methods.",
-      "username": "Username",
+      "subtitle": "Sign in using email and password, or by using one of the SSO methods.",
+      "email": "Email",
       "password": "Password",
       "login": "Login",
-      "auth_failed": "Incorrect username or password!",
+      "auth_failed": "Incorrect email or password!",
       "insufficient_permissions": "You do not have the required permissions to access this panel."
     },
     "ArchiverView": {

@@ -7,26 +7,27 @@
             <template #text>
                 <div class="d-flex justify-center">
                     <v-btn
-                        v-for="method in socialLoginUrls"
-                        :key="method.method"
+                        v-for="provider in socialProviders"
+                        :key="provider.id"
                         variant="plain"
-                        :href="method.url"
+                        :href="getSocialLoginUrl(provider.id)"
                     >
-                        <template v-if="socialIcons[method.method]" #prepend>
-                            <FontAwesomeIcon :icon="socialIcons[method.method]!" />
+                        <template v-if="socialIcons[provider.id]" #prepend>
+                            <FontAwesomeIcon :icon="socialIcons[provider.id]!" />
                         </template>
-                        {{ method.name }}
+                        {{ provider.name }}
                     </v-btn>
                 </div>
                 <v-form class="mt-4" @submit.prevent="submit">
                     <v-container class="ma-0 pa-0">
                         <v-row dense no-gutters class="mb-2 mt-2">
                             <v-text-field
-                                v-model="username.value.value"
-                                :error-messages="username.errorMessage.value"
+                                v-model="email.value.value"
+                                :error-messages="email.errorMessage.value"
                                 density="compact"
                                 variant="outlined"
-                                :label="t('LoginView.username')"
+                                :label="t('LoginView.email')"
+                                type="email"
                             />
                         </v-row>
                         <v-row dense no-gutters class="mb-2 mt-2">
@@ -57,7 +58,7 @@
 
 <script setup lang="ts">
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord, faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
@@ -66,7 +67,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
-import type { SocialAuthUrl } from "@/api";
+import type { Provider } from "@/api";
 import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 
@@ -76,26 +77,31 @@ const { t } = useI18n();
 
 const socialIcons: Record<string, IconDefinition> = {
     google: faGoogle,
-    steam: faSteam,
     github: faGithub,
+    discord: faDiscord,
+    steam: faSteam,
 };
 
-const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);
+const socialProviders: Ref<Provider[]> = ref([]);
+
+function getSocialLoginUrl(providerId: string): string {
+    return `/accounts/${providerId}/login/?process=login&next=/management/`;
+}
 
 // Field validation rules
 const validationSchema = yupObject({
-    username: yupString().required().min(1),
+    email: yupString().required().email(),
     password: yupString().required().min(1),
 });
 const { handleSubmit, setErrors } = useForm({ validationSchema });
-const username = useField("username");
+const email = useField("email");
 const password = useField("password");
 
 const submit = handleSubmit(async (values) => {
-    const loginOk = await authService.login(values.username, values.password);
+    const loginOk = await authService.login(values.email, values.password);
     if (!loginOk) {
         setErrors({
-            username: t("LoginView.auth_failed"),
+            email: t("LoginView.auth_failed"),
             password: t("LoginView.auth_failed"),
         });
         return;
@@ -103,7 +109,7 @@ const submit = handleSubmit(async (values) => {
     if (!authService.canView(PermissionTarget.EVENT)) {
         await authService.logout();
         setErrors({
-            username: t("LoginView.insufficient_permissions"),
+            email: t("LoginView.insufficient_permissions"),
             password: t("LoginView.insufficient_permissions"),
         });
         return;
@@ -112,7 +118,7 @@ const submit = handleSubmit(async (values) => {
 });
 
 onMounted(async () => {
-    socialLoginUrls.value = await authService.getSocialAuthURLs();
+    socialProviders.value = await authService.getSocialAuthProviders();
 });
 </script>
 

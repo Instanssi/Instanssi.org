@@ -134,7 +134,7 @@ def login_as(page_client, password, create_user):
     @contextmanager
     def _inner(**kwargs):
         user = create_user(**kwargs)
-        page_client.login(username=user.username, password=password)
+        page_client.login(email=user.email, password=password)
         yield page_client
         page_client.logout()
 
@@ -148,14 +148,14 @@ def password() -> str:
 
 @fixture
 def staff_page_client(page_client, staff_user, password) -> APIClient:
-    page_client.login(username=staff_user.username, password=password)
+    page_client.login(email=staff_user.email, password=password)
     yield page_client
     page_client.logout()
 
 
 @fixture
 def super_page_client(page_client, super_user, password) -> APIClient:
-    page_client.login(username=super_user.username, password=password)
+    page_client.login(email=super_user.email, password=password)
     yield page_client
     page_client.logout()
 
@@ -185,6 +185,11 @@ def create_user(faker, password):
 @fixture
 def base_user(create_user) -> User:
     return create_user()
+
+
+@fixture
+def system_user(create_user) -> User:
+    return create_user(is_system=True)
 
 
 @fixture

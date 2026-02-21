@@ -43,18 +43,8 @@ LANGUAGE_CODE = "en"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"
 
-# Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ""
-
-# Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
-
-# Github
-SOCIAL_AUTH_GITHUB_KEY = ""
-SOCIAL_AUTH_GITHUB_SECRET = ""
-SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+# Allauth: skip email verification in tests
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 # Paytrail APIv2
 PAYTRAIL_V2_ID = ""

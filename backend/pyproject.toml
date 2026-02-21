@@ -21,10 +21,10 @@ django-qr-code = "^4.0.1"
 django-auditlog = "^3.4.1"
 django-admin-csvexport = "^2.4.1"
 django-ical = "^1.9.2"
+django-cleanup = "^9.0.0"
+django-allauth = {extras = ["socialaccount", "steam"], version = "^65.14.3"}
 celery = "^5.6.2"
 Pillow = "^12.1.1"
-social-auth-core = "^4.8.3"
-social-auth-app-django = "^5.7.0"
 django-libsass = "^0.9"
 requests = "^2.32.0"
 sentry-sdk = "^2.52.0"
@@ -42,7 +42,6 @@ redis = {extras = ["hiredis"], version = "^7.0.1"}
 mastodon-py = "^2.1.4"
 nh3 = "^0.3.0"
 drf-spectacular = "^0.29.0"
-django-cleanup = "^9.0.0"
 stream-zip = "^0.0.84"
 pywebpush = "^2.0.1"
 
@@ -107,6 +106,7 @@ module = [
     "py_vapid.*",
     "django_ical.*",
     "csvexport.*",
+    "allauth.*",
 ]
 ignore_missing_imports = true
 

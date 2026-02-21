@@ -25,7 +25,7 @@ def store_staff_user(create_user):
 @pytest.fixture
 def store_staff_client(api_client, store_staff_user, password):
     """API client authenticated as store staff."""
-    api_client.login(username=store_staff_user.username, password=password)
+    api_client.login(email=store_staff_user.email, password=password)
     yield api_client
     api_client.logout()
 

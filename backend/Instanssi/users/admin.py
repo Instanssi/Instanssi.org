@@ -9,10 +9,10 @@ from Instanssi.users.models import User
 
 
 class UserAdmin(BaseUserAdmin):  # type: ignore[type-arg]
-    readonly_fields = (*BaseUserAdmin.readonly_fields, "is_system")
+    readonly_fields = (*BaseUserAdmin.readonly_fields, "is_system", "username")
     fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+        (None, {"fields": ("email", "password")}),
+        (_("Personal info"), {"fields": ("username", "first_name", "last_name")}),
         (
             _("Permissions"),
             {
@@ -39,6 +39,8 @@ class UserAdmin(BaseUserAdmin):  # type: ignore[type-arg]
             },
         ),
     )
+    list_display = ("email", "first_name", "last_name", "is_staff")
+    ordering = ("email",)
 
     def has_change_permission(self, request: HttpRequest, obj: Any = None) -> bool:
         if isinstance(obj, User) and obj.is_system:

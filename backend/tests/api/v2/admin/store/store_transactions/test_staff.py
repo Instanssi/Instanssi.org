@@ -17,7 +17,7 @@ def store_staff_api_client(api_client, create_user, password):
         "store.delete_storetransaction",
     ]
     user = create_user(is_staff=True, permissions=permissions)
-    api_client.login(username=user.username, password=password)
+    api_client.login(email=user.email, password=password)
     yield api_client
     api_client.logout()
 

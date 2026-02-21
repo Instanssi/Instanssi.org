@@ -33,11 +33,11 @@
     <div class="container">
         {% if request.user.is_authenticated %}
         <div id="usertools" class="authenticated">
-            <a class="user-image" href="{% url 'users:profile' %}">
+            <a class="user-image" href="{% url 'account_email' %}">
                 <img src="{% gravatar_url request.user.email %}" width="42" height="42"/>
             </a>
             <div>
-                <a href="{% url 'users:profile' %}">
+                <a href="{% url 'account_email' %}">
                     {% if request.user.email %}
                         {{ request.user.email }}
                     {% elif request.user.get_full_name %}
@@ -46,14 +46,14 @@
                         {{ request.user.username }}
                     {% endif %}
                 </a>
-                <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>
+                <a href="{% url 'account_logout' %}">Kirjaudu ulos</a>
             </div>
         </div>
         {% else %}
         <div id="usertools" class="unauthenticated">
             <div class="user-image">Tuntematon</div>
             <div>
-                <a href="{% url 'users:login' %}">Kirjaudu sisään</a>
+                <a href="{% url 'account_login' %}">Kirjaudu sisään</a>
             </div>
         </div>
         {% endif %}

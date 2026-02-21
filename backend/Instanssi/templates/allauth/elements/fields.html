@@ -1,0 +1,5 @@
+{% load crispy_forms_filters %}
+{% for field in attrs.form.hidden_fields %}{{ field }}{% endfor %}
+{% for field in attrs.form.visible_fields %}
+{{ field|as_crispy_field:"bootstrap5" }}
+{% endfor %}

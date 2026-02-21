@@ -1,0 +1,5 @@
+<a class="btn btn-outline-light" href="{{ attrs.href }}" title="{{ attrs.name }}">
+    {% if attrs.provider_id == "google" %}<i class="fa-brands fa-google me-1"></i>{% endif %}
+    {% if attrs.provider_id == "github" %}<i class="fa-brands fa-github me-1"></i>{% endif %}
+    {{ attrs.name }}
+</a>

@@ -1920,6 +1920,7 @@ paths:
         name: status
         schema:
           type: integer
+          x-spec-enum-id: 1f34dd22db6f12e6
           enum:
           - 0
           - 1
@@ -2123,6 +2124,7 @@ paths:
         name: event_type
         schema:
           type: integer
+          x-spec-enum-id: b356803b61514c09
           enum:
           - 0
           - 1
@@ -4153,74 +4155,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v2/auth/login/:
-    post:
-      operationId: login
-      description: Authenticate a user with username and password.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequest'
-        required: true
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      - {}
-      responses:
-        '200':
-          description: No response body
-        '400':
-          description: No response body
-        '401':
-          description: No response body
-  /api/v2/auth/logout/:
-    post:
-      operationId: logout
-      description: End the current user session.
-      tags:
-      - auth
-      security:
-      - knoxApiToken: []
-      - cookieAuth: []
-      responses:
-        '200':
-          description: No response body
-  /api/v2/auth/social_urls/:
-    get:
-      operationId: get_social_auth_urls
-      description: |-
-        Returns a list of URLs that can be used to begin a social authentication process.
-
-        Also ensures the CSRF cookie is set, which is needed for the SPA login flow.
-        Without this, the first login attempt in a fresh browser session would fail
-        because no Django template renders {% csrf_token %} to trigger cookie creation.
-      parameters:
-      - in: query
-        name: next
-        schema:
-          type: string
-      tags:
-      - auth
-      security:
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SocialAuthURL'
-          description: ''
   /api/v2/event/{event_pk}/user/kompomaatti/entries/:
     get:
       operationId: event_user_kompomaatti_entries_list
@@ -4849,6 +4783,7 @@ paths:
         name: status
         schema:
           type: integer
+          x-spec-enum-id: 1f34dd22db6f12e6
           enum:
           - 0
           - 1
@@ -6121,20 +6056,864 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserInfo'
           description: ''
+  /api/v2/allauth/browser/v1/config:
+    get:
+      summary: Get configuration
+      tags:
+      - Configuration
+      description: |
+        There are many configuration options that alter the functionality
+        and behavior of django-allauth, some of which can also impact the
+        frontend. Therefore, relevant configuration options are exposed via
+        this endpoint. The data returned is not user/authentication
+        dependent. Hence, it suffices to only fetch this data once at boot
+        time of your application.
+      responses:
+        '200':
+          $ref: '#/components/responses/Configuration'
+      operationId: allauth_get_api_v2_allauth_browser_v1_config
+  /api/v2/allauth/browser/v1/auth/login:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Login
+      description: |
+        Login using a username-password or email-password combination.
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticatedByPassword'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmail'
+                password_mismatch:
+                  $ref: '#/components/examples/PasswordMismatch'
+        '401':
+          description: |
+            Not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+              examples:
+                pending_email:
+                  $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+                pending_2fa:
+                  $ref: '#/components/examples/UnauthenticatedPending2FA'
+        '409':
+          description: |
+            Conflict. For example, when logging in when a user is already logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_login
+  /api/v2/allauth/browser/v1/auth/signup:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Signup
+      description: |
+        Whether or not `username`, `email`, `phone` or combination of those are
+        required depends on the configuration of django-allauth. Additionally,
+        if a custom signup form is used there may be other custom properties
+        required.
+      requestBody:
+        $ref: '#/components/requestBodies/Signup'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticatedByPassword'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmail'
+        '401':
+          description: |
+            Not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+              examples:
+                pending_email:
+                  $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+        '403':
+          description: |
+            Forbidden. For example, when signup is closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '409':
+          description: |
+            Conflict. For example, when signing up while user is logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_signup
+  /api/v2/allauth/browser/v1/auth/email/verify:
+    get:
+      tags:
+      - 'Authentication: Account'
+      summary: Get email verification information
+      description: |
+        Obtain email verification information, given the token that was sent to
+        the user by email.
+      parameters:
+      - $ref: '#/components/parameters/EmailVerificationKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/EmailVerificationInfo'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmailVerificationKey'
+        '409':
+          description: |
+            Conflict. The email verification (by code) flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_get_api_v2_allauth_browser_v1_auth_email_verify
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Verify an email
+      description: |
+        Complete the email verification process. Depending on the configuration,
+        email addresses are either verified by opening a link that is sent to
+        their email address, or, by inputting a code that is sent. On the API,
+        both cases are handled identically. Meaning, the required key is either
+        the one from the link, or, the code itself.
+
+        Note that a status code of 401 does not imply failure. It indicates that
+        the email verification was successful, yet, the user is still not signed
+        in. For example, in case `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` is set to
+        `False`, a 401 is returned when verifying as part of login/signup.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyEmail'
+      responses:
+        '200':
+          $ref: '#/components/responses/Authenticated'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmailVerificationKey'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '409':
+          description: |
+            Conflict. The email verification (by code) flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_email_verify
+  /api/v2/allauth/browser/v1/auth/email/verify/resend:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Resend email verification code
+      description: |
+        Requests a new email verification code.
+        Requires `ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_RESEND = True`.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/StatusOK'
+        '409':
+          description: |
+            Conflict. The email verification (by code) flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_email_verify_resend
+  /api/v2/allauth/browser/v1/auth/phone/verify:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Verify a phone number
+      description: |
+        Complete the phone number verification process. Note that a status code
+        of 401 does not imply failure. It merely indicates that the phone number
+        verification was successful, yet, the user is still not signed in.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyPhone'
+      responses:
+        '200':
+          $ref: '#/components/responses/Authenticated'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '409':
+          description: |
+            Conflict. The phone verification flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_phone_verify
+  /api/v2/allauth/browser/v1/auth/phone/verify/resend:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Resend phone number verification code
+      description: |
+        Requests a new phone number verification code.
+        Requires `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_RESEND = True`.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/StatusOK'
+        '409':
+          description: |
+            Conflict. The phone verification flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_phone_verify_resend
+  /api/v2/allauth/browser/v1/auth/reauthenticate:
+    post:
+      tags:
+      - 'Authentication: Account'
+      summary: Reauthenticate
+      description: |
+        In order to safeguard the account, some actions require the user to be
+        recently authenticated.  If you try to perform such an action without
+        having been recently authenticated, a `401` status is returned, listing
+        flows that can be performed to reauthenticate. One such flow is the flow
+        with ID `reauthenticate`, which allows for the user to input the
+        password. This is the endpoint related towards that flow.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/Reauthenticate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticatedByPassword'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/IncorrectPassword'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_reauthenticate
+  /api/v2/allauth/browser/v1/auth/password/request:
+    post:
+      summary: Request password
+      description: |
+        Initiates the password reset procedure. Depending on whether or not
+        `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED` is `True`, the procedure is
+        either stateless or stateful.
+
+        In case codes are used, it is stateful, and a new
+        `password_reset_by_code` flow is started. In this case, on a successful
+        password reset request, you will receive a 401 indicating the pending
+        status of this flow.
+
+        In case password reset is configured to use (stateless) links, you will
+        receive a 200 on a successful password reset request.
+      tags:
+      - 'Authentication: Password Reset'
+      requestBody:
+        $ref: '#/components/requestBodies/RequestPassword'
+      responses:
+        '200':
+          $ref: '#/components/responses/StatusOK'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmail'
+        '401':
+          $ref: '#/components/responses/Authentication'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_password_request
+  /api/v2/allauth/browser/v1/auth/password/reset:
+    get:
+      summary: Get password reset information
+      description: |
+        Used to obtain information on and validate a password reset key.  The
+        key passed is either the key encoded in the password reset URL that the
+        user has received per email, or, the password reset code in case of
+        `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED`. Note that in case of a code,
+        the number of requests you can make is limited (by
+        `ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS`).
+      tags:
+      - 'Authentication: Password Reset'
+      parameters:
+      - $ref: '#/components/parameters/PasswordResetKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/PasswordResetInfo'
+        '400':
+          description: |
+            An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                password_reset_key_invalid:
+                  $ref: '#/components/examples/InvalidPasswordResetKey'
+        '409':
+          description: |
+            Conflict. There is no password reset (by code) flow pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_get_api_v2_allauth_browser_v1_auth_password_reset
+    post:
+      summary: Reset password
+      description: |
+        Perform the password reset, by handing over the password reset key and
+        the new password. After successfully completing the password reset, the
+        user is either logged in (in case `ACCOUNT_LOGIN_ON_PASSWORD_RESET` is
+        `True`), or, the user will need to proceed to the login page.  In case
+        of the former, a `200` status code is returned, in case of the latter a
+        401.
+      tags:
+      - 'Authentication: Password Reset'
+      requestBody:
+        $ref: '#/components/requestBodies/ResetPassword'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticatedByPassword'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmail'
+        '401':
+          $ref: '#/components/responses/Authentication'
+        '409':
+          description: |
+            Conflict. There is no password reset (by code) flow pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_password_reset
+  /api/v2/allauth/browser/v1/auth/provider/redirect:
+    post:
+      tags:
+      - 'Authentication: Providers'
+      summary: Provider redirect
+      description: |
+        Initiates the third-party provider authentication redirect flow. As calling
+        this endpoint results in a user facing redirect (302), this call is only
+        available in a browser, and must be called in a synchronous (non-XHR)
+        manner.
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderRedirect'
+      responses:
+        '302':
+          description: The provider authorization URL to which the client should be
+            redirected.
+          headers:
+            location:
+              schema:
+                type: string
+              description: The redirect URL.
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_provider_redirect
+  /api/v2/allauth/browser/v1/auth/provider/token:
+    post:
+      tags:
+      - 'Authentication: Providers'
+      summary: Provider token
+      description: |
+        Authenticates with a third-party provider using provider tokens received
+        by other means. For example, in case of a mobile app, the authentication
+        flow runs completely on the device itself, without any interaction with
+        the API. Then, when the (device) authentication completes and the mobile
+        app receives an access and/or ID token, it can hand over these tokens
+        via this endpoint to authenticate on the server.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Authenticated'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_token:
+                  $ref: '#/components/examples/InvalidProviderToken'
+        '401':
+          description: Not authenticated, more steps are required to be completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+              examples:
+                unauthenticated_pending_2fa:
+                  $ref: '#/components/examples/UnauthenticatedPending2FA'
+                unauthenticated_pending_email_verification:
+                  $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+        '403':
+          description: |
+            Forbidden. For example, when signup is closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_provider_token
+  /api/v2/allauth/browser/v1/auth/provider/signup:
+    get:
+      tags:
+      - 'Authentication: Providers'
+      summary: Provider signup information
+      description: |
+        If, while signing up using a third-party provider account, there is
+        insufficient information received from the provider to automatically
+        complete the signup process, an additional step is needed to complete
+        the missing data before the user is fully signed up and authenticated.
+        The information available so far, such as the pending provider account,
+        can be retrieved via this endpoint.
+      responses:
+        '200':
+          $ref: '#/components/responses/ProviderSignup'
+        '409':
+          description: |
+            Conflict. The provider signup flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_get_api_v2_allauth_browser_v1_auth_provider_signup
+    post:
+      tags:
+      - 'Authentication: Providers'
+      summary: Provider signup
+      description: |
+        If, while signing up using a third-party provider account, there is
+        insufficient information received from the provider to automatically
+        complete the signup process, an additional step is needed to complete
+        the missing data before the user is fully signed up and authenticated.
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderSignup'
+      responses:
+        '200':
+          $ref: '#/components/responses/Authenticated'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmail'
+        '401':
+          description: Not authenticated, more steps are required to be completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+              examples:
+                unauthenticated_pending_email_verification:
+                  $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+        '403':
+          description: |
+            Forbidden. For example, when signup is closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '409':
+          description: |
+            Conflict. The provider signup flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_provider_signup
+  /api/v2/allauth/browser/v1/auth/code/confirm:
+    post:
+      tags:
+      - 'Authentication: Login By Code'
+      summary: Confirm login code
+      description: |
+        Use this endpoint to pass along the received "special" login code.
+      requestBody:
+        $ref: '#/components/requestBodies/ConfirmLoginCode'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticatedByCode'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_code:
+                  $ref: '#/components/examples/InvalidAuthenticatorCode'
+        '401':
+          description: |
+            Not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+              examples:
+                unauthenticated_pending_2fa:
+                  $ref: '#/components/examples/UnauthenticatedPending2FA'
+        '409':
+          description: |
+            Conflict. The "login by code" flow is not pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_auth_code_confirm
+  /api/v2/allauth/browser/v1/account/providers:
+    get:
+      tags:
+      - 'Account: Providers'
+      summary: List the connected third-party provider accounts
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProviderAccounts'
+      operationId: allauth_get_api_v2_allauth_browser_v1_account_providers
+    delete:
+      tags:
+      - 'Account: Providers'
+      summary: |
+        Disconnect a third-party provider account
+      description: |
+        Disconnect a third-party provider account, returning the remaining
+        accounts that are still connected. The disconnect is not allowed if it
+        would leave the account unusable. For example, if no password was
+        set up yet.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderAccount'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProviderAccounts'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                no_password:
+                  $ref: '#/components/examples/DisconnectNotAllowedNoPassword'
+                no_email:
+                  $ref: '#/components/examples/DisconnectNotAllowedNoVerifiedEmail'
+      operationId: allauth_delete_api_v2_allauth_browser_v1_account_providers
+  /api/v2/allauth/browser/v1/account/email:
+    get:
+      tags:
+      - 'Account: Email'
+      summary: List email addresses
+      description: |
+        Retrieves the list of email addresses of the account.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/EmailAddresses'
+        '401':
+          $ref: '#/components/responses/Authentication'
+      operationId: allauth_get_api_v2_allauth_browser_v1_account_email
+    post:
+      tags:
+      - 'Account: Email'
+      summary: |
+        Add/Change email address
+      description: |
+        The following functionality is available:
+
+          - Adding a new email address for an already signed in user (`ACCOUNT_CHANGE_EMAIL = False`).
+          - Change to a new email address for an already signed in user   (`ACCOUNT_CHANGE_EMAIL = True`).
+          - Change to a new email address during the email verification process at signup (`ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_CHANGE = True`).
+
+        In all cases, an email verification mail will be sent containing a link or code that needs to be verified.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/Email'
+      responses:
+        '200':
+          $ref: '#/components/responses/EmailAddresses'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_code:
+                  $ref: '#/components/examples/InvalidEmail'
+        '401':
+          $ref: '#/components/responses/AuthenticationOrReauthentication'
+        '409':
+          description: |
+            Conflict. For example, when no user is authenticated and no email verification flow is pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_account_email
+    put:
+      tags:
+      - 'Account: Email'
+      summary: Request email verification
+      description: |
+        Requests for (another) email verification email to be sent. Note that
+        sending emails is rate limited, so when you send too many requests the
+        email will not be sent.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/Email'
+      responses:
+        '200':
+          $ref: '#/components/responses/StatusOK'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_code:
+                  $ref: '#/components/examples/InvalidEmail'
+        '403':
+          description: |
+            Too many email verification mails were already sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+      operationId: allauth_put_api_v2_allauth_browser_v1_account_email
+    patch:
+      tags:
+      - 'Account: Email'
+      summary: Change primary email address
+      description: |
+        Used to change primary email address to a different one. Note that only verified email addresses
+        can be marked as primary.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/MarkPrimaryEmail'
+      responses:
+        '200':
+          $ref: '#/components/responses/EmailAddresses'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_code:
+                  $ref: '#/components/examples/InvalidEmail'
+      operationId: allauth_patch_api_v2_allauth_browser_v1_account_email
+    delete:
+      tags:
+      - 'Account: Email'
+      summary: Remove an email address
+      description: |
+        Used to remove an email address.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/Email'
+      responses:
+        '200':
+          $ref: '#/components/responses/EmailAddresses'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_code:
+                  $ref: '#/components/examples/InvalidEmail'
+      operationId: allauth_delete_api_v2_allauth_browser_v1_account_email
+  /api/v2/allauth/browser/v1/account/phone:
+    get:
+      tags:
+      - 'Account: Phone'
+      summary: Get the phone number
+      description: |
+        Retrieves the phone number of the account, if any. Note that while the
+        endpoint returns a list of phone numbers, at most one entry is returned.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/PhoneNumbers'
+        '401':
+          $ref: '#/components/responses/Authentication'
+      operationId: allauth_get_api_v2_allauth_browser_v1_account_phone
+    post:
+      tags:
+      - 'Account: Phone'
+      summary: |
+        Change the phone number
+      description: |
+        The following functionality is available:
+
+        - Initiate the phone number change process for signed in users.
+        - Change to a new phone number during the phone number verification
+          process at signup for unauthenticated users. Note that this requires:
+          `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_CHANGE = True`.
+
+        In both cases, after posting a new phone number, proceed with the phone
+        verification endpoint to confirm the change of the phone number by
+        posting the verification code.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/Phone'
+      responses:
+        '202':
+          description: Phone number change process initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberChangeResponse'
+        '400':
+          description: An input error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationOrReauthentication'
+        '409':
+          description: |
+            Conflict. For example, when no user is authenticated and no phone verification flow is pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+      operationId: allauth_post_api_v2_allauth_browser_v1_account_phone
+  /api/v2/allauth/browser/v1/auth/session:
+    get:
+      tags:
+      - 'Authentication: Current Session'
+      summary: |
+        Get authentication status
+      description: |
+        Retrieve information about the authentication status for the current
+        session.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Authenticated'
+        '401':
+          $ref: '#/components/responses/Authentication'
+        '410':
+          $ref: '#/components/responses/SessionGone'
+      operationId: allauth_get_api_v2_allauth_browser_v1_auth_session
+    delete:
+      tags:
+      - 'Authentication: Current Session'
+      summary: Logout
+      description: |
+        Logs out the user from the current session.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      operationId: allauth_delete_api_v2_allauth_browser_v1_auth_session
+  /api/v2/allauth/browser/v1/account/password/change:
+    post:
+      tags:
+      - 'Account: Password'
+      summary: Change password
+      description: |
+        In order to change the password of an account, the current and new
+        password must be provider.  However, accounts that were created by
+        signing up using a third-party provider do not have a password set. In
+        that case, the current password is not required.
+      parameters:
+      - $ref: '#/components/parameters/SessionToken'
+      requestBody:
+        $ref: '#/components/requestBodies/ChangePassword'
+      responses:
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Authentication'
+      operationId: allauth_post_api_v2_allauth_browser_v1_account_password_change
 components:
   schemas:
-    ActionEnum:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      type: integer
-      description: |-
-        * `0` - create
-        * `1` - update
-        * `2` - delete
-        * `3` - access
     Actor:
       type: object
       description: Serializer for the actor (user) who made the change.
@@ -6251,9 +7030,6 @@ components:
       - pk
       - token
       - token_key
-    BlankEnum:
-      enum:
-      - ''
     BlogEntry:
       type: object
       description: |-
@@ -6346,8 +7122,14 @@ components:
           type: string
           maxLength: 8
         score_sort:
-          allOf:
-          - $ref: '#/components/schemas/ScoreSortEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Highest score first
+            * `1` - Lowest score first
+          x-spec-enum-id: 4a7c63df6767c81e
           title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6453,8 +7235,14 @@ components:
           minLength: 1
           maxLength: 8
         score_sort:
-          allOf:
-          - $ref: '#/components/schemas/ScoreSortEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Highest score first
+            * `1` - Lowest score first
+          x-spec-enum-id: 4a7c63df6767c81e
           title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6556,8 +7344,18 @@ components:
           type: boolean
           title: Show results
         entry_view_type:
-          allOf:
-          - $ref: '#/components/schemas/EntryViewTypeEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Nothing
+            * `1` - Youtube first, then image
+            * `2` - Image only
+            * `3` - (deprecated)
+          x-spec-enum-id: f824dbf964814cac
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6570,8 +7368,18 @@ components:
           type: boolean
           title: Votable
         thumbnail_pref:
-          allOf:
-          - $ref: '#/components/schemas/ThumbnailPrefEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Require separate thumbnail.
+            * `1` - Use entry file as thumbnail (only works for png/jpg files).
+            * `2` - Allow thumbnail (not required).
+            * `3` - Do not allow thumbnail.
+          x-spec-enum-id: 7bef0dfabdd1ad5d
           title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6827,8 +7635,18 @@ components:
           type: boolean
           title: Show results
         entry_view_type:
-          allOf:
-          - $ref: '#/components/schemas/EntryViewTypeEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Nothing
+            * `1` - Youtube first, then image
+            * `2` - Image only
+            * `3` - (deprecated)
+          x-spec-enum-id: f824dbf964814cac
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6841,8 +7659,18 @@ components:
           type: boolean
           title: Votable
         thumbnail_pref:
-          allOf:
-          - $ref: '#/components/schemas/ThumbnailPrefEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Require separate thumbnail.
+            * `1` - Use entry file as thumbnail (only works for png/jpg files).
+            * `2` - Allow thumbnail (not required).
+            * `3` - Do not allow thumbnail.
+          x-spec-enum-id: 7bef0dfabdd1ad5d
           title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -6872,520 +7700,6 @@ components:
       - app_label
       - id
       - model
-    CountryEnum:
-      enum:
-      - AF
-      - AX
-      - AL
-      - DZ
-      - AS
-      - AD
-      - AO
-      - AI
-      - AQ
-      - AG
-      - AR
-      - AM
-      - AW
-      - AU
-      - AT
-      - AZ
-      - BS
-      - BH
-      - BD
-      - BB
-      - BY
-      - BE
-      - BZ
-      - BJ
-      - BM
-      - BT
-      - BO
-      - BQ
-      - BA
-      - BW
-      - BV
-      - BR
-      - IO
-      - BN
-      - BG
-      - BF
-      - BI
-      - CV
-      - KH
-      - CM
-      - CA
-      - KY
-      - CF
-      - TD
-      - CL
-      - CN
-      - CX
-      - CC
-      - CO
-      - KM
-      - CG
-      - CK
-      - CR
-      - CI
-      - HR
-      - CU
-      - CW
-      - CY
-      - CZ
-      - CD
-      - DK
-      - DJ
-      - DM
-      - DO
-      - EC
-      - EG
-      - SV
-      - GQ
-      - ER
-      - EE
-      - SZ
-      - ET
-      - FK
-      - FO
-      - FJ
-      - FI
-      - FR
-      - GF
-      - PF
-      - TF
-      - GA
-      - GM
-      - GE
-      - DE
-      - GH
-      - GI
-      - GR
-      - GL
-      - GD
-      - GP
-      - GU
-      - GT
-      - GG
-      - GN
-      - GW
-      - GY
-      - HT
-      - HM
-      - HN
-      - HK
-      - HU
-      - IS
-      - IN
-      - ID
-      - IR
-      - IQ
-      - IE
-      - IM
-      - IL
-      - IT
-      - JM
-      - JP
-      - JE
-      - JO
-      - KZ
-      - KE
-      - KI
-      - KW
-      - KG
-      - LA
-      - LV
-      - LB
-      - LS
-      - LR
-      - LY
-      - LI
-      - LT
-      - LU
-      - MO
-      - MG
-      - MW
-      - MY
-      - MV
-      - ML
-      - MT
-      - MH
-      - MQ
-      - MR
-      - MU
-      - YT
-      - MX
-      - FM
-      - MD
-      - MC
-      - MN
-      - ME
-      - MS
-      - MA
-      - MZ
-      - MM
-      - NA
-      - NR
-      - NP
-      - NL
-      - NC
-      - NZ
-      - NI
-      - NE
-      - NG
-      - NU
-      - NF
-      - KP
-      - MK
-      - MP
-      - 'NO'
-      - OM
-      - PK
-      - PW
-      - PS
-      - PA
-      - PG
-      - PY
-      - PE
-      - PH
-      - PN
-      - PL
-      - PT
-      - PR
-      - QA
-      - RE
-      - RO
-      - RU
-      - RW
-      - BL
-      - SH
-      - KN
-      - LC
-      - MF
-      - PM
-      - VC
-      - WS
-      - SM
-      - ST
-      - SA
-      - SN
-      - RS
-      - SC
-      - SL
-      - SG
-      - SX
-      - SK
-      - SI
-      - SB
-      - SO
-      - ZA
-      - GS
-      - KR
-      - SS
-      - ES
-      - LK
-      - SD
-      - SR
-      - SJ
-      - SE
-      - CH
-      - SY
-      - TW
-      - TJ
-      - TZ
-      - TH
-      - TL
-      - TG
-      - TK
-      - TO
-      - TT
-      - TN
-      - TR
-      - TM
-      - TC
-      - TV
-      - UG
-      - UA
-      - AE
-      - GB
-      - UM
-      - US
-      - UY
-      - UZ
-      - VU
-      - VA
-      - VE
-      - VN
-      - VG
-      - VI
-      - WF
-      - EH
-      - YE
-      - ZM
-      - ZW
-      type: string
-      description: |-
-        * `AF` - Afghanistan
-        * `AX` - Åland Islands
-        * `AL` - Albania
-        * `DZ` - Algeria
-        * `AS` - American Samoa
-        * `AD` - Andorra
-        * `AO` - Angola
-        * `AI` - Anguilla
-        * `AQ` - Antarctica
-        * `AG` - Antigua and Barbuda
-        * `AR` - Argentina
-        * `AM` - Armenia
-        * `AW` - Aruba
-        * `AU` - Australia
-        * `AT` - Austria
-        * `AZ` - Azerbaijan
-        * `BS` - Bahamas (The)
-        * `BH` - Bahrain
-        * `BD` - Bangladesh
-        * `BB` - Barbados
-        * `BY` - Belarus
-        * `BE` - Belgium
-        * `BZ` - Belize
-        * `BJ` - Benin
-        * `BM` - Bermuda
-        * `BT` - Bhutan
-        * `BO` - Bolivia
-        * `BQ` - Bonaire, Sint Eustatius and Saba
-        * `BA` - Bosnia and Herzegovina
-        * `BW` - Botswana
-        * `BV` - Bouvet Island
-        * `BR` - Brazil
-        * `IO` - British Indian Ocean Territory
-        * `BN` - Brunei
-        * `BG` - Bulgaria
-        * `BF` - Burkina Faso
-        * `BI` - Burundi
-        * `CV` - Cabo Verde
-        * `KH` - Cambodia
-        * `CM` - Cameroon
-        * `CA` - Canada
-        * `KY` - Cayman Islands
-        * `CF` - Central African Republic
-        * `TD` - Chad
-        * `CL` - Chile
-        * `CN` - China
-        * `CX` - Christmas Island
-        * `CC` - Cocos (Keeling) Islands
-        * `CO` - Colombia
-        * `KM` - Comoros
-        * `CG` - Congo
-        * `CK` - Cook Islands
-        * `CR` - Costa Rica
-        * `CI` - Côte d'Ivoire
-        * `HR` - Croatia
-        * `CU` - Cuba
-        * `CW` - Curaçao
-        * `CY` - Cyprus
-        * `CZ` - Czechia
-        * `CD` - Democratic Republic of the Congo
-        * `DK` - Denmark
-        * `DJ` - Djibouti
-        * `DM` - Dominica
-        * `DO` - Dominican Republic
-        * `EC` - Ecuador
-        * `EG` - Egypt
-        * `SV` - El Salvador
-        * `GQ` - Equatorial Guinea
-        * `ER` - Eritrea
-        * `EE` - Estonia
-        * `SZ` - Eswatini
-        * `ET` - Ethiopia
-        * `FK` - Falkland Islands (Malvinas)
-        * `FO` - Faroe Islands
-        * `FJ` - Fiji
-        * `FI` - Finland
-        * `FR` - France
-        * `GF` - French Guiana
-        * `PF` - French Polynesia
-        * `TF` - French Southern Territories
-        * `GA` - Gabon
-        * `GM` - Gambia
-        * `GE` - Georgia
-        * `DE` - Germany
-        * `GH` - Ghana
-        * `GI` - Gibraltar
-        * `GR` - Greece
-        * `GL` - Greenland
-        * `GD` - Grenada
-        * `GP` - Guadeloupe
-        * `GU` - Guam
-        * `GT` - Guatemala
-        * `GG` - Guernsey
-        * `GN` - Guinea
-        * `GW` - Guinea-Bissau
-        * `GY` - Guyana
-        * `HT` - Haiti
-        * `HM` - Heard Island and McDonald Islands
-        * `HN` - Honduras
-        * `HK` - Hong Kong
-        * `HU` - Hungary
-        * `IS` - Iceland
-        * `IN` - India
-        * `ID` - Indonesia
-        * `IR` - Iran
-        * `IQ` - Iraq
-        * `IE` - Ireland
-        * `IM` - Isle of Man
-        * `IL` - Israel
-        * `IT` - Italy
-        * `JM` - Jamaica
-        * `JP` - Japan
-        * `JE` - Jersey
-        * `JO` - Jordan
-        * `KZ` - Kazakhstan
-        * `KE` - Kenya
-        * `KI` - Kiribati
-        * `KW` - Kuwait
-        * `KG` - Kyrgyzstan
-        * `LA` - Laos
-        * `LV` - Latvia
-        * `LB` - Lebanon
-        * `LS` - Lesotho
-        * `LR` - Liberia
-        * `LY` - Libya
-        * `LI` - Liechtenstein
-        * `LT` - Lithuania
-        * `LU` - Luxembourg
-        * `MO` - Macao
-        * `MG` - Madagascar
-        * `MW` - Malawi
-        * `MY` - Malaysia
-        * `MV` - Maldives
-        * `ML` - Mali
-        * `MT` - Malta
-        * `MH` - Marshall Islands
-        * `MQ` - Martinique
-        * `MR` - Mauritania
-        * `MU` - Mauritius
-        * `YT` - Mayotte
-        * `MX` - Mexico
-        * `FM` - Micronesia
-        * `MD` - Moldova
-        * `MC` - Monaco
-        * `MN` - Mongolia
-        * `ME` - Montenegro
-        * `MS` - Montserrat
-        * `MA` - Morocco
-        * `MZ` - Mozambique
-        * `MM` - Myanmar
-        * `NA` - Namibia
-        * `NR` - Nauru
-        * `NP` - Nepal
-        * `NL` - Netherlands
-        * `NC` - New Caledonia
-        * `NZ` - New Zealand
-        * `NI` - Nicaragua
-        * `NE` - Niger
-        * `NG` - Nigeria
-        * `NU` - Niue
-        * `NF` - Norfolk Island
-        * `KP` - North Korea
-        * `MK` - North Macedonia
-        * `MP` - Northern Mariana Islands
-        * `NO` - Norway
-        * `OM` - Oman
-        * `PK` - Pakistan
-        * `PW` - Palau
-        * `PS` - Palestine
-        * `PA` - Panama
-        * `PG` - Papua New Guinea
-        * `PY` - Paraguay
-        * `PE` - Peru
-        * `PH` - Philippines
-        * `PN` - Pitcairn
-        * `PL` - Poland
-        * `PT` - Portugal
-        * `PR` - Puerto Rico
-        * `QA` - Qatar
-        * `RE` - Réunion
-        * `RO` - Romania
-        * `RU` - Russia
-        * `RW` - Rwanda
-        * `BL` - Saint Barthélemy
-        * `SH` - Saint Helena
-        * `KN` - Saint Kitts and Nevis
-        * `LC` - Saint Lucia
-        * `MF` - Saint Martin (French part)
-        * `PM` - Saint Pierre and Miquelon
-        * `VC` - Saint Vincent and the Grenadines
-        * `WS` - Samoa
-        * `SM` - San Marino
-        * `ST` - Sao Tome and Principe
-        * `SA` - Saudi Arabia
-        * `SN` - Senegal
-        * `RS` - Serbia
-        * `SC` - Seychelles
-        * `SL` - Sierra Leone
-        * `SG` - Singapore
-        * `SX` - Sint Maarten (Dutch part)
-        * `SK` - Slovakia
-        * `SI` - Slovenia
-        * `SB` - Solomon Islands
-        * `SO` - Somalia
-        * `ZA` - South Africa
-        * `GS` - South Georgia
-        * `KR` - South Korea
-        * `SS` - South Sudan
-        * `ES` - Spain
-        * `LK` - Sri Lanka
-        * `SD` - Sudan
-        * `SR` - Suriname
-        * `SJ` - Svalbard and Jan Mayen
-        * `SE` - Sweden
-        * `CH` - Switzerland
-        * `SY` - Syria
-        * `TW` - Taiwan
-        * `TJ` - Tajikistan
-        * `TZ` - Tanzania
-        * `TH` - Thailand
-        * `TL` - Timor-Leste
-        * `TG` - Togo
-        * `TK` - Tokelau
-        * `TO` - Tonga
-        * `TT` - Trinidad and Tobago
-        * `TN` - Tunisia
-        * `TR` - Türkiye
-        * `TM` - Turkmenistan
-        * `TC` - Turks and Caicos Islands
-        * `TV` - Tuvalu
-        * `UG` - Uganda
-        * `UA` - Ukraine
-        * `AE` - United Arab Emirates
-        * `GB` - United Kingdom
-        * `UM` - United States Minor Outlying Islands
-        * `US` - United States of America
-        * `UY` - Uruguay
-        * `UZ` - Uzbekistan
-        * `VU` - Vanuatu
-        * `VA` - Vatican City
-        * `VE` - Venezuela
-        * `VN` - Vietnam
-        * `VG` - Virgin Islands (British)
-        * `VI` - Virgin Islands (U.S.)
-        * `WF` - Wallis and Futuna
-        * `EH` - Western Sahara
-        * `YE` - Yemen
-        * `ZM` - Zambia
-        * `ZW` - Zimbabwe
-    EntryViewTypeEnum:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      type: integer
-      description: |-
-        * `0` - Nothing
-        * `1` - Youtube first, then image
-        * `2` - Image only
-        * `3` - (deprecated)
     Event:
       type: object
       description: Staff serializer for events.
@@ -7446,14 +7760,6 @@ components:
       required:
       - date
       - name
-    EventTypeEnum:
-      enum:
-      - 0
-      - 1
-      type: integer
-      description: |-
-        * `0` - Simple
-        * `1` - Detailed
     Group:
       type: object
       description: Serializer for user groups (used in user info responses).
@@ -7477,15 +7783,6 @@ components:
           maxLength: 150
       required:
       - name
-    LanguageEnum:
-      enum:
-      - en
-      - fi
-      type: string
-      description: |-
-        * `` - Not set
-        * `en` - English
-        * `fi` - Finnish
     LogEntry:
       type: object
       description: Serializer for audit log entries.
@@ -7504,8 +7801,18 @@ components:
           type: string
           title: Object representation
         action:
-          allOf:
-          - $ref: '#/components/schemas/ActionEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - create
+            * `1` - update
+            * `2` - delete
+            * `3` - access
+          x-spec-enum-id: f07ca4f574297d89
           minimum: 0
           maximum: 9223372036854775807
         changes:
@@ -8541,8 +8848,14 @@ components:
           minLength: 1
           maxLength: 8
         score_sort:
-          allOf:
-          - $ref: '#/components/schemas/ScoreSortEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Highest score first
+            * `1` - Lowest score first
+          x-spec-enum-id: 4a7c63df6767c81e
           title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -8673,8 +8986,18 @@ components:
           type: boolean
           title: Show results
         entry_view_type:
-          allOf:
-          - $ref: '#/components/schemas/EntryViewTypeEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Nothing
+            * `1` - Youtube first, then image
+            * `2` - Image only
+            * `3` - (deprecated)
+          x-spec-enum-id: f824dbf964814cac
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -8687,8 +9010,18 @@ components:
           type: boolean
           title: Votable
         thumbnail_pref:
-          allOf:
-          - $ref: '#/components/schemas/ThumbnailPrefEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Require separate thumbnail.
+            * `1` - Use entry file as thumbnail (only works for png/jpg files).
+            * `2` - Allow thumbnail (not required).
+            * `3` - Do not allow thumbnail.
+          x-spec-enum-id: 7bef0dfabdd1ad5d
           title: Thumbnail settings
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -8811,8 +9144,14 @@ components:
           title: Wikipedia
           maxLength: 200
         event_type:
-          allOf:
-          - $ref: '#/components/schemas/EventTypeEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Simple
+            * `1` - Detailed
+          x-spec-enum-id: b356803b61514c09
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
@@ -8991,7 +9330,508 @@ components:
           minLength: 1
           maxLength: 64
         country:
-          $ref: '#/components/schemas/CountryEnum'
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CK
+          - CR
+          - CI
+          - HR
+          - CU
+          - CW
+          - CY
+          - CZ
+          - CD
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IR
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - KP
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RE
+          - RO
+          - RU
+          - RW
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - KR
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - SY
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - UM
+          - US
+          - UY
+          - UZ
+          - VU
+          - VA
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+          type: string
+          description: |-
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas (The)
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `CD` - Democratic Republic of the Congo
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VA` - Vatican City
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          x-spec-enum-id: a1595bab5e5e3473
         information:
           type: string
           title: Additional information
@@ -9097,9 +9937,16 @@ components:
           type: string
           maxLength: 150
         language:
-          oneOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          - $ref: '#/components/schemas/BlankEnum'
+          enum:
+          - ''
+          - en
+          - fi
+          type: string
+          description: |-
+            * `` - Not set
+            * `en` - English
+            * `fi` - Finnish
+          x-spec-enum-id: 38aa4f572f4f47e1
         otherinfo:
           type: string
         notify_vote_code_requests:
@@ -9133,9 +9980,16 @@ components:
           title: Email address
           maxLength: 254
         language:
-          oneOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          - $ref: '#/components/schemas/BlankEnum'
+          enum:
+          - ''
+          - en
+          - fi
+          type: string
+          description: |-
+            * `` - Not set
+            * `en` - English
+            * `fi` - Finnish
+          x-spec-enum-id: 38aa4f572f4f47e1
         group_ids:
           type: array
           items:
@@ -9176,18 +10030,18 @@ components:
           minLength: 1
           title: Description
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: |-
+            * `0` - Pending approval
+            * `1` - Approved
+            * `2` - Rejected
+          x-spec-enum-id: 1f34dd22db6f12e6
           minimum: -9223372036854775808
           maximum: 9223372036854775807
-    PaymentMethodEnum:
-      enum:
-      - -1
-      - 1
-      type: integer
-      description: |-
-        * `-1` - -1
-        * `1` - 1
     ProgramEvent:
       type: object
       description: Staff serializer for programme events.
@@ -9272,8 +10126,14 @@ components:
           title: Wikipedia
           maxLength: 200
         event_type:
-          allOf:
-          - $ref: '#/components/schemas/EventTypeEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Simple
+            * `1` - Detailed
+          x-spec-enum-id: b356803b61514c09
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
@@ -9354,8 +10214,14 @@ components:
           title: Wikipedia
           maxLength: 200
         event_type:
-          allOf:
-          - $ref: '#/components/schemas/EventTypeEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Simple
+            * `1` - Detailed
+          x-spec-enum-id: b356803b61514c09
           minimum: -9223372036854775808
           maximum: 9223372036854775807
         active:
@@ -9431,8 +10297,14 @@ components:
           type: string
           maxLength: 8
         score_sort:
-          allOf:
-          - $ref: '#/components/schemas/ScoreSortEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Highest score first
+            * `1` - Lowest score first
+          x-spec-enum-id: 4a7c63df6767c81e
           title: Score sorting
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -9521,8 +10393,18 @@ components:
           format: date-time
           title: Voting end time
         entry_view_type:
-          allOf:
-          - $ref: '#/components/schemas/EntryViewTypeEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+          description: |-
+            * `0` - Nothing
+            * `1` - Youtube first, then image
+            * `2` - Image only
+            * `3` - (deprecated)
+          x-spec-enum-id: f824dbf964814cac
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
@@ -9756,8 +10638,14 @@ components:
           title: Wikipedia
           maxLength: 200
         event_type:
-          allOf:
-          - $ref: '#/components/schemas/EventTypeEnum'
+          enum:
+          - 0
+          - 1
+          type: integer
+          description: |-
+            * `0` - Simple
+            * `1` - Detailed
+          x-spec-enum-id: b356803b61514c09
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -9925,7 +10813,14 @@ components:
           default: ''
           maxLength: 1024
         payment_method:
-          $ref: '#/components/schemas/PaymentMethodEnum'
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: |-
+            * `-1` - -1
+            * `1` - 1
+          x-spec-enum-id: ac4f4a7dd888d3fe
         read_terms:
           type: boolean
         items:
@@ -10032,7 +10927,14 @@ components:
           default: ''
           maxLength: 1024
         payment_method:
-          $ref: '#/components/schemas/PaymentMethodEnum'
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: |-
+            * `-1` - -1
+            * `1` - 1
+          x-spec-enum-id: ac4f4a7dd888d3fe
         read_terms:
           type: boolean
         items:
@@ -10177,38 +11079,6 @@ components:
       - mail_from
       - mail_to
       - subject
-    ScoreSortEnum:
-      enum:
-      - 0
-      - 1
-      type: integer
-      description: |-
-        * `0` - Highest score first
-        * `1` - Lowest score first
-    SocialAuthURL:
-      type: object
-      description: Serializer for social authentication provider URLs.
-      properties:
-        method:
-          type: string
-        url:
-          type: string
-        name:
-          type: string
-      required:
-      - method
-      - name
-      - url
-    StatusEnum:
-      enum:
-      - 0
-      - 1
-      - 2
-      type: integer
-      description: |-
-        * `0` - Pending approval
-        * `1` - Approved
-        * `2` - Rejected
     StoreItem:
       type: object
       description: Staff serializer for StoreItem model.
@@ -10561,7 +11431,508 @@ components:
           type: string
           maxLength: 64
         country:
-          $ref: '#/components/schemas/CountryEnum'
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CK
+          - CR
+          - CI
+          - HR
+          - CU
+          - CW
+          - CY
+          - CZ
+          - CD
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IR
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - KP
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RE
+          - RO
+          - RU
+          - RW
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - KR
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - SY
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - UM
+          - US
+          - UY
+          - UZ
+          - VU
+          - VA
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+          type: string
+          description: |-
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas (The)
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `CD` - Democratic Republic of the Congo
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VA` - Vatican City
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          x-spec-enum-id: a1595bab5e5e3473
         information:
           type: string
           title: Additional information
@@ -10708,7 +12079,508 @@ components:
           minLength: 1
           maxLength: 64
         country:
-          $ref: '#/components/schemas/CountryEnum'
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CK
+          - CR
+          - CI
+          - HR
+          - CU
+          - CW
+          - CY
+          - CZ
+          - CD
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IR
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - KP
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RE
+          - RO
+          - RU
+          - RW
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - KR
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - SY
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - UM
+          - US
+          - UY
+          - UZ
+          - VU
+          - VA
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+          type: string
+          description: |-
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas (The)
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `CD` - Democratic Republic of the Congo
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VA` - Vatican City
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          x-spec-enum-id: a1595bab5e5e3473
         information:
           type: string
           title: Additional information
@@ -10719,18 +12591,6 @@ components:
       - lastname
       - postalcode
       - street
-    ThumbnailPrefEnum:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      type: integer
-      description: |-
-        * `0` - Require separate thumbnail.
-        * `1` - Use entry file as thumbnail (only works for png/jpg files).
-        * `2` - Allow thumbnail (not required).
-        * `3` - Do not allow thumbnail.
     TicketVoteCode:
       type: object
       description: Staff serializer for ticket vote codes.
@@ -10933,9 +12793,16 @@ components:
           format: date-time
           readOnly: true
         language:
-          oneOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          - $ref: '#/components/schemas/BlankEnum'
+          enum:
+          - ''
+          - en
+          - fi
+          type: string
+          description: |-
+            * `` - Not set
+            * `en` - English
+            * `fi` - Finnish
+          x-spec-enum-id: 38aa4f572f4f47e1
         groups:
           type: array
           items:
@@ -11163,9 +13030,16 @@ components:
           format: date-time
           readOnly: true
         language:
-          oneOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          - $ref: '#/components/schemas/BlankEnum'
+          enum:
+          - ''
+          - en
+          - fi
+          type: string
+          description: |-
+            * `` - Not set
+            * `en` - English
+            * `fi` - Finnish
+          x-spec-enum-id: 38aa4f572f4f47e1
         otherinfo:
           type: string
         notify_vote_code_requests:
@@ -11183,21 +13057,6 @@ components:
       - is_staff
       - is_superuser
       - user_permissions
-      - username
-    UserLoginRequest:
-      type: object
-      description: Serializer for username/password login credentials.
-      properties:
-        username:
-          type: string
-          minLength: 1
-          maxLength: 255
-        password:
-          type: string
-          minLength: 1
-          maxLength: 255
-      required:
-      - password
       - username
     UserRequest:
       type: object
@@ -11222,9 +13081,16 @@ components:
           title: Email address
           maxLength: 254
         language:
-          oneOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          - $ref: '#/components/schemas/BlankEnum'
+          enum:
+          - ''
+          - en
+          - fi
+          type: string
+          description: |-
+            * `` - Not set
+            * `en` - English
+            * `fi` - Finnish
+          x-spec-enum-id: 38aa4f572f4f47e1
         group_ids:
           type: array
           items:
@@ -11304,8 +13170,16 @@ components:
           type: string
           title: Description
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: |-
+            * `0` - Pending approval
+            * `1` - Approved
+            * `2` - Rejected
+          x-spec-enum-id: 1f34dd22db6f12e6
           readOnly: true
       required:
       - event
@@ -11424,8 +13298,16 @@ components:
           type: string
           title: Description
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: |-
+            * `0` - Pending approval
+            * `1` - Approved
+            * `2` - Rejected
+          x-spec-enum-id: 1f34dd22db6f12e6
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
@@ -11444,13 +13326,1098 @@ components:
           minLength: 1
           title: Description
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: |-
+            * `0` - Pending approval
+            * `1` - Approved
+            * `2` - Rejected
+          x-spec-enum-id: 1f34dd22db6f12e6
           minimum: -9223372036854775808
           maximum: 9223372036854775807
       required:
       - text
       - user
+    Session:
+      type: object
+      properties:
+        user_agent:
+          type: string
+          example: Mozilla Firefox
+        ip:
+          type: string
+          example: 127.2.3.192
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+        is_current:
+          type: boolean
+        id:
+          type: integer
+          example: 123
+        last_seen_at:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+      - user_agent
+      - ip
+      - created_at
+      - is_current
+      - id
+    AccountConfiguration:
+      type: object
+      description: |
+        Configuration of the Django `allauth.account` app.
+      properties:
+        login_methods:
+          type: array
+          items:
+            type: string
+            enum:
+            - email
+            - username
+        is_open_for_signup:
+          type: boolean
+        email_verification_by_code_enabled:
+          type: boolean
+        login_by_code_enabled:
+          type: boolean
+        password_reset_by_code_enabled:
+          type: boolean
+      required:
+      - authentication_method
+      - email_verification_by_code_enabled
+      - is_open_for_signup
+      - login_by_code_enabled
+    AuthenticationResponse:
+      type: object
+      description: |
+        An authentication related response.
+      properties:
+        status:
+          type: integer
+          enum:
+          - 401
+        data:
+          type: object
+          properties:
+            flows:
+              type: array
+              items:
+                $ref: '#/components/schemas/Flow'
+          required:
+          - flows
+        meta:
+          $ref: '#/components/schemas/AuthenticationMeta'
+      required:
+      - status
+      - data
+      - meta
+    ForbiddenResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          enum:
+          - 403
+      required:
+      - status
+    ConflictResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          enum:
+          - 409
+      required:
+      - status
+    EndSessions:
+      type: object
+      properties:
+        sessions:
+          description: |
+            The IDs of the sessions that are to be ended.
+          type: array
+          items:
+            type: integer
+            example: 123
+      required:
+      - sessions
+    PhoneNumber:
+      type: object
+      description: |
+        A phone number.
+      properties:
+        phone:
+          type: string
+          example: '+314159265359'
+        verified:
+          type: boolean
+      required:
+      - phone
+      - verified
+    PhoneNumbersResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusOK'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+      required:
+      - status
+      - data
+    PhoneNumberChangeResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusAccepted'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+      required:
+      - status
+      - data
+      example:
+        status: 202
+        data:
+        - phone: '+314159265359'
+          verified: false
+    ReauthenticationResponse:
+      type: object
+      description: |
+        A response indicating reauthentication is required.
+      properties:
+        status:
+          type: integer
+          enum:
+          - 401
+        data:
+          $ref: '#/components/schemas/ReauthenticationRequired'
+        meta:
+          $ref: '#/components/schemas/AuthenticatedMeta'
+      required:
+      - status
+      - data
+      - meta
+    SessionGoneResponse:
+      type: object
+      description: |
+        The session is expired or invalid.
+      properties:
+        status:
+          type: integer
+          enum:
+          - 410
+        data:
+          type: object
+        meta:
+          $ref: '#/components/schemas/AuthenticationMeta'
+      required:
+      - status
+      - data
+      - meta
+    BaseAuthenticationMeta:
+      type: object
+      properties:
+        session_token:
+          type: string
+          description: |
+            The session token (`app` clients only).
+          example: ufwcig0zen9skyd545jc0fkq813ghar2
+        access_token:
+          type: string
+          description: |
+            The access token (`app` clients only).
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
+    AuthenticationMeta:
+      allOf:
+      - $ref: '#/components/schemas/BaseAuthenticationMeta'
+      - type: object
+        description: |
+          Metadata available in an authentication related response.
+        properties:
+          is_authenticated:
+            type: boolean
+        required:
+        - is_authenticated
+    AuthenticatedMeta:
+      allOf:
+      - $ref: '#/components/schemas/BaseAuthenticationMeta'
+      - type: object
+        description: |
+          Metadata available in an re-authentication related response.
+        properties:
+          is_authenticated:
+            type: boolean
+            enum:
+            - true
+        required:
+        - is_authenticated
+    Flow:
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+          - login
+          - login_by_code
+          - mfa_authenticate
+          - mfa_reauthenticate
+          - provider_redirect
+          - provider_signup
+          - provider_token
+          - reauthenticate
+          - signup
+          - verify_email
+          - verify_phone
+        provider:
+          $ref: '#/components/schemas/Provider'
+        is_pending:
+          type: boolean
+          enum:
+          - true
+        types:
+          type: array
+          description: Matches `settings.MFA_SUPPORTED_TYPES`.
+          items:
+            $ref: '#/components/schemas/AuthenticatorType'
+      required:
+      - id
+    Authenticated:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/AllauthUser'
+        methods:
+          type: array
+          description: |
+            A list of methods used to authenticate.
+          items:
+            $ref: '#/components/schemas/AuthenticationMethod'
+      required:
+      - user
+      - methods
+    ReauthenticationRequired:
+      properties:
+        flows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flow'
+        user:
+          $ref: '#/components/schemas/AllauthUser'
+        methods:
+          type: array
+          description: |
+            A list of methods used to authenticate.
+          items:
+            $ref: '#/components/schemas/AuthenticationMethod'
+      required:
+      - flows
+      - user
+      - methods
+      type: object
+    AuthenticationMethod:
+      oneOf:
+      - type: object
+        title: |
+          Authenticated by username/email login
+        properties:
+          method:
+            type: string
+            enum:
+            - password
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+          username:
+            $ref: '#/components/schemas/Username'
+        required:
+        - method
+        - at
+      - type: object
+        title: |
+          Authenticated after password reset
+        properties:
+          method:
+            type: string
+            enum:
+            - password_reset
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - at
+        - email
+        - method
+      - type: object
+        title: |
+          Authenticated by confirming a code sent by email.
+        properties:
+          method:
+            type: string
+            enum:
+            - code
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - at
+        - email
+        - method
+      - type: object
+        title: |
+          Authenticated by confirming a code sent by phone.
+        properties:
+          method:
+            type: string
+            enum:
+            - code
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          phone:
+            $ref: '#/components/schemas/Phone'
+        required:
+        - at
+        - method
+        - phone
+      - type: object
+        title: |
+          Reauthenticated by password
+        properties:
+          method:
+            type: string
+            enum:
+            - password
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          reauthenticated:
+            type: boolean
+            enum:
+            - true
+        required:
+        - method
+        - reauthenticated
+        - at
+      - type: object
+        title: |
+          Authenticated by third-party provider
+        properties:
+          method:
+            type: string
+            enum:
+            - socialaccount
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          provider:
+            $ref: '#/components/schemas/ProviderID'
+          uid:
+            $ref: '#/components/schemas/ProviderAccountID'
+        required:
+        - method
+        - reauthenticated
+        - at
+        - provider
+        - uid
+      - type: object
+        title: |
+          (Re)authenticated by 2FA
+        properties:
+          method:
+            type: string
+            enum:
+            - mfa
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          type:
+            $ref: '#/components/schemas/AuthenticatorType'
+          reauthenticated:
+            type: boolean
+        required:
+        - method
+        - at
+        - type
+    AuthenticatedResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusOK'
+        data:
+          $ref: '#/components/schemas/Authenticated'
+        meta:
+          $ref: '#/components/schemas/AuthenticationMeta'
+      required:
+      - status
+      - data
+      - meta
+    MFAAuthenticate:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/AuthenticatorCode'
+      required:
+      - code
+    MFATrust:
+      type: object
+      properties:
+        trust:
+          type: boolean
+      required:
+      - trust
+    ConfirmLoginCode:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/Code'
+      required:
+      - code
+    ClientID:
+      type: string
+      description: |
+        The client ID (in case of OAuth2 or OpenID Connect based providers)
+      example: 123.apps.googleusercontent.com
+    ProviderToken:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ProviderID'
+        process:
+          $ref: '#/components/schemas/Process'
+        token:
+          description: |
+            The token.
+          type: object
+          properties:
+            client_id:
+              $ref: '#/components/schemas/ClientID'
+            id_token:
+              type: string
+              description: |
+                The ID token.
+              example: eyJhbGciOiJI
+            access_token:
+              type: string
+              description: |
+                The access token.
+              example: 36POk6yJV_adQs
+          required:
+          - client_id
+      required:
+      - provider
+      - process
+      - token
+    ProviderRedirect:
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ProviderID'
+        callback_url:
+          type: string
+          description: |
+            The URL to return to after the redirect flow is complete.
+
+            Note that this is not to be mistaken with the callback URL that you
+            configure over at the OAuth provider during the OAuth app/client
+            setup. The flow is as follows:
+
+              1. Your frontend redirects to the headless provider redirect
+                 endpoint in a synchronous (non-XHR) manner, informing allauth
+                 (by means of `callback_url`) where to redirect to after the
+                 provider handshake is completed.
+
+              2. Headless will redirect to the (OAuth) identity provider to
+                 initiate the handshake, passing along a different callback URL
+                 to the provider: one that points to an allauth backend URL.
+                 This is the URL that you need to have setup at your OAuth
+                 app/client configuration. Note that this must be a backend URL
+                 as providers can use POST requests to perform their callbacks,
+                 which is something a frontend would not be able to handle.
+
+              3. After the authorization at the provider is completed, the
+                 provider redirects to the *backend* allauth callback URL, which
+                 will then redirect back to the *frontend* callback URL.
+
+              4. Your frontend is now expected to fetch the current session to
+                 determine what the next course of action is. The user could be
+                 authenticated at this point, or another flow is pending
+                 (e.g. email verification, or, provider signup). In case of
+                 errors a `?error=` is passed to the frontend callback URL.
+          example: https://app.project.org/account/provider/callback
+        process:
+          $ref: '#/components/schemas/Process'
+      required:
+      - provider
+      - process
+      - callback_url
+    RequestPassword:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+      required:
+      - email
+    RequestLoginCode:
+      type: object
+      anyOf:
+      - title: Request login code (phone)
+        properties:
+          phone:
+            $ref: '#/components/schemas/Phone'
+        required:
+        - phone
+      - title: Request login code (email)
+        properties:
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - email
+    Reauthenticate:
+      type: object
+      properties:
+        password:
+          $ref: '#/components/schemas/Password'
+      required:
+      - password
+    ProviderSignup:
+      allOf:
+      - $ref: '#/components/schemas/BaseSignup'
+    PasskeySignup:
+      allOf:
+      - $ref: '#/components/schemas/BaseSignup'
+    BaseSignup:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+      required:
+      - email
+    Signup:
+      allOf:
+      - $ref: '#/components/schemas/BaseSignup'
+      - type: object
+        properties:
+          password:
+            $ref: '#/components/schemas/Password'
+        required:
+        - password
+    Username:
+      type: string
+      description: |
+        The username.
+      example: wizard
+    Email:
+      type: string
+      description: |
+        The email address.
+      example: email@domain.org
+    Phone:
+      type: string
+      description: |
+        The phone number.
+      example: '+314159265359'
+    AccessToken:
+      type: string
+      description: |
+        The access token.
+      example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
+    RefreshToken:
+      type: string
+      description: |
+        The refresh token.
+      example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.QV30
+    Login:
+      allOf:
+      - type: object
+        properties:
+          password:
+            $ref: '#/components/schemas/Password'
+        required:
+        - password
+      - anyOf:
+        - title: Login by username
+          properties:
+            username:
+              $ref: '#/components/schemas/Username'
+          required:
+          - username
+        - title: Login by email
+          properties:
+            email:
+              $ref: '#/components/schemas/Email'
+          required:
+          - email
+        - title: Login by phone
+          properties:
+            phone:
+              $ref: '#/components/schemas/Phone'
+          required:
+          - phone
+    StatusOK:
+      type: integer
+      enum:
+      - 200
+    StatusAccepted:
+      type: integer
+      enum:
+      - 202
+    AuthenticatorID:
+      type: integer
+      description: |
+        Authenticator ID.
+      example: 123
+    SocialAccountConfiguration:
+      type: object
+      description: |
+        Configuration of the Django `allauth.socialaccount` app.
+      properties:
+        providers:
+          $ref: '#/components/schemas/ProviderList'
+      required:
+      - providers
+    MFAConfiguration:
+      type: object
+      description: |
+        Configuration of the Django `allauth.mfa` app.
+      properties:
+        supported_types:
+          type: array
+          description: |
+            Matches `settings.MFA_SUPPORTED_TYPES`.
+          items:
+            $ref: '#/components/schemas/AuthenticatorType'
+      required:
+      - supported_types
+    UserSessionsConfiguration:
+      type: object
+      description: |
+        Configuration of the Django `allauth.usersessions` app.
+      properties:
+        track_activity:
+          type: boolean
+          description: |
+            Matches `settings.USERSESSIONS_TRACK_ACTIVITY`.
+      required:
+      - track_activity
+    ConfigurationResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account:
+              $ref: '#/components/schemas/AccountConfiguration'
+            socialaccount:
+              $ref: '#/components/schemas/SocialAccountConfiguration'
+            mfa:
+              $ref: '#/components/schemas/MFAConfiguration'
+            usersessions:
+              $ref: '#/components/schemas/UserSessionsConfiguration'
+          required:
+          - account
+        status:
+          $ref: '#/components/schemas/StatusOK'
+      required:
+      - status
+      - data
+      example:
+        status: 200
+        data:
+          account:
+            authentication_method: email
+          socialaccount:
+            providers:
+            - id: google
+              name: Google
+              flows:
+              - provider_redirect
+              - provider_token
+              client_id: 123.apps.googleusercontent.com
+              openid_configuration_url: https://accounts.google.com/.well-known/openid-configuration
+          mfa:
+            supported_types:
+            - recovery_codes
+            - totp
+          usersessions:
+            track_activity: false
+    ResetPassword:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The password reset key
+          example: 2f-c4nqd4-e07d9bc694f9f28cd4fe92569d495333
+        password:
+          $ref: '#/components/schemas/Password'
+      required:
+      - key
+      - password
+    VerifyEmail:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The email verification key
+          example: 2f-c4nqd4-e07d9bc694f9f28cd4fe92569d495333
+      required:
+      - key
+    VerifyPhone:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The phone verification code
+          example: 4S3H82
+      required:
+      - code
+    OptionalTimestamp:
+      nullable: true
+      $ref: '#/components/schemas/Timestamp'
+    Timestamp:
+      type: number
+      description: |
+        An epoch based timestamp (trivial to parse using: `new Date(value)*1000`)
+      example: 1711555057.065702
+    AuthenticatorCode:
+      type: string
+      description: |
+        An authenticator code.
+      example: '314159'
+    Code:
+      type: string
+      description: |
+        An one-time code.
+      example: NQ3TM5
+    AuthenticatorType:
+      type: string
+      enum:
+      - recovery_codes
+      - totp
+      - webauthn
+      description: |
+        The type of authenticator.
+    Password:
+      type: string
+      description: |
+        The password.
+      example: Alohomora!
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          enum:
+          - 400
+          example: 400
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                example: invalid
+                description: |
+                  An error code.
+              param:
+                type: string
+                example: email
+                description: |
+                  The name of the input parameter that was incorrect.
+              message:
+                type: string
+                example: Enter a valid email address.
+                description: |
+                  A human readable error message.
+            required:
+            - code
+            - message
+    Process:
+      type: string
+      description: |
+        The process to be executed when the user successfully
+        authenticates. When set to `login`, the user will be logged into the
+        account to which the provider account is connected, or if no such
+        account exists, a signup will occur. If set to `connect`, the provider
+        account will be connected to the list of provider accounts for the
+        currently authenticated user.
+      enum:
+      - login
+      - connect
+      example: login
+    ProviderID:
+      type: string
+      description: |
+        The provider ID.
+      example: google
+    ProviderAccountID:
+      type: string
+      description: |
+        The provider specific account ID.
+      example: goo12345
+    AllauthUser:
+      type: object
+      properties:
+        id:
+          description: The user ID.
+          example: 123
+          type: integer
+        display:
+          description: The display name for the user.
+          example: Magic Wizard
+          type: string
+        email:
+          description: The email address.
+          example: email@domain.org
+          type: string
+        has_usable_password:
+          description: Whether or not the account has a password set.
+          example: true
+          type: boolean
+        username:
+          description: The username.
+          example: wizard
+          type: string
+      required:
+      - display
+      - has_usable_password
+      - username
+    EmailAddress:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        primary:
+          type: boolean
+          example: true
+        verified:
+          type: boolean
+          example: false
+      required:
+      - email
+      - primary
+      - verified
+    BaseAuthenticator:
+      type: object
+      properties:
+        last_used_at:
+          $ref: '#/components/schemas/OptionalTimestamp'
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+      - created_at
+      - last_used_at
+    TOTPAuthenticator:
+      allOf:
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - totp
+        required:
+        - type
+    WebAuthnAuthenticator:
+      allOf:
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - webauthn
+          id:
+            $ref: '#/components/schemas/AuthenticatorID'
+          name:
+            type: string
+            example: Master key
+          is_passwordless:
+            type: boolean
+            description: |
+              Whether or not this authenticator represents a passkey. Absent if it is not specified.
+        required:
+        - type
+        - id
+        - name
+    RecoveryCodesAuthenticator:
+      allOf:
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: |
+              The authenticator type.
+            enum:
+            - recovery_codes
+          total_code_count:
+            type: integer
+            description: |
+              The total number of recovery codes that initially were available.
+            example: 10
+          unused_code_count:
+            type: integer
+            description: |
+              The number of recovery codes that are unused.
+            example: 7
+        required:
+        - type
+        - total_code_count
+        - unused_code_count
+    SensitiveRecoveryCodesAuthenticator:
+      allOf:
+      - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
+      - type: object
+        properties:
+          unused_codes:
+            type: array
+            description: |
+              The list of unused codes.
+            items:
+              $ref: '#/components/schemas/AuthenticatorCode'
+        required:
+        - unused_codes
+    AuthenticatorList:
+      type: array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/TOTPAuthenticator'
+        - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
+        - $ref: '#/components/schemas/WebAuthnAuthenticator'
+    ProviderList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Provider'
+    Provider:
+      type: object
+      properties:
+        id:
+          type: string
+          example: google
+          description: |
+            The provider ID.
+        name:
+          type: string
+          description: |
+            The name of the provider.
+          example: Google
+        client_id:
+          type: string
+          description: |
+            The client ID (in case of OAuth2 or OpenID Connect based providers)
+          example: 123.apps.googleusercontent.com
+        openid_configuration_url:
+          type: string
+          description: |
+            The OIDC discovery or well-known URL (in case of OAuth2 or OpenID Connect based providers)
+          example: https://accounts.google.com/.well-known/openid-configuration
+        flows:
+          type: array
+          description: |
+            The authentication flows the provider integration supports.
+          items:
+            type: string
+            enum:
+            - provider_redirect
+            - provider_token
+      required:
+      - id
+      - name
+      - flows
+    ProviderAccount:
+      type: object
+      properties:
+        uid:
+          $ref: '#/components/schemas/ProviderAccountID'
+        display:
+          type: string
+          description: |
+            A name derived from the third-party provider account data.
+          example: Wizzkid
+        provider:
+          $ref: '#/components/schemas/Provider'
+      required:
+      - uid
+      - provider
+      - display
+    EmailVerificationInfo:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusOK'
+        data:
+          type: object
+          properties:
+            email:
+              $ref: '#/components/schemas/Email'
+            user:
+              $ref: '#/components/schemas/AllauthUser'
+          required:
+          - email
+          - user
+        meta:
+          type: object
+          properties:
+            is_authenticating:
+              type: boolean
+          required:
+          - is_authenticating
+      required:
+      - status
+      - data
+      - meta
+    WebAuthnCredentialRequestOptions:
+      type: object
+      properties:
+        request_options:
+          type: object
+          example:
+            status: 200
+            data:
+              request_options:
+                publicKey:
+                  challenge: aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o
+                  rpId: localhost
+                  allowCredentials: []
+                  userVerification: preferred
+      required:
+      - request_options
+    WebAuthnCredentialCreationOptions:
+      type: object
+      properties:
+        creation_options:
+          type: object
+          example:
+            status: 200
+            data:
+              request_options:
+                publicKey:
+                  challenge: aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o
+                  rpId: localhost
+                  allowCredentials: []
+                  userVerification: preferred
+      required:
+      - creation_options
+    WebAuthnCredential:
+      type: object
+      example:
+        credential:
+          type: public-key
+          id: -J4JNfPfnLyRSMK4R...
+          rawId: -J4JNfPfnLyRSMK4R...
+          authenticatorAttachment: cross-platform
+          response:
+            clientDataJSON: eyJjaGFsbGVuZ2UiOi...
+            authenticatorData: SZYN5YgO...
+            signature: MEUCIE-7sqILygPqGbrRZ4j2nqeqUU...
+            userHandle: Mg...
+          clientExtensionResults: {}
   securitySchemes:
     cookieAuth:
       type: apiKey
@@ -11461,3 +14428,1051 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+  examples:
+    AllauthUser:
+      value:
+        id: 123
+        display: Magic Wizard
+        email: email@domain.org
+        has_usable_password: true
+        username: wizard
+    AuthenticatedByPassword:
+      summary: |
+        Authenticated by password.
+      value:
+        status: 200
+        data:
+          user:
+            id: 123
+            display: Magic Wizard
+            email: email@domain.org
+            has_usable_password: true
+            username: wizard
+          methods:
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
+        meta:
+          is_authenticated: true
+          session_token: ufwcig0zen9skyd545jc0fkq813ghar2
+          access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
+    AuthenticatedByCode:
+      summary: |
+        Authenticated by code.
+      value:
+        status: 200
+        data:
+          user:
+            id: 123
+            display: Magic Wizard
+            email: email@domain.org
+            has_usable_password: true
+            username: wizard
+          methods:
+          - method: code
+            at: 1711555057.065702
+            email: email@domain.org
+        meta:
+          is_authenticated: true
+          session_token: ufwcig0zen9skyd545jc0fkq813ghar2
+          access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
+    AuthenticatedByPasswordAnd2FA:
+      summary: |
+        Fully authenticated using by password and 2FA.
+      value:
+        status: 200
+        data:
+          user:
+            id: 123
+            display: Magic Wizard
+            email: email@domain.org
+            has_usable_password: true
+            username: wizard
+          methods:
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
+          - method: mfa
+            at: 1711555060.9375854
+            id: 66
+            type: totp
+        meta:
+          is_authenticated: true
+          session_token: ufwcig0zen9skyd545jc0fkq813ghar2
+          access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
+    CannotGenerateRecoveryCodes:
+      summary: |
+        Unable to generate recovery codes.
+      value:
+        status: 400
+        errors:
+        - message: |
+            You cannot deactivate two-factor authentication.
+            code: cannot_generate_recovery_codes
+    DisconnectNotAllowedNoPassword:
+      summary: Account without a password.
+      value:
+        status: 400
+        errors:
+        - message: Your account has no password set up.
+          code: no_password
+          param: account
+    DisconnectNotAllowedNoVerifiedEmail:
+      summary: Account without a verified email.
+      value:
+        status: 400
+        errors:
+        - message: Your account has no verified email address.
+          code: no_verified_email
+          param: account
+    InvalidAuthenticatorCode:
+      summary: |
+        An error response indicating that the provided code is incorrect.
+      value:
+        status: 400
+        errors:
+        - message: Incorrect code.
+          code: incorrect_code
+          param: code
+    InvalidEmailVerificationKey:
+      summary: |
+        Email verification key invalid.
+      value:
+        status: 400
+        errors:
+        - message: Invalid or expired key.
+          code: invalid
+          param: key
+    InvalidEmail:
+      value:
+        status: 400
+        errors:
+        - message: Enter a valid email address.
+          code: invalid
+          param: email
+    IncorrectPassword:
+      value:
+        status: 400
+        errors:
+        - message: Incorrect password.
+          param: password
+          code: incorrect_password
+    InvalidPasswordResetKey:
+      summary: |
+        Password reset key invalid.
+      value:
+        status: 400
+        errors:
+        - message: The password reset token was invalid.
+          code: token_invalid
+          param: key
+    InvalidProviderToken:
+      summary: |
+        Provider token invalid.
+      value:
+        status: 400
+        errors:
+        - message: The token was invalid.
+          code: invalid
+          param: token
+    PasswordMismatch:
+      value:
+        status: 400
+        errors:
+        - message: The email address and/or password you specified are not correct.
+          code: email_password_mismatch
+          param: password
+    UnauthenticatedInitial:
+      summary: |
+        Unauthenticated: Initial
+      value:
+        status: 401
+        data:
+          flows:
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+        meta:
+          is_authenticated: false
+    UnauthenticatedPending2FA:
+      summary: |
+        Unauthenticated: pending 2FA
+      value:
+        status: 401
+        data:
+          flows:
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: mfa_authenticate
+            is_pending: true
+        meta:
+          is_authenticated: false
+    UnauthenticatedPendingLoginByCode:
+      summary: |
+        Unauthenticated: pending login by code
+      value:
+        status: 401
+        data:
+          flows:
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: mfa_authenticate
+          - id: login_by_code
+            is_pending: true
+        meta:
+          is_authenticated: false
+    UnauthenticatedPendingProviderSignup:
+      summary: |
+        Unauthenticated: pending provider signup
+      value:
+        status: 401
+        data:
+          flows:
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: provider_signup
+            provider:
+              id: google
+              name: Google
+              client_id: 123.apps.googleusercontent.com
+              flows:
+              - provider_redirect
+              - provider_token
+            is_pending: true
+        meta:
+          is_authenticated: false
+    UnauthenticatedPendingEmailVerification:
+      summary: |
+        Unauthenticated: pending email verification
+      value:
+        status: 401
+        data:
+          flows:
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: verify_email
+            is_pending: true
+        meta:
+          is_authenticated: false
+    ReauthenticationRequired:
+      summary: |
+        Reauthentication required
+      value:
+        status: 401
+        data:
+          user:
+            id: 123
+            display: Magic Wizard
+            email: email@domain.org
+            has_usable_password: true
+            username: wizard
+          methods:
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
+          - method: mfa
+            at: 1711555060.9375854
+            id: 66
+            type: totp
+          flows:
+          - id: reauthenticate
+          - id: mfa_reauthenticate
+        meta:
+          is_authenticated: true
+  requestBodies:
+    Login:
+      description: Login.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
+    LoginWebAuthn:
+      description: Login using WebAuthn.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              credential:
+                $ref: '#/components/schemas/WebAuthnCredential'
+            required:
+            - credential
+    ReauthenticateWebAuthn:
+      description: Reauthenticate using WebAuthn.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              credential:
+                $ref: '#/components/schemas/WebAuthnCredential'
+            required:
+            - credential
+    AuthenticateWebAuthn:
+      description: Authenticate using WebAuthn.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              credential:
+                $ref: '#/components/schemas/WebAuthnCredential'
+            required:
+            - credential
+    MFAAuthenticate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MFAAuthenticate'
+    MFATrust:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MFATrust'
+    ConfirmLoginCode:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfirmLoginCode'
+    EndSessions:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndSessions'
+    PasskeySignup:
+      description: Signup using a passkey
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PasskeySignup'
+    ProviderAccount:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              provider:
+                $ref: '#/components/schemas/ProviderID'
+              account:
+                $ref: '#/components/schemas/ProviderAccountID'
+            required:
+            - account
+            - provider
+    ProviderRedirect:
+      required: true
+      description: |
+        Initiate the provider redirect flow.
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProviderRedirect'
+    ProviderSignup:
+      description: Provider signup.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProviderSignup'
+    ProviderToken:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProviderToken'
+    Reauthenticate:
+      description: Reauthenticate.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Reauthenticate'
+    RefreshToken:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              refresh_token:
+                $ref: '#/components/schemas/RefreshToken'
+            required:
+            - refresh_token
+    RequestPassword:
+      description: Request password.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestPassword'
+    RequestLoginCode:
+      description: Request a login code.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestLoginCode'
+    SetupTOTP:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                $ref: '#/components/schemas/AuthenticatorCode'
+            required:
+            - code
+    Signup:
+      description: Signup
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Signup'
+    ChangePassword:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              current_password:
+                $ref: '#/components/schemas/Password'
+              new_password:
+                type: string
+                description: |
+                  The current password.
+                example: Aberto!
+            required:
+            - new_password
+    Email:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                $ref: '#/components/schemas/Email'
+            required:
+            - email
+    MarkPrimaryEmail:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: |
+                  An email address.
+                example: email@domain.org
+              primary:
+                type: boolean
+                enum:
+                - true
+                description: |
+                  Primary flag.
+            required:
+            - email
+            - primary
+    Phone:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              phone:
+                type: string
+                example: '+314159265359'
+            required:
+            - phone
+    ResetPassword:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResetPassword'
+    VerifyEmail:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmail'
+    VerifyPhone:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyPhone'
+    UpdateWebAuthn:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/AuthenticatorID'
+              name:
+                type: string
+                example: Master key
+    AddWebAuthnAuthenticator:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Master key
+              credential:
+                $ref: '#/components/schemas/WebAuthnCredential'
+            required:
+            - credential
+    DeleteWebAuthn:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              authenticators:
+                description: |
+                  The IDs of the authenticator that are to be deleted.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthenticatorID'
+            required:
+            - authenticators
+  parameters:
+    EmailVerificationKey:
+      in: header
+      name: X-Email-Verification-Key
+      schema:
+        type: string
+      required: true
+      description: The email verification key
+    PasswordResetKey:
+      in: header
+      name: X-Password-Reset-Key
+      schema:
+        type: string
+      required: true
+      description: The password reset key
+    SessionToken:
+      in: header
+      name: X-Session-Token
+      required: false
+      description: |
+        Session token. Only needed when `client` is equal to `app`.
+      schema:
+        type: string
+    PasswordLess:
+      in: query
+      name: passwordless
+      required: false
+      schema:
+        type: boolean
+      allowEmptyValue: true
+      description: |
+        When present (regardless of its value), enables passwordless sign-in via a WebAuthn credential (Passkey),
+        but may enforce additional multi-factor authentication (MFA) requirements. Omit the parameter to disable.
+  responses:
+    AddAuthenticatorConflict:
+      description: |
+        The account prohibits adding an authenticator, e.g. because of an unverified email address.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConflictResponse'
+    Authentication:
+      description: Not authenticated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationResponse'
+          examples:
+            unauthenticated_initial:
+              $ref: '#/components/examples/UnauthenticatedInitial'
+            unauthenticated_pending_2fa:
+              $ref: '#/components/examples/UnauthenticatedPending2FA'
+            unauthenticated_pending_provider_signup:
+              $ref: '#/components/examples/UnauthenticatedPendingProviderSignup'
+            unauthenticated_pending_email_verification:
+              $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+            reauthentication_required:
+              $ref: '#/components/examples/ReauthenticationRequired'
+    Authenticators:
+      description: |
+        List of authenticators.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/AuthenticatorList'
+            required:
+            - status
+            - data
+    AuthenticatedByPassword:
+      description: |
+        Authenticated by password.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticatedResponse'
+          examples:
+            authenticated:
+              $ref: '#/components/examples/AuthenticatedByPassword'
+    AuthenticatedByCode:
+      description: |
+        Authenticated by code.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticatedResponse'
+          examples:
+            authenticated:
+              $ref: '#/components/examples/AuthenticatedByCode'
+    AuthenticatedByPasswordAnd2FA:
+      description: |
+        Authenticated by password and 2FA.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticatedResponse'
+          examples:
+            authenticated:
+              $ref: '#/components/examples/AuthenticatedByPasswordAnd2FA'
+    AuthenticationOrReauthentication:
+      description: |
+        The response indicates authentication or re-authentication is required.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/AuthenticationResponse'
+            - $ref: '#/components/schemas/ReauthenticationResponse'
+    Configuration:
+      description: |
+        The django-allauth configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfigurationResponse'
+    EmailAddresses:
+      description: |
+        List of email addresses.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailAddress'
+            required:
+            - status
+            - data
+    EmailVerificationInfo:
+      description: Email verification information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EmailVerificationInfo'
+    Error:
+      description: An input error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: |
+        A forbidden response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenResponse'
+    NotFound:
+      description: |
+        Not found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                enum:
+                - 404
+            required:
+            - status
+    PasswordResetInfo:
+      description: Information about the password reset key.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/AllauthUser'
+            required:
+            - status
+            - data
+    PhoneNumbers:
+      description: |
+        List of phone numbers.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PhoneNumbersResponse'
+    ProviderAccounts:
+      description: |
+        List of third-party provider accounts.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderAccount'
+            required:
+            - status
+            - data
+    ProviderSignup:
+      description: |
+        Information relating to the pending provider signup.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: object
+                properties:
+                  email:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmailAddress'
+                  account:
+                    $ref: '#/components/schemas/ProviderAccount'
+                  user:
+                    $ref: '#/components/schemas/AllauthUser'
+                required:
+                - email
+                - account
+                - user
+            required:
+            - status
+            - data
+    ReauthenticationRequired:
+      description: |
+        The response indicates reauthentication is required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReauthenticationResponse'
+          examples:
+            reauthentication_required:
+              summary: |
+                Reauthentication required
+              value:
+                status: 401
+                data:
+                  user:
+                    id: 123
+                    display: Magic Wizard
+                    email: email@domain.org
+                    has_usable_password: true
+                    username: wizard
+                  methods:
+                  - method: password
+                    at: 1711555057.065702
+                    email: email@domain.org
+                  - method: mfa
+                    at: 1711555060.9375854
+                    id: 66
+                    type: totp
+                  flows:
+                  - id: reauthenticate
+                  - id: mfa_reauthenticate
+                meta:
+                  is_authenticated: true
+    RecoveryCodes:
+      description: |
+        Information on the recovery codes.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/SensitiveRecoveryCodesAuthenticator'
+            required:
+            - status
+            - data
+    RefreshToken:
+      description: A new access token (and optionally new refresh token).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: object
+                properties:
+                  access_token:
+                    $ref: '#/components/schemas/AccessToken'
+                  refresh_token:
+                    $ref: '#/components/schemas/RefreshToken'
+                required:
+                - access_token
+            required:
+            - data
+            - status
+    Sessions:
+      description: |
+        List of sessions.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+            required:
+            - status
+            - data
+    SessionGone:
+      description: |
+        The response indicates session is invalid or no longer exists.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SessionGoneResponse'
+          examples:
+            unauth:
+              $ref: '#/components/examples/UnauthenticatedInitial'
+    StatusOK:
+      description: |
+        A success response.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+            required:
+            - status
+    TooManyRequests:
+      description: |
+        Too many requests.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                enum:
+                - 429
+            required:
+            - status
+    TOTPAuthenticator:
+      description: |
+        Information on the TOTP authenticator.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              meta:
+                properties:
+                  recovery_codes_generated:
+                    description: Whether or not recovery codes where generated automatically.
+                    type: boolean
+                type: object
+              data:
+                $ref: '#/components/schemas/TOTPAuthenticator'
+            required:
+            - status
+            - data
+    TOTPAuthenticatorNotFound:
+      description: |
+        No TOTP authenticator has been set up.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                enum:
+                - 404
+              meta:
+                type: object
+                properties:
+                  secret:
+                    type: string
+                    description: |
+                      A TOTP secret that can be used to setup a new authenticator.
+                    example: J4ZKKXTK7NOVU7EPUVY23LCDV4T2QZYM
+                  totp_url:
+                    type: string
+                    description: |
+                      otpauth URI from which a QR code can be generated and scanned by OTP clients.
+                    example: otpauth://totp/Example:alice@fsf.org?secret=JBSWY3DPEHPK3PXP&issuer=Example
+                required:
+                - secret
+                - totp_url
+            required:
+            - status
+            - meta
+    Unauthenticated:
+      description: |
+        There is no authenticated session.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationResponse'
+          examples:
+            unauth:
+              $ref: '#/components/examples/UnauthenticatedInitial'
+    Authenticated:
+      description: The user is authenticated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticatedResponse'
+    WebAuthnRequestOptionsResponse:
+      description: WebAuthn credential request options.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/WebAuthnCredentialRequestOptions'
+            required:
+            - status
+            - data
+    WebAuthnCreationOptionsResponse:
+      description: WebAuthn credential creation options.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/WebAuthnCredentialCreationOptions'
+            required:
+            - status
+            - data
+    WebAuthnAuthenticator:
+      description: A WebAuthn authenticator.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/WebAuthnAuthenticator'
+            required:
+            - status
+            - data
+    AddWebAuthnAuthenticator:
+      description: A WebAuthn authenticator.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/StatusOK'
+              data:
+                $ref: '#/components/schemas/WebAuthnAuthenticator'
+              meta:
+                type: object
+                properties:
+                  recovery_codes_generated:
+                    type: boolean
+                    description: |
+                      Whether or not recovery codes where generated automatically.
+            required:
+            - status
+            - data
+            - meta

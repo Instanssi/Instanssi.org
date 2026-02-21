@@ -2,7 +2,7 @@ import { type Ref, ref } from "vue";
 import { useToast } from "vue-toastification";
 
 import * as api from "@/api";
-import type { SocialAuthUrl, UserInfo } from "@/api";
+import type { Provider, UserInfo } from "@/api";
 import { i18n, isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
@@ -60,18 +60,26 @@ export function useAuth() {
         return loggedIn.value;
     }
 
-    async function login(username: string, password: string): Promise<boolean> {
-        const response = await api.login({ body: { username, password } });
-        if (response.status === 200) {
+    async function login(email: string, password: string): Promise<boolean> {
+        try {
+            await api.allauthPostApiV2AllauthBrowserV1AuthLogin({
+                body: { email, password },
+            });
             await refreshStatus();
             return true;
+        } catch {
+            return false;
         }
-        return false;
     }
 
-    async function getSocialAuthURLs(): Promise<SocialAuthUrl[]> {
-        const value = await api.getSocialAuthUrls({ query: { next: "/management" } });
-        return value.data ?? [];
+    async function getSocialAuthProviders(): Promise<Provider[]> {
+        try {
+            const result = await api.allauthGetApiV2AllauthBrowserV1Config();
+            const data = result.data as { data?: { socialaccount?: { providers?: Provider[] } } };
+            return data?.data?.socialaccount?.providers ?? [];
+        } catch {
+            return [];
+        }
     }
 
     async function tryFetchUserData(): Promise<UserInfo | undefined> {
@@ -149,7 +157,12 @@ export function useAuth() {
     }
 
     async function logout() {
-        await api.logout();
+        try {
+            await api.allauthDeleteApiV2AllauthBrowserV1AuthSession();
+        } catch {
+            // Allauth returns 401 on successful session deletion; ignore errors
+            // to ensure local state always gets cleaned up.
+        }
         loggedIn.value = false;
         userInfo.value = {
             id: 0,
@@ -167,7 +180,7 @@ export function useAuth() {
         isSuperUser,
         login,
         logout,
-        getSocialAuthURLs,
+        getSocialAuthProviders,
         refreshStatus,
         getUserData,
         updateLanguage,

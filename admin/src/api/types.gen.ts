@@ -5,14 +5,6 @@ export type ClientOptions = {
 };
 
 /**
- * * `0` - create
- * * `1` - update
- * * `2` - delete
- * * `3` - access
- */
-export type ActionEnum = 0 | 1 | 2 | 3;
-
-/**
  * Serializer for the actor (user) who made the change.
  */
 export type Actor = {
@@ -89,8 +81,6 @@ export type AuthTokenCreateResponse = {
     expiry: string;
 };
 
-export type BlankEnum = "";
-
 /**
  * Serializer for staff - includes all fields.
  *
@@ -142,8 +132,11 @@ export type Competition = {
     score_type: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
     active?: boolean;
     hide_from_archive?: boolean;
@@ -206,8 +199,11 @@ export type CompetitionRequest = {
     score_type: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
     active?: boolean;
     hide_from_archive?: boolean;
@@ -273,8 +269,13 @@ export type Compo = {
     show_voting_results?: boolean;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     hide_from_archive?: boolean;
     /**
      * Hide from front page
@@ -286,8 +287,13 @@ export type Compo = {
     is_votable?: boolean;
     /**
      * Thumbnail settings
+     *
+     * * `0` - Require separate thumbnail.
+     * * `1` - Use entry file as thumbnail (only works for png/jpg files).
+     * * `2` - Allow thumbnail (not required).
+     * * `3` - Do not allow thumbnail.
      */
-    thumbnail_pref?: ThumbnailPrefEnum;
+    thumbnail_pref?: 0 | 1 | 2 | 3;
 };
 
 /**
@@ -434,8 +440,13 @@ export type CompoRequest = {
     show_voting_results?: boolean;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     hide_from_archive?: boolean;
     /**
      * Hide from front page
@@ -447,8 +458,13 @@ export type CompoRequest = {
     is_votable?: boolean;
     /**
      * Thumbnail settings
+     *
+     * * `0` - Require separate thumbnail.
+     * * `1` - Use entry file as thumbnail (only works for png/jpg files).
+     * * `2` - Allow thumbnail (not required).
+     * * `3` - Do not allow thumbnail.
      */
-    thumbnail_pref?: ThumbnailPrefEnum;
+    thumbnail_pref?: 0 | 1 | 2 | 3;
 };
 
 /**
@@ -462,516 +478,6 @@ export type ContentType = {
      */
     model: string;
 };
-
-/**
- * * `AF` - Afghanistan
- * * `AX` - Åland Islands
- * * `AL` - Albania
- * * `DZ` - Algeria
- * * `AS` - American Samoa
- * * `AD` - Andorra
- * * `AO` - Angola
- * * `AI` - Anguilla
- * * `AQ` - Antarctica
- * * `AG` - Antigua and Barbuda
- * * `AR` - Argentina
- * * `AM` - Armenia
- * * `AW` - Aruba
- * * `AU` - Australia
- * * `AT` - Austria
- * * `AZ` - Azerbaijan
- * * `BS` - Bahamas (The)
- * * `BH` - Bahrain
- * * `BD` - Bangladesh
- * * `BB` - Barbados
- * * `BY` - Belarus
- * * `BE` - Belgium
- * * `BZ` - Belize
- * * `BJ` - Benin
- * * `BM` - Bermuda
- * * `BT` - Bhutan
- * * `BO` - Bolivia
- * * `BQ` - Bonaire, Sint Eustatius and Saba
- * * `BA` - Bosnia and Herzegovina
- * * `BW` - Botswana
- * * `BV` - Bouvet Island
- * * `BR` - Brazil
- * * `IO` - British Indian Ocean Territory
- * * `BN` - Brunei
- * * `BG` - Bulgaria
- * * `BF` - Burkina Faso
- * * `BI` - Burundi
- * * `CV` - Cabo Verde
- * * `KH` - Cambodia
- * * `CM` - Cameroon
- * * `CA` - Canada
- * * `KY` - Cayman Islands
- * * `CF` - Central African Republic
- * * `TD` - Chad
- * * `CL` - Chile
- * * `CN` - China
- * * `CX` - Christmas Island
- * * `CC` - Cocos (Keeling) Islands
- * * `CO` - Colombia
- * * `KM` - Comoros
- * * `CG` - Congo
- * * `CK` - Cook Islands
- * * `CR` - Costa Rica
- * * `CI` - Côte d'Ivoire
- * * `HR` - Croatia
- * * `CU` - Cuba
- * * `CW` - Curaçao
- * * `CY` - Cyprus
- * * `CZ` - Czechia
- * * `CD` - Democratic Republic of the Congo
- * * `DK` - Denmark
- * * `DJ` - Djibouti
- * * `DM` - Dominica
- * * `DO` - Dominican Republic
- * * `EC` - Ecuador
- * * `EG` - Egypt
- * * `SV` - El Salvador
- * * `GQ` - Equatorial Guinea
- * * `ER` - Eritrea
- * * `EE` - Estonia
- * * `SZ` - Eswatini
- * * `ET` - Ethiopia
- * * `FK` - Falkland Islands (Malvinas)
- * * `FO` - Faroe Islands
- * * `FJ` - Fiji
- * * `FI` - Finland
- * * `FR` - France
- * * `GF` - French Guiana
- * * `PF` - French Polynesia
- * * `TF` - French Southern Territories
- * * `GA` - Gabon
- * * `GM` - Gambia
- * * `GE` - Georgia
- * * `DE` - Germany
- * * `GH` - Ghana
- * * `GI` - Gibraltar
- * * `GR` - Greece
- * * `GL` - Greenland
- * * `GD` - Grenada
- * * `GP` - Guadeloupe
- * * `GU` - Guam
- * * `GT` - Guatemala
- * * `GG` - Guernsey
- * * `GN` - Guinea
- * * `GW` - Guinea-Bissau
- * * `GY` - Guyana
- * * `HT` - Haiti
- * * `HM` - Heard Island and McDonald Islands
- * * `HN` - Honduras
- * * `HK` - Hong Kong
- * * `HU` - Hungary
- * * `IS` - Iceland
- * * `IN` - India
- * * `ID` - Indonesia
- * * `IR` - Iran
- * * `IQ` - Iraq
- * * `IE` - Ireland
- * * `IM` - Isle of Man
- * * `IL` - Israel
- * * `IT` - Italy
- * * `JM` - Jamaica
- * * `JP` - Japan
- * * `JE` - Jersey
- * * `JO` - Jordan
- * * `KZ` - Kazakhstan
- * * `KE` - Kenya
- * * `KI` - Kiribati
- * * `KW` - Kuwait
- * * `KG` - Kyrgyzstan
- * * `LA` - Laos
- * * `LV` - Latvia
- * * `LB` - Lebanon
- * * `LS` - Lesotho
- * * `LR` - Liberia
- * * `LY` - Libya
- * * `LI` - Liechtenstein
- * * `LT` - Lithuania
- * * `LU` - Luxembourg
- * * `MO` - Macao
- * * `MG` - Madagascar
- * * `MW` - Malawi
- * * `MY` - Malaysia
- * * `MV` - Maldives
- * * `ML` - Mali
- * * `MT` - Malta
- * * `MH` - Marshall Islands
- * * `MQ` - Martinique
- * * `MR` - Mauritania
- * * `MU` - Mauritius
- * * `YT` - Mayotte
- * * `MX` - Mexico
- * * `FM` - Micronesia
- * * `MD` - Moldova
- * * `MC` - Monaco
- * * `MN` - Mongolia
- * * `ME` - Montenegro
- * * `MS` - Montserrat
- * * `MA` - Morocco
- * * `MZ` - Mozambique
- * * `MM` - Myanmar
- * * `NA` - Namibia
- * * `NR` - Nauru
- * * `NP` - Nepal
- * * `NL` - Netherlands
- * * `NC` - New Caledonia
- * * `NZ` - New Zealand
- * * `NI` - Nicaragua
- * * `NE` - Niger
- * * `NG` - Nigeria
- * * `NU` - Niue
- * * `NF` - Norfolk Island
- * * `KP` - North Korea
- * * `MK` - North Macedonia
- * * `MP` - Northern Mariana Islands
- * * `NO` - Norway
- * * `OM` - Oman
- * * `PK` - Pakistan
- * * `PW` - Palau
- * * `PS` - Palestine
- * * `PA` - Panama
- * * `PG` - Papua New Guinea
- * * `PY` - Paraguay
- * * `PE` - Peru
- * * `PH` - Philippines
- * * `PN` - Pitcairn
- * * `PL` - Poland
- * * `PT` - Portugal
- * * `PR` - Puerto Rico
- * * `QA` - Qatar
- * * `RE` - Réunion
- * * `RO` - Romania
- * * `RU` - Russia
- * * `RW` - Rwanda
- * * `BL` - Saint Barthélemy
- * * `SH` - Saint Helena
- * * `KN` - Saint Kitts and Nevis
- * * `LC` - Saint Lucia
- * * `MF` - Saint Martin (French part)
- * * `PM` - Saint Pierre and Miquelon
- * * `VC` - Saint Vincent and the Grenadines
- * * `WS` - Samoa
- * * `SM` - San Marino
- * * `ST` - Sao Tome and Principe
- * * `SA` - Saudi Arabia
- * * `SN` - Senegal
- * * `RS` - Serbia
- * * `SC` - Seychelles
- * * `SL` - Sierra Leone
- * * `SG` - Singapore
- * * `SX` - Sint Maarten (Dutch part)
- * * `SK` - Slovakia
- * * `SI` - Slovenia
- * * `SB` - Solomon Islands
- * * `SO` - Somalia
- * * `ZA` - South Africa
- * * `GS` - South Georgia
- * * `KR` - South Korea
- * * `SS` - South Sudan
- * * `ES` - Spain
- * * `LK` - Sri Lanka
- * * `SD` - Sudan
- * * `SR` - Suriname
- * * `SJ` - Svalbard and Jan Mayen
- * * `SE` - Sweden
- * * `CH` - Switzerland
- * * `SY` - Syria
- * * `TW` - Taiwan
- * * `TJ` - Tajikistan
- * * `TZ` - Tanzania
- * * `TH` - Thailand
- * * `TL` - Timor-Leste
- * * `TG` - Togo
- * * `TK` - Tokelau
- * * `TO` - Tonga
- * * `TT` - Trinidad and Tobago
- * * `TN` - Tunisia
- * * `TR` - Türkiye
- * * `TM` - Turkmenistan
- * * `TC` - Turks and Caicos Islands
- * * `TV` - Tuvalu
- * * `UG` - Uganda
- * * `UA` - Ukraine
- * * `AE` - United Arab Emirates
- * * `GB` - United Kingdom
- * * `UM` - United States Minor Outlying Islands
- * * `US` - United States of America
- * * `UY` - Uruguay
- * * `UZ` - Uzbekistan
- * * `VU` - Vanuatu
- * * `VA` - Vatican City
- * * `VE` - Venezuela
- * * `VN` - Vietnam
- * * `VG` - Virgin Islands (British)
- * * `VI` - Virgin Islands (U.S.)
- * * `WF` - Wallis and Futuna
- * * `EH` - Western Sahara
- * * `YE` - Yemen
- * * `ZM` - Zambia
- * * `ZW` - Zimbabwe
- */
-export type CountryEnum =
-    | "AF"
-    | "AX"
-    | "AL"
-    | "DZ"
-    | "AS"
-    | "AD"
-    | "AO"
-    | "AI"
-    | "AQ"
-    | "AG"
-    | "AR"
-    | "AM"
-    | "AW"
-    | "AU"
-    | "AT"
-    | "AZ"
-    | "BS"
-    | "BH"
-    | "BD"
-    | "BB"
-    | "BY"
-    | "BE"
-    | "BZ"
-    | "BJ"
-    | "BM"
-    | "BT"
-    | "BO"
-    | "BQ"
-    | "BA"
-    | "BW"
-    | "BV"
-    | "BR"
-    | "IO"
-    | "BN"
-    | "BG"
-    | "BF"
-    | "BI"
-    | "CV"
-    | "KH"
-    | "CM"
-    | "CA"
-    | "KY"
-    | "CF"
-    | "TD"
-    | "CL"
-    | "CN"
-    | "CX"
-    | "CC"
-    | "CO"
-    | "KM"
-    | "CG"
-    | "CK"
-    | "CR"
-    | "CI"
-    | "HR"
-    | "CU"
-    | "CW"
-    | "CY"
-    | "CZ"
-    | "CD"
-    | "DK"
-    | "DJ"
-    | "DM"
-    | "DO"
-    | "EC"
-    | "EG"
-    | "SV"
-    | "GQ"
-    | "ER"
-    | "EE"
-    | "SZ"
-    | "ET"
-    | "FK"
-    | "FO"
-    | "FJ"
-    | "FI"
-    | "FR"
-    | "GF"
-    | "PF"
-    | "TF"
-    | "GA"
-    | "GM"
-    | "GE"
-    | "DE"
-    | "GH"
-    | "GI"
-    | "GR"
-    | "GL"
-    | "GD"
-    | "GP"
-    | "GU"
-    | "GT"
-    | "GG"
-    | "GN"
-    | "GW"
-    | "GY"
-    | "HT"
-    | "HM"
-    | "HN"
-    | "HK"
-    | "HU"
-    | "IS"
-    | "IN"
-    | "ID"
-    | "IR"
-    | "IQ"
-    | "IE"
-    | "IM"
-    | "IL"
-    | "IT"
-    | "JM"
-    | "JP"
-    | "JE"
-    | "JO"
-    | "KZ"
-    | "KE"
-    | "KI"
-    | "KW"
-    | "KG"
-    | "LA"
-    | "LV"
-    | "LB"
-    | "LS"
-    | "LR"
-    | "LY"
-    | "LI"
-    | "LT"
-    | "LU"
-    | "MO"
-    | "MG"
-    | "MW"
-    | "MY"
-    | "MV"
-    | "ML"
-    | "MT"
-    | "MH"
-    | "MQ"
-    | "MR"
-    | "MU"
-    | "YT"
-    | "MX"
-    | "FM"
-    | "MD"
-    | "MC"
-    | "MN"
-    | "ME"
-    | "MS"
-    | "MA"
-    | "MZ"
-    | "MM"
-    | "NA"
-    | "NR"
-    | "NP"
-    | "NL"
-    | "NC"
-    | "NZ"
-    | "NI"
-    | "NE"
-    | "NG"
-    | "NU"
-    | "NF"
-    | "KP"
-    | "MK"
-    | "MP"
-    | "NO"
-    | "OM"
-    | "PK"
-    | "PW"
-    | "PS"
-    | "PA"
-    | "PG"
-    | "PY"
-    | "PE"
-    | "PH"
-    | "PN"
-    | "PL"
-    | "PT"
-    | "PR"
-    | "QA"
-    | "RE"
-    | "RO"
-    | "RU"
-    | "RW"
-    | "BL"
-    | "SH"
-    | "KN"
-    | "LC"
-    | "MF"
-    | "PM"
-    | "VC"
-    | "WS"
-    | "SM"
-    | "ST"
-    | "SA"
-    | "SN"
-    | "RS"
-    | "SC"
-    | "SL"
-    | "SG"
-    | "SX"
-    | "SK"
-    | "SI"
-    | "SB"
-    | "SO"
-    | "ZA"
-    | "GS"
-    | "KR"
-    | "SS"
-    | "ES"
-    | "LK"
-    | "SD"
-    | "SR"
-    | "SJ"
-    | "SE"
-    | "CH"
-    | "SY"
-    | "TW"
-    | "TJ"
-    | "TZ"
-    | "TH"
-    | "TL"
-    | "TG"
-    | "TK"
-    | "TO"
-    | "TT"
-    | "TN"
-    | "TR"
-    | "TM"
-    | "TC"
-    | "TV"
-    | "UG"
-    | "UA"
-    | "AE"
-    | "GB"
-    | "UM"
-    | "US"
-    | "UY"
-    | "UZ"
-    | "VU"
-    | "VA"
-    | "VE"
-    | "VN"
-    | "VG"
-    | "VI"
-    | "WF"
-    | "EH"
-    | "YE"
-    | "ZM"
-    | "ZW";
-
-/**
- * * `0` - Nothing
- * * `1` - Youtube first, then image
- * * `2` - Image only
- * * `3` - (deprecated)
- */
-export type EntryViewTypeEnum = 0 | 1 | 2 | 3;
 
 /**
  * Staff serializer for events.
@@ -1011,12 +517,6 @@ export type EventRequest = {
 };
 
 /**
- * * `0` - Simple
- * * `1` - Detailed
- */
-export type EventTypeEnum = 0 | 1;
-
-/**
  * Serializer for user groups (used in user info responses).
  */
 export type Group = {
@@ -1032,13 +532,6 @@ export type GroupRequest = {
 };
 
 /**
- * * `` - Not set
- * * `en` - English
- * * `fi` - Finnish
- */
-export type LanguageEnum = "en" | "fi";
-
-/**
  * Serializer for audit log entries.
  */
 export type LogEntry = {
@@ -1049,7 +542,13 @@ export type LogEntry = {
      * Object representation
      */
     object_repr: string;
-    action: ActionEnum;
+    /**
+     * * `0` - create
+     * * `1` - update
+     * * `2` - delete
+     * * `3` - access
+     */
+    action: 0 | 1 | 2 | 3;
     /**
      * Return the changes as a dictionary.
      */
@@ -1428,8 +927,11 @@ export type PatchedCompetitionRequest = {
     score_type?: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
     active?: boolean;
     hide_from_archive?: boolean;
@@ -1526,8 +1028,13 @@ export type PatchedCompoRequest = {
     show_voting_results?: boolean;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     hide_from_archive?: boolean;
     /**
      * Hide from front page
@@ -1539,8 +1046,13 @@ export type PatchedCompoRequest = {
     is_votable?: boolean;
     /**
      * Thumbnail settings
+     *
+     * * `0` - Require separate thumbnail.
+     * * `1` - Use entry file as thumbnail (only works for png/jpg files).
+     * * `2` - Allow thumbnail (not required).
+     * * `3` - Do not allow thumbnail.
      */
-    thumbnail_pref?: ThumbnailPrefEnum;
+    thumbnail_pref?: 0 | 1 | 2 | 3;
 };
 
 /**
@@ -1622,7 +1134,11 @@ export type PatchedProgramEventRequest = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
     active?: boolean;
 };
 
@@ -1761,7 +1277,507 @@ export type PatchedStoreTransactionRequest = {
      */
     postalcode?: string;
     city?: string;
-    country?: CountryEnum;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas (The)
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `CD` - Democratic Republic of the Congo
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VA` - Vatican City
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?:
+        | "AF"
+        | "AX"
+        | "AL"
+        | "DZ"
+        | "AS"
+        | "AD"
+        | "AO"
+        | "AI"
+        | "AQ"
+        | "AG"
+        | "AR"
+        | "AM"
+        | "AW"
+        | "AU"
+        | "AT"
+        | "AZ"
+        | "BS"
+        | "BH"
+        | "BD"
+        | "BB"
+        | "BY"
+        | "BE"
+        | "BZ"
+        | "BJ"
+        | "BM"
+        | "BT"
+        | "BO"
+        | "BQ"
+        | "BA"
+        | "BW"
+        | "BV"
+        | "BR"
+        | "IO"
+        | "BN"
+        | "BG"
+        | "BF"
+        | "BI"
+        | "CV"
+        | "KH"
+        | "CM"
+        | "CA"
+        | "KY"
+        | "CF"
+        | "TD"
+        | "CL"
+        | "CN"
+        | "CX"
+        | "CC"
+        | "CO"
+        | "KM"
+        | "CG"
+        | "CK"
+        | "CR"
+        | "CI"
+        | "HR"
+        | "CU"
+        | "CW"
+        | "CY"
+        | "CZ"
+        | "CD"
+        | "DK"
+        | "DJ"
+        | "DM"
+        | "DO"
+        | "EC"
+        | "EG"
+        | "SV"
+        | "GQ"
+        | "ER"
+        | "EE"
+        | "SZ"
+        | "ET"
+        | "FK"
+        | "FO"
+        | "FJ"
+        | "FI"
+        | "FR"
+        | "GF"
+        | "PF"
+        | "TF"
+        | "GA"
+        | "GM"
+        | "GE"
+        | "DE"
+        | "GH"
+        | "GI"
+        | "GR"
+        | "GL"
+        | "GD"
+        | "GP"
+        | "GU"
+        | "GT"
+        | "GG"
+        | "GN"
+        | "GW"
+        | "GY"
+        | "HT"
+        | "HM"
+        | "HN"
+        | "HK"
+        | "HU"
+        | "IS"
+        | "IN"
+        | "ID"
+        | "IR"
+        | "IQ"
+        | "IE"
+        | "IM"
+        | "IL"
+        | "IT"
+        | "JM"
+        | "JP"
+        | "JE"
+        | "JO"
+        | "KZ"
+        | "KE"
+        | "KI"
+        | "KW"
+        | "KG"
+        | "LA"
+        | "LV"
+        | "LB"
+        | "LS"
+        | "LR"
+        | "LY"
+        | "LI"
+        | "LT"
+        | "LU"
+        | "MO"
+        | "MG"
+        | "MW"
+        | "MY"
+        | "MV"
+        | "ML"
+        | "MT"
+        | "MH"
+        | "MQ"
+        | "MR"
+        | "MU"
+        | "YT"
+        | "MX"
+        | "FM"
+        | "MD"
+        | "MC"
+        | "MN"
+        | "ME"
+        | "MS"
+        | "MA"
+        | "MZ"
+        | "MM"
+        | "NA"
+        | "NR"
+        | "NP"
+        | "NL"
+        | "NC"
+        | "NZ"
+        | "NI"
+        | "NE"
+        | "NG"
+        | "NU"
+        | "NF"
+        | "KP"
+        | "MK"
+        | "MP"
+        | "NO"
+        | "OM"
+        | "PK"
+        | "PW"
+        | "PS"
+        | "PA"
+        | "PG"
+        | "PY"
+        | "PE"
+        | "PH"
+        | "PN"
+        | "PL"
+        | "PT"
+        | "PR"
+        | "QA"
+        | "RE"
+        | "RO"
+        | "RU"
+        | "RW"
+        | "BL"
+        | "SH"
+        | "KN"
+        | "LC"
+        | "MF"
+        | "PM"
+        | "VC"
+        | "WS"
+        | "SM"
+        | "ST"
+        | "SA"
+        | "SN"
+        | "RS"
+        | "SC"
+        | "SL"
+        | "SG"
+        | "SX"
+        | "SK"
+        | "SI"
+        | "SB"
+        | "SO"
+        | "ZA"
+        | "GS"
+        | "KR"
+        | "SS"
+        | "ES"
+        | "LK"
+        | "SD"
+        | "SR"
+        | "SJ"
+        | "SE"
+        | "CH"
+        | "SY"
+        | "TW"
+        | "TJ"
+        | "TZ"
+        | "TH"
+        | "TL"
+        | "TG"
+        | "TK"
+        | "TO"
+        | "TT"
+        | "TN"
+        | "TR"
+        | "TM"
+        | "TC"
+        | "TV"
+        | "UG"
+        | "UA"
+        | "AE"
+        | "GB"
+        | "UM"
+        | "US"
+        | "UY"
+        | "UZ"
+        | "VU"
+        | "VA"
+        | "VE"
+        | "VN"
+        | "VG"
+        | "VI"
+        | "WF"
+        | "EH"
+        | "YE"
+        | "ZM"
+        | "ZW";
     /**
      * Additional information
      */
@@ -1830,7 +1846,12 @@ export type PatchedUserCompoEntryRequest = {
 export type PatchedUserInfoRequest = {
     first_name?: string;
     last_name?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
@@ -1852,7 +1873,12 @@ export type PatchedUserRequest = {
      * Email address
      */
     email?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     /**
      * Active
      *
@@ -1889,14 +1915,13 @@ export type PatchedVoteCodeRequestRequest = {
      * Description
      */
     text?: string;
-    status?: StatusEnum;
+    /**
+     * * `0` - Pending approval
+     * * `1` - Approved
+     * * `2` - Rejected
+     */
+    status?: 0 | 1 | 2;
 };
-
-/**
- * * `-1` - -1
- * * `1` - 1
- */
-export type PaymentMethodEnum = -1 | 1;
 
 /**
  * Staff serializer for programme events.
@@ -1952,7 +1977,11 @@ export type ProgramEvent = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
     active?: boolean;
 };
 
@@ -2000,7 +2029,11 @@ export type ProgramEventRequest = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
     active?: boolean;
 };
 
@@ -2046,8 +2079,11 @@ export type PublicCompetition = {
     score_type: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
 };
 
@@ -2097,8 +2133,13 @@ export type PublicCompo = {
     voting_end: string;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     /**
      * Votable
      */
@@ -2209,7 +2250,11 @@ export type PublicProgramEvent = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
 };
 
 /**
@@ -2296,7 +2341,11 @@ export type PublicStoreTransactionCheckout = {
     city: string;
     country: string;
     information?: string;
-    payment_method: PaymentMethodEnum;
+    /**
+     * * `-1` - -1
+     * * `1` - 1
+     */
+    payment_method: -1 | 1;
     read_terms: boolean;
     items: Array<PublicStoreTransactionCheckoutItem>;
     confirm?: boolean;
@@ -2338,7 +2387,11 @@ export type PublicStoreTransactionCheckoutRequest = {
     city: string;
     country: string;
     information?: string;
-    payment_method: PaymentMethodEnum;
+    /**
+     * * `-1` - -1
+     * * `1` - 1
+     */
+    payment_method: -1 | 1;
     read_terms: boolean;
     items: Array<PublicStoreTransactionCheckoutItemRequest>;
     confirm?: boolean;
@@ -2411,28 +2464,6 @@ export type ReceiptRequest = {
      */
     content?: string | null;
 };
-
-/**
- * * `0` - Highest score first
- * * `1` - Lowest score first
- */
-export type ScoreSortEnum = 0 | 1;
-
-/**
- * Serializer for social authentication provider URLs.
- */
-export type SocialAuthUrl = {
-    method: string;
-    url: string;
-    name: string;
-};
-
-/**
- * * `0` - Pending approval
- * * `1` - Approved
- * * `2` - Rejected
- */
-export type StatusEnum = 0 | 1 | 2;
 
 /**
  * Staff serializer for StoreItem model.
@@ -2653,7 +2684,507 @@ export type StoreTransaction = {
      */
     postalcode: string;
     city: string;
-    country?: CountryEnum;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas (The)
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `CD` - Democratic Republic of the Congo
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VA` - Vatican City
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?:
+        | "AF"
+        | "AX"
+        | "AL"
+        | "DZ"
+        | "AS"
+        | "AD"
+        | "AO"
+        | "AI"
+        | "AQ"
+        | "AG"
+        | "AR"
+        | "AM"
+        | "AW"
+        | "AU"
+        | "AT"
+        | "AZ"
+        | "BS"
+        | "BH"
+        | "BD"
+        | "BB"
+        | "BY"
+        | "BE"
+        | "BZ"
+        | "BJ"
+        | "BM"
+        | "BT"
+        | "BO"
+        | "BQ"
+        | "BA"
+        | "BW"
+        | "BV"
+        | "BR"
+        | "IO"
+        | "BN"
+        | "BG"
+        | "BF"
+        | "BI"
+        | "CV"
+        | "KH"
+        | "CM"
+        | "CA"
+        | "KY"
+        | "CF"
+        | "TD"
+        | "CL"
+        | "CN"
+        | "CX"
+        | "CC"
+        | "CO"
+        | "KM"
+        | "CG"
+        | "CK"
+        | "CR"
+        | "CI"
+        | "HR"
+        | "CU"
+        | "CW"
+        | "CY"
+        | "CZ"
+        | "CD"
+        | "DK"
+        | "DJ"
+        | "DM"
+        | "DO"
+        | "EC"
+        | "EG"
+        | "SV"
+        | "GQ"
+        | "ER"
+        | "EE"
+        | "SZ"
+        | "ET"
+        | "FK"
+        | "FO"
+        | "FJ"
+        | "FI"
+        | "FR"
+        | "GF"
+        | "PF"
+        | "TF"
+        | "GA"
+        | "GM"
+        | "GE"
+        | "DE"
+        | "GH"
+        | "GI"
+        | "GR"
+        | "GL"
+        | "GD"
+        | "GP"
+        | "GU"
+        | "GT"
+        | "GG"
+        | "GN"
+        | "GW"
+        | "GY"
+        | "HT"
+        | "HM"
+        | "HN"
+        | "HK"
+        | "HU"
+        | "IS"
+        | "IN"
+        | "ID"
+        | "IR"
+        | "IQ"
+        | "IE"
+        | "IM"
+        | "IL"
+        | "IT"
+        | "JM"
+        | "JP"
+        | "JE"
+        | "JO"
+        | "KZ"
+        | "KE"
+        | "KI"
+        | "KW"
+        | "KG"
+        | "LA"
+        | "LV"
+        | "LB"
+        | "LS"
+        | "LR"
+        | "LY"
+        | "LI"
+        | "LT"
+        | "LU"
+        | "MO"
+        | "MG"
+        | "MW"
+        | "MY"
+        | "MV"
+        | "ML"
+        | "MT"
+        | "MH"
+        | "MQ"
+        | "MR"
+        | "MU"
+        | "YT"
+        | "MX"
+        | "FM"
+        | "MD"
+        | "MC"
+        | "MN"
+        | "ME"
+        | "MS"
+        | "MA"
+        | "MZ"
+        | "MM"
+        | "NA"
+        | "NR"
+        | "NP"
+        | "NL"
+        | "NC"
+        | "NZ"
+        | "NI"
+        | "NE"
+        | "NG"
+        | "NU"
+        | "NF"
+        | "KP"
+        | "MK"
+        | "MP"
+        | "NO"
+        | "OM"
+        | "PK"
+        | "PW"
+        | "PS"
+        | "PA"
+        | "PG"
+        | "PY"
+        | "PE"
+        | "PH"
+        | "PN"
+        | "PL"
+        | "PT"
+        | "PR"
+        | "QA"
+        | "RE"
+        | "RO"
+        | "RU"
+        | "RW"
+        | "BL"
+        | "SH"
+        | "KN"
+        | "LC"
+        | "MF"
+        | "PM"
+        | "VC"
+        | "WS"
+        | "SM"
+        | "ST"
+        | "SA"
+        | "SN"
+        | "RS"
+        | "SC"
+        | "SL"
+        | "SG"
+        | "SX"
+        | "SK"
+        | "SI"
+        | "SB"
+        | "SO"
+        | "ZA"
+        | "GS"
+        | "KR"
+        | "SS"
+        | "ES"
+        | "LK"
+        | "SD"
+        | "SR"
+        | "SJ"
+        | "SE"
+        | "CH"
+        | "SY"
+        | "TW"
+        | "TJ"
+        | "TZ"
+        | "TH"
+        | "TL"
+        | "TG"
+        | "TK"
+        | "TO"
+        | "TT"
+        | "TN"
+        | "TR"
+        | "TM"
+        | "TC"
+        | "TV"
+        | "UG"
+        | "UA"
+        | "AE"
+        | "GB"
+        | "UM"
+        | "US"
+        | "UY"
+        | "UZ"
+        | "VU"
+        | "VA"
+        | "VE"
+        | "VN"
+        | "VG"
+        | "VI"
+        | "WF"
+        | "EH"
+        | "YE"
+        | "ZM"
+        | "ZW";
     /**
      * Additional information
      */
@@ -2736,20 +3267,512 @@ export type StoreTransactionRequest = {
      */
     postalcode: string;
     city: string;
-    country?: CountryEnum;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas (The)
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `CD` - Democratic Republic of the Congo
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VA` - Vatican City
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?:
+        | "AF"
+        | "AX"
+        | "AL"
+        | "DZ"
+        | "AS"
+        | "AD"
+        | "AO"
+        | "AI"
+        | "AQ"
+        | "AG"
+        | "AR"
+        | "AM"
+        | "AW"
+        | "AU"
+        | "AT"
+        | "AZ"
+        | "BS"
+        | "BH"
+        | "BD"
+        | "BB"
+        | "BY"
+        | "BE"
+        | "BZ"
+        | "BJ"
+        | "BM"
+        | "BT"
+        | "BO"
+        | "BQ"
+        | "BA"
+        | "BW"
+        | "BV"
+        | "BR"
+        | "IO"
+        | "BN"
+        | "BG"
+        | "BF"
+        | "BI"
+        | "CV"
+        | "KH"
+        | "CM"
+        | "CA"
+        | "KY"
+        | "CF"
+        | "TD"
+        | "CL"
+        | "CN"
+        | "CX"
+        | "CC"
+        | "CO"
+        | "KM"
+        | "CG"
+        | "CK"
+        | "CR"
+        | "CI"
+        | "HR"
+        | "CU"
+        | "CW"
+        | "CY"
+        | "CZ"
+        | "CD"
+        | "DK"
+        | "DJ"
+        | "DM"
+        | "DO"
+        | "EC"
+        | "EG"
+        | "SV"
+        | "GQ"
+        | "ER"
+        | "EE"
+        | "SZ"
+        | "ET"
+        | "FK"
+        | "FO"
+        | "FJ"
+        | "FI"
+        | "FR"
+        | "GF"
+        | "PF"
+        | "TF"
+        | "GA"
+        | "GM"
+        | "GE"
+        | "DE"
+        | "GH"
+        | "GI"
+        | "GR"
+        | "GL"
+        | "GD"
+        | "GP"
+        | "GU"
+        | "GT"
+        | "GG"
+        | "GN"
+        | "GW"
+        | "GY"
+        | "HT"
+        | "HM"
+        | "HN"
+        | "HK"
+        | "HU"
+        | "IS"
+        | "IN"
+        | "ID"
+        | "IR"
+        | "IQ"
+        | "IE"
+        | "IM"
+        | "IL"
+        | "IT"
+        | "JM"
+        | "JP"
+        | "JE"
+        | "JO"
+        | "KZ"
+        | "KE"
+        | "KI"
+        | "KW"
+        | "KG"
+        | "LA"
+        | "LV"
+        | "LB"
+        | "LS"
+        | "LR"
+        | "LY"
+        | "LI"
+        | "LT"
+        | "LU"
+        | "MO"
+        | "MG"
+        | "MW"
+        | "MY"
+        | "MV"
+        | "ML"
+        | "MT"
+        | "MH"
+        | "MQ"
+        | "MR"
+        | "MU"
+        | "YT"
+        | "MX"
+        | "FM"
+        | "MD"
+        | "MC"
+        | "MN"
+        | "ME"
+        | "MS"
+        | "MA"
+        | "MZ"
+        | "MM"
+        | "NA"
+        | "NR"
+        | "NP"
+        | "NL"
+        | "NC"
+        | "NZ"
+        | "NI"
+        | "NE"
+        | "NG"
+        | "NU"
+        | "NF"
+        | "KP"
+        | "MK"
+        | "MP"
+        | "NO"
+        | "OM"
+        | "PK"
+        | "PW"
+        | "PS"
+        | "PA"
+        | "PG"
+        | "PY"
+        | "PE"
+        | "PH"
+        | "PN"
+        | "PL"
+        | "PT"
+        | "PR"
+        | "QA"
+        | "RE"
+        | "RO"
+        | "RU"
+        | "RW"
+        | "BL"
+        | "SH"
+        | "KN"
+        | "LC"
+        | "MF"
+        | "PM"
+        | "VC"
+        | "WS"
+        | "SM"
+        | "ST"
+        | "SA"
+        | "SN"
+        | "RS"
+        | "SC"
+        | "SL"
+        | "SG"
+        | "SX"
+        | "SK"
+        | "SI"
+        | "SB"
+        | "SO"
+        | "ZA"
+        | "GS"
+        | "KR"
+        | "SS"
+        | "ES"
+        | "LK"
+        | "SD"
+        | "SR"
+        | "SJ"
+        | "SE"
+        | "CH"
+        | "SY"
+        | "TW"
+        | "TJ"
+        | "TZ"
+        | "TH"
+        | "TL"
+        | "TG"
+        | "TK"
+        | "TO"
+        | "TT"
+        | "TN"
+        | "TR"
+        | "TM"
+        | "TC"
+        | "TV"
+        | "UG"
+        | "UA"
+        | "AE"
+        | "GB"
+        | "UM"
+        | "US"
+        | "UY"
+        | "UZ"
+        | "VU"
+        | "VA"
+        | "VE"
+        | "VN"
+        | "VG"
+        | "VI"
+        | "WF"
+        | "EH"
+        | "YE"
+        | "ZM"
+        | "ZW";
     /**
      * Additional information
      */
     information?: string;
 };
-
-/**
- * * `0` - Require separate thumbnail.
- * * `1` - Use entry file as thumbnail (only works for png/jpg files).
- * * `2` - Allow thumbnail (not required).
- * * `3` - Do not allow thumbnail.
- */
-export type ThumbnailPrefEnum = 0 | 1 | 2 | 3;
 
 /**
  * Staff serializer for ticket vote codes.
@@ -2881,7 +3904,12 @@ export type User = {
      */
     readonly is_superuser: boolean;
     readonly date_joined: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     readonly groups: Array<Group>;
     /**
      * Active
@@ -2979,20 +4007,17 @@ export type UserInfo = {
      */
     readonly is_superuser: boolean;
     readonly date_joined: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
     notify_compo_starts?: boolean;
     notify_competition_starts?: boolean;
-};
-
-/**
- * Serializer for username/password login credentials.
- */
-export type UserLoginRequest = {
-    username: string;
-    password: string;
 };
 
 /**
@@ -3009,7 +4034,12 @@ export type UserRequest = {
      * Email address
      */
     email?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     /**
      * Active
      *
@@ -3064,7 +4094,12 @@ export type UserVoteCodeRequest = {
      * Description
      */
     text: string;
-    status: StatusEnum;
+    /**
+     * * `0` - Pending approval
+     * * `1` - Approved
+     * * `2` - Rejected
+     */
+    status: 0 | 1 | 2;
 };
 
 /**
@@ -3138,7 +4173,12 @@ export type VoteCodeRequest = {
      * Description
      */
     text: string;
-    status?: StatusEnum;
+    /**
+     * * `0` - Pending approval
+     * * `1` - Approved
+     * * `2` - Rejected
+     */
+    status?: 0 | 1 | 2;
 };
 
 /**
@@ -3150,7 +4190,654 @@ export type VoteCodeRequestRequest = {
      * Description
      */
     text: string;
-    status?: StatusEnum;
+    /**
+     * * `0` - Pending approval
+     * * `1` - Approved
+     * * `2` - Rejected
+     */
+    status?: 0 | 1 | 2;
+};
+
+export type Session = {
+    user_agent: string;
+    ip: string;
+    created_at: Timestamp;
+    is_current: boolean;
+    id: number;
+    last_seen_at?: Timestamp;
+};
+
+/**
+ * Configuration of the Django `allauth.account` app.
+ *
+ */
+export type AccountConfiguration = {
+    login_methods?: Array<"email" | "username">;
+    is_open_for_signup: boolean;
+    email_verification_by_code_enabled: boolean;
+    login_by_code_enabled: boolean;
+    password_reset_by_code_enabled?: boolean;
+};
+
+/**
+ * An authentication related response.
+ *
+ */
+export type AuthenticationResponse = {
+    status: 401;
+    data: {
+        flows: Array<Flow>;
+    };
+    meta: AuthenticationMeta;
+};
+
+export type ForbiddenResponse = {
+    status: 403;
+};
+
+export type ConflictResponse = {
+    status: 409;
+};
+
+export type EndSessions = {
+    /**
+     * The IDs of the sessions that are to be ended.
+     *
+     */
+    sessions: Array<number>;
+};
+
+/**
+ * A phone number.
+ *
+ */
+export type PhoneNumber = {
+    phone: string;
+    verified: boolean;
+};
+
+export type PhoneNumbersResponse = {
+    status: StatusOk;
+    data: Array<PhoneNumber>;
+};
+
+export type PhoneNumberChangeResponse = {
+    status: StatusAccepted;
+    data: Array<PhoneNumber>;
+};
+
+/**
+ * A response indicating reauthentication is required.
+ *
+ */
+export type ReauthenticationResponse = {
+    status: 401;
+    data: ReauthenticationRequired;
+    meta: AuthenticatedMeta;
+};
+
+/**
+ * The session is expired or invalid.
+ *
+ */
+export type SessionGoneResponse = {
+    status: 410;
+    data: {
+        [key: string]: unknown;
+    };
+    meta: AuthenticationMeta;
+};
+
+export type BaseAuthenticationMeta = {
+    /**
+     * The session token (`app` clients only).
+     *
+     */
+    session_token?: string;
+    /**
+     * The access token (`app` clients only).
+     *
+     */
+    access_token?: string;
+};
+
+export type AuthenticationMeta = BaseAuthenticationMeta & {
+    is_authenticated: boolean;
+};
+
+export type AuthenticatedMeta = BaseAuthenticationMeta & {
+    is_authenticated: true;
+};
+
+export type Flow = {
+    id:
+        | "login"
+        | "login_by_code"
+        | "mfa_authenticate"
+        | "mfa_reauthenticate"
+        | "provider_redirect"
+        | "provider_signup"
+        | "provider_token"
+        | "reauthenticate"
+        | "signup"
+        | "verify_email"
+        | "verify_phone";
+    provider?: Provider;
+    is_pending?: true;
+    /**
+     * Matches `settings.MFA_SUPPORTED_TYPES`.
+     */
+    types?: Array<AuthenticatorType>;
+};
+
+export type Authenticated = {
+    user: AllauthUser;
+    /**
+     * A list of methods used to authenticate.
+     *
+     */
+    methods: Array<AuthenticationMethod>;
+};
+
+export type ReauthenticationRequired = {
+    flows: Array<Flow>;
+    user: AllauthUser;
+    /**
+     * A list of methods used to authenticate.
+     *
+     */
+    methods: Array<AuthenticationMethod>;
+};
+
+export type AuthenticationMethod =
+    | {
+          method: "password";
+          at: Timestamp;
+          email?: Email;
+          username?: Username;
+      }
+    | {
+          method: "password_reset";
+          at: Timestamp;
+          email: Email;
+      }
+    | {
+          method: "code";
+          at: Timestamp;
+          email: Email;
+      }
+    | {
+          method: "code";
+          at: Timestamp;
+          phone: Phone;
+      }
+    | {
+          method: "password";
+          at: Timestamp;
+          reauthenticated: true;
+      }
+    | {
+          method: "socialaccount";
+          at: Timestamp;
+          provider: ProviderId;
+          uid: ProviderAccountId;
+      }
+    | {
+          method: "mfa";
+          at: Timestamp;
+          type: AuthenticatorType;
+          reauthenticated?: boolean;
+      };
+
+export type AuthenticatedResponse = {
+    status: StatusOk;
+    data: Authenticated;
+    meta: AuthenticationMeta;
+};
+
+export type MfaAuthenticate = {
+    code: AuthenticatorCode;
+};
+
+export type MfaTrust = {
+    trust: boolean;
+};
+
+export type ConfirmLoginCode = {
+    code: Code;
+};
+
+/**
+ * The client ID (in case of OAuth2 or OpenID Connect based providers)
+ *
+ */
+export type ClientId = string;
+
+export type ProviderToken = {
+    provider: ProviderId;
+    process: Process;
+    /**
+     * The token.
+     *
+     */
+    token: {
+        client_id: ClientId;
+        /**
+         * The ID token.
+         *
+         */
+        id_token?: string;
+        /**
+         * The access token.
+         *
+         */
+        access_token?: string;
+    };
+};
+
+export type ProviderRedirect = {
+    provider: ProviderId;
+    /**
+     * The URL to return to after the redirect flow is complete.
+     *
+     * Note that this is not to be mistaken with the callback URL that you
+     * configure over at the OAuth provider during the OAuth app/client
+     * setup. The flow is as follows:
+     *
+     * 1. Your frontend redirects to the headless provider redirect
+     * endpoint in a synchronous (non-XHR) manner, informing allauth
+     * (by means of `callback_url`) where to redirect to after the
+     * provider handshake is completed.
+     *
+     * 2. Headless will redirect to the (OAuth) identity provider to
+     * initiate the handshake, passing along a different callback URL
+     * to the provider: one that points to an allauth backend URL.
+     * This is the URL that you need to have setup at your OAuth
+     * app/client configuration. Note that this must be a backend URL
+     * as providers can use POST requests to perform their callbacks,
+     * which is something a frontend would not be able to handle.
+     *
+     * 3. After the authorization at the provider is completed, the
+     * provider redirects to the *backend* allauth callback URL, which
+     * will then redirect back to the *frontend* callback URL.
+     *
+     * 4. Your frontend is now expected to fetch the current session to
+     * determine what the next course of action is. The user could be
+     * authenticated at this point, or another flow is pending
+     * (e.g. email verification, or, provider signup). In case of
+     * errors a `?error=` is passed to the frontend callback URL.
+     *
+     */
+    callback_url: string;
+    process: Process;
+};
+
+export type RequestPassword = {
+    email: Email;
+};
+
+export type RequestLoginCode =
+    | {
+          phone: Phone;
+      }
+    | {
+          email: Email;
+      };
+
+export type Reauthenticate = {
+    password: Password;
+};
+
+export type ProviderSignup = BaseSignup;
+
+export type PasskeySignup = BaseSignup;
+
+export type BaseSignup = {
+    email: Email;
+};
+
+export type Signup = BaseSignup & {
+    password: Password;
+};
+
+/**
+ * The username.
+ *
+ */
+export type Username = string;
+
+/**
+ * The email address.
+ *
+ */
+export type Email = string;
+
+/**
+ * The phone number.
+ *
+ */
+export type Phone = string;
+
+/**
+ * The access token.
+ *
+ */
+export type AccessToken = string;
+
+/**
+ * The refresh token.
+ *
+ */
+export type RefreshToken = string;
+
+export type Login = {
+    password: Password;
+} & (
+    | {
+          username: Username;
+      }
+    | {
+          email: Email;
+      }
+    | {
+          phone: Phone;
+      }
+);
+
+export type StatusOk = 200;
+
+export type StatusAccepted = 202;
+
+/**
+ * Authenticator ID.
+ *
+ */
+export type AuthenticatorId = number;
+
+/**
+ * Configuration of the Django `allauth.socialaccount` app.
+ *
+ */
+export type SocialAccountConfiguration = {
+    providers: ProviderList;
+};
+
+/**
+ * Configuration of the Django `allauth.mfa` app.
+ *
+ */
+export type MfaConfiguration = {
+    /**
+     * Matches `settings.MFA_SUPPORTED_TYPES`.
+     *
+     */
+    supported_types: Array<AuthenticatorType>;
+};
+
+/**
+ * Configuration of the Django `allauth.usersessions` app.
+ *
+ */
+export type UserSessionsConfiguration = {
+    /**
+     * Matches `settings.USERSESSIONS_TRACK_ACTIVITY`.
+     *
+     */
+    track_activity: boolean;
+};
+
+export type ConfigurationResponse = {
+    data: {
+        account: AccountConfiguration;
+        socialaccount?: SocialAccountConfiguration;
+        mfa?: MfaConfiguration;
+        usersessions?: UserSessionsConfiguration;
+    };
+    status: StatusOk;
+};
+
+export type ResetPassword = {
+    /**
+     * The password reset key
+     */
+    key: string;
+    password: Password;
+};
+
+export type VerifyEmail = {
+    /**
+     * The email verification key
+     */
+    key: string;
+};
+
+export type VerifyPhone = {
+    /**
+     * The phone verification code
+     */
+    code: string;
+};
+
+export type OptionalTimestamp = Timestamp;
+
+/**
+ * An epoch based timestamp (trivial to parse using: `new Date(value)*1000`)
+ *
+ */
+export type Timestamp = number;
+
+/**
+ * An authenticator code.
+ *
+ */
+export type AuthenticatorCode = string;
+
+/**
+ * An one-time code.
+ *
+ */
+export type Code = string;
+
+/**
+ * The type of authenticator.
+ *
+ */
+export type AuthenticatorType = "recovery_codes" | "totp" | "webauthn";
+
+/**
+ * The password.
+ *
+ */
+export type Password = string;
+
+export type ErrorResponse = {
+    status?: 400;
+    errors?: Array<{
+        /**
+         * An error code.
+         *
+         */
+        code: string;
+        /**
+         * The name of the input parameter that was incorrect.
+         *
+         */
+        param?: string;
+        /**
+         * A human readable error message.
+         *
+         */
+        message: string;
+    }>;
+};
+
+/**
+ * The process to be executed when the user successfully
+ * authenticates. When set to `login`, the user will be logged into the
+ * account to which the provider account is connected, or if no such
+ * account exists, a signup will occur. If set to `connect`, the provider
+ * account will be connected to the list of provider accounts for the
+ * currently authenticated user.
+ *
+ */
+export type Process = "login" | "connect";
+
+/**
+ * The provider ID.
+ *
+ */
+export type ProviderId = string;
+
+/**
+ * The provider specific account ID.
+ *
+ */
+export type ProviderAccountId = string;
+
+export type AllauthUser = {
+    /**
+     * The user ID.
+     */
+    id?: number;
+    /**
+     * The display name for the user.
+     */
+    display: string;
+    /**
+     * The email address.
+     */
+    email?: string;
+    /**
+     * Whether or not the account has a password set.
+     */
+    has_usable_password: boolean;
+    /**
+     * The username.
+     */
+    username: string;
+};
+
+export type EmailAddress = {
+    email: Email;
+    primary: boolean;
+    verified: boolean;
+};
+
+export type BaseAuthenticator = {
+    last_used_at: OptionalTimestamp;
+    created_at: Timestamp;
+};
+
+export type TotpAuthenticator = BaseAuthenticator & {
+    type: "totp";
+};
+
+export type WebAuthnAuthenticator = BaseAuthenticator & {
+    type: "webauthn";
+    id: AuthenticatorId;
+    name: string;
+    /**
+     * Whether or not this authenticator represents a passkey. Absent if it is not specified.
+     *
+     */
+    is_passwordless?: boolean;
+};
+
+export type RecoveryCodesAuthenticator = BaseAuthenticator & {
+    /**
+     * The authenticator type.
+     *
+     */
+    type: "recovery_codes";
+    /**
+     * The total number of recovery codes that initially were available.
+     *
+     */
+    total_code_count: number;
+    /**
+     * The number of recovery codes that are unused.
+     *
+     */
+    unused_code_count: number;
+};
+
+export type SensitiveRecoveryCodesAuthenticator = RecoveryCodesAuthenticator & {
+    /**
+     * The list of unused codes.
+     *
+     */
+    unused_codes: Array<AuthenticatorCode>;
+};
+
+export type AuthenticatorList = Array<
+    TotpAuthenticator | RecoveryCodesAuthenticator | WebAuthnAuthenticator
+>;
+
+export type ProviderList = Array<Provider>;
+
+export type Provider = {
+    /**
+     * The provider ID.
+     *
+     */
+    id: string;
+    /**
+     * The name of the provider.
+     *
+     */
+    name: string;
+    /**
+     * The client ID (in case of OAuth2 or OpenID Connect based providers)
+     *
+     */
+    client_id?: string;
+    /**
+     * The OIDC discovery or well-known URL (in case of OAuth2 or OpenID Connect based providers)
+     *
+     */
+    openid_configuration_url?: string;
+    /**
+     * The authentication flows the provider integration supports.
+     *
+     */
+    flows: Array<"provider_redirect" | "provider_token">;
+};
+
+export type ProviderAccount = {
+    uid: ProviderAccountId;
+    /**
+     * A name derived from the third-party provider account data.
+     *
+     */
+    display: string;
+    provider: Provider;
+};
+
+export type EmailVerificationInfo = {
+    status: StatusOk;
+    data: {
+        email: Email;
+        user: AllauthUser;
+    };
+    meta: {
+        is_authenticating: boolean;
+    };
+};
+
+export type WebAuthnCredentialRequestOptions = {
+    request_options: {
+        [key: string]: unknown;
+    };
+};
+
+export type WebAuthnCredentialCreationOptions = {
+    creation_options: {
+        [key: string]: unknown;
+    };
+};
+
+export type WebAuthnCredential = {
+    [key: string]: unknown;
 };
 
 /**
@@ -3196,8 +4883,11 @@ export type CompetitionWritable = {
     score_type: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
     active?: boolean;
     hide_from_archive?: boolean;
@@ -3273,8 +4963,13 @@ export type CompoWritable = {
     show_voting_results?: boolean;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     hide_from_archive?: boolean;
     /**
      * Hide from front page
@@ -3286,8 +4981,13 @@ export type CompoWritable = {
     is_votable?: boolean;
     /**
      * Thumbnail settings
+     *
+     * * `0` - Require separate thumbnail.
+     * * `1` - Use entry file as thumbnail (only works for png/jpg files).
+     * * `2` - Allow thumbnail (not required).
+     * * `3` - Do not allow thumbnail.
      */
-    thumbnail_pref?: ThumbnailPrefEnum;
+    thumbnail_pref?: 0 | 1 | 2 | 3;
 };
 
 /**
@@ -3373,7 +5073,13 @@ export type LogEntryWritable = {
      * Object representation
      */
     object_repr: string;
-    action: ActionEnum;
+    /**
+     * * `0` - create
+     * * `1` - update
+     * * `2` - delete
+     * * `3` - access
+     */
+    action: 0 | 1 | 2 | 3;
     timestamp?: string;
     /**
      * Remote address
@@ -3450,7 +5156,12 @@ export type PatchedUserRequestWritable = {
      * Email address
      */
     email?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     group_ids?: Array<number>;
     /**
      * Active
@@ -3504,7 +5215,11 @@ export type ProgramEventWritable = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
     active?: boolean;
 };
 
@@ -3540,8 +5255,11 @@ export type PublicCompetitionWritable = {
     score_type: string;
     /**
      * Score sorting
+     *
+     * * `0` - Highest score first
+     * * `1` - Lowest score first
      */
-    score_sort?: ScoreSortEnum;
+    score_sort?: 0 | 1;
     show_results?: boolean;
 };
 
@@ -3585,8 +5303,13 @@ export type PublicCompoWritable = {
     voting_end: string;
     /**
      * Entry presentation
+     *
+     * * `0` - Nothing
+     * * `1` - Youtube first, then image
+     * * `2` - Image only
+     * * `3` - (deprecated)
      */
-    entry_view_type?: EntryViewTypeEnum;
+    entry_view_type?: 0 | 1 | 2 | 3;
     /**
      * Votable
      */
@@ -3681,7 +5404,11 @@ export type PublicProgramEventWritable = {
      * Wikipedia
      */
     wiki_url?: string;
-    event_type?: EventTypeEnum;
+    /**
+     * * `0` - Simple
+     * * `1` - Detailed
+     */
+    event_type?: 0 | 1;
 };
 
 /**
@@ -3880,7 +5607,507 @@ export type StoreTransactionWritable = {
      */
     postalcode: string;
     city: string;
-    country?: CountryEnum;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas (The)
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `CD` - Democratic Republic of the Congo
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VA` - Vatican City
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?:
+        | "AF"
+        | "AX"
+        | "AL"
+        | "DZ"
+        | "AS"
+        | "AD"
+        | "AO"
+        | "AI"
+        | "AQ"
+        | "AG"
+        | "AR"
+        | "AM"
+        | "AW"
+        | "AU"
+        | "AT"
+        | "AZ"
+        | "BS"
+        | "BH"
+        | "BD"
+        | "BB"
+        | "BY"
+        | "BE"
+        | "BZ"
+        | "BJ"
+        | "BM"
+        | "BT"
+        | "BO"
+        | "BQ"
+        | "BA"
+        | "BW"
+        | "BV"
+        | "BR"
+        | "IO"
+        | "BN"
+        | "BG"
+        | "BF"
+        | "BI"
+        | "CV"
+        | "KH"
+        | "CM"
+        | "CA"
+        | "KY"
+        | "CF"
+        | "TD"
+        | "CL"
+        | "CN"
+        | "CX"
+        | "CC"
+        | "CO"
+        | "KM"
+        | "CG"
+        | "CK"
+        | "CR"
+        | "CI"
+        | "HR"
+        | "CU"
+        | "CW"
+        | "CY"
+        | "CZ"
+        | "CD"
+        | "DK"
+        | "DJ"
+        | "DM"
+        | "DO"
+        | "EC"
+        | "EG"
+        | "SV"
+        | "GQ"
+        | "ER"
+        | "EE"
+        | "SZ"
+        | "ET"
+        | "FK"
+        | "FO"
+        | "FJ"
+        | "FI"
+        | "FR"
+        | "GF"
+        | "PF"
+        | "TF"
+        | "GA"
+        | "GM"
+        | "GE"
+        | "DE"
+        | "GH"
+        | "GI"
+        | "GR"
+        | "GL"
+        | "GD"
+        | "GP"
+        | "GU"
+        | "GT"
+        | "GG"
+        | "GN"
+        | "GW"
+        | "GY"
+        | "HT"
+        | "HM"
+        | "HN"
+        | "HK"
+        | "HU"
+        | "IS"
+        | "IN"
+        | "ID"
+        | "IR"
+        | "IQ"
+        | "IE"
+        | "IM"
+        | "IL"
+        | "IT"
+        | "JM"
+        | "JP"
+        | "JE"
+        | "JO"
+        | "KZ"
+        | "KE"
+        | "KI"
+        | "KW"
+        | "KG"
+        | "LA"
+        | "LV"
+        | "LB"
+        | "LS"
+        | "LR"
+        | "LY"
+        | "LI"
+        | "LT"
+        | "LU"
+        | "MO"
+        | "MG"
+        | "MW"
+        | "MY"
+        | "MV"
+        | "ML"
+        | "MT"
+        | "MH"
+        | "MQ"
+        | "MR"
+        | "MU"
+        | "YT"
+        | "MX"
+        | "FM"
+        | "MD"
+        | "MC"
+        | "MN"
+        | "ME"
+        | "MS"
+        | "MA"
+        | "MZ"
+        | "MM"
+        | "NA"
+        | "NR"
+        | "NP"
+        | "NL"
+        | "NC"
+        | "NZ"
+        | "NI"
+        | "NE"
+        | "NG"
+        | "NU"
+        | "NF"
+        | "KP"
+        | "MK"
+        | "MP"
+        | "NO"
+        | "OM"
+        | "PK"
+        | "PW"
+        | "PS"
+        | "PA"
+        | "PG"
+        | "PY"
+        | "PE"
+        | "PH"
+        | "PN"
+        | "PL"
+        | "PT"
+        | "PR"
+        | "QA"
+        | "RE"
+        | "RO"
+        | "RU"
+        | "RW"
+        | "BL"
+        | "SH"
+        | "KN"
+        | "LC"
+        | "MF"
+        | "PM"
+        | "VC"
+        | "WS"
+        | "SM"
+        | "ST"
+        | "SA"
+        | "SN"
+        | "RS"
+        | "SC"
+        | "SL"
+        | "SG"
+        | "SX"
+        | "SK"
+        | "SI"
+        | "SB"
+        | "SO"
+        | "ZA"
+        | "GS"
+        | "KR"
+        | "SS"
+        | "ES"
+        | "LK"
+        | "SD"
+        | "SR"
+        | "SJ"
+        | "SE"
+        | "CH"
+        | "SY"
+        | "TW"
+        | "TJ"
+        | "TZ"
+        | "TH"
+        | "TL"
+        | "TG"
+        | "TK"
+        | "TO"
+        | "TT"
+        | "TN"
+        | "TR"
+        | "TM"
+        | "TC"
+        | "TV"
+        | "UG"
+        | "UA"
+        | "AE"
+        | "GB"
+        | "UM"
+        | "US"
+        | "UY"
+        | "UZ"
+        | "VU"
+        | "VA"
+        | "VE"
+        | "VN"
+        | "VG"
+        | "VI"
+        | "WF"
+        | "EH"
+        | "YE"
+        | "ZM"
+        | "ZW";
     /**
      * Additional information
      */
@@ -3955,7 +6182,12 @@ export type UserWritable = {
      * Email address
      */
     email?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     /**
      * Active
      *
@@ -4014,7 +6246,12 @@ export type UserCompoEntryRequestWritable = {
 export type UserInfoWritable = {
     first_name?: string;
     last_name?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     otherinfo?: string;
     notify_vote_code_requests?: boolean;
     notify_program_events?: boolean;
@@ -4036,7 +6273,12 @@ export type UserRequestWritable = {
      * Email address
      */
     email?: string;
-    language?: LanguageEnum | BlankEnum;
+    /**
+     * * `` - Not set
+     * * `en` - English
+     * * `fi` - Finnish
+     */
+    language?: "" | "en" | "fi";
     group_ids?: Array<number>;
     /**
      * Active
@@ -4100,7 +6342,149 @@ export type VoteCodeRequestWritable = {
      * Description
      */
     text: string;
-    status?: StatusEnum;
+    /**
+     * * `0` - Pending approval
+     * * `1` - Approved
+     * * `2` - Rejected
+     */
+    status?: 0 | 1 | 2;
+};
+
+/**
+ * The email verification key
+ */
+export type EmailVerificationKey = string;
+
+/**
+ * The password reset key
+ */
+export type PasswordResetKey = string;
+
+/**
+ * Session token. Only needed when `client` is equal to `app`.
+ *
+ */
+export type SessionToken = string;
+
+/**
+ * When present (regardless of its value), enables passwordless sign-in via a WebAuthn credential (Passkey),
+ * but may enforce additional multi-factor authentication (MFA) requirements. Omit the parameter to disable.
+ *
+ */
+export type PasswordLess = boolean;
+
+export type Login2 = Login;
+
+/**
+ * Login using WebAuthn.
+ */
+export type LoginWebAuthn = {
+    credential: WebAuthnCredential;
+};
+
+/**
+ * Reauthenticate using WebAuthn.
+ */
+export type ReauthenticateWebAuthn = {
+    credential: WebAuthnCredential;
+};
+
+/**
+ * Authenticate using WebAuthn.
+ */
+export type AuthenticateWebAuthn = {
+    credential: WebAuthnCredential;
+};
+
+export type MfaAuthenticate2 = MfaAuthenticate;
+
+export type MfaTrust2 = MfaTrust;
+
+export type ConfirmLoginCode2 = ConfirmLoginCode;
+
+export type EndSessions2 = EndSessions;
+
+export type PasskeySignup2 = PasskeySignup;
+
+export type ProviderAccount2 = {
+    provider: ProviderId;
+    account: ProviderAccountId;
+};
+
+export type ProviderRedirect2 = ProviderRedirect;
+
+export type ProviderSignup2 = ProviderSignup;
+
+export type ProviderToken2 = ProviderToken;
+
+export type Reauthenticate2 = Reauthenticate;
+
+export type RefreshToken2 = {
+    refresh_token: RefreshToken;
+};
+
+export type RequestPassword2 = RequestPassword;
+
+export type RequestLoginCode2 = RequestLoginCode;
+
+export type SetupTotp = {
+    code: AuthenticatorCode;
+};
+
+export type Signup2 = Signup;
+
+export type ChangePassword = {
+    current_password?: Password;
+    /**
+     * The current password.
+     *
+     */
+    new_password: string;
+};
+
+export type Email2 = {
+    email: Email;
+};
+
+export type MarkPrimaryEmail = {
+    /**
+     * An email address.
+     *
+     */
+    email: string;
+    /**
+     * Primary flag.
+     *
+     */
+    primary: true;
+};
+
+export type Phone2 = {
+    phone: string;
+};
+
+export type ResetPassword2 = ResetPassword;
+
+export type VerifyEmail2 = VerifyEmail;
+
+export type VerifyPhone2 = VerifyPhone;
+
+export type UpdateWebAuthn = {
+    id?: AuthenticatorId;
+    name?: string;
+};
+
+export type AddWebAuthnAuthenticator = {
+    name?: string;
+    credential: WebAuthnCredential;
+};
+
+export type DeleteWebAuthn = {
+    /**
+     * The IDs of the authenticator that are to be deleted.
+     *
+     */
+    authenticators: Array<AuthenticatorId>;
 };
 
 export type AdminAuditlogListData = {
@@ -6696,61 +9080,6 @@ export type AdminUsersUpdateResponses = {
 
 export type AdminUsersUpdateResponse = AdminUsersUpdateResponses[keyof AdminUsersUpdateResponses];
 
-export type LoginData = {
-    body: UserLoginRequest;
-    path?: never;
-    query?: never;
-    url: "/api/v2/auth/login/";
-};
-
-export type LoginErrors = {
-    /**
-     * No response body
-     */
-    400: unknown;
-    /**
-     * No response body
-     */
-    401: unknown;
-};
-
-export type LoginResponses = {
-    /**
-     * No response body
-     */
-    200: unknown;
-};
-
-export type LogoutData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: "/api/v2/auth/logout/";
-};
-
-export type LogoutResponses = {
-    /**
-     * No response body
-     */
-    200: unknown;
-};
-
-export type GetSocialAuthUrlsData = {
-    body?: never;
-    path?: never;
-    query?: {
-        next?: string;
-    };
-    url: "/api/v2/auth/social_urls/";
-};
-
-export type GetSocialAuthUrlsResponses = {
-    200: Array<SocialAuthUrl>;
-};
-
-export type GetSocialAuthUrlsResponse =
-    GetSocialAuthUrlsResponses[keyof GetSocialAuthUrlsResponses];
-
 export type EventUserKompomaattiEntriesListData = {
     body?: never;
     path: {
@@ -7885,3 +10214,1098 @@ export type UserInfoPartialUpdateResponses = {
 
 export type UserInfoPartialUpdateResponse =
     UserInfoPartialUpdateResponses[keyof UserInfoPartialUpdateResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1ConfigData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/config";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1ConfigResponses = {
+    /**
+     * The django-allauth configuration.
+     *
+     */
+    200: ConfigurationResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1ConfigResponse =
+    AllauthGetApiV2AllauthBrowserV1ConfigResponses[keyof AllauthGetApiV2AllauthBrowserV1ConfigResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthLoginData = {
+    /**
+     * Login.
+     */
+    body: Login2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/login";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthLoginErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     *
+     */
+    401: AuthenticationResponse;
+    /**
+     * Conflict. For example, when logging in when a user is already logged in.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthLoginError =
+    AllauthPostApiV2AllauthBrowserV1AuthLoginErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthLoginErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthLoginResponses = {
+    /**
+     * Authenticated by password.
+     *
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthLoginResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthLoginResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthLoginResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthSignupData = {
+    /**
+     * Signup
+     */
+    body: Signup2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/signup";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthSignupErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     *
+     */
+    401: AuthenticationResponse;
+    /**
+     * Forbidden. For example, when signup is closed.
+     *
+     */
+    403: ForbiddenResponse;
+    /**
+     * Conflict. For example, when signing up while user is logged in.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthSignupError =
+    AllauthPostApiV2AllauthBrowserV1AuthSignupErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthSignupErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthSignupResponses = {
+    /**
+     * Authenticated by password.
+     *
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthSignupResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthSignupResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthSignupResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyData = {
+    body?: never;
+    headers: {
+        /**
+         * The email verification key
+         */
+        "X-Email-Verification-Key": string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/email/verify";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * Conflict. The email verification (by code) flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyError =
+    AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyErrors[keyof AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponses = {
+    /**
+     * Email verification information.
+     */
+    200: EmailVerificationInfo;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponse =
+    AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponses[keyof AllauthGetApiV2AllauthBrowserV1AuthEmailVerifyResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyData = {
+    body?: VerifyEmail2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/email/verify";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * There is no authenticated session.
+     *
+     */
+    401: AuthenticationResponse;
+    /**
+     * Conflict. The email verification (by code) flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyError =
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponses = {
+    /**
+     * The user is authenticated.
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/email/verify/resend";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendErrors = {
+    /**
+     * Conflict. The email verification (by code) flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+    /**
+     * Too many requests.
+     *
+     */
+    429: {
+        status: 429;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendError =
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponses = {
+    /**
+     * A success response.
+     *
+     */
+    200: {
+        status: StatusOk;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthEmailVerifyResendResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyData = {
+    body?: VerifyPhone2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/phone/verify";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * There is no authenticated session.
+     *
+     */
+    401: AuthenticationResponse;
+    /**
+     * Conflict. The phone verification flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyError =
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponses = {
+    /**
+     * The user is authenticated.
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/phone/verify/resend";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendErrors = {
+    /**
+     * Conflict. The phone verification flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+    /**
+     * Too many requests.
+     *
+     */
+    429: {
+        status: 429;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendError =
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponses = {
+    /**
+     * A success response.
+     *
+     */
+    200: {
+        status: StatusOk;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthPhoneVerifyResendResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthReauthenticateData = {
+    /**
+     * Reauthenticate.
+     */
+    body: Reauthenticate2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/reauthenticate";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthReauthenticateErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthReauthenticateError =
+    AllauthPostApiV2AllauthBrowserV1AuthReauthenticateErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthReauthenticateErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponses = {
+    /**
+     * Authenticated by password.
+     *
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthReauthenticateResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestData = {
+    /**
+     * Request password.
+     */
+    body: RequestPassword2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/password/request";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestError =
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponses = {
+    /**
+     * A success response.
+     *
+     */
+    200: {
+        status: StatusOk;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthPasswordRequestResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthPasswordResetData = {
+    body?: never;
+    headers: {
+        /**
+         * The password reset key
+         */
+        "X-Password-Reset-Key": string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/password/reset";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthPasswordResetErrors = {
+    /**
+     * An input error occurred.
+     *
+     */
+    400: ErrorResponse;
+    /**
+     * Conflict. There is no password reset (by code) flow pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthPasswordResetError =
+    AllauthGetApiV2AllauthBrowserV1AuthPasswordResetErrors[keyof AllauthGetApiV2AllauthBrowserV1AuthPasswordResetErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponses = {
+    /**
+     * Information about the password reset key.
+     */
+    200: {
+        status: StatusOk;
+        data: {
+            user?: AllauthUser;
+        };
+    };
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponse =
+    AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponses[keyof AllauthGetApiV2AllauthBrowserV1AuthPasswordResetResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordResetData = {
+    body?: ResetPassword2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/password/reset";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordResetErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+    /**
+     * Conflict. There is no password reset (by code) flow pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordResetError =
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordResetErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthPasswordResetErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponses = {
+    /**
+     * Authenticated by password.
+     *
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthPasswordResetResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderRedirectData = {
+    /**
+     * Initiate the provider redirect flow.
+     *
+     */
+    body: ProviderRedirect2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/provider/redirect";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderTokenData = {
+    body: ProviderToken2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/provider/token";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderTokenErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated, more steps are required to be completed.
+     */
+    401: AuthenticationResponse;
+    /**
+     * Forbidden. For example, when signup is closed.
+     *
+     */
+    403: ForbiddenResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderTokenError =
+    AllauthPostApiV2AllauthBrowserV1AuthProviderTokenErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthProviderTokenErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponses = {
+    /**
+     * The user is authenticated.
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthProviderTokenResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthProviderSignupData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/provider/signup";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthProviderSignupErrors = {
+    /**
+     * Conflict. The provider signup flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthProviderSignupError =
+    AllauthGetApiV2AllauthBrowserV1AuthProviderSignupErrors[keyof AllauthGetApiV2AllauthBrowserV1AuthProviderSignupErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponses = {
+    /**
+     * Information relating to the pending provider signup.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: {
+            email: Array<EmailAddress>;
+            account: ProviderAccount;
+            user: AllauthUser;
+        };
+    };
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponse =
+    AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponses[keyof AllauthGetApiV2AllauthBrowserV1AuthProviderSignupResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderSignupData = {
+    /**
+     * Provider signup.
+     */
+    body: ProviderSignup2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/provider/signup";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderSignupErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated, more steps are required to be completed.
+     */
+    401: AuthenticationResponse;
+    /**
+     * Forbidden. For example, when signup is closed.
+     *
+     */
+    403: ForbiddenResponse;
+    /**
+     * Conflict. The provider signup flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderSignupError =
+    AllauthPostApiV2AllauthBrowserV1AuthProviderSignupErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthProviderSignupErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponses = {
+    /**
+     * The user is authenticated.
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthProviderSignupResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmData = {
+    body: ConfirmLoginCode2;
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/code/confirm";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     *
+     */
+    401: AuthenticationResponse;
+    /**
+     * Conflict. The "login by code" flow is not pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmError =
+    AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmErrors[keyof AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponses = {
+    /**
+     * Authenticated by code.
+     *
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponse =
+    AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponses[keyof AllauthPostApiV2AllauthBrowserV1AuthCodeConfirmResponses];
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountProvidersData = {
+    body?: ProviderAccount2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/providers";
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountProvidersErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountProvidersError =
+    AllauthDeleteApiV2AllauthBrowserV1AccountProvidersErrors[keyof AllauthDeleteApiV2AllauthBrowserV1AccountProvidersErrors];
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponses = {
+    /**
+     * List of third-party provider accounts.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<ProviderAccount>;
+    };
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponse =
+    AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponses[keyof AllauthDeleteApiV2AllauthBrowserV1AccountProvidersResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AccountProvidersData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/providers";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountProvidersResponses = {
+    /**
+     * List of third-party provider accounts.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<ProviderAccount>;
+    };
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountProvidersResponse =
+    AllauthGetApiV2AllauthBrowserV1AccountProvidersResponses[keyof AllauthGetApiV2AllauthBrowserV1AccountProvidersResponses];
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountEmailData = {
+    body?: Email2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/email";
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountEmailErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountEmailError =
+    AllauthDeleteApiV2AllauthBrowserV1AccountEmailErrors[keyof AllauthDeleteApiV2AllauthBrowserV1AccountEmailErrors];
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponses = {
+    /**
+     * List of email addresses.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<EmailAddress>;
+    };
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponse =
+    AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponses[keyof AllauthDeleteApiV2AllauthBrowserV1AccountEmailResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AccountEmailData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/email";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountEmailErrors = {
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountEmailError =
+    AllauthGetApiV2AllauthBrowserV1AccountEmailErrors[keyof AllauthGetApiV2AllauthBrowserV1AccountEmailErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AccountEmailResponses = {
+    /**
+     * List of email addresses.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<EmailAddress>;
+    };
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountEmailResponse =
+    AllauthGetApiV2AllauthBrowserV1AccountEmailResponses[keyof AllauthGetApiV2AllauthBrowserV1AccountEmailResponses];
+
+export type AllauthPatchApiV2AllauthBrowserV1AccountEmailData = {
+    body?: MarkPrimaryEmail;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/email";
+};
+
+export type AllauthPatchApiV2AllauthBrowserV1AccountEmailErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+};
+
+export type AllauthPatchApiV2AllauthBrowserV1AccountEmailError =
+    AllauthPatchApiV2AllauthBrowserV1AccountEmailErrors[keyof AllauthPatchApiV2AllauthBrowserV1AccountEmailErrors];
+
+export type AllauthPatchApiV2AllauthBrowserV1AccountEmailResponses = {
+    /**
+     * List of email addresses.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<EmailAddress>;
+    };
+};
+
+export type AllauthPatchApiV2AllauthBrowserV1AccountEmailResponse =
+    AllauthPatchApiV2AllauthBrowserV1AccountEmailResponses[keyof AllauthPatchApiV2AllauthBrowserV1AccountEmailResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AccountEmailData = {
+    body?: Email2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/email";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountEmailErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * The response indicates authentication or re-authentication is required.
+     *
+     */
+    401: AuthenticationResponse | ReauthenticationResponse;
+    /**
+     * Conflict. For example, when no user is authenticated and no email verification flow is pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountEmailError =
+    AllauthPostApiV2AllauthBrowserV1AccountEmailErrors[keyof AllauthPostApiV2AllauthBrowserV1AccountEmailErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AccountEmailResponses = {
+    /**
+     * List of email addresses.
+     *
+     */
+    200: {
+        status: StatusOk;
+        data: Array<EmailAddress>;
+    };
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountEmailResponse =
+    AllauthPostApiV2AllauthBrowserV1AccountEmailResponses[keyof AllauthPostApiV2AllauthBrowserV1AccountEmailResponses];
+
+export type AllauthPutApiV2AllauthBrowserV1AccountEmailData = {
+    body?: Email2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/email";
+};
+
+export type AllauthPutApiV2AllauthBrowserV1AccountEmailErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Too many email verification mails were already sent.
+     *
+     */
+    403: ForbiddenResponse;
+};
+
+export type AllauthPutApiV2AllauthBrowserV1AccountEmailError =
+    AllauthPutApiV2AllauthBrowserV1AccountEmailErrors[keyof AllauthPutApiV2AllauthBrowserV1AccountEmailErrors];
+
+export type AllauthPutApiV2AllauthBrowserV1AccountEmailResponses = {
+    /**
+     * A success response.
+     *
+     */
+    200: {
+        status: StatusOk;
+    };
+};
+
+export type AllauthPutApiV2AllauthBrowserV1AccountEmailResponse =
+    AllauthPutApiV2AllauthBrowserV1AccountEmailResponses[keyof AllauthPutApiV2AllauthBrowserV1AccountEmailResponses];
+
+export type AllauthGetApiV2AllauthBrowserV1AccountPhoneData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/phone";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountPhoneErrors = {
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountPhoneError =
+    AllauthGetApiV2AllauthBrowserV1AccountPhoneErrors[keyof AllauthGetApiV2AllauthBrowserV1AccountPhoneErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AccountPhoneResponses = {
+    /**
+     * List of phone numbers.
+     *
+     */
+    200: PhoneNumbersResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AccountPhoneResponse =
+    AllauthGetApiV2AllauthBrowserV1AccountPhoneResponses[keyof AllauthGetApiV2AllauthBrowserV1AccountPhoneResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPhoneData = {
+    body?: Phone2;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/phone";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPhoneErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * The response indicates authentication or re-authentication is required.
+     *
+     */
+    401: AuthenticationResponse | ReauthenticationResponse;
+    /**
+     * Conflict. For example, when no user is authenticated and no phone verification flow is pending.
+     *
+     */
+    409: ConflictResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPhoneError =
+    AllauthPostApiV2AllauthBrowserV1AccountPhoneErrors[keyof AllauthPostApiV2AllauthBrowserV1AccountPhoneErrors];
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPhoneResponses = {
+    /**
+     * Phone number change process initiated.
+     */
+    202: PhoneNumberChangeResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPhoneResponse =
+    AllauthPostApiV2AllauthBrowserV1AccountPhoneResponses[keyof AllauthPostApiV2AllauthBrowserV1AccountPhoneResponses];
+
+export type AllauthDeleteApiV2AllauthBrowserV1AuthSessionData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/session";
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AuthSessionErrors = {
+    /**
+     * There is no authenticated session.
+     *
+     */
+    401: AuthenticationResponse;
+};
+
+export type AllauthDeleteApiV2AllauthBrowserV1AuthSessionError =
+    AllauthDeleteApiV2AllauthBrowserV1AuthSessionErrors[keyof AllauthDeleteApiV2AllauthBrowserV1AuthSessionErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthSessionData = {
+    body?: never;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/auth/session";
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthSessionErrors = {
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+    /**
+     * The response indicates session is invalid or no longer exists.
+     *
+     */
+    410: SessionGoneResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthSessionError =
+    AllauthGetApiV2AllauthBrowserV1AuthSessionErrors[keyof AllauthGetApiV2AllauthBrowserV1AuthSessionErrors];
+
+export type AllauthGetApiV2AllauthBrowserV1AuthSessionResponses = {
+    /**
+     * The user is authenticated.
+     */
+    200: AuthenticatedResponse;
+};
+
+export type AllauthGetApiV2AllauthBrowserV1AuthSessionResponse =
+    AllauthGetApiV2AllauthBrowserV1AuthSessionResponses[keyof AllauthGetApiV2AllauthBrowserV1AuthSessionResponses];
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeData = {
+    body?: ChangePassword;
+    headers?: {
+        /**
+         * Session token. Only needed when `client` is equal to `app`.
+         *
+         */
+        "X-Session-Token"?: string;
+    };
+    path?: never;
+    query?: never;
+    url: "/api/v2/allauth/browser/v1/account/password/change";
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeErrors = {
+    /**
+     * An input error occurred.
+     */
+    400: ErrorResponse;
+    /**
+     * Not authenticated.
+     */
+    401: AuthenticationResponse;
+};
+
+export type AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeError =
+    AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeErrors[keyof AllauthPostApiV2AllauthBrowserV1AccountPasswordChangeErrors];

@@ -198,7 +198,7 @@ def test_non_superuser_cannot_set_is_staff(api_client, create_user, password, ba
         is_staff=True,
         permissions=["users.view_user", "users.change_user"],
     )
-    api_client.login(username=staff.username, password=password)
+    api_client.login(email=staff.email, password=password)
     result = api_client.patch(
         f"{BASE_URL}{base_user.id}/",
         dict(is_staff=True),

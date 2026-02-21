@@ -39,18 +39,13 @@ SECRET_KEY = ""
 # Set this to True in production for https-only cookies
 SESSION_COOKIE_SECURE = False
 
-# Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ""
-
-# Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
-
-# Github
-SOCIAL_AUTH_GITHUB_KEY = ""
-SOCIAL_AUTH_GITHUB_SECRET = ""
-SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+# Allauth social provider keys
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "github": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "discord": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "steam": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+}
 
 # Paytrail APIv2
 PAYTRAIL_V2_ID = "375917"  # Test ID

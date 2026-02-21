@@ -136,7 +136,7 @@ import { useToast } from "vue-toastification";
 import { object as yupObject, string as yupString } from "yup";
 
 import * as api from "@/api";
-import type { BlankEnum, LanguageEnum } from "@/api";
+import type { UserInfoWritable } from "@/api";
 import FormSection from "@/components/form/FormSection.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
@@ -228,7 +228,7 @@ async function saveProfile(values: ProfileFormValues): Promise<boolean> {
                 first_name: values.firstName,
                 last_name: values.lastName,
                 otherinfo: values.otherinfo,
-                language: values.language as LanguageEnum | BlankEnum,
+                language: values.language as UserInfoWritable["language"],
                 notify_vote_code_requests: notifyVoteCodeRequests.value,
                 notify_program_events: notifyProgramEvents.value,
                 notify_compo_starts: notifyCompoStarts.value,

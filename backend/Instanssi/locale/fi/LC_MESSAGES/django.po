@@ -882,36 +882,26 @@ msgid "Login with credentials"
 msgstr "Kirjautuminen käyttäjätunnuksilla"
 
 #: Instanssi/users/templates/users/profile.html:4
-#: Instanssi/users/templates/users/profile.html:5
-#: Instanssi/users/templates/users/profile.html:34
+#: Instanssi/templates/allauth/layouts/manage.html:10
 msgid "Profile"
 msgstr "Profiili"
 
-#: Instanssi/users/templates/users/profile.html:10
-msgid "Login accounts"
-msgstr "Kirjautumistilit"
+#: Instanssi/users/templates/users/profile.html:5
+msgid "Edit your profile"
+msgstr "Muokkaa profiiliasi"
 
-#: Instanssi/users/templates/users/profile.html:12
-msgid ""
-"You can bind other login providers to your account. This allows you to log "
-"in using any of the bound providers. If a button is greyed out, it means "
-"that provider is already bound to your account."
-msgstr ""
-"Halutessasi voit sitoa tiliisi muita kirjautumispalveluita. Tällöin voit "
-"kirjautua Instanssi.org-tiliisi käyttäen mitä tahansa tunnukseesi sidottua "
-"kirjautumispalvelua. Mikäli painike on harmaa, tarkoittaa se palvelun olevan "
-"jo sidottu Instanssi.org-tiliin."
+#: Instanssi/users/views.py:18
+msgid "Profile updated successfully."
+msgstr "Profiili päivitetty onnistuneesti."
 
-#: Instanssi/users/templates/users/profile.html:28
-msgid "Bind"
-msgstr "Sido"
+#: Instanssi/templates/allauth/layouts/manage.html:13
+msgid "Connections"
+msgstr "Yhteydet"
 
-#: Instanssi/users/templates/users/profile.html:35
-msgid ""
-"Please make sure your contact information is correct. The event organizers "
-"may need to reach you :) None of the information on this page will be "
-"published."
-msgstr ""
-"Kannattaa pitää huolta siitä, että käyttäjätiedot ovat oikein. Tapahtuman "
-"järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei "
-"julkaista."
+#: Instanssi/users/forms.py:20
+msgid "Language"
+msgstr "Kieli"
+
+#: Instanssi/users/forms.py:21
+msgid "Other info"
+msgstr "Muut tiedot"

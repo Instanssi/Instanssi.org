@@ -106,7 +106,7 @@ import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
 import * as api from "@/api";
-import type { StatusEnum, VoteCodeRequest } from "@/api";
+import type { VoteCodeRequest } from "@/api";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";
@@ -217,7 +217,7 @@ async function load(args: LoadArgs) {
     }
 }
 
-async function updateStatus(id: number, status: StatusEnum) {
+async function updateStatus(id: number, status: VoteCodeRequest["status"]) {
     updatingId.value = id;
     try {
         await api.adminEventKompomaattiVoteCodeRequestsPartialUpdate({

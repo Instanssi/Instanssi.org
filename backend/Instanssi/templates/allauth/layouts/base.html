@@ -1,0 +1,16 @@
+{% extends "users/base.html" %}
+{% load i18n %}
+
+{% block card_nav %}{% endblock %}
+{% block title %}Instanssi.org - {% block head_title %}{% endblock %}{% endblock %}
+{% block subtitle %}{% block page_title %}{% endblock %}{% endblock %}
+
+{% block card_content %}
+    {% block pre_content %}{% endblock %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if 'error' in message.tags %}alert-danger{% elif 'warning' in message.tags %}alert-warning{% elif 'success' in message.tags %}alert-success{% else %}alert-info{% endif %} mb-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+{% endblock %}

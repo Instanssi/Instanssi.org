@@ -254,11 +254,6 @@ class StoreTransaction(models.Model):
     def __str__(self) -> str:
         return self.full_name
 
-    class Meta:
-        pass
-        # permissions = (("view_storetransaction", "Can view store transactions"),)
-        # default_permissions = ('add', 'change', 'delete',)
-
 
 class StoreTransactionEvent(models.Model):
     """Data log for transaction events (such as when payment events arrive from payment processor)"""

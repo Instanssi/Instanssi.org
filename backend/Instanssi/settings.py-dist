@@ -43,6 +43,8 @@ SESSION_COOKIE_SECURE = False
 SOCIALACCOUNT_PROVIDERS = {
     "google": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
     "github": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "discord": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "steam": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
 }
 
 # Paytrail APIv2

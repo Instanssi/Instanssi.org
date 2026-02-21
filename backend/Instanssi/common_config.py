@@ -199,6 +199,9 @@ INSTALLED_APPS = (
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.discord",
+    "allauth.socialaccount.providers.openid",
+    "allauth.socialaccount.providers.steam",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -236,6 +239,8 @@ HEADLESS_FRONTEND_URLS = {
 SOCIALACCOUNT_PROVIDERS = {
     "google": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
     "github": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "discord": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
+    "steam": {"APPS": [{"client_id": "", "secret": "", "key": ""}]},
 }
 
 # Log handlers, insert our own database log handler

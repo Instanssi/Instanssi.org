@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord, faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
@@ -78,6 +78,8 @@ const { t } = useI18n();
 const socialIcons: Record<string, IconDefinition> = {
     google: faGoogle,
     github: faGithub,
+    discord: faDiscord,
+    steam: faSteam,
 };
 
 const socialProviders: Ref<Provider[]> = ref([]);

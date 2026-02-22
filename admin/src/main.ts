@@ -29,6 +29,7 @@ function init() {
     Sentry.init({
         app,
         dsn: import.meta.env.VITE_SENTRY_DSN ?? "",
+        integrations: [Sentry.browserTracingIntegration({ router })],
         sendDefaultPii: false,
         maxBreadcrumbs: 25,
     });

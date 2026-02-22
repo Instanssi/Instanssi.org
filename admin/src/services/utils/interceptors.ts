@@ -1,9 +1,12 @@
 import type { AxiosError } from "axios";
 import { useToast } from "vue-toastification";
+import * as Sentry from "@sentry/vue";
 
 import { i18n } from "@/i18n";
 
 export function errorResponseInterceptor(error: AxiosError) {
+    Sentry.captureException(error);
+
     // Don't worry about this path -- we handle its errors in auth service.
     const path = error.response?.config.url ?? "";
     if (path.endsWith("/user_info/")) {

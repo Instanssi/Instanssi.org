@@ -107,7 +107,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                     "icon": icon,
                     "url": None,
                     "place": prog.place,
-                    "desc": "",
+                    "desc": prog.description,
                     "id": f"sp-{prog.id}",
                     "type": "program",
                 }

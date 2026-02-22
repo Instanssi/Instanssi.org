@@ -2,8 +2,6 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
-import sentry_sdk
-
 PROJECT_DIR = Path(__file__).resolve(strict=True).parent
 BASE_DIR = PROJECT_DIR.parent
 
@@ -259,13 +257,19 @@ def make_email_conf(debug_mode: bool) -> str:
 
 
 def setup_sentry(conf: dict[str, Any]) -> None:
+    import logging
+
+    import sentry_sdk
     from sentry_sdk.integrations.celery import CeleryIntegration
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
     sentry_sdk.init(
         dsn=conf.get("SENTRY_DSN"),
+        send_default_pii=False,
         integrations=[
+            LoggingIntegration(level=logging.INFO, event_level=logging.ERROR),
             DjangoIntegration(),
             RedisIntegration(),
             CeleryIntegration(),

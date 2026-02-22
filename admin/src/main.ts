@@ -12,6 +12,7 @@ import router from "@/router";
 import { setupClient } from "@/client";
 import { useAuth } from "@/services/auth";
 import { vuetifyTipTap } from "@/tiptap";
+import * as Sentry from "@sentry/vue";
 
 function init() {
     const app = createApp(App);
@@ -25,6 +26,12 @@ function init() {
     const toastOptions: PluginOptions = {
         maxToasts: 5,
     };
+    Sentry.init({
+        app,
+        dsn: import.meta.env.VITE_SENTRY_DSN ?? "",
+        sendDefaultPii: false,
+        maxBreadcrumbs: 25,
+    });
 
     setupIcons(app);
     app.use(router);

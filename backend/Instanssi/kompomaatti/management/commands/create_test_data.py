@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from secrets import token_hex
 from typing import Any

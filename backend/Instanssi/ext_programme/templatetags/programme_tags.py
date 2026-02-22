@@ -42,6 +42,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                 "icon": "",
                 "place": "",
                 "desc": "",
+                "type": "compo",
             }
         )
         events.append(
@@ -52,6 +53,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                 "icon": "",
                 "place": "",
                 "desc": "",
+                "type": "compo",
             }
         )
         if compo.is_votable:
@@ -63,6 +65,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                     "icon": "",
                     "place": "",
                     "desc": "",
+                    "type": "compo",
                 }
             )
 
@@ -76,6 +79,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                 "icon": "",
                 "place": "",
                 "desc": "",
+                "type": "competition",
             }
         )
         events.append(
@@ -86,6 +90,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                 "icon": "",
                 "place": "",
                 "desc": "",
+                "type": "competition",
             }
         )
 
@@ -104,6 +109,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                     "place": prog.place,
                     "desc": "",
                     "id": f"sp-{prog.id}",
+                    "type": "program",
                 }
             )
         else:
@@ -116,6 +122,7 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                     "place": prog.place,
                     "desc": prog.title,
                     "id": f"sp-{prog.id}",
+                    "type": "program",
                 }
             )
 

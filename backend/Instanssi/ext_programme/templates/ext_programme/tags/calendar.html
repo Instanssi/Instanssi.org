@@ -14,11 +14,11 @@
         </thead>
         <tbody>
 {% for event in day.items %}
-            <tr {% if event.id %}id="{{ event.id }}"{% endif %}>
+            <tr class="type-{{ event.type }}" {% if event.id %}id="{{ event.id }}"{% endif %}>
                 <td class="time">{{ event.date|date:"H:i" }}</td>
                 <td class="image">{% if event.icon %}<img src="{{ event.icon }}" width="48" height="48" alt="{{ event.title }}" />{% endif %}</td>
                 <td class="description">
-                    <strong>{{ event.title }}</strong>{% if event.desc %}: {{ event.desc }}{% endif %}
+                    {% if event.title %}<strong>{{ event.title }}</strong>{% endif %}{% if event.title and event.desc %}: {% endif %}{% if event.desc %}{{ event.desc|safe }}{% endif %}
                     {% if event.place or event.url %}<br />{% endif %}
                     {% if event.place %}<span style="font-size: 80%;">Paikka: {{ event.place }}</span>{% endif %}
                     {% if event.place and event.url %} <span style="font-size: 80%;">&middot;</span> {% endif %}

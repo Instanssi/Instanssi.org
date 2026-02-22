@@ -37,9 +37,9 @@ body > * {
         .title {
             font-weight: bold;
         }
-        tr:nth-child(even) {
-            background: #eee;
-        }
+        tr.type-compo { background-color: rgba(38, 168, 211, 0.08); }
+        tr.type-competition { background-color: rgba(76, 175, 80, 0.08); }
+        tr.type-program { background-color: rgba(255, 152, 0, 0.08); }
         td img {
             height: auto;
             border: none;

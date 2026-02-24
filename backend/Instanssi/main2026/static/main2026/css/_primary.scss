@@ -97,4 +97,20 @@ body > * {
             margin: 0 0 10px 10px;
         }
     }
+
+
+    .page-toc-wrapper {
+        margin-top: ($spacer * 2);
+        background: mix($theme-color-bright, #fff, 10%);
+        border: 1px solid $theme-color-bright;
+        padding: 0 ($spacer * 2) $spacer;
+
+        @media screen and (min-width: $screen-md-min) {
+            max-width: 300px;
+        }
+    }
+    .page-toc {
+        margin: 0;
+        padding: 0 $spacer 0 ($spacer * 3);
+    }
 }

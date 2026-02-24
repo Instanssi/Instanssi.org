@@ -104,7 +104,10 @@ body > * {
         background: mix($theme-color-bright, #fff, 10%);
         border: 1px solid $theme-color-bright;
         padding: 0 ($spacer * 2) $spacer;
-        max-width: 300px;
+
+        @media screen and (min-width: $screen-md-min) {
+            max-width: 300px;
+        }
     }
     .page-toc {
         margin: 0;

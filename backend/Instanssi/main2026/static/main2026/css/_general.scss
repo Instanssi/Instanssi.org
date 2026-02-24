@@ -111,7 +111,7 @@ form legend {
     background: transparent;
     font-weight: 400;
     padding: 0 $spacer;
-    margin: 0 (-$spacer) ($spacer * 2);
+    margin: ($spacer * 2) (-$spacer) ($spacer * 2);
     font-size: 25px;
 }
 h3 {

@@ -1,4 +1,5 @@
 {% extends "main2026/base.html" %}
+{% load static %}
 
 {% block content %}
 {{ block.super }}
@@ -112,6 +113,9 @@
     </ul>
 
     <h2 id="at-the-event">Tapahtumapaikalla</h2>
+
+    <img src="{% static 'main2026/images/tilakartta_instanssi_2026.png' %}" alt="Kartta tapahtumapaikasta" >
+
     <h3>Konepaikat</h3>
     <p>
         Jos olet ostanut konepaikan, voit vapaasti valita tyhjän paikan salista. Jokaista konepaikkaa kohden on yksi sähköpistoke sekä paikka verkkopiuhalle.

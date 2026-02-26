@@ -263,6 +263,24 @@ $main-content-height: calc(100vh - #{$main-header-actual} - #{$main-footer-actua
         padding: 1% 4%;
     }
 
+
+    #programme [id="291"] {
+        // Hack around a difficult table in the programme view
+        // not benefiting from the mobile hack above.
+
+        table, th, tr, tbody, td {
+            display: revert;
+            width: auto;
+            visibility: revert;
+        }
+        th, td {
+            padding: $spacer/2;
+        }
+        table {
+            width: 100%;
+        }
+    }
+
     #page-header {
         nav.main-nav {
             margin: 0;

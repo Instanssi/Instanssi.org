@@ -51,7 +51,8 @@ def test_archive_contains_entry_file(staff_api_client, editable_compo_entry):
         names = zf.namelist()
 
     assert len(names) == 1
-    assert "001__" in names[0]
+    entry_id = editable_compo_entry.id
+    assert f"{entry_id:05d}__" in names[0]
 
 
 @pytest.mark.django_db
@@ -97,7 +98,7 @@ def test_empty_archive_when_no_entries(staff_api_client, event):
 
 
 @pytest.mark.django_db
-def test_archive_uses_rank_prefix(staff_api_client, closed_compo_entry):
+def test_archive_uses_entry_id_prefix(staff_api_client, closed_compo_entry):
     url = get_archive_url(closed_compo_entry.compo.event_id)
     response = staff_api_client.get(url)
     assert response.status_code == 200
@@ -106,8 +107,9 @@ def test_archive_uses_rank_prefix(staff_api_client, closed_compo_entry):
     with zipfile.ZipFile(BytesIO(content)) as zf:
         names = zf.namelist()
 
+    entry_id = closed_compo_entry.id
     assert len(names) == 1
-    assert names[0].startswith("closed_compo/001__")
+    assert names[0].startswith(f"closed_compo/{entry_id:05d}__")
 
 
 @pytest.mark.django_db

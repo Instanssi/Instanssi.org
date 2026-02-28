@@ -98,7 +98,6 @@ class CompoEntryViewSet(PermissionViewSet):
             .filter(disqualified=False)
             .exclude(entryfile="")
             .select_related("compo")
-            .with_rank()
             .only("id", "name", "entryfile", "compo__name")
         )
         queryset = self.filter_queryset(base_queryset)
@@ -111,9 +110,7 @@ class CompoEntryViewSet(PermissionViewSet):
             if not file_path.is_file():
                 missing_files.append(f"[{entry.compo.name}] Entry {entry.id}: {entry.name}")
             else:
-                archive_name = (
-                    f"{clean_filename(entry.compo.name)}/{entry.computed_rank:03d}__{file_path.name}"
-                )
+                archive_name = f"{clean_filename(entry.compo.name)}/{entry.id:05d}__{file_path.name}"
                 files.append((archive_name, file_path))
 
         return files, missing_files
@@ -170,7 +167,7 @@ class CompoEntryViewSet(PermissionViewSet):
     def download_archive(self, request: Request, event_pk: int = 0) -> StreamingHttpResponse | Response:
         """Download entry files as a .zip archive.
 
-        Streams all entry files organized by compo directory, with rank prefix.
+        Streams all entry files organized by compo directory, with entry ID prefix.
         Disqualified entries are excluded. Supports filtering via query params.
 
         Query parameters (inherited from viewset):

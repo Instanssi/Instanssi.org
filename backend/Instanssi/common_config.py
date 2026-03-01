@@ -170,6 +170,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "Instanssi.urls"
 
 INSTALLED_APPS = (
+    "Instanssi.base_theme.apps.BaseThemeConfig",
     "Instanssi.base_layout",
     "Instanssi.arkisto",
     "Instanssi.main2026",

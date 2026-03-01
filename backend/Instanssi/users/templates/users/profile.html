@@ -1,9 +1,13 @@
-{% extends "users/base.html" %}
-{% load crispy_forms_tags i18n %}
+{% extends "base_theme/card_page.html" %}
+{% load crispy_forms_tags i18n static %}
 
 {% block title %}Instanssi.org - {% trans "Profile" %}{% endblock %}
 {% block subtitle %}{% trans "Profile" %}{% endblock %}
-{% block card_class %}users-card-wide{% endblock %}
+{% block card_class %}bt-card-wide{% endblock %}
+
+{% block page_head %}
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+{% endblock %}
 
 {% block card_content %}
 

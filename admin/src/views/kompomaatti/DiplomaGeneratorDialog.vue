@@ -327,8 +327,13 @@ async function generateAll() {
     progressCurrent.value = 0;
     progressTotal.value = diplomaDataList.value.length;
     try {
+        const currentOrganizers = getOrganizers();
+        const diplomasWithOrganizers = diplomaDataList.value.map((d) => ({
+            ...d,
+            organizers: currentOrganizers,
+        }));
         const pdfBytes = await generateAllDiplomasPdf(
-            diplomaDataList.value,
+            diplomasWithOrganizers,
             {
                 backgroundImageUrl: selectedBackground.value,
             },

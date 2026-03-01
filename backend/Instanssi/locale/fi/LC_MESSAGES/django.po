@@ -16,6 +16,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html
+msgid "Management"
+msgstr "Hallinta"
+
 #: Instanssi/admin_upload/models.py:26 Instanssi/arkisto/models.py:10
 #: Instanssi/ext_blog/models.py:13 Instanssi/ext_programme/models.py:34
 #: Instanssi/kompomaatti/models.py:49 Instanssi/kompomaatti/models.py:71

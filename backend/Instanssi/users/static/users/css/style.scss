@@ -1,0 +1,21 @@
+// Social login buttons
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    .btn {
+        color: #fff;
+        font-size: 0.9rem;
+
+        &:hover {
+            color: #00cbe6;
+        }
+
+        &:disabled {
+            color: #666;
+            opacity: 0.6;
+        }
+    }
+}

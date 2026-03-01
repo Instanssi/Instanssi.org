@@ -1,0 +1,18 @@
+{% load i18n %}
+<nav class="bt-navbar">
+    <div class="bt-navbar-inner">
+        <div class="bt-navbar-left">
+            <a href="/">{% trans "Index" %}</a>
+            <a href="{% url 'km:eventselect' %}">{% trans "Compomatic" %}</a>
+            <a href="{% url 'archive:index' %}">{% trans "Archive" %}</a>
+        </div>
+        <div class="bt-navbar-right">
+            {% if user.is_authenticated %}
+                <a href="{% url 'users:profile' %}">{% trans "Profile" %}</a>
+                <a href="{% url 'users:logout' %}">{% trans "Log out" %}</a>
+            {% else %}
+                <a href="{% url 'users:login' %}">{% trans "Login" %}</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

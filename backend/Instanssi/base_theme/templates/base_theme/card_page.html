@@ -1,0 +1,20 @@
+{% extends "base_theme/base.html" %}
+{% load static %}
+
+{% block body_class %}bt-page{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'base_theme/css/style.css' %}">
+    {% block page_head %}{% endblock %}
+{% endblock %}
+
+{% block body_content %}
+    {% include "base_theme/includes/navbar.html" %}
+    <div class="bt-page-container">
+        <div class="bt-card {% block card_class %}{% endblock %}">
+            <h1 class="bt-card-title">Instanssi.org</h1>
+            <div class="bt-card-subtitle">{% block subtitle %}{% endblock %}</div>
+            {% block card_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

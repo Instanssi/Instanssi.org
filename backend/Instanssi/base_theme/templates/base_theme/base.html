@@ -1,0 +1,19 @@
+{% load static i18n %}{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Instanssi.org{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'libs/bootstrap-5.3.8/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-free-7.2.0/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/exo-2/latin-600.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/exo-2/latin-900.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/open-sans/latin-400.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fira-mono/latin-400.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% block body_content %}{% endblock %}
+</body>
+</html>

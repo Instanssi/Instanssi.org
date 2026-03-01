@@ -1,32 +1,32 @@
 {% extends "arkisto/base.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }} - {{ event.name }} - {{ video.name }}{% endblock %}
-
-{% block head %}{{ block.super }}{% endblock %}
-
-{% block jquery %}{{ block.super }}{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
-    <li><a href="{% url 'archive:video' video.id %}">{{ video.name }}</a></li>
-{% endblock %}
+{% block arkisto_title %}{{ video.name }} – {{ event.name }}{% endblock %}
 
 {% block content %}
-{{ block.super }}
-        <div id="entry-holder">
-            <div class="center">
-                <p class="title">
-                    <span class="name">{{ video.name }}</span>
-                </p>
-                <iframe class="video"
-                        frameborder="0"
-                        src="{{ video.youtube_url.embed_url }}"
-                        allowfullscreen></iframe>
-                <div class="info">&nbsp;</div>
-                <div class="clearer"></div>
-            </div>
-            <div class="desc">{{ video.description|linebreaksbr }}</div>
+<div class="entry-detail rounded-2 overflow-hidden">
+    <div class="entry-detail-header p-3">
+        <h2 class="entry-detail-title fs-3 mb-1">{{ video.name }}</h2>
+        <p class="entry-detail-creator mb-0">{{ video.category.name }}</p>
+    </div>
+    <div class="d-flex flex-wrap gap-3 p-3">
+        <div class="entry-detail-media">
+            <iframe src="{{ video.youtube_url.embed_url }}" allowfullscreen></iframe>
         </div>
-{% endblock %}
+        <div class="entry-detail-sidebar">
+            <div class="entry-actions d-flex flex-wrap gap-2 small">
+                <a href="{{ video.youtube_url.link_url }}" target="_blank" rel="noopener" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-brands fa-youtube"></i> {% trans "Watch on YouTube" %}</a>
+            </div>
+            {% if video.description %}
+            <div class="entry-description small">
+                {{ video.description|linebreaksbr }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
+<div class="mt-3">
+    <a href="{% url 'archive:event' event.id %}" class="back-link d-inline-flex align-items-center gap-2 small"><i class="fa-solid fa-arrow-left"></i> {% blocktrans with name=event.name %}Back: {{ name }}{% endblocktrans %}</a>
+</div>
+{% endblock %}

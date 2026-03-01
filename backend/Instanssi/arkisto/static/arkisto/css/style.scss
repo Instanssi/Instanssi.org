@@ -1,51 +1,438 @@
+// ===== Theme Variables =====
+$accent: #00cbe6;
+$accent-hover: #33d9ee;
+$dark-card: rgba(33, 33, 33, 0.85);
+$dark-card-strong: rgba(33, 33, 33, 0.9);
+$border-subtle: rgba(255, 255, 255, 0.06);
+$border-light: rgba(255, 255, 255, 0.08);
+$border-medium: rgba(255, 255, 255, 0.1);
+$overlay: rgba(0, 0, 0, 0.7);
+$text-muted-custom: #999;
+$text-label: #888;
+$font-title: "Exo 2", sans-serif;
+$font-body: "Open Sans", sans-serif;
+$font-mono: "Fira Mono", monospace;
 
-.clearer{clear: both;}
+// ===== Body & Overlay =====
+body.arkisto-bg {
+    font-family: $font-body;
+    background-image: url("../../base_theme/images/webtausta.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    background-color: #262729;
+    color: #e0e0e0;
 
-.sija {
-    color: #aaa;
-    background: #ddd;
-    text-align: center;
-    width: 1.3em;
-    height: 1.3em;
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: $overlay;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    > *:not(nav) {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+// ===== Links =====
+body.arkisto-bg a {
+    color: $accent;
+    text-decoration: none;
+
+    &:hover {
+        color: $accent-hover;
+    }
+}
+
+// ===== Arkisto Header =====
+.arkisto-header {
+    padding-top: 4rem;
+}
+
+// ===== Page Title =====
+.arkisto-title {
+    font-family: $font-title;
+    font-weight: 900;
+
+    i {
+        color: $accent;
+    }
+}
+
+// ===== Event Tabs =====
+.event-tab {
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid $border-medium;
+    border-radius: 2rem;
+    color: #ccc;
+    font-family: $font-title;
+    font-weight: 600;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba($accent, 0.15);
+        border-color: rgba($accent, 0.3);
+        color: $accent;
+    }
+
+    &.active {
+        background: $accent;
+        border-color: $accent;
+        color: #000;
+    }
+}
+
+// ===== Section Nav =====
+.section-nav-arrow {
+    color: $text-label;
+    margin-right: 0.25rem;
+}
+
+.section-nav-sep {
+    color: $text-label;
+    margin: 0 0.3rem;
+}
+
+.section-nav-link {
+    color: $text-muted-custom;
+    transition: color 0.15s;
+
+    &:hover {
+        color: $accent;
+    }
+}
+
+// ===== Compo Heading =====
+.compo-heading {
+    font-family: $font-title;
+    font-weight: 600;
+    color: #fff;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid $accent;
+}
+
+// ===== Entry Grid =====
+.entry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.25rem;
+}
+
+// ===== Entry Card =====
+.entry-card {
+    background: $dark-card;
+    border: 1px solid $border-subtle;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        border-color: rgba($accent, 0.2);
+
+        .thumb img {
+            opacity: 0.85;
+        }
+    }
+
+    a {
+        color: inherit;
+    }
+
+    .thumb {
+        aspect-ratio: 16 / 10;
+        background: rgba(0, 0, 0, 0.3);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.2s;
+        }
+    }
+
+    .entry-name {
+        font-family: $font-title;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .entry-creator {
+        color: $text-muted-custom;
+    }
+}
+
+// ===== Rank Badges =====
+.rank-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-family: $font-title;
+    font-weight: 900;
+    font-size: 0.85rem;
+    z-index: 1;
     line-height: 1;
-    padding-top: 0.1em;
-    position: relative;
-    top: 0.7em;
-    right: 0.6em;
-    z-index: 10;
-    font-size: 2em;
-    box-shadow: inset 1px 1px 1px #fff;
-    border: 1px solid #ccc;
-    text-shadow: 1px 1px 0px #fff;
+
+    &.rank-1 {
+        background: linear-gradient(135deg, #ffd700, #f0c000);
+        color: #000;
+        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    }
+
+    &.rank-2 {
+        background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+        color: #000;
+        box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
+    }
+
+    &.rank-3 {
+        background: linear-gradient(135deg, #cd7f32, #b8722e);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+    }
+
+    &.rank-other {
+        background: rgba(255, 255, 255, 0.15);
+        color: #aaa;
+    }
+
+    &.rank-dq {
+        background: rgba(255, 60, 60, 0.8);
+        color: #fff;
+    }
+
+    &.rank-badge-lg {
+        position: static;
+        min-width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.1rem;
+    }
 }
 
-#contents { padding-left: 0; padding-right: 0; }
+// ===== Competition Results =====
+.competition-list li {
+    padding: 0.6rem 1rem;
+    background: rgba(33, 33, 33, 0.7);
+    border: 1px solid $border-subtle;
+    border-radius: 6px;
 
-.entry-holder ol {
-    margin: 15px;
-    list-style-type: decimal;
+    &:hover {
+        background: $dark-card;
+    }
+
+    &.disqualified .competition-name {
+        text-decoration: line-through;
+        color: $text-label;
+    }
 }
 
-.entry-holder li {
-    margin: 0.3em;
-    margin-left: 1em;
+.competition-rank {
+    font-family: $font-title;
+    font-weight: 900;
+    color: $accent;
+    min-width: 1.5rem;
+    text-align: center;
+
+    &.rank-gold { color: #ffd700; }
+    &.rank-silver { color: #c0c0c0; }
+    &.rank-bronze { color: #cd7f32; }
 }
 
-.entry img{width:160px; height: 100px;border: 1px solid #fff; box-shadow: 0px 2px 6px #000; }
-.entry { float: left; margin: 0; margin-left: 15px; margin-right: 15px; color: #444;}
-.entry img:hover{ border: 1px solid #666; cursor: pointer;}
-.entry-holder{margin-bottom: 20px;}
-p.by { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
-p.entry-name { font-size: 95%; white-space: nowrap; width: 160px; overflow: hidden; text-overflow: ellipsis; }
+.competition-score {
+    color: $text-label;
+    font-family: $font-mono;
+}
 
-#entry-holder .title{font-variant: small-caps; color: #666;}
-#entry-holder .name{font-size: 1.6em; color: #222;}
-#entry-holder .by{font-size: 1.6em; color: #222;}
-#entry-holder .img{max-width: 100%; box-sizing: border-box; border: 1px solid #333; float: left;}
-#entry-holder .info{max-width: 100%; box-sizing: border-box; font-size: 1em; float:left; padding-left: 20px; font-variant: small-caps; color: #222;}
-#entry-holder  .info p a{ margin: 5px; font-variant: small-caps;color:#0A5ED3;text-decoration: none;}
-#entry-holder  .info p a:hover{ text-decoration: underline;}
-#entry-holder  .some-width{width: 100px; background:blue;}
+// ===== Export Links =====
+.export-links {
+    border-top: 1px solid $border-light;
+}
 
-#entry-holder  .desc{background: #e7e7e7; padding: 20px; margin: 20px 0; border: 1px solid #d7d7d7; box-shadow: inset 0px 0px 10px #ddd;}
-#entry-holder  .video {aspect-ratio: 16 / 9; max-width: 640px; width: 100%; padding: 0; float: left;}
+.export-label {
+    color: $text-label;
+}
+
+.export-links a {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid $border-medium;
+    border-radius: 6px;
+    color: #ccc;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba($accent, 0.1);
+        border-color: rgba($accent, 0.3);
+        color: $accent;
+    }
+}
+
+// ===== Entry Detail =====
+.entry-detail {
+    background: $dark-card-strong;
+    border: 1px solid $border-subtle;
+}
+
+.entry-detail-header {
+    border-bottom: 1px solid $border-light;
+}
+
+.entry-detail-title {
+    font-family: $font-title;
+    font-weight: 900;
+    color: #fff;
+}
+
+.entry-detail-creator {
+    color: $text-muted-custom;
+}
+
+.entry-detail-media {
+    flex: 0 1 640px;
+    min-width: 0;
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    iframe,
+    video {
+        aspect-ratio: 16 / 9;
+        width: 640px;
+        max-width: 100%;
+        border: none;
+        border-radius: 4px;
+    }
+}
+
+.entry-detail-sidebar {
+    flex: 1 1 200px;
+    min-width: 200px;
+
+    audio {
+        width: 100%;
+    }
+}
+
+// ===== Entry Meta =====
+.entry-meta {
+    border-collapse: collapse;
+
+    td {
+        padding: 0.35rem 0;
+    }
+
+    tr:not(:last-child) td {
+        border-bottom: 1px solid $border-subtle;
+    }
+}
+
+.meta-label {
+    color: $text-label;
+    font-size: 0.8rem;
+}
+
+.meta-value {
+    color: #fff;
+    font-family: $font-title;
+    font-weight: 600;
+}
+
+// ===== Entry Actions =====
+.entry-action-btn {
+    padding: 0.35rem 0.85rem;
+    background: rgba($accent, 0.1);
+    border: 1px solid rgba($accent, 0.25);
+    border-radius: 4px;
+    color: $accent;
+    transition: all 0.15s;
+
+    &:hover {
+        background: rgba($accent, 0.2);
+        border-color: rgba($accent, 0.4);
+        color: $accent-hover;
+    }
+
+    i {
+        width: 1rem;
+        text-align: center;
+    }
+}
+
+// ===== Entry Description =====
+.entry-description {
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.entry-actions + .entry-description {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid $border-light;
+}
+
+// ===== Disqualified text =====
+.text-dq {
+    color: #ff6b6b;
+}
+
+// ===== Entry Disqualified =====
+.entry-disqualified {
+    background: rgba(255, 60, 60, 0.1);
+    border: 1px solid rgba(255, 60, 60, 0.3);
+    border-radius: 6px;
+    color: #ff8888;
+
+    strong {
+        color: #ff6b6b;
+    }
+}
+
+// ===== Empty State =====
+.empty-state {
+    color: $text-muted-custom;
+
+    i {
+        color: $text-label;
+    }
+}
+
+// ===== Back Link =====
+.back-link {
+    color: $text-muted-custom;
+    transition: color 0.15s;
+
+    &:hover {
+        color: $accent;
+    }
+}
+
+// ===== Responsive =====
+@media (max-width: 768px) {
+    .entry-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .entry-detail-media {
+        flex: 1 1 100%;
+    }
+
+    .entry-detail-sidebar {
+        flex: 1 1 auto;
+    }
+}

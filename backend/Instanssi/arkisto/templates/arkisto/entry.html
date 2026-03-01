@@ -1,77 +1,99 @@
 {% extends "arkisto/base.html" %}
-{% load static %}
+{% load static i18n %}
+{% load media_type from arkisto_base_tags %}
 
-{% block title %}{{ block.super }} - {{ event.name }} - {{ entry.name }}{% endblock %}
-
-{% block head %}{{ block.super }}{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
-    <li><a href="{% url 'archive:entry' entry.id %}">{{ entry.name }}</a></li>
-{% endblock %}
+{% block arkisto_title %}{{ entry.name }} – {{ event.name }}{% endblock %}
 
 {% block content %}
-{{ block.super }}
-        <div id="entry-holder">
-            <div class="center">
-                <p class="title">
-                    <span class="name">{{ entry.name }}</span>
-                    by <span class="by">{{ entry.creator }}</span>
-                </p>
-{% if entry.get_show_list.youtube %}
-                <iframe class="video"
-                        frameborder="0"
-                        src="{{ entry.archive_embed_url }}"
-                        allowfullscreen></iframe>
-{% endif %}
-{% if entry.get_show_list.image or entry.get_show_list.jplayer or entry.get_show_list.noshow %}
-                {% if entry.imagefile_medium %}
-                <img class="img" src="{{ entry.imagefile_medium.url }}" alt="{{ entry.name }}" />
-                {% else %}
-                <img class="img" src="{% static "arkisto/img/filler_medium.png" %}" alt="Audio file" />
-                {% endif %}
-{% endif %}
-                <div class="info">
-                    <ul class="facts">
-                        <li class="fact-name">Kompo: {{ entry.compo.name }}</li>
-{% if entry.platform %}
-                        <li class="fact-platform">Platform: {{ entry.platform }}</li>
-{% endif %}
-{% if entry.disqualified %}
-                        <li class="fact-disqualified">Diskattu!</li>
-{% else %}
-    {% if entry.compo.show_voting_results %}
-                        <li class="fact-rank">{{ entry.computed_rank }}. sija</li>
-                        <li class="fact-score">{{ entry.computed_score|floatformat:"2" }} pistettä</li>
-    {% endif %}
-{% endif %}
-                    </ul>
-                <hr />
-{% if not entry.get_show_list.youtube %}
-    {% if entry.is_audio %}
-        <p>
-            <audio preload="auto" controls>
-                {% for alternate in entry.alternate_files.all %}
-                    <source src="{{ alternate.file.url }}" type="{{ alternate.mime_format }}">
-                {% endfor %}
-                <source src="{{ entry.entryfile.url }}" />
-            </audio>
-        </p>
-    {% endif %}
-{% endif %}
-                <p><a href="{{ entry.entryfile.url }}">Lataa koneelle</a></p>
-{% if entry.sourcefile %}
-                <p><a href="{{ entry.sourcefile.url }}">Lähdekoodi</a></p>
-{% endif %}
-                </div>
-                <div class="clearer"></div>
-            </div>
-            <div class="desc">{{ entry.description|linebreaksbr }}</div>
-{% if entry.disqualified %}
-            <div class="desc"><strong>Entry on diskattu:</strong><br />{{ entry.disqualified_reason|linebreaksbr }}</div>
-{% endif %}
+{% with file_type=entry.entryfile|media_type %}
+<div class="entry-detail rounded-2 overflow-hidden">
+    <div class="entry-detail-header d-flex align-items-center gap-3 p-3">
+        <div class="flex-grow-1">
+            <h2 class="entry-detail-title fs-3 mb-1">{{ entry.name }}</h2>
+            <p class="entry-detail-creator mb-0">{% blocktrans with creator=entry.creator %}by {{ creator }}{% endblocktrans %}</p>
         </div>
+        {% if entry.disqualified %}
+            <span class="rank-badge rank-dq rank-badge-lg flex-shrink-0">DQ</span>
+        {% elif entry.compo.show_voting_results %}
+            <span class="rank-badge {% if entry.computed_rank == 1 %}rank-1{% elif entry.computed_rank == 2 %}rank-2{% elif entry.computed_rank == 3 %}rank-3{% else %}rank-other{% endif %} rank-badge-lg flex-shrink-0">{{ entry.computed_rank }}</span>
+        {% endif %}
+    </div>
+    <div class="d-flex flex-wrap gap-3 p-3">
+        <div class="entry-detail-media">
+        {% if entry.youtube_url %}
+            <iframe src="{{ entry.archive_embed_url }}" allowfullscreen></iframe>
+        {% elif file_type == "video" %}
+            <video controls preload="metadata">
+                <source src="{{ entry.entryfile.url }}" />
+            </video>
+        {% elif entry.imagefile_medium %}
+            <img src="{{ entry.imagefile_medium.url }}" alt="{{ entry.name }}" />
+        {% else %}
+            <img src="{% static 'arkisto/img/filler_medium.png' %}" alt="{{ entry.name }}" />
+        {% endif %}
+        </div>
+        <div class="entry-detail-sidebar">
+            <table class="entry-meta small">
+                <tr>
+                    <td class="meta-label pe-3 text-nowrap">{% trans "Compo" %}</td>
+                    <td class="meta-value">{{ entry.compo.name }}</td>
+                </tr>
+            {% if entry.platform %}
+                <tr>
+                    <td class="meta-label pe-3 text-nowrap">{% trans "Platform" %}</td>
+                    <td class="meta-value">{{ entry.platform }}</td>
+                </tr>
+            {% endif %}
+            {% if entry.disqualified %}
+                <tr>
+                    <td class="meta-label pe-3 text-nowrap">{% trans "Status" %}</td>
+                    <td class="meta-value text-dq">{% trans "Disqualified" %}</td>
+                </tr>
+            {% elif entry.compo.show_voting_results %}
+                <tr>
+                    <td class="meta-label pe-3 text-nowrap">{% trans "Rank" %}</td>
+                    <td class="meta-value">{% blocktrans with rank=entry.computed_rank %}{{ rank }}. place{% endblocktrans %}</td>
+                </tr>
+                <tr>
+                    <td class="meta-label pe-3 text-nowrap">{% trans "Score" %}</td>
+                    <td class="meta-value">{{ entry.computed_score|floatformat:"2" }}</td>
+                </tr>
+            {% endif %}
+            </table>
+            {% if file_type == "audio" and not entry.youtube_url %}
+            <div class="mt-3">
+                <span class="meta-label small d-block mb-1">{% trans "Listen" %}</span>
+                <audio preload="auto" controls>
+                    {% for alternate in entry.alternate_files.all %}
+                        <source src="{{ alternate.file.url }}" type="{{ alternate.mime_format }}">
+                    {% endfor %}
+                    <source src="{{ entry.entryfile.url }}" />
+                </audio>
+            </div>
+            {% endif %}
+            <div class="entry-actions d-flex flex-wrap gap-2 mt-3 small">
+                <a href="{{ entry.entryfile.url }}" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-solid fa-download"></i> {% trans "Download file" %}</a>
+            {% if entry.sourcefile %}
+                <a href="{{ entry.sourcefile.url }}" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-solid fa-code"></i> {% trans "Source code" %}</a>
+            {% endif %}
+            </div>
+            {% if entry.description %}
+            <div class="entry-description small">
+                {{ entry.description|linebreaksbr }}
+            </div>
+            {% endif %}
+            {% if entry.disqualified %}
+            <div class="entry-disqualified p-2 mt-3 small">
+                <strong><i class="fa-solid fa-triangle-exclamation"></i> {% trans "Disqualified:" %}</strong><br />
+                {{ entry.disqualified_reason|linebreaksbr }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endwith %}
 
+<div class="mt-3">
+    <a href="{% url 'archive:event' event.id %}" class="back-link d-inline-flex align-items-center gap-2 small"><i class="fa-solid fa-arrow-left"></i> {% blocktrans with name=event.name %}Back: {{ name }}{% endblocktrans %}</a>
+</div>
 {% endblock %}
-

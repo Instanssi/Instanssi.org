@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+from django.utils.translation import gettext as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -45,23 +46,27 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
         """Validate that competition belongs to the event in the URL and event is not hidden."""
         event_id = int(self.kwargs["event_pk"])
         if competition.event_id != event_id:
-            raise serializers.ValidationError({"competition": ["Competition does not belong to this event"]})
+            raise serializers.ValidationError(
+                {"competition": [_("Competition does not belong to this event")]}
+            )
         if competition.event.hidden:
-            raise serializers.ValidationError({"competition": ["Competition is not active"]})
+            raise serializers.ValidationError({"competition": [_("Competition is not active")]})
 
     def validate_competition(self, competition: Competition) -> None:
         """Validate that competition is active and open for participation."""
         if not competition.active:
-            raise serializers.ValidationError({"competition": ["Competition is not active"]})
+            raise serializers.ValidationError({"competition": [_("Competition is not active")]})
 
         if not competition.is_participating_open():
-            raise serializers.ValidationError({"competition": ["Competition participation time has ended"]})
+            raise serializers.ValidationError(
+                {"competition": [_("Competition participation time has ended")]}
+            )
 
     def validate_no_duplicate_participation(self, competition: Competition, user: User) -> None:
         """Validate that the user hasn't already participated in this competition."""
         if CompetitionParticipation.objects.filter(competition=competition, user=user).exists():
             raise serializers.ValidationError(
-                {"competition": ["You have already participated in this competition"]}
+                {"competition": [_("You have already participated in this competition")]}
             )
 
     def perform_create(self, serializer: BaseSerializer[CompetitionParticipation]) -> None:
@@ -84,9 +89,11 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
     def perform_destroy(self, instance: CompetitionParticipation) -> None:
         """Validate that participation can be deleted."""
         if not instance.competition.active:
-            raise serializers.ValidationError({"competition": ["Competition is not active"]})
+            raise serializers.ValidationError({"competition": [_("Competition is not active")]})
 
         if not instance.competition.is_participating_open():
-            raise serializers.ValidationError({"competition": ["Competition participation time has ended"]})
+            raise serializers.ValidationError(
+                {"competition": [_("Competition participation time has ended")]}
+            )
 
         super().perform_destroy(instance)

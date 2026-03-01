@@ -4,12 +4,13 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, Layout, Submit
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from Instanssi.store.models import StoreTransaction, TransactionItem
 
 
 class ItemKeyScanForm(forms.Form):
-    key = forms.CharField(label="Tunniste")
+    key = forms.CharField(label=_("Identifier"))
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(ItemKeyScanForm, self).__init__(*args, **kwargs)
@@ -22,12 +23,12 @@ class ItemKeyScanForm(forms.Form):
         try:
             self.item = TransactionItem.objects.get(key=key)
         except TransactionItem.DoesNotExist:
-            raise ValidationError("Virheellinen tuoteavain!")
+            raise ValidationError(_("Invalid item key!"))
         return key
 
 
 class TransactionKeyScanForm(forms.Form):
-    key = forms.CharField(label="Tunniste")
+    key = forms.CharField(label=_("Identifier"))
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(TransactionKeyScanForm, self).__init__(*args, **kwargs)
@@ -40,5 +41,5 @@ class TransactionKeyScanForm(forms.Form):
         try:
             self.transaction = StoreTransaction.objects.get(key=key)
         except StoreTransaction.DoesNotExist:
-            raise ValidationError("Virheellinen transaktioavain!")
+            raise ValidationError(_("Invalid transaction key!"))
         return key

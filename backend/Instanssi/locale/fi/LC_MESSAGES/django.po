@@ -1,0 +1,859 @@
+# Finnish translations for the Instanssi.org backend.
+# Copyright (C) 2025 Instanssi.org
+# This file is distributed under the same license as the Instanssi package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Instanssi\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-17 02:44+0200\n"
+"PO-Revision-Date: 2026-02-17 02:00+0200\n"
+"Last-Translator: Instanssi Team\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Instanssi/admin_upload/models.py:26 Instanssi/arkisto/models.py:10
+#: Instanssi/ext_blog/models.py:13 Instanssi/ext_programme/models.py:34
+#: Instanssi/kompomaatti/models.py:65 Instanssi/kompomaatti/models.py:89
+#: Instanssi/kompomaatti/models.py:505 Instanssi/store/models.py:42
+msgid "Event"
+msgstr "Tapahtuma"
+
+#: Instanssi/admin_upload/models.py:28 Instanssi/ext_blog/models.py:15
+#: Instanssi/kompomaatti/models.py:29 Instanssi/kompomaatti/models.py:71
+#: Instanssi/kompomaatti/models.py:96 Instanssi/kompomaatti/models.py:544
+msgid "User"
+msgstr "Käyttäjä"
+
+#: Instanssi/admin_upload/models.py:30 Instanssi/arkisto/models.py:24
+#: Instanssi/ext_programme/models.py:37 Instanssi/kompomaatti/models.py:74
+#: Instanssi/kompomaatti/models.py:153 Instanssi/kompomaatti/models.py:312
+#: Instanssi/kompomaatti/models.py:509
+msgid "Description"
+msgstr "Kuvaus"
+
+#: Instanssi/admin_upload/models.py:31 Instanssi/kompomaatti/models.py:320
+msgid "File"
+msgstr "Tiedosto"
+
+#: Instanssi/admin_upload/models.py:32 Instanssi/ext_blog/models.py:19
+#: Instanssi/kompomaatti/models.py:43
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: Instanssi/api/exception_handler.py:13
+msgid "Database connection error"
+msgstr "Tietokantayhteysvirhe"
+
+#: Instanssi/api/exception_handler.py:16
+msgid "Data integrity error"
+msgstr "Tiedon eheysvirhe"
+
+#: Instanssi/api/v2/serializers/admin/arkisto/archiver_serializer.py:10
+msgid "Whether the event is visible in the public archive"
+msgstr "Onko tapahtuma näkyvissä julkisessa arkistossa"
+
+#: Instanssi/api/v2/serializers/admin/arkisto/archiver_serializer.py:12
+msgid "Whether there are entries/participations not owned by archive user"
+msgstr "Onko kilpailutöitä/osallistumisia, joita arkistokäyttäjä ei omista"
+
+#: Instanssi/api/v2/serializers/admin/arkisto/archiver_serializer.py:14
+msgid "Whether the event is still ongoing"
+msgstr "Onko tapahtuma vielä käynnissä"
+
+#: Instanssi/api/v2/serializers/admin/arkisto/archiver_serializer.py:16
+msgid ""
+"Whether voting results need to be pre-calculated (archive_score/archive_rank "
+"not set)"
+msgstr ""
+"Täytyykö äänestystulokset laskea valmiiksi (archive_score/archive_rank ei "
+"asetettu)"
+
+#: Instanssi/api/v2/serializers/admin/arkisto/archiver_serializer.py:18
+msgid "Whether there are old vote records to clean up"
+msgstr "Onko vanhoja äänestystietueita siivottavana"
+
+#: Instanssi/api/v2/serializers/user/kompomaatti/user_vote_group_serializer.py:24
+msgid "List of entry IDs in order of preference (first = highest rank)"
+msgstr ""
+"Lista kilpailutyö-ID:istä suosituimmuusjärjestyksessä (ensimmäinen = korkein "
+"sijoitus)"
+
+#: Instanssi/api/v2/serializers/user/token_serializer.py:26
+msgid "Expiry must be in the future"
+msgstr "Vanhenemisajan täytyy olla tulevaisuudessa"
+
+#: Instanssi/api/v2/utils/entry_file_validation.py:21
+msgid "Image file is required for this compo"
+msgstr "Kuvatiedosto vaaditaan tähän kompoon"
+
+#: Instanssi/api/v2/utils/entry_file_validation.py:25
+msgid "Image file is not allowed for this compo"
+msgstr "Kuvatiedosto ei ole sallittu tässä kompossa"
+
+#: Instanssi/api/v2/utils/entry_file_validation.py:80
+#, python-format
+msgid "Maximum allowed file size is %(size)s"
+msgstr "Suurin sallittu tiedostokoko on %(size)s"
+
+#: Instanssi/api/v2/utils/entry_file_validation.py:86
+#, python-format
+msgid "Allowed file types are %(types)s"
+msgstr "Sallitut tiedostotyypit ovat %(types)s"
+
+#: Instanssi/api/v2/viewsets/admin/arkisto/other_videos.py:33
+msgid "Category does not belong to this event"
+msgstr "Kategoria ei kuulu tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/competition_participations.py:43
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:50
+msgid "Competition does not belong to this event"
+msgstr "Kilpailu ei kuulu tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/competition_participations.py:63
+msgid "Cannot change competition after creation"
+msgstr "Kilpailua ei voi vaihtaa luonnin jälkeen"
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/competitions.py:33
+msgid "Cannot delete a competition that has participations."
+msgstr "Kilpailua, jossa on osallistumisia, ei voi poistaa."
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/compo_entries.py:65
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:52
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:62
+msgid "Compo does not belong to this event"
+msgstr "Kompo ei kuulu tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/compo_entries.py:84
+msgid "Cannot change compo after creation"
+msgstr "Kompoa ei voi vaihtaa luonnin jälkeen"
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/compos.py:55
+msgid "Automatic thumbnails require image-only entry formats (png, jpg)."
+msgstr ""
+"Automaattiset pienoiskuvat vaativat vain kuvatiedostomuotoja (png, jpg)."
+
+#: Instanssi/api/v2/viewsets/admin/kompomaatti/compos.py:79
+msgid "Cannot delete a compo that has entries."
+msgstr "Kompoa, jossa on kilpailutöitä, ei voi poistaa."
+
+#: Instanssi/api/v2/viewsets/admin/store/store_items.py:35
+msgid "Cannot delete a store item that has sold units."
+msgstr "Tuotetta, jota on myyty, ei voi poistaa."
+
+#: Instanssi/api/v2/viewsets/admin/store/transaction_items.py:29
+msgid "Item does not belong to this event"
+msgstr "Tuote ei kuulu tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/admin/users.py:12
+msgid "System users cannot be modified."
+msgstr "Järjestelmäkäyttäjiä ei voi muokata."
+
+#: Instanssi/api/v2/viewsets/public/store/public_store_transaction_checkout.py:42
+msgid "Terms and conditions must be accepted before proceeding with the order"
+msgstr "Tilausehdot on hyväksyttävä ennen tilauksen jatkamista"
+
+#: Instanssi/api/v2/viewsets/public/store/public_store_transaction_checkout.py:47
+msgid "Shopping cart must contain at least one item"
+msgstr "Ostoskorissa on oltava vähintään yksi tuote"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:53
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:58
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:92
+msgid "Competition is not active"
+msgstr "Kilpailu ei ole aktiivinen"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:62
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:96
+msgid "Competition participation time has ended"
+msgstr "Kilpailun osallistumisaika on päättynyt"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_competition_participations.py:69
+msgid "You have already participated in this competition"
+msgstr "Olet jo osallistunut tähän kilpailuun"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:54
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:73
+msgid "Compo not found or not active"
+msgstr "Kompoa ei löydy tai se ei ole aktiivinen"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:59
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:64
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:108
+msgid "Compo is not active"
+msgstr "Kompo ei ole aktiivinen"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:61
+msgid "Compo edit time has ended"
+msgstr "Kompon muokkausaika on päättynyt"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_compo_entries.py:76
+msgid "Compo entry adding time has ended"
+msgstr "Kompon kilpailutöiden lisäysaika on päättynyt"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_ticket_vote_codes.py:59
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_code_requests.py:63
+msgid "Event not found."
+msgstr "Tapahtumaa ei löydy."
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_ticket_vote_codes.py:65
+msgid "You already have a vote code for this event"
+msgstr "Sinulla on jo äänestysoikeus tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_ticket_vote_codes.py:71
+msgid "This ticket key has already been used."
+msgstr "Tämä lippuavain on jo käytetty."
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_ticket_vote_codes.py:81
+msgid "No valid ticket found with this key."
+msgstr "Tällä avaimella ei löydy voimassa olevaa lippua."
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_ticket_vote_codes.py:84
+msgid "Ticket key is ambiguous. Please provide more characters."
+msgstr "Lippuavain on moniselitteinen. Anna lisää merkkejä."
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_code_requests.py:67
+msgid "You have already requested a vote code for this event"
+msgstr "Olet jo pyytänyt äänestysoikeutta tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:70
+msgid "You can only vote for each entry once"
+msgstr "Voit äänestää kutakin kilpailutyötä vain kerran"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:77
+#, python-format
+msgid "Entry '%(entry)s' does not belong to compo '%(compo)s'"
+msgstr "Kilpailutyö '%(entry)s' ei kuulu kompoon '%(compo)s'"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:84
+#, python-format
+msgid "Entry '%(entry)s' is disqualified"
+msgstr "Kilpailutyö '%(entry)s' on hylätty"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:95
+msgid "You do not have voting rights for this event"
+msgstr "Sinulla ei ole äänestysoikeutta tähän tapahtumaan"
+
+#: Instanssi/api/v2/viewsets/user/kompomaatti/user_vote_groups.py:111
+msgid "Voting is not open for this compo"
+msgstr "Äänestys ei ole avoinna tässä kompossa"
+
+#: Instanssi/arkisto/models.py:11 Instanssi/arkisto/models.py:23
+#: Instanssi/kompomaatti/models.py:41 Instanssi/kompomaatti/models.py:152
+#: Instanssi/kompomaatti/models.py:311 Instanssi/kompomaatti/models.py:508
+msgid "Name"
+msgstr "Nimi"
+
+#: Instanssi/arkisto/models.py:22
+msgid "Category"
+msgstr "Kategoria"
+
+#: Instanssi/arkisto/models.py:25 Instanssi/common/youtube/fields.py:15
+#: Instanssi/kompomaatti/models.py:345
+msgid "Youtube URL"
+msgstr "Youtube-osoite"
+
+#: Instanssi/common/youtube/fields.py:16
+msgid "Value is not a youtube URL"
+msgstr "Arvo ei ole Youtube-osoite"
+
+#: Instanssi/common/youtube/forms.py:20
+#, python-format
+msgid "%(value)s is not a youtube URL"
+msgstr "%(value)s ei ole Youtube-osoite"
+
+#: Instanssi/ext_blog/models.py:17 Instanssi/ext_programme/models.py:38
+msgid "Title"
+msgstr "Otsikko"
+
+#: Instanssi/ext_blog/models.py:18
+msgid "Text"
+msgstr "Teksti"
+
+#: Instanssi/ext_blog/models.py:20
+msgid "Public"
+msgstr "Julkinen"
+
+#: Instanssi/ext_programme/models.py:30
+msgid "Simple"
+msgstr "Yksinkertainen"
+
+#: Instanssi/ext_programme/models.py:31
+msgid "Detailed"
+msgstr "Yksityiskohtainen"
+
+#: Instanssi/ext_programme/models.py:35
+msgid "Start"
+msgstr "Alkuaika"
+
+#: Instanssi/ext_programme/models.py:36
+msgid "End"
+msgstr "Loppuaika"
+
+#: Instanssi/ext_programme/models.py:39
+msgid "Presenters"
+msgstr "Esittäjät"
+
+#: Instanssi/ext_programme/models.py:40
+msgid "Titles"
+msgstr "Tittelit"
+
+#: Instanssi/ext_programme/models.py:41
+msgid "Place"
+msgstr "Paikka"
+
+#: Instanssi/ext_programme/models.py:45
+msgid "Image 1"
+msgstr "Kuva 1"
+
+#: Instanssi/ext_programme/models.py:52
+msgid "Image 2"
+msgstr "Kuva 2"
+
+#: Instanssi/ext_programme/models.py:59 Instanssi/store/models.py:171
+#: Instanssi/users/forms.py:95
+msgid "Email"
+msgstr "Sähköposti"
+
+#: Instanssi/ext_programme/models.py:60
+msgid "Home URL"
+msgstr "Kotisivun URL"
+
+#: Instanssi/ext_programme/models.py:61
+msgid "Twitter"
+msgstr "Twitter"
+
+#: Instanssi/ext_programme/models.py:62
+msgid "Github"
+msgstr "Github"
+
+#: Instanssi/ext_programme/models.py:63
+msgid "Facebook"
+msgstr "Facebook"
+
+#: Instanssi/ext_programme/models.py:64
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#: Instanssi/ext_programme/models.py:65
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: Instanssi/ext_programme/models.py:67
+msgid "Event type"
+msgstr "Tapahtuman tyyppi"
+
+#: Instanssi/ext_programme/models.py:71 Instanssi/kompomaatti/models.py:180
+#: Instanssi/kompomaatti/models.py:520
+msgid "Active"
+msgstr "Aktiivinen"
+
+#: Instanssi/infodesk/forms.py:13 Instanssi/infodesk/forms.py:31
+msgid "Identifier"
+msgstr "Tunniste"
+
+#: Instanssi/infodesk/forms.py:26
+msgid "Invalid item key!"
+msgstr "Virheellinen tuoteavain!"
+
+#: Instanssi/infodesk/forms.py:44
+msgid "Invalid transaction key!"
+msgstr "Virheellinen transaktioavain!"
+
+#: Instanssi/kompomaatti/models.py:30 Instanssi/users/forms.py:62
+msgid "Other contact info"
+msgstr "Muut yhteystiedot"
+
+#: Instanssi/kompomaatti/models.py:42
+msgid "Short tag"
+msgstr "Lyhyt tagi"
+
+#: Instanssi/kompomaatti/models.py:44
+msgid "Archived"
+msgstr "Arkistoitu"
+
+#: Instanssi/kompomaatti/models.py:45
+msgid "Hidden"
+msgstr "Piilotettu"
+
+#: Instanssi/kompomaatti/models.py:46
+msgid "Event main page"
+msgstr "Tapahtuman pääsivu"
+
+#: Instanssi/kompomaatti/models.py:58
+msgid "Pending approval"
+msgstr "Odottaa hyväksyntää"
+
+#: Instanssi/kompomaatti/models.py:59
+msgid "Approved"
+msgstr "Hyväksytty"
+
+#: Instanssi/kompomaatti/models.py:60
+msgid "Rejected"
+msgstr "Hylätty"
+
+#: Instanssi/kompomaatti/models.py:75
+msgid "Status"
+msgstr "Tila"
+
+#: Instanssi/kompomaatti/models.py:103
+msgid "Ticket item"
+msgstr "Lippuostos"
+
+#: Instanssi/kompomaatti/models.py:108
+msgid "Timestamp"
+msgstr "Aikaleima"
+
+#: Instanssi/kompomaatti/models.py:135
+msgid "Nothing"
+msgstr "Ei mitään"
+
+#: Instanssi/kompomaatti/models.py:136
+msgid "Youtube first, then image"
+msgstr "Youtube ensin, sitten kuva"
+
+#: Instanssi/kompomaatti/models.py:137
+msgid "Image only"
+msgstr "Vain kuva"
+
+#: Instanssi/kompomaatti/models.py:141
+msgid "Require separate thumbnail."
+msgstr "Vaadi erillinen pienoiskuva."
+
+#: Instanssi/kompomaatti/models.py:142
+msgid "Use entry file as thumbnail (only works for png/jpg files)."
+msgstr ""
+"Käytä kilpailutyötiedostoa pienoiskuvana (toimii vain png/jpg-tiedostoille)."
+
+#: Instanssi/kompomaatti/models.py:143
+msgid "Allow thumbnail (not required)."
+msgstr "Salli pienoiskuva (ei pakollinen)."
+
+#: Instanssi/kompomaatti/models.py:144
+msgid "Do not allow thumbnail."
+msgstr "Älä salli pienoiskuvaa."
+
+#: Instanssi/kompomaatti/models.py:149
+msgid "event"
+msgstr "tapahtuma"
+
+#: Instanssi/kompomaatti/models.py:154
+msgid "Entry adding deadline"
+msgstr "Kilpailutöiden lisäyksen takaraja"
+
+#: Instanssi/kompomaatti/models.py:155
+msgid "Entry editing deadline"
+msgstr "Kilpailutöiden muokkauksen takaraja"
+
+#: Instanssi/kompomaatti/models.py:156
+msgid "Compo start time"
+msgstr "Kompon alkuaika"
+
+#: Instanssi/kompomaatti/models.py:157
+msgid "Voting start time"
+msgstr "Äänestyksen alkuaika"
+
+#: Instanssi/kompomaatti/models.py:158
+msgid "Voting end time"
+msgstr "Äänestyksen loppuaika"
+
+#: Instanssi/kompomaatti/models.py:160
+msgid "Entry size limit"
+msgstr "Kilpailutyön kokorajoitus"
+
+#: Instanssi/kompomaatti/models.py:163
+msgid "Source size limit"
+msgstr "Lähdekoodin kokorajoitus"
+
+#: Instanssi/kompomaatti/models.py:166
+msgid "Allowed file extensions"
+msgstr "Sallitut tiedostopäätteet"
+
+#: Instanssi/kompomaatti/models.py:171
+msgid "Allowed source package extensions"
+msgstr "Sallitut lähdekoodipaketin päätteet"
+
+#: Instanssi/kompomaatti/models.py:176
+msgid "Allowed image file extensions"
+msgstr "Sallitut kuvatiedostopäätteet"
+
+#: Instanssi/kompomaatti/models.py:181 Instanssi/kompomaatti/models.py:519
+msgid "Show results"
+msgstr "Näytä tulokset"
+
+#: Instanssi/kompomaatti/models.py:183
+msgid "Entry presentation"
+msgstr "Kilpailutyön esitystapa"
+
+#: Instanssi/kompomaatti/models.py:187 Instanssi/kompomaatti/models.py:521
+msgid "Hide from archive"
+msgstr "Piilota arkistosta"
+
+#: Instanssi/kompomaatti/models.py:188
+msgid "Hide from front page"
+msgstr "Piilota etusivulta"
+
+#: Instanssi/kompomaatti/models.py:189
+msgid "Votable"
+msgstr "Äänestettävä"
+
+#: Instanssi/kompomaatti/models.py:191
+msgid "Thumbnail settings"
+msgstr "Pienoiskuva-asetukset"
+
+#: Instanssi/kompomaatti/models.py:306 Instanssi/kompomaatti/models.py:450
+#: Instanssi/kompomaatti/models.py:476
+msgid "user"
+msgstr "käyttäjä"
+
+#: Instanssi/kompomaatti/models.py:309 Instanssi/kompomaatti/models.py:451
+#: Instanssi/kompomaatti/models.py:477
+msgid "compo"
+msgstr "kompo"
+
+#: Instanssi/kompomaatti/models.py:310 Instanssi/store/models.py:157
+#: Instanssi/store/models.py:278
+msgid "Created at"
+msgstr "Luotu"
+
+#: Instanssi/kompomaatti/models.py:313
+msgid "Creator"
+msgstr "Tekijä"
+
+#: Instanssi/kompomaatti/models.py:315
+msgid "Platform"
+msgstr "Alusta"
+
+#: Instanssi/kompomaatti/models.py:322
+msgid "Source code"
+msgstr "Lähdekoodi"
+
+#: Instanssi/kompomaatti/models.py:328
+msgid "Image"
+msgstr "Kuva"
+
+#: Instanssi/kompomaatti/models.py:346 Instanssi/kompomaatti/models.py:553
+msgid "Disqualified"
+msgstr "Hylätty"
+
+#: Instanssi/kompomaatti/models.py:347 Instanssi/kompomaatti/models.py:554
+msgid "Disqualification reason"
+msgstr "Hylkäyksen syy"
+
+#: Instanssi/kompomaatti/models.py:348 Instanssi/kompomaatti/models.py:552
+msgid "Score"
+msgstr "Pisteet"
+
+#: Instanssi/kompomaatti/models.py:349 Instanssi/kompomaatti/models.py:479
+msgid "Rank"
+msgstr "Sijoitus"
+
+#: Instanssi/kompomaatti/models.py:478
+msgid "entry"
+msgstr "kilpailutyö"
+
+#: Instanssi/kompomaatti/models.py:499
+msgid "Highest score first"
+msgstr "Korkein pistemäärä ensin"
+
+#: Instanssi/kompomaatti/models.py:500
+msgid "Lowest score first"
+msgstr "Matalin pistemäärä ensin"
+
+#: Instanssi/kompomaatti/models.py:510
+msgid "Participation deadline"
+msgstr "Osallistumisen takaraja"
+
+#: Instanssi/kompomaatti/models.py:511
+msgid "Competition start"
+msgstr "Kilpailun alku"
+
+#: Instanssi/kompomaatti/models.py:512
+msgid "Competition end"
+msgstr "Kilpailun loppu"
+
+#: Instanssi/kompomaatti/models.py:513
+msgid "Score type"
+msgstr "Pistetyyppi"
+
+#: Instanssi/kompomaatti/models.py:515
+msgid "Score sorting"
+msgstr "Pisteiden järjestys"
+
+#: Instanssi/kompomaatti/models.py:539
+msgid "Competition"
+msgstr "Kilpailu"
+
+#: Instanssi/kompomaatti/models.py:548
+msgid "Participant name"
+msgstr "Osallistujan nimi"
+
+#: Instanssi/notifications/tasks.py:115
+msgid "New vote code request"
+msgstr "Uusi äänestyskoodipyyntö"
+
+#: Instanssi/notifications/tasks.py:116
+#, python-format
+msgid "%(user)s requested a vote code for %(event)s"
+msgstr "%(user)s pyysi äänestysoikeutta tapahtumaan %(event)s"
+
+#: Instanssi/notifications/tasks.py:150
+#, python-format
+msgid "Program starting soon: %(title)s"
+msgstr "Ohjelma alkaa pian: %(title)s"
+
+#: Instanssi/notifications/tasks.py:151
+#, python-format
+msgid "%(title)s starting soon at %(event)s"
+msgstr "%(title)s alkaa pian tapahtumassa %(event)s"
+
+#: Instanssi/notifications/tasks.py:171
+#, python-format
+msgid "Compo starting soon: %(name)s"
+msgstr "Kompo alkaa pian: %(name)s"
+
+#: Instanssi/notifications/tasks.py:172 Instanssi/notifications/tasks.py:193
+#, python-format
+msgid "%(name)s starting soon at %(event)s"
+msgstr "%(name)s alkaa pian tapahtumassa %(event)s"
+
+#: Instanssi/notifications/tasks.py:192
+#, python-format
+msgid "Competition starting soon: %(name)s"
+msgstr "Kilpailu alkaa pian: %(name)s"
+
+#: Instanssi/store/models.py:47
+msgid "Product name"
+msgstr "Tuotteen nimi"
+
+#: Instanssi/store/models.py:48
+msgid "Product description"
+msgstr "Tuotekuvaus"
+
+#: Instanssi/store/models.py:49 Instanssi/store/models.py:296
+msgid "Product price"
+msgstr "Tuotteen hinta"
+
+#: Instanssi/store/models.py:50
+msgid "Available quantity"
+msgstr "Saatavilla oleva määrä"
+
+#: Instanssi/store/models.py:51
+msgid "Available for purchase"
+msgstr "Ostettavissa"
+
+#: Instanssi/store/models.py:53
+msgid "Product image"
+msgstr "Tuotekuva"
+
+#: Instanssi/store/models.py:60
+msgid "Maximum per order"
+msgstr "Enimmäismäärä tilauksessa"
+
+#: Instanssi/store/models.py:61
+msgid "Sort order"
+msgstr "Järjestysnumero"
+
+#: Instanssi/store/models.py:62
+msgid "Discount threshold"
+msgstr "Alennusraja"
+
+#: Instanssi/store/models.py:63
+msgid "Discount percentage"
+msgstr "Alennusprosentti"
+
+#: Instanssi/store/models.py:64
+msgid "Product is a ticket"
+msgstr "Tuote on lippu"
+
+#: Instanssi/store/models.py:65
+msgid "Product is secret"
+msgstr "Tuote on salainen"
+
+#: Instanssi/store/models.py:66
+msgid "Secret key"
+msgstr "Salainen avain"
+
+#: Instanssi/store/models.py:145
+msgid "Variant name"
+msgstr "Variantin nimi"
+
+#: Instanssi/store/models.py:156
+msgid "Service token"
+msgstr "Palvelutunniste"
+
+#: Instanssi/store/models.py:158
+msgid "Payment confirmed at"
+msgstr "Maksu vahvistettu"
+
+#: Instanssi/store/models.py:159
+msgid "Payment initiated at"
+msgstr "Maksu aloitettu"
+
+#: Instanssi/store/models.py:160
+msgid "Cancelled at"
+msgstr "Peruutettu"
+
+#: Instanssi/store/models.py:162
+msgid "Payment method"
+msgstr "Maksutapa"
+
+#: Instanssi/store/models.py:167 Instanssi/store/models.py:287
+msgid "Key"
+msgstr "Avain"
+
+#: Instanssi/store/models.py:168 Instanssi/users/forms.py:93
+msgid "First name"
+msgstr "Etunimi"
+
+#: Instanssi/store/models.py:169 Instanssi/users/forms.py:94
+msgid "Last name"
+msgstr "Sukunimi"
+
+#: Instanssi/store/models.py:170
+msgid "Company"
+msgstr "Yritys"
+
+#: Instanssi/store/models.py:172
+msgid "Telephone"
+msgstr "Puhelin"
+
+#: Instanssi/store/models.py:173
+msgid "Mobile phone"
+msgstr "Matkapuhelin"
+
+#: Instanssi/store/models.py:174
+msgid "Street address"
+msgstr "Katuosoite"
+
+#: Instanssi/store/models.py:175
+msgid "Postal code"
+msgstr "Postinumero"
+
+#: Instanssi/store/models.py:176
+msgid "City"
+msgstr "Kaupunki"
+
+#: Instanssi/store/models.py:177
+msgid "Country"
+msgstr "Maa"
+
+#: Instanssi/store/models.py:178
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+#: Instanssi/store/models.py:276
+msgid "Event message"
+msgstr "Tapahtumailmoitus"
+
+#: Instanssi/store/models.py:277
+msgid "Event data"
+msgstr "Tapahtumatiedot"
+
+#: Instanssi/store/models.py:288
+msgid "Product"
+msgstr "Tuote"
+
+#: Instanssi/store/models.py:290
+msgid "Product variant"
+msgstr "Tuotevariantti"
+
+#: Instanssi/store/models.py:293
+msgid "Transaction"
+msgstr "Transaktio"
+
+#: Instanssi/store/models.py:295
+msgid "Delivery time"
+msgstr "Toimitusaika"
+
+#: Instanssi/store/models.py:298
+msgid "Original product price"
+msgstr "Tuotteen alkuperäinen hinta"
+
+#: Instanssi/store/models.py:321
+msgid "Subject"
+msgstr "Aihe"
+
+#: Instanssi/store/models.py:322
+msgid "Recipient address"
+msgstr "Vastaanottajan osoite"
+
+#: Instanssi/store/models.py:323
+msgid "Sender address"
+msgstr "Lähettäjän osoite"
+
+#: Instanssi/store/models.py:324
+msgid "Sent at"
+msgstr "Lähetetty"
+
+#: Instanssi/store/models.py:325
+msgid "Send parameters"
+msgstr "Lähetysparametrit"
+
+#: Instanssi/store/models.py:326
+msgid "Receipt content"
+msgstr "Kuitin sisältö"
+
+#: Instanssi/users/admin.py:15
+msgid "Personal info"
+msgstr "Henkilötiedot"
+
+#: Instanssi/users/admin.py:17
+msgid "Permissions"
+msgstr "Oikeudet"
+
+#: Instanssi/users/admin.py:29
+msgid "Important dates"
+msgstr "Tärkeät päivämäärät"
+
+#: Instanssi/users/admin.py:31
+msgid "Notifications"
+msgstr "Ilmoitukset"
+
+#: Instanssi/users/forms.py:19
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: Instanssi/users/forms.py:20
+msgid "Password"
+msgstr "Salasana"
+
+#: Instanssi/users/forms.py:31
+msgid "Login with credentials"
+msgstr "Kirjautuminen käyttäjätunnuksilla"
+
+#: Instanssi/users/forms.py:35
+msgid "Login"
+msgstr "Kirjaudu"
+
+#: Instanssi/users/forms.py:52
+msgid "Invalid username or password!"
+msgstr "Väärä käyttäjätunnus tai salasana!"
+
+#: Instanssi/users/forms.py:63
+msgid "Other contact information, e.g. IRC nick & network, etc."
+msgstr "Muut yhteystiedot, esim. IRC-nick ja verkko, jne."
+
+#: Instanssi/users/forms.py:83
+msgid "User profile"
+msgstr "Käyttäjäprofiili"
+
+#: Instanssi/users/forms.py:88
+msgid "Save"
+msgstr "Tallenna"
+
+#: Instanssi/users/models.py:6
+msgid "Not set"
+msgstr "Ei asetettu"
+
+#: Instanssi/users/models.py:7
+msgid "English"
+msgstr "Englanti"
+
+#: Instanssi/users/models.py:8
+msgid "Finnish"
+msgstr "Suomi"

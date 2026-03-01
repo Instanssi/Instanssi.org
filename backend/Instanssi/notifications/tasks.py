@@ -5,7 +5,8 @@ from datetime import timedelta
 
 from celery import shared_task
 from django.conf import settings
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext as _
 from pywebpush import WebPushException, webpush
 
 from Instanssi.ext_programme.models import ProgrammeEvent
@@ -17,8 +18,8 @@ log = logging.getLogger(__name__)
 
 
 def _send_push_to_staff(
-    title: str,
-    body: str,
+    get_title: Callable[[], str],
+    get_body: Callable[[], str],
     url: str,
     notification_key: str,
     user_wants_notification: Callable[[User], bool],
@@ -36,8 +37,8 @@ def _send_push_to_staff(
     automatically removed.
 
     Args:
-        title: Short heading displayed in the browser notification.
-        body: Longer descriptive text shown below the title.
+        get_title: Callable that returns the notification title (called per-user for i18n).
+        get_body: Callable that returns the notification body (called per-user for i18n).
         url: Target URL opened when the user clicks the notification.
         notification_key: Unique key used for deduplication (e.g. ``"vcr:42"``).
         user_wants_notification: Predicate that receives a ``User`` instance
@@ -56,11 +57,15 @@ def _send_push_to_staff(
         user__is_staff=True,
     ).select_related("user")
 
-    payload = json.dumps({"title": title, "body": body, "url": url})
-
     for subscription in subscriptions:
         if not user_wants_notification(subscription.user):
             continue
+
+        with translation.override(subscription.user.language or settings.LANGUAGE_CODE):
+            title = get_title()
+            body = get_body()
+
+        payload = json.dumps({"title": title, "body": body, "url": url})
 
         try:
             webpush(
@@ -103,9 +108,13 @@ def notify_new_vote_code_request(vote_code_request_id: int) -> None:
         log.warning("VoteCodeRequest %s not found", vote_code_request_id)
         return
 
+    event_name = vcr.event.name if vcr.event else "unknown event"
+    username = vcr.user.username
+
     _send_push_to_staff(
-        title="New vote code request",
-        body=f"{vcr.user.username} requested a vote code for {vcr.event.name if vcr.event else 'unknown event'}",
+        get_title=lambda: _("New vote code request"),
+        get_body=lambda: _("%(user)s requested a vote code for %(event)s")
+        % {"user": username, "event": event_name},
         url="/management/",
         notification_key=f"vcr:{vcr.id}",
         user_wants_notification=lambda u: u.notify_vote_code_requests,
@@ -134,11 +143,15 @@ def check_upcoming_events() -> None:
     ).select_related("event")
 
     for prog in upcoming_programs:
+        prog_title = prog.title
+        prog_event_name = prog.event.name
+        prog_id = prog.id
         _send_push_to_staff(
-            title=f"Program starting soon: {prog.title}",
-            body=f"{prog.title} starting soon at {prog.event.name}",
+            get_title=lambda: _("Program starting soon: %(title)s") % {"title": prog_title},
+            get_body=lambda: _("%(title)s starting soon at %(event)s")
+            % {"title": prog_title, "event": prog_event_name},
             url="/management/",
-            notification_key=f"prog:{prog.id}:15min",
+            notification_key=f"prog:{prog_id}:15min",
             user_wants_notification=lambda u: u.notify_program_events,
         )
 
@@ -151,11 +164,15 @@ def check_upcoming_events() -> None:
     ).select_related("event")
 
     for compo in upcoming_compos:
+        compo_name = compo.name
+        compo_event_name = compo.event.name
+        compo_id = compo.id
         _send_push_to_staff(
-            title=f"Compo starting soon: {compo.name}",
-            body=f"{compo.name} starting soon at {compo.event.name}",
+            get_title=lambda: _("Compo starting soon: %(name)s") % {"name": compo_name},
+            get_body=lambda: _("%(name)s starting soon at %(event)s")
+            % {"name": compo_name, "event": compo_event_name},
             url="/management/",
-            notification_key=f"compo:{compo.id}:15min",
+            notification_key=f"compo:{compo_id}:15min",
             user_wants_notification=lambda u: u.notify_compo_starts,
         )
 
@@ -168,11 +185,15 @@ def check_upcoming_events() -> None:
     ).select_related("event")
 
     for comp in upcoming_competitions:
+        comp_name = comp.name
+        comp_event_name = comp.event.name
+        comp_id = comp.id
         _send_push_to_staff(
-            title=f"Competition starting soon: {comp.name}",
-            body=f"{comp.name} starting soon at {comp.event.name}",
+            get_title=lambda: _("Competition starting soon: %(name)s") % {"name": comp_name},
+            get_body=lambda: _("%(name)s starting soon at %(event)s")
+            % {"name": comp_name, "event": comp_event_name},
             url="/management/",
-            notification_key=f"comp:{comp.id}:15min",
+            notification_key=f"comp:{comp_id}:15min",
             user_wants_notification=lambda u: u.notify_competition_starts,
         )
 

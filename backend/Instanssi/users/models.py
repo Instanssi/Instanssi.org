@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 LANGUAGE_CHOICES = [
-    ("", "Not set"),
-    ("en", "English"),
-    ("fi", "Finnish"),
+    ("", _("Not set")),
+    ("en", _("English")),
+    ("fi", _("Finnish")),
 ]
 
 

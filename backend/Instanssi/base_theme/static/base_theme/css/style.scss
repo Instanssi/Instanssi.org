@@ -56,4 +56,23 @@ body {
             border-color: rgba(255, 255, 255, 0.1);
         }
     }
+
+    .bt-lang-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0.15rem;
+        cursor: pointer;
+        opacity: 0.4;
+        transition: opacity 0.15s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+    }
 }

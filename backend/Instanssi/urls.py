@@ -3,9 +3,11 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
+from django.views.i18n import set_language
 from django.views.static import serve
 
 urlpatterns = [
+    path("i18n/setlang/", set_language, name="set_language"),
     path("", include("social_django.urls", namespace="social")),
     path("qr/", include("qr_code.urls", namespace="qr_code")),
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),

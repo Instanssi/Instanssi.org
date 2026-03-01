@@ -1,4 +1,5 @@
 {% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
 <nav class="navbar navbar-expand navbar-dark fixed-top bt-navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
@@ -20,7 +21,23 @@
                 </li>
             {% endif %}
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-items-center">
+            {% if not user.is_authenticated or not user.language %}
+                <li class="nav-item d-flex align-items-center me-2">
+                    <form action="{% url 'set_language' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="fi">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="bt-lang-btn{% if LANGUAGE_CODE == 'fi' %} active{% endif %}" title="Suomeksi">&#x1F1EB;&#x1F1EE;</button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="en">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="bt-lang-btn{% if LANGUAGE_CODE == 'en' %} active{% endif %}" title="In English">&#x1F1EC;&#x1F1E7;</button>
+                    </form>
+                </li>
+            {% endif %}
             {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

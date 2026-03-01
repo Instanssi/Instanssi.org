@@ -919,3 +919,59 @@ msgstr ""
 "Kannattaa pitää huolta siitä, että käyttäjätiedot ovat oikein. Tapahtuman "
 "järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei "
 "julkaista."
+
+#: Instanssi/users/models.py:14
+msgid "Language"
+msgstr "Kieli"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+msgid "Compo"
+msgstr "Kompo"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+msgid "Listen"
+msgstr "Kuuntele"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+#, python-format
+msgid "by %(creator)s"
+msgstr "tekijä: %(creator)s"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+msgid "Download file"
+msgstr "Lataa tiedosto"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+msgid "Disqualified:"
+msgstr "Hylätty:"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+#, python-format
+msgid "%(rank)s. place"
+msgstr "%(rank)s. sija"
+
+#: Instanssi/arkisto/templates/arkisto/video.html
+msgid "Watch on YouTube"
+msgstr "Katso YouTubessa"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html
+#: Instanssi/arkisto/templates/arkisto/video.html
+#, python-format
+msgid "Back: %(name)s"
+msgstr "Takaisin: %(name)s"
+
+#: Instanssi/arkisto/templates/arkisto/index.html
+msgid "Export"
+msgstr "Vie"
+
+#: Instanssi/arkisto/templates/arkisto/index.html
+msgid "Results as text"
+msgstr "Tulokset tekstinä"
+
+#: Instanssi/arkisto/templates/arkisto/index.html
+msgid "M3U8 playlist"
+msgstr "M3U8-soittolista"
+
+#: Instanssi/arkisto/templates/arkisto/empty.html
+msgid "The archive currently has no content."
+msgstr "Arkistossa ei valitettavasti ole tällä hetkellä sisältöä."

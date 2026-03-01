@@ -1,14 +1,8 @@
 {% extends "base_theme/card_page.html" %}
-{% load crispy_forms_tags i18n static compress %}
+{% load crispy_forms_tags i18n %}
 
 {% block title %}Instanssi.org - {% trans "Login" %}{% endblock %}
 {% block subtitle %}{% trans "Login" %}{% endblock %}
-
-{% block page_head %}
-    {% compress css %}
-    <link rel="stylesheet" type="text/x-scss" href="{% static 'users/css/style.scss' %}">
-    {% endcompress %}
-{% endblock %}
 
 {% block card_content %}
     <div class="social-buttons mb-3">

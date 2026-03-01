@@ -7,6 +7,9 @@
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'base_theme/css/style.scss' %}">
     {% endcompress %}
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'users/css/style.scss' %}">
+    {% endcompress %}
     {% block page_head %}{% endblock %}
 {% endblock %}
 

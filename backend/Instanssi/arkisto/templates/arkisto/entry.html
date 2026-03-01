@@ -4,8 +4,21 @@
 
 {% block arkisto_title %}{{ entry.name }} – {{ event.name }}{% endblock %}
 {% block og_title %}{{ entry.name }} – {{ event.name }} – Instanssi.org{% endblock %}
-{% block og_description %}{{ entry.name }} {% blocktrans with creator=entry.creator %}by {{ creator }}{% endblocktrans %} – {{ entry.compo.name }}{% endblock %}
-{% block og_image %}{% if entry.imagefile_medium %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ entry.imagefile_medium.url }}" />{% else %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />{% endif %}{% endblock %}
+{% block head_description %}{% blocktrans with name=entry.name creator=entry.creator compo=entry.compo.name asvar desc %}{{ name }} by {{ creator }} – {{ compo }}{% endblocktrans %}
+    <meta name="description" content="{{ desc }}" />
+    <meta property="og:description" content="{{ desc }}" />
+{% endblock %}
+{% block og_image %}
+{% if entry.imagefile_medium %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ entry.imagefile_medium.url }}" />
+    <meta property="og:image:width" content="640" />
+    <meta property="og:image:height" content="400" />
+{% else %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+{% endif %}
+{% endblock %}
 
 {% block content %}
 {% with file_type=entry.entryfile|media_type %}

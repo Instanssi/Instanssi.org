@@ -1,0 +1,14 @@
+// Shared theme variables — imported by base_theme, arkisto, and users stylesheets.
+// Keep this file small: only values that are reused across multiple apps belong here.
+
+// Breakpoints
+$bp-md: 768px;
+
+// Accent colors
+$accent: #00cbe6;
+$accent-hover: #33d9ee;
+
+// Font stacks
+$font-title: "Exo 2", sans-serif;
+$font-body: "Open Sans", sans-serif;
+$font-mono: "Fira Mono", monospace;

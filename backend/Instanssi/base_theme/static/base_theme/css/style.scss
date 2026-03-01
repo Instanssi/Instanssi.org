@@ -1,9 +1,4 @@
-// Bootstrap breakpoints
-$bt-bp-md: 768px;
-
-// Base theme variables
-$bt-accent: #00cbe6;
-$bt-accent-hover: #33d9ee;
+@import 'variables';
 
 // Shared background
 body {
@@ -35,7 +30,7 @@ body {
 
         &:hover,
         &:focus {
-            color: $bt-accent;
+            color: $accent;
         }
     }
 
@@ -50,7 +45,7 @@ body {
 
             &:hover,
             &:focus {
-                color: $bt-accent;
+                color: $accent;
                 background-color: rgba(255, 255, 255, 0.05);
             }
         }
@@ -66,11 +61,11 @@ body {
         font-size: 0.85rem;
 
         &:focus {
-            box-shadow: 0 0 0 0.15rem rgba($bt-accent, 0.4);
+            box-shadow: 0 0 0 0.15rem rgba($accent, 0.4);
         }
     }
 
-    @media (max-width: $bt-bp-md - 0.02) {
+    @media (max-width: $bp-md - 0.02) {
         .navbar-collapse {
             padding-top: 0.5rem;
             padding-bottom: 0.25rem;

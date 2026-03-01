@@ -1,9 +1,6 @@
-// ===== Bootstrap Breakpoints =====
-$bp-md: 768px;
+@import 'base_theme/css/variables';
 
-// ===== Theme Variables =====
-$accent: #00cbe6;
-$accent-hover: #33d9ee;
+// ===== Arkisto Variables =====
 $dark-card: rgba(33, 33, 33, 0.85);
 $dark-card-strong: rgba(33, 33, 33, 0.9);
 $border-subtle: rgba(255, 255, 255, 0.06);
@@ -12,9 +9,6 @@ $border-medium: rgba(255, 255, 255, 0.1);
 $overlay: rgba(0, 0, 0, 0.7);
 $text-muted-custom: #999;
 $text-label: #888;
-$font-title: "Exo 2", sans-serif;
-$font-body: "Open Sans", sans-serif;
-$font-mono: "Fira Mono", monospace;
 
 // ===== Body & Overlay =====
 body.arkisto-bg {

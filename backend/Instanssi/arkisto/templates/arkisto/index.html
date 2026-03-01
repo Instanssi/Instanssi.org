@@ -2,6 +2,8 @@
 {% load static i18n %}
 
 {% block arkisto_title %}{{ event.name }} – {% trans "Archive" %}{% endblock %}
+{% block og_title %}{{ event.name }} – {% trans "Archive" %} – Instanssi.org{% endblock %}
+{% block og_description %}{% blocktrans with name=event.name %}Compo entries and results from {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block subnav %}
 <nav class="section-nav mt-2 small">

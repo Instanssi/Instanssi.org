@@ -975,3 +975,12 @@ msgstr "M3U8-soittolista"
 #: Instanssi/arkisto/templates/arkisto/empty.html
 msgid "The archive currently has no content."
 msgstr "Arkistossa ei valitettavasti ole tällä hetkellä sisältöä."
+
+#: Instanssi/arkisto/templates/arkisto/base.html
+msgid "Archive of Instanssi demoparty events, compo entries and results"
+msgstr "Instanssi-demopartyjen tapahtumat, kilpailutyöt ja tulokset"
+
+#: Instanssi/arkisto/templates/arkisto/index.html
+#, python-format
+msgid "Compo entries and results from %(name)s"
+msgstr "Kompotöitä ja tuloksia tapahtumasta %(name)s"

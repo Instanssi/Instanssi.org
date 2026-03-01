@@ -2,6 +2,8 @@
 {% load i18n %}
 
 {% block arkisto_title %}{{ video.name }} – {{ event.name }}{% endblock %}
+{% block og_title %}{{ video.name }} – {{ event.name }} – Instanssi.org{% endblock %}
+{% block og_description %}{{ video.name }} – {{ video.category.name }}{% endblock %}
 
 {% block content %}
 <div class="entry-detail rounded-2 overflow-hidden">

@@ -11,12 +11,13 @@
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'arkisto/css/style.scss' %}" />
     {% endcompress %}
-    <meta property="og:locale" content="fi_FI" />
-    <meta property="og:url" content="https://instanssi.org/arkisto/" />
-    <meta property="og:image" content="{% static 'main2026/images/logoteksti-og.jpg' %}" />
-    <meta property="og:title" content="Instanssi Arkisto" />
+    <meta property="og:site_name" content="Instanssi.org" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Instanssi Arkisto" />
+    <meta property="og:locale" content="fi_FI" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:title" content="{% block og_title %}{% trans 'Archive' %} – Instanssi.org{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}{% trans 'Archive of Instanssi demoparty events, compo entries and results' %}{% endblock %}" />
+    {% block og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />{% endblock %}
 {% endblock %}
 
 {% block body_class %}arkisto-bg min-vh-100 d-flex flex-column{% endblock %}

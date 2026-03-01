@@ -1,10 +1,12 @@
 {% extends "base_theme/base.html" %}
-{% load static %}
+{% load static compress %}
 
 {% block body_class %}bt-page{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'base_theme/css/style.css' %}">
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'base_theme/css/style.scss' %}">
+    {% endcompress %}
     {% block page_head %}{% endblock %}
 {% endblock %}
 

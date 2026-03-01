@@ -5,8 +5,7 @@
 
 {% block subnav %}
 <nav class="section-nav mt-2 small">
-    <span class="section-nav-arrow"><i class="fa-solid fa-arrow-right"></i></span>
-    {% for compo in compos %}{% if not forloop.first %}<span class="section-nav-sep">&middot;</span>{% endif %}<a href="#compo-{{ compo.id }}" class="section-nav-link">{{ compo.name }}</a>{% endfor %}{% for category in videos %}{% if category.videos %}<span class="section-nav-sep">&middot;</span><a href="#videos-{{ category.id }}" class="section-nav-link">{{ category.name }}</a>{% endif %}{% endfor %}{% for comp in competitions %}<span class="section-nav-sep">&middot;</span><a href="#competition-{{ comp.id }}" class="section-nav-link">{{ comp.name }}</a>{% endfor %}
+    {% for compo in compos %}<a href="#compo-{{ compo.id }}" class="section-nav-link">{{ compo.name }}</a>{% endfor %}{% for category in videos %}{% if category.videos %}<a href="#videos-{{ category.id }}" class="section-nav-link">{{ category.name }}</a>{% endif %}{% endfor %}{% for comp in competitions %}<a href="#competition-{{ comp.id }}" class="section-nav-link">{{ comp.name }}</a>{% endfor %}
 </nav>
 {% endblock %}
 

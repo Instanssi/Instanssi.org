@@ -1,3 +1,6 @@
+// ===== Bootstrap Breakpoints =====
+$bp-md: 768px;
+
 // ===== Theme Variables =====
 $accent: #00cbe6;
 $accent-hover: #33d9ee;
@@ -59,6 +62,23 @@ body.arkisto-bg a {
 }
 
 // ===== Event Tabs =====
+.event-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    @media (hover: none) and (pointer: coarse) {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
 .event-tab {
     padding: 0.4rem 1rem;
     background: rgba(255, 255, 255, 0.08);
@@ -67,6 +87,7 @@ body.arkisto-bg a {
     color: #ccc;
     font-family: $font-title;
     font-weight: 600;
+    white-space: nowrap;
     transition: all 0.2s;
 
     &:hover {
@@ -83,21 +104,36 @@ body.arkisto-bg a {
 }
 
 // ===== Section Nav =====
-.section-nav-arrow {
-    color: $text-label;
-    margin-right: 0.25rem;
-}
+.section-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
 
-.section-nav-sep {
-    color: $text-label;
-    margin: 0 0.3rem;
+    @media (hover: none) and (pointer: coarse) {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 }
 
 .section-nav-link {
+    padding: 0.25rem 0.7rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid $border-subtle;
+    border-radius: 2rem;
     color: $text-muted-custom;
-    transition: color 0.15s;
+    white-space: nowrap;
+    transition: all 0.15s;
 
     &:hover {
+        background: rgba($accent, 0.1);
+        border-color: rgba($accent, 0.25);
         color: $accent;
     }
 }
@@ -287,6 +323,7 @@ body.arkisto-bg a {
     font-family: $font-title;
     font-weight: 900;
     color: #fff;
+    overflow-wrap: anywhere;
 }
 
 .entry-detail-creator {
@@ -306,8 +343,7 @@ body.arkisto-bg a {
     iframe,
     video {
         aspect-ratio: 16 / 9;
-        width: 640px;
-        max-width: 100%;
+        width: 100%;
         border: none;
         border-radius: 4px;
     }
@@ -416,7 +452,7 @@ body.arkisto-bg a {
 }
 
 // ===== Responsive =====
-@media (max-width: 768px) {
+@media (max-width: $bp-md - 0.02) {
     .entry-grid {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 0.75rem;
@@ -427,6 +463,15 @@ body.arkisto-bg a {
     }
 
     .entry-detail-sidebar {
-        flex: 1 1 auto;
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+
+    .entry-detail-title {
+        font-size: 1.4rem;
+    }
+
+    .entry-action-btn {
+        padding: 0.5rem 1rem;
     }
 }

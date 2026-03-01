@@ -27,7 +27,7 @@
     <header class="arkisto-header pb-2">
         <div class="container">
             <h1 class="arkisto-title text-white fs-2 my-4"><i class="fa-solid fa-box-archive"></i> {% trans "Archive" %}</h1>
-            <div class="d-flex flex-wrap gap-2">
+            <div class="event-tabs">
                 {% if event %}{% render_arkisto_nav event.id %}{% else %}{% render_arkisto_nav %}{% endif %}
             </div>
             {% block subnav %}{% endblock %}

@@ -2,6 +2,16 @@
 $bt-accent: #00cbe6;
 $bt-accent-hover: #33d9ee;
 
+// Shared background
+body {
+    background-image: url("../images/webtausta.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #262729;
+}
+
 // Navbar overrides (on top of Bootstrap .navbar)
 .bt-navbar {
     background-color: rgba(15, 15, 15, 0.85);

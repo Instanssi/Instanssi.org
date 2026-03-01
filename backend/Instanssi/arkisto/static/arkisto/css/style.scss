@@ -16,12 +16,6 @@ $font-mono: "Fira Mono", monospace;
 // ===== Body & Overlay =====
 body.arkisto-bg {
     font-family: $font-body;
-    background-image: url("../../base_theme/images/webtausta.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed;
-    background-color: #262729;
     color: #e0e0e0;
 
     &::before {

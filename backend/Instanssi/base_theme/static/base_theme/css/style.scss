@@ -1,3 +1,6 @@
+// Bootstrap breakpoints
+$bt-bp-md: 768px;
+
 // Base theme variables
 $bt-accent: #00cbe6;
 $bt-accent-hover: #33d9ee;
@@ -54,6 +57,28 @@ body {
 
         .dropdown-divider {
             border-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.15);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.85rem;
+
+        &:focus {
+            box-shadow: 0 0 0 0.15rem rgba($bt-accent, 0.4);
+        }
+    }
+
+    @media (max-width: $bt-bp-md - 0.02) {
+        .navbar-collapse {
+            padding-top: 0.5rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
     }
 

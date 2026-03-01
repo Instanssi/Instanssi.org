@@ -1,40 +1,37 @@
 {% extends "users/base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags i18n %}
 
-{% block title %}{{ block.super }} - Profiili{% endblock %}
+{% block title %}Instanssi.org - {% trans "Profile" %}{% endblock %}
+{% block subtitle %}{% trans "Profile" %}{% endblock %}
+{% block card_class %}users-card-wide{% endblock %}
 
-{% block head %}
-{{ block.super }}
-{% endblock %}
+{% block card_content %}
 
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li>Profiili</li>
-{% endblock %}
-
-{% block content %}
-{{ block.super }}
-    <h2>Kirjautumistilit</h2>
-    <p>
-        Halutessasi voit sitoa tiliisi muita kirjautumispalveluita. Tällöin voit kirjautua Instanssi.org palvelun
-        tiliisi käyttäen mitä tahansa tunnukseesi sidottua kirjautumispalvelua. Mikäli painike on harmaa, tarkoittaa
-        se palvelun olevan jo sidottu Instanssi.org-tiliin.
+    <h2><i class="fa-solid fa-link me-2"></i>{% trans "Login accounts" %}</h2>
+    <p class="small">
+        {% trans "You can bind other login providers to your account. This allows you to log in using any of the bound providers. If a button is greyed out, it means that provider is already bound to your account." %}
     </p>
-    <p>
-    {% for method in AUTH_METHODS %}
-        {% if method.3 %}
-            <button class="btn btn-primary login-button login-{{ method.0 }}" disabled="disabled">{{ method.2 }}</button>
-        {% else %}
-            <a class="btn btn-primary login-button login-{{ method.0 }}" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">Sido {{ method.2 }}</a>
-        {% endif %}
-    {% endfor %}
-    </p>
+    <div class="social-buttons mb-3">
+        {% for method in AUTH_METHODS %}
+            {% if method.3 %}
+                <button class="btn btn-outline-light" disabled>
+                    {% if method.0 == "google" %}<i class="fa-brands fa-google me-1"></i>{% endif %}
+                    {% if method.0 == "github" %}<i class="fa-brands fa-github me-1"></i>{% endif %}
+                    {% if method.0 == "steam" %}<i class="fa-brands fa-steam me-1"></i>{% endif %}
+                    {{ method.2 }}
+                </button>
+            {% else %}
+                <a class="btn btn-outline-light" href="{% url 'social:begin' method.1 %}?next={% url 'users:profile' %}">
+                    {% if method.0 == "google" %}<i class="fa-brands fa-google me-1"></i>{% endif %}
+                    {% if method.0 == "github" %}<i class="fa-brands fa-github me-1"></i>{% endif %}
+                    {% if method.0 == "steam" %}<i class="fa-brands fa-steam me-1"></i>{% endif %}
+                    {% trans "Bind" %} {{ method.2 }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
-    <h2>Profiili</h2>
-    <p>Kannattaa pitää huolta siitä että käyttäjätiedot ovat oikein. Tapahtuman järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei julkaista.</p>
+    <h2><i class="fa-solid fa-id-card me-2"></i>{% trans "Profile" %}</h2>
+    <p class="small">{% trans "Please make sure your contact information is correct. The event organizers may need to reach you :) None of the information on this page will be published." %}</p>
     {% crispy profileform profileform.helper %}
 {% endblock %}

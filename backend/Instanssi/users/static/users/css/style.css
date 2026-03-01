@@ -1,20 +1,173 @@
-
-form.uniForm fieldset {
-    border: 1px solid #999999;
-}
-
-form.uniForm #errorMsg {
-    vertical-align: middle;
-}
-
-form.uniForm #errorMsg ol {
+body.users-bg {
+    font-family: "Open Sans", sans-serif;
+    background-image: url("../images/webtausta.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
     margin: 0;
 }
 
-form.uniForm #errorMsg li {
-    background-color: transparent;
+.users-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
 }
 
-form.uniForm .error {
-    margin: 0.5em;
+.users-card {
+    background-color: rgba(33, 33, 33, 0.95);
+    color: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.users-card.users-card-wide {
+    max-width: 960px;
+}
+
+.users-card .card-nav {
+    display: flex;
+    justify-content: space-between;
+    margin: -0.5rem -0.5rem 1rem -0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+}
+
+.users-card .card-nav-left,
+.users-card .card-nav-right {
+    display: flex;
+    gap: 1rem;
+}
+
+.users-card .card-nav a {
+    color: #999;
+    text-decoration: none;
+}
+
+.users-card .card-nav a:hover {
+    color: #00cbe6;
+}
+
+.users-card .card-title {
+    font-family: "Exo 2", sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.users-card .card-subtitle {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.users-card h2 {
+    font-family: "Exo 2", sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Social login buttons */
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.social-buttons .btn {
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.social-buttons .btn:hover {
+    color: #00cbe6;
+}
+
+.social-buttons .btn:disabled {
+    color: #666;
+    opacity: 0.6;
+}
+
+/* Form styling overrides for dark theme */
+.users-card .form-control,
+.users-card .form-select {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.users-card .form-control:focus,
+.users-card .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #00cbe6;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 203, 230, 0.2);
+}
+
+.users-card .form-control::placeholder {
+    color: #888;
+}
+
+.users-card .form-label,
+.users-card label {
+    color: #ccc;
+    font-size: 0.875rem;
+}
+
+.users-card .form-text {
+    color: #999;
+}
+
+.users-card .invalid-feedback {
+    color: #ff6b6b;
+}
+
+.users-card .btn-primary {
+    background-color: #0054c0;
+    border-color: #0054c0;
+}
+
+.users-card .btn-primary:hover {
+    background-color: #0065e8;
+    border-color: #0065e8;
+}
+
+.users-card a {
+    color: #00cbe6;
+}
+
+.users-card a:hover {
+    color: #33d9ee;
+}
+
+.users-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.users-card ul li {
+    margin-bottom: 0.25rem;
+}
+
+.users-card ul li::before {
+    content: "\203A";
+    margin-right: 0.5rem;
+    color: #00cbe6;
+    font-weight: 900;
+}
+
+.users-card .alert {
+    font-size: 0.875rem;
 }

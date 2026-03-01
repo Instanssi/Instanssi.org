@@ -25,9 +25,9 @@ class DjangoLoginForm(forms.Form):
         super(DjangoLoginForm, self).__init__(*args, **kwargs)
         self.fields["next"].initial = self.next_page
         self.fields["username"].widget.attrs["placeholder"] = self.fields["username"].label
-        self.fields["username"].label = False
+        self.fields["username"].label = ""
         self.fields["password"].widget.attrs["placeholder"] = self.fields["password"].label
-        self.fields["password"].label = False
+        self.fields["password"].label = ""
         self.helper = FormHelper()
         self.helper.template_pack = "bootstrap5"
         self.helper.layout = Layout(

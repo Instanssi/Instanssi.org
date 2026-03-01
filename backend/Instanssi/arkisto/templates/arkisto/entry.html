@@ -72,6 +72,9 @@
             </div>
             {% endif %}
             <div class="entry-actions d-flex flex-wrap gap-2 mt-3 small">
+            {% if entry.youtube_url %}
+                <a href="{{ entry.youtube_url.link_url }}" target="_blank" rel="noopener" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-brands fa-youtube"></i> {% trans "Watch on YouTube" %}</a>
+            {% endif %}
                 <a href="{{ entry.entryfile.url }}" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-solid fa-download"></i> {% trans "Download file" %}</a>
             {% if entry.sourcefile %}
                 <a href="{{ entry.sourcefile.url }}" class="entry-action-btn d-inline-flex align-items-center gap-2"><i class="fa-solid fa-code"></i> {% trans "Source code" %}</a>

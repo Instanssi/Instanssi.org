@@ -24,6 +24,15 @@
                             variant="outlined"
                             :label="t('ProfileView.labels.lastName')"
                         />
+                        <v-textarea
+                            v-model="otherinfo.value.value"
+                            :error-messages="otherinfo.errorMessage.value"
+                            variant="outlined"
+                            :label="t('ProfileView.labels.otherinfo')"
+                            :hint="t('ProfileView.labels.otherinfoHint')"
+                            persistent-hint
+                            rows="3"
+                        />
                         <v-select
                             v-model="language.value.value"
                             :error-messages="language.errorMessage.value"
@@ -142,6 +151,7 @@ import { handleApiError, type FieldMapping } from "@/utils/http";
 const API_FIELD_MAPPING: FieldMapping = {
     first_name: "firstName",
     last_name: "lastName",
+    otherinfo: "otherinfo",
     language: "language",
 };
 
@@ -174,6 +184,7 @@ const languageOptions = [
 const validationSchema = yupObject({
     firstName: yupString().max(150),
     lastName: yupString().max(150),
+    otherinfo: yupString().defined(),
     language: yupString()
         .defined()
         .oneOf(["", ...SUPPORTED_LOCALES]),
@@ -184,12 +195,14 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
     initialValues: {
         firstName: "",
         lastName: "",
+        otherinfo: "",
         language: "",
     },
 });
 
 const firstName = useField<string>("firstName");
 const lastName = useField<string>("lastName");
+const otherinfo = useField<string>("otherinfo");
 const language = useField<string>("language");
 
 const submit = handleSubmit(async (values) => {
@@ -204,6 +217,7 @@ const submit = handleSubmit(async (values) => {
 interface ProfileFormValues {
     firstName: string;
     lastName: string;
+    otherinfo: string;
     language: string;
 }
 
@@ -213,6 +227,7 @@ async function saveProfile(values: ProfileFormValues): Promise<boolean> {
             body: {
                 first_name: values.firstName,
                 last_name: values.lastName,
+                otherinfo: values.otherinfo,
                 language: values.language as LanguageEnum | BlankEnum,
                 notify_vote_code_requests: notifyVoteCodeRequests.value,
                 notify_program_events: notifyProgramEvents.value,
@@ -252,6 +267,7 @@ async function loadProfile(): Promise<void> {
         setValues({
             firstName: data.first_name ?? "",
             lastName: data.last_name ?? "",
+            otherinfo: data.otherinfo ?? "",
             language: data.language ?? "",
         });
         notifyVoteCodeRequests.value = data.notify_vote_code_requests ?? true;

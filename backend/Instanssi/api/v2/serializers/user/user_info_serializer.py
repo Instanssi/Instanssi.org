@@ -33,6 +33,7 @@ class UserInfoSerializer(ModelSerializer[User]):
             "is_superuser",
             "date_joined",
             "language",
+            "otherinfo",
             "notify_vote_code_requests",
             "notify_program_events",
             "notify_compo_starts",

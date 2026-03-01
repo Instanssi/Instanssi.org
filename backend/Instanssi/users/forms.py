@@ -11,7 +11,6 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from Instanssi.common.misc import get_url_local_path
-from Instanssi.kompomaatti.models import Profile
 from Instanssi.users.models import User
 
 
@@ -57,26 +56,10 @@ class DjangoLoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):  # type: ignore[type-arg]
-    otherinfo = forms.CharField(
-        widget=forms.Textarea(),
-        label=_("Other contact info"),
-        help_text=_("Other contact information, e.g. IRC nick & network, etc."),
-        required=False,
-    )
-
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        # Init
-        self.user: User | None = kwargs.pop("user", None)
+        kwargs.pop("user", None)
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-        # Find profile
-        try:
-            self.profile = Profile.objects.get(user=self.user)
-        except Profile.DoesNotExist:
-            self.profile = Profile(user=self.user, otherinfo="")
-            self.profile.save()
-
-        # Build form
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(
@@ -89,20 +72,14 @@ class ProfileForm(forms.ModelForm):  # type: ignore[type-arg]
             )
         )
 
-        # Labels
         self.fields["first_name"].label = _("First name")
         self.fields["last_name"].label = _("Last name")
         self.fields["email"].label = _("Email")
         self.fields["email"].required = True
-        self.fields["otherinfo"].initial = self.profile.otherinfo
-
-    def save(self, commit: bool = True) -> User:
-        super(ProfileForm, self).save()
-        self.profile.otherinfo = self.cleaned_data["otherinfo"]
-        self.profile.save()
-        instance: User = self.instance
-        return instance
+        self.fields["otherinfo"].label = _("Other contact info")
+        self.fields["otherinfo"].help_text = _("Other contact information, e.g. IRC nick & network, etc.")
+        self.fields["otherinfo"].required = False
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email")
+        fields = ("first_name", "last_name", "email", "otherinfo")

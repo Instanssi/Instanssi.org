@@ -7,6 +7,7 @@ from rest_framework.fields import (
 )
 from rest_framework.serializers import ModelSerializer
 
+from Instanssi.api.v2.utils.youtube_url_field import YoutubeUrlField
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
@@ -50,6 +51,7 @@ class AdminCompoEntrySerializer(ModelSerializer[Entry]):
     imagefile_original_url = SerializerMethodField()
     imagefile_thumbnail_url = SerializerMethodField()
     imagefile_medium_url = SerializerMethodField()
+    youtube_url = YoutubeUrlField(read_only=True)
     rank = SerializerMethodField()
     score = SerializerMethodField()
 

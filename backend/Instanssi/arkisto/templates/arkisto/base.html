@@ -7,8 +7,6 @@
 {% block extra_head %}
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'base_theme/css/style.scss' %}">
-    {% endcompress %}
-    {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'arkisto/css/style.scss' %}" />
     {% endcompress %}
     {% block head_description %}{% trans 'Archive of Instanssi demoparty events, compo entries and results' as desc %}
@@ -20,9 +18,11 @@
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:url" content="{{ request.build_absolute_uri }}" />
     <meta property="og:title" content="{% block og_title %}{% trans 'Archive' %} – Instanssi.org{% endblock %}" />
-    {% block og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />
+    {% block og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />{% endblock %}
+    <meta property="og:image:height" content="630" />
+    {% endblock %}
 {% endblock %}
 
 {% block body_class %}arkisto-bg min-vh-100 d-flex flex-column{% endblock %}

@@ -1,6 +1,6 @@
 from typing import Any
 
-import yarl
+from allauth.socialaccount.adapter import get_adapter
 from django.http import HttpRequest, HttpResponseBase
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -13,7 +13,6 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from Instanssi.api.v2.serializers.auth import SocialAuthURLSerializer
-from Instanssi.users.views import AUTH_METHODS
 
 
 class SocialAuthUrlsViewSet(ViewSet):
@@ -40,21 +39,20 @@ class SocialAuthUrlsViewSet(ViewSet):
         responses={200: SocialAuthURLSerializer},
     )
     def list(self, request: Request) -> Response:
-        methods = []
-        default_next = reverse("users:login")
+        default_next = reverse("account_login")
         found_next = request.query_params.get("next", default_next)
-        for method in AUTH_METHODS:
-            url = yarl.URL(
-                reverse(
-                    viewname="social:begin",
-                    args=(method[1],),
-                )
-            ).update_query(next=found_next)
+        adapter = get_adapter()
+        providers = adapter.list_providers(request)
+        methods = []
+        for provider in sorted(providers, key=lambda p: p.name):
+            if provider.id == "openid":
+                continue
+            url = provider.get_login_url(request, next=found_next)
             methods.append(
                 dict(
-                    method=method[0],
-                    url=str(url),
-                    name=method[2],
+                    method=provider.id,
+                    url=url,
+                    name=provider.name,
                 )
             )
         data = SocialAuthURLSerializer(instance=methods, many=True).data  # type: ignore[arg-type]

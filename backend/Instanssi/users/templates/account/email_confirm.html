@@ -1,0 +1,17 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Confirm Email" %}{% endblock %}
+{% block subtitle %}{% trans "Confirm Email" %}{% endblock %}
+
+{% block card_content %}
+    {% if confirmation %}
+        <p>{% blocktranslate with email=confirmation.email_address.email %}Please confirm that <strong>{{ email }}</strong> is your email address.{% endblocktranslate %}</p>
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light">{% trans "Confirm" %}</button>
+        </form>
+    {% else %}
+        <p>{% trans "This confirmation link is invalid or has expired." %}</p>
+    {% endif %}
+{% endblock %}

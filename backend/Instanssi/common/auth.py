@@ -14,7 +14,7 @@ def user_access_required(view_func: ViewFunc) -> ViewFunc:
     def _checklogin(request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         if request.user.is_authenticated and request.user.is_active:
             return view_func(request, *args, **kwargs)
-        return HttpResponseRedirect(reverse("users:login") + "?next=" + request.get_full_path())
+        return HttpResponseRedirect(reverse("account_login") + "?next=" + request.get_full_path())
 
     return _checklogin
 
@@ -26,6 +26,6 @@ def infodesk_access_required(view_func: ViewFunc) -> ViewFunc:
             if request.user.has_perm("store.change_storetransaction"):
                 return view_func(request, *args, **kwargs)
             raise PermissionDenied()
-        return HttpResponseRedirect(reverse("users:login") + "?next=" + request.get_full_path())
+        return HttpResponseRedirect(reverse("account_login") + "?next=" + request.get_full_path())
 
     return _checklogin

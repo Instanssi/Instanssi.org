@@ -47,7 +47,15 @@ class UserSerializer(ModelSerializer[User]):
             "is_staff",
             "is_system",
         )
-        read_only_fields = ("id", "user_permissions", "date_joined", "is_superuser", "is_staff", "is_system")
+        read_only_fields = (
+            "id",
+            "user_permissions",
+            "date_joined",
+            "email",
+            "is_superuser",
+            "is_staff",
+            "is_system",
+        )
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)

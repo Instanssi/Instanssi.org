@@ -844,6 +844,9 @@ msgstr "Muut yhteystiedot"
 msgid "Other contact information, e.g. IRC nick & network, etc."
 msgstr "Muut yhteystiedot, esim. IRC-nick ja verkko, jne."
 
+msgid "Manage email addresses"
+msgstr "Hallitse sähköpostiosoitteita"
+
 #: Instanssi/users/models.py:6
 msgid "Not set"
 msgstr "Ei asetettu"

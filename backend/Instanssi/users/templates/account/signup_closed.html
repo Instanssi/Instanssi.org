@@ -1,0 +1,10 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Registration Closed" %}{% endblock %}
+{% block subtitle %}{% trans "Registration Closed" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "Registration is currently closed. Please try again later." %}</p>
+    <a href="{% url 'account_login' %}" class="btn btn-outline-light">{% trans "Back to Login" %}</a>
+{% endblock %}

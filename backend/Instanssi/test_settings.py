@@ -43,18 +43,45 @@ LANGUAGE_CODE = "en"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "qw35vb23t234dfgdfgdfgt"
 
-# Steam API
-SOCIAL_AUTH_STEAM_API_KEY = ""
+# Social account providers (django-allauth)
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APPS": [{"client_id": "", "secret": ""}],
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
+    "github": {
+        "APPS": [{"client_id": "", "secret": ""}],
+        "SCOPE": ["user:email"],
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
+    "steam": {
+        # Steam uses OpenID; client_id is unused but required by allauth. Set secret to your Steam API key.
+        "APPS": [{"client_id": "none", "secret": ""}],
+    },
+    "discord": {
+        "APPS": [{"client_id": "", "secret": ""}],
+        "SCOPE": ["identify", "email"],
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
+    "twitch": {
+        "APPS": [{"client_id": "", "secret": ""}],
+        "SCOPE": ["user:read:email"],
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
+}
 
-# Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ["email"]
-
-# Github
-SOCIAL_AUTH_GITHUB_KEY = ""
-SOCIAL_AUTH_GITHUB_SECRET = ""
-SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+# Disable mandatory email verification for tests
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 # Paytrail APIv2
 PAYTRAIL_V2_ID = ""

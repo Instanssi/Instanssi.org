@@ -1,0 +1,39 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n socialaccount %}
+
+{% block title %}Instanssi.org - {% trans "Social Accounts" %}{% endblock %}
+{% block subtitle %}{% trans "Social Accounts" %}{% endblock %}
+
+{% block card_content %}
+    {% if form.accounts %}
+        <p>{% trans "The following social accounts are connected to your account:" %}</p>
+        <form method="post" action="{% url 'socialaccount_connections' %}">
+            {% csrf_token %}
+            {% for account in form.accounts %}
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="account" value="{{ account.pk }}" id="account_{{ account.pk }}">
+                    <label class="form-check-label" for="account_{{ account.pk }}">
+                        {% include "socialaccount/_provider_icon.html" with provider_id=account.provider %}
+                        {{ account.get_provider_display }}
+                    </label>
+                </div>
+            {% endfor %}
+            <button class="btn btn-outline-danger btn-sm mt-2" type="submit">{% trans "Disconnect" %}</button>
+        </form>
+    {% else %}
+        <p>{% trans "No social accounts are connected." %}</p>
+    {% endif %}
+
+    <h2 class="mt-4">{% trans "Connect a new account" %}</h2>
+    {% get_providers as socialaccount_providers %}
+    <div class="social-buttons mb-3">
+        {% for provider in socialaccount_providers %}
+            {% if provider.id != "openid" %}
+                <a class="btn btn-outline-light" href="{% provider_login_url provider.id process='connect' %}">
+                    {% include "socialaccount/_provider_icon.html" with provider_id=provider.id %}
+                    {{ provider.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

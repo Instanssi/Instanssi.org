@@ -9,6 +9,7 @@ from Instanssi.users.models import User
 
 
 class UserAdmin(BaseUserAdmin):  # type: ignore[type-arg]
+    list_display = (*BaseUserAdmin.list_display, "is_system")
     readonly_fields = (*BaseUserAdmin.readonly_fields, "is_system")
     fieldsets = (
         (None, {"fields": ("username", "password")}),

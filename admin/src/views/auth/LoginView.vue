@@ -57,7 +57,13 @@
 
 <script setup lang="ts">
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faGoogle, faSteam } from "@fortawesome/free-brands-svg-icons";
+import {
+    faDiscord,
+    faGithub,
+    faGoogle,
+    faSteam,
+    faTwitch,
+} from "@fortawesome/free-brands-svg-icons";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
@@ -68,7 +74,7 @@ import { object as yupObject, string as yupString } from "yup";
 
 import type { SocialAuthUrl } from "@/api";
 import LanguageSelector from "@/components/layout/LanguageSelector.vue";
-import { PermissionTarget, useAuth } from "@/services/auth";
+import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
 
 const authService = useAuth();
 const router = useRouter();
@@ -78,6 +84,8 @@ const socialIcons: Record<string, IconDefinition> = {
     google: faGoogle,
     steam: faSteam,
     github: faGithub,
+    discord: faDiscord,
+    twitch: faTwitch,
 };
 
 const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);
@@ -92,8 +100,15 @@ const username = useField("username");
 const password = useField("password");
 
 const submit = handleSubmit(async (values) => {
-    const loginOk = await authService.login(values.username, values.password);
-    if (!loginOk) {
+    const result = await authService.login(values.username, values.password);
+    if (result === LoginResult.EMAIL_NOT_VERIFIED) {
+        setErrors({
+            username: t("LoginView.email_not_verified"),
+            password: t("LoginView.email_not_verified"),
+        });
+        return;
+    }
+    if (result !== LoginResult.SUCCESS) {
         setErrors({
             username: t("LoginView.auth_failed"),
             password: t("LoginView.auth_failed"),

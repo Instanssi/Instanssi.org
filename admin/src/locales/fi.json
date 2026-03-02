@@ -970,6 +970,7 @@
       "password": "Salasana",
       "login": "Kirjaudu",
       "auth_failed": "Virheellinen käyttäjänimi tai salasana!",
+      "email_not_verified": "Sähköpostiosoitettasi ei ole vahvistettu. Vahvista sähköpostiosoitteesi ennen kirjautumista.",
       "insufficient_permissions": "Sinulla ei ole tarvittavia oikeuksia tämän paneelin käyttöön."
     },
     "ArchiverView": {

@@ -970,6 +970,7 @@
       "password": "Password",
       "login": "Login",
       "auth_failed": "Incorrect username or password!",
+      "email_not_verified": "Your email address has not been verified. Please verify your email before logging in.",
       "insufficient_permissions": "You do not have the required permissions to access this panel."
     },
     "ArchiverView": {

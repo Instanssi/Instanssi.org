@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import { type Ref, ref } from "vue";
 import { useToast } from "vue-toastification";
 
@@ -55,18 +56,35 @@ export enum PermissionTarget {
     USER = "user",
 }
 
+export enum LoginResult {
+    SUCCESS = "success",
+    AUTH_FAILED = "auth_failed",
+    EMAIL_NOT_VERIFIED = "email_not_verified",
+}
+
 export function useAuth() {
     function isLoggedIn(): boolean {
         return loggedIn.value;
     }
 
-    async function login(username: string, password: string): Promise<boolean> {
-        const response = await api.login({ body: { username, password } });
-        if (response.status === 200) {
-            await refreshStatus();
-            return true;
+    async function login(username: string, password: string): Promise<LoginResult> {
+        try {
+            const response = await api.login({ body: { username, password } });
+            if (response.status === 200) {
+                await refreshStatus();
+                return LoginResult.SUCCESS;
+            }
+            return LoginResult.AUTH_FAILED;
+        } catch (err: unknown) {
+            const axiosError = err as AxiosError<{ code?: string }>;
+            if (
+                axiosError.response?.status === 403 &&
+                axiosError.response?.data?.code === "email_not_verified"
+            ) {
+                return LoginResult.EMAIL_NOT_VERIFIED;
+            }
+            return LoginResult.AUTH_FAILED;
         }
-        return false;
     }
 
     async function getSocialAuthURLs(): Promise<SocialAuthUrl[]> {

@@ -1,38 +1,48 @@
-{% extends "base_layout/base.html" %}
-{% load static compress %}
+{% extends "base_theme/base.html" %}
+{% load static compress i18n %}
 {% load render_arkisto_nav from arkisto_base_tags %}
 
-{% block title %}Arkisto{% endblock %}
-{% block headername %}<a href="{% url 'archive:index' %}">Arkisto</a>{% endblock %}
+{% block title %}{% block arkisto_title %}{% trans "Archive" %}{% endblock %} – Instanssi.org{% endblock %}
 
-{% block head %}
+{% block extra_head %}
     {% compress css %}
-    <link rel="stylesheet" type="text/x-scss" href="{% static "arkisto/css/style.scss" %}" />
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'base_theme/css/style.scss' %}">
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'arkisto/css/style.scss' %}" />
     {% endcompress %}
-    <meta property="og:locale" content="fi_FI" />
-    <meta property="og:url" content="https://instanssi.org/arkisto/" />
-    <meta property="og:image" content="{% static 'main2026/images/logoteksti-og.jpg' %}" />
-    <meta property="og:title" content="Instanssi Arkisto" />
+    {% block head_description %}{% trans 'Archive of Instanssi demoparty events, compo entries and results' as desc %}
+    <meta name="description" content="{{ desc }}" />
+    <meta property="og:description" content="{{ desc }}" />
+    {% endblock %}
+    <meta property="og:site_name" content="Instanssi.org" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Instanssi Arkisto" />
+    <meta property="og:locale" content="fi_FI" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:title" content="{% block og_title %}{% trans 'Archive' %} – Instanssi.org{% endblock %}" />
+    {% block og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main2026/images/logoteksti-og.jpg' %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {% endblock %}
 {% endblock %}
 
-{% block jquery %}
-    $('.ui-widget').css('font-size','14px');
-{% endblock %}
+{% block body_class %}arkisto-bg min-vh-100 d-flex flex-column{% endblock %}
 
-{% block crumbs %}
-{{ block.super }}
-    <li><a href="{% url 'archive:index' %}">Arkisto</a></li>
-{% endblock %}
+{% block body_content %}
+    {% include "base_theme/includes/navbar.html" %}
 
-{% block headernav %}
-        <ul id="header_nav_left">
-{% render_arkisto_nav %}
-        </ul>
-        <ul id="header_nav_right">
-            &nbsp;
-        </ul>
-{% endblock %}
+    <header class="arkisto-header pb-2">
+        <div class="container">
+            <h1 class="arkisto-title text-white fs-2 my-4"><i class="fa-solid fa-box-archive"></i> {% trans "Archive" %}</h1>
+            <div class="event-tabs">
+                {% if event %}{% render_arkisto_nav event.id %}{% else %}{% render_arkisto_nav %}{% endif %}
+            </div>
+            {% block subnav %}{% endblock %}
+        </div>
+    </header>
 
-{% block content %}{% endblock %}
+    <main class="py-3 flex-grow-1">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+{% endblock %}

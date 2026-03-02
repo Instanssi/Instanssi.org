@@ -1,4 +1,135 @@
-// Social login buttons
+@import 'base_theme/css/variables';
+
+// ===== Users Variables =====
+$bg-dark: rgba(33, 33, 33, 0.95);
+$btn-primary: #0054c0;
+$btn-primary-hover: #0065e8;
+
+// ===== Page layout =====
+body.bt-page {
+    font-family: $font-body;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.bt-page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 3rem 1rem 1rem;
+}
+
+// ===== Card =====
+.bt-card {
+    background-color: $bg-dark;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    &.bt-card-wide {
+        max-width: 960px;
+    }
+
+    .bt-card-title {
+        font-family: $font-title;
+        font-weight: 900;
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .bt-card-subtitle {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-family: $font-title;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    // Form styling overrides for dark theme
+    .form-control,
+    .form-select {
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+
+        &:focus {
+            background-color: rgba(255, 255, 255, 0.12);
+            border-color: $accent;
+            color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba($accent, 0.2);
+        }
+
+        &::placeholder {
+            color: #888;
+        }
+    }
+
+    .form-label,
+    label {
+        color: #ccc;
+        font-size: 0.875rem;
+    }
+
+    .form-text {
+        color: #999;
+    }
+
+    .invalid-feedback {
+        color: #ff6b6b;
+    }
+
+    .btn-primary {
+        background-color: $btn-primary;
+        border-color: $btn-primary;
+
+        &:hover {
+            background-color: $btn-primary-hover;
+            border-color: $btn-primary-hover;
+        }
+    }
+
+    a {
+        color: $accent;
+
+        &:hover {
+            color: $accent-hover;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+
+        li {
+            margin-bottom: 0.25rem;
+
+            &::before {
+                content: "\203A";
+                margin-right: 0.5rem;
+                color: $accent;
+                font-weight: 900;
+            }
+        }
+    }
+
+    .alert {
+        font-size: 0.875rem;
+    }
+}
+
+// ===== Social login buttons =====
 .social-buttons {
     display: flex;
     justify-content: center;
@@ -10,7 +141,7 @@
         font-size: 0.9rem;
 
         &:hover {
-            color: #00cbe6;
+            color: $accent;
         }
 
         &:disabled {

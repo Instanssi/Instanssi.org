@@ -138,7 +138,7 @@ class Command(BaseCommand):
             self.created_compos[(event_pk, compo_name)] = compo
             self.stdout.write(f"  Created compo: {compo.name} for {event.name}")
 
-    def get_test_file(self, file_type: str) -> File[Any]:
+    def get_test_file(self, file_type: str) -> File[bytes]:
         """Get a test file of the specified type"""
         if file_type == "image":
             filepath = get_random_image_filename()

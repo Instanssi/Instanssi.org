@@ -1,3 +1,3 @@
 {% for event in events %}
-        <li class="menuitem"><a href="{% url 'archive:event' event.id %}">{{ event.tag }}</a></li>
+<a href="{% url 'archive:event' event.id %}" class="event-tab{% if event.id == current_event_id %} active{% endif %}">{{ event.tag }}</a>
 {% endfor %}

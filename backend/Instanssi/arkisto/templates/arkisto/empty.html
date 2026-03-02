@@ -1,17 +1,9 @@
 {% extends "arkisto/base.html" %}
-
-{% block head %}{{ block.super }}{% endblock %}
-
-{% block title %}{{ block.super }} - Etusivu{% endblock %}
-
-{% block jquery %}{{ block.super }}{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li>Etusivu</li>
-{% endblock %}
+{% load i18n %}
 
 {% block content %}
-{{ block.super }}
-<p>Arkistossa ei valitettavasti ole tällä hetkellä sisältöä!</p>
+<div class="empty-state text-center py-5">
+    <i class="fa-solid fa-box-open fs-1 mb-3 d-block"></i>
+    <p class="mb-0">{% trans "The archive currently has no content." %}</p>
+</div>
 {% endblock %}

@@ -1,77 +1,92 @@
 {% extends "arkisto/base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{{ block.super }} - {{ event.name }}{% endblock %}
-
-{% block head %}
-{{ block.super }}
+{% block arkisto_title %}{{ event.name }} – {% trans "Archive" %}{% endblock %}
+{% block og_title %}{{ event.name }} – {% trans "Archive" %} – Instanssi.org{% endblock %}
+{% block head_description %}{% blocktrans with name=event.name asvar desc %}Compo entries and results from {{ name }}{% endblocktrans %}
+    <meta name="description" content="{{ desc }}" />
+    <meta property="og:description" content="{{ desc }}" />
 {% endblock %}
 
-{% block jquery %}
-{{ block.super }}
-{% endblock %}
-
-{% block crumbs %}
-{{ block.super }}
-    <li><a href="{% url 'archive:event' event.id %}">{{ event.name }}</a></li>
+{% block subnav %}
+<nav class="section-nav mt-2 small">
+    {% for compo in compos %}<a href="#compo-{{ compo.id }}" class="section-nav-link">{{ compo.name }}</a>{% endfor %}{% for category in videos %}{% if category.videos %}<a href="#videos-{{ category.id }}" class="section-nav-link">{{ category.name }}</a>{% endif %}{% endfor %}{% for comp in competitions %}<a href="#competition-{{ comp.id }}" class="section-nav-link">{{ comp.name }}</a>{% endfor %}
+</nav>
 {% endblock %}
 
 {% block content %}
-{{ block.super }}
-
 {% for compo in compos %}
-    <h3>{{ compo.name }}</h3>
-    <div class="entry-holder">
-{% for entry in compo.entries %}
-        <div class="entry">
-{% if compo.show_voting_results %}
-            <div class="sija">{% if entry.disqualified %}X{% else %}{{ forloop.counter }}{% endif %}</div>
-{% endif %}
-            <a href="{% url 'archive:entry' entry.id %}">
-{% if entry.imagefile_thumbnail %}
-                <img src="{{ entry.imagefile_thumbnail.url }}" width="{{ entry.imagefile_thumbnail.width }}" height="{{ entry.imagefile_thumbnail.height }}" alt="{{ entry.name }}"  />
-{% else %}
-                <img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
-{% endif %}
+<section id="compo-{{ compo.id }}" class="mb-5">
+    <h2 class="compo-heading fs-5 mb-3">{{ compo.name }}</h2>
+    <div class="entry-grid">
+    {% for entry in compo.entries %}
+        <div class="entry-card rounded-2 overflow-hidden">
+            <a href="{% url 'archive:entry' entry.id %}" class="text-decoration-none d-block">
+                <div class="thumb position-relative overflow-hidden">
+                {% if compo.show_voting_results %}
+                    <span class="rank-badge {% if entry.disqualified %}rank-dq{% elif forloop.counter == 1 %}rank-1{% elif forloop.counter == 2 %}rank-2{% elif forloop.counter == 3 %}rank-3{% else %}rank-other{% endif %}">
+                        {% if entry.disqualified %}DQ{% else %}{{ forloop.counter }}{% endif %}
+                    </span>
+                {% endif %}
+                {% if entry.imagefile_thumbnail %}
+                    <img src="{{ entry.imagefile_thumbnail.url }}" alt="{{ entry.name }}" />
+                {% else %}
+                    <img src="{% static 'arkisto/img/filler_small.png' %}" alt="{{ entry.name }}" />
+                {% endif %}
+                </div>
+                <div class="p-2">
+                    <p class="entry-name text-truncate small mb-0" title="{{ entry.name }}">{{ entry.name }}</p>
+                    <p class="entry-creator text-truncate small mb-0 mt-1" title="{{ entry.creator }}">{{ entry.creator }}</p>
+                </div>
             </a>
-            <p class="entry-name" title="{{ entry.name }}">{{ entry.name }}</p>
-            <p class="by" title="{{ entry.creator }}">{{ entry.creator }}</p>
         </div>
-{% endfor %}
-        <div class="clearer"></div>
+    {% endfor %}
     </div>
+</section>
 {% endfor %}
 
 {% for category in videos %}
 {% if category.videos %}
-    <h3>{{ category.name }}</h3>
-    <div class="entry-holder">
-{% for video in category.videos %}
-        <div class="entry">
-            <a href="{% url 'archive:video' video.id %}">
-                <img src="{% static "arkisto/img/filler_small.png" %}" alt="Entry" width="160" height="100">
+<section id="videos-{{ category.id }}" class="mb-5">
+    <h2 class="compo-heading fs-5 mb-3">{{ category.name }}</h2>
+    <div class="entry-grid">
+    {% for video in category.videos %}
+        <div class="entry-card rounded-2 overflow-hidden">
+            <a href="{% url 'archive:video' video.id %}" class="text-decoration-none d-block">
+                <div class="thumb position-relative overflow-hidden">
+                    <img src="{% static 'arkisto/img/filler_small.png' %}" alt="{{ video.name }}" />
+                </div>
+                <div class="p-2">
+                    <p class="entry-name text-truncate small mb-0" title="{{ video.name }}">{{ video.name }}</p>
+                </div>
             </a>
-            <p class="entry-name" title="{{ video.name }}">{{ video.name }}</p>
         </div>
-{% endfor %}
-        <div class="clearer"></div>
+    {% endfor %}
     </div>
+</section>
 {% endif %}
 {% endfor %}
 
 {% for comp in competitions %}
-    <h3>{{ comp.name }}</h3>
-    <div class="entry-holder">
-        <ol>
-{% for p in comp.participants %}
-            <li>{{ p.participant_name }}{% if p.disqualified %}, diskattu.{% else %}, {{ p.get_formatted_score }}.{% endif %}</li>
-{% endfor %}
-        </ol>
-    </div>
+<section id="competition-{{ comp.id }}" class="mb-5">
+    <h2 class="compo-heading fs-5 mb-3">{{ comp.name }}</h2>
+    <ol class="list-unstyled d-flex flex-column gap-1 competition-list">
+    {% for p in comp.participants %}
+        <li class="d-flex align-items-center gap-2{% if p.disqualified %} disqualified{% endif %}">
+            <span class="competition-rank {% if forloop.counter == 1 %}rank-gold{% elif forloop.counter == 2 %}rank-silver{% elif forloop.counter == 3 %}rank-bronze{% endif %}">{{ forloop.counter }}.</span>
+            <span class="competition-name flex-grow-1">{{ p.participant_name }}</span>
+            <span class="competition-score small{% if p.disqualified %} text-danger{% endif %}">{% if p.disqualified %}DQ{% else %}{{ p.get_formatted_score }}{% endif %}</span>
+        </li>
+    {% endfor %}
+    </ol>
+</section>
 {% endfor %}
 
+<div class="export-links d-flex flex-wrap gap-2 mt-4 pt-3 small">
+    <span class="export-label d-inline-flex align-items-center me-1"><i class="fa-solid fa-share-from-square"></i> {% trans "Export" %}:</span>
+    <a href="{% url 'archive:text_event' event.id %}" class="d-inline-flex align-items-center gap-2"><i class="fa-solid fa-file-lines"></i> {% trans "Results as text" %}</a>
+    <a href="{% url 'archive:json_event' event.id %}" class="d-inline-flex align-items-center gap-2"><i class="fa-solid fa-code"></i> JSON</a>
+    <a href="{% url 'archive:entries_m3u8' event.id %}" class="d-inline-flex align-items-center gap-2"><i class="fa-solid fa-music"></i> {% trans "M3U8 playlist" %}</a>
+</div>
 
-<p><a href="{% url 'archive:text_event' event.id %}">Näytä tulokset tekstimuodossa / Show results in plaintext</a></p>
-<p><a href="{% url 'archive:json_event' event.id %}">Näytä tulokset JSON-formaatissa / Show results in JSON format</a></p>
-<p><a href="{% url 'archive:entries_m3u8' event.id %}">Tuota m3u8-toistolista / Produce an m3u8 playlist</a></p>
 {% endblock %}

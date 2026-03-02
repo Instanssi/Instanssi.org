@@ -1,28 +1,13 @@
-// Base theme variables
-$bt-accent: #00cbe6;
-$bt-accent-hover: #33d9ee;
-$bt-bg-dark: rgba(33, 33, 33, 0.95);
-$bt-btn-primary: #0054c0;
-$bt-btn-primary-hover: #0065e8;
+@import 'variables';
 
-// Page layout
-body.bt-page {
-    font-family: "Open Sans", sans-serif;
+// Shared background
+body {
     background-image: url("../images/webtausta.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    min-height: 100vh;
-    margin: 0;
-}
-
-.bt-page-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 3rem 1rem 1rem;
+    background-color: #262729;
 }
 
 // Navbar overrides (on top of Bootstrap .navbar)
@@ -45,7 +30,7 @@ body.bt-page {
 
         &:hover,
         &:focus {
-            color: $bt-accent;
+            color: $accent;
         }
     }
 
@@ -60,7 +45,7 @@ body.bt-page {
 
             &:hover,
             &:focus {
-                color: $bt-accent;
+                color: $accent;
                 background-color: rgba(255, 255, 255, 0.05);
             }
         }
@@ -69,113 +54,45 @@ body.bt-page {
             border-color: rgba(255, 255, 255, 0.1);
         }
     }
-}
 
-// Card
-.bt-card {
-    background-color: $bt-bg-dark;
-    color: #fff;
-    border-radius: 8px;
-    padding: 2rem;
-    max-width: 480px;
-    width: 100%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-    &.bt-card-wide {
-        max-width: 960px;
-    }
-
-    .bt-card-title {
-        font-family: "Exo 2", sans-serif;
-        font-weight: 900;
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .bt-card-subtitle {
-        color: #aaa;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-    }
-
-    h2 {
-        font-family: "Exo 2", sans-serif;
-        font-weight: 600;
-        font-size: 1.1rem;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.4rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    // Form styling overrides for dark theme
-    .form-control,
-    .form-select {
-        background-color: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.15);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.85rem;
 
         &:focus {
-            background-color: rgba(255, 255, 255, 0.12);
-            border-color: $bt-accent;
-            color: #fff;
-            box-shadow: 0 0 0 0.25rem rgba($bt-accent, 0.2);
-        }
-
-        &::placeholder {
-            color: #888;
+            box-shadow: 0 0 0 0.15rem rgba($accent, 0.4);
         }
     }
 
-    .form-label,
-    label {
-        color: #ccc;
-        font-size: 0.875rem;
+    @media (max-width: $bp-md - 0.02) {
+        .navbar-collapse {
+            padding-top: 0.5rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
     }
 
-    .form-text {
-        color: #999;
-    }
-
-    .invalid-feedback {
-        color: #ff6b6b;
-    }
-
-    .btn-primary {
-        background-color: $bt-btn-primary;
-        border-color: $bt-btn-primary;
+    .bt-lang-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0.15rem;
+        cursor: pointer;
+        opacity: 0.4;
+        transition: opacity 0.15s;
 
         &:hover {
-            background-color: $bt-btn-primary-hover;
-            border-color: $bt-btn-primary-hover;
+            opacity: 0.8;
         }
-    }
 
-    a {
-        color: $bt-accent;
-
-        &:hover {
-            color: $bt-accent-hover;
+        &.active {
+            opacity: 1;
         }
-    }
-
-    ul {
-        list-style: none;
-        padding-left: 0;
-
-        li {
-            margin-bottom: 0.25rem;
-
-            &::before {
-                content: "\203A";
-                margin-right: 0.5rem;
-                color: $bt-accent;
-                font-weight: 900;
-            }
-        }
-    }
-
-    .alert {
-        font-size: 0.875rem;
     }
 }

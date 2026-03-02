@@ -1848,10 +1848,6 @@ export type PatchedUserRequest = {
     username?: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
     /**
      * Active
@@ -2872,7 +2868,7 @@ export type User = {
     /**
      * Email address
      */
-    email?: string;
+    readonly email: string;
     readonly user_permissions: Array<string>;
     /**
      * Superuser status
@@ -3005,10 +3001,6 @@ export type UserRequest = {
     username: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
     /**
      * Active
@@ -3446,10 +3438,6 @@ export type PatchedUserRequestWritable = {
     username?: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
     group_ids?: Array<number>;
     /**
@@ -3951,10 +3939,6 @@ export type UserWritable = {
     username: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
     /**
      * Active
@@ -4032,10 +4016,6 @@ export type UserRequestWritable = {
     username: string;
     first_name?: string;
     last_name?: string;
-    /**
-     * Email address
-     */
-    email?: string;
     language?: LanguageEnum | BlankEnum;
     group_ids?: Array<number>;
     /**
@@ -6712,6 +6692,10 @@ export type LoginErrors = {
      * No response body
      */
     401: unknown;
+    /**
+     * No response body
+     */
+    403: unknown;
 };
 
 export type LoginResponses = {

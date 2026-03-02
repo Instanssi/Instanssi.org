@@ -6,7 +6,12 @@
         <v-col v-else>
             <InfoCard :title="t('ProfileView.sections.account')" class="mb-4">
                 <InfoRow :label="t('ProfileView.labels.username')" :value="username" />
-                <InfoRow :label="t('ProfileView.labels.email')" :value="email" />
+                <InfoRow :label="t('ProfileView.labels.email')">
+                    {{ email }}
+                    <a href="/users/email/" class="ml-2">{{
+                        t("ProfileView.labels.manageEmail")
+                    }}</a>
+                </InfoRow>
                 <InfoRow :label="t('ProfileView.labels.dateJoined')" :value="dateJoined" />
             </InfoCard>
             <v-card class="mb-4">

@@ -25,11 +25,11 @@
                             :label="t('UserDialog.labels.dateJoined')"
                         />
                         <v-text-field
-                            v-model="email.value.value"
-                            :error-messages="email.errorMessage.value"
+                            v-if="isEditMode"
+                            v-model="emailDisplay"
                             variant="outlined"
-                            :disabled="isSystem"
-                            :label="t('UserDialog.labels.email') + ' *'"
+                            readonly
+                            :label="t('UserDialog.labels.email')"
                         />
                         <v-text-field
                             v-model="firstName.value.value"
@@ -130,7 +130,6 @@ import { handleApiError, type FieldMapping } from "@/utils/http";
 /** Maps API field names (snake_case) to form field names (camelCase) */
 const API_FIELD_MAPPING: FieldMapping = {
     username: "username",
-    email: "email",
     first_name: "firstName",
     last_name: "lastName",
     is_active: "isActive",
@@ -151,6 +150,7 @@ const loading = ref(false);
 const saving = ref(false);
 const userName = ref<string>("");
 const dateJoined = ref<string>("");
+const emailDisplay = ref<string>("");
 const isSystem = ref(false);
 const isEditMode = computed(() => props.id !== undefined);
 const selectedGroupIds = ref<number[]>([]);
@@ -171,7 +171,6 @@ const validationSchema = yupObject({
     firstName: yupString().min(0).max(150),
     lastName: yupString().min(0).max(150),
     username: yupString().required().min(1).max(150),
-    email: yupString().email().required().min(1).max(254),
     isActive: yupBoolean(),
     isStaff: yupBoolean(),
 });
@@ -181,7 +180,6 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         firstName: "",
         lastName: "",
         username: "",
-        email: "",
         isActive: true,
         isStaff: false,
     },
@@ -189,7 +187,6 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
 const firstName = useField<string>("firstName");
 const lastName = useField<string>("lastName");
 const username = useField<string>("username");
-const email = useField<string>("email");
 const isActive = useField<boolean>("isActive");
 const isStaff = useField<boolean>("isStaff");
 
@@ -211,7 +208,6 @@ function buildBody(values: GenericObject) {
     return {
         first_name: values.firstName,
         last_name: values.lastName,
-        email: values.email,
         username: values.username,
         is_active: values.isActive,
         is_staff: values.isStaff,
@@ -273,12 +269,12 @@ onMounted(async () => {
             const item = response.data!;
             userName.value = item.username;
             dateJoined.value = d(item.date_joined, "long");
+            emailDisplay.value = item.email ?? "";
             isSystem.value = item.is_system ?? false;
             selectedGroupIds.value = (item.groups ?? []).map((g: Group) => g.id);
             setValues({
                 firstName: item.first_name ?? "",
                 lastName: item.last_name ?? "",
-                email: item.email ?? "",
                 username: item.username,
                 isActive: item.is_active ?? true,
                 isStaff: item.is_staff ?? false,

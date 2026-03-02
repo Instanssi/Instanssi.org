@@ -935,7 +935,8 @@
         "language": "Language",
         "browserDefault": "Browser default",
         "otherinfo": "Other contact info",
-        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc."
+        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc.",
+        "manageEmail": "Manage email addresses"
       },
       "loadFailure": "Failed to load profile; try again later.",
       "saveSuccess": "Profile saved!",

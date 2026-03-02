@@ -935,7 +935,8 @@
         "language": "Kieli",
         "browserDefault": "Selaimen oletus",
         "otherinfo": "Muut yhteystiedot",
-        "otherinfoHint": "Muut yhteystiedot, esim. IRC-nick ja -verkko, Discord-tunnus jne."
+        "otherinfoHint": "Muut yhteystiedot, esim. IRC-nick ja -verkko, Discord-tunnus jne.",
+        "manageEmail": "Hallitse sähköpostiosoitteita"
       },
       "loadFailure": "Profiilin lataus epäonnistui; yritä myöhemmin uudelleen.",
       "saveSuccess": "Profiili tallennettu!",

@@ -14,7 +14,7 @@
                     <input class="form-check-input" type="checkbox" name="account" value="{{ account.pk }}" id="account_{{ account.pk }}">
                     <label class="form-check-label" for="account_{{ account.pk }}">
                         {% include "socialaccount/_provider_icon.html" with provider_id=account.provider %}
-                        {{ account.get_provider_display }}
+                        {{ account.get_provider_display }} — {{ account.get_provider_account }}
                     </label>
                 </div>
             {% endfor %}

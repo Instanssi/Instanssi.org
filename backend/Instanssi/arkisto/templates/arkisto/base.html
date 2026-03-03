@@ -33,8 +33,12 @@
     <header class="arkisto-header pb-2">
         <div class="container">
             <h1 class="arkisto-title text-white fs-2 my-4"><i class="fa-solid fa-box-archive"></i> {% trans "Archive" %}</h1>
-            <div class="event-tabs">
-                {% if event %}{% render_arkisto_nav event.id %}{% else %}{% render_arkisto_nav %}{% endif %}
+            <div class="scroll-nav-wrapper">
+                <span class="scroll-arrow scroll-arrow-left hidden"><i class="fa-solid fa-chevron-left"></i></span>
+                <div class="event-tabs">
+                    {% if event %}{% render_arkisto_nav event.id %}{% else %}{% render_arkisto_nav %}{% endif %}
+                </div>
+                <span class="scroll-arrow scroll-arrow-right hidden"><i class="fa-solid fa-chevron-right"></i></span>
             </div>
             {% block subnav %}{% endblock %}
         </div>
@@ -45,4 +49,22 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+        document.querySelectorAll('.scroll-nav-wrapper').forEach(function(wrapper) {
+            var scrollable = wrapper.querySelector('.event-tabs, .section-nav');
+            var left = wrapper.querySelector('.scroll-arrow-left');
+            var right = wrapper.querySelector('.scroll-arrow-right');
+            if (!scrollable || !left || !right) return;
+            function update() {
+                left.classList.toggle('hidden', scrollable.scrollLeft <= 2);
+                right.classList.toggle('hidden', scrollable.scrollLeft + scrollable.clientWidth >= scrollable.scrollWidth - 2);
+            }
+            scrollable.addEventListener('scroll', update, {passive: true});
+            update();
+        });
+    });
+    </script>
 {% endblock %}

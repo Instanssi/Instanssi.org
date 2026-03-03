@@ -55,6 +55,45 @@ body.arkisto-bg a {
     }
 }
 
+// ===== Scroll Navigation Wrapper =====
+.scroll-nav-wrapper {
+    position: relative;
+}
+
+.scroll-arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.6rem;
+    transition: opacity 0.2s;
+    pointer-events: none;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.scroll-arrow-left {
+        left: 0;
+    }
+
+    &.scroll-arrow-right {
+        right: 0;
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+        display: flex;
+    }
+}
+
 // ===== Event Tabs =====
 .event-tabs {
     display: flex;
@@ -66,6 +105,21 @@ body.arkisto-bg a {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 1.5rem,
+            black calc(100% - 1.5rem),
+            transparent
+        );
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 1.5rem,
+            black calc(100% - 1.5rem),
+            transparent
+        );
+        padding-inline: 0.75rem;
 
         &::-webkit-scrollbar {
             display: none;
@@ -109,6 +163,21 @@ body.arkisto-bg a {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 1.5rem,
+            black calc(100% - 1.5rem),
+            transparent
+        );
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 1.5rem,
+            black calc(100% - 1.5rem),
+            transparent
+        );
+        padding-inline: 0.75rem;
 
         &::-webkit-scrollbar {
             display: none;

@@ -1,0 +1,10 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Verified Email Required" %}{% endblock %}
+{% block subtitle %}{% trans "Verified Email Required" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "This action requires a verified email address. Please verify your email first." %}</p>
+    <a href="{% url 'account_email' %}" class="btn btn-outline-light">{% trans "Manage Email Addresses" %}</a>
+{% endblock %}

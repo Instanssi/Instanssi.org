@@ -157,13 +157,13 @@ Files are auto-organized with timestamps and cleaned filenames via `common.file_
 
 ### Authentication
 
-Multiple OAuth backends configured via python-social-auth:
-- Google OAuth2
-- GitHub OAuth2
-- Steam OpenID
-- Django's built-in ModelBackend
+Authentication is handled by django-allauth:
+- Account management (signup, login, logout, password reset/change, email verification)
+- Social login providers: Google, GitHub, Steam, Discord, Twitch (configured in `SOCIALACCOUNT_PROVIDERS`)
+- Custom authentication backend in `Instanssi/users/backends.py` (prevents system users from logging in)
+- Custom account adapter in `Instanssi/users/adapters.py` (configures redirect URLs)
 
-Login URL for users is `/users/login/`.
+Login URL for users is `/users/login/` (served by allauth).
 
 ### REST API
 

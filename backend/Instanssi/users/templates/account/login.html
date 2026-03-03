@@ -1,0 +1,27 @@
+{% extends "base_theme/card_page.html" %}
+{% load crispy_forms_tags i18n socialaccount %}
+
+{% block title %}Instanssi.org - {% trans "Login" %}{% endblock %}
+{% block subtitle %}{% trans "Login" %}{% endblock %}
+
+{% block card_content %}
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+        <div class="social-buttons mb-3">
+            {% for provider in socialaccount_providers %}
+                {% if provider.id != "openid" %}
+                    <a class="btn btn-outline-light" href="{% provider_login_url provider.id %}">
+                        {% include "socialaccount/_provider_icon.html" with provider_id=provider.id %}
+                        {{ provider.name }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <h2>{% trans "Login with credentials" %}</h2>
+    {{ redirect_field }}
+    {% crispy form form.helper %}
+    <div class="mt-2">
+        {% trans "Don't have an account?" %} <a href="{% url 'account_signup' %}">{% trans "Register" %}</a>
+    </div>
+{% endblock %}

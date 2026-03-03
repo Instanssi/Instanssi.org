@@ -46,14 +46,14 @@
                         {{ request.user.username }}
                     {% endif %}
                 </a>
-                <a href="{% url 'users:logout' %}">Kirjaudu ulos</a>
+                <a href="{% url 'account_logout' %}">Kirjaudu ulos</a>
             </div>
         </div>
         {% else %}
         <div id="usertools" class="unauthenticated">
             <div class="user-image">Tuntematon</div>
             <div>
-                <a href="{% url 'users:login' %}">Kirjaudu sisään</a>
+                <a href="{% url 'account_login' %}">Kirjaudu sisään</a>
             </div>
         </div>
         {% endif %}

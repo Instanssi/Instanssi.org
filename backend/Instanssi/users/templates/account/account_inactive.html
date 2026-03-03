@@ -1,0 +1,10 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Account Inactive" %}{% endblock %}
+{% block subtitle %}{% trans "Account Inactive" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "This account has been deactivated. Please contact the site administrators for assistance." %}</p>
+    <a href="{% url 'account_login' %}" class="btn btn-outline-light">{% trans "Back to Login" %}</a>
+{% endblock %}

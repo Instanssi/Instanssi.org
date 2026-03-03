@@ -1,0 +1,18 @@
+{% extends "base_theme/card_page.html" %}
+{% load crispy_forms_tags i18n %}
+
+{% block title %}Instanssi.org - {% trans "Complete Registration" %}{% endblock %}
+{% block subtitle %}{% trans "Complete Registration" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "You've successfully authenticated via your social account. Please complete the form below to finish registration." %}</p>
+    {% if form.helper %}
+        {% crispy form form.helper %}
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-outline-light w-100 mt-2">{% trans "Register" %}</button>
+        </form>
+    {% endif %}
+{% endblock %}

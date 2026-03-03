@@ -1,0 +1,40 @@
+{% extends "base_theme/card_page.html" %}
+{% load crispy_forms_tags i18n %}
+
+{% block title %}Instanssi.org - {% trans "Email Addresses" %}{% endblock %}
+{% block subtitle %}{% trans "Email Addresses" %}{% endblock %}
+
+{% block card_content %}
+    {% if emailaddresses %}
+        <p>{% trans "The following email addresses are associated with your account:" %}</p>
+        <form method="post" action="{% url 'account_email' %}">
+            {% csrf_token %}
+            {% for emailaddress in emailaddresses %}
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="email" value="{{ emailaddress.email }}" id="email_radio_{{ forloop.counter }}" {% if emailaddress.primary %}checked{% endif %}>
+                    <label class="form-check-label" for="email_radio_{{ forloop.counter }}">
+                        {{ emailaddress.email }}
+                        {% if emailaddress.verified %}
+                            <span class="badge bg-success">{% trans "Verified" %}</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">{% trans "Unverified" %}</span>
+                        {% endif %}
+                        {% if emailaddress.primary %}
+                            <span class="badge bg-primary">{% trans "Primary" %}</span>
+                        {% endif %}
+                    </label>
+                </div>
+            {% endfor %}
+            <div class="mt-2">
+                <button class="btn btn-outline-light btn-sm" type="submit" name="action_primary">{% trans "Make Primary" %}</button>
+                <button class="btn btn-outline-light btn-sm" type="submit" name="action_send">{% trans "Re-send Verification" %}</button>
+                <button class="btn btn-outline-danger btn-sm" type="submit" name="action_remove">{% trans "Remove" %}</button>
+            </div>
+        </form>
+    {% else %}
+        <p>{% trans "You don't have any email addresses yet." %}</p>
+    {% endif %}
+
+    <h2 class="mt-4">{% trans "Add Email Address" %}</h2>
+    {% crispy form form.helper %}
+{% endblock %}

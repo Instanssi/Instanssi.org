@@ -1,0 +1,10 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Login Cancelled" %}{% endblock %}
+{% block subtitle %}{% trans "Login Cancelled" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "You cancelled the social login process. No changes have been made to your account." %}</p>
+    <a href="{% url 'account_login' %}" class="btn btn-outline-light">{% trans "Back to Login" %}</a>
+{% endblock %}

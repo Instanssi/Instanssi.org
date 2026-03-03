@@ -53,7 +53,6 @@ def test_users_post_new(super_api_client):
             first_name="first_name",
             last_name="last_name",
             username="username",
-            email="email@test.com",
             group_ids=[],
         ),
     )
@@ -69,7 +68,7 @@ def test_users_post_new(super_api_client):
         "first_name": "first_name",
         "last_name": "last_name",
         "username": "username",
-        "email": "email@test.com",
+        "email": "",
         "groups": [],
         "language": "",
     }
@@ -93,13 +92,13 @@ def test_users_patch_old(super_api_client, base_user):
 @pytest.mark.django_db
 def test_users_put_old(super_api_client, base_user):
     """Make sure PUT works"""
+    original_email = base_user.email
     result = super_api_client.put(
         f"{BASE_URL}{base_user.id}/",
         dict(
             first_name="new_first_name",
             last_name="new_last_name",
             username="new_username",
-            email="new_email@test.com",
             group_ids=[],
         ),
     )
@@ -115,7 +114,7 @@ def test_users_put_old(super_api_client, base_user):
         "first_name": "new_first_name",
         "last_name": "new_last_name",
         "username": "new_username",
-        "email": "new_email@test.com",
+        "email": original_email,
         "groups": [],
         "language": "",
     }
@@ -150,7 +149,6 @@ def test_system_user_cannot_be_put(super_api_client, create_user):
             first_name="hacked",
             last_name="hacked",
             username="hacked",
-            email="hacked@test.com",
             group_ids=[],
         ),
     )
@@ -164,6 +162,19 @@ def test_system_user_cannot_be_deleted(super_api_client, create_user):
     result = super_api_client.delete(f"{BASE_URL}{system_user.id}/")
     assert result.status_code == 403
     assert User.objects.filter(id=system_user.id).exists()
+
+
+@pytest.mark.django_db
+def test_email_is_read_only(super_api_client, base_user):
+    """The email field cannot be changed via the API"""
+    original_email = base_user.email
+    result = super_api_client.patch(
+        f"{BASE_URL}{base_user.id}/",
+        dict(email="hacked@test.com"),
+    )
+    assert result.status_code == 200
+    base_user.refresh_from_db()
+    assert base_user.email == original_email
 
 
 @pytest.mark.django_db

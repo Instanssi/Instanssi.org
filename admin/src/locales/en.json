@@ -935,7 +935,8 @@
         "language": "Language",
         "browserDefault": "Browser default",
         "otherinfo": "Other contact info",
-        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc."
+        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc.",
+        "manageEmail": "Manage email addresses"
       },
       "loadFailure": "Failed to load profile; try again later.",
       "saveSuccess": "Profile saved!",
@@ -970,6 +971,7 @@
       "password": "Password",
       "login": "Login",
       "auth_failed": "Incorrect username or password!",
+      "email_not_verified": "Your email address has not been verified. Please verify your email before logging in.",
       "insufficient_permissions": "You do not have the required permissions to access this panel."
     },
     "ArchiverView": {

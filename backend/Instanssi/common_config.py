@@ -142,8 +142,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "Instanssi.common.context.settings_export",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -161,6 +159,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "Instanssi.common.middleware.UserLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -191,7 +190,15 @@ INSTALLED_APPS = (
     "crispy_forms",
     "crispy_bootstrap3",
     "crispy_bootstrap5",
-    "social_django",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.discord",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.steam",
+    "allauth.socialaccount.providers.twitch",
+    "allauth.socialaccount.providers.openid",  # Required by Steam provider
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -207,12 +214,7 @@ INSTALLED_APPS = (
 )
 
 # Authentication backends
-AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.github.GithubOAuth2",
-    "social_core.backends.steam.SteamOpenId",
-    "Instanssi.users.backends.SystemUserAwareModelBackend",
-)
+AUTHENTICATION_BACKENDS = ("Instanssi.users.backends.SystemUserAwareAuthenticationBackend",)
 
 # Log handlers, insert our own database log handler
 LOGGING = {
@@ -285,3 +287,25 @@ def setup_sentry(conf: dict[str, Any]) -> None:
             CeleryIntegration(),
         ],
     )
+
+
+# django-allauth settings
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_METHODS = ["username", "email"]
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*", "first_name", "last_name"]
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_ADAPTER = "Instanssi.users.adapters.InstanssiAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "Instanssi.users.adapters.InstanssiSocialAccountAdapter"
+SOCIALACCOUNT_AUTO_SIGNUP = True
+LOGIN_REDIRECT_URL = "/users/profile/"
+ACCOUNT_FORMS = {
+    "login": "Instanssi.users.forms.CrispyLoginForm",
+    "signup": "Instanssi.users.forms.CrispySignupForm",
+    "reset_password": "Instanssi.users.forms.CrispyResetPasswordForm",
+    "reset_password_from_key": "Instanssi.users.forms.CrispyResetPasswordKeyForm",
+    "change_password": "Instanssi.users.forms.CrispyChangePasswordForm",
+    "set_password": "Instanssi.users.forms.CrispySetPasswordForm",
+    "add_email": "Instanssi.users.forms.CrispyAddEmailForm",
+}

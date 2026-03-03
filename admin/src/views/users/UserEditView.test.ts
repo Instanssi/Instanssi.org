@@ -68,18 +68,17 @@ describe("UserEditView", () => {
             const wrapper = mountComponent({});
             await flushPromises();
 
+            // Create mode fields: username, firstName, lastName (no email)
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
-            await inputs[2]!.setValue("John");
-            await inputs[3]!.setValue("Doe");
+            await inputs[1]!.setValue("John");
+            await inputs[2]!.setValue("Doe");
 
             await submitForm(wrapper);
 
             expect(api.adminUsersCreate).toHaveBeenCalled();
             expectApiCalledWithBody(vi.mocked(api.adminUsersCreate), {
                 username: "testuser",
-                email: "test@example.com",
                 first_name: "John",
                 last_name: "Doe",
                 is_active: true,
@@ -93,7 +92,6 @@ describe("UserEditView", () => {
 
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
 
             const switchInput = wrapper.find('.v-switch input[type="checkbox"]');
             if (switchInput.exists()) {
@@ -186,16 +184,18 @@ describe("UserEditView", () => {
             const wrapper = mountComponent({ id: "1" });
             await flushPromises();
 
-            // In edit mode, fields are: username (readonly), date_joined, email, firstName, lastName
-            const emailInput = wrapper.findAll('input[type="text"]')[2]!;
-            await emailInput!.setValue("newemail@example.com");
+            // In edit mode, fields are: username (readonly), date_joined (readonly),
+            // email (readonly), firstName, lastName
+            // firstName is input index 3
+            const firstNameInput = wrapper.findAll('input[type="text"]')[3]!;
+            await firstNameInput!.setValue("Updated");
 
             await submitForm(wrapper);
 
             expect(api.adminUsersPartialUpdate).toHaveBeenCalled();
             expectApiCalledWithPath(vi.mocked(api.adminUsersPartialUpdate), { id: 1 });
             expectApiCalledWithBody(vi.mocked(api.adminUsersPartialUpdate), {
-                email: "newemail@example.com",
+                first_name: "Updated",
             });
         });
     });
@@ -205,7 +205,6 @@ describe("UserEditView", () => {
             vi.mocked(api.adminUsersCreate).mockRejectedValueOnce(
                 createMockApiError(400, {
                     username: ["This username is already taken."],
-                    email: ["Enter a valid email address."],
                 })
             );
 
@@ -214,7 +213,6 @@ describe("UserEditView", () => {
 
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("duplicateuser");
-            await inputs[1]!.setValue("valid@email.com");
 
             await submitForm(wrapper);
 
@@ -235,9 +233,8 @@ describe("UserEditView", () => {
 
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
-            await inputs[2]!.setValue("ValidFirstName");
-            await inputs[3]!.setValue("ValidLastName");
+            await inputs[1]!.setValue("ValidFirstName");
+            await inputs[2]!.setValue("ValidLastName");
 
             await submitForm(wrapper);
 
@@ -252,7 +249,6 @@ describe("UserEditView", () => {
 
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
 
             await submitForm(wrapper);
 
@@ -265,11 +261,11 @@ describe("UserEditView", () => {
             const wrapper = mountComponent({});
             await flushPromises();
 
+            // Create mode fields: username, firstName, lastName
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
-            await inputs[2]!.setValue("John");
-            await inputs[3]!.setValue("Doe");
+            await inputs[1]!.setValue("John");
+            await inputs[2]!.setValue("Doe");
 
             await submitForm(wrapper);
 
@@ -286,7 +282,6 @@ describe("UserEditView", () => {
 
             const inputs = wrapper.findAll('input[type="text"]');
             await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("test@example.com");
             // Don't set firstName and lastName
 
             await submitForm(wrapper);
@@ -304,21 +299,9 @@ describe("UserEditView", () => {
             const wrapper = mountComponent({});
             await flushPromises();
 
+            // Only fill optional fields, leave username empty
             const inputs = wrapper.findAll('input[type="text"]');
-            await inputs[1]!.setValue("test@example.com");
-
-            await submitForm(wrapper);
-
-            expect(api.adminUsersCreate).not.toHaveBeenCalled();
-        });
-
-        it("does not submit with invalid email", async () => {
-            const wrapper = mountComponent({});
-            await flushPromises();
-
-            const inputs = wrapper.findAll('input[type="text"]');
-            await inputs[0]!.setValue("testuser");
-            await inputs[1]!.setValue("not-an-email");
+            await inputs[1]!.setValue("John");
 
             await submitForm(wrapper);
 

@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 vi.unmock("@/services/auth");
 
 import * as api from "@/api";
-import { PermissionTarget, useAuth } from "@/services/auth";
+import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
 
 describe("LoginView - auth service integration", () => {
     const authService = useAuth();
@@ -38,7 +38,7 @@ describe("LoginView - auth service integration", () => {
 
             const result = await authService.login("testuser", "password");
 
-            expect(result).toBe(true);
+            expect(result).toBe(LoginResult.SUCCESS);
             expect(authService.isLoggedIn()).toBe(true);
             expect(authService.canView(PermissionTarget.EVENT)).toBe(true);
         });
@@ -61,7 +61,7 @@ describe("LoginView - auth service integration", () => {
 
             const result = await authService.login("testuser", "password");
 
-            expect(result).toBe(true);
+            expect(result).toBe(LoginResult.SUCCESS);
             expect(authService.isLoggedIn()).toBe(true);
             expect(authService.canView(PermissionTarget.EVENT)).toBe(false);
         });
@@ -71,7 +71,7 @@ describe("LoginView - auth service integration", () => {
 
             const result = await authService.login("testuser", "wrongpassword");
 
-            expect(result).toBe(false);
+            expect(result).toBe(LoginResult.AUTH_FAILED);
             expect(authService.isLoggedIn()).toBe(false);
         });
 

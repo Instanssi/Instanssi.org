@@ -8,7 +8,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path("i18n/setlang/", set_language, name="set_language"),
-    path("", include("social_django.urls", namespace="social")),
+    path("users/", include("allauth.urls")),
     path("qr/", include("qr_code.urls", namespace="qr_code")),
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),
     path("api/v2/", include("Instanssi.api.v2.urls", namespace="api-v2")),

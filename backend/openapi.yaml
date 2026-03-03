@@ -4182,6 +4182,8 @@ paths:
           description: No response body
         '401':
           description: No response body
+        '403':
+          description: No response body
   /api/v2/auth/logout/:
     post:
       operationId: logout
@@ -9127,11 +9129,6 @@ components:
         last_name:
           type: string
           maxLength: 150
-        email:
-          type: string
-          format: email
-          title: Email address
-          maxLength: 254
         language:
           oneOf:
           - $ref: '#/components/schemas/LanguageEnum'
@@ -10915,8 +10912,8 @@ components:
         email:
           type: string
           format: email
+          readOnly: true
           title: Email address
-          maxLength: 254
         user_permissions:
           type: array
           items:
@@ -10956,6 +10953,7 @@ components:
           readOnly: true
       required:
       - date_joined
+      - email
       - groups
       - id
       - is_staff
@@ -11216,11 +11214,6 @@ components:
         last_name:
           type: string
           maxLength: 150
-        email:
-          type: string
-          format: email
-          title: Email address
-          maxLength: 254
         language:
           oneOf:
           - $ref: '#/components/schemas/LanguageEnum'

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Instanssi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-18 01:37+0200\n"
+"POT-Creation-Date: 2026-03-03 02:03+0200\n"
 "PO-Revision-Date: 2026-02-17 02:00+0200\n"
 "Last-Translator: Instanssi Team\n"
 "Language-Team: Finnish\n"
@@ -15,10 +15,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: Instanssi/base_theme/templates/base_theme/includes/navbar.html
-msgid "Management"
-msgstr "Hallinta"
 
 #: Instanssi/admin_upload/models.py:26 Instanssi/arkisto/models.py:10
 #: Instanssi/ext_blog/models.py:13 Instanssi/ext_programme/models.py:34
@@ -261,6 +257,156 @@ msgstr "Kategoria"
 msgid "Youtube URL"
 msgstr "Youtube-osoite"
 
+#: Instanssi/arkisto/templates/arkisto/base.html:5
+#: Instanssi/arkisto/templates/arkisto/base.html:20
+#: Instanssi/arkisto/templates/arkisto/base.html:35
+#: Instanssi/arkisto/templates/arkisto/index.html:4
+#: Instanssi/arkisto/templates/arkisto/index.html:5
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:20
+msgid "Archive"
+msgstr "Arkisto"
+
+#: Instanssi/arkisto/templates/arkisto/base.html:12
+msgid "Archive of Instanssi demoparty events, compo entries and results"
+msgstr "Instanssi-demopartyjen tapahtumat, kilpailutyöt ja tulokset"
+
+#: Instanssi/arkisto/templates/arkisto/empty.html:7
+msgid "The archive currently has no content."
+msgstr "Arkistossa ei valitettavasti ole tällä hetkellä sisältöä."
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:7
+#, python-format
+msgid "%(name)s by %(creator)s – %(compo)s"
+msgstr "%(name)s – %(creator)s – %(compo)s"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:29
+#, python-format
+msgid "by %(creator)s"
+msgstr "tekijä: %(creator)s"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:54
+msgid "Compo"
+msgstr "Kompo"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:59
+#: Instanssi/kompomaatti/models.py:287
+msgid "Platform"
+msgstr "Alusta"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:65
+#: Instanssi/kompomaatti/models.py:59
+msgid "Status"
+msgstr "Tila"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:66
+#: Instanssi/kompomaatti/models.py:318 Instanssi/kompomaatti/models.py:511
+msgid "Disqualified"
+msgstr "Hylätty"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:70
+#: Instanssi/kompomaatti/models.py:321 Instanssi/kompomaatti/models.py:445
+msgid "Rank"
+msgstr "Sijoitus"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:71
+#, python-format
+msgid "%(rank)s. place"
+msgstr "%(rank)s. sija"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:74
+#: Instanssi/kompomaatti/models.py:320 Instanssi/kompomaatti/models.py:510
+msgid "Score"
+msgstr "Pisteet"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:81
+msgid "Listen"
+msgstr "Kuuntele"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:92
+#: Instanssi/arkisto/templates/arkisto/video.html:23
+msgid "Watch on YouTube"
+msgstr "Katso YouTubessa"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:94
+msgid "Download file"
+msgstr "Lataa tiedosto"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:96
+#: Instanssi/kompomaatti/models.py:294
+msgid "Source code"
+msgstr "Lähdekoodi"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:106
+msgid "Disqualified:"
+msgstr "Hylätty:"
+
+#: Instanssi/arkisto/templates/arkisto/entry.html:116
+#: Instanssi/arkisto/templates/arkisto/video.html:35
+#, python-format
+msgid "Back: %(name)s"
+msgstr "Takaisin: %(name)s"
+
+#: Instanssi/arkisto/templates/arkisto/index.html:6
+#, python-format
+msgid "Compo entries and results from %(name)s"
+msgstr "Kompotöitä ja tuloksia tapahtumasta %(name)s"
+
+#: Instanssi/arkisto/templates/arkisto/index.html:86
+msgid "Export"
+msgstr "Vie"
+
+#: Instanssi/arkisto/templates/arkisto/index.html:87
+msgid "Results as text"
+msgstr "Tulokset tekstinä"
+
+#: Instanssi/arkisto/templates/arkisto/index.html:89
+msgid "M3U8 playlist"
+msgstr "M3U8-soittolista"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:8
+msgid "Toggle navigation"
+msgstr "Vaihda navigaatio"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:14
+msgid "Index"
+msgstr "Etusivu"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:17
+msgid "Compomatic"
+msgstr "Kompomaatti"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:24
+msgid "Management"
+msgstr "Hallinta"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:52
+#: Instanssi/users/templates/users/profile.html:4
+#: Instanssi/users/templates/users/profile.html:5
+msgid "Profile"
+msgstr "Profiili"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:55
+msgid "Email addresses"
+msgstr "Sähköpostiosoitteet"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:58
+msgid "Change password"
+msgstr "Vaihda salasana"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:61
+msgid "Connected accounts"
+msgstr "Yhdistetyt tilit"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:65
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: Instanssi/base_theme/templates/base_theme/includes/navbar.html:71
+#: Instanssi/users/templates/account/login.html:4
+#: Instanssi/users/templates/account/login.html:5
+msgid "Login"
+msgstr "Kirjaudu"
+
 #: Instanssi/common/youtube/fields.py:16
 msgid "Value is not a youtube URL"
 msgstr "Arvo ei ole Youtube-osoite"
@@ -395,10 +541,6 @@ msgstr "Hyväksytty"
 msgid "Rejected"
 msgstr "Hylätty"
 
-#: Instanssi/kompomaatti/models.py:59
-msgid "Status"
-msgstr "Tila"
-
 #: Instanssi/kompomaatti/models.py:85
 msgid "Ticket item"
 msgstr "Lippuostos"
@@ -515,7 +657,7 @@ msgid "compo"
 msgstr "kompo"
 
 #: Instanssi/kompomaatti/models.py:282 Instanssi/store/models.py:149
-#: Instanssi/store/models.py:269
+#: Instanssi/store/models.py:264
 msgid "Created at"
 msgstr "Luotu"
 
@@ -523,33 +665,13 @@ msgstr "Luotu"
 msgid "Creator"
 msgstr "Tekijä"
 
-#: Instanssi/kompomaatti/models.py:287
-msgid "Platform"
-msgstr "Alusta"
-
-#: Instanssi/kompomaatti/models.py:294
-msgid "Source code"
-msgstr "Lähdekoodi"
-
 #: Instanssi/kompomaatti/models.py:300
 msgid "Image"
 msgstr "Kuva"
 
-#: Instanssi/kompomaatti/models.py:318 Instanssi/kompomaatti/models.py:511
-msgid "Disqualified"
-msgstr "Hylätty"
-
 #: Instanssi/kompomaatti/models.py:319 Instanssi/kompomaatti/models.py:512
 msgid "Disqualification reason"
 msgstr "Hylkäyksen syy"
-
-#: Instanssi/kompomaatti/models.py:320 Instanssi/kompomaatti/models.py:510
-msgid "Score"
-msgstr "Pisteet"
-
-#: Instanssi/kompomaatti/models.py:321 Instanssi/kompomaatti/models.py:445
-msgid "Rank"
-msgstr "Sijoitus"
 
 #: Instanssi/kompomaatti/models.py:444
 msgid "entry"
@@ -633,7 +755,7 @@ msgstr "Tuotteen nimi"
 msgid "Product description"
 msgstr "Tuotekuvaus"
 
-#: Instanssi/store/models.py:49 Instanssi/store/models.py:287
+#: Instanssi/store/models.py:49 Instanssi/store/models.py:282
 msgid "Product price"
 msgstr "Tuotteen hinta"
 
@@ -701,15 +823,15 @@ msgstr "Peruutettu"
 msgid "Payment method"
 msgstr "Maksutapa"
 
-#: Instanssi/store/models.py:159 Instanssi/store/models.py:278
+#: Instanssi/store/models.py:159 Instanssi/store/models.py:273
 msgid "Key"
 msgstr "Avain"
 
-#: Instanssi/store/models.py:160
+#: Instanssi/store/models.py:160 Instanssi/users/forms.py:63
 msgid "First name"
 msgstr "Etunimi"
 
-#: Instanssi/store/models.py:161
+#: Instanssi/store/models.py:161 Instanssi/users/forms.py:64
 msgid "Last name"
 msgstr "Sukunimi"
 
@@ -745,55 +867,55 @@ msgstr "Maa"
 msgid "Additional information"
 msgstr "Lisätiedot"
 
-#: Instanssi/store/models.py:267
+#: Instanssi/store/models.py:262
 msgid "Event message"
 msgstr "Tapahtumailmoitus"
 
-#: Instanssi/store/models.py:268
+#: Instanssi/store/models.py:263
 msgid "Event data"
 msgstr "Tapahtumatiedot"
 
-#: Instanssi/store/models.py:279
+#: Instanssi/store/models.py:274
 msgid "Product"
 msgstr "Tuote"
 
-#: Instanssi/store/models.py:281
+#: Instanssi/store/models.py:276
 msgid "Product variant"
 msgstr "Tuotevariantti"
 
-#: Instanssi/store/models.py:284
+#: Instanssi/store/models.py:279
 msgid "Transaction"
 msgstr "Transaktio"
 
-#: Instanssi/store/models.py:286
+#: Instanssi/store/models.py:281
 msgid "Delivery time"
 msgstr "Toimitusaika"
 
-#: Instanssi/store/models.py:289
+#: Instanssi/store/models.py:284
 msgid "Original product price"
 msgstr "Tuotteen alkuperäinen hinta"
 
-#: Instanssi/store/models.py:308
+#: Instanssi/store/models.py:303
 msgid "Subject"
 msgstr "Aihe"
 
-#: Instanssi/store/models.py:309
+#: Instanssi/store/models.py:304
 msgid "Recipient address"
 msgstr "Vastaanottajan osoite"
 
-#: Instanssi/store/models.py:310
+#: Instanssi/store/models.py:305
 msgid "Sender address"
 msgstr "Lähettäjän osoite"
 
-#: Instanssi/store/models.py:311
+#: Instanssi/store/models.py:306
 msgid "Sent at"
 msgstr "Lähetetty"
 
-#: Instanssi/store/models.py:312
+#: Instanssi/store/models.py:307
 msgid "Send parameters"
 msgstr "Lähetysparametrit"
 
-#: Instanssi/store/models.py:313
+#: Instanssi/store/models.py:308
 msgid "Receipt content"
 msgstr "Kuitin sisältö"
 
@@ -813,36 +935,63 @@ msgstr "Tärkeät päivämäärät"
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
-#: Instanssi/users/forms.py:18
-msgid "Username"
-msgstr "Käyttäjätunnus"
-
-#: Instanssi/users/forms.py:19
-msgid "Password"
-msgstr "Salasana"
-
-#: Instanssi/users/forms.py:33
-#: Instanssi/users/templates/users/loggedout.html:12
-#: Instanssi/users/templates/users/login.html:4
-#: Instanssi/users/templates/users/login.html:5
-msgid "Login"
-msgstr "Kirjaudu"
-
-#: Instanssi/users/forms.py:49
-msgid "Invalid username or password!"
-msgstr "Väärä käyttäjätunnus tai salasana!"
-
-#: Instanssi/users/forms.py:71
+#: Instanssi/users/forms.py:36
 msgid "Save"
 msgstr "Tallenna"
 
-#: Instanssi/users/forms.py:75
+#: Instanssi/users/forms.py:39
 msgid "Other contact info"
 msgstr "Muut yhteystiedot"
 
-#: Instanssi/users/forms.py:76
+#: Instanssi/users/forms.py:40
 msgid "Other contact information, e.g. IRC nick & network, etc."
 msgstr "Muut yhteystiedot, esim. IRC-nick ja verkko, jne."
+
+#: Instanssi/users/forms.py:55
+#: Instanssi/users/templates/account/password_reset_from_key_done.html:9
+msgid "Sign In"
+msgstr "Kirjaudu sisään"
+
+#: Instanssi/users/forms.py:68 Instanssi/users/models.py:15
+msgid "Language"
+msgstr "Kieli"
+
+#: Instanssi/users/forms.py:88 Instanssi/users/templates/account/login.html:25
+#: Instanssi/users/templates/account/signup.html:4
+#: Instanssi/users/templates/account/signup.html:5
+#: Instanssi/users/templates/socialaccount/signup.html:15
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: Instanssi/users/forms.py:102
+#: Instanssi/users/templates/account/password_reset.html:4
+#: Instanssi/users/templates/account/password_reset.html:5
+#: Instanssi/users/templates/account/password_reset_done.html:4
+#: Instanssi/users/templates/account/password_reset_done.html:5
+msgid "Reset Password"
+msgstr "Nollaa salasana"
+
+#: Instanssi/users/forms.py:111
+#: Instanssi/users/templates/account/password_reset_from_key.html:4
+#: Instanssi/users/templates/account/password_reset_from_key.html:5
+msgid "Set New Password"
+msgstr "Aseta uusi salasana"
+
+#: Instanssi/users/forms.py:120
+#: Instanssi/users/templates/account/password_change.html:4
+#: Instanssi/users/templates/account/password_change.html:5
+msgid "Change Password"
+msgstr "Vaihda salasana"
+
+#: Instanssi/users/forms.py:129
+#: Instanssi/users/templates/account/password_set.html:4
+#: Instanssi/users/templates/account/password_set.html:5
+msgid "Set Password"
+msgstr "Aseta salasana"
+
+#: Instanssi/users/forms.py:138
+msgid "Add Email"
+msgstr "Lisää sähköposti"
 
 #: Instanssi/users/models.py:6
 msgid "Not set"
@@ -856,131 +1005,253 @@ msgstr "Englanti"
 msgid "Finnish"
 msgstr "Suomi"
 
-#: Instanssi/users/templates/users/base.html:18
-msgid "Index"
-msgstr "Etusivu"
+#: Instanssi/users/templates/account/account_inactive.html:4
+#: Instanssi/users/templates/account/account_inactive.html:5
+msgid "Account Inactive"
+msgstr "Tili ei ole aktiivinen"
 
-#: Instanssi/users/templates/users/base.html:19
-msgid "Compomatic"
-msgstr "Kompomaatti"
+#: Instanssi/users/templates/account/account_inactive.html:8
+msgid ""
+"This account has been deactivated. Please contact the site administrators "
+"for assistance."
+msgstr ""
+"Tämä tili on poistettu käytöstä. Ota yhteyttä sivuston ylläpitäjiin "
+"saadaksesi apua."
 
-#: Instanssi/users/templates/users/base.html:20
-msgid "Archive"
-msgstr "Arkisto"
+#: Instanssi/users/templates/account/account_inactive.html:9
+#: Instanssi/users/templates/account/signup_closed.html:9
+#: Instanssi/users/templates/socialaccount/authentication_error.html:9
+#: Instanssi/users/templates/socialaccount/login_cancelled.html:9
+msgid "Back to Login"
+msgstr "Takaisin kirjautumiseen"
 
-#: Instanssi/users/templates/users/base.html:22
-msgid "Log out"
-msgstr "Kirjaudu ulos"
+#: Instanssi/users/templates/account/email.html:4
+#: Instanssi/users/templates/account/email.html:5
+msgid "Email Addresses"
+msgstr "Sähköpostiosoitteet"
+
+#: Instanssi/users/templates/account/email.html:9
+msgid "The following email addresses are associated with your account:"
+msgstr "Seuraavat sähköpostiosoitteet on yhdistetty tiliisi:"
+
+#: Instanssi/users/templates/account/email.html:18
+msgid "Verified"
+msgstr "Vahvistettu"
+
+#: Instanssi/users/templates/account/email.html:20
+msgid "Unverified"
+msgstr "Vahvistamaton"
+
+#: Instanssi/users/templates/account/email.html:23
+msgid "Primary"
+msgstr "Ensisijainen"
+
+#: Instanssi/users/templates/account/email.html:29
+msgid "Make Primary"
+msgstr "Aseta ensisijaiseksi"
+
+#: Instanssi/users/templates/account/email.html:30
+msgid "Re-send Verification"
+msgstr "Lähetä vahvistus uudelleen"
+
+#: Instanssi/users/templates/account/email.html:31
+msgid "Remove"
+msgstr "Poista"
+
+#: Instanssi/users/templates/account/email.html:35
+msgid "You don't have any email addresses yet."
+msgstr "Sinulla ei ole vielä sähköpostiosoitteita."
+
+#: Instanssi/users/templates/account/email.html:38
+msgid "Add Email Address"
+msgstr "Lisää sähköpostiosoite"
+
+#: Instanssi/users/templates/account/email_confirm.html:4
+#: Instanssi/users/templates/account/email_confirm.html:5
+msgid "Confirm Email"
+msgstr "Vahvista sähköposti"
+
+#: Instanssi/users/templates/account/email_confirm.html:9
+#, python-format
+msgid "Please confirm that <strong>%(email)s</strong> is your email address."
+msgstr "Vahvista, että <strong>%(email)s</strong> on sähköpostiosoitteesi."
+
+#: Instanssi/users/templates/account/email_confirm.html:12
+msgid "Confirm"
+msgstr "Vahvista"
+
+#: Instanssi/users/templates/account/email_confirm.html:15
+msgid "This confirmation link is invalid or has expired."
+msgstr "Tämä vahvistuslinkki on virheellinen tai vanhentunut."
+
+#: Instanssi/users/templates/account/login.html:21
+msgid "Login with credentials"
+msgstr "Kirjautuminen käyttäjätunnuksilla"
+
+#: Instanssi/users/templates/account/login.html:25
+msgid "Don't have an account?"
+msgstr "Eikö sinulla ole tiliä?"
+
+#: Instanssi/users/templates/account/password_reset.html:8
+msgid ""
+"Enter your email address and we'll send you a link to reset your password."
+msgstr ""
+"Syötä sähköpostiosoitteesi, niin lähetämme sinulle linkin salasanan "
+"nollaamiseksi."
+
+#: Instanssi/users/templates/account/password_reset_done.html:8
+msgid ""
+"We have sent you an email with a link to reset your password. Please check "
+"your inbox."
+msgstr ""
+"Olemme lähettäneet sinulle sähköpostin, jossa on linkki salasanan "
+"nollaamiseen. Tarkista postilaatikkosi."
+
+#: Instanssi/users/templates/account/password_reset_from_key.html:9
+msgid ""
+"This password reset link is invalid or has expired. Please request a new one."
+msgstr ""
+"Tämä salasanan nollauslinkki on virheellinen tai vanhentunut. Pyydä uusi "
+"linkki."
+
+#: Instanssi/users/templates/account/password_reset_from_key.html:10
+msgid "Request new link"
+msgstr "Pyydä uusi linkki"
+
+#: Instanssi/users/templates/account/password_reset_from_key_done.html:4
+#: Instanssi/users/templates/account/password_reset_from_key_done.html:5
+msgid "Password Reset Complete"
+msgstr "Salasanan nollaus valmis"
+
+#: Instanssi/users/templates/account/password_reset_from_key_done.html:8
+msgid ""
+"Your password has been reset. You can now log in with your new password."
+msgstr ""
+"Salasanasi on nollattu. Voit nyt kirjautua sisään uudella salasanallasi."
+
+#: Instanssi/users/templates/account/password_set.html:8
+msgid ""
+"You currently don't have a password set. Set one here so you can also log in "
+"with your username and password."
+msgstr ""
+"Sinulla ei ole vielä salasanaa. Aseta salasana tässä, jotta voit kirjautua "
+"myös käyttäjätunnuksella ja salasanalla."
+
+#: Instanssi/users/templates/account/signup.html:13
+msgid "Already have an account?"
+msgstr "Onko sinulla jo tili?"
+
+#: Instanssi/users/templates/account/signup.html:13
+msgid "Sign in"
+msgstr "Kirjaudu sisään"
+
+#: Instanssi/users/templates/account/signup_closed.html:4
+#: Instanssi/users/templates/account/signup_closed.html:5
+msgid "Registration Closed"
+msgstr "Rekisteröityminen suljettu"
+
+#: Instanssi/users/templates/account/signup_closed.html:8
+msgid "Registration is currently closed. Please try again later."
+msgstr ""
+"Rekisteröityminen on tällä hetkellä suljettu. Yritä myöhemmin uudelleen."
+
+#: Instanssi/users/templates/account/verification_sent.html:4
+#: Instanssi/users/templates/account/verification_sent.html:5
+msgid "Verify Your Email"
+msgstr "Vahvista sähköpostisi"
+
+#: Instanssi/users/templates/account/verification_sent.html:8
+msgid ""
+"We have sent you an email to verify your email address. Please check your "
+"inbox and click the link to complete registration."
+msgstr ""
+"Olemme lähettäneet sinulle sähköpostin osoitteesi vahvistamiseksi. Tarkista "
+"postilaatikkosi ja klikkaa linkkiä rekisteröitymisen viimeistelemiseksi."
+
+#: Instanssi/users/templates/account/verified_email_required.html:4
+#: Instanssi/users/templates/account/verified_email_required.html:5
+msgid "Verified Email Required"
+msgstr "Vahvistettu sähköposti vaaditaan"
+
+#: Instanssi/users/templates/account/verified_email_required.html:8
+msgid ""
+"This action requires a verified email address. Please verify your email "
+"first."
+msgstr ""
+"Tämä toiminto vaatii vahvistetun sähköpostiosoitteen. Vahvista "
+"sähköpostiosoitteesi ensin."
+
+#: Instanssi/users/templates/account/verified_email_required.html:9
+#: Instanssi/users/templates/users/profile.html:10
+msgid "Manage Email Addresses"
+msgstr "Hallitse sähköpostiosoitteita"
+
+#: Instanssi/users/templates/socialaccount/authentication_error.html:4
+#: Instanssi/users/templates/socialaccount/authentication_error.html:5
+msgid "Social Login Error"
+msgstr "Kirjautumisvirhe"
+
+#: Instanssi/users/templates/socialaccount/authentication_error.html:8
+msgid ""
+"An error occurred while attempting to log in via your social account. Please "
+"try again."
+msgstr "Kirjautuminen ulkoisella tilillä epäonnistui. Yritä uudelleen."
+
+#: Instanssi/users/templates/socialaccount/connections.html:4
+#: Instanssi/users/templates/socialaccount/connections.html:5
+msgid "Social Accounts"
+msgstr "Yhdistetyt tilit"
+
+#: Instanssi/users/templates/socialaccount/connections.html:9
+msgid "The following social accounts are connected to your account:"
+msgstr "Seuraavat ulkoiset tilit on yhdistetty tiliisi:"
+
+#: Instanssi/users/templates/socialaccount/connections.html:21
+msgid "Disconnect"
+msgstr "Poista yhdistys"
+
+#: Instanssi/users/templates/socialaccount/connections.html:24
+msgid "No social accounts are connected."
+msgstr "Ulkoisia tilejä ei ole yhdistetty."
+
+#: Instanssi/users/templates/socialaccount/connections.html:27
+msgid "Connect a new account"
+msgstr "Yhdistä uusi tili"
+
+#: Instanssi/users/templates/socialaccount/login_cancelled.html:4
+#: Instanssi/users/templates/socialaccount/login_cancelled.html:5
+msgid "Login Cancelled"
+msgstr "Kirjautuminen peruutettu"
+
+#: Instanssi/users/templates/socialaccount/login_cancelled.html:8
+msgid ""
+"You cancelled the social login process. No changes have been made to your "
+"account."
+msgstr "Peruutit kirjautumisen ulkoisella tilillä. Tiliisi ei tehty muutoksia."
+
+#: Instanssi/users/templates/socialaccount/signup.html:4
+#: Instanssi/users/templates/socialaccount/signup.html:5
+msgid "Complete Registration"
+msgstr "Viimeistele rekisteröityminen"
+
+#: Instanssi/users/templates/socialaccount/signup.html:8
+msgid ""
+"You've successfully authenticated via your social account. Please complete "
+"the form below to finish registration."
+msgstr ""
+"Olet kirjautunut onnistuneesti ulkoisella tilillä. Täytä alla oleva lomake "
+"viimeistelläksesi rekisteröitymisen."
 
 #: Instanssi/users/templates/users/loggedout.html:4
 #: Instanssi/users/templates/users/loggedout.html:5
 msgid "Logged out"
 msgstr "Uloskirjautuminen"
 
-#: Instanssi/users/templates/users/loggedout.html:8
-msgid "You have been logged out."
-msgstr "Kirjauduit ulos."
-
-#: Instanssi/users/templates/users/login.html:22
-msgid "Login with credentials"
-msgstr "Kirjautuminen käyttäjätunnuksilla"
-
-#: Instanssi/users/templates/users/profile.html:4
-#: Instanssi/users/templates/users/profile.html:5
-#: Instanssi/users/templates/users/profile.html:34
-msgid "Profile"
-msgstr "Profiili"
-
-#: Instanssi/users/templates/users/profile.html:10
-msgid "Login accounts"
-msgstr "Kirjautumistilit"
-
-#: Instanssi/users/templates/users/profile.html:12
+#: Instanssi/users/templates/users/loggedout.html:9
+#, python-format
 msgid ""
-"You can bind other login providers to your account. This allows you to log "
-"in using any of the bound providers. If a button is greyed out, it means "
-"that provider is already bound to your account."
+"You have been logged out. Go <a href=\"%(login_url)s\">here</a> to log back "
+"in."
 msgstr ""
-"Halutessasi voit sitoa tiliisi muita kirjautumispalveluita. Tällöin voit "
-"kirjautua Instanssi.org-tiliisi käyttäen mitä tahansa tunnukseesi sidottua "
-"kirjautumispalvelua. Mikäli painike on harmaa, tarkoittaa se palvelun olevan "
-"jo sidottu Instanssi.org-tiliin."
-
-#: Instanssi/users/templates/users/profile.html:28
-msgid "Bind"
-msgstr "Sido"
-
-#: Instanssi/users/templates/users/profile.html:35
-msgid ""
-"Please make sure your contact information is correct. The event organizers "
-"may need to reach you :) None of the information on this page will be "
-"published."
-msgstr ""
-"Kannattaa pitää huolta siitä, että käyttäjätiedot ovat oikein. Tapahtuman "
-"järjestäjillä saattaa tulla asiaa :) Mitään tämän sivun käyttäjätietoja ei "
-"julkaista."
-
-#: Instanssi/users/models.py:14
-msgid "Language"
-msgstr "Kieli"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-msgid "Compo"
-msgstr "Kompo"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-msgid "Listen"
-msgstr "Kuuntele"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-#, python-format
-msgid "by %(creator)s"
-msgstr "tekijä: %(creator)s"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-msgid "Download file"
-msgstr "Lataa tiedosto"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-msgid "Disqualified:"
-msgstr "Hylätty:"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-#, python-format
-msgid "%(rank)s. place"
-msgstr "%(rank)s. sija"
-
-#: Instanssi/arkisto/templates/arkisto/video.html
-msgid "Watch on YouTube"
-msgstr "Katso YouTubessa"
-
-#: Instanssi/arkisto/templates/arkisto/entry.html
-#: Instanssi/arkisto/templates/arkisto/video.html
-#, python-format
-msgid "Back: %(name)s"
-msgstr "Takaisin: %(name)s"
-
-#: Instanssi/arkisto/templates/arkisto/index.html
-msgid "Export"
-msgstr "Vie"
-
-#: Instanssi/arkisto/templates/arkisto/index.html
-msgid "Results as text"
-msgstr "Tulokset tekstinä"
-
-#: Instanssi/arkisto/templates/arkisto/index.html
-msgid "M3U8 playlist"
-msgstr "M3U8-soittolista"
-
-#: Instanssi/arkisto/templates/arkisto/empty.html
-msgid "The archive currently has no content."
-msgstr "Arkistossa ei valitettavasti ole tällä hetkellä sisältöä."
-
-#: Instanssi/arkisto/templates/arkisto/base.html
-msgid "Archive of Instanssi demoparty events, compo entries and results"
-msgstr "Instanssi-demopartyjen tapahtumat, kilpailutyöt ja tulokset"
-
-#: Instanssi/arkisto/templates/arkisto/index.html
-#, python-format
-msgid "Compo entries and results from %(name)s"
-msgstr "Kompotöitä ja tuloksia tapahtumasta %(name)s"
+"Olet kirjautunut ulos. Kirjaudu takaisin sisään <a "
+"href=\"%(login_url)s\">tästä</a>."

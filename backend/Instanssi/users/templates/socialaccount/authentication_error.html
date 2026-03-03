@@ -1,0 +1,10 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Social Login Error" %}{% endblock %}
+{% block subtitle %}{% trans "Social Login Error" %}{% endblock %}
+
+{% block card_content %}
+    <p>{% trans "An error occurred while attempting to log in via your social account. Please try again." %}</p>
+    <a href="{% url 'account_login' %}" class="btn btn-outline-light">{% trans "Back to Login" %}</a>
+{% endblock %}

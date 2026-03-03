@@ -9,7 +9,7 @@ export function errorResponseInterceptor(error: AxiosError) {
 
     // Don't worry about this path -- we handle its errors in auth service.
     const path = error.response?.config.url ?? "";
-    if (path.endsWith("/user_info/")) {
+    if (path.endsWith("/user_info/") || path.endsWith("/auth/login/")) {
         return Promise.reject(error);
     }
 

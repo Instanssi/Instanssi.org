@@ -277,28 +277,27 @@ body.arkisto-bg a {
     font-size: 0.85rem;
     z-index: 1;
     line-height: 1;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 
     &.rank-1 {
         background: linear-gradient(135deg, #ffd700, #f0c000);
         color: #000;
-        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
     }
 
     &.rank-2 {
         background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
         color: #000;
-        box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
     }
 
     &.rank-3 {
         background: linear-gradient(135deg, #cd7f32, #b8722e);
         color: #fff;
-        box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
     }
 
     &.rank-other {
-        background: rgba(255, 255, 255, 0.15);
-        color: #aaa;
+        background: rgba(0, 0, 0, 0.55);
+        color: #ddd;
     }
 
     &.rank-dq {

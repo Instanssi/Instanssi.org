@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Instanssi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-03 02:03+0200\n"
+"POT-Creation-Date: 2026-03-03 17:50+0200\n"
 "PO-Revision-Date: 2026-02-17 02:00+0200\n"
 "Last-Translator: Instanssi Team\n"
 "Language-Team: Finnish\n"
@@ -919,19 +919,19 @@ msgstr "Lähetysparametrit"
 msgid "Receipt content"
 msgstr "Kuitin sisältö"
 
-#: Instanssi/users/admin.py:15
+#: Instanssi/users/admin.py:16
 msgid "Personal info"
 msgstr "Henkilötiedot"
 
-#: Instanssi/users/admin.py:17
+#: Instanssi/users/admin.py:18
 msgid "Permissions"
 msgstr "Oikeudet"
 
-#: Instanssi/users/admin.py:29
+#: Instanssi/users/admin.py:30
 msgid "Important dates"
 msgstr "Tärkeät päivämäärät"
 
-#: Instanssi/users/admin.py:31
+#: Instanssi/users/admin.py:32
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
@@ -949,6 +949,7 @@ msgstr "Muut yhteystiedot, esim. IRC-nick ja verkko, jne."
 
 #: Instanssi/users/forms.py:55
 #: Instanssi/users/templates/account/password_reset_from_key_done.html:9
+#: Instanssi/users/templates/socialaccount/login.html:4
 msgid "Sign In"
 msgstr "Kirjaudu sisään"
 
@@ -1217,6 +1218,30 @@ msgstr "Ulkoisia tilejä ei ole yhdistetty."
 #: Instanssi/users/templates/socialaccount/connections.html:27
 msgid "Connect a new account"
 msgstr "Yhdistä uusi tili"
+
+#: Instanssi/users/templates/socialaccount/login.html:5
+#, python-format
+msgid "Connect %(provider)s"
+msgstr "Yhdistä %(provider)s"
+
+#: Instanssi/users/templates/socialaccount/login.html:5
+#, python-format
+msgid "Sign In Via %(provider)s"
+msgstr "Kirjaudu sisään palvelulla %(provider)s"
+
+#: Instanssi/users/templates/socialaccount/login.html:9
+#, python-format
+msgid "You are about to connect a new third-party account from %(provider)s."
+msgstr "Olet yhdistämässä uuden kolmannen osapuolen tilin palvelusta %(provider)s."
+
+#: Instanssi/users/templates/socialaccount/login.html:11
+#, python-format
+msgid "You are about to sign in using a third-party account from %(provider)s."
+msgstr "Olet kirjautumassa sisään kolmannen osapuolen tilillä palvelusta %(provider)s."
+
+#: Instanssi/users/templates/socialaccount/login.html:15
+msgid "Continue"
+msgstr "Jatka"
 
 #: Instanssi/users/templates/socialaccount/login_cancelled.html:4
 #: Instanssi/users/templates/socialaccount/login_cancelled.html:5

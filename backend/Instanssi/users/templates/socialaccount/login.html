@@ -1,0 +1,17 @@
+{% extends "base_theme/card_page.html" %}
+{% load i18n %}
+
+{% block title %}Instanssi.org - {% trans "Sign In" %}{% endblock %}
+{% block subtitle %}{% if process == "connect" %}{% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}{% else %}{% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}{% endif %}{% endblock %}
+
+{% block card_content %}
+    {% if process == "connect" %}
+        <p>{% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}</p>
+    {% else %}
+        <p>{% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-light w-100 mt-2">{% trans "Continue" %}</button>
+    </form>
+{% endblock %}

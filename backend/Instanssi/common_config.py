@@ -205,6 +205,7 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     "django.contrib.admin",
     "compressor",
     "qr_code",
@@ -299,6 +300,7 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_ADAPTER = "Instanssi.users.adapters.InstanssiAccountAdapter"
 SOCIALACCOUNT_ADAPTER = "Instanssi.users.adapters.InstanssiSocialAccountAdapter"
 SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 LOGIN_REDIRECT_URL = "/users/profile/"
 ACCOUNT_FORMS = {
     "login": "Instanssi.users.forms.CrispyLoginForm",

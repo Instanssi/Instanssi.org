@@ -23,7 +23,6 @@ class AdminCompoViewSet(AdminReadOnlyViewSet):
         "event",
         "active",
         "show_voting_results",
-        "is_votable",
         "hide_from_archive",
         "hide_from_frontpage",
     )

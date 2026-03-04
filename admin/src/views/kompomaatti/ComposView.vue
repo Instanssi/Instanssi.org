@@ -61,9 +61,6 @@
                     <template #item.adding_end="{ item }">
                         <DateTimeCell :value="item.adding_end" />
                     </template>
-                    <template #item.voting_start="{ item }">
-                        <DateTimeCell :value="item.voting_start" />
-                    </template>
                     <template #item.voting_end="{ item }">
                         <DateTimeCell :value="item.voting_end" />
                     </template>
@@ -71,6 +68,19 @@
                         <LongTextCell :value="item.description" :sanitized-html="true" />
                     </template>
                     <template #item.actions="{ item }">
+                        <v-btn
+                            v-if="auth.canView(PermissionTarget.LIVE_VOTING_STATE)"
+                            class="ml-1 mr-1"
+                            icon
+                            density="compact"
+                            variant="elevated"
+                            size="small"
+                            color="purple"
+                            :title="t('ComposView.liveVoting')"
+                            @click="openLiveVoting(item.id)"
+                        >
+                            <FontAwesomeIcon :icon="faBolt" />
+                        </v-btn>
                         <TableActionButtons
                             :can-edit="auth.canChange(PermissionTarget.COMPO)"
                             :can-delete="auth.canDelete(PermissionTarget.COMPO)"
@@ -90,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBolt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { debounce, parseInt } from "lodash-es";
 import { type Ref, computed, inject, ref, watch } from "vue";
@@ -156,12 +166,6 @@ const headers = useResponsiveHeaders(() => [
         title: t("ComposView.headers.addingEnd"),
         sortable: true,
         key: "adding_end",
-        minBreakpoint: "md",
-    },
-    {
-        title: t("ComposView.headers.votingStart"),
-        sortable: true,
-        key: "voting_start",
         minBreakpoint: "md",
     },
     {
@@ -272,5 +276,12 @@ function editCompo(id: number): void {
 
 function createCompo(): void {
     router.push({ name: "compos-new", params: { eventId: eventId.value }, query: route.query });
+}
+
+function openLiveVoting(compoId: number): void {
+    router.push({
+        name: "live-voting",
+        params: { eventId: eventId.value, compoId },
+    });
 }
 </script>

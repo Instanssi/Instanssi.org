@@ -83,6 +83,10 @@ class UserVoteGroupViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin,
                 raise serializers.ValidationError(
                     {"entries": [_("Entry '%(entry)s' is disqualified") % {"entry": entry.name}]}
                 )
+            if not entry.live_voting_revealed:
+                raise serializers.ValidationError(
+                    {"entries": [_("Entry '%(entry)s' has not been revealed yet") % {"entry": entry.name}]}
+                )
 
     def validate_voting_rights(self, user: User, compo: Compo) -> None:
         """Validate that the user has voting rights for the compo's event."""

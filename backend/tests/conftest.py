@@ -31,6 +31,7 @@ from Instanssi.kompomaatti.models import (
     Compo,
     Entry,
     Event,
+    LiveVotingState,
     TicketVoteCode,
     Vote,
     VoteCodeRequest,
@@ -226,6 +227,10 @@ def staff_user(create_user) -> User:
         "kompomaatti.add_ticketvotecode",
         "kompomaatti.change_ticketvotecode",
         "kompomaatti.delete_ticketvotecode",
+        "kompomaatti.view_livevotingstate",
+        "kompomaatti.add_livevotingstate",
+        "kompomaatti.change_livevotingstate",
+        "kompomaatti.delete_livevotingstate",
         "ext_programme.view_programmeevent",
         "ext_programme.add_programmeevent",
         "ext_programme.change_programmeevent",
@@ -409,7 +414,6 @@ def upcoming_compo(event) -> Compo:
         adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 18, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 18, 30, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
@@ -423,37 +427,38 @@ def open_compo(event) -> Compo:
         adding_end=datetime(2025, 1, 15, 12, 30, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
 
 @fixture
 def votable_compo(event) -> Compo:
-    return Compo.objects.create(
+    compo = Compo.objects.create(
         event=event,
         name="Votable Compo",
         description="Test Compo should be votable!",
         adding_end=datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
+    LiveVotingState.objects.create(compo=compo, voting_open=True)
+    return compo
 
 
 @fixture
 def second_votable_compo(faker, event) -> Compo:
-    return Compo.objects.create(
+    compo = Compo.objects.create(
         event=event,
         name="Second Votable Compo",
         description="Another votable test compo!",
         adding_end=timezone.now() + timedelta(hours=-6),
         editing_end=timezone.now() + timedelta(hours=-2),
         compo_start=timezone.now() + timedelta(hours=-1),
-        voting_start=timezone.now() + timedelta(minutes=-30),
         voting_end=timezone.now() + timedelta(hours=8),
     )
+    LiveVotingState.objects.create(compo=compo, voting_open=True)
+    return compo
 
 
 @fixture
@@ -465,7 +470,6 @@ def closed_compo(event) -> Compo:
         adding_end=datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 11, 55, 0, tzinfo=dt_tz.utc),
     )
 
@@ -480,9 +484,42 @@ def inactive_compo(event) -> Compo:
         adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 16, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
+
+
+@fixture
+def live_voting_compo(event) -> Compo:
+    return Compo.objects.create(
+        event=event,
+        name="Live Voting Compo",
+        description="Compo with live voting enabled",
+        adding_end=datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc),
+        editing_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
+        compo_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
+        voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
+    )
+
+
+@fixture
+def live_voting_state(live_voting_compo) -> LiveVotingState:
+    return LiveVotingState.objects.create(compo=live_voting_compo)
+
+
+@fixture
+def live_voting_entries(base_user, live_voting_compo, test_zip) -> list[Entry]:
+    entries = []
+    for i in range(3):
+        entry = Entry.objects.create(
+            compo=live_voting_compo,
+            user=base_user,
+            name=f"LV Entry {i + 1}",
+            description=f"Live voting entry {i + 1}",
+            creator=f"Creator {i + 1}",
+            entryfile=SimpleUploadedFile(f"lv_entry_{i}.zip", test_zip, content_type="application/zip"),
+        )
+        entries.append(entry)
+    return entries
 
 
 @fixture
@@ -514,6 +551,7 @@ def closed_compo_entry(base_user, closed_compo, entry_zip, source_zip, image_png
         imagefile_original=image_png,
         archive_score=5,
         archive_rank=1,
+        live_voting_revealed=True,
     )
 
 
@@ -530,6 +568,7 @@ def votable_compo_entry(base_user, votable_compo, entry_zip, source_zip, image_p
         sourcefile=source_zip,
         imagefile_original=image_png,
         youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        live_voting_revealed=True,
     )
 
 
@@ -546,6 +585,7 @@ def second_votable_entry(normal_user, votable_compo, entry_zip, source_zip, imag
         entryfile=entry_zip,
         sourcefile=source_zip,
         imagefile_original=image_png,
+        live_voting_revealed=True,
     )
 
 
@@ -562,6 +602,7 @@ def third_votable_entry(normal_user, votable_compo, entry_zip, source_zip, image
         entryfile=entry_zip,
         sourcefile=source_zip,
         imagefile_original=image_png,
+        live_voting_revealed=True,
     )
 
 
@@ -1385,7 +1426,6 @@ def past_compo(past_event) -> Compo:
         adding_end=datetime(2024, 12, 26, 12, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2024, 12, 27, 12, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2024, 12, 28, 12, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2024, 12, 29, 12, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 5, 12, 0, 0, tzinfo=dt_tz.utc),
     )
 
@@ -1491,7 +1531,6 @@ def hidden_event_compo(hidden_event) -> Compo:
         adding_end=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 14, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 15, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
     )
 
@@ -1619,6 +1658,7 @@ def disqualified_entry(base_user, votable_compo, entry_zip, source_zip, image_pn
         imagefile_original=image_png,
         disqualified=True,
         disqualified_reason="Rule violation",
+        live_voting_revealed=True,
     )
 
 

@@ -32,7 +32,6 @@ def test_staff_can_get_compo_detail(staff_api_client, open_compo):
         "adding_end": open_compo.adding_end.astimezone(settings.ZONE_INFO).isoformat(),
         "editing_end": open_compo.editing_end.astimezone(settings.ZONE_INFO).isoformat(),
         "compo_start": open_compo.compo_start.astimezone(settings.ZONE_INFO).isoformat(),
-        "voting_start": open_compo.voting_start.astimezone(settings.ZONE_INFO).isoformat(),
         "voting_end": open_compo.voting_end.astimezone(settings.ZONE_INFO).isoformat(),
         "entry_sizelimit": open_compo.entry_sizelimit,
         "source_sizelimit": open_compo.source_sizelimit,
@@ -49,7 +48,6 @@ def test_staff_can_get_compo_detail(staff_api_client, open_compo):
         "entry_view_type": open_compo.entry_view_type,
         "hide_from_archive": open_compo.hide_from_archive,
         "hide_from_frontpage": open_compo.hide_from_frontpage,
-        "is_votable": open_compo.is_votable,
         "thumbnail_pref": open_compo.thumbnail_pref,
     }
 
@@ -61,7 +59,6 @@ def test_staff_can_create_compo(staff_api_client, event):
     adding_end = datetime(2025, 6, 15, 12, 0, 0, tzinfo=dt_tz.utc)
     editing_end = datetime(2025, 6, 15, 13, 0, 0, tzinfo=dt_tz.utc)
     compo_start = datetime(2025, 6, 15, 14, 0, 0, tzinfo=dt_tz.utc)
-    voting_start = datetime(2025, 6, 15, 15, 0, 0, tzinfo=dt_tz.utc)
     voting_end = datetime(2025, 6, 15, 20, 0, 0, tzinfo=dt_tz.utc)
     req = staff_api_client.post(
         base_url,
@@ -72,7 +69,6 @@ def test_staff_can_create_compo(staff_api_client, event):
             "adding_end": adding_end.isoformat(),
             "editing_end": editing_end.isoformat(),
             "compo_start": compo_start.isoformat(),
-            "voting_start": voting_start.isoformat(),
             "voting_end": voting_end.isoformat(),
         },
     )
@@ -85,7 +81,6 @@ def test_staff_can_create_compo(staff_api_client, event):
         "adding_end": adding_end.astimezone(settings.ZONE_INFO).isoformat(),
         "editing_end": editing_end.astimezone(settings.ZONE_INFO).isoformat(),
         "compo_start": compo_start.astimezone(settings.ZONE_INFO).isoformat(),
-        "voting_start": voting_start.astimezone(settings.ZONE_INFO).isoformat(),
         "voting_end": voting_end.astimezone(settings.ZONE_INFO).isoformat(),
         "entry_sizelimit": 134217728,
         "source_sizelimit": 134217728,
@@ -102,7 +97,6 @@ def test_staff_can_create_compo(staff_api_client, event):
         "entry_view_type": 0,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,
     }
 
@@ -121,7 +115,6 @@ def test_staff_can_update_compo(staff_api_client, open_compo):
         "adding_end": open_compo.adding_end.astimezone(settings.ZONE_INFO).isoformat(),
         "editing_end": open_compo.editing_end.astimezone(settings.ZONE_INFO).isoformat(),
         "compo_start": open_compo.compo_start.astimezone(settings.ZONE_INFO).isoformat(),
-        "voting_start": open_compo.voting_start.astimezone(settings.ZONE_INFO).isoformat(),
         "voting_end": open_compo.voting_end.astimezone(settings.ZONE_INFO).isoformat(),
         "entry_sizelimit": open_compo.entry_sizelimit,
         "source_sizelimit": open_compo.source_sizelimit,
@@ -138,7 +131,6 @@ def test_staff_can_update_compo(staff_api_client, open_compo):
         "entry_view_type": open_compo.entry_view_type,
         "hide_from_archive": open_compo.hide_from_archive,
         "hide_from_frontpage": open_compo.hide_from_frontpage,
-        "is_votable": open_compo.is_votable,
         "thumbnail_pref": open_compo.thumbnail_pref,
     }
 

@@ -16,8 +16,6 @@ class PublicCompoSerializer(ModelSerializer[Compo]):
             "adding_end",
             "editing_end",
             "compo_start",
-            "voting_start",
             "voting_end",
             "entry_view_type",
-            "is_votable",
         )

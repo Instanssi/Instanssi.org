@@ -113,6 +113,20 @@ import type {
     AdminEventKompomaattiEntriesValidateArchiveRetrieveData,
     AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
     AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses,
+    AdminEventKompomaattiLiveVotingHideAllCreateData,
+    AdminEventKompomaattiLiveVotingHideAllCreateResponses,
+    AdminEventKompomaattiLiveVotingHideEntryCreateData,
+    AdminEventKompomaattiLiveVotingHideEntryCreateResponses,
+    AdminEventKompomaattiLiveVotingPartialUpdateData,
+    AdminEventKompomaattiLiveVotingPartialUpdateResponses,
+    AdminEventKompomaattiLiveVotingResetCreateData,
+    AdminEventKompomaattiLiveVotingResetCreateResponses,
+    AdminEventKompomaattiLiveVotingRetrieveData,
+    AdminEventKompomaattiLiveVotingRetrieveResponses,
+    AdminEventKompomaattiLiveVotingRevealAllCreateData,
+    AdminEventKompomaattiLiveVotingRevealAllCreateResponses,
+    AdminEventKompomaattiLiveVotingRevealEntryCreateData,
+    AdminEventKompomaattiLiveVotingRevealEntryCreateResponses,
     AdminEventKompomaattiTicketVoteCodesListData,
     AdminEventKompomaattiTicketVoteCodesListResponses,
     AdminEventKompomaattiTicketVoteCodesRetrieveData,
@@ -332,6 +346,9 @@ import type {
     PublicEventKompomaattiEntriesListResponses,
     PublicEventKompomaattiEntriesRetrieveData,
     PublicEventKompomaattiEntriesRetrieveResponses,
+    PublicEventKompomaattiLiveVotingRetrieveData,
+    PublicEventKompomaattiLiveVotingRetrieveErrors,
+    PublicEventKompomaattiLiveVotingRetrieveResponses,
     PublicEventProgramEventsListData,
     PublicEventProgramEventsListResponses,
     PublicEventProgramEventsRetrieveData,
@@ -1950,6 +1967,220 @@ export const adminEventKompomaattiEntriesValidateArchiveRetrieve = <
         ],
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/",
         ...options,
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventKompomaattiLiveVotingRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        AdminEventKompomaattiLiveVotingRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingPartialUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventKompomaattiLiveVotingPartialUpdateData, ThrowOnError>
+) => {
+    return (options.client ?? client).patch<
+        AdminEventKompomaattiLiveVotingPartialUpdateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingHideAllCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventKompomaattiLiveVotingHideAllCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiLiveVotingHideAllCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_all/",
+        ...options,
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingHideEntryCreate = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AdminEventKompomaattiLiveVotingHideEntryCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiLiveVotingHideEntryCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_entry/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingResetCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventKompomaattiLiveVotingResetCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiLiveVotingResetCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reset/",
+        ...options,
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingRevealAllCreate = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AdminEventKompomaattiLiveVotingRevealAllCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiLiveVotingRevealAllCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_all/",
+        ...options,
+    });
+};
+
+/**
+ * Staff viewset for managing live voting state during a compo presentation.
+ */
+export const adminEventKompomaattiLiveVotingRevealEntryCreate = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<AdminEventKompomaattiLiveVotingRevealEntryCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiLiveVotingRevealEntryCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_entry/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
     });
 };
 
@@ -5133,8 +5364,8 @@ export const publicEventKompomaattiComposRetrieve = <ThrowOnError extends boolea
 /**
  * Public read-only endpoint for compo entries.
  *
- * Only entries from active compos where voting has started (or the event
- * is archived) are shown.
+ * Only entries from active compos where the event is archived or the entry
+ * has been revealed via live voting are shown.
  *
  * Supports ordering by rank and score when results are visible.
  */
@@ -5155,8 +5386,8 @@ export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean =
 /**
  * Public read-only endpoint for compo entries.
  *
- * Only entries from active compos where voting has started (or the event
- * is archived) are shown.
+ * Only entries from active compos where the event is archived or the entry
+ * has been revealed via live voting are shown.
  *
  * Supports ordering by rank and score when results are visible.
  */
@@ -5170,6 +5401,27 @@ export const publicEventKompomaattiEntriesRetrieve = <ThrowOnError extends boole
     >({
         responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Public polling endpoint for live voting state.
+ *
+ * Returns the current live voting state for a compo, including which entries
+ * have been revealed. Supports conditional requests via If-Modified-Since
+ * for efficient polling.
+ */
+export const publicEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<PublicEventKompomaattiLiveVotingRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        PublicEventKompomaattiLiveVotingRetrieveResponses,
+        PublicEventKompomaattiLiveVotingRetrieveErrors,
+        ThrowOnError
+    >({
+        responseType: "json",
+        url: "/api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/",
         ...options,
     });
 };

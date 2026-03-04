@@ -124,7 +124,6 @@ class CompoSerializer(ModelSerializer[Compo]):
             "adding_end",
             "editing_end",
             "compo_start",
-            "voting_start",
             "voting_end",
             "max_source_size",
             "max_entry_size",
@@ -134,7 +133,6 @@ class CompoSerializer(ModelSerializer[Compo]):
             "image_format_list",
             "show_voting_results",
             "entry_view_type",
-            "is_votable",
             "is_imagefile_allowed",
             "is_imagefile_required",
         )
@@ -174,13 +172,13 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
     alternate_files = AlternateEntryFileSerializer(many=True, read_only=True)
 
     def get_entryfile_url(self, obj: Entry) -> str | None:
-        if obj.entryfile and (obj.compo.show_voting_results or obj.compo.has_voting_started()):
+        if obj.entryfile and (obj.compo.show_voting_results or obj.compo.is_voting_open()):
             request: HttpRequest = self.context["request"]
             return request.build_absolute_uri(obj.entryfile.url)
         return None
 
     def get_sourcefile_url(self, obj: Entry) -> str | None:
-        if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.has_voting_started()):
+        if obj.sourcefile and (obj.compo.show_voting_results or obj.compo.is_voting_open()):
             request: HttpRequest = self.context["request"]
             return request.build_absolute_uri(obj.sourcefile.url)
         return None
@@ -204,12 +202,12 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
         return None
 
     def get_disqualified_reason(self, obj: Entry) -> str | None:
-        if obj.compo.has_voting_started():
+        if obj.compo.is_voting_open():
             return obj.disqualified_reason
         return None
 
     def get_disqualified(self, obj: Entry) -> bool | None:
-        if obj.compo.has_voting_started():
+        if obj.compo.is_voting_open():
             return obj.disqualified
         return None
 

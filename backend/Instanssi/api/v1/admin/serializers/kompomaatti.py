@@ -85,11 +85,15 @@ class AdminCompoEntrySerializer(ModelSerializer[Entry]):
             return request.build_absolute_uri(obj.imagefile_thumbnail.url)
         return None
 
-    def get_rank(self, obj: Entry) -> int:
-        return obj.computed_rank
+    def get_rank(self, obj: Entry) -> int | None:
+        if obj.compo.show_voting_results:
+            return obj.computed_rank
+        return None
 
-    def get_score(self, obj: Entry) -> float:
-        return obj.computed_score
+    def get_score(self, obj: Entry) -> float | None:
+        if obj.compo.show_voting_results:
+            return obj.computed_score
+        return None
 
     class Meta:
         model = Entry

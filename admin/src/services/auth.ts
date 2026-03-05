@@ -78,7 +78,7 @@ export function useAuth() {
         } catch (err: unknown) {
             const axiosError = err as AxiosError<{ code?: string }>;
             if (
-                axiosError.response?.status === 403 &&
+                axiosError.response?.status === 401 &&
                 axiosError.response?.data?.code === "email_not_verified"
             ) {
                 return LoginResult.EMAIL_NOT_VERIFIED;

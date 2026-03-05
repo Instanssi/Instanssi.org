@@ -2,11 +2,55 @@ import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from freezegun import freeze_time
 
+from Instanssi.api.v2.utils.entry_file_validation import _validate_file
+
 FROZEN_TIME = "2025-01-15T12:00:00Z"
 
 
 def get_base_url(event_id):
     return f"/api/v2/event/{event_id}/user/kompomaatti/entries/"
+
+
+# --- Unit tests for _validate_file extension logic ---
+
+
+FORMATS = ["zip", "7z", "gz", "bz2"]
+MAX_SIZE = 134217728
+
+
+@pytest.mark.parametrize(
+    "filename,expect_error",
+    [
+        ("entry.zip", False),
+        ("entry.ZIP", False),
+        ("entry.tar.gz", False),
+        ("entry.tar.bz2", False),
+        ("entry.TAR.GZ", False),
+        ("entry.php.exe", True),
+        ("entry.php.zip", False),  # last ext "zip" matches
+        ("entry", True),  # no extension
+        ("entry.xyz", True),
+    ],
+)
+def test_validate_file_extension_cases(filename, expect_error):
+    """Unit test for extension validation with single and double extensions."""
+    file = SimpleUploadedFile(filename, b"data")
+    errors = _validate_file(file, FORMATS, "zip, 7z, gz, bz2", MAX_SIZE, "128M")
+    if expect_error:
+        assert errors, f"Expected error for {filename}"
+        assert "allowed file types" in errors[0].lower()
+    else:
+        assert not errors, f"Unexpected error for {filename}: {errors}"
+
+
+def test_validate_file_full_double_extension_in_allow_list():
+    """When 'tar.gz' is explicitly in the allow list, it matches the full extension."""
+    file = SimpleUploadedFile("entry.tar.gz", b"data")
+    errors = _validate_file(file, ["tar.gz"], "tar.gz", MAX_SIZE, "128M")
+    assert not errors
+
+
+# --- Integration tests ---
 
 
 @pytest.mark.django_db
@@ -83,6 +127,58 @@ def test_user_invalid_image_file_format_rejected(auth_client, open_compo, entry_
     assert req.status_code == 400
     assert "imagefile_original" in req.data
     assert "allowed file types" in str(req.data["imagefile_original"]).lower()
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_user_double_extension_entry_file_rejected(auth_client, open_compo, source_zip, image_png):
+    """Test that files with double extensions are rejected when neither extension matches."""
+    double_ext_file = SimpleUploadedFile(
+        "entry.php.exe", b"fake content", content_type="application/octet-stream"
+    )
+    base_url = get_base_url(open_compo.event_id)
+    req = auth_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Should fail - double extension",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": double_ext_file,
+            "imagefile_original": image_png,
+            "sourcefile": source_zip,
+        },
+    )
+    assert req.status_code == 400
+    assert "entryfile" in req.data
+    assert "allowed file types" in str(req.data["entryfile"]).lower()
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
+def test_user_common_double_extension_accepted(auth_client, open_compo, source_zip, image_png):
+    """Files with common double extensions like .tar.gz are accepted when last ext matches."""
+    open_compo.formats = "zip|7z|gz|bz2"
+    open_compo.save()
+    tar_gz_file = SimpleUploadedFile("entry.tar.gz", b"fake content", content_type="application/gzip")
+    base_url = get_base_url(open_compo.event_id)
+    req = auth_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Should pass - tar.gz last ext matches gz",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": tar_gz_file,
+            "imagefile_original": image_png,
+            "sourcefile": source_zip,
+        },
+    )
+    assert req.status_code == 201
 
 
 @pytest.mark.django_db

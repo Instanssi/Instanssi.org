@@ -46,7 +46,7 @@ def test_login_blocked_when_email_not_verified(api_client, base_user, password):
             "password": password,
         },
     )
-    assert response.status_code == 403
+    assert response.status_code == 401
     assert response.data == {"code": "email_not_verified"}
 
 

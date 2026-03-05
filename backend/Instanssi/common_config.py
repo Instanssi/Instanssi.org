@@ -2,6 +2,8 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from celery.schedules import crontab
+
 PROJECT_DIR = Path(__file__).resolve(strict=True).parent
 BASE_DIR = PROJECT_DIR.parent
 
@@ -49,6 +51,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "Instanssi.notifications.tasks.cleanup_old_sent_notifications",
         "schedule": timedelta(days=1),
     },
+    "cleanup-old-audit-logs": {
+        "task": "Instanssi.common.tasks.cleanup_old_audit_logs",
+        "schedule": crontab(hour=3, minute=0),
+    },
 }
 
 # Specific media directories (under MEDIA_ROOT)
@@ -59,6 +65,13 @@ MEDIA_COMPO_IMAGES: str = "kompomaatti/images"
 MEDIA_PROGRAMME_IMAGES: str = "programme/images"
 MEDIA_STORE_IMAGES: str = "store/images"
 MEDIA_UPLOAD_FILES: str = "files"
+
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
 
 AUTH_USER_MODEL = "users.User"
 
@@ -95,7 +108,7 @@ FORMS_URLFIELD_ASSUME_HTTPS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "knox.auth.TokenAuthentication",
@@ -110,6 +123,9 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "login": "5/min",
+    },
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "EXCEPTION_HANDLER": "Instanssi.api.exception_handler.custom_exception_handler",

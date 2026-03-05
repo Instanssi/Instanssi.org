@@ -36,8 +36,9 @@ LANGUAGE_CODE = "en"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ""
 
-# Set this to True in production for https-only cookies
+# Set these to True in production for https-only cookies
 SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # Social account providers (django-allauth)
 SOCIALACCOUNT_PROVIDERS = {
@@ -90,6 +91,9 @@ MASTODON_ACCOUNT_NAME = None
 VAPID_PUBLIC_KEY = ""
 VAPID_PRIVATE_KEY = ""
 VAPID_CLAIMS_EMAIL = "admin@instanssi.org"
+
+# In production, disable the browsable API:
+# REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ["rest_framework.renderers.JSONRenderer"]
 
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG

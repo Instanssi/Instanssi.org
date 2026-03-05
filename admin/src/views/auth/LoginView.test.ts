@@ -75,6 +75,19 @@ describe("LoginView - auth service integration", () => {
             expect(authService.isLoggedIn()).toBe(false);
         });
 
+        it("should return EMAIL_NOT_VERIFIED when backend returns 401 with code", async () => {
+            const error = {
+                response: { status: 401, data: { code: "email_not_verified" } },
+                isAxiosError: true,
+            };
+            vi.mocked(api.login).mockRejectedValue(error);
+
+            const result = await authService.login("testuser", "password");
+
+            expect(result).toBe(LoginResult.EMAIL_NOT_VERIFIED);
+            expect(authService.isLoggedIn()).toBe(false);
+        });
+
         it("should allow superuser to bypass permission checks", async () => {
             vi.mocked(api.login).mockResolvedValue({ status: 200 } as never);
             vi.mocked(api.userInfoRetrieve).mockResolvedValue({

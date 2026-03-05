@@ -69,7 +69,7 @@ def test_programme_events(api_client):
 def test_store_items(api_client):
     url = "/api/v1/store_items/"
     assert api_client.get(url).status_code == 200
-    assert api_client.post(url).status_code == 403  # Unauthorized by permission class
+    assert api_client.post(url).status_code == 405  # Read-only viewset
     assert api_client.options(url).status_code == 200
 
 

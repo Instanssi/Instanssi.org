@@ -8,7 +8,7 @@ from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -55,6 +55,8 @@ class EventViewSet(ReadOnlyModelViewSet[Event]):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
     queryset = Event.objects.filter(hidden=False)
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
@@ -81,6 +83,8 @@ class CompetitionViewSet(ReadOnlyModelViewSet[Competition]):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
     queryset = Competition.objects.filter(active=True, event__hidden=False)
     serializer_class = CompetitionSerializer
     pagination_class = LimitOffsetPagination
@@ -104,6 +108,8 @@ class CompetitionParticipationViewSet(ReadOnlyModelViewSet[CompetitionParticipat
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
     queryset = CompetitionParticipation.objects.filter(
         competition__active=True, competition__event__hidden=False
     )
@@ -164,6 +170,8 @@ class CompoViewSet(ReadOnlyModelViewSet[Compo]):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
     queryset = Compo.objects.filter(active=True, event__hidden=False)
     serializer_class = CompoSerializer
     pagination_class = LimitOffsetPagination
@@ -186,6 +194,8 @@ class CompoEntryViewSet(ReadOnlyModelViewSet[Entry]):
     * ordering: Set ordering, default is 'id'. Allowed: id, -id
     """
 
+    permission_classes = [AllowAny]
+    authentication_classes: list[type] = []
     serializer_class = CompoEntrySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (

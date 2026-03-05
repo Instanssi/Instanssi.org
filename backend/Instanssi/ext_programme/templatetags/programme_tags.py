@@ -5,6 +5,7 @@ from typing import Any
 from django import template
 from django.urls import reverse
 from django.utils.formats import date_format
+from django.utils.html import escape
 from django.utils.translation import override as translation_override
 
 from Instanssi.ext_programme.models import ProgrammeEvent
@@ -117,11 +118,11 @@ def render_calendar(event_id: int) -> dict[str, Any]:
             events.append(
                 {
                     "date": prog.start,
-                    "title": prog.presenters,
+                    "title": escape(prog.presenters),
                     "icon": icon,
                     "url": f"../ohjelma/#{prog.id}",
                     "place": prog.place,
-                    "desc": prog.title,
+                    "desc": escape(prog.title),
                     "id": f"sp-{prog.id}",
                     "type": "program",
                 }

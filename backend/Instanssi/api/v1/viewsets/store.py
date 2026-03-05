@@ -3,7 +3,7 @@ from typing import Any
 
 from django.db.models import QuerySet
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -12,7 +12,7 @@ from Instanssi.api.v1.serializers.store import (
     StoreItemSerializer,
     StoreTransactionSerializer,
 )
-from Instanssi.api.v1.utils import IsAuthenticatedOrWriteOnly, WriteOnlyModelViewSet
+from Instanssi.api.v1.utils import WriteOnlyModelViewSet
 from Instanssi.store.handlers import begin_payment_process
 from Instanssi.store.methods import PaymentMethod
 from Instanssi.store.models import StoreItem
@@ -26,7 +26,7 @@ class StoreItemViewSet(ReadOnlyModelViewSet[StoreItem]):
     """
 
     serializer_class = StoreItemSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     authentication_classes: list[Any] = []
 
     def get_queryset(self) -> QuerySet[StoreItem]:
@@ -39,7 +39,7 @@ class StoreTransactionViewSet(WriteOnlyModelViewSet):
     """
 
     serializer_class = StoreTransactionSerializer
-    permission_classes = [IsAuthenticatedOrWriteOnly]
+    permission_classes = [AllowAny]
     authentication_classes: list[Any] = []
 
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:

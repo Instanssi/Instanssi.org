@@ -100,7 +100,9 @@ def entries_m3u8(request: HttpRequest, event_id: int) -> HttpResponse:
         first = entry.alternate_files.filter(container=MediaContainer.WEBM).only("file").first()
         if first is not None:
             url = request.build_absolute_uri(first.file.url)
-            response.write(f"#EXTINF:0,{entry.creator} - {entry.name}\r\n".encode())
+            safe_creator = entry.creator.replace("\r", "").replace("\n", "")
+            safe_name = entry.name.replace("\r", "").replace("\n", "")
+            response.write(f"#EXTINF:0,{safe_creator} - {safe_name}\r\n".encode())
             response.write(url)
             response.write("\r\n\r\n".encode())
 

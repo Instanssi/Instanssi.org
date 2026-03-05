@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import Any
 
 from django.core.files.uploadedfile import UploadedFile
@@ -79,10 +80,12 @@ def _validate_file(
     if file.size is not None and file.size > max_size:
         errors.append(_("Maximum allowed file size is %(size)s") % {"size": max_readable_size})
 
-    # Check file extension
+    # Check file extension — use all suffixes so that e.g. ".tar.gz" is
+    # matched as "tar.gz" first, falling back to the last suffix alone ("gz").
     if file.name:
-        ext = os.path.splitext(file.name)[1][1:]
-        if ext.lower() not in accept_formats:
+        all_ext = "".join(Path(file.name).suffixes).lower().lstrip(".")
+        last_ext = Path(file.name).suffix.lower().lstrip(".")
+        if all_ext not in accept_formats and last_ext not in accept_formats:
             errors.append(_("Allowed file types are %(types)s") % {"types": accept_formats_readable})
 
     return errors

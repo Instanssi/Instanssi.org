@@ -193,6 +193,32 @@ def test_cross_user_endpoint_reassignment(super_api_client, super_user, staff_us
     assert sub.auth == "new_auth"
 
 
+@pytest.mark.django_db
+def test_http_endpoint_rejected(super_api_client):
+    """Push subscription endpoints must use HTTPS."""
+    data = {
+        "endpoint": "http://push.example.com/sub/insecure",
+        "p256dh": "BEl62iUYgUivxIkv69yViEuiBIa",
+        "auth": "aGVsbG8gd29ybGQ",
+    }
+    result = super_api_client.post(SUBSCRIPTIONS_URL, data)
+    assert result.status_code == 400
+    assert "endpoint" in result.data
+
+
+@pytest.mark.django_db
+def test_invalid_url_endpoint_rejected(super_api_client):
+    """Push subscription endpoints must be valid URLs."""
+    data = {
+        "endpoint": "https://not a valid url",
+        "p256dh": "BEl62iUYgUivxIkv69yViEuiBIa",
+        "auth": "aGVsbG8gd29ybGQ",
+    }
+    result = super_api_client.post(SUBSCRIPTIONS_URL, data)
+    assert result.status_code == 400
+    assert "endpoint" in result.data
+
+
 # --- VAPID key tests (public endpoint) ---
 
 

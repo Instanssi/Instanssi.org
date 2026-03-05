@@ -71,6 +71,7 @@ class PublicCompoEntrySerializer(ModelSerializer[Entry]):
             "description",
             "creator",
             "platform",
+            "order_index",
             "imagefile_original_url",
             "imagefile_thumbnail_url",
             "imagefile_medium_url",

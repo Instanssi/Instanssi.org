@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.decorators import action
-from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -34,7 +34,7 @@ class CompoEntryViewSet(PermissionViewSet):
 
     queryset = Entry.objects.all()
     serializer_class = CompoEntrySerializer  # type: ignore[assignment]
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     ordering_fields = (
         "id",
         "compo",
@@ -44,6 +44,7 @@ class CompoEntryViewSet(PermissionViewSet):
         "disqualified",
         "computed_rank",
         "computed_score",
+        "order_index",
     )
     search_fields = ("name", "creator", "description")
     filterset_fields = ("compo", "disqualified", "user")
@@ -87,20 +88,83 @@ class CompoEntryViewSet(PermissionViewSet):
         maybe_copy_entry_to_image(instance)
         self._refresh_with_annotations(serializer)
 
-    def _collect_archive_files(self, event_pk: int) -> tuple[list[tuple[str, Path]], list[str]]:
+    @extend_schema(
+        request=inline_serializer(
+            "ReorderEntriesRequest",
+            fields={
+                "compo": serializers.IntegerField(),
+                "entry_ids": serializers.ListField(child=serializers.IntegerField()),
+            },
+        ),
+        responses={200: inline_serializer("ReorderEntriesOk", fields={"ok": serializers.BooleanField()})},
+        summary="Reorder entries within a compo",
+        description=(
+            "Sets the order_index of each entry based on its position in the provided entry_ids list. "
+            "All entries in the compo must be included exactly once."
+        ),
+    )
+    @action(detail=False, methods=["post"], url_path="reorder")
+    def reorder(self, request: Request, event_pk: int = 0) -> Response:
+        """Bulk reorder entries within a compo."""
+        compo_id = request.data.get("compo")
+        entry_ids = request.data.get("entry_ids")
+
+        if compo_id is None or not isinstance(entry_ids, list):
+            raise serializers.ValidationError({"error": _("Both 'compo' and 'entry_ids' are required")})
+
+        compo = get_object_or_404(Compo, pk=compo_id, event_id=event_pk)
+
+        if len(entry_ids) != len(set(entry_ids)):
+            raise serializers.ValidationError({"error": _("entry_ids must not contain duplicates")})
+
+        # Validate that entry_ids contains exactly all entries in this compo
+        compo_entry_ids = set(Entry.objects.filter(compo=compo).values_list("pk", flat=True))
+        if set(entry_ids) != compo_entry_ids:
+            raise serializers.ValidationError(
+                {"error": _("entry_ids must contain exactly all entries in this compo")}
+            )
+
+        # Bulk update order_index
+        updates = []
+        for index, entry_id in enumerate(entry_ids):
+            updates.append(Entry(pk=entry_id, order_index=index))
+        Entry.objects.bulk_update(updates, ["order_index"])
+
+        return Response({"ok": True})
+
+    ARCHIVE_PREFIX_CHOICES = ("id", "rank", "order")
+
+    def _get_entry_prefix(self, entry: Entry, prefix_mode: str) -> str:
+        if prefix_mode == "rank":
+            rank = getattr(entry, "computed_rank", None) or 0
+            return f"{rank:05d}"
+        elif prefix_mode == "order":
+            return f"{entry.order_index:05d}"
+        return f"{entry.id:05d}"
+
+    def _collect_archive_files(
+        self, event_pk: int, prefix_mode: str = "id"
+    ) -> tuple[list[tuple[str, Path]], list[str]]:
         """Collect entry files for archiving and check for missing files.
 
         Returns a tuple of (files, missing_files) where files is a list of
         (archive_name, file_path) tuples and missing_files is a list of
         human-readable descriptions of entries with missing files on disk.
+
+        Args:
+            event_pk: Event primary key.
+            prefix_mode: Filename prefix mode - "id" (default), "rank", or "order".
         """
         base_queryset = (
             self.queryset.filter(compo__event_id=event_pk)
             .filter(disqualified=False)
             .exclude(entryfile="")
             .select_related("compo")
-            .only("id", "name", "entryfile", "compo__name")
         )
+        if prefix_mode == "rank":
+            base_queryset = base_queryset.with_rank()
+        elif prefix_mode == "order":
+            base_queryset = base_queryset.order_by("compo", "order_index")
         queryset = self.filter_queryset(base_queryset)
 
         files: list[tuple[str, Path]] = []
@@ -111,13 +175,22 @@ class CompoEntryViewSet(PermissionViewSet):
             if not file_path.is_file():
                 missing_files.append(f"[{entry.compo.name}] Entry {entry.id}: {entry.name}")
             else:
-                archive_name = f"{clean_filename(entry.compo.name)}/{entry.id:05d}__{file_path.name}"
+                prefix = self._get_entry_prefix(entry, prefix_mode)
+                archive_name = f"{clean_filename(entry.compo.name)}/{prefix}__{file_path.name}"
                 files.append((archive_name, file_path))
 
         return files, missing_files
 
     @extend_schema(
-        parameters=[OpenApiParameter("compo", int, description="Filter by compo ID")],
+        parameters=[
+            OpenApiParameter("compo", int, description="Filter by compo ID"),
+            OpenApiParameter(
+                "prefix",
+                str,
+                description="Filename prefix mode: 'id' (default), 'rank', or 'order'",
+                enum=["id", "rank", "order"],
+            ),
+        ],
         responses={
             200: inline_serializer(
                 "ValidateArchiveOk",
@@ -148,7 +221,10 @@ class CompoEntryViewSet(PermissionViewSet):
         missing files. Supports the same query parameters as download-archive.
         """
         get_object_or_404(Event, pk=event_pk)
-        files, missing_files = self._collect_archive_files(event_pk)
+        prefix_mode = request.query_params.get("prefix", "id")
+        if prefix_mode not in self.ARCHIVE_PREFIX_CHOICES:
+            prefix_mode = "id"
+        files, missing_files = self._collect_archive_files(event_pk, prefix_mode)
 
         if missing_files:
             return Response(
@@ -159,7 +235,15 @@ class CompoEntryViewSet(PermissionViewSet):
         return Response({"ok": True, "count": len(files)})
 
     @extend_schema(
-        parameters=[OpenApiParameter("compo", int, description="Filter by compo ID")],
+        parameters=[
+            OpenApiParameter("compo", int, description="Filter by compo ID"),
+            OpenApiParameter(
+                "prefix",
+                str,
+                description="Filename prefix mode: 'id' (default), 'rank', or 'order'",
+                enum=["id", "rank", "order"],
+            ),
+        ],
         responses={(200, "application/zip"): bytes},
         summary="Download entry files archive",
         description="Streams all entry files as a ZIP archive organized by compo directory.",
@@ -168,15 +252,20 @@ class CompoEntryViewSet(PermissionViewSet):
     def download_archive(self, request: Request, event_pk: int = 0) -> StreamingHttpResponse | Response:
         """Download entry files as a .zip archive.
 
-        Streams all entry files organized by compo directory, with entry ID prefix.
+        Streams all entry files organized by compo directory, prefixed by
+        entry ID, rank, or order_index depending on the 'prefix' parameter.
         Disqualified entries are excluded. Supports filtering via query params.
 
         Query parameters (inherited from viewset):
             compo: Filter by compo ID
             user: Filter by user ID
+            prefix: Filename prefix mode - "id" (default), "rank", or "order"
         """
         event = get_object_or_404(Event, pk=event_pk)
-        files, missing_files = self._collect_archive_files(event_pk)
+        prefix_mode = request.query_params.get("prefix", "id")
+        if prefix_mode not in self.ARCHIVE_PREFIX_CHOICES:
+            prefix_mode = "id"
+        files, missing_files = self._collect_archive_files(event_pk, prefix_mode)
 
         if missing_files:
             return Response(

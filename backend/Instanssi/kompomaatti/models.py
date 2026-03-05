@@ -315,6 +315,7 @@ class Entry(models.Model):
         options={"quality": 90},
     )
     youtube_url = YoutubeVideoField(_("Youtube URL"), null=True, blank=True)
+    order_index = models.IntegerField(_("Order index"), default=0, db_index=True)
     disqualified = models.BooleanField(_("Disqualified"), default=False)
     disqualified_reason = models.TextField(_("Disqualification reason"), blank=True)
     archive_score = models.FloatField(_("Score"), null=True, blank=True)

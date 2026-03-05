@@ -63,6 +63,7 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             "description",
             "creator",
             "platform",
+            "order_index",
             "entryfile",
             "sourcefile",
             "imagefile_original",

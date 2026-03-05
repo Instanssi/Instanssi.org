@@ -30,6 +30,27 @@
                     </template>
                     {{ t("DiplomaGenerator.title") }}
                 </v-btn>
+                <v-tooltip
+                    :text="t('EntriesView.reorderTooltip')"
+                    :disabled="!!selectedCompo"
+                    location="bottom"
+                >
+                    <template #activator="{ props: tooltipProps }">
+                        <div v-bind="tooltipProps" class="ml-4">
+                            <v-btn
+                                v-if="auth.canChange(PermissionTarget.ENTRY)"
+                                color="secondary"
+                                :disabled="!selectedCompo"
+                                @click="openReorderDialog"
+                            >
+                                <template #prepend>
+                                    <FontAwesomeIcon :icon="faArrowsUpDown" />
+                                </template>
+                                {{ t("EntriesView.reorder") }}
+                            </v-btn>
+                        </div>
+                    </template>
+                </v-tooltip>
                 <v-menu v-if="auth.canView(PermissionTarget.ENTRY)">
                     <template #activator="{ props: menuProps }">
                         <v-btn class="ml-4" :loading="archiveLoading" v-bind="menuProps">
@@ -43,9 +64,14 @@
                         </v-btn>
                     </template>
                     <v-list density="compact">
-                        <v-list-item @click="downloadArchive">
+                        <v-list-item @click="downloadArchive('rank')">
                             <v-list-item-title>
-                                {{ t("EntriesView.downloadAllEntries") }}
+                                {{ t("EntriesView.downloadByRank") }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="downloadArchive('order')">
+                            <v-list-item-title>
+                                {{ t("EntriesView.downloadByOrder") }}
                             </v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -150,6 +176,12 @@
             </v-row>
         </v-col>
         <DiplomaGeneratorDialog ref="diplomaDialog" :event-id="eventId" />
+        <EntryReorderDialog
+            ref="reorderDialog"
+            :event-id="eventId"
+            :compo-id="selectedCompo"
+            @saved="flushData"
+        />
         <ErrorDialog ref="missingFilesErrorDialog" :title="t('EntriesView.missingFilesTitle')">
             <p class="mb-2">{{ t("EntriesView.missingFilesDescription") }}</p>
             <v-list density="compact">
@@ -163,6 +195,7 @@
 
 <script setup lang="ts">
 import {
+    faArrowsUpDown,
     faChevronDown,
     faDownload,
     faCertificate,
@@ -197,6 +230,7 @@ import { useAsyncAction } from "@/composables/useAsyncAction";
 import { downloadSpreadsheet, type SpreadsheetFormat } from "@/utils/spreadsheet";
 import ErrorDialog from "@/components/dialogs/ErrorDialog.vue";
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
+import EntryReorderDialog from "./EntryReorderDialog.vue";
 
 const props = defineProps<{ eventId: string }>();
 const { t } = useI18n();
@@ -216,6 +250,7 @@ const archiveLoading = ref(false);
 const missingFilesErrorDialog: Ref<InstanceType<typeof ErrorDialog> | undefined> = ref(undefined);
 const missingFileEntries: Ref<string[]> = ref([]);
 const diplomaDialog: Ref<InstanceType<typeof DiplomaGeneratorDialog> | undefined> = ref(undefined);
+const reorderDialog: Ref<InstanceType<typeof EntryReorderDialog> | undefined> = ref(undefined);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     {
@@ -289,6 +324,12 @@ const headers = useResponsiveHeaders(() => [
         title: t("EntriesView.headers.compo"),
         sortable: true,
         key: "compo",
+    },
+    {
+        title: t("EntriesView.headers.order"),
+        sortable: true,
+        key: "order_index",
+        minBreakpoint: "md",
     },
     {
         title: t("EntriesView.headers.disqualified"),
@@ -437,6 +478,10 @@ function openDiplomaDialog(): void {
     diplomaDialog.value?.open();
 }
 
+function openReorderDialog(): void {
+    reorderDialog.value?.open();
+}
+
 /**
  * Download entry files as a zip archive.
  *
@@ -444,19 +489,20 @@ function openDiplomaDialog(): void {
  * On validation success, triggers a native browser download that streams
  * directly to disk (no buffering in browser memory).
  */
-async function downloadArchive(): Promise<void> {
+async function downloadArchive(prefix: "rank" | "order"): Promise<void> {
     const compo = selectedCompo.value ?? undefined;
     const params = new URLSearchParams();
     if (compo) {
         params.set("compo", String(compo));
     }
-    const suffix = params.toString() ? `?${params.toString()}` : "";
+    params.set("prefix", prefix);
+    const suffix = `?${params.toString()}`;
 
     archiveLoading.value = true;
     try {
         await api.adminEventKompomaattiEntriesValidateArchiveRetrieve({
             path: { event_pk: eventId.value },
-            query: { compo },
+            query: { compo, prefix },
         });
 
         // Validation passed — trigger native streaming download

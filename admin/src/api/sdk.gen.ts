@@ -106,6 +106,8 @@ import type {
     AdminEventKompomaattiEntriesListResponses,
     AdminEventKompomaattiEntriesPartialUpdateData,
     AdminEventKompomaattiEntriesPartialUpdateResponses,
+    AdminEventKompomaattiEntriesReorderCreateData,
+    AdminEventKompomaattiEntriesReorderCreateResponses,
     AdminEventKompomaattiEntriesRetrieveData,
     AdminEventKompomaattiEntriesRetrieveResponses,
     AdminEventKompomaattiEntriesUpdateData,
@@ -1734,7 +1736,6 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
         unknown,
         ThrowOnError
     >({
-        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1750,7 +1751,7 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/",
         ...options,
         headers: {
-            "Content-Type": null,
+            "Content-Type": "application/json",
             ...options.headers,
         },
     });
@@ -1831,7 +1832,6 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
-        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1847,7 +1847,7 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
         headers: {
-            "Content-Type": null,
+            "Content-Type": "application/json",
             ...options.headers,
         },
     });
@@ -1867,7 +1867,6 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
         unknown,
         ThrowOnError
     >({
-        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1883,7 +1882,7 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
         headers: {
-            "Content-Type": null,
+            "Content-Type": "application/json",
             ...options.headers,
         },
     });
@@ -1918,6 +1917,40 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
         ],
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/",
         ...options,
+    });
+};
+
+/**
+ * Reorder entries within a compo
+ *
+ * Sets the order_index of each entry based on its position in the provided entry_ids list. All entries must belong to the specified compo and event.
+ */
+export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventKompomaattiEntriesReorderCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        AdminEventKompomaattiEntriesReorderCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/reorder/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
     });
 };
 

@@ -110,6 +110,9 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "login": "5/min",
+    },
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "EXCEPTION_HANDLER": "Instanssi.api.exception_handler.custom_exception_handler",

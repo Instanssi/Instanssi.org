@@ -8,10 +8,13 @@ from rest_framework.response import Response
 
 from Instanssi.api.v2.serializers.auth import UserLoginSerializer
 from Instanssi.api.v2.utils.base import EnforceCSRFViewSet
+from Instanssi.api.v2.utils.throttles import LoginRateThrottle
 
 
 class LoginViewSet(EnforceCSRFViewSet):
     """Authenticate a user with username and password."""
+
+    throttle_classes = [LoginRateThrottle]
 
     @extend_schema(
         operation_id="login",

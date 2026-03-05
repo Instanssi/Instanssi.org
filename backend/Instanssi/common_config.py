@@ -60,6 +60,13 @@ MEDIA_PROGRAMME_IMAGES: str = "programme/images"
 MEDIA_STORE_IMAGES: str = "store/images"
 MEDIA_UPLOAD_FILES: str = "files"
 
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_URL = "/users/login/"

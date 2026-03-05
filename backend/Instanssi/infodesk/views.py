@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
+from django.views.decorators.http import require_POST
 
 from Instanssi.common.auth import infodesk_access_required
 from Instanssi.infodesk.forms import ItemKeyScanForm, TransactionKeyScanForm
@@ -148,6 +149,7 @@ def transaction_check(request: HttpRequest) -> HttpResponse:
 
 
 @infodesk_access_required
+@require_POST
 def item_mark(request: HttpRequest, item_id: int) -> HttpResponse:
     """Mark an item as delivered."""
     item = get_object_or_404(TransactionItem, pk=item_id)

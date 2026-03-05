@@ -3,6 +3,7 @@ from allauth.account.utils import has_verified_email
 from django.contrib import auth
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -14,6 +15,7 @@ from Instanssi.api.v2.utils.throttles import LoginRateThrottle
 class LoginViewSet(EnforceCSRFViewSet):
     """Authenticate a user with username and password."""
 
+    permission_classes = [AllowAny]
     throttle_classes = [LoginRateThrottle]
 
     @extend_schema(

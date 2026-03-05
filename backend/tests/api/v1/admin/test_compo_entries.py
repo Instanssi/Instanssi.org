@@ -107,8 +107,8 @@ def test_admin_compo_entries_detail_response(staff_api_client, editable_compo_en
         "youtube_url": None,
         "disqualified": False,
         "disqualified_reason": "",
-        "score": 0.0,
-        "rank": 1,
+        "score": None,
+        "rank": None,
     }
 
 

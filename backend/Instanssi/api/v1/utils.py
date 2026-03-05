@@ -8,7 +8,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     UpdateModelMixin,
 )
-from rest_framework.permissions import SAFE_METHODS, BasePermission
+from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.viewsets import GenericViewSet
 
@@ -42,11 +42,6 @@ class ReadWriteDeleteModelViewSet(
     CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet[Any]
 ):
     pass
-
-
-class IsAuthenticatedOrWriteOnly(BasePermission):
-    def has_permission(self, request: Request, view: Any) -> bool:
-        return request.method == "POST" or request.method in SAFE_METHODS or request.user.is_authenticated
 
 
 class IsWriteOnly(BasePermission):

@@ -388,7 +388,7 @@ def test_auth_programme_events(auth_client):
 def test_auth_store_items(auth_client):
     url = "/api/v1/store_items/"
     assert auth_client.get(url).status_code == 200
-    assert auth_client.post(url).status_code == 403  # Unauthorized by permission class
+    assert auth_client.post(url).status_code == 405  # Read-only viewset
     assert auth_client.options(url).status_code == 200
 
 

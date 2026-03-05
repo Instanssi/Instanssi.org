@@ -2,6 +2,8 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from celery.schedules import crontab
+
 PROJECT_DIR = Path(__file__).resolve(strict=True).parent
 BASE_DIR = PROJECT_DIR.parent
 
@@ -48,6 +50,10 @@ CELERY_BEAT_SCHEDULE = {
     "cleanup-old-sent-notifications": {
         "task": "Instanssi.notifications.tasks.cleanup_old_sent_notifications",
         "schedule": timedelta(days=1),
+    },
+    "cleanup-old-audit-logs": {
+        "task": "Instanssi.common.tasks.cleanup_old_audit_logs",
+        "schedule": crontab(hour=3, minute=0),
     },
 }
 

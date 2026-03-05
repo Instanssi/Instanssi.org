@@ -92,6 +92,9 @@ VAPID_PUBLIC_KEY = ""
 VAPID_PRIVATE_KEY = ""
 VAPID_CLAIMS_EMAIL = "admin@instanssi.org"
 
+# In production, disable the browsable API:
+# REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ["rest_framework.renderers.JSONRenderer"]
+
 # Crispy forms stuff
 CRISPY_FAIL_SILENTLY = not DEBUG
 CRISPY_TEMPLATE_PACK = "bootstrap3"

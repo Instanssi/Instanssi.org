@@ -23,7 +23,6 @@ class CompoSerializer(ModelSerializer[Compo]):
             "adding_end",
             "editing_end",
             "compo_start",
-            "voting_start",
             "voting_end",
             "entry_sizelimit",
             "source_sizelimit",
@@ -40,7 +39,6 @@ class CompoSerializer(ModelSerializer[Compo]):
             "entry_view_type",
             "hide_from_archive",
             "hide_from_frontpage",
-            "is_votable",
             "thumbnail_pref",
         )
         read_only_fields = ("event",)  # Set from URL, not request body

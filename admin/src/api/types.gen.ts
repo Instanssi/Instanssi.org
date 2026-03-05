@@ -234,10 +234,6 @@ export type Compo = {
      */
     compo_start: string;
     /**
-     * Voting start time
-     */
-    voting_start: string;
-    /**
      * Voting end time
      */
     voting_end: string;
@@ -281,10 +277,6 @@ export type Compo = {
      */
     hide_from_frontpage?: boolean;
     /**
-     * Votable
-     */
-    is_votable?: boolean;
-    /**
      * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
@@ -319,6 +311,14 @@ export type CompoEntry = {
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
     youtube_url?: string | null;
+    /**
+     * Revealed in live voting
+     */
+    live_voting_revealed?: boolean;
+    /**
+     * Live voting reveal order
+     */
+    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -366,6 +366,14 @@ export type CompoEntryRequest = {
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
+    /**
+     * Revealed in live voting
+     */
+    live_voting_revealed?: boolean;
+    /**
+     * Live voting reveal order
+     */
+    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -399,10 +407,6 @@ export type CompoRequest = {
      * Compo start time
      */
     compo_start: string;
-    /**
-     * Voting start time
-     */
-    voting_start: string;
     /**
      * Voting end time
      */
@@ -441,10 +445,6 @@ export type CompoRequest = {
      * Hide from front page
      */
     hide_from_frontpage?: boolean;
-    /**
-     * Votable
-     */
-    is_votable?: boolean;
     /**
      * Thumbnail settings
      */
@@ -1038,6 +1038,33 @@ export type GroupRequest = {
  */
 export type LanguageEnum = "en" | "fi";
 
+export type LiveVotingEntry = {
+    readonly id: number;
+    readonly name: string;
+    readonly creator: string;
+    readonly imagefile_thumbnail_url: string | null;
+    /**
+     * Revealed in live voting
+     */
+    readonly live_voting_revealed: boolean;
+    /**
+     * Live voting reveal order
+     */
+    readonly live_voting_order: number;
+};
+
+export type LiveVotingEntryActionRequest = {
+    entry_id: number;
+};
+
+export type LiveVotingState = {
+    readonly compo: number;
+    voting_open?: boolean;
+    current_entry?: number | null;
+    readonly updated_at: string;
+    readonly entries: Array<LiveVotingEntry>;
+};
+
 /**
  * Serializer for audit log entries.
  */
@@ -1458,6 +1485,14 @@ export type PatchedCompoEntryRequest = {
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
+    /**
+     * Revealed in live voting
+     */
+    live_voting_revealed?: boolean;
+    /**
+     * Live voting reveal order
+     */
+    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -1491,10 +1526,6 @@ export type PatchedCompoRequest = {
      * Compo start time
      */
     compo_start?: string;
-    /**
-     * Voting start time
-     */
-    voting_start?: string;
     /**
      * Voting end time
      */
@@ -1534,10 +1565,6 @@ export type PatchedCompoRequest = {
      */
     hide_from_frontpage?: boolean;
     /**
-     * Votable
-     */
-    is_votable?: boolean;
-    /**
      * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
@@ -1559,6 +1586,11 @@ export type PatchedEventRequest = {
      * Event main page
      */
     mainurl?: string;
+};
+
+export type PatchedLiveVotingUpdateRequest = {
+    voting_open?: boolean;
+    current_entry?: number | null;
 };
 
 /**
@@ -2084,10 +2116,6 @@ export type PublicCompo = {
      */
     compo_start: string;
     /**
-     * Voting start time
-     */
-    voting_start: string;
-    /**
      * Voting end time
      */
     voting_end: string;
@@ -2095,10 +2123,6 @@ export type PublicCompo = {
      * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Votable
-     */
-    is_votable?: boolean;
 };
 
 /**
@@ -2144,6 +2168,14 @@ export type PublicEvent = {
      * Event main page
      */
     mainurl?: string;
+};
+
+export type PublicLiveVotingState = {
+    compo: number;
+    voting_open: boolean;
+    current_entry: number | null;
+    updated_at: string;
+    revealed_entries: Array<number>;
 };
 
 /**
@@ -3231,10 +3263,6 @@ export type CompoWritable = {
      */
     compo_start: string;
     /**
-     * Voting start time
-     */
-    voting_start: string;
-    /**
      * Voting end time
      */
     voting_end: string;
@@ -3273,10 +3301,6 @@ export type CompoWritable = {
      */
     hide_from_frontpage?: boolean;
     /**
-     * Votable
-     */
-    is_votable?: boolean;
-    /**
      * Thumbnail settings
      */
     thumbnail_pref?: ThumbnailPrefEnum;
@@ -3305,6 +3329,14 @@ export type CompoEntryWritable = {
      */
     imagefile_original?: string | null;
     youtube_url?: string | null;
+    /**
+     * Revealed in live voting
+     */
+    live_voting_revealed?: boolean;
+    /**
+     * Live voting reveal order
+     */
+    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -3354,6 +3386,11 @@ export type EventWritable = {
  */
 export type GroupWritable = {
     name: string;
+};
+
+export type LiveVotingStateWritable = {
+    voting_open?: boolean;
+    current_entry?: number | null;
 };
 
 /**
@@ -3564,10 +3601,6 @@ export type PublicCompoWritable = {
      */
     compo_start: string;
     /**
-     * Voting start time
-     */
-    voting_start: string;
-    /**
      * Voting end time
      */
     voting_end: string;
@@ -3575,10 +3608,6 @@ export type PublicCompoWritable = {
      * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
-    /**
-     * Votable
-     */
-    is_votable?: boolean;
 };
 
 /**
@@ -4894,7 +4923,6 @@ export type AdminEventKompomaattiComposListData = {
         active?: boolean;
         hide_from_archive?: boolean;
         hide_from_frontpage?: boolean;
-        is_votable?: boolean;
         /**
          * Number of results to return per page.
          */
@@ -5205,6 +5233,146 @@ export type AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses = {
 
 export type AdminEventKompomaattiEntriesValidateArchiveRetrieveResponse =
     AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses[keyof AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses];
+
+export type AdminEventKompomaattiLiveVotingRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/";
+};
+
+export type AdminEventKompomaattiLiveVotingRetrieveResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingRetrieveResponse =
+    AdminEventKompomaattiLiveVotingRetrieveResponses[keyof AdminEventKompomaattiLiveVotingRetrieveResponses];
+
+export type AdminEventKompomaattiLiveVotingPartialUpdateData = {
+    body?: PatchedLiveVotingUpdateRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/";
+};
+
+export type AdminEventKompomaattiLiveVotingPartialUpdateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingPartialUpdateResponse =
+    AdminEventKompomaattiLiveVotingPartialUpdateResponses[keyof AdminEventKompomaattiLiveVotingPartialUpdateResponses];
+
+export type AdminEventKompomaattiLiveVotingHideAllCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_all/";
+};
+
+export type AdminEventKompomaattiLiveVotingHideAllCreateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingHideAllCreateResponse =
+    AdminEventKompomaattiLiveVotingHideAllCreateResponses[keyof AdminEventKompomaattiLiveVotingHideAllCreateResponses];
+
+export type AdminEventKompomaattiLiveVotingHideEntryCreateData = {
+    body: LiveVotingEntryActionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_entry/";
+};
+
+export type AdminEventKompomaattiLiveVotingHideEntryCreateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingHideEntryCreateResponse =
+    AdminEventKompomaattiLiveVotingHideEntryCreateResponses[keyof AdminEventKompomaattiLiveVotingHideEntryCreateResponses];
+
+export type AdminEventKompomaattiLiveVotingResetCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reset/";
+};
+
+export type AdminEventKompomaattiLiveVotingResetCreateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingResetCreateResponse =
+    AdminEventKompomaattiLiveVotingResetCreateResponses[keyof AdminEventKompomaattiLiveVotingResetCreateResponses];
+
+export type AdminEventKompomaattiLiveVotingRevealAllCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_all/";
+};
+
+export type AdminEventKompomaattiLiveVotingRevealAllCreateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingRevealAllCreateResponse =
+    AdminEventKompomaattiLiveVotingRevealAllCreateResponses[keyof AdminEventKompomaattiLiveVotingRevealAllCreateResponses];
+
+export type AdminEventKompomaattiLiveVotingRevealEntryCreateData = {
+    body: LiveVotingEntryActionRequest;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this live voting state.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_entry/";
+};
+
+export type AdminEventKompomaattiLiveVotingRevealEntryCreateResponses = {
+    200: LiveVotingState;
+};
+
+export type AdminEventKompomaattiLiveVotingRevealEntryCreateResponse =
+    AdminEventKompomaattiLiveVotingRevealEntryCreateResponses[keyof AdminEventKompomaattiLiveVotingRevealEntryCreateResponses];
 
 export type AdminEventKompomaattiTicketVoteCodesListData = {
     body?: never;
@@ -7611,6 +7779,30 @@ export type PublicEventKompomaattiEntriesRetrieveResponses = {
 
 export type PublicEventKompomaattiEntriesRetrieveResponse =
     PublicEventKompomaattiEntriesRetrieveResponses[keyof PublicEventKompomaattiEntriesRetrieveResponses];
+
+export type PublicEventKompomaattiLiveVotingRetrieveData = {
+    body?: never;
+    path: {
+        compo_pk: number;
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/";
+};
+
+export type PublicEventKompomaattiLiveVotingRetrieveErrors = {
+    /**
+     * No response body
+     */
+    404: unknown;
+};
+
+export type PublicEventKompomaattiLiveVotingRetrieveResponses = {
+    200: PublicLiveVotingState;
+};
+
+export type PublicEventKompomaattiLiveVotingRetrieveResponse =
+    PublicEventKompomaattiLiveVotingRetrieveResponses[keyof PublicEventKompomaattiLiveVotingRetrieveResponses];
 
 export type PublicEventProgramEventsListData = {
     body?: never;

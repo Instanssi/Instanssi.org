@@ -163,7 +163,6 @@ def test_check_upcoming_compos(mock_webpush, staff_with_subscription, notificati
         adding_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 12, 10, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         active=True,
     )
@@ -206,7 +205,6 @@ def test_check_skips_inactive_compos(mock_webpush, staff_with_subscription, noti
         adding_end=datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2025, 1, 15, 12, 10, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2025, 1, 15, 13, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc),
         active=False,
     )

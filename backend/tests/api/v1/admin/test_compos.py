@@ -82,7 +82,6 @@ def test_admin_compos_list_response(staff_api_client, votable_compo):
             "adding_end": _dt(datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc)),
             "editing_end": _dt(datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc)),
             "compo_start": _dt(datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc)),
-            "voting_start": _dt(datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc)),
             "voting_end": _dt(datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc)),
             "max_source_size": 134217728,
             "max_entry_size": 134217728,
@@ -94,7 +93,6 @@ def test_admin_compos_list_response(staff_api_client, votable_compo):
             "entry_view_type": 0,
             "hide_from_archive": False,
             "hide_from_frontpage": False,
-            "is_votable": True,
             "thumbnail_pref": 2,
         }
     ]
@@ -113,7 +111,6 @@ def test_admin_compos_detail_response(staff_api_client, votable_compo):
         "adding_end": _dt(datetime(2025, 1, 15, 6, 0, 0, tzinfo=dt_tz.utc)),
         "editing_end": _dt(datetime(2025, 1, 15, 10, 0, 0, tzinfo=dt_tz.utc)),
         "compo_start": _dt(datetime(2025, 1, 15, 11, 0, 0, tzinfo=dt_tz.utc)),
-        "voting_start": _dt(datetime(2025, 1, 15, 11, 30, 0, tzinfo=dt_tz.utc)),
         "voting_end": _dt(datetime(2025, 1, 15, 20, 0, 0, tzinfo=dt_tz.utc)),
         "max_source_size": 134217728,
         "max_entry_size": 134217728,
@@ -125,7 +122,6 @@ def test_admin_compos_detail_response(staff_api_client, votable_compo):
         "entry_view_type": 0,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,
     }
 

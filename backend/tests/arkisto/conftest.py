@@ -23,7 +23,6 @@ def archived_compo(archived_event) -> Compo:
         adding_end=datetime(2024, 1, 10, 12, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2024, 1, 11, 12, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2024, 1, 12, 12, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2024, 1, 12, 13, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2024, 1, 13, 12, 0, 0, tzinfo=dt_tz.utc),
     )
 
@@ -39,7 +38,6 @@ def hidden_from_archive_compo(archived_event) -> Compo:
         adding_end=datetime(2024, 1, 10, 12, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2024, 1, 11, 12, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2024, 1, 12, 12, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2024, 1, 12, 13, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2024, 1, 13, 12, 0, 0, tzinfo=dt_tz.utc),
     )
 
@@ -55,7 +53,6 @@ def inactive_archived_compo(archived_event) -> Compo:
         adding_end=datetime(2024, 1, 10, 12, 0, 0, tzinfo=dt_tz.utc),
         editing_end=datetime(2024, 1, 11, 12, 0, 0, tzinfo=dt_tz.utc),
         compo_start=datetime(2024, 1, 12, 12, 0, 0, tzinfo=dt_tz.utc),
-        voting_start=datetime(2024, 1, 12, 13, 0, 0, tzinfo=dt_tz.utc),
         voting_end=datetime(2024, 1, 13, 12, 0, 0, tzinfo=dt_tz.utc),
     )
 

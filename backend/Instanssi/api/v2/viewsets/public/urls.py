@@ -12,6 +12,9 @@ from Instanssi.api.v2.viewsets.public import (
     PublicOtherVideoViewSet,
     PublicProgramEventViewSet,
 )
+from Instanssi.api.v2.viewsets.public.kompomaatti.live_voting import (
+    PublicLiveVotingView,
+)
 from Instanssi.api.v2.viewsets.public.notifications import VapidPublicKeyView
 from Instanssi.api.v2.viewsets.public.store.public_store_items import (
     PublicStoreItemViewSet,
@@ -62,6 +65,11 @@ urlpatterns: list[URLPattern | URLResolver] = [
         name="public_notifications_vapid_key",
     ),
     path("event/<int:event_pk>/kompomaatti/", include(kompomaatti_router.urls)),
+    path(
+        "event/<int:event_pk>/kompomaatti/live_voting/<int:compo_pk>/",
+        PublicLiveVotingView.as_view(),
+        name="public_kompomaatti_live_voting",
+    ),
     path("event/<int:event_pk>/program/", include(program_router.urls)),
     path("event/<int:event_pk>/archive/", include(archive_router.urls)),
     path("store/", include(store_router.urls)),

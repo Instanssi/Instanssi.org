@@ -18,7 +18,6 @@ Maksimikoko: Ei rajoitusta (järki käteen)""",
         "adding_end": datetime(2026, 2, 22, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2026, 2, 25, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2026, 2, 27, 18, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2026, 2, 27, 18, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2026, 3, 1, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 10 * 1024 * 1024,  # 10 MB
         "source_sizelimit": 50 * 1024 * 1024,  # 50 MB
@@ -30,7 +29,6 @@ Maksimikoko: Ei rajoitusta (järki käteen)""",
         "entry_view_type": 2,  # Image only
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 1,  # Use entry file as thumbnail
     },
     {
@@ -46,7 +44,6 @@ Lähdekoodit: Tracker-tiedostot, projektifileet yms. suositeltavia!""",
         "adding_end": datetime(2026, 2, 22, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2026, 2, 25, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2026, 2, 27, 19, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2026, 2, 27, 19, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2026, 3, 1, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 50 * 1024 * 1024,  # 50 MB
         "source_sizelimit": 100 * 1024 * 1024,  # 100 MB
@@ -58,7 +55,6 @@ Lähdekoodit: Tracker-tiedostot, projektifileet yms. suositeltavia!""",
         "entry_view_type": 1,  # Youtube first, then image
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,  # Optional thumbnail
     },
     {
@@ -74,7 +70,6 @@ mainitse ne kuvauksessa.""",
         "adding_end": datetime(2026, 2, 22, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2026, 2, 25, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2026, 2, 27, 20, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2026, 2, 27, 20, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2026, 3, 1, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 200 * 1024 * 1024,  # 200 MB
         "source_sizelimit": 200 * 1024 * 1024,  # 200 MB
@@ -86,7 +81,6 @@ mainitse ne kuvauksessa.""",
         "entry_view_type": 1,  # Youtube first, then image
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 0,  # Require separate thumbnail
     },
 ]
@@ -100,7 +94,6 @@ compos_2024: list[dict[str, Any]] = [
         "adding_end": datetime(2024, 2, 27, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2024, 2, 28, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2024, 3, 1, 18, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2024, 3, 1, 18, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2024, 3, 2, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 10 * 1024 * 1024,
         "source_sizelimit": 50 * 1024 * 1024,
@@ -112,7 +105,6 @@ compos_2024: list[dict[str, Any]] = [
         "entry_view_type": 2,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 1,
     },
     {
@@ -122,7 +114,6 @@ compos_2024: list[dict[str, Any]] = [
         "adding_end": datetime(2024, 2, 27, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2024, 2, 28, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2024, 3, 1, 19, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2024, 3, 1, 19, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2024, 3, 2, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 50 * 1024 * 1024,
         "source_sizelimit": 100 * 1024 * 1024,
@@ -134,7 +125,6 @@ compos_2024: list[dict[str, Any]] = [
         "entry_view_type": 1,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,
     },
 ]
@@ -148,7 +138,6 @@ compos_2023: list[dict[str, Any]] = [
         "adding_end": datetime(2023, 3, 1, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2023, 3, 2, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2023, 3, 3, 18, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2023, 3, 3, 18, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2023, 3, 5, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 10 * 1024 * 1024,
         "source_sizelimit": 50 * 1024 * 1024,
@@ -160,7 +149,6 @@ compos_2023: list[dict[str, Any]] = [
         "entry_view_type": 2,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 1,
     },
     {
@@ -170,7 +158,6 @@ compos_2023: list[dict[str, Any]] = [
         "adding_end": datetime(2023, 3, 1, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2023, 3, 2, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2023, 3, 3, 19, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2023, 3, 3, 19, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2023, 3, 5, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 50 * 1024 * 1024,
         "source_sizelimit": 100 * 1024 * 1024,
@@ -182,7 +169,6 @@ compos_2023: list[dict[str, Any]] = [
         "entry_view_type": 1,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,
     },
     {
@@ -192,7 +178,6 @@ compos_2023: list[dict[str, Any]] = [
         "adding_end": datetime(2023, 3, 1, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2023, 3, 2, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2023, 3, 3, 20, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2023, 3, 3, 20, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2023, 3, 5, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 200 * 1024 * 1024,
         "source_sizelimit": 200 * 1024 * 1024,
@@ -204,7 +189,6 @@ compos_2023: list[dict[str, Any]] = [
         "entry_view_type": 1,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 0,
     },
 ]
@@ -218,7 +202,6 @@ compos_2021: list[dict[str, Any]] = [
         "adding_end": datetime(2021, 3, 3, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2021, 3, 4, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2021, 3, 5, 18, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2021, 3, 5, 18, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2021, 3, 7, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 10 * 1024 * 1024,
         "source_sizelimit": 50 * 1024 * 1024,
@@ -230,7 +213,6 @@ compos_2021: list[dict[str, Any]] = [
         "entry_view_type": 2,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 1,
     },
     {
@@ -240,7 +222,6 @@ compos_2021: list[dict[str, Any]] = [
         "adding_end": datetime(2021, 3, 3, 23, 59, 0, tzinfo=UTC),
         "editing_end": datetime(2021, 3, 4, 12, 0, 0, tzinfo=UTC),
         "compo_start": datetime(2021, 3, 5, 19, 0, 0, tzinfo=UTC),
-        "voting_start": datetime(2021, 3, 5, 19, 30, 0, tzinfo=UTC),
         "voting_end": datetime(2021, 3, 7, 12, 0, 0, tzinfo=UTC),
         "entry_sizelimit": 50 * 1024 * 1024,
         "source_sizelimit": 100 * 1024 * 1024,
@@ -252,7 +233,6 @@ compos_2021: list[dict[str, Any]] = [
         "entry_view_type": 1,
         "hide_from_archive": False,
         "hide_from_frontpage": False,
-        "is_votable": True,
         "thumbnail_pref": 2,
     },
 ]

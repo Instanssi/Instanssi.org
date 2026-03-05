@@ -23,7 +23,6 @@ class CompoViewSet(PermissionViewSet):
         "name",
         "adding_end",
         "compo_start",
-        "voting_start",
         "voting_end",
         "active",
     )
@@ -31,7 +30,6 @@ class CompoViewSet(PermissionViewSet):
     filterset_fields = (
         "active",
         "show_voting_results",
-        "is_votable",
         "hide_from_archive",
         "hide_from_frontpage",
     )

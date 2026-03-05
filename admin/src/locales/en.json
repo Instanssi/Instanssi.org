@@ -112,6 +112,7 @@
         "entries": "Entries",
         "competitions": "Competitions",
         "competitionParticipations": "Participations",
+        "liveVoting": "Live Voting",
         "voteCodes": "Ticket Vote Codes",
         "voteCodeRequests": "Vote Requests",
         "store": "Store",
@@ -235,13 +236,13 @@
       "loadingCompos": "Loading compos ...",
       "headers": {
         "addingEnd": "Entry deadline",
-        "votingStart": "Voting start",
         "votingEnd": "Voting end"
       },
       "filterByStatus": "Status",
       "allStatuses": "All",
       "activeOnly": "Active",
-      "inactiveOnly": "Inactive"
+      "inactiveOnly": "Inactive",
+      "liveVoting": "Live voting"
     },
     "CompoEditView": {
       "newTitle": "New Compo",
@@ -261,7 +262,6 @@
         "addingEnd": "Entry deadline",
         "editingEnd": "Edit deadline",
         "compoStart": "Compo start",
-        "votingStart": "Voting start",
         "votingEnd": "Voting end",
         "entrySizelimit": "Max entry size (bytes)",
         "sourceSizelimit": "Max source size (bytes)",
@@ -276,10 +276,6 @@
         "showVotingResultsOff": "Voting results are hidden",
         "showVotingResultsHintOn": "Scores, rankings, and entry files are publicly visible",
         "showVotingResultsHintOff": "Scores and rankings are hidden; entry files hidden until voting starts",
-        "isVotableOn": "Voting is enabled",
-        "isVotableOff": "Voting is disabled",
-        "isVotableHintOn": "Users can vote on entries during the voting period",
-        "isVotableHintOff": "Voting disabled entirely; use for externally judged compos (e.g. Robocoding)",
         "entryViewType": "Entry view type",
         "thumbnailPref": "Thumbnail preference",
         "hideFromArchiveOn": "Hidden from archive",
@@ -526,6 +522,29 @@
         "disqualifiedOff": "Participant is not disqualified",
         "disqualifiedReason": "Reason"
       }
+    },
+    "LiveVotingView": {
+      "title": "Live Voting",
+      "selectCompo": "Select compo",
+      "noLiveCompos": "No compos with live voting enabled.",
+      "loadFailure": "Failed to load live voting state.",
+      "actionFailure": "Action failed; try again.",
+      "openVoting": "Open Voting",
+      "closeVoting": "Close Voting",
+      "revealAll": "Reveal All",
+      "revealAllConfirm": "Reveal all entries?",
+      "hideAll": "Hide All",
+      "hideAllConfirm": "Hide all entries?",
+      "reset": "Reset",
+      "openVotingConfirm": "Open voting for this compo?",
+      "closeVotingConfirm": "Close voting for this compo?",
+      "resetConfirm": "Reset all entries and close voting?",
+      "reveal": "Reveal",
+      "hide": "Hide",
+      "revealed": "Revealed",
+      "onScreen": "On Screen",
+      "votingEnd": "Voting ends:",
+      "votingTimeEnded": "Ended"
     },
     "VoteCodesView": {
       "title": "Ticket Vote Codes",

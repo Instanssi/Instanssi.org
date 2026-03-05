@@ -2,7 +2,6 @@ import logging
 from typing import Any, cast
 
 from django.db.models import Q, QuerySet
-from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
@@ -208,7 +207,7 @@ class CompoEntryViewSet(ReadOnlyModelViewSet[Entry]):
     def get_queryset(self) -> QuerySet[Entry]:
         return (
             Entry.objects.filter(compo__active=True, compo__event__hidden=False)
-            .filter(Q(compo__voting_start__lt=timezone.now()) | Q(compo__event__archived=True))
+            .filter(Q(live_voting_revealed=True) | Q(compo__event__archived=True))
             .with_rank()
         )
 

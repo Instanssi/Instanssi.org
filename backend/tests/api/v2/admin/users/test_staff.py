@@ -220,6 +220,26 @@ def test_non_superuser_cannot_set_is_staff(api_client, create_user, password, ba
 
 
 @pytest.mark.django_db
+def test_non_superuser_cannot_modify_groups(api_client, create_user, password, base_user):
+    """Non-superuser staff cannot change group assignments."""
+    staff = create_user(
+        is_staff=True,
+        permissions=["users.view_user", "users.change_user"],
+    )
+    api_client.login(username=staff.username, password=password)
+
+    group = Group.objects.get(name="staff_defaults")
+    result = api_client.patch(
+        f"{BASE_URL}{base_user.id}/",
+        dict(group_ids=[group.id]),
+        format="json",
+    )
+    assert result.status_code == 200
+    base_user.refresh_from_db()
+    assert base_user.groups.count() == 0
+
+
+@pytest.mark.django_db
 def test_assign_groups_via_patch(super_api_client, base_user):
     """Groups can be assigned to a user via group_ids"""
     group = Group.objects.get(name="staff_defaults")

@@ -62,3 +62,5 @@ class UserSerializer(ModelSerializer[User]):
         request = self.context.get("request")
         if request and request.user.is_superuser:
             self.fields["is_staff"].read_only = False
+        else:
+            self.fields["group_ids"].read_only = True

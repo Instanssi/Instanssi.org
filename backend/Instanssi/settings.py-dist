@@ -36,8 +36,9 @@ LANGUAGE_CODE = "en"
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ""
 
-# Set this to True in production for https-only cookies
+# Set these to True in production for https-only cookies
 SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # Social account providers (django-allauth)
 SOCIALACCOUNT_PROVIDERS = {

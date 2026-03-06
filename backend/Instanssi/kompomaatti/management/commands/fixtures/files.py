@@ -7,6 +7,8 @@ TEST_IMAGE_1 = BASE_DIR / "files" / "image1.jpg"
 TEST_IMAGE_2 = BASE_DIR / "files" / "image2.jpg"
 TEST_IMAGE_3 = BASE_DIR / "files" / "image3.jpg"
 TEST_VIDEO_1 = BASE_DIR / "files" / "video1.mp4"
+TEST_MUSIC_1 = BASE_DIR / "files" / "music1.mp3"
+TEST_MUSIC_2 = BASE_DIR / "files" / "music2.flac"
 TEST_ARCHIVE_1 = BASE_DIR / "files" / "archive1.zip"
 
 TICKET1_IMAGE = BASE_DIR / "files" / "ticket1.png"
@@ -21,6 +23,10 @@ def get_random_image_filename() -> Path:
 
 def get_random_video_filename() -> Path:
     return random.choice([TEST_VIDEO_1])
+
+
+def get_random_music_filename() -> Path:
+    return random.choice([TEST_MUSIC_1, TEST_MUSIC_2])
 
 
 def get_random_archive_filename() -> Path:

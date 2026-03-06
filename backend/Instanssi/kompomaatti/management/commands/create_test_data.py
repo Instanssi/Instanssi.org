@@ -4,6 +4,7 @@ from pathlib import Path
 from secrets import token_hex
 from typing import Any
 
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.core.files import File
 from django.core.management.base import BaseCommand
@@ -43,6 +44,7 @@ from .fixtures.events import events
 from .fixtures.files import (
     get_random_archive_filename,
     get_random_image_filename,
+    get_random_music_filename,
     get_random_ticket_product_image_filename,
     get_random_tshirt_product_image_filename,
     get_random_video_filename,
@@ -104,6 +106,18 @@ class Command(BaseCommand):
             self.created_users[username] = user
             self.stdout.write(f"  Created user: {username} (password: {username})")
 
+    def setup_email_addresses(self) -> None:
+        """Create verified EmailAddress records for all test users (django-allauth)"""
+        self.stdout.write("Creating verified email addresses...")
+        for user in self.created_users.values():
+            if not user.email:
+                continue
+            if EmailAddress.objects.filter(user=user, email=user.email).exists():
+                self.stdout.write(f"  Email for {user.username} already exists, skipping...")
+                continue
+            EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
+            self.stdout.write(f"  Created verified email: {user.email} for {user.username}")
+
     def setup_events(self) -> None:
         """Create events"""
         self.stdout.write("Creating events...")
@@ -144,6 +158,8 @@ class Command(BaseCommand):
             filepath = get_random_image_filename()
         elif file_type == "video":
             filepath = get_random_video_filename()
+        elif file_type == "music":
+            filepath = get_random_music_filename()
         elif file_type == "archive":
             filepath = get_random_archive_filename()
         elif file_type == "ticket":
@@ -778,6 +794,7 @@ class Command(BaseCommand):
         try:
             with transaction.atomic():
                 self.setup_users()
+                self.setup_email_addresses()
                 self.setup_events()
                 self.setup_compos()
                 self.setup_entries()

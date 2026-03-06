@@ -80,9 +80,8 @@
             <div class="mt-3">
                 <span class="meta-label small d-block mb-1">{% trans "Listen" %}</span>
                 <audio preload="auto" controls>
-                    <source src="{{ entry.entryfile.url }}" />
-                    {% for alternate in entry.alternate_files.all %}
-                        <source src="{{ alternate.file.url }}" type="{{ alternate.mime_format }}">
+                    {% for source in entry.get_audio_sources %}
+                        <source src="{{ source.url }}" {% if source.type %}type="{{ source.type }}"{% endif %}>
                     {% endfor %}
                 </audio>
             </div>

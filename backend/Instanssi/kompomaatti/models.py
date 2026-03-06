@@ -14,6 +14,7 @@ from Instanssi.common.html.fields import SanitizedHtmlField
 from Instanssi.common.youtube.fields import YoutubeVideoField
 from Instanssi.kompomaatti.enums import (
     AUDIO_FILE_EXTENSIONS,
+    BROWSER_AUDIO_EXTENSIONS,
     WEB_AUDIO_FORMATS,
     MediaCodec,
     MediaContainer,
@@ -340,6 +341,27 @@ class Entry(models.Model):
     @property
     def is_audio(self) -> bool:
         return self.entry_file_ext in AUDIO_FILE_EXTENSIONS
+
+    def get_audio_sources(self) -> list[dict[str, str]]:
+        """Return audio <source> entries in optimal browser playback order.
+
+        If the original file is browser-friendly (mp3, ogg, opus, m4a, etc.),
+        it comes first with alternates after. Otherwise, alternates come first
+        and the original is a fallback at the end.
+        """
+        original_ext = self.entry_file_ext.lower()
+        original_mime = BROWSER_AUDIO_EXTENSIONS.get(original_ext)
+        original_source: dict[str, str] = {"url": self.entryfile.url}
+        if original_mime:
+            original_source["type"] = original_mime
+
+        alternate_sources = [
+            {"url": alt.file.url, "type": alt.mime_format} for alt in self.alternate_files.all()
+        ]
+
+        if original_mime:
+            return [original_source] + alternate_sources
+        return alternate_sources + [original_source]
 
     def get_show_list(self) -> dict[str, bool]:
         show = {"youtube": False, "image": False, "noshow": True}

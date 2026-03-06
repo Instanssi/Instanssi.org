@@ -15,9 +15,10 @@ log = logging.getLogger(__name__)
 
 
 # Predefined bit-rates for known formats. Otherwise, use a guess.
+# These sound pretty good, and make decently small files.
 FFMPEG_BITRATE: Final[Dict[MediaCodec, str]] = {
-    MediaCodec.OPUS: "256k",
-    MediaCodec.AAC: "256k",
+    MediaCodec.OPUS: "128k",
+    MediaCodec.AAC: "160k",
 }
 
 # Map codec to ffmpeg encoder name
@@ -25,6 +26,13 @@ FFMPEG_ENCODERS: Final[Dict[MediaCodec, str]] = {
     MediaCodec.AAC: "aac",
     MediaCodec.OPUS: "libopus",
 }
+
+
+def _has_video_stream(source_file: Path) -> bool:
+    """Use ffprobe to check if the file contains a video stream."""
+    probe = ffmpeg.probe(source_file.resolve())
+    streams = probe.get("streams", [])
+    return any(s["codec_type"] == "video" for s in streams)
 
 
 @shared_task(autoretry_for=[Entry.DoesNotExist], retry_backoff=3, retry_kwargs={"max_retries": 3})  # type: ignore[untyped-decorator]
@@ -39,6 +47,10 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
     # Some quick sanity checks for the input.
     if not entry.is_audio:
         log.error("Unable to convert -- Input file is not an audio file")
+        return
+
+    if _has_video_stream(source_file):
+        log.info("Skipping conversion -- file contains a video stream: %s", source_file)
         return
 
     log.info(

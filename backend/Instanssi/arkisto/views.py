@@ -29,10 +29,18 @@ def text_event(request: HttpRequest, event_id: int) -> HttpResponse:
             compo.entries = Entry.objects.filter(compo=compo).order_by("name")  # type: ignore[attr-defined]
         compos.append(compo)
 
+    # Get all competitions that are active but not hidden from archive
+    competitions: list[Any] = []
+    for comp in Competition.objects.filter(event=event, active=True, hide_from_archive=False):
+        comp.participants = (  # type: ignore[attr-defined]
+            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")
+        )
+        competitions.append(comp)
+
     return render(
         request,
         "arkisto/results.txt",
-        {"event": event, "compos": compos},
+        {"event": event, "compos": compos, "competitions": competitions},
         content_type="text/plain; charset=utf-8",
     )
 

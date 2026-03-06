@@ -301,6 +301,7 @@ export type CompoEntry = {
     description: string;
     creator: string;
     platform?: string | null;
+    order_index?: number;
     /**
      * File
      */
@@ -353,6 +354,7 @@ export type CompoEntryRequest = {
     description: string;
     creator: string;
     platform?: string | null;
+    order_index?: number;
     /**
      * File
      */
@@ -1445,6 +1447,7 @@ export type PatchedCompoEntryRequest = {
     description?: string;
     creator?: string;
     platform?: string | null;
+    order_index?: number;
     /**
      * File
      */
@@ -2117,6 +2120,7 @@ export type PublicCompoEntry = {
     description: string;
     creator: string;
     platform?: string | null;
+    order_index?: number;
     readonly imagefile_original_url: string | null;
     readonly imagefile_thumbnail_url: string | null;
     readonly imagefile_medium_url: string | null;
@@ -2406,6 +2410,15 @@ export type ReceiptRequest = {
      * Receipt content
      */
     content?: string | null;
+};
+
+export type ReorderEntriesOk = {
+    ok: boolean;
+};
+
+export type ReorderEntriesRequestRequest = {
+    compo: number;
+    entry_ids: Array<number>;
 };
 
 /**
@@ -3292,6 +3305,7 @@ export type CompoEntryWritable = {
     description: string;
     creator: string;
     platform?: string | null;
+    order_index?: number;
     /**
      * File
      */
@@ -3426,26 +3440,6 @@ export type PatchedUserCompoEntryRequestWritable = {
      */
     imagefile_original?: Blob | File | null;
     youtube_url?: string | null;
-};
-
-/**
- * Staff serializer for users, includes all fields for admin management.
- */
-export type PatchedUserRequestWritable = {
-    /**
-     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-     */
-    username?: string;
-    first_name?: string;
-    last_name?: string;
-    language?: LanguageEnum | BlankEnum;
-    group_ids?: Array<number>;
-    /**
-     * Active
-     *
-     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-     */
-    is_active?: boolean;
 };
 
 /**
@@ -3596,6 +3590,7 @@ export type PublicCompoEntryWritable = {
     description: string;
     creator: string;
     platform?: string | null;
+    order_index?: number;
     youtube_url?: string | null;
 };
 
@@ -4004,26 +3999,6 @@ export type UserInfoWritable = {
     notify_program_events?: boolean;
     notify_compo_starts?: boolean;
     notify_competition_starts?: boolean;
-};
-
-/**
- * Staff serializer for users, includes all fields for admin management.
- */
-export type UserRequestWritable = {
-    /**
-     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-     */
-    username: string;
-    first_name?: string;
-    last_name?: string;
-    language?: LanguageEnum | BlankEnum;
-    group_ids?: Array<number>;
-    /**
-     * Active
-     *
-     * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-     */
-    is_active?: boolean;
 };
 
 /**
@@ -5167,6 +5142,10 @@ export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveData = {
          * Filter by compo ID
          */
         compo?: number;
+        /**
+         * Filename prefix mode: 'id' (default), 'rank', or 'order'
+         */
+        prefix?: "id" | "order" | "rank";
     };
     url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/";
 };
@@ -5178,6 +5157,22 @@ export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses = {
 export type AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponse =
     AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses[keyof AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses];
 
+export type AdminEventKompomaattiEntriesReorderCreateData = {
+    body: ReorderEntriesRequestRequest;
+    path: {
+        event_pk: number;
+    };
+    query?: never;
+    url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/reorder/";
+};
+
+export type AdminEventKompomaattiEntriesReorderCreateResponses = {
+    200: ReorderEntriesOk;
+};
+
+export type AdminEventKompomaattiEntriesReorderCreateResponse =
+    AdminEventKompomaattiEntriesReorderCreateResponses[keyof AdminEventKompomaattiEntriesReorderCreateResponses];
+
 export type AdminEventKompomaattiEntriesValidateArchiveRetrieveData = {
     body?: never;
     path: {
@@ -5188,6 +5183,10 @@ export type AdminEventKompomaattiEntriesValidateArchiveRetrieveData = {
          * Filter by compo ID
          */
         compo?: number;
+        /**
+         * Filename prefix mode: 'id' (default), 'rank', or 'order'
+         */
+        prefix?: "id" | "order" | "rank";
     };
     url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/";
 };
@@ -6586,7 +6585,7 @@ export type AdminUsersListResponses = {
 export type AdminUsersListResponse = AdminUsersListResponses[keyof AdminUsersListResponses];
 
 export type AdminUsersCreateData = {
-    body: UserRequestWritable;
+    body: UserRequest;
     path?: never;
     query?: never;
     url: "/api/v2/admin/users/";
@@ -6640,7 +6639,7 @@ export type AdminUsersRetrieveResponse =
     AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
 
 export type AdminUsersPartialUpdateData = {
-    body?: PatchedUserRequestWritable;
+    body?: PatchedUserRequest;
     path: {
         /**
          * A unique integer value identifying this user.
@@ -6659,7 +6658,7 @@ export type AdminUsersPartialUpdateResponse =
     AdminUsersPartialUpdateResponses[keyof AdminUsersPartialUpdateResponses];
 
 export type AdminUsersUpdateData = {
-    body: UserRequestWritable;
+    body: UserRequest;
     path: {
         /**
          * A unique integer value identifying this user.
@@ -6692,10 +6691,6 @@ export type LoginErrors = {
      * No response body
      */
     401: unknown;
-    /**
-     * No response body
-     */
-    403: unknown;
 };
 
 export type LoginResponses = {

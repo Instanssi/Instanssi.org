@@ -28,6 +28,7 @@
     "@fontsource/exo-2": "^5.2.8",
     "@fontsource/fira-mono": "^5.2.7",
     "@fontsource/open-sans": "^5.2.7",
+    "@formkit/drag-and-drop": "^0.5.3",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",

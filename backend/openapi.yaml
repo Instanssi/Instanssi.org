@@ -1593,6 +1593,9 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1665,6 +1668,9 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1703,6 +1709,9 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
           application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompoEntryRequest'
+          application/json:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
       security:
@@ -1758,6 +1767,15 @@ paths:
         schema:
           type: integer
         required: true
+      - in: query
+        name: prefix
+        schema:
+          type: string
+          enum:
+          - id
+          - order
+          - rank
+        description: 'Filename prefix mode: ''id'' (default), ''rank'', or ''order'''
       tags:
       - admin
       security:
@@ -1770,6 +1788,43 @@ paths:
               schema:
                 type: string
                 format: binary
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/entries/reorder/:
+    post:
+      operationId: admin_event_kompomaatti_entries_reorder_create
+      description: Sets the order_index of each entry based on its position in the
+        provided entry_ids list. All entries must belong to the specified compo and
+        event.
+      summary: Reorder entries within a compo
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReorderEntriesOk'
           description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/:
     get:
@@ -1788,6 +1843,15 @@ paths:
         schema:
           type: integer
         required: true
+      - in: query
+        name: prefix
+        schema:
+          type: string
+          enum:
+          - id
+          - order
+          - rank
+        description: 'Filename prefix mode: ''id'' (default), ''rank'', or ''order'''
       tags:
       - admin
       security:
@@ -4181,8 +4245,6 @@ paths:
         '400':
           description: No response body
         '401':
-          description: No response body
-        '403':
           description: No response body
   /api/v2/auth/logout/:
     post:
@@ -6615,6 +6677,11 @@ components:
           type: string
           nullable: true
           maxLength: 128
+        order_index:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         entryfile:
           type: string
           format: uri
@@ -6724,6 +6791,11 @@ components:
           type: string
           nullable: true
           maxLength: 128
+        order_index:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         entryfile:
           type: string
           format: binary
@@ -8577,6 +8649,11 @@ components:
           type: string
           nullable: true
           maxLength: 128
+        order_index:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         entryfile:
           type: string
           format: binary
@@ -9133,12 +9210,6 @@ components:
           oneOf:
           - $ref: '#/components/schemas/LanguageEnum'
           - $ref: '#/components/schemas/BlankEnum'
-        group_ids:
-          type: array
-          items:
-            type: integer
-            writeOnly: true
-          writeOnly: true
         is_active:
           type: boolean
           title: Active
@@ -9564,6 +9635,11 @@ components:
           type: string
           nullable: true
           maxLength: 128
+        order_index:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         imagefile_original_url:
           type: string
           nullable: true
@@ -10174,6 +10250,25 @@ components:
       - mail_from
       - mail_to
       - subject
+    ReorderEntriesOk:
+      type: object
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    ReorderEntriesRequestRequest:
+      type: object
+      properties:
+        compo:
+          type: integer
+        entry_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - compo
+      - entry_ids
     ScoreSortEnum:
       enum:
       - 0
@@ -11218,12 +11313,6 @@ components:
           oneOf:
           - $ref: '#/components/schemas/LanguageEnum'
           - $ref: '#/components/schemas/BlankEnum'
-        group_ids:
-          type: array
-          items:
-            type: integer
-            writeOnly: true
-          writeOnly: true
         is_active:
           type: boolean
           title: Active

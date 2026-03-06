@@ -360,7 +360,8 @@
       "newEntry": "Uusi tuotos",
       "exportResults": "Vie tulokset",
       "download": "Lataa",
-      "downloadAllEntries": "Kaikki tuotokset (.zip)",
+      "downloadByRank": "Sijoituksen mukaan (.zip)",
+      "downloadByOrder": "Järjestyksen mukaan (.zip)",
       "confirmDelete": "Haluatko varmasti poistaa tuotoksen '{name}'?",
       "loadFailure": "Tuotosten lataus epäonnistui; yritä myöhemmin uudelleen.",
       "deleteSuccess": "Tuotos poistettu!",
@@ -376,15 +377,28 @@
       "allCompos": "Kaikki kompot",
       "filterByDisqualified": "Tila",
       "allStatuses": "Kaikki",
+      "reorder": "Järjestele",
+      "reorderTooltip": "Valitse ensin kompo suodattimesta järjestelläksesi tuotoksia",
       "headers": {
         "creator": "Tekijä",
         "entryfile": "Tuotos",
         "sourcefile": "Lähdekoodi",
         "youtube": "Youtube",
         "compo": "Kompo",
+        "order": "Järjestys",
         "disqualified": "Hylätty",
         "disqualifiedReason": "Hylkäyssyy"
       }
+    },
+    "EntryReorderDialog": {
+      "title": "Järjestä tuotokset",
+      "selectCompo": "Valitse kompo jonka tuotokset järjestetään.",
+      "noEntries": "Tässä kompossa ei ole tuotoksia.",
+      "saveSuccess": "Tuotosten järjestys tallennettu!",
+      "saveFailure": "Tuotosten järjestyksen tallennus epäonnistui; yritä myöhemmin uudelleen.",
+      "loadFailure": "Tuotosten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "save": "Tallenna järjestys",
+      "cancel": "Peruuta"
     },
     "EntryEditView": {
       "newTitle": "Uusi tuotos",

@@ -37,6 +37,7 @@ def test_get_admin_compo_entry_detail(staff_api_client, votable_compo_entry):
     assert data["disqualified_reason"] == votable_compo_entry.disqualified_reason
     assert "computed_rank" in data
     assert "computed_score" in data
+    assert "order_index" in data
 
 
 @pytest.mark.django_db

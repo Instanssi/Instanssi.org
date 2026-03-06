@@ -19,7 +19,7 @@ class PublicCompoEntryViewSet(PublicReadOnlyViewSet[Entry]):
     serializer_class = PublicCompoEntrySerializer
     queryset = Entry.objects.all()
     filter_backends = [OrderingFilter]
-    ordering_fields = ["id", "name", "compo", "computed_rank", "computed_score"]
+    ordering_fields = ["id", "name", "compo", "order_index", "computed_rank", "computed_score"]
     ordering = ["compo", "computed_rank"]
 
     def get_queryset(self) -> QuerySet[Entry]:

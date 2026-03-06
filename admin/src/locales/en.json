@@ -360,7 +360,8 @@
       "newEntry": "New Entry",
       "exportResults": "Export Results",
       "download": "Download",
-      "downloadAllEntries": "All entries (.zip)",
+      "downloadByRank": "By rank (.zip)",
+      "downloadByOrder": "By order (.zip)",
       "confirmDelete": "Do you really want to delete entry '{name}'?",
       "loadFailure": "Failed to load entries; try again later.",
       "deleteSuccess": "Entry deleted!",
@@ -376,15 +377,28 @@
       "allCompos": "All compos",
       "filterByDisqualified": "Status",
       "allStatuses": "All",
+      "reorder": "Sort",
+      "reorderTooltip": "Select a compo filter first to sort entries",
       "headers": {
         "creator": "Creator",
         "entryfile": "Entry",
         "sourcefile": "Source",
         "youtube": "Youtube",
         "compo": "Compo",
+        "order": "Order",
         "disqualified": "Disqualified",
         "disqualifiedReason": "DQ Reason"
       }
+    },
+    "EntryReorderDialog": {
+      "title": "Reorder Entries",
+      "selectCompo": "Select a compo to reorder its entries.",
+      "noEntries": "No entries in this compo.",
+      "saveSuccess": "Entry order saved!",
+      "saveFailure": "Failed to save entry order; try again later.",
+      "loadFailure": "Failed to load entries; try again later.",
+      "save": "Save order",
+      "cancel": "Cancel"
     },
     "EntryEditView": {
       "newTitle": "New Entry",

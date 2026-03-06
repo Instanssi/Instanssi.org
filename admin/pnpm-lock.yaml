@@ -17,6 +17,9 @@ importers:
       '@fontsource/open-sans':
         specifier: ^5.2.7
         version: 5.2.7
+      '@formkit/drag-and-drop':
+        specifier: ^0.5.3
+        version: 0.5.3
       '@fortawesome/fontawesome-svg-core':
         specifier: ^6.7.2
         version: 6.7.2
@@ -868,6 +871,9 @@ packages:
 
   '@fontsource/open-sans@5.2.7':
     resolution: {integrity: sha512-8yfgDYjE5O0vmTPdrcjV35y4yMnctsokmi9gN49Gcsr0sjzkMkR97AnKDe6OqZh2SFkYlR28fxOvi21bYEgMSw==}
+
+  '@formkit/drag-and-drop@0.5.3':
+    resolution: {integrity: sha512-VGQsKYc350OOMbz7wYt69YqDbn49x7RJ32eqiJieNke54nGZYmx18XEqTw0lBiJmH3RaiH6V45gB1u+tvI/TNw==}
 
   '@fortawesome/fontawesome-common-types@6.7.2':
     resolution: {integrity: sha512-Zs+YeHUC5fkt7Mg1l6XTniei3k4bwG/yo3iFUtZWd/pMx9g3fdvkSK9E0FOC+++phXOka78uJcYb8JaFkW52Xg==}
@@ -4703,6 +4709,8 @@ snapshots:
   '@fontsource/fira-mono@5.2.7': {}
 
   '@fontsource/open-sans@5.2.7': {}
+
+  '@formkit/drag-and-drop@0.5.3': {}
 
   '@fortawesome/fontawesome-common-types@6.7.2': {}
 

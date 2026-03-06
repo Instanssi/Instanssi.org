@@ -113,6 +113,23 @@ def test_archive_uses_entry_id_prefix(staff_api_client, closed_compo_entry):
 
 
 @pytest.mark.django_db
+def test_archive_uses_order_prefix(staff_api_client, editable_compo_entry):
+    editable_compo_entry.order_index = 3
+    editable_compo_entry.save()
+
+    url = get_archive_url(editable_compo_entry.compo.event_id)
+    response = staff_api_client.get(url, {"prefix": "order"})
+    assert response.status_code == 200
+
+    content = b"".join(response.streaming_content)
+    with zipfile.ZipFile(BytesIO(content)) as zf:
+        names = zf.namelist()
+
+    assert len(names) == 1
+    assert "00003__" in names[0]
+
+
+@pytest.mark.django_db
 def test_returns_400_when_file_missing(staff_api_client, editable_compo_entry):
     file_path = Path(editable_compo_entry.entryfile.path)
     file_path.unlink()

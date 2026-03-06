@@ -19,7 +19,6 @@ def test_generate_alternate_audio_files_success(audio_entry, caplog):
     # Mock ffmpeg pipeline
     with (
         mock.patch("Instanssi.kompomaatti.tasks.ffmpeg.input") as mock_input,
-        mock.patch("Instanssi.kompomaatti.tasks._has_video_stream", return_value=False),
         mock.patch("Instanssi.kompomaatti.tasks.temp_file") as mock_temp_file,
     ):
         # Set up mocks
@@ -68,19 +67,6 @@ def test_generate_alternate_audio_files_skips_non_audio(editable_compo_entry, ca
 
 @pytest.mark.django_db
 @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
-def test_generate_alternate_audio_files_skips_video(audio_entry, caplog):
-    """Test that files with video streams are skipped."""
-    caplog.set_level(logging.INFO)
-
-    with mock.patch("Instanssi.kompomaatti.tasks._has_video_stream", return_value=True):
-        generate_alternate_audio_files(audio_entry.id, int(MediaCodec.OPUS), int(MediaContainer.WEBM))
-
-    assert AlternateEntryFile.objects.filter(entry=audio_entry).count() == 0
-    assert any("file contains a video stream" in r.message for r in caplog.records)
-
-
-@pytest.mark.django_db
-@override_settings(CELERY_TASK_ALWAYS_EAGER=True)
 def test_generate_alternate_audio_files_missing_entry(caplog):
     """Test that missing entry triggers retry (Entry.DoesNotExist)."""
     caplog.set_level(logging.ERROR)
@@ -107,7 +93,6 @@ def test_generate_alternate_audio_files_updates_existing(audio_entry, test_zip):
     # Mock ffmpeg pipeline
     with (
         mock.patch("Instanssi.kompomaatti.tasks.ffmpeg.input") as mock_input,
-        mock.patch("Instanssi.kompomaatti.tasks._has_video_stream", return_value=False),
         mock.patch("Instanssi.kompomaatti.tasks.temp_file") as mock_temp_file,
         mock.patch("Instanssi.kompomaatti.tasks.ffmpeg.output") as mock_ffmpeg_output,
     ):
@@ -147,7 +132,6 @@ def test_generate_alternate_audio_files_ffmpeg_error(audio_entry, caplog):
 
     with (
         mock.patch("Instanssi.kompomaatti.tasks.ffmpeg.input") as mock_input,
-        mock.patch("Instanssi.kompomaatti.tasks._has_video_stream", return_value=False),
         mock.patch("Instanssi.kompomaatti.tasks.temp_file") as mock_temp_file,
         mock.patch("Instanssi.kompomaatti.tasks.ffmpeg.output") as mock_ffmpeg_output,
     ):

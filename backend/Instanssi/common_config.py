@@ -231,6 +231,9 @@ INSTALLED_APPS = (
     "django_cleanup.apps.CleanupConfig",  # Must be last - cleans up files on model delete/update
 )
 
+# Generate imagekit thumbnails on save, not on first access
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = "imagekit.cachefiles.strategies.Optimistic"
+
 # Authentication backends
 AUTHENTICATION_BACKENDS = ("Instanssi.users.backends.SystemUserAwareAuthenticationBackend",)
 

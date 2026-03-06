@@ -16,8 +16,8 @@ log = logging.getLogger(__name__)
 
 # Predefined bit-rates for known formats. Otherwise, use a guess.
 FFMPEG_BITRATE: Final[Dict[MediaCodec, str]] = {
-    MediaCodec.OPUS: "64k",
-    MediaCodec.AAC: "128k",
+    MediaCodec.OPUS: "256k",
+    MediaCodec.AAC: "256k",
 }
 
 # Map codec to ffmpeg encoder name

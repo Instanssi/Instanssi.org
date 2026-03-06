@@ -196,6 +196,7 @@ INSTALLED_APPS = (
     "Instanssi.ext_programme",
     "Instanssi.ext_mastodon",
     "Instanssi.store",
+    "Instanssi.common",
     "Instanssi.notifications",
     "Instanssi.infodesk",
     "imagekit",

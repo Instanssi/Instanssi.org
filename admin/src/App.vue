@@ -197,6 +197,7 @@ const secondaryLinks = computed(
             icon: faUsers,
             to: "users",
             noEventId: true,
+            requirePerm: PermissionTarget.USER,
         },
         {
             title: t("App.nav.apiTokens"),

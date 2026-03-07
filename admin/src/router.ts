@@ -121,6 +121,37 @@ const router = createRouter({
             },
             component: () => import("@/views/auditlog/AuditLogView.vue"),
         },
+        // Infodesk
+        {
+            path: "/:eventId(\\d+)/infodesk",
+            name: "infodesk",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.INFODESK_ACCESS,
+            },
+            props: true,
+            component: () => import("@/views/infodesk/InfodeskView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/infodesk/items/:id(\\d+)",
+            name: "infodesk-item",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.INFODESK_ACCESS,
+            },
+            props: true,
+            component: () => import("@/views/infodesk/InfodeskItemView.vue"),
+        },
+        {
+            path: "/:eventId(\\d+)/infodesk/transactions/:id(\\d+)",
+            name: "infodesk-transaction",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.INFODESK_ACCESS,
+            },
+            props: true,
+            component: () => import("@/views/infodesk/InfodeskTransactionView.vue"),
+        },
         {
             path: "/:eventId(\\d+)/blog/new",
             name: "blog-new",

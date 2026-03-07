@@ -1034,6 +1034,80 @@ export type GroupRequest = {
 };
 
 /**
+ * Read-only serializer for infodesk transaction lookup.
+ */
+export type InfodeskTransaction = {
+    readonly id: number;
+    /**
+     * Created at
+     */
+    readonly time_created: string | null;
+    /**
+     * Payment confirmed at
+     */
+    readonly time_paid: string | null;
+    /**
+     * Cancelled at
+     */
+    readonly time_cancelled: string | null;
+    /**
+     * First name
+     */
+    readonly firstname: string;
+    /**
+     * Last name
+     */
+    readonly lastname: string;
+    readonly email: string;
+    readonly company: string;
+    readonly telephone: string;
+    /**
+     * Mobile phone
+     */
+    readonly mobile: string;
+    /**
+     * Additional information
+     */
+    readonly information: string;
+    readonly is_paid: boolean;
+    readonly is_cancelled: boolean;
+    readonly is_pending: boolean;
+    readonly is_delivered: boolean;
+    readonly full_name: string;
+    readonly status_text: string;
+};
+
+/**
+ * Read-only serializer for infodesk transaction item lookup.
+ */
+export type InfodeskTransactionItem = {
+    readonly id: number;
+    readonly key: string;
+    /**
+     * Product
+     */
+    readonly item: number;
+    /**
+     * Product variant
+     */
+    readonly variant: number | null;
+    readonly transaction: number;
+    /**
+     * Delivery time
+     */
+    readonly time_delivered: string | null;
+    /**
+     * Product price
+     */
+    readonly purchase_price: string;
+    readonly is_delivered: boolean;
+    readonly item_name: string;
+    readonly variant_name: string | null;
+    readonly transaction_full_name: string;
+    readonly transaction_is_paid: boolean;
+};
+
+/**
  * * `` - Not set
  * * `en` - English
  * * `fi` - Finnish
@@ -1182,6 +1256,20 @@ export type PaginatedGroupList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Group>;
+};
+
+export type PaginatedInfodeskTransactionItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<InfodeskTransactionItem>;
+};
+
+export type PaginatedInfodeskTransactionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<InfodeskTransaction>;
 };
 
 export type PaginatedLogEntryList = {
@@ -3405,6 +3493,20 @@ export type OtherVideoCategoryWritable = {
 };
 
 export type PaginatedAuthTokenListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedInfodeskTransactionItemListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedInfodeskTransactionListWritable = {
     count: number;
     next?: string | null;
     previous?: string | null;
@@ -7231,6 +7333,133 @@ export type EventUserKompomaattiVotesRetrieveResponses = {
 
 export type EventUserKompomaattiVotesRetrieveResponse =
     EventUserKompomaattiVotesRetrieveResponses[keyof EventUserKompomaattiVotesRetrieveResponses];
+
+export type InfodeskEventTransactionItemsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+        transaction?: number;
+    };
+    url: "/api/v2/infodesk/event/{event_pk}/transaction_items/";
+};
+
+export type InfodeskEventTransactionItemsListResponses = {
+    200: PaginatedInfodeskTransactionItemList;
+};
+
+export type InfodeskEventTransactionItemsListResponse =
+    InfodeskEventTransactionItemsListResponses[keyof InfodeskEventTransactionItemsListResponses];
+
+export type InfodeskEventTransactionItemsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaction item.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/";
+};
+
+export type InfodeskEventTransactionItemsRetrieveResponses = {
+    200: InfodeskTransactionItem;
+};
+
+export type InfodeskEventTransactionItemsRetrieveResponse =
+    InfodeskEventTransactionItemsRetrieveResponses[keyof InfodeskEventTransactionItemsRetrieveResponses];
+
+export type InfodeskEventTransactionItemsMarkDeliveredCreateData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this transaction item.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/mark_delivered/";
+};
+
+export type InfodeskEventTransactionItemsMarkDeliveredCreateResponses = {
+    200: InfodeskTransactionItem;
+};
+
+export type InfodeskEventTransactionItemsMarkDeliveredCreateResponse =
+    InfodeskEventTransactionItemsMarkDeliveredCreateResponses[keyof InfodeskEventTransactionItemsMarkDeliveredCreateResponses];
+
+export type InfodeskEventTransactionsListData = {
+    body?: never;
+    path: {
+        event_pk: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
+        /**
+         * A search term.
+         */
+        search?: string;
+    };
+    url: "/api/v2/infodesk/event/{event_pk}/transactions/";
+};
+
+export type InfodeskEventTransactionsListResponses = {
+    200: PaginatedInfodeskTransactionList;
+};
+
+export type InfodeskEventTransactionsListResponse =
+    InfodeskEventTransactionsListResponses[keyof InfodeskEventTransactionsListResponses];
+
+export type InfodeskEventTransactionsRetrieveData = {
+    body?: never;
+    path: {
+        event_pk: number;
+        /**
+         * A unique integer value identifying this store transaction.
+         */
+        id: number;
+    };
+    query?: never;
+    url: "/api/v2/infodesk/event/{event_pk}/transactions/{id}/";
+};
+
+export type InfodeskEventTransactionsRetrieveResponses = {
+    200: InfodeskTransaction;
+};
+
+export type InfodeskEventTransactionsRetrieveResponse =
+    InfodeskEventTransactionsRetrieveResponses[keyof InfodeskEventTransactionsRetrieveResponses];
 
 export type NotificationsSubscriptionsListData = {
     body?: never;

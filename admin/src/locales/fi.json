@@ -125,6 +125,7 @@
         "arkistoVideos": "Videot",
         "apiTokens": "API-avaimet",
         "auditLog": "Muutosloki",
+        "infodesk": "Infotiski",
         "profile": "Profiili"
       }
     },
@@ -1219,6 +1220,61 @@
         "delete": "Poisto",
         "access": "Käyttö",
         "unknown": "Tuntematon"
+      }
+    },
+    "InfodeskView": {
+      "title": "Infotiski",
+      "searchPlaceholder": "Hae nimellä, sähköpostilla tai avaimella",
+      "noItemsFound": "Tuotteita ei löytynyt.",
+      "loading": "Ladataan ...",
+      "loadFailure": "Tietojen lataaminen epäonnistui; yritä myöhemmin uudelleen.",
+      "paid": "Maksettu",
+      "notPaid": "Ei maksettu",
+      "delivered": "Toimitettu",
+      "notDelivered": "Ei toimitettu",
+      "headers": {
+        "itemName": "Tuote",
+        "key": "Avain",
+        "customer": "Asiakas",
+        "payment": "Maksu",
+        "delivery": "Toimitus"
+      }
+    },
+    "InfodeskItemView": {
+      "loadFailure": "Tuotteen lataaminen epäonnistui; yritä myöhemmin uudelleen.",
+      "markDelivered": "Merkitse toimitetuksi",
+      "markSuccess": "Tuote merkitty toimitetuksi.",
+      "markFailure": "Tuotteen merkitseminen toimitetuksi epäonnistui.",
+      "alreadyDelivered": "Tämä tuote on jo toimitettu.",
+      "notPaidWarning": "Varoitus: Tätä tilausta ei ole maksettu!",
+      "backToSearch": "Takaisin hakuun",
+      "viewTransaction": "Näytä tilaus",
+      "sections": {
+        "product": "Tuote",
+        "status": "Tila"
+      },
+      "labels": {
+        "productName": "Tuote",
+        "variant": "Variantti",
+        "key": "Avain",
+        "price": "Hinta",
+        "payment": "Maksu",
+        "delivery": "Toimitus"
+      }
+    },
+    "InfodeskTransactionView": {
+      "loadFailure": "Tilauksen lataaminen epäonnistui; yritä myöhemmin uudelleen.",
+      "sections": {
+        "customer": "Asiakas",
+        "status": "Tila",
+        "items": "Tuotteet"
+      },
+      "labels": {
+        "name": "Nimi",
+        "company": "Yritys",
+        "telephone": "Puhelin",
+        "mobile": "Matkapuhelin",
+        "information": "Lisätiedot"
       }
     },
     "RichTextEditor": {

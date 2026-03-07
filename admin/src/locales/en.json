@@ -125,6 +125,7 @@
         "arkistoVideos": "Videos",
         "apiTokens": "API Tokens",
         "auditLog": "Audit Log",
+        "infodesk": "Infodesk",
         "profile": "Profile"
       }
     },
@@ -1219,6 +1220,61 @@
         "delete": "Delete",
         "access": "Access",
         "unknown": "Unknown"
+      }
+    },
+    "InfodeskView": {
+      "title": "Infodesk",
+      "searchPlaceholder": "Search by name, email or key",
+      "noItemsFound": "No items found.",
+      "loading": "Loading ...",
+      "loadFailure": "Failed to load data; try again later.",
+      "paid": "Paid",
+      "notPaid": "Not paid",
+      "delivered": "Delivered",
+      "notDelivered": "Not delivered",
+      "headers": {
+        "itemName": "Product",
+        "key": "Key",
+        "customer": "Customer",
+        "payment": "Payment",
+        "delivery": "Delivery"
+      }
+    },
+    "InfodeskItemView": {
+      "loadFailure": "Failed to load item; try again later.",
+      "markDelivered": "Mark as Delivered",
+      "markSuccess": "Item marked as delivered.",
+      "markFailure": "Failed to mark item as delivered.",
+      "alreadyDelivered": "This item has already been delivered.",
+      "notPaidWarning": "Warning: This transaction has not been paid!",
+      "backToSearch": "Back to Search",
+      "viewTransaction": "View Transaction",
+      "sections": {
+        "product": "Product",
+        "status": "Status"
+      },
+      "labels": {
+        "productName": "Product",
+        "variant": "Variant",
+        "key": "Key",
+        "price": "Price",
+        "payment": "Payment",
+        "delivery": "Delivery"
+      }
+    },
+    "InfodeskTransactionView": {
+      "loadFailure": "Failed to load transaction; try again later.",
+      "sections": {
+        "customer": "Customer",
+        "status": "Status",
+        "items": "Items"
+      },
+      "labels": {
+        "name": "Name",
+        "company": "Company",
+        "telephone": "Telephone",
+        "mobile": "Mobile",
+        "information": "Additional Information"
       }
     },
     "RichTextEditor": {

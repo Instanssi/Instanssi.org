@@ -20,6 +20,7 @@ import {
     faBoxOpen,
     faCalendarAlt,
     faChartPie,
+    faClipboardCheck,
     faClockRotateLeft,
     faCreditCard,
     faDashboard,
@@ -158,6 +159,12 @@ const primaryLinks = computed(
             ],
         },
         {
+            title: t("App.nav.infodesk"),
+            icon: faClipboardCheck,
+            to: "infodesk",
+            requirePerm: PermissionTarget.INFODESK_ACCESS,
+        },
+        {
             title: t("App.nav.arkisto"),
             icon: faArchive,
             children: [
@@ -190,6 +197,7 @@ const secondaryLinks = computed(
             icon: faUsers,
             to: "users",
             noEventId: true,
+            requirePerm: PermissionTarget.USER,
         },
         {
             title: t("App.nav.apiTokens"),

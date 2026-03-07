@@ -1793,8 +1793,8 @@ paths:
     post:
       operationId: admin_event_kompomaatti_entries_reorder_create
       description: Sets the order_index of each entry based on its position in the
-        provided entry_ids list. All entries must belong to the specified compo and
-        event.
+        provided entry_ids list. All entries in the compo must be included exactly
+        once.
       summary: Reorder entries within a compo
       parameters:
       - in: path
@@ -5262,6 +5262,186 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserVoteGroup'
           description: ''
+  /api/v2/infodesk/event/{event_pk}/transaction_items/:
+    get:
+      operationId: infodesk_event_transaction_items_list
+      description: Infodesk viewset for looking up and marking transaction items.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: transaction
+        schema:
+          type: integer
+      tags:
+      - infodesk
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInfodeskTransactionItemList'
+          description: ''
+  /api/v2/infodesk/event/{event_pk}/transaction_items/{id}/:
+    get:
+      operationId: infodesk_event_transaction_items_retrieve
+      description: Infodesk viewset for looking up and marking transaction items.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction item.
+        required: true
+      tags:
+      - infodesk
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfodeskTransactionItem'
+          description: ''
+  /api/v2/infodesk/event/{event_pk}/transaction_items/{id}/mark_delivered/:
+    post:
+      operationId: infodesk_event_transaction_items_mark_delivered_create
+      description: Mark a transaction item as delivered.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction item.
+        required: true
+      tags:
+      - infodesk
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfodeskTransactionItem'
+          description: ''
+  /api/v2/infodesk/event/{event_pk}/transactions/:
+    get:
+      operationId: infodesk_event_transactions_list
+      description: Infodesk viewset for looking up transactions.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - infodesk
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInfodeskTransactionList'
+          description: ''
+  /api/v2/infodesk/event/{event_pk}/transactions/{id}/:
+    get:
+      operationId: infodesk_event_transactions_retrieve
+      description: Infodesk viewset for looking up transactions.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this store transaction.
+        required: true
+      tags:
+      - infodesk
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfodeskTransaction'
+          description: ''
   /api/v2/notifications/subscriptions/:
     get:
       operationId: notifications_subscriptions_list
@@ -7551,6 +7731,156 @@ components:
           maxLength: 150
       required:
       - name
+    InfodeskTransaction:
+      type: object
+      description: Read-only serializer for infodesk transaction lookup.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        time_created:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Created at
+        time_paid:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Payment confirmed at
+        time_cancelled:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Cancelled at
+        firstname:
+          type: string
+          readOnly: true
+          title: First name
+        lastname:
+          type: string
+          readOnly: true
+          title: Last name
+        email:
+          type: string
+          format: email
+          readOnly: true
+        company:
+          type: string
+          readOnly: true
+        telephone:
+          type: string
+          readOnly: true
+        mobile:
+          type: string
+          readOnly: true
+          title: Mobile phone
+        information:
+          type: string
+          readOnly: true
+          title: Additional information
+        is_paid:
+          type: boolean
+          readOnly: true
+        is_cancelled:
+          type: boolean
+          readOnly: true
+        is_pending:
+          type: boolean
+          readOnly: true
+        is_delivered:
+          type: boolean
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        status_text:
+          type: string
+          readOnly: true
+      required:
+      - company
+      - email
+      - firstname
+      - full_name
+      - id
+      - information
+      - is_cancelled
+      - is_delivered
+      - is_paid
+      - is_pending
+      - lastname
+      - mobile
+      - status_text
+      - telephone
+      - time_cancelled
+      - time_created
+      - time_paid
+    InfodeskTransactionItem:
+      type: object
+      description: Read-only serializer for infodesk transaction item lookup.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        key:
+          type: string
+          readOnly: true
+        item:
+          type: integer
+          readOnly: true
+          title: Product
+        variant:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Product variant
+        transaction:
+          type: integer
+          readOnly: true
+        time_delivered:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Delivery time
+        purchase_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+          title: Product price
+        is_delivered:
+          type: boolean
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        variant_name:
+          type: string
+          nullable: true
+          readOnly: true
+        transaction_full_name:
+          type: string
+          readOnly: true
+        transaction_is_paid:
+          type: boolean
+          readOnly: true
+      required:
+      - id
+      - is_delivered
+      - item
+      - item_name
+      - key
+      - purchase_price
+      - time_delivered
+      - transaction
+      - transaction_full_name
+      - transaction_is_paid
+      - variant
+      - variant_name
     LanguageEnum:
       enum:
       - en
@@ -7901,6 +8231,52 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Group'
+    PaginatedInfodeskTransactionItemList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InfodeskTransactionItem'
+    PaginatedInfodeskTransactionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InfodeskTransaction'
     PaginatedLogEntryList:
       type: object
       required:

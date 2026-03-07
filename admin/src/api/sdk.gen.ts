@@ -295,6 +295,16 @@ import type {
     EventUserKompomaattiVotesRetrieveResponses,
     GetSocialAuthUrlsData,
     GetSocialAuthUrlsResponses,
+    InfodeskEventTransactionItemsListData,
+    InfodeskEventTransactionItemsListResponses,
+    InfodeskEventTransactionItemsMarkDeliveredCreateData,
+    InfodeskEventTransactionItemsMarkDeliveredCreateResponses,
+    InfodeskEventTransactionItemsRetrieveData,
+    InfodeskEventTransactionItemsRetrieveResponses,
+    InfodeskEventTransactionsListData,
+    InfodeskEventTransactionsListResponses,
+    InfodeskEventTransactionsRetrieveData,
+    InfodeskEventTransactionsRetrieveResponses,
     LoginData,
     LoginErrors,
     LoginResponses,
@@ -1923,7 +1933,7 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
 /**
  * Reorder entries within a compo
  *
- * Sets the order_index of each entry based on its position in the provided entry_ids list. All entries must belong to the specified compo and event.
+ * Sets the order_index of each entry based on its position in the provided entry_ids list. All entries in the compo must be included exactly once.
  */
 export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesReorderCreateData, ThrowOnError>
@@ -4848,6 +4858,148 @@ export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean =
             },
         ],
         url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Infodesk viewset for looking up and marking transaction items.
+ */
+export const infodeskEventTransactionItemsList = <ThrowOnError extends boolean = false>(
+    options: Options<InfodeskEventTransactionItemsListData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        InfodeskEventTransactionItemsListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/infodesk/event/{event_pk}/transaction_items/",
+        ...options,
+    });
+};
+
+/**
+ * Infodesk viewset for looking up and marking transaction items.
+ */
+export const infodeskEventTransactionItemsRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<InfodeskEventTransactionItemsRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        InfodeskEventTransactionItemsRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/",
+        ...options,
+    });
+};
+
+/**
+ * Mark a transaction item as delivered.
+ */
+export const infodeskEventTransactionItemsMarkDeliveredCreate = <
+    ThrowOnError extends boolean = false,
+>(
+    options: Options<InfodeskEventTransactionItemsMarkDeliveredCreateData, ThrowOnError>
+) => {
+    return (options.client ?? client).post<
+        InfodeskEventTransactionItemsMarkDeliveredCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/mark_delivered/",
+        ...options,
+    });
+};
+
+/**
+ * Infodesk viewset for looking up transactions.
+ */
+export const infodeskEventTransactionsList = <ThrowOnError extends boolean = false>(
+    options: Options<InfodeskEventTransactionsListData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        InfodeskEventTransactionsListResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/infodesk/event/{event_pk}/transactions/",
+        ...options,
+    });
+};
+
+/**
+ * Infodesk viewset for looking up transactions.
+ */
+export const infodeskEventTransactionsRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<InfodeskEventTransactionsRetrieveData, ThrowOnError>
+) => {
+    return (options.client ?? client).get<
+        InfodeskEventTransactionsRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        responseType: "json",
+        security: [
+            {
+                name: "Authorization",
+                type: "apiKey",
+            },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/infodesk/event/{event_pk}/transactions/{id}/",
         ...options,
     });
 };

@@ -264,21 +264,27 @@ async function loadBlogPosts(eid: number) {
 }
 
 async function loadComposAndEntries(eid: number) {
-    if (!auth.canView(PermissionTarget.COMPO) && !auth.canView(PermissionTarget.ENTRY)) return;
+    const canViewCompos = auth.canView(PermissionTarget.COMPO);
+    const canViewEntries = auth.canView(PermissionTarget.ENTRY);
+    if (!canViewCompos && !canViewEntries) return;
     try {
-        const [compoResponse, entriesResponse] = await Promise.all([
-            api.adminEventKompomaattiComposList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
-            api.adminEventKompomaattiEntriesList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
-        ]);
+        const compoList = canViewCompos
+            ? ((
+                  await api.adminEventKompomaattiComposList({
+                      path: { event_pk: eid },
+                      query: { limit: 1000 },
+                  })
+              ).data?.results ?? [])
+            : [];
+        const entries = canViewEntries
+            ? ((
+                  await api.adminEventKompomaattiEntriesList({
+                      path: { event_pk: eid },
+                      query: { limit: 1000 },
+                  })
+              ).data?.results ?? [])
+            : [];
 
-        const compoList = compoResponse.data?.results ?? [];
-        const entries = entriesResponse.data?.results ?? [];
         compos.value = compoList;
         stats.value.compos = compoList.length;
         stats.value.compoEntries = entries.length;
@@ -295,26 +301,27 @@ async function loadComposAndEntries(eid: number) {
 }
 
 async function loadCompetitionsAndParticipants(eid: number) {
-    if (
-        !auth.canView(PermissionTarget.COMPETITION) &&
-        !auth.canView(PermissionTarget.COMPETITION_PARTICIPATION)
-    ) {
-        return;
-    }
+    const canViewCompetitions = auth.canView(PermissionTarget.COMPETITION);
+    const canViewParticipations = auth.canView(PermissionTarget.COMPETITION_PARTICIPATION);
+    if (!canViewCompetitions && !canViewParticipations) return;
     try {
-        const [competitionsResponse, participantsResponse] = await Promise.all([
-            api.adminEventKompomaattiCompetitionsList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
-            api.adminEventKompomaattiCompetitionParticipationsList({
-                path: { event_pk: eid },
-                query: { limit: 1000 },
-            }),
-        ]);
+        const competitionList = canViewCompetitions
+            ? ((
+                  await api.adminEventKompomaattiCompetitionsList({
+                      path: { event_pk: eid },
+                      query: { limit: 1000 },
+                  })
+              ).data?.results ?? [])
+            : [];
+        const participants = canViewParticipations
+            ? ((
+                  await api.adminEventKompomaattiCompetitionParticipationsList({
+                      path: { event_pk: eid },
+                      query: { limit: 1000 },
+                  })
+              ).data?.results ?? [])
+            : [];
 
-        const competitionList = competitionsResponse.data?.results ?? [];
-        const participants = participantsResponse.data?.results ?? [];
         competitions.value = competitionList;
         stats.value.competitions = competitionList.length;
         stats.value.competitionParticipants = participants.length;

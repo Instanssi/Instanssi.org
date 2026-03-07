@@ -38,6 +38,7 @@ if settings.DEBUG:
 urlpatterns += [
     path("admin/", include("Instanssi.api.v2.viewsets.admin.urls")),
     path("auth/", include("Instanssi.api.v2.viewsets.auth.urls")),
+    path("infodesk/", include("Instanssi.api.v2.viewsets.infodesk.urls")),
     path("public/", include("Instanssi.api.v2.viewsets.public.urls")),
     path("", include("Instanssi.api.v2.viewsets.user.urls")),
     # API root

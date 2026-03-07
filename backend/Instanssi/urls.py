@@ -18,7 +18,6 @@ urlpatterns = [
     path("arkisto/", include("Instanssi.arkisto.urls", namespace="archive")),
     path("kompomaatti/", include("Instanssi.kompomaatti.urls", namespace="km")),
     path("store/", include("Instanssi.store.urls", namespace="store")),
-    path("infodesk/", include("Instanssi.infodesk.urls", namespace="infodesk")),
     # External Vue app -- served by nginx; this just provides a named URL for templates.
     path("management/", RedirectView.as_view(url="/management/"), name="management"),
     path("", RedirectView.as_view(url=reverse_lazy("main2026:index")), name="root-index"),

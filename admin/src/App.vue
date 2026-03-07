@@ -20,6 +20,7 @@ import {
     faBoxOpen,
     faCalendarAlt,
     faChartPie,
+    faClipboardCheck,
     faClockRotateLeft,
     faCreditCard,
     faDashboard,
@@ -156,6 +157,12 @@ const primaryLinks = computed(
                     requirePerm: PermissionTarget.TRANSACTION_ITEM,
                 },
             ],
+        },
+        {
+            title: t("App.nav.infodesk"),
+            icon: faClipboardCheck,
+            to: "infodesk",
+            requirePerm: PermissionTarget.INFODESK_ACCESS,
         },
         {
             title: t("App.nav.arkisto"),

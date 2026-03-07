@@ -54,6 +54,7 @@ export enum PermissionTarget {
     STORE_TRANSACTION_EVENT = "storetransactionevent",
     TRANSACTION_ITEM = "transactionitem",
     USER = "user",
+    INFODESK_ACCESS = "infodeskaccess",
 }
 
 export enum LoginResult {

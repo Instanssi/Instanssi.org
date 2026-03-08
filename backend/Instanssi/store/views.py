@@ -15,7 +15,7 @@ def has_infodesk_access(request: HttpRequest) -> bool:
     return (
         request.user.is_authenticated
         and request.user.is_active
-        and request.user.has_perm("store.change_storetransaction")
+        and request.user.has_perm("infodesk.change_infodeskaccess")
     )
 
 

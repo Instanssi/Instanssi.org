@@ -139,3 +139,21 @@ def payment():
         ),
         items=[Item(product_code="efsef34hf", unit_price=1000, units=1, vat_percentage=0)],
     )
+
+
+@fixture
+def infodesk_client(page_client, create_user, password):
+    """Client with infodesk change permission (can mark items as delivered)."""
+    user = create_user(is_staff=True, permissions=["infodesk.change_infodeskaccess"])
+    page_client.login(username=user.username, password=password)
+    yield page_client
+    page_client.logout()
+
+
+@fixture
+def store_change_client(page_client, create_user, password):
+    """Client with store.change_storetransaction but NOT infodesk permission."""
+    user = create_user(is_staff=True, permissions=["store.change_storetransaction"])
+    page_client.login(username=user.username, password=password)
+    yield page_client
+    page_client.logout()

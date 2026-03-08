@@ -103,7 +103,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap3"
 EMAIL_BACKEND = make_email_conf(DEBUG)
 
 # Disable DRF throttling in tests to avoid flaky failures from shared LocMemCache state
-REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["login"] = "1000/min"  # type: ignore[index]
+REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []
 
 # Initialize cache configuration
 CACHES = make_cache_conf(DEBUG)

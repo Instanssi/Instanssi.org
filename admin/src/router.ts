@@ -379,6 +379,17 @@ const router = createRouter({
             props: true,
             component: () => import("@/views/kompomaatti/VoteCodesView.vue"),
         },
+        // Live Voting
+        {
+            path: "/:eventId(\\d+)/live-voting/:compoId(\\d+)",
+            name: "live-voting",
+            meta: {
+                requireAuth: true,
+                requireViewPermission: PermissionTarget.LIVE_VOTING_STATE,
+            },
+            props: true,
+            component: () => import("@/views/kompomaatti/LiveVotingView.vue"),
+        },
         // Vote Code Requests
         {
             path: "/:eventId(\\d+)/vote-code-requests",

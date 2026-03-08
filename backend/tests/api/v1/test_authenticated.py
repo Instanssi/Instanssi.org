@@ -591,7 +591,7 @@ def test_auth_user_vote_code_request_instance_options(auth_client, vote_code_req
 @pytest.mark.django_db
 @freeze_time(FROZEN_TIME)
 def test_auth_user_vote_post_fail_not_started(auth_client, editable_compo_entry):
-    """This should fail due to compo voting not started"""
+    """This should fail because live voting is not open for this compo."""
     url = "/api/v1/user_votes/"
     req = auth_client.post(
         url, data={"compo": editable_compo_entry.compo_id, "entries": [editable_compo_entry.id]}

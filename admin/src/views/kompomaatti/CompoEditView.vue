@@ -45,7 +45,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="6">
                                 <v-text-field
                                     v-model="compoStart.value.value"
                                     type="datetime-local"
@@ -54,16 +54,7 @@
                                     :label="t('CompoEditView.labels.compoStart') + ' *'"
                                 />
                             </v-col>
-                            <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="votingStart.value.value"
-                                    type="datetime-local"
-                                    :error-messages="votingStart.errorMessage.value"
-                                    variant="outlined"
-                                    :label="t('CompoEditView.labels.votingStart') + ' *'"
-                                />
-                            </v-col>
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="6">
                                 <v-text-field
                                     v-model="votingEnd.value.value"
                                     type="datetime-local"
@@ -172,14 +163,6 @@
                             :hint-off="t('CompoEditView.labels.activeHintOff')"
                         />
                         <ToggleSwitch
-                            v-model="isVotable.value.value"
-                            :error-message="isVotable.errorMessage.value"
-                            :label-on="t('CompoEditView.labels.isVotableOn')"
-                            :label-off="t('CompoEditView.labels.isVotableOff')"
-                            :hint-on="t('CompoEditView.labels.isVotableHintOn')"
-                            :hint-off="t('CompoEditView.labels.isVotableHintOff')"
-                        />
-                        <ToggleSwitch
                             v-model="showVotingResults.value.value"
                             :error-message="showVotingResults.errorMessage.value"
                             :label-on="t('CompoEditView.labels.showVotingResultsOn')"
@@ -269,7 +252,6 @@ const API_FIELD_MAPPING: FieldMapping = {
     adding_end: "addingEnd",
     editing_end: "editingEnd",
     compo_start: "compoStart",
-    voting_start: "votingStart",
     voting_end: "votingEnd",
     entry_sizelimit: "entrySizelimit",
     source_sizelimit: "sourceSizelimit",
@@ -278,7 +260,6 @@ const API_FIELD_MAPPING: FieldMapping = {
     image_formats: "imageFormats",
     active: "active",
     show_voting_results: "showVotingResults",
-    is_votable: "isVotable",
     entry_view_type: "entryViewType",
     thumbnail_pref: "thumbnailPref",
     hide_from_archive: "hideFromArchive",
@@ -374,7 +355,6 @@ const validationSchema = yupObject({
     addingEnd: yupString().required(),
     editingEnd: yupString().required(),
     compoStart: yupString().required(),
-    votingStart: yupString().required(),
     votingEnd: yupString().required(),
     entrySizelimit: yupNumber().nullable(),
     sourceSizelimit: yupNumber().nullable(),
@@ -383,7 +363,6 @@ const validationSchema = yupObject({
     imageFormats: yupString(),
     active: yupBoolean(),
     showVotingResults: yupBoolean(),
-    isVotable: yupBoolean(),
     entryViewType: yupNumber(),
     thumbnailPref: yupNumber(),
     hideFromArchive: yupBoolean(),
@@ -398,7 +377,6 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         addingEnd: "",
         editingEnd: "",
         compoStart: "",
-        votingStart: "",
         votingEnd: "",
         entrySizelimit: null as number | null,
         sourceSizelimit: null as number | null,
@@ -407,7 +385,6 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         imageFormats: "",
         active: true,
         showVotingResults: false,
-        isVotable: true,
         entryViewType: 0,
         thumbnailPref: 0,
         hideFromArchive: false,
@@ -420,7 +397,6 @@ const description = useField<string>("description");
 const addingEnd = useField<string>("addingEnd");
 const editingEnd = useField<string>("editingEnd");
 const compoStart = useField<string>("compoStart");
-const votingStart = useField<string>("votingStart");
 const votingEnd = useField<string>("votingEnd");
 const entrySizelimit = useField<number | null>("entrySizelimit");
 const sourceSizelimit = useField<number | null>("sourceSizelimit");
@@ -429,7 +405,6 @@ const sourceFormats = useField<string>("sourceFormats");
 const imageFormats = useField<string>("imageFormats");
 const active = useField<boolean>("active");
 const showVotingResults = useField<boolean>("showVotingResults");
-const isVotable = useField<boolean>("isVotable");
 const entryViewType = useField<number>("entryViewType");
 const thumbnailPref = useField<number>("thumbnailPref");
 const hideFromArchive = useField<boolean>("hideFromArchive");
@@ -470,7 +445,6 @@ function buildBody(values: GenericObject) {
         adding_end: toISODatetime(values.addingEnd)!,
         editing_end: toISODatetime(values.editingEnd)!,
         compo_start: toISODatetime(values.compoStart)!,
-        voting_start: toISODatetime(values.votingStart)!,
         voting_end: toISODatetime(values.votingEnd)!,
         entry_sizelimit: values.entrySizelimit,
         source_sizelimit: values.sourceSizelimit,
@@ -479,7 +453,6 @@ function buildBody(values: GenericObject) {
         image_formats: values.imageFormats || "",
         active: values.active,
         show_voting_results: values.showVotingResults,
-        is_votable: values.isVotable,
         entry_view_type: values.entryViewType,
         thumbnail_pref: values.thumbnailPref,
         hide_from_archive: values.hideFromArchive,
@@ -534,7 +507,6 @@ onMounted(async () => {
                 addingEnd: toLocalDatetime(item.adding_end),
                 editingEnd: toLocalDatetime(item.editing_end),
                 compoStart: toLocalDatetime(item.compo_start),
-                votingStart: toLocalDatetime(item.voting_start),
                 votingEnd: toLocalDatetime(item.voting_end),
                 entrySizelimit: item.entry_sizelimit ?? null,
                 sourceSizelimit: item.source_sizelimit ?? null,
@@ -543,7 +515,6 @@ onMounted(async () => {
                 imageFormats: item.image_formats ?? "",
                 active: item.active ?? true,
                 showVotingResults: item.show_voting_results ?? false,
-                isVotable: item.is_votable ?? true,
                 entryViewType: item.entry_view_type ?? 0,
                 thumbnailPref: item.thumbnail_pref ?? 0,
                 hideFromArchive: item.hide_from_archive ?? false,

@@ -1303,10 +1303,6 @@ paths:
         name: hide_from_frontpage
         schema:
           type: boolean
-      - in: query
-        name: is_votable
-        schema:
-          type: boolean
       - name: limit
         required: false
         in: query
@@ -1869,6 +1865,236 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidateArchiveError'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/:
+    get:
+      operationId: admin_event_kompomaatti_live_voting_retrieve
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+    patch:
+      operationId: admin_event_kompomaatti_live_voting_partial_update
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLiveVotingUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLiveVotingUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLiveVotingUpdateRequest'
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_all/:
+    post:
+      operationId: admin_event_kompomaatti_live_voting_hide_all_create
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_entry/:
+    post:
+      operationId: admin_event_kompomaatti_live_voting_hide_entry_create
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reset/:
+    post:
+      operationId: admin_event_kompomaatti_live_voting_reset_create
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_all/:
+    post:
+      operationId: admin_event_kompomaatti_live_voting_reveal_all_create
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
+          description: ''
+  /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_entry/:
+    post:
+      operationId: admin_event_kompomaatti_live_voting_reveal_entry_create
+      description: Staff viewset for managing live voting state during a compo presentation.
+      parameters:
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this live voting state.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LiveVotingEntryActionRequest'
+        required: true
+      security:
+      - knoxApiToken: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveVotingState'
           description: ''
   /api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/:
     get:
@@ -5911,8 +6137,8 @@ paths:
       description: |-
         Public read-only endpoint for compo entries.
 
-        Only entries from active compos where voting has started (or the event
-        is archived) are shown.
+        Only entries from active compos where the event is archived or the entry
+        has been revealed via live voting are shown.
 
         Supports ordering by rank and score when results are visible.
       parameters:
@@ -5956,8 +6182,8 @@ paths:
       description: |-
         Public read-only endpoint for compo entries.
 
-        Only entries from active compos where voting has started (or the event
-        is archived) are shown.
+        Only entries from active compos where the event is archived or the entry
+        has been revealed via live voting are shown.
 
         Supports ordering by rank and score when results are visible.
       parameters:
@@ -5983,6 +6209,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/PublicCompoEntry'
           description: ''
+  /api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/:
+    get:
+      operationId: public_event_kompomaatti_live_voting_retrieve
+      description: |-
+        Public polling endpoint for live voting state.
+
+        Returns the current live voting state for a compo, including which entries
+        have been revealed. Supports conditional requests via If-Modified-Since
+        for efficient polling.
+      parameters:
+      - in: path
+        name: compo_pk
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: event_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - public
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLiveVotingState'
+          description: ''
+        '304':
+          description: No response body
+        '404':
+          description: No response body
   /api/v2/public/event/{event_pk}/program/events/:
     get:
       operationId: public_event_program_events_list
@@ -6741,10 +7002,6 @@ components:
           type: string
           format: date-time
           title: Compo start time
-        voting_start:
-          type: string
-          format: date-time
-          title: Voting start time
         voting_end:
           type: string
           format: date-time
@@ -6810,9 +7067,6 @@ components:
         hide_from_frontpage:
           type: boolean
           title: Hide from front page
-        is_votable:
-          type: boolean
-          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
@@ -6833,7 +7087,6 @@ components:
       - name
       - source_format_list
       - voting_end
-      - voting_start
     CompoEntry:
       type: object
       description: Staff serializer for compo entries.
@@ -6899,6 +7152,15 @@ components:
         youtube_url:
           type: string
           nullable: true
+        live_voting_revealed:
+          type: boolean
+          title: Revealed in live voting
+        live_voting_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -6993,6 +7255,15 @@ components:
         youtube_url:
           type: string
           nullable: true
+        live_voting_revealed:
+          type: boolean
+          title: Revealed in live voting
+        live_voting_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -7040,10 +7311,6 @@ components:
           type: string
           format: date-time
           title: Compo start time
-        voting_start:
-          type: string
-          format: date-time
-          title: Voting start time
         voting_end:
           type: string
           format: date-time
@@ -7091,9 +7358,6 @@ components:
         hide_from_frontpage:
           type: boolean
           title: Hide from front page
-        is_votable:
-          type: boolean
-          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
@@ -7107,7 +7371,6 @@ components:
       - editing_end
       - name
       - voting_end
-      - voting_start
     ContentType:
       type: object
       description: Serializer for content type information.
@@ -7890,6 +8153,50 @@ components:
         * `` - Not set
         * `en` - English
         * `fi` - Finnish
+    LiveVotingEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        live_voting_revealed:
+          type: boolean
+          readOnly: true
+          title: Revealed in live voting
+      required:
+      - id
+      - live_voting_revealed
+    LiveVotingEntryActionRequest:
+      type: object
+      properties:
+        entry_id:
+          type: integer
+      required:
+      - entry_id
+    LiveVotingState:
+      type: object
+      properties:
+        compo:
+          type: integer
+          readOnly: true
+        voting_open:
+          type: boolean
+        current_entry:
+          type: integer
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveVotingEntry'
+          readOnly: true
+      required:
+      - compo
+      - entries
+      - updated_at
     LogEntry:
       type: object
       description: Serializer for audit log entries.
@@ -9047,6 +9354,15 @@ components:
         youtube_url:
           type: string
           nullable: true
+        live_voting_revealed:
+          type: boolean
+          title: Revealed in live voting
+        live_voting_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -9087,10 +9403,6 @@ components:
           type: string
           format: date-time
           title: Compo start time
-        voting_start:
-          type: string
-          format: date-time
-          title: Voting start time
         voting_end:
           type: string
           format: date-time
@@ -9138,9 +9450,6 @@ components:
         hide_from_frontpage:
           type: boolean
           title: Hide from front page
-        is_votable:
-          type: boolean
-          title: Votable
         thumbnail_pref:
           allOf:
           - $ref: '#/components/schemas/ThumbnailPrefEnum'
@@ -9173,6 +9482,14 @@ components:
           format: uri
           title: Event main page
           maxLength: 200
+    PatchedLiveVotingUpdateRequest:
+      type: object
+      properties:
+        voting_open:
+          type: boolean
+        current_entry:
+          type: integer
+          nullable: true
     PatchedOtherVideoCategoryRequest:
       type: object
       description: Staff serializer for archive video categories.
@@ -9956,10 +10273,6 @@ components:
           type: string
           format: date-time
           title: Compo start time
-        voting_start:
-          type: string
-          format: date-time
-          title: Voting start time
         voting_end:
           type: string
           format: date-time
@@ -9970,9 +10283,6 @@ components:
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
-        is_votable:
-          type: boolean
-          title: Votable
       required:
       - adding_end
       - compo_start
@@ -9982,7 +10292,6 @@ components:
       - id
       - name
       - voting_end
-      - voting_start
     PublicCompoEntry:
       type: object
       description: |-
@@ -10096,6 +10405,29 @@ components:
       - date
       - id
       - name
+    PublicLiveVotingState:
+      type: object
+      properties:
+        compo:
+          type: integer
+        voting_open:
+          type: boolean
+        current_entry:
+          type: integer
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+        revealed_entries:
+          type: array
+          items:
+            type: integer
+      required:
+      - compo
+      - current_entry
+      - revealed_entries
+      - updated_at
+      - voting_open
     PublicOtherVideo:
       type: object
       description: Public read-only serializer for archive videos.

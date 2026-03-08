@@ -28,7 +28,6 @@ class AdminCompoSerializer(ModelSerializer[Compo]):
             "adding_end",
             "editing_end",
             "compo_start",
-            "voting_start",
             "voting_end",
             "max_source_size",
             "max_entry_size",
@@ -40,7 +39,6 @@ class AdminCompoSerializer(ModelSerializer[Compo]):
             "entry_view_type",
             "hide_from_archive",
             "hide_from_frontpage",
-            "is_votable",
             "thumbnail_pref",
         )
 

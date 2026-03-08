@@ -73,6 +73,7 @@ class CompoEntrySerializer(ModelSerializer[Entry]):
             "imagefile_thumbnail_url",
             "imagefile_medium_url",
             "youtube_url",
+            "live_voting_revealed",
             "disqualified",
             "disqualified_reason",
             "archive_score",

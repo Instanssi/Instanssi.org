@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.django_db
 def test_ta_anonymous_can_view_paid_transaction(page_client, store_transaction):
     resp = page_client.get(f"/store/ta/{store_transaction.key}/")

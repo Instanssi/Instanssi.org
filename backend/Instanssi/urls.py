@@ -6,10 +6,13 @@ from django.views.generic import RedirectView
 from django.views.i18n import set_language
 from django.views.static import serve
 
+from Instanssi.api.ical.feed import EventFeed
+
 urlpatterns = [
     path("i18n/setlang/", set_language, name="set_language"),
     path("users/", include("allauth.urls")),
     path("qr/", include("qr_code.urls", namespace="qr_code")),
+    path("api/v1/ics/instanssi.ics", EventFeed(), name="ics_feed"),
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),
     path("api/v2/", include("Instanssi.api.v2.urls", namespace="api-v2")),
     path("2026/", include("Instanssi.main2026.urls", namespace="main2026")),

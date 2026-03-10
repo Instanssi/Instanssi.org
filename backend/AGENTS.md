@@ -168,7 +168,7 @@ Login URL for users is `/users/login/` (served by allauth).
 ### REST API
 
 Two API versions:
-- **APIv1**: Legacy endpoints under `/api/v1/`
+- **APIv1**: Legacy store-only endpoints under `/api/v1/` (used by the store frontend)
 - **APIv2**: Current endpoints under `/api/v2/` with OpenAPI docs via drf-spectacular
 
 Authentication:
@@ -247,7 +247,8 @@ Items can be hidden behind secret keys:
 - `/kompomaatti/`: Public compo browsing and participation
 - `/arkisto/`: Historical event archive
 - `/store/`: Ticket and merchandise store
-- `/api/v1/`, `/api/v2/`: REST APIs
+- `/api/v1/`: Legacy store API (store frontend only)
+- `/api/v2/`: REST APIs
 - `/admin/`: Django admin (debug/development only)
 
 Root URL redirects to current year's main page (currently `/2026/`).

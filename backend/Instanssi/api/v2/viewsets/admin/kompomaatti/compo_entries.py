@@ -34,7 +34,7 @@ class CompoEntryViewSet(PermissionViewSet):
 
     queryset = Entry.objects.all()
     serializer_class = CompoEntrySerializer  # type: ignore[assignment]
-    parser_classes = (MultiPartParser, FormParser, JSONParser)
+    parser_classes = (MultiPartParser, FormParser)
     ordering_fields = (
         "id",
         "compo",
@@ -103,7 +103,7 @@ class CompoEntryViewSet(PermissionViewSet):
             "All entries in the compo must be included exactly once."
         ),
     )
-    @action(detail=False, methods=["post"], url_path="reorder")
+    @action(detail=False, methods=["post"], url_path="reorder", parser_classes=[JSONParser])
     def reorder(self, request: Request, event_pk: int = 0) -> Response:
         """Bulk reorder entries within a compo."""
         compo_id = request.data.get("compo")

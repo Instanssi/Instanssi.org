@@ -1589,9 +1589,6 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1664,9 +1661,6 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1705,9 +1699,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedCompoEntryRequest'
-          application/json:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
       security:
@@ -1806,9 +1797,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ReorderEntriesRequestRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
-          application/json:
             schema:
               $ref: '#/components/schemas/ReorderEntriesRequestRequest'
         required: true

@@ -1763,6 +1763,7 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1778,7 +1779,7 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -1859,6 +1860,7 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1874,7 +1876,7 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -1894,6 +1896,7 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1909,7 +1912,7 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });
@@ -1960,6 +1963,7 @@ export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
+        ...formDataBodySerializer,
         responseType: "json",
         security: [
             {
@@ -1975,7 +1979,7 @@ export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/reorder/",
         ...options,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": null,
             ...options.headers,
         },
     });

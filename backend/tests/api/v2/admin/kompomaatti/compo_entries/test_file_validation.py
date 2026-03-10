@@ -323,3 +323,36 @@ def test_staff_can_upload_to_closed_compo(
         },
     )
     assert req.status_code == 201
+
+
+@pytest.mark.django_db
+def test_staff_skip_size_check_allows_oversized_files(
+    staff_api_client, open_compo, base_user, source_zip, test_image
+):
+    """Test that staff can bypass size limits with skip_size_check query parameter"""
+    open_compo.entry_sizelimit = 10
+    open_compo.source_sizelimit = 10
+    open_compo.imagefile_sizelimit = 10
+    open_compo.save()
+
+    large_entry = SimpleUploadedFile("entry.zip", b"x" * 100, content_type="application/zip")
+    large_source = SimpleUploadedFile("source.zip", b"x" * 100, content_type="application/zip")
+    large_image = SimpleUploadedFile("image.png", test_image, content_type="image/png")
+
+    base_url = get_base_url(open_compo.event_id)
+    req = staff_api_client.post(
+        f"{base_url}?skip_size_check=true",
+        format="multipart",
+        data={
+            "user": base_user.id,
+            "compo": open_compo.id,
+            "name": "Oversized Entry",
+            "description": "Should pass with size check skipped",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": large_entry,
+            "imagefile_original": large_image,
+            "sourcefile": large_source,
+        },
+    )
+    assert req.status_code == 201

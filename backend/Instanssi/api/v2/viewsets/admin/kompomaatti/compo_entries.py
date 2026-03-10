@@ -70,10 +70,13 @@ class CompoEntryViewSet(PermissionViewSet):
         assert serializer.instance is not None
         serializer.instance = self.get_queryset().get(pk=serializer.instance.pk)
 
+    def _skip_size_check(self) -> bool:
+        return self.request.query_params.get("skip_size_check") == "true"
+
     def perform_create(self, serializer: BaseSerializer[Entry]) -> None:  # type: ignore[override]
         if compo := serializer.validated_data.get("compo"):
             self.validate_compo_belongs_to_event(compo)
-            validate_entry_files(serializer.validated_data, compo)
+            validate_entry_files(serializer.validated_data, compo, skip_size_check=self._skip_size_check())
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)
         self._refresh_with_annotations(serializer)
@@ -83,7 +86,12 @@ class CompoEntryViewSet(PermissionViewSet):
         if new_compo := serializer.validated_data.get("compo"):
             if new_compo.id != serializer.instance.compo_id:
                 raise serializers.ValidationError({"compo": [_("Cannot change compo after creation")]})
-        validate_entry_files(serializer.validated_data, serializer.instance.compo, serializer.instance)
+        validate_entry_files(
+            serializer.validated_data,
+            serializer.instance.compo,
+            serializer.instance,
+            skip_size_check=self._skip_size_check(),
+        )
         instance = serializer.save()
         maybe_copy_entry_to_image(instance)
         self._refresh_with_annotations(serializer)

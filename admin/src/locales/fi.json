@@ -426,7 +426,8 @@
         "youtubeUrl": "YouTube-URL",
         "disqualifiedOn": "Tuotos on hylätty",
         "disqualifiedOff": "Tuotosta ei ole hylätty",
-        "disqualifiedReason": "Syy"
+        "disqualifiedReason": "Syy",
+        "skipSizeCheck": "Ohita tiedostojen kokorajat"
       },
       "noAlternateFiles": "Vaihtoehtoisia tiedostoja ei ole saatavilla."
     },

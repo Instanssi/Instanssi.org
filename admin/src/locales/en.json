@@ -426,7 +426,8 @@
         "youtubeUrl": "YouTube URL",
         "disqualifiedOn": "Entry is disqualified",
         "disqualifiedOff": "Entry is not disqualified",
-        "disqualifiedReason": "Reason"
+        "disqualifiedReason": "Reason",
+        "skipSizeCheck": "Override file size limits"
       },
       "noAlternateFiles": "No alternate files available."
     },

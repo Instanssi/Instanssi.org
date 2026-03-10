@@ -2194,7 +2194,10 @@ export const adminEventKompomaattiLiveVotingRevealAllCreate = <
 };
 
 /**
- * Staff viewset for managing live voting state during a compo presentation.
+ * Reveal a single entry. Only the next unrevealed entry (by order_index) can be revealed.
+ *
+ * Note: Entry.objects.filter().update() is used instead of entry.save() throughout
+ * this viewset to avoid triggering Entry.save()'s generate_alternates() side effect.
  */
 export const adminEventKompomaattiLiveVotingRevealEntryCreate = <
     ThrowOnError extends boolean = false,

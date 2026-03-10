@@ -266,6 +266,7 @@
         "votingEnd": "Voting end",
         "entrySizelimit": "Max entry size (bytes)",
         "sourceSizelimit": "Max source size (bytes)",
+        "imageSizelimit": "Max image size (bytes)",
         "formats": "Entry formats (e.g. png|jpg)",
         "sourceFormats": "Source formats",
         "imageFormats": "Image formats",

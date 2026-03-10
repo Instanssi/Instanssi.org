@@ -118,6 +118,64 @@ def test_staff_entry_file_too_large_rejected(staff_api_client, open_compo, base_
 
 
 @pytest.mark.django_db
+def test_staff_source_file_too_large_rejected(staff_api_client, open_compo, base_user, entry_zip, image_png):
+    """Test that source files exceeding size limit are rejected"""
+    open_compo.source_sizelimit = 10  # 10 bytes
+    open_compo.save()
+
+    large_file = SimpleUploadedFile("source.zip", b"x" * 100, content_type="application/zip")
+    base_url = get_base_url(open_compo.event_id)
+    req = staff_api_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "user": base_user.id,
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Should fail validation",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": entry_zip,
+            "imagefile_original": image_png,
+            "sourcefile": large_file,
+        },
+    )
+    assert req.status_code == 400
+    assert "sourcefile" in req.data
+    assert "maximum allowed file size" in str(req.data["sourcefile"]).lower()
+
+
+@pytest.mark.django_db
+def test_staff_image_file_too_large_rejected(
+    staff_api_client, open_compo, base_user, entry_zip, source_zip, test_image
+):
+    """Test that image files exceeding size limit are rejected"""
+    open_compo.imagefile_sizelimit = 10  # 10 bytes
+    open_compo.save()
+
+    large_image = SimpleUploadedFile("image.png", test_image, content_type="image/png")
+    base_url = get_base_url(open_compo.event_id)
+    req = staff_api_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "user": base_user.id,
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Should fail validation",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": entry_zip,
+            "imagefile_original": large_image,
+            "sourcefile": source_zip,
+        },
+    )
+    assert req.status_code == 400
+    assert "imagefile_original" in req.data
+    assert "maximum allowed file size" in str(req.data["imagefile_original"]).lower()
+
+
+@pytest.mark.django_db
 def test_staff_image_required_but_missing_rejected(
     staff_api_client, open_compo, base_user, entry_zip, source_zip
 ):

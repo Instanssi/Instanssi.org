@@ -69,18 +69,25 @@
                             {{ t("CompoEditView.sections.fileSettings") }}
                         </FormSection>
                         <v-row>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
                                 <FileSizeInputField
                                     v-model="entrySizelimit.value.value"
                                     :error-message="entrySizelimit.errorMessage.value"
                                     :label="t('CompoEditView.labels.entrySizelimit')"
                                 />
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
                                 <FileSizeInputField
                                     v-model="sourceSizelimit.value.value"
                                     :error-message="sourceSizelimit.errorMessage.value"
                                     :label="t('CompoEditView.labels.sourceSizelimit')"
+                                />
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                <FileSizeInputField
+                                    v-model="imageSizelimit.value.value"
+                                    :error-message="imageSizelimit.errorMessage.value"
+                                    :label="t('CompoEditView.labels.imageSizelimit')"
                                 />
                             </v-col>
                         </v-row>
@@ -255,6 +262,7 @@ const API_FIELD_MAPPING: FieldMapping = {
     voting_end: "votingEnd",
     entry_sizelimit: "entrySizelimit",
     source_sizelimit: "sourceSizelimit",
+    imagefile_sizelimit: "imageSizelimit",
     formats: "formats",
     source_formats: "sourceFormats",
     image_formats: "imageFormats",
@@ -358,6 +366,7 @@ const validationSchema = yupObject({
     votingEnd: yupString().required(),
     entrySizelimit: yupNumber().nullable(),
     sourceSizelimit: yupNumber().nullable(),
+    imageSizelimit: yupNumber().nullable(),
     formats: yupString(),
     sourceFormats: yupString(),
     imageFormats: yupString(),
@@ -380,6 +389,7 @@ const { handleSubmit, setValues, setErrors, meta } = useForm({
         votingEnd: "",
         entrySizelimit: null as number | null,
         sourceSizelimit: null as number | null,
+        imageSizelimit: null as number | null,
         formats: "",
         sourceFormats: "",
         imageFormats: "",
@@ -400,6 +410,7 @@ const compoStart = useField<string>("compoStart");
 const votingEnd = useField<string>("votingEnd");
 const entrySizelimit = useField<number | null>("entrySizelimit");
 const sourceSizelimit = useField<number | null>("sourceSizelimit");
+const imageSizelimit = useField<number | null>("imageSizelimit");
 const formats = useField<string>("formats");
 const sourceFormats = useField<string>("sourceFormats");
 const imageFormats = useField<string>("imageFormats");
@@ -448,6 +459,7 @@ function buildBody(values: GenericObject) {
         voting_end: toISODatetime(values.votingEnd)!,
         entry_sizelimit: values.entrySizelimit,
         source_sizelimit: values.sourceSizelimit,
+        imagefile_sizelimit: values.imageSizelimit,
         formats: values.formats || "",
         source_formats: values.sourceFormats || "",
         image_formats: values.imageFormats || "",
@@ -510,6 +522,7 @@ onMounted(async () => {
                 votingEnd: toLocalDatetime(item.voting_end),
                 entrySizelimit: item.entry_sizelimit ?? null,
                 sourceSizelimit: item.source_sizelimit ?? null,
+                imageSizelimit: item.imagefile_sizelimit ?? null,
                 formats: item.formats ?? "",
                 sourceFormats: item.source_formats ?? "",
                 imageFormats: item.image_formats ?? "",

@@ -9,6 +9,7 @@ class CompoSerializer(ModelSerializer[Compo]):
 
     max_entry_size = IntegerField(read_only=True)
     max_source_size = IntegerField(read_only=True)
+    max_image_size = IntegerField(read_only=True)
     source_format_list = ListField(child=CharField(), read_only=True)
     entry_format_list = ListField(child=CharField(), read_only=True)
     image_format_list = ListField(child=CharField(), read_only=True)
@@ -26,11 +27,13 @@ class CompoSerializer(ModelSerializer[Compo]):
             "voting_end",
             "entry_sizelimit",
             "source_sizelimit",
+            "imagefile_sizelimit",
             "formats",
             "source_formats",
             "image_formats",
             "max_source_size",
             "max_entry_size",
+            "max_image_size",
             "source_format_list",
             "entry_format_list",
             "image_format_list",

@@ -9,7 +9,13 @@ from rest_framework.exceptions import ValidationError
 from Instanssi.kompomaatti.models import Compo, Entry
 
 
-def validate_entry_files(data: dict[str, Any], compo: Compo, instance: Entry | None = None) -> None:
+def validate_entry_files(
+    data: dict[str, Any],
+    compo: Compo,
+    instance: Entry | None = None,
+    *,
+    skip_size_check: bool = False,
+) -> None:
     """Validate entry files against compo settings.
 
     Checks file format (extension), file size, and image file requirements.
@@ -51,7 +57,7 @@ def validate_entry_files(data: dict[str, Any], compo: Compo, instance: Entry | N
     errors = {}
     for key, args in check_files_on.items():
         if file := data.get(key):
-            field_errors = _validate_file(file, *args)
+            field_errors = _validate_file(file, *args, skip_size_check=skip_size_check)
             if field_errors:
                 errors[key] = field_errors
 
@@ -72,12 +78,14 @@ def _validate_file(
     accept_formats_readable: str,
     max_size: int,
     max_readable_size: str,
+    *,
+    skip_size_check: bool = False,
 ) -> list[str]:
     """Validate file size and format, returning list of error messages."""
     errors: list[str] = []
 
     # Check file size
-    if file.size is not None and file.size > max_size:
+    if not skip_size_check and file.size is not None and file.size > max_size:
         errors.append(_("Maximum allowed file size is %(size)s") % {"size": max_readable_size})
 
     # Check file extension — use all suffixes so that e.g. ".tar.gz" is

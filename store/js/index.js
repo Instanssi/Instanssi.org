@@ -1,17 +1,19 @@
 /* global $ */
 
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 import {
     formatPrice,
     storeXHR,
     loadingOverlay,
+    storeFormGroup,
+    storeMessages,
     cartItemEquals,
 } from './store_common.js';
 
-import './store_information.js';
-import './store_cart.js';
-import './store_product.js';
+import { storeInformationForm, storeSummaryField, storeOrderSummary } from './store_information.js';
+import { storeCartItem } from './store_cart.js';
+import { storeProduct } from './store_product.js';
 
 const PAYMENT_METHODS = [
     { id: 1, name: 'Paytrail verkkomaksu' },
@@ -48,17 +50,14 @@ function scrollToTop() {
     }, 500);
 }
 
-Vue.filter('formatPrice', formatPrice);
-
-
 import storeTemplate from "./store.html?minify";
 
 /**
  * Instanssi.org store frontend application.
  */
-const app = new Vue({
-    el: '#store',
-    data: {
+const app = createApp({
+    data() {
+        return {
         /** Current step. 0 = products, 1 = info, 2 = summary & payment */
         step: 0,
         /** Products list. */
@@ -95,6 +94,7 @@ const app = new Vue({
         paymentURL: null,
         /** Set when transaction is being submitted (prevent accidental spam) */
         submitting: false,
+        };
     },
     template: storeTemplate,
     created() {
@@ -128,6 +128,7 @@ const app = new Vue({
         },
     },
     methods: {
+        formatPrice,
         canMoveToStep(step) {
             // Not going anywhere if the payment URL is already set
             // or the UI is waiting for it.
@@ -374,3 +375,14 @@ const app = new Vue({
         }
     }
 });
+
+app.component('store-form-group', storeFormGroup);
+app.component('store-messages', storeMessages);
+app.component('loading-overlay', loadingOverlay);
+app.component('store-product', storeProduct);
+app.component('store-cart-item', storeCartItem);
+app.component('store-information-form', storeInformationForm);
+app.component('store-summary-field', storeSummaryField);
+app.component('store-order-summary', storeOrderSummary);
+
+app.mount('#store');

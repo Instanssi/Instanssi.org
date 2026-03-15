@@ -112,6 +112,7 @@
         "entries": "Tuotokset",
         "competitions": "Kilpailut",
         "competitionParticipations": "Osallistumiset",
+        "liveVoting": "Live-äänestys",
         "voteCodes": "Lippu-äänikoodit",
         "voteCodeRequests": "Äänikoodipyynnöt",
         "store": "Kauppa",
@@ -236,13 +237,13 @@
       "loadingCompos": "Ladataan kompoja ...",
       "headers": {
         "addingEnd": "Lähetystakaraja",
-        "votingStart": "Äänestyksen alku",
         "votingEnd": "Äänestyksen loppu"
       },
       "filterByStatus": "Tila",
       "allStatuses": "Kaikki",
       "activeOnly": "Aktiiviset",
-      "inactiveOnly": "Ei-aktiiviset"
+      "inactiveOnly": "Ei-aktiiviset",
+      "liveVoting": "Live-äänestys"
     },
     "CompoEditView": {
       "newTitle": "Uusi kompo",
@@ -262,7 +263,6 @@
         "addingEnd": "Lähetystakaraja",
         "editingEnd": "Muokkaustakaraja",
         "compoStart": "Kompon alkamisaika",
-        "votingStart": "Äänestyksen alkamisaika",
         "votingEnd": "Äänestyksen päättymisaika",
         "entrySizelimit": "Tuotoksen enimmäiskoko (tavua)",
         "sourceSizelimit": "Lähdekoodin enimmäiskoko (tavua)",
@@ -277,10 +277,6 @@
         "showVotingResultsOff": "Äänestystulokset ovat piilossa",
         "showVotingResultsHintOn": "Pisteet, sijoitukset ja tuotostiedostot ovat julkisesti näkyvissä",
         "showVotingResultsHintOff": "Pisteet ja sijoitukset ovat piilossa; tuotostiedostot piilotettu ennen äänestyksen alkua",
-        "isVotableOn": "Äänestys on käytössä",
-        "isVotableOff": "Äänestys on pois käytöstä",
-        "isVotableHintOn": "Käyttäjät voivat äänestää tuotoksia äänestysaikana",
-        "isVotableHintOff": "Äänestys on kokonaan pois käytöstä; käytä ulkoisesti arvioitavissa kompoissa (esim. Robocoding)",
         "entryViewType": "Tuotoksen näkymätyyppi",
         "thumbnailPref": "Pienoiskuva-asetus",
         "hideFromArchiveOn": "Piilotettu arkistosta",
@@ -541,6 +537,27 @@
         "disqualifiedOff": "Osallistujaa ei ole hylätty",
         "disqualifiedReason": "Syy"
       }
+    },
+    "LiveVotingView": {
+      "title": "Live-äänestys",
+      "loadFailure": "Live-äänestyksen tilan lataus epäonnistui.",
+      "actionFailure": "Toiminto epäonnistui; yritä uudelleen.",
+      "openVoting": "Avaa äänestys",
+      "closeVoting": "Sulje äänestys",
+      "revealAll": "Paljasta kaikki",
+      "revealAllConfirm": "Paljasta kaikki tuotokset?",
+      "hideAll": "Piilota kaikki",
+      "hideAllConfirm": "Piilota kaikki tuotokset?",
+      "reset": "Nollaa",
+      "openVotingConfirm": "Avaa äänestys tälle kompolle?",
+      "closeVotingConfirm": "Sulje äänestys tälle kompolle?",
+      "resetConfirm": "Nollaa kaikki tuotokset ja sulje äänestys?",
+      "reveal": "Paljasta",
+      "hide": "Piilota",
+      "revealed": "Paljastettu",
+      "onScreen": "Ruudulla",
+      "votingEnd": "Äänestys päättyy:",
+      "votingTimeEnded": "Päättynyt"
     },
     "VoteCodesView": {
       "title": "Lippu-äänikoodit",

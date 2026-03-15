@@ -21,7 +21,6 @@ def test_entry_index_404_for_non_archived_event_entry(page_client, non_archived_
         adding_end="2025-01-10T12:00:00Z",
         editing_end="2025-01-11T12:00:00Z",
         compo_start="2025-01-12T12:00:00Z",
-        voting_start="2025-01-12T13:00:00Z",
         voting_end="2025-01-13T12:00:00Z",
     )
     entry = Entry.objects.create(

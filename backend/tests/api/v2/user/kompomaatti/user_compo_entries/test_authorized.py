@@ -61,6 +61,7 @@ def test_get_user_compo_entries(auth_client, editable_compo_entry):
 
 
 @pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_get_user_compo_entry(auth_client, votable_compo_entry):
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     req = auth_client.get(f"{base_url}{votable_compo_entry.id}/")

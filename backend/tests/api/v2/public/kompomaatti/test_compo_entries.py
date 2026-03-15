@@ -30,7 +30,7 @@ def test_anonymous_can_get_votable_entry_detail(api_client, votable_compo_entry)
 @pytest.mark.django_db
 @freeze_time(FROZEN_TIME)
 def test_anonymous_cannot_see_non_votable_entries(api_client, editable_compo_entry):
-    """Test that entries from compos before voting starts are not visible."""
+    """Test that entries not yet revealed via live voting are not visible."""
     base_url = get_base_url(editable_compo_entry.compo.event_id)
 
     # Not in list
@@ -87,8 +87,8 @@ def test_public_can_see_score_rank_after_results_shown(api_client, votable_compo
 
 
 @pytest.mark.django_db
-def test_public_cannot_see_disqualified_before_results_shown(api_client, votable_compo_entry):
-    """Test that disqualified/disqualified_reason are hidden when show_voting_results is False."""
+def test_public_can_see_disqualified_for_revealed_entry(api_client, votable_compo_entry):
+    """Test that disqualified info is visible for live-voting-revealed entries."""
     votable_compo_entry.disqualified = True
     votable_compo_entry.disqualified_reason = "Test reason"
     votable_compo_entry.save()
@@ -98,8 +98,8 @@ def test_public_cannot_see_disqualified_before_results_shown(api_client, votable
     base_url = get_base_url(votable_compo_entry.compo.event_id)
     req = api_client.get(f"{base_url}{votable_compo_entry.id}/")
     assert req.status_code == 200
-    assert req.data["disqualified"] is None
-    assert req.data["disqualified_reason"] is None
+    assert req.data["disqualified"] is True
+    assert req.data["disqualified_reason"] == "Test reason"
 
 
 @pytest.mark.django_db

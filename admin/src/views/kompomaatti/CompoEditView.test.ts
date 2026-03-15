@@ -81,9 +81,9 @@ describe("CompoEditView", () => {
             // Tiptap editor for description
             expect(wrapper.find('[data-testid="tiptap"]').exists()).toBe(true);
 
-            // Datetime fields (5 total)
+            // Datetime fields (4 total)
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
-            expect(datetimeInputs.length).toBe(5);
+            expect(datetimeInputs.length).toBe(4);
 
             // Size inputs (2)
             const numberInputs = wrapper.findAll('input[type="number"]');
@@ -97,8 +97,8 @@ describe("CompoEditView", () => {
             const selects = wrapper.findAllComponents({ name: "VSelect" });
             expect(selects.length).toBe(4);
 
-            // Toggle switches (5)
-            expect(wrapper.findAll(".toggle-switch").length).toBe(5);
+            // Toggle switches (4)
+            expect(wrapper.findAll(".toggle-switch").length).toBe(4);
         });
 
         it("submits correct snake_case data to API", async () => {
@@ -113,8 +113,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await flushPromises();
             await submitForm(wrapper);
@@ -130,14 +129,12 @@ describe("CompoEditView", () => {
             expect("adding_end" in callBody!).toBe(true);
             expect("editing_end" in callBody!).toBe(true);
             expect("compo_start" in callBody!).toBe(true);
-            expect("voting_start" in callBody!).toBe(true);
             expect("voting_end" in callBody!).toBe(true);
             expect("entry_sizelimit" in callBody!).toBe(true);
             expect("source_sizelimit" in callBody!).toBe(true);
             expect("source_formats" in callBody!).toBe(true);
             expect("image_formats" in callBody!).toBe(true);
             expect("show_voting_results" in callBody!).toBe(true);
-            expect("is_votable" in callBody!).toBe(true);
             expect("entry_view_type" in callBody!).toBe(true);
             expect("thumbnail_pref" in callBody!).toBe(true);
             expect("hide_from_archive" in callBody!).toBe(true);
@@ -155,8 +152,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             // Set size value (first number input)
             const numberInputs = wrapper.findAll('input[type="number"]');
@@ -182,8 +178,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             // Add formats via combobox (simulated)
             const comboboxes = wrapper.findAllComponents({ name: "VCombobox" });
@@ -208,7 +203,6 @@ describe("CompoEditView", () => {
                     adding_end: "2024-03-15T12:00:00Z",
                     editing_end: "2024-03-15T18:00:00Z",
                     compo_start: "2024-03-16T10:00:00Z",
-                    voting_start: "2024-03-16T12:00:00Z",
                     voting_end: "2024-03-16T20:00:00Z",
                     entry_sizelimit: 52428800, // 50 MB
                     source_sizelimit: 10485760, // 10 MB
@@ -217,7 +211,6 @@ describe("CompoEditView", () => {
                     image_formats: "png|jpg",
                     active: true,
                     show_voting_results: false,
-                    is_votable: true,
                     entry_view_type: 0,
                     thumbnail_pref: 1,
                     hide_from_archive: false,
@@ -245,7 +238,6 @@ describe("CompoEditView", () => {
                     adding_end: "2024-03-15T12:00:00Z",
                     editing_end: "2024-03-15T18:00:00Z",
                     compo_start: "2024-03-16T10:00:00Z",
-                    voting_start: "2024-03-16T12:00:00Z",
                     voting_end: "2024-03-16T20:00:00Z",
                     entry_sizelimit: 1073741824, // 1 GB
                     source_sizelimit: null,
@@ -254,7 +246,6 @@ describe("CompoEditView", () => {
                     image_formats: "",
                     active: true,
                     show_voting_results: false,
-                    is_votable: true,
                     entry_view_type: 0,
                     thumbnail_pref: 0,
                     hide_from_archive: false,
@@ -279,7 +270,6 @@ describe("CompoEditView", () => {
                     adding_end: "2024-03-15T12:00:00Z",
                     editing_end: "2024-03-15T18:00:00Z",
                     compo_start: "2024-03-16T10:00:00Z",
-                    voting_start: "2024-03-16T12:00:00Z",
                     voting_end: "2024-03-16T20:00:00Z",
                     entry_sizelimit: null,
                     source_sizelimit: null,
@@ -288,7 +278,6 @@ describe("CompoEditView", () => {
                     image_formats: "",
                     active: true,
                     show_voting_results: false,
-                    is_votable: true,
                     entry_view_type: 0,
                     thumbnail_pref: 0,
                     hide_from_archive: false,
@@ -337,8 +326,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await flushPromises();
             await submitForm(wrapper);
@@ -363,8 +351,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await flushPromises();
             await submitForm(wrapper);
@@ -387,9 +374,9 @@ describe("CompoEditView", () => {
             const wrapper = mountComponent({ eventId: "1" });
             await flushPromises();
 
-            // 5 toggle switches
+            // 4 toggle switches
             const toggles = wrapper.findAll(".toggle-switch");
-            expect(toggles.length).toBe(5);
+            expect(toggles.length).toBe(4);
         });
 
         it("has format comboboxes with common format suggestions", async () => {
@@ -426,8 +413,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await flushPromises();
             await submitForm(wrapper);
@@ -451,8 +437,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await flushPromises();
             await submitForm(wrapper);
@@ -474,8 +459,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             await submitForm(wrapper);
 
@@ -489,7 +473,7 @@ describe("CompoEditView", () => {
             const textInputs = wrapper.findAll('input[type="text"]');
             await textInputs[0]!.setValue("Demo Compo");
 
-            // Only fill 3 of 5 datetime fields
+            // Only fill 3 of 4 datetime fields
             const datetimeInputs = wrapper.findAll('input[type="datetime-local"]');
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
@@ -511,8 +495,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             // Don't fill size limits
 
@@ -533,8 +516,7 @@ describe("CompoEditView", () => {
             await datetimeInputs[0]!.setValue("2024-03-15T12:00");
             await datetimeInputs[1]!.setValue("2024-03-15T18:00");
             await datetimeInputs[2]!.setValue("2024-03-16T10:00");
-            await datetimeInputs[3]!.setValue("2024-03-16T12:00");
-            await datetimeInputs[4]!.setValue("2024-03-16T20:00");
+            await datetimeInputs[3]!.setValue("2024-03-16T20:00");
 
             // Don't fill formats
 

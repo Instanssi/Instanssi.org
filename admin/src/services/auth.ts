@@ -45,6 +45,7 @@ export enum PermissionTarget {
     EVENT = "event",
     TICKET_VOTE_CODE = "ticketvotecode",
     VOTE = "vote",
+    LIVE_VOTING_STATE = "livevotingstate",
     VOTE_CODE_REQUEST = "votecoderequest",
     VOTE_GROUP = "votegroup",
     RECEIPT = "receipt",

@@ -3,6 +3,7 @@ from typing import Any, Iterable
 
 from auditlog.registry import auditlog
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -135,7 +136,6 @@ class Compo(models.Model):
     adding_end = models.DateTimeField(_("Entry adding deadline"))
     editing_end = models.DateTimeField(_("Entry editing deadline"))
     compo_start = models.DateTimeField(_("Compo start time"))
-    voting_start = models.DateTimeField(_("Voting start time"))
     voting_end = models.DateTimeField(_("Voting end time"))
     entry_sizelimit = models.IntegerField(_("Entry size limit"), default=134217728)  # Default to 128M
     source_sizelimit = models.IntegerField(_("Source size limit"), default=134217728)  # Default to 128M
@@ -163,7 +163,6 @@ class Compo(models.Model):
     )
     hide_from_archive = models.BooleanField(_("Hide from archive"), default=False)
     hide_from_frontpage = models.BooleanField(_("Hide from front page"), default=False)
-    is_votable = models.BooleanField(_("Votable"), default=True)
     thumbnail_pref = models.IntegerField(
         _("Thumbnail settings"),
         choices=THUMBNAIL_REQ,
@@ -174,11 +173,10 @@ class Compo(models.Model):
         return f"{self.event.name}: {self.name}"
 
     def is_voting_open(self) -> bool:
-        if not self.is_votable:
+        try:
+            return self.live_voting_state.voting_open and timezone.now() < self.voting_end
+        except ObjectDoesNotExist:
             return False
-        if self.voting_start <= timezone.now() < self.voting_end:
-            return True
-        return False
 
     def is_adding_open(self) -> bool:
         if timezone.now() < self.adding_end:
@@ -187,13 +185,6 @@ class Compo(models.Model):
 
     def is_editing_open(self) -> bool:
         if timezone.now() < self.editing_end:
-            return True
-        return False
-
-    def has_voting_started(self) -> bool:
-        if not self.is_votable:
-            return False
-        if timezone.now() > self.voting_start:
             return True
         return False
 
@@ -317,6 +308,7 @@ class Entry(models.Model):
     )
     youtube_url = YoutubeVideoField(_("Youtube URL"), null=True, blank=True)
     order_index = models.IntegerField(_("Order index"), default=0, db_index=True)
+    live_voting_revealed = models.BooleanField(_("Revealed in live voting"), default=False)
     disqualified = models.BooleanField(_("Disqualified"), default=False)
     disqualified_reason = models.TextField(_("Disqualification reason"), blank=True)
     archive_score = models.FloatField(_("Score"), null=True, blank=True)
@@ -330,6 +322,11 @@ class Entry(models.Model):
 
     def __str__(self) -> str:
         return "{} by {}".format(self.name, self.creator)
+
+    @property
+    def is_revealed(self) -> bool:
+        """Entry details (files, disqualification info) should be visible to users."""
+        return self.live_voting_revealed or self.compo.show_voting_results or self.compo.event.archived
 
     @property
     def entry_file_ext(self) -> str:
@@ -561,9 +558,20 @@ class CompetitionParticipation(models.Model):
         return "{}, {}: {}".format(self.competition.name, self.participant_name, self.score)
 
 
+class LiveVotingState(models.Model):
+    compo = models.OneToOneField(Compo, on_delete=models.CASCADE, related_name="live_voting_state")
+    voting_open = models.BooleanField(_("Voting open"), default=False)
+    current_entry = models.ForeignKey(Entry, null=True, blank=True, on_delete=models.SET_NULL)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+
+    def __str__(self) -> str:
+        return f"Live voting state for {self.compo}"
+
+
 auditlog.register(Compo)
 auditlog.register(Competition)
 auditlog.register(Entry)
+auditlog.register(LiveVotingState)
 auditlog.register(CompetitionParticipation)
 auditlog.register(Vote)
 auditlog.register(VoteGroup)

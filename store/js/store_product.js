@@ -1,7 +1,5 @@
 /* global $ */
 
-import Vue from 'vue';
-
 import {
     formatPrice,
     cartItemEquals,
@@ -13,7 +11,7 @@ import storeProductTemplate from "./store_product.html?minify";
 /**
  * Displays a single store product with cart counts and "add" button.
  */
-Vue.component('store-product', {
+export const storeProduct = {
     template: storeProductTemplate,
     props: {
         product: Object,
@@ -40,6 +38,7 @@ Vue.component('store-product', {
         }
     },
     methods: {
+        formatPrice,
         /**
          * Signal that a new item should be added to the cart.
          */
@@ -111,4 +110,4 @@ Vue.component('store-product', {
             return items;
         }
     }
-});
+};

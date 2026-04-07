@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-sm-3 form-inline">
-            <div class="item-price text-right">{{ effectivePrice | formatPrice }}</div>
+            <div class="item-price text-right">{{ formatPrice(effectivePrice) }}</div>
             <div class="text-right">
                 <select class="form-control product-variants" v-if="product.variants && product.variants.length > 0" v-model="variant">
                     <option v-for="variant in product.variants" v-bind:value="variant">

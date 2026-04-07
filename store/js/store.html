@@ -55,7 +55,7 @@
                 :changeItemCount="changeItemCount"
                 :removeItemFromCart="removeItemFromCart" />
             <div class="pull-right cart-total">
-                Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong>
+                Yhteensä: <strong>{{ formatPrice(totalPrice) }}</strong>
             </div>
         </div>
 
@@ -87,7 +87,7 @@
                     :removeItemFromCart="removeItemFromCart" />
 
                 <div class="pull-right cart-total">
-                    Yhteensä: <strong>{{ totalPrice | formatPrice }}</strong>
+                    Yhteensä: <strong>{{ formatPrice(totalPrice) }}</strong>
                 </div>
                 <div class="clearfix" />
             </div>

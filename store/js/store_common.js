@@ -3,8 +3,6 @@
  * @todo Move some of this into a sitewide library?
  */
 
-import Vue from 'vue';
-
 export { storeXHR } from './store_api.js';
 
 // Support for this was still a bit patchy last I checked.
@@ -59,7 +57,7 @@ export function getDiscountedPrice(product, count) {
 /**
  * Form group with a title, input field and any messages concerning the field.
  */
-let storeFormGroup = Vue.component('store-form-group', {
+let storeFormGroup = {
     props: {
         title: String,
         field: String,
@@ -97,12 +95,12 @@ let storeFormGroup = Vue.component('store-form-group', {
             <store-messages :field="field" :messages="messages" />
         </div>
     </div>`
-});
+};
 
 /**
  * Shows messages addressed to a specific named field.
  */
-let storeMessages = Vue.component('store-messages', {
+let storeMessages = {
     props: {
         /** Field name to pick up messages for. */
         field: String,
@@ -140,9 +138,9 @@ let storeMessages = Vue.component('store-messages', {
             <span class="fa fa-times"></span> {{ message }}
         </div>
     </p></div>`
-});
+};
 
-let loadingOverlay = Vue.component('loading-overlay', {
+let loadingOverlay = {
     props: {
         loading: Boolean,
         text: String,
@@ -156,6 +154,6 @@ let loadingOverlay = Vue.component('loading-overlay', {
         <div class="fa fa-spinner fa-pulse fa-3x fa-fw"></div>
         <div v-if="text">{{ text }}</div>
     </div>`
-});
+};
 
 export { storeFormGroup, storeMessages, loadingOverlay };

@@ -1,11 +1,9 @@
-import Vue from 'vue';
-
 import storeInformationTemplate from "./store_information.html?minify";
 
 /**
  * Customer info form for a store order.
  */
-Vue.component('store-information-form', {
+export const storeInformationForm = {
     template: storeInformationTemplate,
     props: {
         /** Field error messages, maps field name -> array */
@@ -25,12 +23,12 @@ Vue.component('store-information-form', {
             this.$emit('update');
         }
     }
-});
+};
 
 /**
  * Form group with a title, input field and any messages concerning the field.
  */
-Vue.component('store-summary-field', {
+export const storeSummaryField = {
     props: {
         title: String,
         field: String,
@@ -58,14 +56,14 @@ Vue.component('store-summary-field', {
             <store-messages :field="field" :messages="messages" />
         </div>
     </div>`
-});
+};
 
 import storeSummaryTemplate from "./store_summary.html?minify";
 
 /**
  * Immutable listing of an order's contents and customer info.
  */
-Vue.component('store-order-summary', {
+export const storeOrderSummary = {
     template: storeSummaryTemplate,
     props: {
         /** Field error messages, maps field name -> array */
@@ -75,4 +73,4 @@ Vue.component('store-order-summary', {
         /** Shopping cart */
         cart: Array
     }
-});
+};

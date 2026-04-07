@@ -1,11 +1,10 @@
-import Vue from 'vue';
-
+import { formatPrice } from './store_common.js';
 import storeCartItemTemplate from "./store_cart_item.html?minify";
 
 /**
  * Single item in the cart.
  */
-Vue.component('store-cart-item', {
+export const storeCartItem = {
     template: storeCartItemTemplate,
     props: {
         item: Object,
@@ -14,6 +13,7 @@ Vue.component('store-cart-item', {
         removeItemFromCart: Function
     },
     methods: {
+        formatPrice,
         /**
          * Calculates subtotal for a specific cart item, considering discounts, etc.
          * @param {Object} cartItem - Existing cart item
@@ -29,4 +29,4 @@ Vue.component('store-cart-item', {
             return cartItem.product.price * cartItem.count * multiplier;
         }
     }
-});
+};

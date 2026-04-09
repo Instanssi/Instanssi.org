@@ -68,6 +68,13 @@
                         <FormSection>
                             {{ t("EntryEditView.sections.files") }}
                         </FormSection>
+                        <v-checkbox
+                            v-model="skipSizeCheck"
+                            :label="t('EntryEditView.labels.skipSizeCheck')"
+                            density="compact"
+                            hide-details
+                            class="mb-2"
+                        />
                         <v-row>
                             <v-col cols="12" md="4">
                                 <FileUploadField
@@ -250,6 +257,7 @@ const { getEventById } = useEvents();
 
 const loading = ref(false);
 const saving = ref(false);
+const skipSizeCheck = ref(false);
 const entryName = ref<string>("");
 const eventId = computed(() => parseInt(props.eventId, 10));
 const isEditMode = computed(() => props.id !== undefined);
@@ -438,7 +446,8 @@ async function createItem(values: GenericObject) {
             // Type assertion needed: our bodySerializer handles null for file clearing
             body: body as api.CompoEntryRequest,
             bodySerializer: () => toFormData(body),
-        });
+            ...(skipSizeCheck.value && { query: { skip_size_check: "true" } }),
+        } as Parameters<typeof api.adminEventKompomaattiEntriesCreate>[0]);
         toast.success(t("EntryEditView.createSuccess"));
         return true;
     } catch (e) {
@@ -455,7 +464,8 @@ async function editItem(itemId: number, values: GenericObject) {
             // Type assertion needed: our bodySerializer handles null for file clearing
             body: body as api.PatchedCompoEntryRequest,
             bodySerializer: () => toFormData(body),
-        });
+            ...(skipSizeCheck.value && { query: { skip_size_check: "true" } }),
+        } as Parameters<typeof api.adminEventKompomaattiEntriesPartialUpdate>[0]);
         toast.success(t("EntryEditView.editSuccess"));
         return true;
     } catch (e) {

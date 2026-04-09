@@ -246,6 +246,10 @@ export type Compo = {
      */
     source_sizelimit?: number;
     /**
+     * Image file size limit
+     */
+    imagefile_sizelimit?: number;
+    /**
      * Allowed file extensions
      */
     formats?: string;
@@ -259,6 +263,7 @@ export type Compo = {
     image_formats?: string;
     readonly max_source_size: number;
     readonly max_entry_size: number;
+    readonly max_image_size: number;
     readonly source_format_list: Array<string>;
     readonly entry_format_list: Array<string>;
     readonly image_format_list: Array<string>;
@@ -316,10 +321,6 @@ export type CompoEntry = {
      * Revealed in live voting
      */
     live_voting_revealed?: boolean;
-    /**
-     * Live voting reveal order
-     */
-    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -372,10 +373,6 @@ export type CompoEntryRequest = {
      * Revealed in live voting
      */
     live_voting_revealed?: boolean;
-    /**
-     * Live voting reveal order
-     */
-    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -421,6 +418,10 @@ export type CompoRequest = {
      * Source size limit
      */
     source_sizelimit?: number;
+    /**
+     * Image file size limit
+     */
+    imagefile_sizelimit?: number;
     /**
      * Allowed file extensions
      */
@@ -1573,10 +1574,6 @@ export type PatchedCompoEntryRequest = {
      * Revealed in live voting
      */
     live_voting_revealed?: boolean;
-    /**
-     * Live voting reveal order
-     */
-    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason
@@ -1622,6 +1619,10 @@ export type PatchedCompoRequest = {
      * Source size limit
      */
     source_sizelimit?: number;
+    /**
+     * Image file size limit
+     */
+    imagefile_sizelimit?: number;
     /**
      * Allowed file extensions
      */
@@ -3369,6 +3370,10 @@ export type CompoWritable = {
      */
     source_sizelimit?: number;
     /**
+     * Image file size limit
+     */
+    imagefile_sizelimit?: number;
+    /**
      * Allowed file extensions
      */
     formats?: string;
@@ -3428,10 +3433,6 @@ export type CompoEntryWritable = {
      * Revealed in live voting
      */
     live_voting_revealed?: boolean;
-    /**
-     * Live voting reveal order
-     */
-    live_voting_order?: number;
     disqualified?: boolean;
     /**
      * Disqualification reason

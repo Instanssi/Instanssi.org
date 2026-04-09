@@ -1589,9 +1589,6 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1664,9 +1661,6 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CompoEntryRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompoEntryRequest'
         required: true
       security:
       - knoxApiToken: []
@@ -1705,9 +1699,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedCompoEntryRequest'
-          application/json:
             schema:
               $ref: '#/components/schemas/PatchedCompoEntryRequest'
       security:
@@ -1806,9 +1797,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ReorderEntriesRequestRequest'
           application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
-          application/json:
             schema:
               $ref: '#/components/schemas/ReorderEntriesRequestRequest'
         required: true
@@ -2059,7 +2047,11 @@ paths:
   /api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_entry/:
     post:
       operationId: admin_event_kompomaatti_live_voting_reveal_entry_create
-      description: Staff viewset for managing live voting state during a compo presentation.
+      description: |-
+        Reveal a single entry. Only the next unrevealed entry (by order_index) can be revealed.
+
+        Note: Entry.objects.filter().update() is used instead of entry.save() throughout
+        this viewset to avoid triggering Entry.save()'s generate_alternates() side effect.
       parameters:
       - in: path
         name: event_pk
@@ -7018,6 +7010,12 @@ components:
           minimum: -9223372036854775808
           format: int64
           title: Source size limit
+        imagefile_sizelimit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Image file size limit
         formats:
           type: string
           title: Allowed file extensions
@@ -7034,6 +7032,9 @@ components:
           type: integer
           readOnly: true
         max_entry_size:
+          type: integer
+          readOnly: true
+        max_image_size:
           type: integer
           readOnly: true
         source_format_list:
@@ -7083,6 +7084,7 @@ components:
       - id
       - image_format_list
       - max_entry_size
+      - max_image_size
       - max_source_size
       - name
       - source_format_list
@@ -7155,12 +7157,6 @@ components:
         live_voting_revealed:
           type: boolean
           title: Revealed in live voting
-        live_voting_order:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -7258,12 +7254,6 @@ components:
         live_voting_revealed:
           type: boolean
           title: Revealed in live voting
-        live_voting_order:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -7327,6 +7317,12 @@ components:
           minimum: -9223372036854775808
           format: int64
           title: Source size limit
+        imagefile_sizelimit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Image file size limit
         formats:
           type: string
           minLength: 1
@@ -9357,12 +9353,6 @@ components:
         live_voting_revealed:
           type: boolean
           title: Revealed in live voting
-        live_voting_order:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          title: Live voting reveal order
         disqualified:
           type: boolean
         disqualified_reason:
@@ -9419,6 +9409,12 @@ components:
           minimum: -9223372036854775808
           format: int64
           title: Source size limit
+        imagefile_sizelimit:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Image file size limit
         formats:
           type: string
           minLength: 1

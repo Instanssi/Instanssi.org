@@ -266,6 +266,7 @@
         "votingEnd": "Äänestyksen päättymisaika",
         "entrySizelimit": "Tuotoksen enimmäiskoko (tavua)",
         "sourceSizelimit": "Lähdekoodin enimmäiskoko (tavua)",
+        "imageSizelimit": "Kuvatiedoston enimmäiskoko (tavua)",
         "formats": "Tuotosmuodot (esim. png|jpg)",
         "sourceFormats": "Lähdekoodimuodot",
         "imageFormats": "Kuvamuodot",
@@ -425,7 +426,8 @@
         "youtubeUrl": "YouTube-URL",
         "disqualifiedOn": "Tuotos on hylätty",
         "disqualifiedOff": "Tuotosta ei ole hylätty",
-        "disqualifiedReason": "Syy"
+        "disqualifiedReason": "Syy",
+        "skipSizeCheck": "Ohita tiedostojen kokorajat"
       },
       "noAlternateFiles": "Vaihtoehtoisia tiedostoja ei ole saatavilla."
     },

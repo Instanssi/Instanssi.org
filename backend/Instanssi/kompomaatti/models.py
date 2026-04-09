@@ -139,6 +139,7 @@ class Compo(models.Model):
     voting_end = models.DateTimeField(_("Voting end time"))
     entry_sizelimit = models.IntegerField(_("Entry size limit"), default=134217728)  # Default to 128M
     source_sizelimit = models.IntegerField(_("Source size limit"), default=134217728)  # Default to 128M
+    imagefile_sizelimit = models.IntegerField(_("Image file size limit"), default=6291456)  # Default to 6M
     formats = models.CharField(
         _("Allowed file extensions"),
         max_length=128,
@@ -222,7 +223,7 @@ class Compo(models.Model):
 
     @property
     def max_image_size(self) -> int:
-        return self.MAX_IMAGE_SIZE
+        return self.imagefile_sizelimit
 
     @property
     def readable_max_source_size(self) -> str:

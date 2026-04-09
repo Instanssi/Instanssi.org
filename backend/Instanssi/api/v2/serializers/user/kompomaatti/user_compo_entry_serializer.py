@@ -51,12 +51,12 @@ class UserCompoEntrySerializer(ModelSerializer[Entry]):
         return None
 
     def get_disqualified_reason(self, obj: Entry) -> str | None:
-        if obj.compo.has_voting_started():
+        if obj.is_revealed:
             return obj.disqualified_reason
         return None
 
     def get_disqualified(self, obj: Entry) -> bool | None:
-        if obj.compo.has_voting_started():
+        if obj.is_revealed:
             return obj.disqualified
         return None
 

@@ -16,6 +16,7 @@ from Instanssi.api.v2.viewsets.admin.kompomaatti.competition_participations impo
 from Instanssi.api.v2.viewsets.admin.kompomaatti.competitions import CompetitionViewSet
 from Instanssi.api.v2.viewsets.admin.kompomaatti.compo_entries import CompoEntryViewSet
 from Instanssi.api.v2.viewsets.admin.kompomaatti.compos import CompoViewSet
+from Instanssi.api.v2.viewsets.admin.kompomaatti.live_voting import LiveVotingViewSet
 from Instanssi.api.v2.viewsets.admin.kompomaatti.ticket_vote_codes import (
     TicketVoteCodeViewSet,
 )
@@ -62,6 +63,7 @@ kompomaatti_router.register(
 kompomaatti_router.register(
     "ticket_vote_codes", TicketVoteCodeViewSet, basename="admin_kompomaatti_ticket_vote_codes"
 )
+kompomaatti_router.register("live_voting", LiveVotingViewSet, basename="admin_kompomaatti_live_voting")
 
 # /api/v2/admin/event/<event_pk>/store/...
 store_router = routers.SimpleRouter()

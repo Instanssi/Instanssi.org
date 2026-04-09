@@ -38,16 +38,15 @@ def get_upcoming(event: Event) -> List[Dict[str, Any]]:
                 }
             )
 
-        if compo.is_votable:
-            events.append(
-                {
-                    "id": compo.id,
-                    "date": compo.voting_end,
-                    "title": f"{compo.name}: äänestys päättyy.",
-                    "type": 1,
-                    "icon": "",
-                }
-            )
+        events.append(
+            {
+                "id": compo.id,
+                "date": compo.voting_end,
+                "title": f"{compo.name}: äänestys päättyy.",
+                "type": 1,
+                "icon": "",
+            }
+        )
 
     # Handle competitions
     for comp in comps:

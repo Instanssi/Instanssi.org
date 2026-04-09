@@ -58,18 +58,17 @@ def render_calendar(event_id: int) -> dict[str, Any]:
                 "type": "compo",
             }
         )
-        if compo.is_votable:
-            events.append(
-                {
-                    "date": compo.voting_end,
-                    "title": f"{compo.name}: äänestys päättyy",
-                    "url": reverse("km:compo", args=(event_id, compo.id)),
-                    "icon": "",
-                    "place": "",
-                    "desc": "",
-                    "type": "compo",
-                }
-            )
+        events.append(
+            {
+                "date": compo.voting_end,
+                "title": f"{compo.name}: äänestys päättyy",
+                "url": reverse("km:compo", args=(event_id, compo.id)),
+                "icon": "",
+                "place": "",
+                "desc": "",
+                "type": "compo",
+            }
+        )
 
     # Handle competitions
     for comp in comps:

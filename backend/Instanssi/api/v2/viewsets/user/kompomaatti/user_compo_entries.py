@@ -40,7 +40,7 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
             self.queryset.filter(
                 compo__event_id=event_id, compo__event__hidden=False, compo__active=True, user=user
             )
-            .select_related("compo")
+            .select_related("compo", "compo__event", "compo__live_voting_state")
             .prefetch_related("alternate_files")
             .with_rank()
         )

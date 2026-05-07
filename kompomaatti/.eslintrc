@@ -1,0 +1,21 @@
+{
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 7,
+        "sourceType": "module"
+    },
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "rules": {
+        "no-console": 1,
+        "no-unused-vars": [2, {
+            "argsIgnorePattern": "^_[A-Za-z0-9]+$",
+            "args": "all"
+        }],
+        "semi": 2
+    }
+}

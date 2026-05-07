@@ -1,0 +1,34 @@
+{
+    "presets": [
+        [ "env", {
+            "targets": {
+                "browsers": "> 1%"
+            },
+            "modules": false
+        }]
+    ],
+    "plugins": [
+        "transform-react-jsx",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "syntax-dynamic-import"
+    ],
+    "env": {
+        "test": {
+            "presets": [
+                [ "env", {
+                    "targets": {
+                        "browsers": "> 1%"
+                    },
+                    "modules": "commonjs"
+                }]
+            ],
+            "plugins": [
+                "transform-react-jsx",
+                "transform-object-rest-spread",
+                "transform-class-properties",
+                "dynamic-import-node"
+            ]
+        }
+    }
+}

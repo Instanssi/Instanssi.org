@@ -1,0 +1,332 @@
+// This also imports the custom and Bootstrap variables.
+@import './bootstrap';
+
+body {
+    // if we don't use Bootstrap modals, this should avoid some bouncing.
+    overflow-y: scroll;
+    background: url('./background.jpg') top center no-repeat, black;
+}
+
+a {
+    color: #0e7aba;
+}
+
+h1 {
+    margin-top: $spacer;
+    font-size: 3.5rem;
+}
+
+h2 {
+    font-size: 2.7rem;
+    font-family: 'Exo 2 Variable', sans-serif;
+    border-bottom: 1px solid $brand-primary-bright;
+    padding-bottom: $spacer / 2;
+}
+
+h3 {
+    font-size: 2.2rem;
+}
+
+h4 {
+    font-size: 1.8rem;
+}
+
+hr {
+    margin-top: $spacer;
+    margin-bottom: $spacer;
+}
+
+.app-wrap {
+    background: $app-bg;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    > main {
+        // IE11 breaks from "flex: 1;"
+        flex: 1 0 auto;
+    }
+}
+
+#above-top {
+    overflow: hidden;
+    max-width: 100vw;
+}
+
+#above-top img {
+    max-height: 64px;
+    max-width: 100%;
+}
+
+main {
+    // IE11
+    display: block;
+}
+
+.navbar {
+    font-family: $font-family-sans-serif;
+}
+
+.navbar-nav > li > a {
+    transition: background-color .1s ease-in-out;
+}
+
+.navbar-header {
+    position: relative;
+    .liability-reducer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: $brand-primary;
+        text-transform: uppercase;
+        font-size: 1rem;
+    }
+}
+
+.navbar-toggle {
+    color: $brand-primary;
+    padding: $spacer/2 $spacer;
+}
+
+.container {
+    padding: 0;
+}
+
+.p-3 {
+    padding: $spacer !important;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.ml-auto { margin-left: auto; }
+.mt-auto { margin-top: auto; }
+
+@media screen and (max-width: $screen-xs-max) {
+    .list-k {
+        // Cut through padding around an element through negative margins.
+        // Used to give already-padded lists more space on mobiles.
+        margin-left: -$spacer !important;
+        margin-right: -$spacer !important;
+    }
+}
+
+.text-pre-wrap {
+    white-space: pre-wrap;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-baseline {
+    display: flex;
+    align-items: baseline;
+}
+
+.flex-align-middle {
+    display: flex;
+    align-items: center;
+}
+
+.flex-row-even {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-fill {
+    flex: 1 0 auto;
+}
+
+// Common simple list style.
+.list-k {
+    list-style: none;
+    padding: 0;
+
+    $item-header-width: 7.25em;
+
+    li {
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+
+        padding-left: $spacer;
+        padding-right: $spacer;
+        border-top: 1px solid rgba(0,0,0,.075);
+    }
+    li:first-child {
+        border-top: 0;
+    }
+    li:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    .item-time {
+        // probably enough for dates like "Sun 12:00 AM"
+        flex: 0 0 $item-header-width;
+        white-space: nowrap;
+        text-align: right;
+        padding-right: $spacer;
+    }
+
+    .item-rank, .item-score {
+        flex: 0 0 $item-header-width / 2;
+        white-space: nowrap;
+        text-align: right;
+        padding-right: $spacer;
+    }
+
+    .no-results {
+        display: flex;
+        align-items: baseline;
+        .fa {
+            text-align: right;
+            padding-right: $spacer;
+            flex: 0 0 $item-header-width;
+            width: $item-header-width;
+        }
+    }
+}
+
+@media screen and (min-width: $screen-sm-min) {
+    .event-title {
+        display: flex;
+        align-items: center;
+
+        .title-heading {
+            // Push the shortcuts to the right.
+            margin-right: auto;
+        }
+
+        .fa {
+            margin-right: $spacer / 2;
+        }
+    }
+}
+
+.entry-image img {
+    max-width: 100%;
+}
+
+.entry-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.entry-item {
+    &.disqualified {
+        text-decoration: line-through;
+    }
+}
+
+img.vote-thumbnail {
+    margin: -$spacer $spacer;
+    padding: 0;
+    max-width: 64px;
+    height: 32px;
+}
+
+@media screen and (min-width: $screen-sm-min) {
+    .pull-sm-right {
+        float: right !important;
+    }
+}
+
+@media screen and (min-width: $screen-md-min) {
+    .pull-md-right {
+        float: right !important;
+    }
+}
+
+footer {
+    background: $brand-primary;
+    color: $brand-primary-text-color;
+
+    a, a:hover, a:focus {
+        color: $brand-primary-text-color;
+
+    }
+}
+
+// ---- route transition animations ----
+
+// note that this also has to be set in the JSX code
+// it should be longer there to account for the page animating a bit late
+$transition-duration: .18s;
+
+.transition-group {
+    // Use negative margin float tricks to force children to render on top of each other
+    // while keeping the transition group's height properly calculated.
+    float: left;
+    width: 100%;
+    display: block;
+    position: relative;
+
+    > * {
+        position: relative;
+        float: left;
+        left: 100%;
+        width: 100%;
+        margin-left: -100%;
+    }
+
+    &:after {
+        // Make sure we clear the floats
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+// "route" is the prefix set in JSX for routes
+.route-enter {
+    // position: absolute;
+    opacity: 0;
+    z-index: 1;
+}
+
+.route-enter.route-enter-active {
+    // position: static;
+    opacity: 1;
+    transition: opacity $transition-duration ease-in;
+}
+
+.route-exit {
+    opacity: 1;
+    position: absolute;
+}
+.route-exit.route-exit-active {
+    pointer-events: none;
+    // top: 0;
+    // width: 100%;
+    // position: absolute;
+    opacity: 0;
+    transition: opacity $transition-duration linear;
+}
+
+// Heading margins won't collapse/merge because of the transition positioning hack.
+.compo-title,
+.competition-title,
+.progevent-title {
+    h2 {
+        margin-top: 0;
+    }
+}
+
+.event-overview,
+.front-schedule {
+    & > h2:first-child {
+        margin-top: 0;
+    }
+}
+
+.help-block {
+    font-size: 0.9em;
+}

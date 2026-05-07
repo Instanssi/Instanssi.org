@@ -1,0 +1,14 @@
+.loading-wrapper {
+    position: relative;
+    transition: opacity .5s;
+
+    &.is-pending {
+        opacity: .5;
+    }
+
+    .loading-error {
+        position: absolute;
+        background: rgba(0,0,0,.5);
+        color: #fff;
+    }
+}

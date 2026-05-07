@@ -1,0 +1,69 @@
+// advanced cube technology, handle with care
+
+$size: 12px;
+$halfsize: $size / 2;
+
+.cube-wrap {
+    position: relative;
+    display: inline-block;
+    width: $size;
+    height: $size;
+}
+.cube {
+    transform: rotateX(22deg) rotate3d(0, 1, 0, 36deg);
+    transform-style: preserve-3d;
+    transition: transform ease-in-out 10s;
+    > * {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: $size;
+        height: $size;
+        border: 0.5px solid #fff;
+        box-shadow: rgba(255,255,255,.5) 0 0 4px;
+    }
+    .side-left {
+        transform: translateX(-$halfsize) rotate3d(0, 1, 0, 90deg);
+    }
+    .side-right {
+        transform: translateX($halfsize) rotate3d(0, 1, 0, -90deg);
+    }
+    .side-top {
+        transform: translateY(-$halfsize) rotate3d(1, 0, 0, 90deg);
+    }
+    .side-bottom {
+        transform: translateY($halfsize) rotate3d(1, 0, 0, -90deg);
+    }
+    .side-front {
+        transform: translateZ(-$halfsize);
+    }
+    .side-back {
+        transform: translateZ($halfsize);
+    }
+}
+
+/*
+// This is neat but kind of hard to control from JS.
+@keyframes spincube {
+    from {
+        transform: rotateX(22deg) rotate3d(0, 1, 0, 55deg);
+    }
+    to {
+        transform: rotateX(22deg) rotate3d(0, 1, 0, 360deg + 55deg);
+    }
+}
+*/
+
+.cube-glare {
+    position: absolute;
+    margin: -$halfsize;
+    width: $size * 2;
+    height: $size * 2;
+    background: radial-gradient(closest-side, rgba(#2af,1.0), rgba(#24f,.5), rgba(#48f,0));
+    opacity: .5;
+    transition: opacity ease-in-out .5s;
+}
+
+.cube-wrap.active .cube-glare {
+    opacity: .8;
+}

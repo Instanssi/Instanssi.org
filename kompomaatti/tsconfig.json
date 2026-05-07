@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es6"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noImplicitThis": true,
+        "noImplicitAny": false,
+        "noUnusedLocals": false,
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "target": "es5"
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

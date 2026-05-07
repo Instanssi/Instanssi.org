@@ -1,0 +1,97 @@
+// _no_ rules here! variables and mixins only.
+
+$brand-primary: #0e7aba;
+$brand-primary-bright: #00cbe6;
+$brand-primary-text-color: #fff; // text color to use with above color as bg
+
+$body-color: #111;
+$text-muted: #444;
+$body-bg: #444;
+$app-bg: #fff;
+$app-border: darken($body-bg, 20%);
+
+/*
+
+// Dark theme (didn't work, the "rich text" has hardcoded bg colors)
+
+$body-color: #eee;
+$text-muted: #aaa;
+$body-bg: #222;
+$app-bg: #333;
+$app-border: darken($body-bg, 20%);
+*/
+
+$spacer: 12px;
+
+// Implement Bootstrap 4-ish grid and breakpoints.
+$grid-breakpoints: (xs: 0, sm: 576px, lg: 992px, xl: 1200px);
+$spacers: (
+    0: 0,
+    1: ($spacer * .25),
+    2: ($spacer * .5),
+    3: $spacer,
+    4: ($spacer * 1.5),
+    5: ($spacer * 3),
+);
+
+$theme-colors: (
+    primary: $brand-primary,
+    secondary: #FFFFFF,
+);
+@function theme-color($key: 'primary') {
+    @return map-get($theme-colors, $key);
+}
+
+$font-family-sans-serif:
+    // Safari for OS X and iOS (San Francisco)
+    -apple-system,
+    // Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android
+    system-ui,
+    // Chrome < 56 for OS X (San Francisco)
+    BlinkMacSystemFont,
+    // Windows
+    "Segoe UI",
+    // Android
+    "Roboto",
+    // Basic web fallback
+    "Helvetica Neue", Arial, sans-serif !default;
+
+// Bootstrap 4 reboot compatibility
+$grid-columns: 12;
+
+$font-family-base: $font-family-sans-serif;
+$font-size-base: 16px;
+$font-weight-base: 400;
+$line-height-base: 1.5;
+$paragraph-margin-bottom: $spacer;
+$dt-font-weight: 600;
+$link-color: $brand-primary;
+$link-decoration: none;
+$link-hover-color: lighten($brand-primary, 5%);
+$link-hover-decoration: underline;
+
+$table-cell-padding: $spacer;
+
+// bootstrap 3 compatibility
+
+$text-color: $body-color;
+
+// Just override every 15px-ish value with $spacer for consistency
+$grid-gutter-width: ($spacer * 2);
+$modal-inner-padding: $spacer;
+$modal-title-padding: $spacer;
+$alert-padding: $spacer;
+$panel-body-padding: $spacer;
+$panel-heading-padding: $spacer;
+$breadcrumb-padding-vertical: ($spacer / 2);
+$breadcrumb-padding-horizontal: $spacer;
+$form-group-margin-bottom: $spacer;
+$nav-link-padding: ($spacer * 0.5) $spacer;
+$pager-border-radius: $spacer;
+
+// nice and blocky
+$border-radius-base: 0;
+
+$navbar-inverse-link-active-color: $brand-primary-text-color;
+$navbar-inverse-link-active-bg: $brand-primary;
+$navbar-height: 44px;

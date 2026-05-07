@@ -1,0 +1,107 @@
+@import 'src/styles/variables';
+
+
+$attention-color: mix($brand-primary, $app-bg, 50%);
+
+.voting-item {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+    padding: 0 !important;
+
+    .item-number {
+        padding: ($spacer / 4) $spacer;
+
+        .item-number-score {
+            font-size: 60%;
+        }
+    }
+    .item-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .item-handle {
+        // "grab" might be more fitting, but it doesn't work in Chrome
+        cursor: move;
+        margin-left: auto;
+        padding: $spacer ($spacer * 2);
+        background: $brand-primary;
+        color: #fff;
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .item-content {
+        display: flex;
+        // This should flex as much as possible to fill the row
+        flex: 1 1 auto;
+        padding: ($spacer / 4);
+        overflow: hidden;
+
+        // This contains item-title and item-actions;
+        justify-content: space-between;
+
+        // Break the title into two parts on mobiles
+        .item-creator {
+            display: inline;
+        }
+        @media screen and (max-width: $screen-xs-max) {
+            .item-creator {
+                display: block;
+                font-size: 1.4rem;
+            }
+        }
+
+        .item-index {
+            width: 2em;
+            font-size: 1.5rem;
+        }
+    }
+    .item-actions {
+        float: right;
+    }
+}
+
+.voting-item {
+    background: #fff;
+    box-shadow: rgba(0,0,0,.25) 0 2px 4px;
+    user-select: none;
+}
+
+body > .voting-item {
+    // items being dragged seem to end up absolute-positioned directly inside <body>
+    padding: $spacer;
+    opacity: .8;
+}
+
+.voting-item.divider {
+    font-style: italic;
+    white-space: normal;
+    font-size: 1.2rem;
+    padding: 0 $spacer !important;
+    margin: $spacer 0;
+    background: mix($brand-primary, #fff, 25%);
+}
+
+.voting-item.placeholder {
+    background: $attention-color;
+    color: #fff;
+    display: block;
+    text-align: center;
+
+    position: relative;
+    padding: $spacer !important;
+
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border: 1px dashed rgba(255,255,255,.5);
+        top: $spacer / 2;
+        right: $spacer / 2;
+        left: $spacer / 2;
+        bottom: $spacer / 2;
+    }
+}

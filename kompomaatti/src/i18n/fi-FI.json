@@ -1,0 +1,234 @@
+{
+    "common": {
+        "back": "Takaisin",
+        "edit": "Muokkaa",
+        "cancel": "Peruuta",
+        "description": "Kuvaus",
+        "fileMaxSize": "Tiedoston maksimikoko on ${size} ${unit}",
+        "leaveWithoutSaving": "Poistutaanko sivulta tallentamatta muutoksia?",
+        "loading": "Ladataan...",
+        "loadingError": "Ongelma sisällön lataamisessa.",
+        "loadingRetry": "Yritä uudestaan?",
+        "noImageAvailable": "Kuvaa ei saatavilla",
+        "notLoggedIn": "Et ole kirjautunut sisään.",
+        "results": "Tulokset",
+        "schedule": "Aikataulu",
+        "scheduleEmpty": "Aikataulussa ei ole mitään juuri nyt.",
+        "save": "Tallenna",
+        "showDetails": "Näytä tiedot",
+        "submit": "Lähetä"
+    },
+    "competition": {
+        "competition": "Kilpailu",
+        "end": "Kilpailu päättyy",
+        "participate": "Osallistu kilpailuun",
+        "participationClosed": "Ilmoittautuminen on päättynyt.",
+        "participationEnd": "Ilmoittautuminen päättyy",
+        "signedUp": "Olet ilmoittautunut kilpailuun nimellä ${participant_name}.",
+        "start": "Kilpailu alkaa",
+        "stillOpen": "Ilmoittautuminen on vielä auki."
+    },
+    "compo": {
+        "addEntry": "Lisää entry",
+        "addingEnd": "Entryjen lisääminen päättyy",
+        "compoStart": "Kompo alkaa",
+        "editingEnd": "Entryjen muokkaaminen päättyy",
+        "deadline": "Entryjen lisääminen päättyy",
+        "entries": "Entryt",
+        "logInToAddEntries": "Kirjaudu sisään osallistuaksesi.",
+        "myEntries": "Omat teokset",
+        "status": "Tila",
+        "vote": "Äänestä",
+        "votingIsOpen": "Äänestys on avattu!",
+        "votingIsOpenNotLoggedIn": "Äänestys on avattu! Kirjaudu sisään äänestääksesi.",
+        "votingEnd": "Äänestys päättyy",
+        "votingStart": "Äänestys alkaa"
+    },
+    "dashboard": {
+        "competitions": {
+            "empty": "Ei aktiivisia kilpailuja.",
+            "title": "Kilpailut"
+        },
+        "compos": {
+            "empty": "Ei aktiivisia kompoja.",
+            "title": "Kompot",
+            "viewMy": "Näytä omat"
+        },
+        "events": {
+            "empty": "Ei tapahtumia käynnissä.",
+            "title": "Tapahtuma",
+            "viewAll": "Selaa tapahtumia"
+        },
+        "notLoggedIn": "Et ole kirjautunut sisään. Jos haluat äänestää tai osallistua, kirjaudu pääsivuston puolella.",
+        "programme": {
+            "empty": "Ei ohjelmaa tällä hetkellä.",
+            "title": "Ohjelma",
+            "viewAll": "Selaa ohjelmaa"
+        },
+        "viewTitle": "Etusivu",
+        "welcome": "Tervetuloa Kompomaattiin, Instanssin viralliseen kompojärjestelmään!"
+    },
+    "data": {
+        "c22n": {
+            "participant_name": {
+                "help": "Nimi, jolla kilpailuun ilmoittaudutaan.",
+                "title": "Nimi"
+            }
+        },
+        "entry": {
+            "compo": {
+                "help": "Kompo johon teos kuuluu.",
+                "title": "Kompo"
+            },
+            "creator": {
+                "help": "Tekijän tai tekijäryhmän nimi.",
+                "title": "Tekijä"
+            },
+            "description": {
+                "help": "Kuvaus käytetyistä tekniikoista, selityksiä tai muuta sanottavaa.",
+                "title": "Kuvaus"
+            },
+            "disqualified": {
+                "help": "Teos hylätty sääntöjen rikkomisen tai teknisten ongelmien takia.",
+                "title": "Diskattu"
+            },
+            "entryfile": {
+                "help": "Teos paketoituna. Sallitut formaatit: ${entryFormats}.",
+                "title": "Tiedosto"
+            },
+            "imagefile_original": {
+                "help": "Edustava kuva teokselle. Ei pakollinen, mutta suositeltava. Sallitut formaatit: ${imageFormats}.",
+                "title": "Kuva"
+            },
+            "name": {
+                "help": "Teoksen nimi.",
+                "title": "Nimi"
+            },
+            "platform": {
+                "help": "Käyttöjärjestelmä tms. alusta jolla teosta voidaan ajaa, jos tällä on väliä.",
+                "title": "Alusta"
+            },
+            "sourcefile": {
+                "help": "Paketti, jossa lähdekoodi tms. materiaali. Sallitut formaatit: ${sourceFormats}.",
+                "title": "Lähdekoodi"
+            },
+            "user": {
+                "help": "Käyttäjä jolle teos kuuluu.",
+                "title": "Käyttäjä"
+            },
+            "youtube_url": {
+                "help": "Linkki teoksen YouTube-videoon.",
+                "title": "YouTube URL"
+            }
+        }
+    },
+    "entry": {
+        "add": "Lisää teos",
+        "addOk": "Teos \"${name}\" lisätty.",
+        "addFail": "Teoksen lisäys ei onnistunut.",
+        "audio": "Äänitiedosto",
+        "audioHelp": "Jos selaimesi ei pysty toistamaan tiedostoa, voit ladata sen koneellesi alempaa.",
+        "description": "Teoksen kuvaus",
+        "edit": "Muokkaa teosta",
+        "editOk": "Teos \"${name}\" päivitetty.",
+        "editFail": "Teoksen päivitys ei onnistunut.",
+        "entryfile": "Teos tiedostona",
+        "files": "Tiedostot",
+        "image": "Kuva",
+        "info": "Entryn tiedot",
+        "sourcefile": "Lähdetiedosto",
+        "video": "Video",
+        "youtubeLink": "Katso YouTubessa"
+    },
+    "event": {
+        "competitions": "Kilpailut",
+        "compos": "Kompot",
+        "mainSite": "Pääsivusto",
+        "isOver": "Tapahtuma on päättynyt.",
+        "summary": "Tiedot",
+        "schedule": "Aikataulu",
+        "linkTo": "Tapahtuman tiedot",
+        "programme": "Ohjelma"
+    },
+    "events": {
+        "title": "Kaikki tapahtumat"
+    },
+    "error": {
+        "retry": "Yritä uudestaan",
+        "title": "Virhe",
+        "text": "Internetissä on jotain vikaa tänään. Seuraava teksti saattaa liittyä asiaan."
+    },
+    "fileInput": {
+        "delete": "Poista",
+        "keep": "Nykyinen tiedosto",
+        "noFile": "Ei tiedostoa",
+        "replace": "Korvaa"
+    },
+    "footer": {
+        "copyright": "(c) 2019-2026",
+        "toTop": "Palaa alkuun"
+    },
+    "list": {
+        "noResults": "Ei hakutuloksia.",
+        "pagination": "Näytetään ${ first }-${ last }. Yhteensä ${ total }."
+    },
+    "nav": {
+        "compos": "Kompot",
+        "events": "Kaikki tapahtumat",
+        "login": "Kirjaudu"
+    },
+    "programmeEvent": {
+        "presenters": "Esiintyjät",
+        "event": "Tapahtuma",
+        "start": "Alkaa",
+        "end": "Päättyy"
+    },
+    "session": {
+        "expired": "Istuntosi on vanhentunut. Kirjaudu sisään uudelleen jatkaaksesi.",
+        "login": "Kirjaudu sisään",
+        "loginTitle": "Kirjautuminen",
+        "logout": "Kirjaudu ulos"
+    },
+    "timeZone": {
+        "partyTZ": "Partyn aikavyöhyke on ${name}.",
+        "yourTZ": "Kellonajat näytetään laitteesi aikavyöhykkeen mukaan."
+    },
+    "user": {
+        "password": "Salasana",
+        "username": "Käyttäjätunnus"
+    },
+    "userProfile": {
+        "myCompetitions": "Omat kilpailut",
+        "myEntries": "Omat kompoentryt",
+        "title": "Käyttäjäprofiili"
+    },
+    "voting": {
+        "atLeastOneRequired": "Nosta ainakin yksi entry riman yläpuolelle.",
+        "backToEvent": "Palaa tapahtumasivulle",
+        "deadline": "Äänestys päättyy: ${ date }.",
+        "divider": "Pisteytä entryjä järjestämällä niitä tämän riman yläpuolelle. Alle jäävät entryt eivät saa pisteitä.",
+        "placeholder": "Vedä entryjä tähän",
+        "hasChanges": "Muistathan tallentaa äänesi. Voit muokata ääniä vielä ennen äänestyksen aikarajaa.",
+        "leaveWithoutSaving": "Et ole tallentanut ääniäsi. Poistutaanko sivulta?.",
+        "ended": "Äänestys on päättynyt.",
+        "quickMoveHelp": "Voit siirtää teoksen nopeasti kärkeen tai pohjalle tuplaklikkaamalla merkkiä ",
+        "saveOk": "Äänet tallennettu.",
+        "saveFail": "Ääniä ei voitu tallentaa.",
+        "help": "Järjestä entryt laatujärjestykseen vetämällä merkistä ",
+        "help2": "Viivan yläpuolelle nostetut saavat pisteitä järjestyksensä mukaan.",
+        "help3": "Voit katsoa entryn tietoja klikkaamalla "
+    },
+    "voteCode": {
+        "hasCodeForEvent": "Sinulla on äänestysoikeus tähän tapahtumaan.",
+        "help": "Jos haluat osallistua tapahtuman äänestyksiin Kompomaatissa, tilillesi on liitettävä äänestyskoodi. Jos ostit lippusi verkkokaupasta, voit käyttää lippukoodia äänestyskoodina. Oman entryn lähettämiseen ei tarvitse äänestyskoodia.",
+        "missing": "Ei äänestyskoodia",
+        "noTicketCode": "Minulla ei ole lippukoodia",
+        "requestPending": "Olet pyytänyt äänestyskoodia",
+        "requestPendingHelp": "Jos mitään ei näytä tapahtuvan vähään aikaan, käy tökkimässä infopöydän porukkaa.",
+        "requestRejectedHelp": "Äänestyskoodipyyntösi on hylätty.",
+        "requestTextPlaceholder": "(selitä tilanteesi)",
+        "ticketKeyPlaceholder": "(lippukoodin 8 ensimmäistä merkkiä)",
+        "title": "Äänestyskoodi",
+        "useTicketCode": "Syötä lippukoodi"
+    }
+}

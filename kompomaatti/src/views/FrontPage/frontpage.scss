@@ -1,0 +1,13 @@
+@import 'src/styles/variables';
+
+.front-schedule {
+    .item-title {
+        flex: 1 1 auto;
+    }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+    .front-schedule .item-title span {
+        display: block;
+    }
+}

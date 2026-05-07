@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "commonjs"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

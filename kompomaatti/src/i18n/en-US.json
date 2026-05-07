@@ -1,0 +1,235 @@
+{
+    "common": {
+        "back": "Back",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "description": "Description",
+        "fileMaxSize": "Maximum file size is ${size} ${unit}",
+        "leaveWithoutSaving": "There are unsaved changes. Leave the page anyway?",
+        "loading": "Loading...",
+        "loadingError": "There was a problem loading this content.",
+        "loadingRetry": "Try again?",
+        "noImageAvailable": "No image available",
+        "notLoggedIn": "You are not logged in.",
+        "results": "Results",
+        "schedule": "Schedule",
+        "scheduleEmpty": "Nothing scheduled at the moment.",
+        "save": "Save",
+        "showDetails": "Show details",
+        "submit": "Submit"
+    },
+    "competition": {
+        "competition": "Competition",
+        "end": "Competition end",
+        "participate": "Sign up",
+        "participationClosed": "Signups are closed.",
+        "participationEnd": "Signups close",
+        "signedUp": "You have signed up for this competition as ${participant_name}.",
+        "start": "Competition start",
+        "stillOpen": "This competition is still accepting signups."
+    },
+    "compo": {
+        "addEntry": "Add entry",
+        "addingEnd": "Deadline for adding entries",
+        "compoStart": "Compo starts",
+        "editingEnd": "Deadline for editing entries",
+        "entries": "Entries",
+        "deadline": "Entry deadline",
+        "logInToAddEntries": "Log in to add or edit entries.",
+        "myEntries": "My entries",
+        "schedule": "Schedule",
+        "status": "Status",
+        "vote": "Vote",
+        "votingIsOpen": "Voting is open!",
+        "votingIsOpenNotLoggedIn": "Voting is open! Log in to vote.",
+        "votingEnd": "Voting ends",
+        "votingStart": "Voting starts"
+    },
+    "dashboard": {
+        "competitions": {
+            "empty": "No competitions available.",
+            "title": "Competitions"
+        },
+        "compos": {
+            "empty": "No compos going on right now.",
+            "title": "Compos",
+            "viewMy": "View my entries"
+        },
+        "events": {
+            "empty": "No ongoing events.",
+            "title": "Event",
+            "viewAll": "View all events"
+        },
+        "notLoggedIn": "You are not logged in. To vote or participate in events, log in at the main Instanssi site first.",
+        "programme": {
+            "empty": "Nothing going on at the moment.",
+            "title": "Programme",
+            "viewAll": "View full programme"
+        },
+        "viewTitle": "Front page",
+        "welcome": "Welcome to Kompomaatti, the official compo management system of Instanssi.org!"
+    },
+    "data": {
+        "c22n": {
+            "participant_name": {
+                "help": "Name to sign up as.",
+                "title": "Name"
+            }
+        },
+        "entry": {
+            "compo": {
+                "help": "Compo the entry is for.",
+                "title": "Compo"
+            },
+            "creator": {
+                "help": "Name to use for the author or group of authors.",
+                "title": "Author"
+            },
+            "description": {
+                "help": "Description of the entry, techniques used, excuses, etc.",
+                "title": "Description"
+            },
+            "disqualified": {
+                "help": "Entry disqualified for rule violation or technical issues.",
+                "title": "Disqualified"
+            },
+            "entryfile": {
+                "help": "Entry file. Allowed formats: ${entryFormats}.",
+                "title": "Entry"
+            },
+            "imagefile_original": {
+                "help": "Image to use for the entry. Not required, but recommended. Allowed formats: ${imageFormats}.",
+                "title": "Image"
+            },
+            "name": {
+                "help": "Name for the entry.",
+                "title": "Name"
+            },
+            "platform": {
+                "help": "Operating system or other platform the entry runs on, if relevant.",
+                "title": "Platform"
+            },
+            "sourcefile": {
+                "help": "File containing source code or other material. Allowed formats: ${sourceFormats}.",
+                "title": "Source file"
+            },
+            "user": {
+                "help": "User the entry belongs to.",
+                "title": "User"
+            },
+            "youtube_url": {
+                "help": "Link to a YouTube video of the entry.",
+                "title": "YouTube URL"
+            }
+        }
+    },
+    "entry": {
+        "add": "Add entry",
+        "addOk": "Entry \"${name}\" added.",
+        "addFail": "Could not add entry.",
+        "audio": "Audio file",
+        "audioHelp": "If your browser can't play the audio, you can download the file below.",
+        "description": "Entry description",
+        "edit": "Edit entry",
+        "editOk": "Entry \"${name}\" updated.",
+        "editFail": "Could not update entry.",
+        "entryfile": "Entry file",
+        "files": "Files",
+        "image": "Image",
+        "info": "Entry info",
+        "sourcefile": "Source file",
+        "video": "Video",
+        "youtubeLink": "Watch in YouTube"
+    },
+    "event": {
+        "competitions": "Competitions",
+        "compos": "Compos",
+        "mainSite": "Main site",
+        "isOver": "This event has ended.",
+        "linkTo": "Event info",
+        "summary": "Summary",
+        "schedule": "Schedule",
+        "programme": "Programme"
+    },
+    "events": {
+        "title": "All events"
+    },
+    "error": {
+        "retry": "Try again",
+        "title": "Error",
+        "text": "There seems to be a problem with the Internet. The following may have something to do with it."
+    },
+    "fileInput": {
+        "delete": "Delete",
+        "keep": "Keep current file",
+        "noFile": "No file",
+        "replace": "Replace"
+    },
+    "footer": {
+        "copyright": "(c) 2019-2026",
+        "toTop": "Back to top"
+    },
+    "list": {
+        "noResults": "Nothing found.",
+        "pagination": "Displaying ${first}-${last} out of ${total}."
+    },
+    "nav": {
+        "compos": "Compos",
+        "events": "All events",
+        "login": "Log in"
+    },
+    "programmeEvent": {
+        "presenters": "Presenters",
+        "event": "Event",
+        "start": "Starts",
+        "end": "Ends"
+    },
+    "session": {
+        "expired": "Your session has expired. Log in at the main site to continue.",
+        "login": "Log in",
+        "loginTitle": "Log in",
+        "logout": "Log out"
+    },
+    "timeZone": {
+        "partyTZ": "The party's time zone is ${name}.",
+        "yourTZ": "Using your device's time zone."
+    },
+    "user": {
+        "password": "Password",
+        "username": "User name"
+    },
+    "userProfile": {
+        "myCompetitions": "My competitions",
+        "myEntries": "My entries",
+        "title": "User profile"
+    },
+    "voting": {
+        "atLeastOneRequired": "Move at least one entry above the bar to continue.",
+        "backToEvent": "Return to event page",
+        "deadline": "Voting ends on: ${ date }.",
+        "divider": "Arrange entries above this bar to give them points. Entries below are ignored.",
+        "placeholder": "Drag entries here to vote",
+        "hasChanges": "Don't forget to save. You can change your votes at any time before the voting deadline.",
+        "leaveWithoutSaving": "You have unsaved votes. Leave the page anyway?",
+        "ended": "Voting has concluded.",
+        "quickMoveHelp": "To quickly move an item above or below the bar, you can double click the ",
+        "saveOk": "Votes saved.",
+        "saveFail": "Saving votes failed.",
+        "help": "Drag entries around by the ",
+        "help2": "Entries moved above the bar will receive points according to their order.",
+        "help3": "You can review entries by clicking the "
+    },
+    "voteCode": {
+        "hasCodeForEvent": "You have a valid vote code for this event.",
+        "help": "To vote in Kompomaatti, your account must have a vote code for the event. If you bought a ticket online, you can use the ticket's code for this. You do not need a code to post entries.",
+        "missing": "No vote code",
+        "noTicketCode": "I don't have a ticket code",
+        "requestPending": "Vote code request pending",
+        "requestPendingHelp": "If nothing happens for a while, try poking the people at the infodesk.",
+        "requestRejectedHelp": "Your vote code request has been rejected.",
+        "requestTextPlaceholder": "(explain your situation here)",
+        "ticketKeyPlaceholder": "(first 8 characters of your ticket code)",
+        "title": "Vote code",
+        "useTicketCode": "Enter ticket code"
+    }
+}

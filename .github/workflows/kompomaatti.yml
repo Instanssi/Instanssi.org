@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - "kompomaatti/**"
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
     paths:
       - "kompomaatti/**"
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:

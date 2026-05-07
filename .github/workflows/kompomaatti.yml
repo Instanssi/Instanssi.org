@@ -1,6 +1,14 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    paths:
+      - "kompomaatti/**"
+    branches: [ master ]
+  pull_request:
+    paths:
+      - "kompomaatti/**"
+    branches: [ master ]
 
 jobs:
   build:

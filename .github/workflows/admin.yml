@@ -12,11 +12,10 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./admin
-    runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Install pnpm

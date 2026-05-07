@@ -29,13 +29,15 @@ export default defineConfig({
             algorithms: ["gzip"],
         }),
     ],
-    esbuild: {
-        pure: ["console.debug", "console.log"],
-    },
     build: {
         sourcemap: true,
         reportCompressedSize: false,
         emptyOutDir: true,
+        rolldownOptions: {
+            treeshake: {
+                manualPureFunctions: ["console.debug", "console.log"],
+            },
+        },
     },
     resolve: {
         alias: {

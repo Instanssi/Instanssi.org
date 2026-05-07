@@ -93,9 +93,9 @@ describe("CompoEditView", () => {
             const comboboxes = wrapper.findAllComponents({ name: "VCombobox" });
             expect(comboboxes.length).toBe(3);
 
-            // Selects (2 for entry view type and thumbnail pref, 2 for size units)
+            // Selects (2 for entry view type and thumbnail pref, 3 for size units)
             const selects = wrapper.findAllComponents({ name: "VSelect" });
-            expect(selects.length).toBe(4);
+            expect(selects.length).toBe(5);
 
             // Toggle switches (4)
             expect(wrapper.findAll(".toggle-switch").length).toBe(4);

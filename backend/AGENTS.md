@@ -22,7 +22,9 @@ This is the Django backend for Instanssi.org, a Finnish demoparty event manageme
 make check
 ```
 
-This will run pytest in parallel, black, isort and django-manage checks.
+This will run black, isort, mypy, pytest in parallel, and django-manage checks.
+
+(Note: mypy was dropped from CI but is still part of the local `make check` target.)
 
 These checks are mandatory before considering any task complete. Do not skip them.
 
@@ -74,7 +76,7 @@ poetry run pytest tests/store/test_models.py
 ### Project Structure
 
 - **Instanssi/**: Main Django project directory
-  - **kompomaatti/**: Core compo system (Entry, Compo, Vote, Competition models)
+  - **kompomaatti/**: Core compo system models (Entry, Compo, Vote, Competition); user-facing views have moved to the React SPA in `../kompomaatti/` and only URL stubs remain here for named-route compatibility
   - **store/**: E-commerce (StoreItem, StoreTransaction, TransactionItem, Receipt)
   - **arkisto/**: Archive of past events and entries
   - **users/**: User authentication and profiles
@@ -253,4 +255,4 @@ Items can be hidden behind secret keys:
 
 Root URL redirects to current year's main page (currently `/2026/`).
 
-Note: The Vue-based admin panel (`/management/`) is deployed separately and served directly by nginx in production.
+Note: The Vue-based admin panel (`/management/`) is a separate frontend in this monorepo (`../admin/`), built into a static bundle and served directly by nginx in production. The React-based Kompomaatti SPA (`../kompomaatti/`) is also part of this monorepo and is served as static files at `/kompomaatti/`. The Django app `Instanssi/kompomaatti/` no longer holds the user-facing kompomaatti views — only URL stubs (pointing to a dummy view) remain so that named routes referenced from elsewhere in the backend continue to resolve; the SPA overlays these paths in the deployed site.

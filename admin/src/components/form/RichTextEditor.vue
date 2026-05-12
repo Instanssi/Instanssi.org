@@ -31,7 +31,7 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { Image } from "vuetify-pro-tiptap";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 
 const props = defineProps<{
     modelValue: string;

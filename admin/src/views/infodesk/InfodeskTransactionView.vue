@@ -121,8 +121,8 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { InfodeskTransaction, InfodeskTransactionItem } from "@/api";
+import * as api from "@instanssi/api";
+import type { InfodeskTransaction, InfodeskTransactionItem } from "@instanssi/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import InfoCard from "@/components/table/InfoCard.vue";
 import InfoRow from "@/components/table/InfoRow.vue";

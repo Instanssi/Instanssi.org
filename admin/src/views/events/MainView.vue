@@ -186,8 +186,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 
-import * as api from "@/api";
-import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@/api";
+import * as api from "@instanssi/api";
+import type { BlogEntry, Compo, CompoEntry, Competition, Event } from "@instanssi/api";
 import CompetitionParticipantsChart from "@/components/dashboard/charts/CompetitionParticipantsChart.vue";
 import EntriesPerCompoChart from "@/components/dashboard/charts/EntriesPerCompoChart.vue";
 import EventCountdown from "@/components/dashboard/EventCountdown.vue";

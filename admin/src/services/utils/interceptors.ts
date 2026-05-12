@@ -1,54 +1,70 @@
-import type { AxiosError } from "axios";
-import { useToast } from "vue-toastification";
 import * as Sentry from "@sentry/vue";
+import { ApiError, HttpStatus, TransportError } from "@instanssi/api";
+import { useToast } from "vue-toastification";
 
 import { i18n } from "@/i18n";
 
-export function errorResponseInterceptor(error: AxiosError) {
-    Sentry.captureException(error);
-
-    // Don't worry about this path -- we handle its errors in auth service.
-    const path = error.response?.config.url ?? "";
-    if (path.endsWith("/user_info/") || path.endsWith("/auth/login/")) {
-        return Promise.reject(error);
+export function errorResponseInterceptor(
+    error: unknown,
+    response: Response,
+    request: Request
+): ApiError | TransportError {
+    if (error instanceof TransportError) {
+        return handleTransportError(error);
     }
+    return handleApiError(error, response, request);
+}
 
-    // First, check if the error was due to timeout.
+function handleTransportError(error: TransportError): TransportError {
+    Sentry.captureException(error);
+    if (error.kind === "abort") {
+        // User-initiated cancellation — stay silent.
+        return error;
+    }
     const toast = useToast();
     const { t } = i18n.global;
-    if (error.code === "ECONNABORTED") {
-        toast.error(t("Toasts.errors.timeout"));
-        return Promise.reject(error);
+    toast.error(error.kind === "timeout" ? t("Toasts.errors.timeout") : t("Toasts.errors.generic"));
+    return error;
+}
+
+function handleApiError(error: unknown, response: Response, request: Request): ApiError {
+    const apiError = new ApiError(error, response, request);
+    Sentry.captureException(apiError);
+
+    // Don't worry about these paths -- they are handled by the auth service.
+    const path = new URL(request.url).pathname;
+    if (path.endsWith("/user_info/") || path.endsWith("/auth/login/")) {
+        return apiError;
     }
 
-    // Then, see if it was server side error code.
-    const status = error.response?.status ?? 0;
-    switch (status) {
-        case 400:
+    const toast = useToast();
+    const { t } = i18n.global;
+    switch (response.status) {
+        case HttpStatus.BAD_REQUEST:
             // Validation errors - let the caller handle these via handleApiError
             break;
 
-        case 401:
+        case HttpStatus.UNAUTHORIZED:
             toast.error(t("Toasts.errors.sessionTimedOut"));
             break;
 
-        case 409:
+        case HttpStatus.CONFLICT:
             toast.error(t("Toasts.errors.conflict"));
             break;
 
-        case 418:
+        case HttpStatus.TEAPOT:
             // Mostly for testing :)
             toast.warning(t("Toasts.errors.teapot"));
             break;
 
-        case 500:
+        case HttpStatus.INTERNAL_SERVER_ERROR:
             // Something is badly wrong server-side
             toast.error(t("Toasts.errors.ise"));
             break;
 
-        case 502:
-        case 503:
-        case 504:
+        case HttpStatus.BAD_GATEWAY:
+        case HttpStatus.SERVICE_UNAVAILABLE:
+        case HttpStatus.GATEWAY_TIMEOUT:
             // These usually happen if server is down for maintenance etc.
             toast.error(t("Toasts.errors.gateway"));
             break;
@@ -59,5 +75,5 @@ export function errorResponseInterceptor(error: AxiosError) {
             break;
     }
 
-    return Promise.reject(error);
+    return apiError;
 }

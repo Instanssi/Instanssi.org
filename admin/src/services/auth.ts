@@ -1,9 +1,8 @@
-import type { AxiosError } from "axios";
+import * as api from "@instanssi/api";
+import { ApiError, type SocialAuthUrl, type UserInfo } from "@instanssi/api";
 import { type Ref, ref } from "vue";
 import { useToast } from "vue-toastification";
 
-import * as api from "@/api";
-import type { SocialAuthUrl, UserInfo } from "@/api";
 import { i18n, isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n";
 
 export type CurrentUserInfo = {
@@ -71,19 +70,15 @@ export function useAuth() {
 
     async function login(username: string, password: string): Promise<LoginResult> {
         try {
-            const response = await api.login({ body: { username, password } });
-            if (response.status === 200) {
-                await refreshStatus();
-                return LoginResult.SUCCESS;
-            }
-            return LoginResult.AUTH_FAILED;
+            await api.login({ body: { username, password } });
+            await refreshStatus();
+            return LoginResult.SUCCESS;
         } catch (err: unknown) {
-            const axiosError = err as AxiosError<{ code?: string }>;
-            if (
-                axiosError.response?.status === 401 &&
-                axiosError.response?.data?.code === "email_not_verified"
-            ) {
-                return LoginResult.EMAIL_NOT_VERIFIED;
+            if (err instanceof ApiError && err.response.status === 401) {
+                const data = err.response.data as { code?: string };
+                if (data?.code === "email_not_verified") {
+                    return LoginResult.EMAIL_NOT_VERIFIED;
+                }
             }
             return LoginResult.AUTH_FAILED;
         }

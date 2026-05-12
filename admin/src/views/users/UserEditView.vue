@@ -120,8 +120,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { boolean as yupBoolean, object as yupObject, string as yupString } from "yup";
 
-import * as api from "@/api";
-import type { Group } from "@/api";
+import * as api from "@instanssi/api";
+import type { Group } from "@instanssi/api";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useAuth } from "@/services/auth";

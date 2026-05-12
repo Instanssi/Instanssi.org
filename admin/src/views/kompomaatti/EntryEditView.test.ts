@@ -5,7 +5,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { useRoute, useRouter } from "vue-router";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import {
     createMockApiError,
     expectApiCalledWithPath,

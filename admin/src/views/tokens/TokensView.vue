@@ -72,8 +72,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { type VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { AuthToken } from "@/api";
+import * as api from "@instanssi/api";
+import type { AuthToken } from "@instanssi/api";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TokenCreateDialog from "@/views/tokens/TokenCreateDialog.vue";

@@ -72,7 +72,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
-import type { SocialAuthUrl } from "@/api";
+import type { SocialAuthUrl } from "@instanssi/api";
 import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
 

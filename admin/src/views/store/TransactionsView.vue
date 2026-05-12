@@ -71,8 +71,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { StoreTransaction } from "@/api";
+import * as api from "@instanssi/api";
+import type { StoreTransaction } from "@instanssi/api";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";

@@ -126,8 +126,8 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
-import type { Competition, User } from "@/api";
+import * as api from "@instanssi/api";
+import type { Competition, User } from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FormSection from "@/components/form/FormSection.vue";

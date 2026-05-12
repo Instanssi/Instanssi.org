@@ -1,6 +1,6 @@
+import { ApiError } from "@instanssi/api";
 import type { VueWrapper } from "@vue/test-utils";
 import { flushPromises } from "@vue/test-utils";
-import type { AxiosError } from "axios";
 import { expect } from "vitest";
 
 /**
@@ -39,38 +39,27 @@ export async function submitForm(
 }
 
 /**
- * Create a mock API error response for testing error handling.
+ * Create a mock ApiError for testing error handling.
  *
  * @param status - HTTP status code (default 400)
  * @param fieldErrors - Object mapping field names to error messages
- * @returns Mock error object matching AxiosError structure
  */
-export function createMockApiError(
-    status: number = 400,
-    fieldErrors: Record<string, string[]> = {}
-): AxiosError {
-    return {
-        response: {
-            status,
-            data: fieldErrors,
-        },
-    } as AxiosError;
+export function createMockApiError(status: number = 400, data: unknown = {}): ApiError {
+    const response = new Response(null, { status });
+    const request = new Request("http://test.local/");
+    return new ApiError(data, response, request);
 }
 
 /**
- * Create a mock API error with a detail message.
+ * Create a mock ApiError with a detail message.
  *
  * @param status - HTTP status code
  * @param detail - Detail message string
- * @returns Mock error object
  */
-export function createMockApiDetailError(status: number, detail: string): AxiosError {
-    return {
-        response: {
-            status,
-            data: { detail },
-        },
-    } as AxiosError;
+export function createMockApiDetailError(status: number, detail: string): ApiError {
+    const response = new Response(null, { status });
+    const request = new Request("http://test.local/");
+    return new ApiError({ detail }, response, request);
 }
 
 /**

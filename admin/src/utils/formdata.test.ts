@@ -1,6 +1,7 @@
+import { toFormData } from "@instanssi/api";
 import { describe, expect, it } from "vitest";
 
-import { prepareFileField, toFormData } from "./formdata";
+import { prepareFileField } from "./formdata";
 
 describe("toFormData", () => {
     describe("with null and undefined values", () => {
@@ -43,15 +44,13 @@ describe("toFormData", () => {
             expect(formFile.type).toBe("image/jpeg");
         });
 
-        it("should handle File array (v-file-input with multiple)", () => {
+        it("should append every File when given a File array", () => {
             const file1 = new File(["content1"], "file1.txt", { type: "text/plain" });
             const file2 = new File(["content2"], "file2.txt", { type: "text/plain" });
             const result = toFormData({ document: [file1, file2] });
 
-            // Should only use the first file
-            const formFile = result.get("document");
-            expect(formFile).toBeInstanceOf(File);
-            expect((formFile as File).name).toBe("file1.txt");
+            const files = result.getAll("document");
+            expect(files.map((f) => (f as File).name)).toEqual(["file1.txt", "file2.txt"]);
         });
 
         it("should skip empty File array", () => {

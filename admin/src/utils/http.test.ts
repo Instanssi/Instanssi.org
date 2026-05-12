@@ -1,6 +1,6 @@
-import type { AxiosError } from "axios";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { createMockApiError } from "@/test/helpers/form-test-utils";
 import { getApiErrorMessage, handleApiError } from "./http";
 
 describe("handleApiError", () => {
@@ -14,15 +14,10 @@ describe("handleApiError", () => {
 
     describe("field validation errors (400)", () => {
         it("should map field errors to form fields using explicit mapping", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        username: ["This field is required."],
-                        email: ["Enter a valid email address."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                username: ["This field is required."],
+                email: ["Enter a valid email address."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
                 username: "username",
@@ -37,15 +32,10 @@ describe("handleApiError", () => {
         });
 
         it("should show unmapped field errors in toast", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        first_name: ["Too long."],
-                        last_name: ["Required."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                first_name: ["Too long."],
+                last_name: ["Required."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
@@ -56,15 +46,10 @@ describe("handleApiError", () => {
         });
 
         it("should use custom field mapping", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        first_name: ["Too long."],
-                        last_name: ["Required."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                first_name: ["Too long."],
+                last_name: ["Required."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
                 first_name: "firstName",
@@ -79,14 +64,9 @@ describe("handleApiError", () => {
         });
 
         it("should join multiple error messages for a field", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        password: ["Too short.", "Must contain a number."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                password: ["Too short.", "Must contain a number."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
                 password: "password",
@@ -98,15 +78,10 @@ describe("handleApiError", () => {
         });
 
         it("should show both field errors and toast for mixed mapped/unmapped", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        name: ["Required."],
-                        unknown_field: ["Some error."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                name: ["Required."],
+                unknown_field: ["Some error."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
                 name: "name",
@@ -121,14 +96,9 @@ describe("handleApiError", () => {
 
     describe("detail message errors", () => {
         it("should show detail message in toast", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        detail: "You do not have permission to perform this action.",
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                detail: "You do not have permission to perform this action.",
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
@@ -139,15 +109,10 @@ describe("handleApiError", () => {
         });
 
         it("should prefer field errors over detail message", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: {
-                        detail: "Validation failed.",
-                        name: ["Required."],
-                    },
-                },
-            } as AxiosError;
+            const error = createMockApiError(400, {
+                detail: "Validation failed.",
+                name: ["Required."],
+            });
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage, {
                 name: "name",
@@ -162,33 +127,21 @@ describe("handleApiError", () => {
 
     describe("fallback behavior", () => {
         it("should show fallback message for non-400 errors", () => {
-            const error = {
-                response: {
-                    status: 500,
-                    data: {},
-                },
-            } as AxiosError;
+            const error = createMockApiError(500, {});
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
             expect(mockToast.error).toHaveBeenCalledWith(fallbackMessage);
         });
 
-        it("should show fallback message when no response", () => {
-            const error = {} as AxiosError;
-
-            handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
+        it("should show fallback message when error is not an ApiError", () => {
+            handleApiError({}, mockSetErrors, mockToast, fallbackMessage);
 
             expect(mockToast.error).toHaveBeenCalledWith(fallbackMessage);
         });
 
-        it("should show fallback message for 400 with no parseable data", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: "Bad Request",
-                },
-            } as AxiosError;
+        it("should show fallback message for 400 with non-object data", () => {
+            const error = createMockApiError(400, "Bad Request");
 
             handleApiError(error, mockSetErrors, mockToast, fallbackMessage);
 
@@ -202,22 +155,12 @@ describe("getApiErrorMessage", () => {
 
     describe("with detail message present", () => {
         it("should return detail message from response", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: { detail: "Custom error from server" },
-                },
-            };
+            const error = createMockApiError(400, { detail: "Custom error from server" });
             expect(getApiErrorMessage(error, fallbackMessage)).toBe("Custom error from server");
         });
 
         it("should return detail for any status code", () => {
-            const error = {
-                response: {
-                    status: 500,
-                    data: { detail: "Internal server error details" },
-                },
-            };
+            const error = createMockApiError(500, { detail: "Internal server error details" });
             expect(getApiErrorMessage(error, fallbackMessage)).toBe(
                 "Internal server error details"
             );
@@ -226,28 +169,17 @@ describe("getApiErrorMessage", () => {
 
     describe("fallback behavior", () => {
         it("should return fallback when no detail present", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: { name: ["Required"] },
-                },
-            };
+            const error = createMockApiError(400, { name: ["Required"] });
             expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
         });
 
         it("should return fallback when response data is not an object", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: "Plain text error",
-                },
-            };
+            const error = createMockApiError(400, "Plain text error");
             expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
         });
 
-        it("should return fallback when no response", () => {
-            const error = {};
-            expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
+        it("should return fallback when error is not an ApiError", () => {
+            expect(getApiErrorMessage({}, fallbackMessage)).toBe(fallbackMessage);
         });
 
         it("should return fallback for null error", () => {
@@ -255,12 +187,7 @@ describe("getApiErrorMessage", () => {
         });
 
         it("should return fallback when detail is not a string", () => {
-            const error = {
-                response: {
-                    status: 400,
-                    data: { detail: 123 },
-                },
-            };
+            const error = createMockApiError(400, { detail: 123 });
             expect(getApiErrorMessage(error, fallbackMessage)).toBe(fallbackMessage);
         });
     });

@@ -80,8 +80,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { StoreSummary } from "@/api";
+import * as api from "@instanssi/api";
+import type { StoreSummary } from "@instanssi/api";
 import RefreshControl from "@/components/dashboard/RefreshControl.vue";
 import SalesByHourChart from "@/components/dashboard/charts/SalesByHourChart.vue";
 import SalesPerDayChart from "@/components/dashboard/charts/SalesPerDayChart.vue";

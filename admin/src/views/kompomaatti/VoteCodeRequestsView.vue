@@ -105,8 +105,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { StatusEnum, VoteCodeRequest } from "@/api";
+import * as api from "@instanssi/api";
+import type { StatusEnum, VoteCodeRequest } from "@instanssi/api";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import LongTextCell from "@/components/table/LongTextCell.vue";

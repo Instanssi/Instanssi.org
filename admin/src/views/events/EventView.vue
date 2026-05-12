@@ -111,8 +111,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { Event } from "@/api";
+import * as api from "@instanssi/api";
+import type { Event } from "@instanssi/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import DateCell from "@/components/table/DateCell.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

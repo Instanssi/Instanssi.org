@@ -153,8 +153,8 @@ import { computed, inject, onMounted, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
-import * as api from "@/api";
-import type { CompoEntry, LiveVotingState } from "@/api";
+import * as api from "@instanssi/api";
+import type { CompoEntry, LiveVotingState } from "@instanssi/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import { useEvents } from "@/services/events";

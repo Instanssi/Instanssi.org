@@ -29,7 +29,7 @@ import { type Ref, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import BaseInfoDialog from "@/components/dialogs/BaseInfoDialog.vue";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 

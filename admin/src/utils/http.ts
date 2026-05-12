@@ -1,4 +1,4 @@
-import { HttpStatus } from "@/utils/http_status";
+import { ApiError, HttpStatus } from "@instanssi/api";
 
 type FieldErrors = Record<string, string>;
 type SetErrorsFn = (errors: FieldErrors) => void;
@@ -7,17 +7,11 @@ type ToastInterface = { error: (message: string) => void };
 /** Maps API field names (snake_case) to form field names (camelCase) */
 export type FieldMapping = Record<string, string>;
 
-interface ErrorResponse {
-    status: number;
-    data: unknown;
+function getErrorResponse(error: unknown): ApiError["response"] | null {
+    return error instanceof ApiError ? error.response : null;
 }
 
-function getErrorResponse(error: unknown): ErrorResponse | null {
-    const err = error as { response?: ErrorResponse };
-    return err?.response ?? null;
-}
-
-function getResponseData(response: ErrorResponse): Record<string, unknown> | null {
+function getResponseData(response: ApiError["response"]): Record<string, unknown> | null {
     const { data } = response;
     return typeof data === "object" && data !== null ? (data as Record<string, unknown>) : null;
 }
@@ -39,7 +33,7 @@ export function getApiErrorMessage(error: unknown, fallbackMessage: string): str
  * Handle API errors by mapping field-level validation errors to form fields
  * and showing appropriate toast messages.
  *
- * @param error - The caught error (typically AxiosError)
+ * @param error - The caught error (typically ApiError)
  * @param setErrors - vee-validate's setErrors function
  * @param toast - Toast interface with error() method
  * @param fallbackMessage - Message to show if no specific error can be extracted

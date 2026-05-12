@@ -67,8 +67,8 @@ import { dragAndDrop } from "@formkit/drag-and-drop/vue";
 import { type Ref, ref, watch, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
-import * as api from "@/api";
-import type { CompoEntry } from "@/api";
+import * as api from "@instanssi/api";
+import type { CompoEntry } from "@instanssi/api";
 import BaseDialog from "@/components/dialogs/BaseDialog.vue";
 import { getApiErrorMessage } from "@/utils/http";
 

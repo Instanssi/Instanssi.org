@@ -59,8 +59,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { LogEntry } from "@/api";
+import * as api from "@instanssi/api";
+import type { LogEntry } from "@instanssi/api";
 import DiffViewer from "@/components/auditlog/DiffViewer.vue";
 import DateTimeCell from "@/components/table/DateTimeCell.vue";
 import { type LoadOptions, useAuditLogUtils } from "@/composables/useAuditLogUtils";

@@ -100,8 +100,8 @@ import { computed, ref, watch, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
-import * as api from "@/api";
-import type { UploadedFile } from "@/api";
+import * as api from "@instanssi/api";
+import type { UploadedFile } from "@instanssi/api";
 import BaseDialog from "@/components/dialogs/BaseDialog.vue";
 import ImageSelectField from "@/components/form/ImageSelectField.vue";
 import { useEvents } from "@/services/events";

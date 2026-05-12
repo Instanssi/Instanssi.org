@@ -227,7 +227,7 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import RichTextEditor from "@/components/form/RichTextEditor.vue";
@@ -237,7 +237,8 @@ import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import { useEvents } from "@/services/events";
 import { toISODatetime, toLocalDatetime } from "@/utils/datetime";
 import { type FileValue, getFile } from "@/utils/file";
-import { prepareFileField, toFormData } from "@/utils/formdata";
+import { toFormData } from "@instanssi/api";
+import { prepareFileField } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */

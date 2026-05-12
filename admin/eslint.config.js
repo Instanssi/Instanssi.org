@@ -5,7 +5,7 @@ import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescri
 
 export default defineConfigWithVueTs(
     {
-        ignores: ["src/api/", ".vite/", ".gitignore", "env.d.ts"],
+        ignores: [".vite/", ".gitignore", "env.d.ts"],
     },
     jsDefaults.configs.recommended,
     ...vueDefaults.configs["flat/recommended"],

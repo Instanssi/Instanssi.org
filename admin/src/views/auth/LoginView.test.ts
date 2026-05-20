@@ -3,8 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Unmock auth service since we're testing it directly
 vi.unmock("@/services/auth");
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
+import { createMockApiError } from "@/test/helpers/form-test-utils";
 
 describe("LoginView - auth service integration", () => {
     const authService = useAuth();
@@ -67,7 +68,7 @@ describe("LoginView - auth service integration", () => {
         });
 
         it("should return false on failed login", async () => {
-            vi.mocked(api.login).mockResolvedValue({ status: 401 } as never);
+            vi.mocked(api.login).mockRejectedValue(createMockApiError(401));
 
             const result = await authService.login("testuser", "wrongpassword");
 
@@ -76,10 +77,7 @@ describe("LoginView - auth service integration", () => {
         });
 
         it("should return EMAIL_NOT_VERIFIED when backend returns 401 with code", async () => {
-            const error = {
-                response: { status: 401, data: { code: "email_not_verified" } },
-                isAxiosError: true,
-            };
+            const error = createMockApiError(401, { code: "email_not_verified" });
             vi.mocked(api.login).mockRejectedValue(error);
 
             const result = await authService.login("testuser", "password");

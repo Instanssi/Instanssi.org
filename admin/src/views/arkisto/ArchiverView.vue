@@ -222,8 +222,8 @@ import { computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 
-import * as api from "@/api";
-import type { ArchiverStatus } from "@/api";
+import * as api from "@instanssi/api";
+import type { ArchiverStatus } from "@instanssi/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";

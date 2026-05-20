@@ -416,7 +416,6 @@ export const adminAuditlogList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminAuditlogListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<AdminAuditlogListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -443,7 +442,6 @@ export const adminAuditlogRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminAuditlogRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<AdminAuditlogRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -467,7 +465,6 @@ export const adminBlogList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminBlogListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<AdminBlogListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -491,7 +488,6 @@ export const adminBlogCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogCreateData, ThrowOnError>
 ) => {
     return (options.client ?? client).post<AdminBlogCreateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -542,7 +538,6 @@ export const adminBlogRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<AdminBlogRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -567,7 +562,6 @@ export const adminBlogPartialUpdate = <ThrowOnError extends boolean = false>(
 ) => {
     return (options.client ?? client).patch<AdminBlogPartialUpdateResponses, unknown, ThrowOnError>(
         {
-            responseType: "json",
             security: [
                 {
                     name: "Authorization",
@@ -596,7 +590,6 @@ export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogUpdateData, ThrowOnError>
 ) => {
     return (options.client ?? client).put<AdminBlogUpdateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -630,7 +623,6 @@ export const adminEventArkistoArchiverHideCreate = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -660,7 +652,6 @@ export const adminEventArkistoArchiverOptimizeScoresCreate = <ThrowOnError exten
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -690,7 +681,6 @@ export const adminEventArkistoArchiverRemoveOldVotesCreate = <ThrowOnError exten
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -720,7 +710,6 @@ export const adminEventArkistoArchiverShowCreate = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -750,7 +739,6 @@ export const adminEventArkistoArchiverStatusRetrieve = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -780,7 +768,6 @@ export const adminEventArkistoArchiverTransferRightsCreate = <ThrowOnError exten
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -808,7 +795,6 @@ export const adminEventArkistoVideoCategoriesList = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -836,7 +822,6 @@ export const adminEventArkistoVideoCategoriesCreate = <ThrowOnError extends bool
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -895,7 +880,6 @@ export const adminEventArkistoVideoCategoriesRetrieve = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -923,7 +907,6 @@ export const adminEventArkistoVideoCategoriesPartialUpdate = <ThrowOnError exten
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -955,7 +938,6 @@ export const adminEventArkistoVideoCategoriesUpdate = <ThrowOnError extends bool
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -987,7 +969,6 @@ export const adminEventArkistoVideosList = <ThrowOnError extends boolean = false
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1015,7 +996,6 @@ export const adminEventArkistoVideosCreate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1074,7 +1054,6 @@ export const adminEventArkistoVideosRetrieve = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1102,7 +1081,6 @@ export const adminEventArkistoVideosPartialUpdate = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1134,7 +1112,6 @@ export const adminEventArkistoVideosUpdate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1170,7 +1147,6 @@ export const adminEventKompomaattiCompetitionParticipationsList = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1202,7 +1178,6 @@ export const adminEventKompomaattiCompetitionParticipationsCreate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1269,7 +1244,6 @@ export const adminEventKompomaattiCompetitionParticipationsRetrieve = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1301,7 +1275,6 @@ export const adminEventKompomaattiCompetitionParticipationsPartialUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1337,7 +1310,6 @@ export const adminEventKompomaattiCompetitionParticipationsUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1369,7 +1341,6 @@ export const adminEventKompomaattiCompetitionsList = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1397,7 +1368,6 @@ export const adminEventKompomaattiCompetitionsCreate = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1456,7 +1426,6 @@ export const adminEventKompomaattiCompetitionsRetrieve = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1486,7 +1455,6 @@ export const adminEventKompomaattiCompetitionsPartialUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1518,7 +1486,6 @@ export const adminEventKompomaattiCompetitionsUpdate = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1550,7 +1517,6 @@ export const adminEventKompomaattiComposList = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1578,7 +1544,6 @@ export const adminEventKompomaattiComposCreate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1637,7 +1602,6 @@ export const adminEventKompomaattiComposRetrieve = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1665,7 +1629,6 @@ export const adminEventKompomaattiComposPartialUpdate = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1697,7 +1660,6 @@ export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1732,7 +1694,6 @@ export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1764,7 +1725,6 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1829,7 +1789,6 @@ export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1861,7 +1820,6 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1897,7 +1855,6 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -1933,7 +1890,6 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
         unknown,
         ThrowOnError
     >({
-        responseType: "blob",
         security: [
             {
                 name: "Authorization",
@@ -1964,7 +1920,6 @@ export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends b
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2000,7 +1955,6 @@ export const adminEventKompomaattiEntriesValidateArchiveRetrieve = <
         AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2028,7 +1982,6 @@ export const adminEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2056,7 +2009,6 @@ export const adminEventKompomaattiLiveVotingPartialUpdate = <ThrowOnError extend
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2088,7 +2040,6 @@ export const adminEventKompomaattiLiveVotingHideAllCreate = <ThrowOnError extend
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2118,7 +2069,6 @@ export const adminEventKompomaattiLiveVotingHideEntryCreate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2150,7 +2100,6 @@ export const adminEventKompomaattiLiveVotingResetCreate = <ThrowOnError extends 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2180,7 +2129,6 @@ export const adminEventKompomaattiLiveVotingRevealAllCreate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2213,7 +2161,6 @@ export const adminEventKompomaattiLiveVotingRevealEntryCreate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2245,7 +2192,6 @@ export const adminEventKompomaattiTicketVoteCodesList = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2273,7 +2219,6 @@ export const adminEventKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extend
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2301,7 +2246,6 @@ export const adminEventKompomaattiVoteCodeRequestsList = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2329,7 +2273,6 @@ export const adminEventKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2388,7 +2331,6 @@ export const adminEventKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError exten
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2418,7 +2360,6 @@ export const adminEventKompomaattiVoteCodeRequestsPartialUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2450,7 +2391,6 @@ export const adminEventKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2482,7 +2422,6 @@ export const adminEventProgramEventsList = <ThrowOnError extends boolean = false
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2511,7 +2450,6 @@ export const adminEventProgramEventsCreate = <ThrowOnError extends boolean = fal
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2570,7 +2508,6 @@ export const adminEventProgramEventsRetrieve = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2599,7 +2536,6 @@ export const adminEventProgramEventsPartialUpdate = <ThrowOnError extends boolea
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2632,7 +2568,6 @@ export const adminEventProgramEventsUpdate = <ThrowOnError extends boolean = fal
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2664,7 +2599,6 @@ export const adminEventStoreItemVariantsList = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2692,7 +2626,6 @@ export const adminEventStoreItemVariantsCreate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2751,7 +2684,6 @@ export const adminEventStoreItemVariantsRetrieve = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2779,7 +2711,6 @@ export const adminEventStoreItemVariantsPartialUpdate = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2811,7 +2742,6 @@ export const adminEventStoreItemVariantsUpdate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2840,7 +2770,6 @@ export const adminEventStoreItemsList = <ThrowOnError extends boolean = false>(
 ) => {
     return (options.client ?? client).get<AdminEventStoreItemsListResponses, unknown, ThrowOnError>(
         {
-            responseType: "json",
             security: [
                 {
                     name: "Authorization",
@@ -2870,7 +2799,6 @@ export const adminEventStoreItemsCreate = <ThrowOnError extends boolean = false>
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2929,7 +2857,6 @@ export const adminEventStoreItemsRetrieve = <ThrowOnError extends boolean = fals
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2958,7 +2885,6 @@ export const adminEventStoreItemsPartialUpdate = <ThrowOnError extends boolean =
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -2991,7 +2917,6 @@ export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3026,7 +2951,6 @@ export const adminEventStoreReceiptsList = <ThrowOnError extends boolean = false
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3057,7 +2981,6 @@ export const adminEventStoreReceiptsCreate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3122,7 +3045,6 @@ export const adminEventStoreReceiptsRetrieve = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3153,7 +3075,6 @@ export const adminEventStoreReceiptsPartialUpdate = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3188,7 +3109,6 @@ export const adminEventStoreReceiptsUpdate = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3220,7 +3140,6 @@ export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3256,7 +3175,6 @@ export const adminEventStoreSummaryList = <ThrowOnError extends boolean = false>
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3284,7 +3202,6 @@ export const adminEventStoreTransactionItemsList = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3312,7 +3229,6 @@ export const adminEventStoreTransactionItemsCreate = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3371,7 +3287,6 @@ export const adminEventStoreTransactionItemsRetrieve = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3399,7 +3314,6 @@ export const adminEventStoreTransactionItemsPartialUpdate = <ThrowOnError extend
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3431,7 +3345,6 @@ export const adminEventStoreTransactionItemsUpdate = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3463,7 +3376,6 @@ export const adminEventStoreTransactionsList = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3491,7 +3403,6 @@ export const adminEventStoreTransactionsCreate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3550,7 +3461,6 @@ export const adminEventStoreTransactionsRetrieve = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3578,7 +3488,6 @@ export const adminEventStoreTransactionsPartialUpdate = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3610,7 +3519,6 @@ export const adminEventStoreTransactionsUpdate = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3644,7 +3552,6 @@ export const adminEventUploadsFilesList = <ThrowOnError extends boolean = false>
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3675,7 +3582,6 @@ export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = fals
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3738,7 +3644,6 @@ export const adminEventUploadsFilesRetrieve = <ThrowOnError extends boolean = fa
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3769,7 +3674,6 @@ export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3804,7 +3708,6 @@ export const adminEventUploadsFilesUpdate = <ThrowOnError extends boolean = fals
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3832,7 +3735,6 @@ export const adminEventsList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminEventsListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<AdminEventsListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3856,7 +3758,6 @@ export const adminEventsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsCreateData, ThrowOnError>
 ) => {
     return (options.client ?? client).post<AdminEventsCreateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3907,7 +3808,6 @@ export const adminEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<AdminEventsRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3935,7 +3835,6 @@ export const adminEventsPartialUpdate = <ThrowOnError extends boolean = false>(
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3963,7 +3862,6 @@ export const adminEventsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsUpdateData, ThrowOnError>
 ) => {
     return (options.client ?? client).put<AdminEventsUpdateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -3991,7 +3889,6 @@ export const adminGroupsList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminGroupsListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<AdminGroupsListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4015,7 +3912,6 @@ export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminGroupsRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<AdminGroupsRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4039,7 +3935,6 @@ export const adminUsersList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminUsersListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<AdminUsersListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4063,7 +3958,6 @@ export const adminUsersCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersCreateData, ThrowOnError>
 ) => {
     return (options.client ?? client).post<AdminUsersCreateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4114,7 +4008,6 @@ export const adminUsersRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<AdminUsersRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4142,7 +4035,6 @@ export const adminUsersPartialUpdate = <ThrowOnError extends boolean = false>(
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4170,7 +4062,6 @@ export const adminUsersUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersUpdateData, ThrowOnError>
 ) => {
     return (options.client ?? client).put<AdminUsersUpdateResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4252,7 +4143,6 @@ export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
     options?: Options<GetSocialAuthUrlsData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<GetSocialAuthUrlsResponses, unknown, ThrowOnError>({
-        responseType: "json",
         url: "/api/v2/auth/social_urls/",
         ...options,
     });
@@ -4271,7 +4161,6 @@ export const eventUserKompomaattiEntriesList = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4302,7 +4191,6 @@ export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean =
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4365,7 +4253,6 @@ export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4396,7 +4283,6 @@ export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends bo
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4431,7 +4317,6 @@ export const eventUserKompomaattiEntriesUpdate = <ThrowOnError extends boolean =
         ThrowOnError
     >({
         ...formDataBodySerializer,
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4466,7 +4351,6 @@ export const eventUserKompomaattiParticipationsList = <ThrowOnError extends bool
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4497,7 +4381,6 @@ export const eventUserKompomaattiParticipationsCreate = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4562,7 +4445,6 @@ export const eventUserKompomaattiParticipationsRetrieve = <ThrowOnError extends 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4595,7 +4477,6 @@ export const eventUserKompomaattiParticipationsPartialUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4630,7 +4511,6 @@ export const eventUserKompomaattiParticipationsUpdate = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4672,7 +4552,6 @@ export const eventUserKompomaattiTicketVoteCodesList = <ThrowOnError extends boo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4710,7 +4589,6 @@ export const eventUserKompomaattiTicketVoteCodesCreate = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4752,7 +4630,6 @@ export const eventUserKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4790,7 +4667,6 @@ export const eventUserKompomaattiVoteCodeRequestsList = <ThrowOnError extends bo
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4828,7 +4704,6 @@ export const eventUserKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4870,7 +4745,6 @@ export const eventUserKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError extend
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4910,7 +4784,6 @@ export const eventUserKompomaattiVoteCodeRequestsPartialUpdate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4952,7 +4825,6 @@ export const eventUserKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -4997,7 +4869,6 @@ export const eventUserKompomaattiVotesList = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5038,7 +4909,6 @@ export const eventUserKompomaattiVotesCreate = <ThrowOnError extends boolean = f
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5083,7 +4953,6 @@ export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5111,7 +4980,6 @@ export const infodeskEventTransactionItemsList = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5139,7 +5007,6 @@ export const infodeskEventTransactionItemsRetrieve = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5169,7 +5036,6 @@ export const infodeskEventTransactionItemsMarkDeliveredCreate = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5197,7 +5063,6 @@ export const infodeskEventTransactionsList = <ThrowOnError extends boolean = fal
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5225,7 +5090,6 @@ export const infodeskEventTransactionsRetrieve = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5256,7 +5120,6 @@ export const notificationsSubscriptionsList = <ThrowOnError extends boolean = fa
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5290,7 +5153,6 @@ export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5348,7 +5210,6 @@ export const publicBlogEntriesList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicBlogEntriesListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<PublicBlogEntriesListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         url: "/api/v2/public/blog_entries/",
         ...options,
     });
@@ -5365,7 +5226,6 @@ export const publicBlogEntriesRetrieve = <ThrowOnError extends boolean = false>(
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/blog_entries/{id}/",
         ...options,
     });
@@ -5384,7 +5244,6 @@ export const publicEventArchiveVideoCategoriesList = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/archive/video_categories/",
         ...options,
     });
@@ -5403,7 +5262,6 @@ export const publicEventArchiveVideoCategoriesRetrieve = <ThrowOnError extends b
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/archive/video_categories/{id}/",
         ...options,
     });
@@ -5420,7 +5278,6 @@ export const publicEventArchiveVideosList = <ThrowOnError extends boolean = fals
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/archive/videos/",
         ...options,
     });
@@ -5437,7 +5294,6 @@ export const publicEventArchiveVideosRetrieve = <ThrowOnError extends boolean = 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/archive/videos/{id}/",
         ...options,
     });
@@ -5458,7 +5314,6 @@ export const publicEventKompomaattiCompetitionParticipationsList = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/",
         ...options,
     });
@@ -5479,7 +5334,6 @@ export const publicEventKompomaattiCompetitionParticipationsRetrieve = <
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/{id}/",
         ...options,
     });
@@ -5496,7 +5350,6 @@ export const publicEventKompomaattiCompetitionsList = <ThrowOnError extends bool
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/",
         ...options,
     });
@@ -5513,7 +5366,6 @@ export const publicEventKompomaattiCompetitionsRetrieve = <ThrowOnError extends 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/{id}/",
         ...options,
     });
@@ -5530,7 +5382,6 @@ export const publicEventKompomaattiComposList = <ThrowOnError extends boolean = 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/",
         ...options,
     });
@@ -5547,7 +5398,6 @@ export const publicEventKompomaattiComposRetrieve = <ThrowOnError extends boolea
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/{id}/",
         ...options,
     });
@@ -5569,7 +5419,6 @@ export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean =
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/",
         ...options,
     });
@@ -5591,7 +5440,6 @@ export const publicEventKompomaattiEntriesRetrieve = <ThrowOnError extends boole
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
     });
@@ -5612,7 +5460,6 @@ export const publicEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends bo
         PublicEventKompomaattiLiveVotingRetrieveErrors,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/",
         ...options,
     });
@@ -5629,7 +5476,6 @@ export const publicEventProgramEventsList = <ThrowOnError extends boolean = fals
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/program/events/",
         ...options,
     });
@@ -5646,7 +5492,6 @@ export const publicEventProgramEventsRetrieve = <ThrowOnError extends boolean = 
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/event/{event_pk}/program/events/{id}/",
         ...options,
     });
@@ -5659,7 +5504,6 @@ export const publicEventsList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicEventsListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<PublicEventsListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         url: "/api/v2/public/events/",
         ...options,
     });
@@ -5672,7 +5516,6 @@ export const publicEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventsRetrieveData, ThrowOnError>
 ) => {
     return (options.client ?? client).get<PublicEventsRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         url: "/api/v2/public/events/{id}/",
         ...options,
     });
@@ -5689,7 +5532,6 @@ export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/notifications/vapid-key/",
         ...options,
     });
@@ -5711,7 +5553,6 @@ export const publicStoreCheckoutCreate = <ThrowOnError extends boolean = false>(
         unknown,
         ThrowOnError
     >({
-        responseType: "json",
         url: "/api/v2/public/store/checkout/",
         ...options,
         headers: {
@@ -5731,7 +5572,6 @@ export const publicStoreItemsList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicStoreItemsListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<PublicStoreItemsListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         url: "/api/v2/public/store/items/",
         ...options,
     });
@@ -5748,7 +5588,6 @@ export const publicStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
 ) => {
     return (options.client ?? client).get<PublicStoreItemsRetrieveResponses, unknown, ThrowOnError>(
         {
-            responseType: "json",
             url: "/api/v2/public/store/items/{id}/",
             ...options,
         }
@@ -5768,7 +5607,6 @@ export const tokensList = <ThrowOnError extends boolean = false>(
     options?: Options<TokensListData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<TokensListResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5821,7 +5659,6 @@ export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
     options: Options<UserTokensCreateTokenData, ThrowOnError>
 ) => {
     return (options.client ?? client).post<UserTokensCreateTokenResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5849,7 +5686,6 @@ export const userInfoRetrieve = <ThrowOnError extends boolean = false>(
     options?: Options<UserInfoRetrieveData, ThrowOnError>
 ) => {
     return (options?.client ?? client).get<UserInfoRetrieveResponses, unknown, ThrowOnError>({
-        responseType: "json",
         security: [
             {
                 name: "Authorization",
@@ -5874,7 +5710,6 @@ export const userInfoPartialUpdate = <ThrowOnError extends boolean = false>(
 ) => {
     return (options?.client ?? client).patch<UserInfoPartialUpdateResponses, unknown, ThrowOnError>(
         {
-            responseType: "json",
             security: [
                 {
                     name: "Authorization",

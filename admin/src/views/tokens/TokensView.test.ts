@@ -5,7 +5,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import { confirmDialogKey } from "@/symbols";
 
 import TokensView from "./TokensView.vue";

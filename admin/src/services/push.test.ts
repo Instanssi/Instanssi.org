@@ -1,23 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { urlBase64ToUint8Array, usePush } from "@/services/push";
-
-// Mock the API module
-vi.mock("@/api", () => ({
-    publicNotificationsVapidKeyRetrieve: vi.fn(),
-    notificationsSubscriptionsCreate: vi.fn(),
-    notificationsSubscriptionsList: vi.fn(),
-    notificationsSubscriptionsDestroy: vi.fn(),
-}));
-
 import {
     notificationsSubscriptionsCreate,
     notificationsSubscriptionsDestroy,
     notificationsSubscriptionsList,
     publicNotificationsVapidKeyRetrieve,
-} from "@/api";
+} from "@instanssi/api";
 
-// Shorthand for mocking API return values (avoids repeating full AxiosResponse shape)
+import { urlBase64ToUint8Array, usePush } from "@/services/push";
+
+// Shorthand for mocking API return values.
 
 function mockResolved(fn: unknown, data: unknown): void {
     vi.mocked(fn as (...args: unknown[]) => unknown).mockResolvedValue({ data } as never);

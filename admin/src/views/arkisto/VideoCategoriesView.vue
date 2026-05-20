@@ -71,8 +71,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { OtherVideoCategory } from "@/api";
+import * as api from "@instanssi/api";
+import type { OtherVideoCategory } from "@instanssi/api";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import TableActionButtons from "@/components/table/TableActionButtons.vue";
 import { useTableState } from "@/composables/useTableState";

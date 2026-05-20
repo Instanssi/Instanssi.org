@@ -1,7 +1,7 @@
 import { type Ref, ref } from "vue";
 
-import { type Event } from "@/api";
-import * as api from "@/api";
+import { type Event } from "@instanssi/api";
+import * as api from "@instanssi/api";
 
 const events: Ref<Event[]> = ref([]);
 

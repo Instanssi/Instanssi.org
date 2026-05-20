@@ -140,8 +140,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import { object as yupObject, string as yupString } from "yup";
 
-import * as api from "@/api";
-import type { BlankEnum, LanguageEnum } from "@/api";
+import * as api from "@instanssi/api";
+import type { BlankEnum, LanguageEnum } from "@instanssi/api";
 import FormSection from "@/components/form/FormSection.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

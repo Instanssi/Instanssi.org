@@ -12,10 +12,10 @@ This document provides AI coding assistants with comprehensive context about the
 - **Build Tool**: Vite 8
 - **Routing**: Vue Router 4
 - **State Management**: Composables pattern with Vue reactivity
-- **API Client**: Auto-generated from backend's OpenAPI spec using @hey-api/openapi-ts
+- **API Client**: Imported from `@instanssi/api` (a workspace-local package at `../shared/api/`). Generated from the backend OpenAPI spec using `@hey-api/openapi-ts`.
 - **Rich Text Editor**: vuetify-pro-tiptap
 - **Form Validation**: vee-validate + yup
-- **HTTP Client**: Axios
+- **HTTP Client**: fetch (via `@hey-api/openapi-ts`'s fetch client, exposed as `@instanssi/api`)
 - **Internationalization**: vue-i18n
 - **Icons**: FontAwesome via vue-fontawesome
 - **Service Worker**: Custom SW (`src/sw.ts`) for web push notifications
@@ -33,7 +33,6 @@ This document provides AI coding assistants with comprehensive context about the
 ```
 admin/
 ├── src/
-│   ├── api/              # Auto-generated API client (DO NOT EDIT MANUALLY)
 │   ├── assets/           # Static assets, styles (main.scss)
 │   ├── components/       # Reusable Vue components
 │   ├── composables/      # Reusable composables (useAsyncAction, useTableState, etc.)
@@ -99,26 +98,28 @@ Reusable view-level composables (in `src/composables/`):
 - `useResponsiveHeaders()` - Adapts data-table headers to viewport
 - `useAuditLogUtils()` - Helpers for rendering audit log entries
 
-### 2. Auto-Generated API Client
+### 2. Shared API Client
 
-**CRITICAL**: Never manually edit files in `src/api/`. The API client is generated from the Django backend's OpenAPI specification.
+The API client lives in `../shared/api/` and is consumed via `@instanssi/api`. The generated sources live in `shared/api/src/generated/` and must not be edited by hand — regenerate from the backend OpenAPI spec instead.
 
 To update the API client:
 ```bash
 # 1. Generate the OpenAPI spec (from backend/)
 make openapi
 
-# 2. Regenerate the TypeScript client (from admin/)
+# 2. Regenerate the TypeScript client (from shared/api/)
 pnpm run generate-api
 ```
 
 API usage example:
 ```typescript
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 
-const result = await api.userInfo();
-const events = await api.listEvents();
+const result = await api.userInfoRetrieve();
+const events = await api.adminEventsList();
 ```
+
+Error handling: requests throw `ApiError` (from `@instanssi/api`) on non-2xx responses; check `err instanceof ApiError` and read `err.response.status` / `err.response.data`.
 
 ### 3. Permission-Based Routing
 
@@ -207,8 +208,8 @@ pnpm dlx vite-bundle-visualizer
 
 1. Add/modify endpoint in Django backend
 2. Run `make openapi` in the backend directory to regenerate the OpenAPI spec
-3. Run `pnpm run generate-api` to regenerate the TypeScript client
-4. Use the new API function from `@/api`
+3. Run `pnpm run generate-api` in `shared/api/` to regenerate the TypeScript client
+4. Use the new API function from `@instanssi/api`
 
 ### Adding a New Permission Target
 
@@ -267,7 +268,8 @@ const onSubmit = handleSubmit(async (values) => {
 - `format` / `format-check` - Prettier
 - `test` - Run unit tests once
 - `test:watch` - Run unit tests in watch mode
-- `generate-api` - Generate API client from backend's `openapi.yaml`
+
+API client generation lives in `shared/api/` (run `pnpm run generate-api` there).
 
 ## Styling
 
@@ -294,23 +296,26 @@ const onSubmit = handleSubmit(async (values) => {
 
 ```typescript
 // src/client.ts
+import { client, configureClient } from "@instanssi/api";
+import { errorResponseInterceptor } from "@/services/utils/interceptors";
+
 export function setupClient() {
-  client.setConfig({
-    baseURL: import.meta.env.BASE_URL,
-  });
-  client.instance.interceptors.request.use(addCSRFHeader);
-  client.instance.interceptors.response.use(okResponse, errorResponse);
+    configureClient(client, { timeout: 5000, wrapErrors: false });
+    client.interceptors.error.use(errorResponseInterceptor);
 }
 ```
 
-Interceptors handle:
-- CSRF token injection
-- Cookie-based authentication
-- Error responses and redirects
+`configureClient` (from `@instanssi/api`) handles:
+- CSRF token injection (reads `csrftoken` cookie, sends as `X-CSRFToken`)
+- Per-request timeout via `AbortSignal.timeout`
+- Cookie-based authentication (`credentials: "include"`)
+- Optional wrapping of thrown errors into `ApiError` (default on, opted out here)
+
+The admin-specific `errorResponseInterceptor` constructs the `ApiError` itself so it can also fire toasts and Sentry reports in the same pass, which is why `wrapErrors: false` is set — it avoids wrapping the error twice.
 
 ## Common Pitfalls
 
-1. **Never manually edit `src/api/`** - It's auto-generated and will be overwritten
+1. **Never manually edit the generated client** - Live in `../shared/api/src/generated/` and overwritten on `pnpm run generate-api`
 2. **CSRF tokens** - Required for POST/PUT/DELETE. Handled automatically by interceptors
 3. **Permissions** - Always check permissions for UI elements and routes
 4. **Event context** - Many operations require an active event ID from route params

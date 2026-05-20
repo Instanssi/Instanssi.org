@@ -3,7 +3,7 @@ import {
     notificationsSubscriptionsDestroy,
     notificationsSubscriptionsList,
     publicNotificationsVapidKeyRetrieve,
-} from "@/api";
+} from "@instanssi/api";
 import { ref, type Ref } from "vue";
 
 export type PushState = "unsupported" | "default" | "granted" | "denied";

@@ -207,8 +207,8 @@ import { type Ref, computed, inject, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import * as api from "@/api";
-import type { Compo, CompoEntry } from "@/api";
+import * as api from "@instanssi/api";
+import { ApiError, HttpStatus, type Compo, type CompoEntry } from "@instanssi/api";
 import DisqualifiedCell from "@/components/table/DisqualifiedCell.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import ImageCell from "@/components/table/ImageCell.vue";
@@ -509,15 +509,13 @@ async function downloadArchive(prefix: "rank" | "order"): Promise<void> {
         const basePath = `/api/v2/admin/event/${eventId.value}/kompomaatti/entries`;
         window.open(`${basePath}/download-archive/${suffix}`, "_blank");
     } catch (e) {
-        const err = e as { response?: { status: number; data: { entries?: string[] } } };
-        if (
-            err.response?.status === 400 &&
-            Array.isArray(err.response.data.entries) &&
-            err.response.data.entries.length > 0
-        ) {
-            missingFileEntries.value = err.response.data.entries;
-            missingFilesErrorDialog.value?.open();
-            return;
+        if (e instanceof ApiError && e.response.status === HttpStatus.BAD_REQUEST) {
+            const data = e.response.data as { entries?: string[] };
+            if (Array.isArray(data.entries) && data.entries.length > 0) {
+                missingFileEntries.value = data.entries;
+                missingFilesErrorDialog.value?.open();
+                return;
+            }
         }
         toast.error(t("EntriesView.downloadFailure"));
         console.error(e);

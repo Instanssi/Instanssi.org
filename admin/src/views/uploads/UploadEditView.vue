@@ -63,13 +63,14 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { mixed as yupMixed, object as yupObject, string as yupString } from "yup";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FileUploadField from "@/components/form/FileUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
-import { prepareFileField, toFormData } from "@/utils/formdata";
+import { toFormData } from "@instanssi/api";
+import { prepareFileField } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */

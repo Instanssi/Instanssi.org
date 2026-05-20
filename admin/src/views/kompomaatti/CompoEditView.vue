@@ -240,7 +240,7 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FileSizeInputField from "@/components/form/FileSizeInputField.vue";
 import RichTextEditor from "@/components/form/RichTextEditor.vue";

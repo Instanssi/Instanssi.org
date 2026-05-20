@@ -85,8 +85,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { number as yupNumber, object as yupObject, string as yupString } from "yup";
 
-import * as api from "@/api";
-import type { OtherVideoCategory } from "@/api";
+import * as api from "@instanssi/api";
+import type { OtherVideoCategory } from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

@@ -72,8 +72,8 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "vue-toastification";
 import type { VDataTable } from "vuetify/components";
 
-import * as api from "@/api";
-import type { TransactionItem, StoreItem, StoreTransaction } from "@/api";
+import * as api from "@instanssi/api";
+import type { TransactionItem, StoreItem, StoreTransaction } from "@instanssi/api";
 import BooleanIcon from "@/components/table/BooleanIcon.vue";
 import ExportButton from "@/components/form/ExportButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

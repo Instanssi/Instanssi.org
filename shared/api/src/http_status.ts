@@ -1,5 +1,3 @@
-import type { AxiosError } from "axios";
-
 export const HttpStatus = {
     OK: 200,
     CREATED: 201,
@@ -17,8 +15,3 @@ export const HttpStatus = {
 } as const;
 
 export type HttpStatusCode = (typeof HttpStatus)[keyof typeof HttpStatus];
-
-export function isHttpError(error: unknown, status: HttpStatusCode): boolean {
-    const axiosError = error as AxiosError;
-    return axiosError?.response?.status === status;
-}

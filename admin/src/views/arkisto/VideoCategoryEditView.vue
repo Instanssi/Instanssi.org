@@ -55,7 +55,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { object as yupObject, string as yupString } from "yup";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";

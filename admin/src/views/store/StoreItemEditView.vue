@@ -262,8 +262,8 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
-import type { StoreItemVariant } from "@/api";
+import * as api from "@instanssi/api";
+import type { StoreItemVariant } from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import FormSection from "@/components/form/FormSection.vue";
 import ImageUploadField from "@/components/form/ImageUploadField.vue";
@@ -275,7 +275,8 @@ import { useEvents } from "@/services/events";
 import { confirmDialogKey } from "@/symbols";
 import type { ConfirmDialogType } from "@/symbols";
 import { type FileValue, getFile } from "@/utils/file";
-import { prepareFileField, toFormData } from "@/utils/formdata";
+import { toFormData } from "@instanssi/api";
+import { prepareFileField } from "@/utils/formdata";
 import { getApiErrorMessage, handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */

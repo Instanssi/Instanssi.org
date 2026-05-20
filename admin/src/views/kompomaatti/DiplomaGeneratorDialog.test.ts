@@ -4,11 +4,10 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 
 import DiplomaGeneratorDialog from "./DiplomaGeneratorDialog.vue";
 
-vi.mock("@/api");
 vi.mock("vue-toastification", () => ({
     useToast: () => ({
         success: vi.fn(),

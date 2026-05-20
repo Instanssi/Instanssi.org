@@ -215,8 +215,8 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
-import type { AlternateEntryFile, Compo, CompoEntry, User } from "@/api";
+import * as api from "@instanssi/api";
+import type { AlternateEntryFile, Compo, CompoEntry, User } from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import DisqualificationField from "@/components/form/DisqualificationField.vue";
 import FileUploadField from "@/components/form/FileUploadField.vue";
@@ -225,7 +225,8 @@ import ImageUploadField from "@/components/form/ImageUploadField.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";
 import { useEvents } from "@/services/events";
 import { type FileValue, getFile } from "@/utils/file";
-import { prepareFileField, toFormData } from "@/utils/formdata";
+import { toFormData } from "@instanssi/api";
+import { prepareFileField } from "@/utils/formdata";
 import { handleApiError, type FieldMapping } from "@/utils/http";
 
 /** Maps API field names (snake_case) to form field names (camelCase) */

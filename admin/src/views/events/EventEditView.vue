@@ -98,7 +98,7 @@ import {
     string as yupString,
 } from "yup";
 
-import * as api from "@/api";
+import * as api from "@instanssi/api";
 import AuditLogButton from "@/components/auditlog/AuditLogButton.vue";
 import ToggleSwitch from "@/components/form/ToggleSwitch.vue";
 import LayoutBase, { type BreadcrumbItem } from "@/components/layout/LayoutBase.vue";

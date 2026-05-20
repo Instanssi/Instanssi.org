@@ -6,6 +6,7 @@ This is a monorepo for Instanssi.org, a Finnish demoparty event management syste
 - **admin/** - Vue 3 + Vuetify organizer administration panel (uses APIv2). See @./admin/AGENTS.md
 - **kompomaatti/** - React + MobX public-facing compo participation frontend (uses APIv1). See @./kompomaatti/AGENTS.md
 - **store/** - Vue 3 store widget embedded in Django-rendered store pages. See @./store/AGENTS.md
+- **shared/api/** - Shared TypeScript APIv2 client (generated from the backend OpenAPI spec, fetch-based).
 
 For visual design guidelines (fonts, colors, icons, CSS frameworks), see @./STYLE_GUIDE.md.
 
@@ -37,8 +38,10 @@ The `admin/` panel consumes APIv2 via an auto-generated TypeScript client. When 
 # 1. Generate the OpenAPI spec (from backend/)
 make openapi
 
-# 2. Regenerate the TypeScript client (from admin/)
+# 2. Regenerate the TypeScript client (from shared/api/)
 pnpm run generate-api
 ```
+
+Note: `shared/api/` has its own `pnpm-lock.yaml` — there is no root pnpm workspace, so a fresh checkout needs `pnpm install` in both `admin/` and `shared/api/` before generation works. Likewise, since `admin/` consumes `shared/api/` as a `file:` dependency (which pnpm copies into the store at install time, rather than live-linking), any edit to `shared/api/src/` requires a follow-up `pnpm install` in `admin/` before admin picks it up.
 
 Note: `kompomaatti/` uses APIv1 with a hand-written client — there is no codegen step for it.

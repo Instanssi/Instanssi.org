@@ -1,0 +1,40 @@
+{
+    "name": "@instanssi/api",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Generated TypeScript client for the Instanssi.org APIv2",
+    "packageManager": "pnpm@10.29.1",
+    "pnpm": {
+        "onlyBuiltDependencies": [],
+        "onlyBuiltDependenciesFile": "",
+        "blockExoticSubdeps": false,
+        "minimumReleaseAge": "1440"
+    },
+    "exports": {
+        ".": "./src/index.ts",
+        "./client": "./src/generated/client.gen.ts",
+        "./types": "./src/generated/types.gen.ts",
+        "./sdk": "./src/generated/sdk.gen.ts",
+        "./configure": "./src/configure.ts",
+        "./error": "./src/error.ts",
+        "./formdata": "./src/formdata.ts",
+        "./http-status": "./src/http_status.ts"
+    },
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "files": [
+        "src"
+    ],
+    "scripts": {
+        "generate-api": "openapi-ts && prettier --write src/",
+        "type-check": "tsc --noEmit",
+        "format": "prettier --write src/ openapi-ts.config.ts",
+        "format-check": "prettier -c src/ openapi-ts.config.ts"
+    },
+    "devDependencies": {
+        "@hey-api/openapi-ts": "^0.85.2",
+        "prettier": "^3.8.3",
+        "typescript": "~5.9.3"
+    }
+}

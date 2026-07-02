@@ -33,7 +33,7 @@
         "format-check": "prettier -c src/ openapi-ts.config.ts"
     },
     "devDependencies": {
-        "@hey-api/openapi-ts": "^0.85.2",
+        "@hey-api/openapi-ts": "^0.97.3",
         "prettier": "^3.8.3",
         "typescript": "~5.9.3"
     }

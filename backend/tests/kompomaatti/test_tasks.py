@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from unittest import mock
 
 import pytest
@@ -29,7 +30,7 @@ def test_generate_alternate_audio_files_success(audio_entry, caplog):
         mock_output.global_args.return_value.run = mock.MagicMock()
 
         # Create a fake output file
-        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value="/tmp/fake_output.webm")
+        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value=Path("/tmp/fake_output.webm"))
         mock_temp_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
         # Mock open to return fake audio data
@@ -104,7 +105,7 @@ def test_generate_alternate_audio_files_updates_existing(audio_entry, test_zip):
         mock_output.global_args.return_value.run = mock.MagicMock()
 
         # Create a fake output file
-        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value="/tmp/fake_output.webm")
+        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value=Path("/tmp/fake_output.webm"))
         mock_temp_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
         # Mock open to return fake audio data
@@ -143,7 +144,7 @@ def test_generate_alternate_audio_files_ffmpeg_error(audio_entry, caplog):
         mock_output.global_args.return_value.run.side_effect = Exception("ffmpeg failed")
 
         # Create a fake output file
-        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value="/tmp/fake_output.webm")
+        mock_temp_file.return_value.__enter__ = mock.MagicMock(return_value=Path("/tmp/fake_output.webm"))
         mock_temp_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
         with pytest.raises(Exception, match="ffmpeg failed"):

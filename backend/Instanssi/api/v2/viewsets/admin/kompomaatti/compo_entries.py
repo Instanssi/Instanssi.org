@@ -1,6 +1,4 @@
-from collections.abc import Iterator
 from pathlib import Path
-from typing import cast
 
 from django.db.models import QuerySet
 from django.http import StreamingHttpResponse
@@ -178,7 +176,7 @@ class CompoEntryViewSet(PermissionViewSet):
         files: list[tuple[str, Path]] = []
         missing_files: list[str] = []
 
-        for entry in cast(Iterator[Entry], queryset.iterator()):
+        for entry in queryset.iterator():
             file_path = Path(entry.entryfile.path)
             if not file_path.is_file():
                 missing_files.append(f"[{entry.compo.name}] Entry {entry.id}: {entry.name}")

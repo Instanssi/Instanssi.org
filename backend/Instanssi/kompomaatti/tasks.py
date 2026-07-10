@@ -79,6 +79,6 @@ def generate_alternate_audio_files(entry_id: int, codec_index: int, container_in
 
         # Read in the temporary file, save to django storage and database.
         with open(output_file, "rb") as fd:
-            alt.file.save(output_file, File(fd))
+            alt.file.save(output_file.name, File(fd))
         alt.save()
         log.info("Entry processed; result saved to %s", alt.file.path)

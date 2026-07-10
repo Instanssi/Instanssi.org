@@ -331,7 +331,7 @@ class Entry(models.Model):
 
     @property
     def entry_file_ext(self) -> str:
-        return Path(self.entryfile.name).suffix
+        return Path(self.entryfile.name or "").suffix
 
     @property
     def archive_embed_url(self) -> str:

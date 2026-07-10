@@ -85,7 +85,7 @@ class StoreItem(models.Model):
         return self.is_discount_available() and amount >= self.discount_amount
 
     def image_available(self) -> bool:
-        full_path = os.path.join(settings.MEDIA_ROOT, self.imagefile_original.name)
+        full_path = os.path.join(settings.MEDIA_ROOT, self.imagefile_original.name or "")
         return os.path.isfile(full_path)
 
     def get_discounted_unit_price(self, amount: int) -> Decimal:

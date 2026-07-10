@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 from pathlib import Path
@@ -85,7 +87,7 @@ def maybe_copy_entry_to_image(instance: Entry) -> None:
                 instance.pk,
             )
             return
-        name = os.path.basename(instance.entryfile.name)
+        name = os.path.basename(instance.entryfile.name or "")
         instance.imagefile_original.save(name, instance.entryfile)
 
 

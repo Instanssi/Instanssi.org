@@ -35,7 +35,7 @@ class UploadedFile(models.Model):
         return str(self.file.name)
 
     def name(self) -> str:
-        return str(os.path.basename(self.file.name))
+        return os.path.basename(self.file.name or "")
 
 
 auditlog.register(UploadedFile)

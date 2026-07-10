@@ -24,7 +24,7 @@ def text_event(request: HttpRequest, event_id: int) -> HttpResponse:
     compos: list[Any] = []
     for compo in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if compo.show_voting_results:
-            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")  # type: ignore[attr-defined]
+            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")  # type: ignore[attr-defined, misc]
         else:
             compo.entries = Entry.objects.filter(compo=compo).order_by("name")  # type: ignore[attr-defined]
         compos.append(compo)
@@ -33,7 +33,7 @@ def text_event(request: HttpRequest, event_id: int) -> HttpResponse:
     competitions: list[Any] = []
     for comp in Competition.objects.filter(event=event, active=True, hide_from_archive=False):
         comp.participants = (  # type: ignore[attr-defined]
-            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")
+            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")  # type: ignore[misc]
         )
         competitions.append(comp)
 
@@ -53,7 +53,7 @@ def json_event(request: HttpRequest, event_id: int) -> HttpResponse:
     compos_out = []
     for c in Compo.objects.filter(event=event, active=True, hide_from_archive=False):
         if c.show_voting_results:
-            entries = Entry.objects.filter(compo=c).with_rank().order_by("computed_rank")
+            entries = Entry.objects.filter(compo=c).with_rank().order_by("computed_rank")  # type: ignore[misc]
         else:
             entries = Entry.objects.filter(compo=c).order_by("name")
 
@@ -131,7 +131,7 @@ def event_index(request: HttpRequest, event_id: int) -> HttpResponse:
     compo_list: list[Any] = []
     for compo in compos_q:
         if compo.show_voting_results:
-            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")  # type: ignore[attr-defined]
+            compo.entries = Entry.objects.filter(compo=compo).with_rank().order_by("computed_rank")  # type: ignore[attr-defined, misc]
         else:
             compo.entries = Entry.objects.filter(compo=compo).order_by("name")  # type: ignore[attr-defined]
         compo_list.append(copy(compo))
@@ -146,7 +146,7 @@ def event_index(request: HttpRequest, event_id: int) -> HttpResponse:
     competition_list: list[Any] = []
     for comp in competitions_q:
         comp.participants = (  # type: ignore[attr-defined]
-            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")
+            CompetitionParticipation.objects.filter(competition=comp).with_rank().order_by("computed_rank")  # type: ignore[misc]
         )
         competition_list.append(copy(comp))
 

@@ -1793,10 +1793,7 @@ paths:
       - admin
       requestBody:
         content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ReorderEntriesRequestRequest'
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               $ref: '#/components/schemas/ReorderEntriesRequestRequest'
         required: true
@@ -7922,10 +7919,13 @@ components:
         hidden:
           type: boolean
         mainurl:
-          type: string
-          format: uri
           title: Event main page
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
       - date
       - id
@@ -7952,10 +7952,13 @@ components:
         hidden:
           type: boolean
         mainurl:
-          type: string
-          format: uri
           title: Event main page
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
       - date
       - name
@@ -9474,10 +9477,13 @@ components:
         hidden:
           type: boolean
         mainurl:
-          type: string
-          format: uri
           title: Event main page
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
     PatchedLiveVotingUpdateRequest:
       type: object
       properties:
@@ -9546,38 +9552,59 @@ components:
           format: binary
           title: Image 2
         email:
-          type: string
-          format: email
-          maxLength: 254
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
         home_url:
-          type: string
-          format: uri
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         twitter_url:
-          type: string
-          format: uri
           title: Twitter
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         github_url:
-          type: string
-          format: uri
           title: Github
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         facebook_url:
-          type: string
-          format: uri
           title: Facebook
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         linkedin_url:
-          type: string
-          format: uri
           title: LinkedIn
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         wiki_url:
-          type: string
-          format: uri
           title: Wikipedia
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
@@ -9980,6 +10007,7 @@ components:
         icon_original:
           type: string
           format: uri
+          nullable: true
           title: Image 1
         icon_small_url:
           type: string
@@ -9989,6 +10017,7 @@ components:
         icon2_original:
           type: string
           format: uri
+          nullable: true
           title: Image 2
         icon2_small_url:
           type: string
@@ -9996,38 +10025,59 @@ components:
           description: Return URL for small icon2 thumbnail, or None if no icon2 exists.
           readOnly: true
         email:
-          type: string
-          format: email
-          maxLength: 254
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
         home_url:
-          type: string
-          format: uri
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         twitter_url:
-          type: string
-          format: uri
           title: Twitter
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         github_url:
-          type: string
-          format: uri
           title: Github
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         facebook_url:
-          type: string
-          format: uri
           title: Facebook
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         linkedin_url:
-          type: string
-          format: uri
           title: LinkedIn
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         wiki_url:
-          type: string
-          format: uri
           title: Wikipedia
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
@@ -10078,38 +10128,59 @@ components:
           format: binary
           title: Image 2
         email:
-          type: string
-          format: email
-          maxLength: 254
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
         home_url:
-          type: string
-          format: uri
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         twitter_url:
-          type: string
-          format: uri
           title: Twitter
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         github_url:
-          type: string
-          format: uri
           title: Github
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         facebook_url:
-          type: string
-          format: uri
           title: Facebook
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         linkedin_url:
-          type: string
-          format: uri
           title: LinkedIn
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         wiki_url:
-          type: string
-          format: uri
           title: Wikipedia
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'
@@ -10393,10 +10464,13 @@ components:
         archived:
           type: boolean
         mainurl:
-          type: string
-          format: uri
           title: Event main page
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
       - date
       - id
@@ -10504,34 +10578,52 @@ components:
           nullable: true
           readOnly: true
         home_url:
-          type: string
-          format: uri
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         twitter_url:
-          type: string
-          format: uri
           title: Twitter
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         github_url:
-          type: string
-          format: uri
           title: Github
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         facebook_url:
-          type: string
-          format: uri
           title: Facebook
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         linkedin_url:
-          type: string
-          format: uri
           title: LinkedIn
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         wiki_url:
-          type: string
-          format: uri
           title: Wikipedia
-          maxLength: 200
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         event_type:
           allOf:
           - $ref: '#/components/schemas/EventTypeEnum'

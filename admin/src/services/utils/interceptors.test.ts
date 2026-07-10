@@ -44,24 +44,30 @@ describe("errorResponseInterceptor (transport branch)", () => {
 
     it("returns the TransportError unchanged for kind=timeout and toasts timeout", () => {
         const err = transport("timeout");
-        const result = errorResponseInterceptor(
-            err,
-            new Response(null, { status: 0 }),
-            err.request
-        );
+        const result = errorResponseInterceptor(err, undefined, err.request);
         expect(result).toBe(err);
         expect(toastErrorMock).toHaveBeenCalledWith("Toasts.errors.timeout");
     });
 
     it("toasts generic for kind=network", () => {
         const err = transport("network");
-        errorResponseInterceptor(err, new Response(null, { status: 0 }), err.request);
+        errorResponseInterceptor(err, undefined, err.request);
         expect(toastErrorMock).toHaveBeenCalledWith("Toasts.errors.generic");
     });
 
     it("stays silent for kind=abort", () => {
         const err = transport("abort");
-        errorResponseInterceptor(err, new Response(null, { status: 0 }), err.request);
+        errorResponseInterceptor(err, undefined, err.request);
+        expect(toastErrorMock).not.toHaveBeenCalled();
+        expect(toastWarningMock).not.toHaveBeenCalled();
+    });
+});
+
+describe("errorResponseInterceptor (no response, unclassified)", () => {
+    it("passes an unclassified error through unchanged without toasting", () => {
+        const err = new Error("request building failed");
+        const result = errorResponseInterceptor(err, undefined, undefined);
+        expect(result).toBe(err);
         expect(toastErrorMock).not.toHaveBeenCalled();
         expect(toastWarningMock).not.toHaveBeenCalled();
     });

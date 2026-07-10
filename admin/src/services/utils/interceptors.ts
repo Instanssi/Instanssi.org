@@ -6,11 +6,15 @@ import { i18n } from "@/i18n";
 
 export function errorResponseInterceptor(
     error: unknown,
-    response: Response,
-    request: Request
-): ApiError | TransportError {
+    response: Response | undefined,
+    request: Request | undefined
+): unknown {
     if (error instanceof TransportError) {
         return handleTransportError(error);
+    }
+    if (!response || !request) {
+        Sentry.captureException(error);
+        return error;
     }
     return handleApiError(error, response, request);
 }

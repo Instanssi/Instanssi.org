@@ -24,40 +24,16 @@ function readCookie(name: string): string | null {
 }
 
 /**
- * Run the registered error interceptors with a transport-level rejection.
- * A sentinel Response is supplied to satisfy the interceptor signature;
- * consumers discriminate the case via `instanceof TransportError`.
- */
-async function runErrorChain(
-    client: Client,
-    transportError: TransportError,
-    request: Request
-): Promise<unknown> {
-    const sentinelResponse = new Response(null, { status: 0, statusText: "Transport error" });
-    let finalError: unknown = transportError;
-    for (const fn of client.interceptors.error.fns) {
-        if (fn) {
-            finalError = await fn(
-                transportError,
-                sentinelResponse,
-                request,
-                {} as Parameters<typeof fn>[3]
-            );
-        }
-    }
-    return finalError;
-}
-
-/**
  * Configure the fetch client with Django-friendly defaults:
  * - throws on non-2xx responses (so callers don't have to check the status)
  * - sends cookies on every request
  * - injects the CSRF token header on non-safe methods
  * - optionally enforces a per-request timeout via AbortSignal
- * - classifies fetch-level rejections into `TransportError` and routes them
- *   through `client.interceptors.error` alongside HTTP errors
+ * - classifies fetch-level rejections into `TransportError` so that error
+ *   interceptors can discriminate them from HTTP errors
  *
- * Call once at app startup, before any API calls.
+ * Call once at app startup, before any API calls and before registering
+ * application error interceptors (so they receive the classified error).
  */
 export function configureClient(client: Client, options: ConfigureClientOptions = {}): void {
     const csrfCookieName = options.csrfCookieName ?? "csrftoken";
@@ -84,17 +60,10 @@ export function configureClient(client: Client, options: ConfigureClientOptions 
         return next;
     });
 
-    const baseFetch = client.getConfig().fetch ?? globalThis.fetch;
-    const wrappedFetch: typeof fetch = async (input, init) => {
-        try {
-            return await baseFetch(input, init);
-        } catch (err) {
-            // The generated client always invokes fetch with a Request, so this branch
-            // is just a type-safety belt for non-Request callers (none in practice).
-            const request = input instanceof Request ? input : new Request(input, init);
-            const transportError = new TransportError(classifyTransportError(err), request, err);
-            throw await runErrorChain(client, transportError, request);
+    client.interceptors.error.use((error, response, request) => {
+        if (!response && request && !(error instanceof TransportError)) {
+            return new TransportError(classifyTransportError(error), request, error);
         }
-    };
-    client.setConfig({ fetch: wrappedFetch });
+        return error;
+    });
 }

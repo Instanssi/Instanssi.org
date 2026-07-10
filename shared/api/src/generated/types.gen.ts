@@ -992,7 +992,7 @@ export type Event = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 /**
@@ -1010,7 +1010,7 @@ export type EventRequest = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 /**
@@ -1670,7 +1670,7 @@ export type PatchedEventRequest = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 export type PatchedLiveVotingUpdateRequest = {
@@ -1717,28 +1717,28 @@ export type PatchedProgramEventRequest = {
      * Image 2
      */
     icon2_original?: Blob | File;
-    email?: string;
-    home_url?: string;
+    email?: string | string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
     active?: boolean;
 };
@@ -2030,7 +2030,7 @@ export type ProgramEvent = {
     /**
      * Image 1
      */
-    icon_original?: string;
+    icon_original?: string | null;
     /**
      * Return URL for small icon thumbnail, or None if no icon exists.
      */
@@ -2038,33 +2038,33 @@ export type ProgramEvent = {
     /**
      * Image 2
      */
-    icon2_original?: string;
+    icon2_original?: string | null;
     /**
      * Return URL for small icon2 thumbnail, or None if no icon2 exists.
      */
     readonly icon2_small_url: string | null;
-    email?: string;
-    home_url?: string;
+    email?: string | string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
     active?: boolean;
 };
@@ -2091,28 +2091,28 @@ export type ProgramEventRequest = {
      * Image 2
      */
     icon2_original?: Blob | File;
-    email?: string;
-    home_url?: string;
+    email?: string | string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
     active?: boolean;
 };
@@ -2253,7 +2253,7 @@ export type PublicEvent = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 export type PublicLiveVotingState = {
@@ -2302,27 +2302,27 @@ export type PublicProgramEvent = {
     place?: string;
     readonly icon_small_url: string | null;
     readonly icon2_small_url: string | null;
-    home_url?: string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
 };
 
@@ -3474,7 +3474,7 @@ export type EventWritable = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 /**
@@ -3530,6 +3530,55 @@ export type PaginatedAuthTokenListWritable = {
     results: Array<unknown>;
 };
 
+export type PaginatedBlogEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<BlogEntryWritable>;
+};
+
+export type PaginatedCompetitionListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CompetitionWritable>;
+};
+
+export type PaginatedCompetitionParticipationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CompetitionParticipationWritable>;
+};
+
+export type PaginatedCompoEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CompoEntryWritable>;
+};
+
+export type PaginatedCompoListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CompoWritable>;
+};
+
+export type PaginatedEventListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<EventWritable>;
+};
+
+export type PaginatedGroupListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<GroupWritable>;
+};
+
 export type PaginatedInfodeskTransactionItemListWritable = {
     count: number;
     next?: string | null;
@@ -3544,11 +3593,200 @@ export type PaginatedInfodeskTransactionListWritable = {
     results: Array<unknown>;
 };
 
+export type PaginatedLogEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<LogEntryWritable>;
+};
+
+export type PaginatedOtherVideoCategoryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OtherVideoCategoryWritable>;
+};
+
+export type PaginatedOtherVideoListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OtherVideoWritable>;
+};
+
+export type PaginatedProgramEventListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<ProgramEventWritable>;
+};
+
+export type PaginatedPublicBlogEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicBlogEntryWritable>;
+};
+
+export type PaginatedPublicCompetitionListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompetitionWritable>;
+};
+
+export type PaginatedPublicCompetitionParticipationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompetitionParticipationWritable>;
+};
+
+export type PaginatedPublicCompoEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompoEntryWritable>;
+};
+
+export type PaginatedPublicCompoListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicCompoWritable>;
+};
+
+export type PaginatedPublicEventListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicEventWritable>;
+};
+
+export type PaginatedPublicOtherVideoCategoryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicOtherVideoCategoryWritable>;
+};
+
+export type PaginatedPublicOtherVideoListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicOtherVideoWritable>;
+};
+
+export type PaginatedPublicProgramEventListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicProgramEventWritable>;
+};
+
+export type PaginatedPublicStoreItemListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PublicStoreItemWritable>;
+};
+
+export type PaginatedReceiptListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<ReceiptWritable>;
+};
+
+export type PaginatedStoreItemListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreItemWritable>;
+};
+
+export type PaginatedStoreItemVariantListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreItemVariantWritable>;
+};
+
+export type PaginatedStoreTransactionListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StoreTransactionWritable>;
+};
+
+export type PaginatedTicketVoteCodeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<TicketVoteCodeWritable>;
+};
+
+export type PaginatedTransactionItemListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<TransactionItemWritable>;
+};
+
+export type PaginatedUploadedFileListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UploadedFileWritable>;
+};
+
+export type PaginatedUserCompetitionParticipationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserCompetitionParticipationWritable>;
+};
+
+export type PaginatedUserCompoEntryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserCompoEntryWritable>;
+};
+
+export type PaginatedUserListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserWritable>;
+};
+
 export type PaginatedUserTicketVoteCodeListWritable = {
     count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<unknown>;
+};
+
+export type PaginatedUserVoteCodeRequestListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserVoteCodeRequestWritable>;
+};
+
+export type PaginatedUserVoteGroupListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserVoteGroupWritable>;
+};
+
+export type PaginatedVoteCodeRequestListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<VoteCodeRequestWritable>;
 };
 
 /**
@@ -3592,33 +3830,33 @@ export type ProgramEventWritable = {
     /**
      * Image 1
      */
-    icon_original?: string;
+    icon_original?: string | null;
     /**
      * Image 2
      */
-    icon2_original?: string;
-    email?: string;
-    home_url?: string;
+    icon2_original?: string | null;
+    email?: string | string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
     active?: boolean;
 };
@@ -3733,7 +3971,7 @@ export type PublicEventWritable = {
     /**
      * Event main page
      */
-    mainurl?: string;
+    mainurl?: string | string;
 };
 
 /**
@@ -3768,27 +4006,27 @@ export type PublicProgramEventWritable = {
      */
     presenters_titles?: string;
     place?: string;
-    home_url?: string;
+    home_url?: string | string;
     /**
      * Twitter
      */
-    twitter_url?: string;
+    twitter_url?: string | string;
     /**
      * Github
      */
-    github_url?: string;
+    github_url?: string | string;
     /**
      * Facebook
      */
-    facebook_url?: string;
+    facebook_url?: string | string;
     /**
      * LinkedIn
      */
-    linkedin_url?: string;
+    linkedin_url?: string | string;
     /**
      * Wikipedia
      */
-    wiki_url?: string;
+    wiki_url?: string | string;
     event_type?: EventTypeEnum;
 };
 

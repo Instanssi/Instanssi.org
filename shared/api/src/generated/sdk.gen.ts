@@ -2,8 +2,10 @@
 
 import {
     type Client,
+    type ClientMeta,
     formDataBodySerializer,
     type Options as Options2,
+    type RequestResult,
     type TDataShape,
 } from "./client";
 import { client } from "./client.gen";
@@ -392,7 +394,8 @@ import type {
 export type Options<
     TData extends TDataShape = TDataShape,
     ThrowOnError extends boolean = boolean,
-> = Options2<TData, ThrowOnError> & {
+    TResponse = unknown,
+> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a
@@ -403,7 +406,7 @@ export type Options<
      * You can pass arbitrary values through the `meta` object. This can be
      * used to access values that aren't defined as part of the SDK function.
      */
-    meta?: Record<string, unknown>;
+    meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
 
 /**
@@ -414,13 +417,10 @@ export type Options<
  */
 export const adminAuditlogList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminAuditlogListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<AdminAuditlogListResponses, unknown, ThrowOnError>({
+): RequestResult<AdminAuditlogListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<AdminAuditlogListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -430,7 +430,6 @@ export const adminAuditlogList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/auditlog/",
         ...options,
     });
-};
 
 /**
  * Read-only viewset for viewing audit log entries.
@@ -440,13 +439,10 @@ export const adminAuditlogList = <ThrowOnError extends boolean = false>(
  */
 export const adminAuditlogRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminAuditlogRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminAuditlogRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<AdminAuditlogRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminAuditlogRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -456,20 +452,16 @@ export const adminAuditlogRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/auditlog/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing blog entries.
  */
 export const adminBlogList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminBlogListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<AdminBlogListResponses, unknown, ThrowOnError>({
+): RequestResult<AdminBlogListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<AdminBlogListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -479,20 +471,16 @@ export const adminBlogList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/blog/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing blog entries.
  */
 export const adminBlogCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<AdminBlogCreateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminBlogCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminBlogCreateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -506,20 +494,16 @@ export const adminBlogCreate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing blog entries.
  */
 export const adminBlogDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<AdminBlogDestroyResponses, unknown, ThrowOnError>({
+): RequestResult<AdminBlogDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<AdminBlogDestroyResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -529,20 +513,16 @@ export const adminBlogDestroy = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/blog/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing blog entries.
  */
 export const adminBlogRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminBlogRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<AdminBlogRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminBlogRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -552,49 +532,16 @@ export const adminBlogRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/blog/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing blog entries.
  */
 export const adminBlogPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminBlogPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<AdminBlogPartialUpdateResponses, unknown, ThrowOnError>(
-        {
-            security: [
-                {
-                    name: "Authorization",
-                    type: "apiKey",
-                },
-                {
-                    in: "cookie",
-                    name: "sessionid",
-                    type: "apiKey",
-                },
-            ],
-            url: "/api/v2/admin/blog/{id}/",
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...options.headers,
-            },
-        }
-    );
-};
-
-/**
- * Staff viewset for managing blog entries.
- */
-export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminBlogUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<AdminBlogUpdateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminBlogPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<AdminBlogPartialUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -608,7 +555,29 @@ export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
+
+/**
+ * Staff viewset for managing blog entries.
+ */
+export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminBlogUpdateData, ThrowOnError>
+): RequestResult<AdminBlogUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminBlogUpdateResponses, unknown, ThrowOnError>({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/blog/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
 
 /**
  * Hide event from archive
@@ -617,17 +586,14 @@ export const adminBlogUpdate = <ThrowOnError extends boolean = false>(
  */
 export const adminEventArkistoArchiverHideCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverHideCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoArchiverHideCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoArchiverHideCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -637,7 +603,6 @@ export const adminEventArkistoArchiverHideCreate = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/hide/",
         ...options,
     });
-};
 
 /**
  * Optimize voting scores
@@ -646,17 +611,14 @@ export const adminEventArkistoArchiverHideCreate = <ThrowOnError extends boolean
  */
 export const adminEventArkistoArchiverOptimizeScoresCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverOptimizeScoresCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoArchiverOptimizeScoresCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoArchiverOptimizeScoresCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -666,7 +628,6 @@ export const adminEventArkistoArchiverOptimizeScoresCreate = <ThrowOnError exten
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/optimize-scores/",
         ...options,
     });
-};
 
 /**
  * Remove old votes
@@ -675,17 +636,14 @@ export const adminEventArkistoArchiverOptimizeScoresCreate = <ThrowOnError exten
  */
 export const adminEventArkistoArchiverRemoveOldVotesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverRemoveOldVotesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoArchiverRemoveOldVotesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoArchiverRemoveOldVotesCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -695,7 +653,6 @@ export const adminEventArkistoArchiverRemoveOldVotesCreate = <ThrowOnError exten
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/remove-old-votes/",
         ...options,
     });
-};
 
 /**
  * Show event in archive
@@ -704,17 +661,14 @@ export const adminEventArkistoArchiverRemoveOldVotesCreate = <ThrowOnError exten
  */
 export const adminEventArkistoArchiverShowCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverShowCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoArchiverShowCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoArchiverShowCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -724,7 +678,6 @@ export const adminEventArkistoArchiverShowCreate = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/show/",
         ...options,
     });
-};
 
 /**
  * Get archiver status
@@ -733,17 +686,14 @@ export const adminEventArkistoArchiverShowCreate = <ThrowOnError extends boolean
  */
 export const adminEventArkistoArchiverStatusRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverStatusRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventArkistoArchiverStatusRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventArkistoArchiverStatusRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -753,7 +703,6 @@ export const adminEventArkistoArchiverStatusRetrieve = <ThrowOnError extends boo
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/status/",
         ...options,
     });
-};
 
 /**
  * Transfer rights to archive user
@@ -762,17 +711,14 @@ export const adminEventArkistoArchiverStatusRetrieve = <ThrowOnError extends boo
  */
 export const adminEventArkistoArchiverTransferRightsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoArchiverTransferRightsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoArchiverTransferRightsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoArchiverTransferRightsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -782,24 +728,20 @@ export const adminEventArkistoArchiverTransferRightsCreate = <ThrowOnError exten
         url: "/api/v2/admin/event/{event_pk}/arkisto/archiver/transfer-rights/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventArkistoVideoCategoriesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventArkistoVideoCategoriesListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -809,24 +751,20 @@ export const adminEventArkistoVideoCategoriesList = <ThrowOnError extends boolea
         url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventArkistoVideoCategoriesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventArkistoVideoCategoriesCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -840,24 +778,20 @@ export const adminEventArkistoVideoCategoriesCreate = <ThrowOnError extends bool
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventArkistoVideoCategoriesDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventArkistoVideoCategoriesDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -867,24 +801,20 @@ export const adminEventArkistoVideoCategoriesDestroy = <ThrowOnError extends boo
         url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventArkistoVideoCategoriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventArkistoVideoCategoriesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -894,24 +824,20 @@ export const adminEventArkistoVideoCategoriesRetrieve = <ThrowOnError extends bo
         url: "/api/v2/admin/event/{event_pk}/arkisto/video_categories/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventArkistoVideoCategoriesPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventArkistoVideoCategoriesPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -925,24 +851,20 @@ export const adminEventArkistoVideoCategoriesPartialUpdate = <ThrowOnError exten
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing archive video categories.
  */
 export const adminEventArkistoVideoCategoriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideoCategoriesUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventArkistoVideoCategoriesUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventArkistoVideoCategoriesUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -956,24 +878,16 @@ export const adminEventArkistoVideoCategoriesUpdate = <ThrowOnError extends bool
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventArkistoVideosListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventArkistoVideosListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventArkistoVideosListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -983,24 +897,16 @@ export const adminEventArkistoVideosList = <ThrowOnError extends boolean = false
         url: "/api/v2/admin/event/{event_pk}/arkisto/videos/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventArkistoVideosCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventArkistoVideosCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventArkistoVideosCreateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1014,24 +920,20 @@ export const adminEventArkistoVideosCreate = <ThrowOnError extends boolean = fal
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventArkistoVideosDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventArkistoVideosDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1041,51 +943,41 @@ export const adminEventArkistoVideosDestroy = <ThrowOnError extends boolean = fa
         url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventArkistoVideosRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/",
-        ...options,
-    });
-};
+): RequestResult<AdminEventArkistoVideosRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventArkistoVideosRetrieveResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/admin/event/{event_pk}/arkisto/videos/{id}/",
+            ...options,
+        }
+    );
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventArkistoVideosPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventArkistoVideosPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1099,24 +991,16 @@ export const adminEventArkistoVideosPartialUpdate = <ThrowOnError extends boolea
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing archive videos.
  */
 export const adminEventArkistoVideosUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventArkistoVideosUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventArkistoVideosUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventArkistoVideosUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventArkistoVideosUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1130,7 +1014,6 @@ export const adminEventArkistoVideosUpdate = <ThrowOnError extends boolean = fal
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1141,17 +1024,18 @@ export const adminEventKompomaattiCompetitionParticipationsList = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsListResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiCompetitionParticipationsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1161,7 +1045,6 @@ export const adminEventKompomaattiCompetitionParticipationsList = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1172,17 +1055,18 @@ export const adminEventKompomaattiCompetitionParticipationsCreate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsCreateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiCompetitionParticipationsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1196,7 +1080,6 @@ export const adminEventKompomaattiCompetitionParticipationsCreate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1207,17 +1090,18 @@ export const adminEventKompomaattiCompetitionParticipationsDestroy = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsDestroyResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).delete<
         AdminEventKompomaattiCompetitionParticipationsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1227,7 +1111,6 @@ export const adminEventKompomaattiCompetitionParticipationsDestroy = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1238,17 +1121,18 @@ export const adminEventKompomaattiCompetitionParticipationsRetrieve = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsRetrieveResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiCompetitionParticipationsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1258,7 +1142,6 @@ export const adminEventKompomaattiCompetitionParticipationsRetrieve = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competition_participations/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1269,17 +1152,18 @@ export const adminEventKompomaattiCompetitionParticipationsPartialUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiCompetitionParticipationsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1293,7 +1177,6 @@ export const adminEventKompomaattiCompetitionParticipationsPartialUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competition participations.
@@ -1304,17 +1187,18 @@ export const adminEventKompomaattiCompetitionParticipationsUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionParticipationsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<
+    AdminEventKompomaattiCompetitionParticipationsUpdateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).put<
         AdminEventKompomaattiCompetitionParticipationsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1328,24 +1212,20 @@ export const adminEventKompomaattiCompetitionParticipationsUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competitions.
  */
 export const adminEventKompomaattiCompetitionsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiCompetitionsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiCompetitionsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiCompetitionsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1355,24 +1235,20 @@ export const adminEventKompomaattiCompetitionsList = <ThrowOnError extends boole
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competitions.
  */
 export const adminEventKompomaattiCompetitionsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiCompetitionsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiCompetitionsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiCompetitionsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1386,24 +1262,20 @@ export const adminEventKompomaattiCompetitionsCreate = <ThrowOnError extends boo
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competitions.
  */
 export const adminEventKompomaattiCompetitionsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiCompetitionsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventKompomaattiCompetitionsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventKompomaattiCompetitionsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1413,24 +1285,20 @@ export const adminEventKompomaattiCompetitionsDestroy = <ThrowOnError extends bo
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competitions.
  */
 export const adminEventKompomaattiCompetitionsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiCompetitionsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiCompetitionsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiCompetitionsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1440,7 +1308,6 @@ export const adminEventKompomaattiCompetitionsRetrieve = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/competitions/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing competitions.
@@ -1449,17 +1316,14 @@ export const adminEventKompomaattiCompetitionsPartialUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiCompetitionsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventKompomaattiCompetitionsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiCompetitionsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1473,24 +1337,20 @@ export const adminEventKompomaattiCompetitionsPartialUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing competitions.
  */
 export const adminEventKompomaattiCompetitionsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiCompetitionsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventKompomaattiCompetitionsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventKompomaattiCompetitionsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1504,51 +1364,41 @@ export const adminEventKompomaattiCompetitionsUpdate = <ThrowOnError extends boo
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventKompomaattiComposListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/",
-        ...options,
-    });
-};
+): RequestResult<AdminEventKompomaattiComposListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventKompomaattiComposListResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/",
+            ...options,
+        }
+    );
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiComposCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiComposCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1562,24 +1412,20 @@ export const adminEventKompomaattiComposCreate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventKompomaattiComposDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventKompomaattiComposDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1589,24 +1435,20 @@ export const adminEventKompomaattiComposDestroy = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiComposRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiComposRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1616,24 +1458,20 @@ export const adminEventKompomaattiComposRetrieve = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/compos/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventKompomaattiComposPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiComposPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1647,24 +1485,20 @@ export const adminEventKompomaattiComposPartialUpdate = <ThrowOnError extends bo
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compos.
  */
 export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiComposUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventKompomaattiComposUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventKompomaattiComposUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1678,7 +1512,6 @@ export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1688,17 +1521,14 @@ export const adminEventKompomaattiComposUpdate = <ThrowOnError extends boolean =
  */
 export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiEntriesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiEntriesListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1708,7 +1538,6 @@ export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1718,18 +1547,15 @@ export const adminEventKompomaattiEntriesList = <ThrowOnError extends boolean = 
  */
 export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiEntriesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiEntriesCreateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1743,7 +1569,6 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1753,17 +1578,14 @@ export const adminEventKompomaattiEntriesCreate = <ThrowOnError extends boolean 
  */
 export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventKompomaattiEntriesDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventKompomaattiEntriesDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1773,7 +1595,6 @@ export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1783,17 +1604,14 @@ export const adminEventKompomaattiEntriesDestroy = <ThrowOnError extends boolean
  */
 export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiEntriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiEntriesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1803,7 +1621,6 @@ export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolea
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1813,18 +1630,15 @@ export const adminEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolea
  */
 export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventKompomaattiEntriesPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiEntriesPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1838,7 +1652,6 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing compo entries.
@@ -1848,18 +1661,15 @@ export const adminEventKompomaattiEntriesPartialUpdate = <ThrowOnError extends b
  */
 export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventKompomaattiEntriesUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventKompomaattiEntriesUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1873,7 +1683,6 @@ export const adminEventKompomaattiEntriesUpdate = <ThrowOnError extends boolean 
             ...options.headers,
         },
     });
-};
 
 /**
  * Download entry files archive
@@ -1884,17 +1693,18 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiEntriesDownloadArchiveRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiEntriesDownloadArchiveRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1904,7 +1714,6 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/download-archive/",
         ...options,
     });
-};
 
 /**
  * Reorder entries within a compo
@@ -1913,18 +1722,14 @@ export const adminEventKompomaattiEntriesDownloadArchiveRetrieve = <
  */
 export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiEntriesReorderCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiEntriesReorderCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiEntriesReorderCreateResponses,
         unknown,
         ThrowOnError
     >({
-        ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1934,11 +1739,10 @@ export const adminEventKompomaattiEntriesReorderCreate = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/reorder/",
         ...options,
         headers: {
-            "Content-Type": null,
+            "Content-Type": "application/json",
             ...options.headers,
         },
     });
-};
 
 /**
  * Validate entry files archive
@@ -1949,17 +1753,18 @@ export const adminEventKompomaattiEntriesValidateArchiveRetrieve = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiEntriesValidateArchiveRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses,
+    AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiEntriesValidateArchiveRetrieveResponses,
         AdminEventKompomaattiEntriesValidateArchiveRetrieveErrors,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1969,24 +1774,20 @@ export const adminEventKompomaattiEntriesValidateArchiveRetrieve = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/entries/validate-archive/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
  */
 export const adminEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiLiveVotingRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiLiveVotingRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiLiveVotingRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -1996,24 +1797,20 @@ export const adminEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boo
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
  */
 export const adminEventKompomaattiLiveVotingPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiLiveVotingPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventKompomaattiLiveVotingPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiLiveVotingPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2027,24 +1824,20 @@ export const adminEventKompomaattiLiveVotingPartialUpdate = <ThrowOnError extend
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
  */
 export const adminEventKompomaattiLiveVotingHideAllCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiLiveVotingHideAllCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiLiveVotingHideAllCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiLiveVotingHideAllCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2054,7 +1847,6 @@ export const adminEventKompomaattiLiveVotingHideAllCreate = <ThrowOnError extend
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/hide_all/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
@@ -2063,17 +1855,14 @@ export const adminEventKompomaattiLiveVotingHideEntryCreate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiLiveVotingHideEntryCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiLiveVotingHideEntryCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiLiveVotingHideEntryCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2087,24 +1876,20 @@ export const adminEventKompomaattiLiveVotingHideEntryCreate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
  */
 export const adminEventKompomaattiLiveVotingResetCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiLiveVotingResetCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiLiveVotingResetCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiLiveVotingResetCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2114,7 +1899,6 @@ export const adminEventKompomaattiLiveVotingResetCreate = <ThrowOnError extends 
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reset/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing live voting state during a compo presentation.
@@ -2123,17 +1907,14 @@ export const adminEventKompomaattiLiveVotingRevealAllCreate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiLiveVotingRevealAllCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiLiveVotingRevealAllCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiLiveVotingRevealAllCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2143,7 +1924,6 @@ export const adminEventKompomaattiLiveVotingRevealAllCreate = <
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/live_voting/{id}/reveal_all/",
         ...options,
     });
-};
 
 /**
  * Reveal a single entry. Only the next unrevealed entry (by order_index) can be revealed.
@@ -2155,17 +1935,18 @@ export const adminEventKompomaattiLiveVotingRevealEntryCreate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiLiveVotingRevealEntryCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<
+    AdminEventKompomaattiLiveVotingRevealEntryCreateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiLiveVotingRevealEntryCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2179,24 +1960,20 @@ export const adminEventKompomaattiLiveVotingRevealEntryCreate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for viewing ticket vote codes (read-only).
  */
 export const adminEventKompomaattiTicketVoteCodesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiTicketVoteCodesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiTicketVoteCodesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiTicketVoteCodesListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2206,24 +1983,20 @@ export const adminEventKompomaattiTicketVoteCodesList = <ThrowOnError extends bo
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for viewing ticket vote codes (read-only).
  */
 export const adminEventKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiTicketVoteCodesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiTicketVoteCodesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiTicketVoteCodesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2233,24 +2006,20 @@ export const adminEventKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extend
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/ticket_vote_codes/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
  */
 export const adminEventKompomaattiVoteCodeRequestsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiVoteCodeRequestsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiVoteCodeRequestsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiVoteCodeRequestsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2260,24 +2029,20 @@ export const adminEventKompomaattiVoteCodeRequestsList = <ThrowOnError extends b
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
  */
 export const adminEventKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiVoteCodeRequestsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventKompomaattiVoteCodeRequestsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventKompomaattiVoteCodeRequestsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2291,24 +2056,20 @@ export const adminEventKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
  */
 export const adminEventKompomaattiVoteCodeRequestsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiVoteCodeRequestsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventKompomaattiVoteCodeRequestsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventKompomaattiVoteCodeRequestsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2318,24 +2079,20 @@ export const adminEventKompomaattiVoteCodeRequestsDestroy = <ThrowOnError extend
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
  */
 export const adminEventKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiVoteCodeRequestsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventKompomaattiVoteCodeRequestsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventKompomaattiVoteCodeRequestsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2345,7 +2102,6 @@ export const adminEventKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError exten
         url: "/api/v2/admin/event/{event_pk}/kompomaatti/vote_code_requests/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
@@ -2354,17 +2110,18 @@ export const adminEventKompomaattiVoteCodeRequestsPartialUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<AdminEventKompomaattiVoteCodeRequestsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<
+    AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).patch<
         AdminEventKompomaattiVoteCodeRequestsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2378,24 +2135,20 @@ export const adminEventKompomaattiVoteCodeRequestsPartialUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing vote code requests.
  */
 export const adminEventKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventKompomaattiVoteCodeRequestsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventKompomaattiVoteCodeRequestsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventKompomaattiVoteCodeRequestsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2409,24 +2162,16 @@ export const adminEventKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing program events.
  */
 export const adminEventProgramEventsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventProgramEventsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventProgramEventsListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventProgramEventsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventProgramEventsListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2436,25 +2181,17 @@ export const adminEventProgramEventsList = <ThrowOnError extends boolean = false
         url: "/api/v2/admin/event/{event_pk}/program/events/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing program events.
  */
 export const adminEventProgramEventsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventProgramEventsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventProgramEventsCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventProgramEventsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventProgramEventsCreateResponses, unknown, ThrowOnError>({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2468,24 +2205,20 @@ export const adminEventProgramEventsCreate = <ThrowOnError extends boolean = fal
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing program events.
  */
 export const adminEventProgramEventsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventProgramEventsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventProgramEventsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventProgramEventsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2495,315 +2228,257 @@ export const adminEventProgramEventsDestroy = <ThrowOnError extends boolean = fa
         url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing program events.
  */
 export const adminEventProgramEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventProgramEventsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventProgramEventsRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
-        ...options,
-    });
-};
-
-/**
- * Staff viewset for managing program events.
- */
-export const adminEventProgramEventsPartialUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventProgramEventsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
-        AdminEventProgramEventsPartialUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        ...formDataBodySerializer,
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": null,
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing program events.
- */
-export const adminEventProgramEventsUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventProgramEventsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventProgramEventsUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        ...formDataBodySerializer,
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": null,
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsList = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreItemVariantsListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/",
-        ...options,
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsCreate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventStoreItemVariantsCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsDestroy = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
-        AdminEventStoreItemVariantsDestroyResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
-        ...options,
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsRetrieve = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreItemVariantsRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
-        ...options,
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsPartialUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
-        AdminEventStoreItemVariantsPartialUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing store item variants.
- */
-export const adminEventStoreItemVariantsUpdate = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemVariantsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventStoreItemVariantsUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-};
-
-/**
- * Staff viewset for managing store items.
- */
-export const adminEventStoreItemsList = <ThrowOnError extends boolean = false>(
-    options: Options<AdminEventStoreItemsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminEventStoreItemsListResponses, unknown, ThrowOnError>(
+): RequestResult<AdminEventProgramEventsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventProgramEventsRetrieveResponses, unknown, ThrowOnError>(
         {
             security: [
-                {
-                    name: "Authorization",
-                    type: "apiKey",
-                },
+                { name: "Authorization", type: "apiKey" },
                 {
                     in: "cookie",
                     name: "sessionid",
                     type: "apiKey",
                 },
             ],
-            url: "/api/v2/admin/event/{event_pk}/store/items/",
+            url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
             ...options,
         }
     );
-};
+
+/**
+ * Staff viewset for managing program events.
+ */
+export const adminEventProgramEventsPartialUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventProgramEventsPartialUpdateData, ThrowOnError>
+): RequestResult<AdminEventProgramEventsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
+        AdminEventProgramEventsPartialUpdateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        ...formDataBodySerializer,
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": null,
+            ...options.headers,
+        },
+    });
+
+/**
+ * Staff viewset for managing program events.
+ */
+export const adminEventProgramEventsUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventProgramEventsUpdateData, ThrowOnError>
+): RequestResult<AdminEventProgramEventsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventProgramEventsUpdateResponses, unknown, ThrowOnError>({
+        ...formDataBodySerializer,
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/program/events/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": null,
+            ...options.headers,
+        },
+    });
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsList = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsListData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreItemVariantsListResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/admin/event/{event_pk}/store/item_variants/",
+            ...options,
+        }
+    );
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsCreate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsCreateData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
+        AdminEventStoreItemVariantsCreateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/item_variants/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsDestroy = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsDestroyData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
+        AdminEventStoreItemVariantsDestroyResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
+        ...options,
+    });
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsRetrieve = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsRetrieveData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
+        AdminEventStoreItemVariantsRetrieveResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
+        ...options,
+    });
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsPartialUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsPartialUpdateData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
+        AdminEventStoreItemVariantsPartialUpdateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+
+/**
+ * Staff viewset for managing store item variants.
+ */
+export const adminEventStoreItemVariantsUpdate = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemVariantsUpdateData, ThrowOnError>
+): RequestResult<AdminEventStoreItemVariantsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
+        AdminEventStoreItemVariantsUpdateResponses,
+        unknown,
+        ThrowOnError
+    >({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/item_variants/{id}/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+        },
+    });
+
+/**
+ * Staff viewset for managing store items.
+ */
+export const adminEventStoreItemsList = <ThrowOnError extends boolean = false>(
+    options: Options<AdminEventStoreItemsListData, ThrowOnError>
+): RequestResult<AdminEventStoreItemsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreItemsListResponses, unknown, ThrowOnError>({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
+            },
+        ],
+        url: "/api/v2/admin/event/{event_pk}/store/items/",
+        ...options,
+    });
 
 /**
  * Staff viewset for managing store items.
  */
 export const adminEventStoreItemsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreItemsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventStoreItemsCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreItemsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventStoreItemsCreateResponses, unknown, ThrowOnError>({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2817,24 +2492,16 @@ export const adminEventStoreItemsCreate = <ThrowOnError extends boolean = false>
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing store items.
  */
 export const adminEventStoreItemsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreItemsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
-        AdminEventStoreItemsDestroyResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreItemsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<AdminEventStoreItemsDestroyResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2844,24 +2511,16 @@ export const adminEventStoreItemsDestroy = <ThrowOnError extends boolean = false
         url: "/api/v2/admin/event/{event_pk}/store/items/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing store items.
  */
 export const adminEventStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreItemsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreItemsRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreItemsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreItemsRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2871,25 +2530,21 @@ export const adminEventStoreItemsRetrieve = <ThrowOnError extends boolean = fals
         url: "/api/v2/admin/event/{event_pk}/store/items/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing store items.
  */
 export const adminEventStoreItemsPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreItemsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventStoreItemsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventStoreItemsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2903,25 +2558,17 @@ export const adminEventStoreItemsPartialUpdate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing store items.
  */
 export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreItemsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventStoreItemsUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreItemsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventStoreItemsUpdateResponses, unknown, ThrowOnError>({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2935,7 +2582,6 @@ export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing receipts.
@@ -2945,17 +2591,10 @@ export const adminEventStoreItemsUpdate = <ThrowOnError extends boolean = false>
  */
 export const adminEventStoreReceiptsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreReceiptsListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreReceiptsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreReceiptsListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2965,7 +2604,6 @@ export const adminEventStoreReceiptsList = <ThrowOnError extends boolean = false
         url: "/api/v2/admin/event/{event_pk}/store/receipts/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing receipts.
@@ -2975,17 +2613,10 @@ export const adminEventStoreReceiptsList = <ThrowOnError extends boolean = false
  */
 export const adminEventStoreReceiptsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventStoreReceiptsCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreReceiptsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventStoreReceiptsCreateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -2999,7 +2630,6 @@ export const adminEventStoreReceiptsCreate = <ThrowOnError extends boolean = fal
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing receipts.
@@ -3009,17 +2639,14 @@ export const adminEventStoreReceiptsCreate = <ThrowOnError extends boolean = fal
  */
 export const adminEventStoreReceiptsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventStoreReceiptsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventStoreReceiptsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3029,7 +2656,6 @@ export const adminEventStoreReceiptsDestroy = <ThrowOnError extends boolean = fa
         url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing receipts.
@@ -3039,27 +2665,21 @@ export const adminEventStoreReceiptsDestroy = <ThrowOnError extends boolean = fa
  */
 export const adminEventStoreReceiptsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreReceiptsRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/",
-        ...options,
-    });
-};
+): RequestResult<AdminEventStoreReceiptsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreReceiptsRetrieveResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/admin/event/{event_pk}/store/receipts/{id}/",
+            ...options,
+        }
+    );
 
 /**
  * Staff viewset for managing receipts.
@@ -3069,17 +2689,14 @@ export const adminEventStoreReceiptsRetrieve = <ThrowOnError extends boolean = f
  */
 export const adminEventStoreReceiptsPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventStoreReceiptsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventStoreReceiptsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3093,7 +2710,6 @@ export const adminEventStoreReceiptsPartialUpdate = <ThrowOnError extends boolea
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing receipts.
@@ -3103,17 +2719,10 @@ export const adminEventStoreReceiptsPartialUpdate = <ThrowOnError extends boolea
  */
 export const adminEventStoreReceiptsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventStoreReceiptsUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreReceiptsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventStoreReceiptsUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3127,24 +2736,20 @@ export const adminEventStoreReceiptsUpdate = <ThrowOnError extends boolean = fal
             ...options.headers,
         },
     });
-};
 
 /**
  * Resend the receipt email.
  */
 export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreReceiptsResendCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventStoreReceiptsResendCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventStoreReceiptsResendCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3158,7 +2763,6 @@ export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for aggregated store sales summary.
@@ -3169,17 +2773,10 @@ export const adminEventStoreReceiptsResendCreate = <ThrowOnError extends boolean
  */
 export const adminEventStoreSummaryList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreSummaryListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreSummaryListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventStoreSummaryListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreSummaryListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3189,24 +2786,20 @@ export const adminEventStoreSummaryList = <ThrowOnError extends boolean = false>
         url: "/api/v2/admin/event/{event_pk}/store/summary/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventStoreTransactionItemsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventStoreTransactionItemsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3216,24 +2809,20 @@ export const adminEventStoreTransactionItemsList = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/store/transaction_items/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventStoreTransactionItemsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventStoreTransactionItemsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3247,24 +2836,20 @@ export const adminEventStoreTransactionItemsCreate = <ThrowOnError extends boole
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventStoreTransactionItemsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventStoreTransactionItemsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3274,24 +2859,20 @@ export const adminEventStoreTransactionItemsDestroy = <ThrowOnError extends bool
         url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventStoreTransactionItemsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventStoreTransactionItemsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3301,24 +2882,20 @@ export const adminEventStoreTransactionItemsRetrieve = <ThrowOnError extends boo
         url: "/api/v2/admin/event/{event_pk}/store/transaction_items/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventStoreTransactionItemsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventStoreTransactionItemsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3332,24 +2909,20 @@ export const adminEventStoreTransactionItemsPartialUpdate = <ThrowOnError extend
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing transaction items.
  */
 export const adminEventStoreTransactionItemsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionItemsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventStoreTransactionItemsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventStoreTransactionItemsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3363,51 +2936,41 @@ export const adminEventStoreTransactionItemsUpdate = <ThrowOnError extends boole
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventStoreTransactionsListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/admin/event/{event_pk}/store/transactions/",
-        ...options,
-    });
-};
+): RequestResult<AdminEventStoreTransactionsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventStoreTransactionsListResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/admin/event/{event_pk}/store/transactions/",
+            ...options,
+        }
+    );
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<AdminEventStoreTransactionsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         AdminEventStoreTransactionsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3421,24 +2984,20 @@ export const adminEventStoreTransactionsCreate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventStoreTransactionsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventStoreTransactionsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3448,24 +3007,20 @@ export const adminEventStoreTransactionsDestroy = <ThrowOnError extends boolean 
         url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<AdminEventStoreTransactionsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         AdminEventStoreTransactionsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3475,24 +3030,20 @@ export const adminEventStoreTransactionsRetrieve = <ThrowOnError extends boolean
         url: "/api/v2/admin/event/{event_pk}/store/transactions/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventStoreTransactionsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventStoreTransactionsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3506,24 +3057,20 @@ export const adminEventStoreTransactionsPartialUpdate = <ThrowOnError extends bo
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing store transactions.
  */
 export const adminEventStoreTransactionsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventStoreTransactionsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<AdminEventStoreTransactionsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         AdminEventStoreTransactionsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3537,7 +3084,6 @@ export const adminEventStoreTransactionsUpdate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3546,17 +3092,10 @@ export const adminEventStoreTransactionsUpdate = <ThrowOnError extends boolean =
  */
 export const adminEventUploadsFilesList = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventUploadsFilesListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventUploadsFilesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventUploadsFilesListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3566,7 +3105,6 @@ export const adminEventUploadsFilesList = <ThrowOnError extends boolean = false>
         url: "/api/v2/admin/event/{event_pk}/uploads/files/",
         ...options,
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3575,18 +3113,11 @@ export const adminEventUploadsFilesList = <ThrowOnError extends boolean = false>
  */
 export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        AdminEventUploadsFilesCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventUploadsFilesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventUploadsFilesCreateResponses, unknown, ThrowOnError>({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3600,7 +3131,6 @@ export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = fals
             ...options.headers,
         },
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3609,17 +3139,14 @@ export const adminEventUploadsFilesCreate = <ThrowOnError extends boolean = fals
  */
 export const adminEventUploadsFilesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<AdminEventUploadsFilesDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         AdminEventUploadsFilesDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3629,7 +3156,6 @@ export const adminEventUploadsFilesDestroy = <ThrowOnError extends boolean = fal
         url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/",
         ...options,
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3638,17 +3164,10 @@ export const adminEventUploadsFilesDestroy = <ThrowOnError extends boolean = fal
  */
 export const adminEventUploadsFilesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        AdminEventUploadsFilesRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventUploadsFilesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventUploadsFilesRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3658,7 +3177,6 @@ export const adminEventUploadsFilesRetrieve = <ThrowOnError extends boolean = fa
         url: "/api/v2/admin/event/{event_pk}/uploads/files/{id}/",
         ...options,
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3667,18 +3185,15 @@ export const adminEventUploadsFilesRetrieve = <ThrowOnError extends boolean = fa
  */
 export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<AdminEventUploadsFilesPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         AdminEventUploadsFilesPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3692,7 +3207,6 @@ export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean
             ...options.headers,
         },
     });
-};
 
 /**
  * Uploaded files for an event.
@@ -3701,18 +3215,11 @@ export const adminEventUploadsFilesPartialUpdate = <ThrowOnError extends boolean
  */
 export const adminEventUploadsFilesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventUploadsFilesUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
-        AdminEventUploadsFilesUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventUploadsFilesUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventUploadsFilesUpdateResponses, unknown, ThrowOnError>({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3726,20 +3233,16 @@ export const adminEventUploadsFilesUpdate = <ThrowOnError extends boolean = fals
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminEventsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<AdminEventsListResponses, unknown, ThrowOnError>({
+): RequestResult<AdminEventsListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<AdminEventsListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3749,20 +3252,16 @@ export const adminEventsList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/events/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<AdminEventsCreateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminEventsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminEventsCreateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3776,20 +3275,16 @@ export const adminEventsCreate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<AdminEventsDestroyResponses, unknown, ThrowOnError>({
+): RequestResult<AdminEventsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<AdminEventsDestroyResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3799,20 +3294,16 @@ export const adminEventsDestroy = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/events/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminEventsRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<AdminEventsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminEventsRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3822,24 +3313,16 @@ export const adminEventsRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/events/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
-        AdminEventsPartialUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminEventsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<AdminEventsPartialUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3853,20 +3336,16 @@ export const adminEventsPartialUpdate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing events.
  */
 export const adminEventsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminEventsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<AdminEventsUpdateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminEventsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminEventsUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3880,20 +3359,16 @@ export const adminEventsUpdate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Read-only viewset for listing groups.
  */
 export const adminGroupsList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminGroupsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<AdminGroupsListResponses, unknown, ThrowOnError>({
+): RequestResult<AdminGroupsListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<AdminGroupsListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3903,20 +3378,16 @@ export const adminGroupsList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/groups/",
         ...options,
     });
-};
 
 /**
  * Read-only viewset for listing groups.
  */
 export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminGroupsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminGroupsRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<AdminGroupsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminGroupsRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3926,20 +3397,16 @@ export const adminGroupsRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/groups/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersList = <ThrowOnError extends boolean = false>(
     options?: Options<AdminUsersListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<AdminUsersListResponses, unknown, ThrowOnError>({
+): RequestResult<AdminUsersListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<AdminUsersListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3949,20 +3416,16 @@ export const adminUsersList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/users/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersCreate = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<AdminUsersCreateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminUsersCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<AdminUsersCreateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3976,20 +3439,16 @@ export const adminUsersCreate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersDestroy = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<AdminUsersDestroyResponses, unknown, ThrowOnError>({
+): RequestResult<AdminUsersDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<AdminUsersDestroyResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -3999,20 +3458,16 @@ export const adminUsersDestroy = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/users/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<AdminUsersRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<AdminUsersRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<AdminUsersRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4022,24 +3477,16 @@ export const adminUsersRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/admin/users/{id}/",
         ...options,
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
-        AdminUsersPartialUpdateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<AdminUsersPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<AdminUsersPartialUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4053,20 +3500,16 @@ export const adminUsersPartialUpdate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Staff viewset for managing users.
  */
 export const adminUsersUpdate = <ThrowOnError extends boolean = false>(
     options: Options<AdminUsersUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<AdminUsersUpdateResponses, unknown, ThrowOnError>({
+): RequestResult<AdminUsersUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<AdminUsersUpdateResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4080,20 +3523,16 @@ export const adminUsersUpdate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Authenticate a user with username and password.
  */
 export const login = <ThrowOnError extends boolean = false>(
     options: Options<LoginData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
+): RequestResult<LoginResponses, LoginErrors, ThrowOnError> =>
+    (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4107,20 +3546,16 @@ export const login = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * End the current user session.
  */
 export const logout = <ThrowOnError extends boolean = false>(
     options?: Options<LogoutData, ThrowOnError>
-) => {
-    return (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({
+): RequestResult<LogoutResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4130,7 +3565,6 @@ export const logout = <ThrowOnError extends boolean = false>(
         url: "/api/v2/auth/logout/",
         ...options,
     });
-};
 
 /**
  * Returns a list of URLs that can be used to begin a social authentication process.
@@ -4141,12 +3575,11 @@ export const logout = <ThrowOnError extends boolean = false>(
  */
 export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
     options?: Options<GetSocialAuthUrlsData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<GetSocialAuthUrlsResponses, unknown, ThrowOnError>({
+): RequestResult<GetSocialAuthUrlsResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<GetSocialAuthUrlsResponses, unknown, ThrowOnError>({
         url: "/api/v2/auth/social_urls/",
         ...options,
     });
-};
 
 /**
  * Manage the current user's own compo entries.
@@ -4155,27 +3588,21 @@ export const getSocialAuthUrls = <ThrowOnError extends boolean = false>(
  */
 export const eventUserKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        EventUserKompomaattiEntriesListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/",
-        ...options,
-    });
-};
+): RequestResult<EventUserKompomaattiEntriesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<EventUserKompomaattiEntriesListResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/",
+            ...options,
+        }
+    );
 
 /**
  * Manage the current user's own compo entries.
@@ -4184,18 +3611,15 @@ export const eventUserKompomaattiEntriesList = <ThrowOnError extends boolean = f
  */
 export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<EventUserKompomaattiEntriesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         EventUserKompomaattiEntriesCreateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4209,7 +3633,6 @@ export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * Manage the current user's own compo entries.
@@ -4218,17 +3641,14 @@ export const eventUserKompomaattiEntriesCreate = <ThrowOnError extends boolean =
  */
 export const eventUserKompomaattiEntriesDestroy = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<EventUserKompomaattiEntriesDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         EventUserKompomaattiEntriesDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4238,7 +3658,6 @@ export const eventUserKompomaattiEntriesDestroy = <ThrowOnError extends boolean 
         url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/",
         ...options,
     });
-};
 
 /**
  * Manage the current user's own compo entries.
@@ -4247,17 +3666,14 @@ export const eventUserKompomaattiEntriesDestroy = <ThrowOnError extends boolean 
  */
 export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiEntriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiEntriesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4267,7 +3683,6 @@ export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean
         url: "/api/v2/event/{event_pk}/user/kompomaatti/entries/{id}/",
         ...options,
     });
-};
 
 /**
  * Manage the current user's own compo entries.
@@ -4276,18 +3691,15 @@ export const eventUserKompomaattiEntriesRetrieve = <ThrowOnError extends boolean
  */
 export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<EventUserKompomaattiEntriesPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         EventUserKompomaattiEntriesPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4301,7 +3713,6 @@ export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends bo
             ...options.headers,
         },
     });
-};
 
 /**
  * Manage the current user's own compo entries.
@@ -4310,18 +3721,15 @@ export const eventUserKompomaattiEntriesPartialUpdate = <ThrowOnError extends bo
  */
 export const eventUserKompomaattiEntriesUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiEntriesUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<EventUserKompomaattiEntriesUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         EventUserKompomaattiEntriesUpdateResponses,
         unknown,
         ThrowOnError
     >({
         ...formDataBodySerializer,
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4335,7 +3743,6 @@ export const eventUserKompomaattiEntriesUpdate = <ThrowOnError extends boolean =
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4345,17 +3752,14 @@ export const eventUserKompomaattiEntriesUpdate = <ThrowOnError extends boolean =
  */
 export const eventUserKompomaattiParticipationsList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiParticipationsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiParticipationsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiParticipationsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4365,7 +3769,6 @@ export const eventUserKompomaattiParticipationsList = <ThrowOnError extends bool
         url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4375,17 +3778,14 @@ export const eventUserKompomaattiParticipationsList = <ThrowOnError extends bool
  */
 export const eventUserKompomaattiParticipationsCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiParticipationsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<EventUserKompomaattiParticipationsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         EventUserKompomaattiParticipationsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4399,7 +3799,6 @@ export const eventUserKompomaattiParticipationsCreate = <ThrowOnError extends bo
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4409,17 +3808,14 @@ export const eventUserKompomaattiParticipationsCreate = <ThrowOnError extends bo
  */
 export const eventUserKompomaattiParticipationsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiParticipationsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<EventUserKompomaattiParticipationsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         EventUserKompomaattiParticipationsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4429,7 +3825,6 @@ export const eventUserKompomaattiParticipationsDestroy = <ThrowOnError extends b
         url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4439,17 +3834,14 @@ export const eventUserKompomaattiParticipationsDestroy = <ThrowOnError extends b
  */
 export const eventUserKompomaattiParticipationsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiParticipationsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiParticipationsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiParticipationsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4459,7 +3851,6 @@ export const eventUserKompomaattiParticipationsRetrieve = <ThrowOnError extends 
         url: "/api/v2/event/{event_pk}/user/kompomaatti/participations/{id}/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4471,17 +3862,14 @@ export const eventUserKompomaattiParticipationsPartialUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<EventUserKompomaattiParticipationsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<EventUserKompomaattiParticipationsPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).patch<
         EventUserKompomaattiParticipationsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4495,7 +3883,6 @@ export const eventUserKompomaattiParticipationsPartialUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own competition participations.
@@ -4505,17 +3892,14 @@ export const eventUserKompomaattiParticipationsPartialUpdate = <
  */
 export const eventUserKompomaattiParticipationsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiParticipationsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<EventUserKompomaattiParticipationsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         EventUserKompomaattiParticipationsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4529,7 +3913,6 @@ export const eventUserKompomaattiParticipationsUpdate = <ThrowOnError extends bo
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own ticket vote codes.
@@ -4546,17 +3929,14 @@ export const eventUserKompomaattiParticipationsUpdate = <ThrowOnError extends bo
  */
 export const eventUserKompomaattiTicketVoteCodesList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiTicketVoteCodesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiTicketVoteCodesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiTicketVoteCodesListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4566,7 +3946,6 @@ export const eventUserKompomaattiTicketVoteCodesList = <ThrowOnError extends boo
         url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own ticket vote codes.
@@ -4583,17 +3962,14 @@ export const eventUserKompomaattiTicketVoteCodesList = <ThrowOnError extends boo
  */
 export const eventUserKompomaattiTicketVoteCodesCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiTicketVoteCodesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<EventUserKompomaattiTicketVoteCodesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         EventUserKompomaattiTicketVoteCodesCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4607,7 +3983,6 @@ export const eventUserKompomaattiTicketVoteCodesCreate = <ThrowOnError extends b
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own ticket vote codes.
@@ -4624,17 +3999,14 @@ export const eventUserKompomaattiTicketVoteCodesCreate = <ThrowOnError extends b
  */
 export const eventUserKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiTicketVoteCodesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiTicketVoteCodesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiTicketVoteCodesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4644,7 +4016,6 @@ export const eventUserKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends
         url: "/api/v2/event/{event_pk}/user/kompomaatti/ticket_vote_codes/{id}/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own vote code requests.
@@ -4661,17 +4032,14 @@ export const eventUserKompomaattiTicketVoteCodesRetrieve = <ThrowOnError extends
  */
 export const eventUserKompomaattiVoteCodeRequestsList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVoteCodeRequestsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiVoteCodeRequestsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiVoteCodeRequestsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4681,7 +4049,6 @@ export const eventUserKompomaattiVoteCodeRequestsList = <ThrowOnError extends bo
         url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own vote code requests.
@@ -4698,17 +4065,14 @@ export const eventUserKompomaattiVoteCodeRequestsList = <ThrowOnError extends bo
  */
 export const eventUserKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVoteCodeRequestsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<EventUserKompomaattiVoteCodeRequestsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         EventUserKompomaattiVoteCodeRequestsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4722,7 +4086,6 @@ export const eventUserKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends 
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own vote code requests.
@@ -4739,17 +4102,14 @@ export const eventUserKompomaattiVoteCodeRequestsCreate = <ThrowOnError extends 
  */
 export const eventUserKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVoteCodeRequestsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiVoteCodeRequestsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiVoteCodeRequestsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4759,7 +4119,6 @@ export const eventUserKompomaattiVoteCodeRequestsRetrieve = <ThrowOnError extend
         url: "/api/v2/event/{event_pk}/user/kompomaatti/vote_code_requests/{id}/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's own vote code requests.
@@ -4778,17 +4137,18 @@ export const eventUserKompomaattiVoteCodeRequestsPartialUpdate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<EventUserKompomaattiVoteCodeRequestsPartialUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).patch<
+): RequestResult<
+    EventUserKompomaattiVoteCodeRequestsPartialUpdateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).patch<
         EventUserKompomaattiVoteCodeRequestsPartialUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4802,7 +4162,6 @@ export const eventUserKompomaattiVoteCodeRequestsPartialUpdate = <
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's own vote code requests.
@@ -4819,17 +4178,14 @@ export const eventUserKompomaattiVoteCodeRequestsPartialUpdate = <
  */
 export const eventUserKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVoteCodeRequestsUpdateData, ThrowOnError>
-) => {
-    return (options.client ?? client).put<
+): RequestResult<EventUserKompomaattiVoteCodeRequestsUpdateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).put<
         EventUserKompomaattiVoteCodeRequestsUpdateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4843,7 +4199,6 @@ export const eventUserKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends 
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's votes.
@@ -4863,17 +4218,10 @@ export const eventUserKompomaattiVoteCodeRequestsUpdate = <ThrowOnError extends 
  */
 export const eventUserKompomaattiVotesList = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVotesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        EventUserKompomaattiVotesListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<EventUserKompomaattiVotesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<EventUserKompomaattiVotesListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4883,7 +4231,6 @@ export const eventUserKompomaattiVotesList = <ThrowOnError extends boolean = fal
         url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/",
         ...options,
     });
-};
 
 /**
  * API endpoint for managing user's votes.
@@ -4903,17 +4250,14 @@ export const eventUserKompomaattiVotesList = <ThrowOnError extends boolean = fal
  */
 export const eventUserKompomaattiVotesCreate = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVotesCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<EventUserKompomaattiVotesCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         EventUserKompomaattiVotesCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4927,7 +4271,6 @@ export const eventUserKompomaattiVotesCreate = <ThrowOnError extends boolean = f
             ...options.headers,
         },
     });
-};
 
 /**
  * API endpoint for managing user's votes.
@@ -4947,17 +4290,14 @@ export const eventUserKompomaattiVotesCreate = <ThrowOnError extends boolean = f
  */
 export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<EventUserKompomaattiVotesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<EventUserKompomaattiVotesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         EventUserKompomaattiVotesRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4967,24 +4307,20 @@ export const eventUserKompomaattiVotesRetrieve = <ThrowOnError extends boolean =
         url: "/api/v2/event/{event_pk}/user/kompomaatti/votes/{id}/",
         ...options,
     });
-};
 
 /**
  * Infodesk viewset for looking up and marking transaction items.
  */
 export const infodeskEventTransactionItemsList = <ThrowOnError extends boolean = false>(
     options: Options<InfodeskEventTransactionItemsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<InfodeskEventTransactionItemsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         InfodeskEventTransactionItemsListResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -4994,24 +4330,20 @@ export const infodeskEventTransactionItemsList = <ThrowOnError extends boolean =
         url: "/api/v2/infodesk/event/{event_pk}/transaction_items/",
         ...options,
     });
-};
 
 /**
  * Infodesk viewset for looking up and marking transaction items.
  */
 export const infodeskEventTransactionItemsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<InfodeskEventTransactionItemsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<InfodeskEventTransactionItemsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         InfodeskEventTransactionItemsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5021,7 +4353,6 @@ export const infodeskEventTransactionItemsRetrieve = <ThrowOnError extends boole
         url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/",
         ...options,
     });
-};
 
 /**
  * Mark a transaction item as delivered.
@@ -5030,17 +4361,18 @@ export const infodeskEventTransactionItemsMarkDeliveredCreate = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<InfodeskEventTransactionItemsMarkDeliveredCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<
+    InfodeskEventTransactionItemsMarkDeliveredCreateResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).post<
         InfodeskEventTransactionItemsMarkDeliveredCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5050,24 +4382,16 @@ export const infodeskEventTransactionItemsMarkDeliveredCreate = <
         url: "/api/v2/infodesk/event/{event_pk}/transaction_items/{id}/mark_delivered/",
         ...options,
     });
-};
 
 /**
  * Infodesk viewset for looking up transactions.
  */
 export const infodeskEventTransactionsList = <ThrowOnError extends boolean = false>(
     options: Options<InfodeskEventTransactionsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        InfodeskEventTransactionsListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<InfodeskEventTransactionsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<InfodeskEventTransactionsListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5077,24 +4401,20 @@ export const infodeskEventTransactionsList = <ThrowOnError extends boolean = fal
         url: "/api/v2/infodesk/event/{event_pk}/transactions/",
         ...options,
     });
-};
 
 /**
  * Infodesk viewset for looking up transactions.
  */
 export const infodeskEventTransactionsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<InfodeskEventTransactionsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<InfodeskEventTransactionsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         InfodeskEventTransactionsRetrieveResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5104,7 +4424,6 @@ export const infodeskEventTransactionsRetrieve = <ThrowOnError extends boolean =
         url: "/api/v2/infodesk/event/{event_pk}/transactions/{id}/",
         ...options,
     });
-};
 
 /**
  * Viewset for managing the current user's push notification subscriptions.
@@ -5114,27 +4433,21 @@ export const infodeskEventTransactionsRetrieve = <ThrowOnError extends boolean =
  */
 export const notificationsSubscriptionsList = <ThrowOnError extends boolean = false>(
     options?: Options<NotificationsSubscriptionsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<
-        NotificationsSubscriptionsListResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
-            {
-                in: "cookie",
-                name: "sessionid",
-                type: "apiKey",
-            },
-        ],
-        url: "/api/v2/notifications/subscriptions/",
-        ...options,
-    });
-};
+): RequestResult<NotificationsSubscriptionsListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<NotificationsSubscriptionsListResponses, unknown, ThrowOnError>(
+        {
+            security: [
+                { name: "Authorization", type: "apiKey" },
+                {
+                    in: "cookie",
+                    name: "sessionid",
+                    type: "apiKey",
+                },
+            ],
+            url: "/api/v2/notifications/subscriptions/",
+            ...options,
+        }
+    );
 
 /**
  * Create or update a push subscription (upsert by endpoint).
@@ -5147,17 +4460,14 @@ export const notificationsSubscriptionsList = <ThrowOnError extends boolean = fa
  */
 export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = false>(
     options: Options<NotificationsSubscriptionsCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
+): RequestResult<NotificationsSubscriptionsCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<
         NotificationsSubscriptionsCreateResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5171,7 +4481,6 @@ export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = 
             ...options.headers,
         },
     });
-};
 
 /**
  * Viewset for managing the current user's push notification subscriptions.
@@ -5181,17 +4490,14 @@ export const notificationsSubscriptionsCreate = <ThrowOnError extends boolean = 
  */
 export const notificationsSubscriptionsDestroy = <ThrowOnError extends boolean = false>(
     options: Options<NotificationsSubscriptionsDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<
+): RequestResult<NotificationsSubscriptionsDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<
         NotificationsSubscriptionsDestroyResponses,
         unknown,
         ThrowOnError
     >({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5201,35 +4507,28 @@ export const notificationsSubscriptionsDestroy = <ThrowOnError extends boolean =
         url: "/api/v2/notifications/subscriptions/{id}/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for blog entries. Only public entries are shown.
  */
 export const publicBlogEntriesList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicBlogEntriesListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<PublicBlogEntriesListResponses, unknown, ThrowOnError>({
+): RequestResult<PublicBlogEntriesListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<PublicBlogEntriesListResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/blog_entries/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for blog entries. Only public entries are shown.
  */
 export const publicBlogEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicBlogEntriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        PublicBlogEntriesRetrieveResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<PublicBlogEntriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<PublicBlogEntriesRetrieveResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/blog_entries/{id}/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for archive video categories.
@@ -5238,16 +4537,12 @@ export const publicBlogEntriesRetrieve = <ThrowOnError extends boolean = false>(
  */
 export const publicEventArchiveVideoCategoriesList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventArchiveVideoCategoriesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventArchiveVideoCategoriesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventArchiveVideoCategoriesListResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/archive/video_categories/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/archive/video_categories/", ...options });
 
 /**
  * Public read-only endpoint for archive video categories.
@@ -5256,48 +4551,35 @@ export const publicEventArchiveVideoCategoriesList = <ThrowOnError extends boole
  */
 export const publicEventArchiveVideoCategoriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventArchiveVideoCategoriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventArchiveVideoCategoriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventArchiveVideoCategoriesRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/archive/video_categories/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/archive/video_categories/{id}/", ...options });
 
 /**
  * Public read-only endpoint for archive videos. Only videos from archived events are shown.
  */
 export const publicEventArchiveVideosList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventArchiveVideosListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        PublicEventArchiveVideosListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<PublicEventArchiveVideosListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<PublicEventArchiveVideosListResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/event/{event_pk}/archive/videos/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for archive videos. Only videos from archived events are shown.
  */
 export const publicEventArchiveVideosRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventArchiveVideosRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventArchiveVideosRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventArchiveVideosRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/archive/videos/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/archive/videos/{id}/", ...options });
 
 /**
  * Public read-only endpoint for competition participations.
@@ -5308,8 +4590,12 @@ export const publicEventKompomaattiCompetitionParticipationsList = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<PublicEventKompomaattiCompetitionParticipationsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    PublicEventKompomaattiCompetitionParticipationsListResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiCompetitionParticipationsListResponses,
         unknown,
         ThrowOnError
@@ -5317,7 +4603,6 @@ export const publicEventKompomaattiCompetitionParticipationsList = <
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for competition participations.
@@ -5328,8 +4613,12 @@ export const publicEventKompomaattiCompetitionParticipationsRetrieve = <
     ThrowOnError extends boolean = false,
 >(
     options: Options<PublicEventKompomaattiCompetitionParticipationsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    PublicEventKompomaattiCompetitionParticipationsRetrieveResponses,
+    unknown,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiCompetitionParticipationsRetrieveResponses,
         unknown,
         ThrowOnError
@@ -5337,71 +4626,54 @@ export const publicEventKompomaattiCompetitionParticipationsRetrieve = <
         url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/{id}/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for competitions. Only active competitions are shown.
  */
 export const publicEventKompomaattiCompetitionsList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiCompetitionsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiCompetitionsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiCompetitionsListResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/", ...options });
 
 /**
  * Public read-only endpoint for competitions. Only active competitions are shown.
  */
 export const publicEventKompomaattiCompetitionsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiCompetitionsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiCompetitionsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiCompetitionsRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/{id}/", ...options });
 
 /**
  * Public read-only endpoint for compos. Only active compos are shown.
  */
 export const publicEventKompomaattiComposList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiComposListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiComposListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiComposListResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/", ...options });
 
 /**
  * Public read-only endpoint for compos. Only active compos are shown.
  */
 export const publicEventKompomaattiComposRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiComposRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiComposRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiComposRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/{id}/", ...options });
 
 /**
  * Public read-only endpoint for compo entries.
@@ -5413,16 +4685,12 @@ export const publicEventKompomaattiComposRetrieve = <ThrowOnError extends boolea
  */
 export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiEntriesListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiEntriesListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiEntriesListResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/", ...options });
 
 /**
  * Public read-only endpoint for compo entries.
@@ -5434,16 +4702,12 @@ export const publicEventKompomaattiEntriesList = <ThrowOnError extends boolean =
  */
 export const publicEventKompomaattiEntriesRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiEntriesRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventKompomaattiEntriesRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiEntriesRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/entries/{id}/", ...options });
 
 /**
  * Public polling endpoint for live voting state.
@@ -5454,88 +4718,73 @@ export const publicEventKompomaattiEntriesRetrieve = <ThrowOnError extends boole
  */
 export const publicEventKompomaattiLiveVotingRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventKompomaattiLiveVotingRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<
+    PublicEventKompomaattiLiveVotingRetrieveResponses,
+    PublicEventKompomaattiLiveVotingRetrieveErrors,
+    ThrowOnError
+> =>
+    (options.client ?? client).get<
         PublicEventKompomaattiLiveVotingRetrieveResponses,
         PublicEventKompomaattiLiveVotingRetrieveErrors,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/kompomaatti/live_voting/{compo_pk}/", ...options });
 
 /**
  * Public read-only endpoint for program events. Only active events are shown.
  */
 export const publicEventProgramEventsList = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventProgramEventsListData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
-        PublicEventProgramEventsListResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<PublicEventProgramEventsListResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<PublicEventProgramEventsListResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/event/{event_pk}/program/events/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for program events. Only active events are shown.
  */
 export const publicEventProgramEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventProgramEventsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<
+): RequestResult<PublicEventProgramEventsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<
         PublicEventProgramEventsRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/event/{event_pk}/program/events/{id}/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/event/{event_pk}/program/events/{id}/", ...options });
 
 /**
  * Public read-only endpoint for events.
  */
 export const publicEventsList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicEventsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<PublicEventsListResponses, unknown, ThrowOnError>({
+): RequestResult<PublicEventsListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<PublicEventsListResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/events/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for events.
  */
 export const publicEventsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicEventsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<PublicEventsRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<PublicEventsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<PublicEventsRetrieveResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/events/{id}/",
         ...options,
     });
-};
 
 /**
  * Returns the VAPID public key for push subscriptions.
  */
 export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean = false>(
     options?: Options<PublicNotificationsVapidKeyRetrieveData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<
+): RequestResult<PublicNotificationsVapidKeyRetrieveResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<
         PublicNotificationsVapidKeyRetrieveResponses,
         unknown,
         ThrowOnError
-    >({
-        url: "/api/v2/public/notifications/vapid-key/",
-        ...options,
-    });
-};
+    >({ url: "/api/v2/public/notifications/vapid-key/", ...options });
 
 /**
  * Public ViewSet for creating store transactions (checkout).
@@ -5547,12 +4796,8 @@ export const publicNotificationsVapidKeyRetrieve = <ThrowOnError extends boolean
  */
 export const publicStoreCheckoutCreate = <ThrowOnError extends boolean = false>(
     options: Options<PublicStoreCheckoutCreateData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<
-        PublicStoreCheckoutCreateResponses,
-        unknown,
-        ThrowOnError
-    >({
+): RequestResult<PublicStoreCheckoutCreateResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<PublicStoreCheckoutCreateResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/store/checkout/",
         ...options,
         headers: {
@@ -5560,7 +4805,6 @@ export const publicStoreCheckoutCreate = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Public read-only endpoint for store items.
@@ -5570,12 +4814,11 @@ export const publicStoreCheckoutCreate = <ThrowOnError extends boolean = false>(
  */
 export const publicStoreItemsList = <ThrowOnError extends boolean = false>(
     options?: Options<PublicStoreItemsListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<PublicStoreItemsListResponses, unknown, ThrowOnError>({
+): RequestResult<PublicStoreItemsListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<PublicStoreItemsListResponses, unknown, ThrowOnError>({
         url: "/api/v2/public/store/items/",
         ...options,
     });
-};
 
 /**
  * Public read-only endpoint for store items.
@@ -5585,14 +4828,11 @@ export const publicStoreItemsList = <ThrowOnError extends boolean = false>(
  */
 export const publicStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
     options: Options<PublicStoreItemsRetrieveData, ThrowOnError>
-) => {
-    return (options.client ?? client).get<PublicStoreItemsRetrieveResponses, unknown, ThrowOnError>(
-        {
-            url: "/api/v2/public/store/items/{id}/",
-            ...options,
-        }
-    );
-};
+): RequestResult<PublicStoreItemsRetrieveResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).get<PublicStoreItemsRetrieveResponses, unknown, ThrowOnError>({
+        url: "/api/v2/public/store/items/{id}/",
+        ...options,
+    });
 
 /**
  * Manage API authentication tokens for the current user.
@@ -5605,13 +4845,10 @@ export const publicStoreItemsRetrieve = <ThrowOnError extends boolean = false>(
  */
 export const tokensList = <ThrowOnError extends boolean = false>(
     options?: Options<TokensListData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<TokensListResponses, unknown, ThrowOnError>({
+): RequestResult<TokensListResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<TokensListResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5621,7 +4858,6 @@ export const tokensList = <ThrowOnError extends boolean = false>(
         url: "/api/v2/tokens/",
         ...options,
     });
-};
 
 /**
  * Manage API authentication tokens for the current user.
@@ -5634,13 +4870,10 @@ export const tokensList = <ThrowOnError extends boolean = false>(
  */
 export const tokensDestroy = <ThrowOnError extends boolean = false>(
     options: Options<TokensDestroyData, ThrowOnError>
-) => {
-    return (options.client ?? client).delete<TokensDestroyResponses, unknown, ThrowOnError>({
+): RequestResult<TokensDestroyResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).delete<TokensDestroyResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5650,20 +4883,16 @@ export const tokensDestroy = <ThrowOnError extends boolean = false>(
         url: "/api/v2/tokens/{digest}/",
         ...options,
     });
-};
 
 /**
  * Create a new API token. The plain token is returned only once.
  */
 export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
     options: Options<UserTokensCreateTokenData, ThrowOnError>
-) => {
-    return (options.client ?? client).post<UserTokensCreateTokenResponses, unknown, ThrowOnError>({
+): RequestResult<UserTokensCreateTokenResponses, unknown, ThrowOnError> =>
+    (options.client ?? client).post<UserTokensCreateTokenResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5677,20 +4906,16 @@ export const userTokensCreateToken = <ThrowOnError extends boolean = false>(
             ...options.headers,
         },
     });
-};
 
 /**
  * Retrieve and update the current authenticated user's profile and permissions.
  */
 export const userInfoRetrieve = <ThrowOnError extends boolean = false>(
     options?: Options<UserInfoRetrieveData, ThrowOnError>
-) => {
-    return (options?.client ?? client).get<UserInfoRetrieveResponses, unknown, ThrowOnError>({
+): RequestResult<UserInfoRetrieveResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).get<UserInfoRetrieveResponses, unknown, ThrowOnError>({
         security: [
-            {
-                name: "Authorization",
-                type: "apiKey",
-            },
+            { name: "Authorization", type: "apiKey" },
             {
                 in: "cookie",
                 name: "sessionid",
@@ -5700,33 +4925,26 @@ export const userInfoRetrieve = <ThrowOnError extends boolean = false>(
         url: "/api/v2/user_info/",
         ...options,
     });
-};
 
 /**
  * Retrieve and update the current authenticated user's profile and permissions.
  */
 export const userInfoPartialUpdate = <ThrowOnError extends boolean = false>(
     options?: Options<UserInfoPartialUpdateData, ThrowOnError>
-) => {
-    return (options?.client ?? client).patch<UserInfoPartialUpdateResponses, unknown, ThrowOnError>(
-        {
-            security: [
-                {
-                    name: "Authorization",
-                    type: "apiKey",
-                },
-                {
-                    in: "cookie",
-                    name: "sessionid",
-                    type: "apiKey",
-                },
-            ],
-            url: "/api/v2/user_info/",
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...options?.headers,
+): RequestResult<UserInfoPartialUpdateResponses, unknown, ThrowOnError> =>
+    (options?.client ?? client).patch<UserInfoPartialUpdateResponses, unknown, ThrowOnError>({
+        security: [
+            { name: "Authorization", type: "apiKey" },
+            {
+                in: "cookie",
+                name: "sessionid",
+                type: "apiKey",
             },
-        }
-    );
-};
+        ],
+        url: "/api/v2/user_info/",
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
+    });

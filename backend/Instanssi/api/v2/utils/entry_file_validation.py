@@ -1,12 +1,17 @@
+import logging
 import os
 from pathlib import Path
 from typing import Any
 
+from django.core.files.base import File
 from django.core.files.uploadedfile import UploadedFile
 from django.utils.translation import gettext as _
+from PIL import Image
 from rest_framework.exceptions import ValidationError
 
 from Instanssi.kompomaatti.models import Compo, Entry
+
+logger = logging.getLogger(__name__)
 
 
 def validate_entry_files(
@@ -61,6 +66,12 @@ def validate_entry_files(
             if field_errors:
                 errors[key] = field_errors
 
+    # When the compo copies the entry file into the image field, the entry file content
+    # must actually be a readable image.
+    if compo.is_imagefile_copied and "entryfile" not in errors:
+        if (entry_file := data.get("entryfile")) and not _is_readable_image(entry_file):
+            errors["entryfile"] = [_("Entry file must be a valid image file for this compo")]
+
     if errors:
         raise ValidationError(errors)
 
@@ -68,8 +79,26 @@ def validate_entry_files(
 def maybe_copy_entry_to_image(instance: Entry) -> None:
     """If necessary, copy entry file to image file for thumbnail generation."""
     if instance.compo.is_imagefile_copied and instance.entryfile:
+        if not _is_readable_image(instance.entryfile):
+            logger.warning(
+                "Not copying entry file of entry %s to image field: not a readable image",
+                instance.pk,
+            )
+            return
         name = os.path.basename(instance.entryfile.name)
         instance.imagefile_original.save(name, instance.entryfile)
+
+
+def _is_readable_image(file: File[Any]) -> bool:
+    try:
+        file.seek(0)
+        with Image.open(file) as image:
+            image.verify()
+    except Exception:
+        return False
+    finally:
+        file.seek(0)
+    return True
 
 
 def _validate_file(

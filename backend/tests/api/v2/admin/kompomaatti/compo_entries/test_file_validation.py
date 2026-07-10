@@ -302,6 +302,34 @@ def test_staff_entry_copied_to_image_when_configured(
 
 
 @pytest.mark.django_db
+def test_staff_entry_copy_to_image_rejects_non_image_entry(
+    staff_api_client, open_compo, base_user, entry_zip, source_zip
+):
+    """Test that a non-image entry file is rejected when compo.is_imagefile_copied is True"""
+    # Set compo to copy entry to image (thumbnail_pref=1)
+    open_compo.thumbnail_pref = 1
+    open_compo.save()
+
+    base_url = get_base_url(open_compo.event_id)
+    req = staff_api_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "user": base_user.id,
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Zip entry should not be accepted as image source",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": entry_zip,
+            "sourcefile": source_zip,
+        },
+    )
+    assert req.status_code == 400
+    assert "entryfile" in req.data
+
+
+@pytest.mark.django_db
 def test_staff_can_upload_to_closed_compo(
     staff_api_client, closed_compo, base_user, entry_zip, source_zip, image_png
 ):

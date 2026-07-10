@@ -390,6 +390,32 @@ def test_user_entry_copied_to_image_when_configured(auth_client, open_compo, sou
 
 @pytest.mark.django_db
 @freeze_time(FROZEN_TIME)
+def test_user_entry_copy_to_image_rejects_non_image_entry(auth_client, open_compo, entry_zip, source_zip):
+    """Test that a non-image entry file is rejected when compo.is_imagefile_copied is True"""
+    # Set compo to copy entry to image (thumbnail_pref=1)
+    open_compo.thumbnail_pref = 1
+    open_compo.save()
+
+    base_url = get_base_url(open_compo.event_id)
+    req = auth_client.post(
+        base_url,
+        format="multipart",
+        data={
+            "compo": open_compo.id,
+            "name": "Test Entry",
+            "description": "Zip entry should not be accepted as image source",
+            "creator": "Test Creator",
+            "platform": "Linux",
+            "entryfile": entry_zip,
+            "sourcefile": source_zip,
+        },
+    )
+    assert req.status_code == 400
+    assert "entryfile" in req.data
+
+
+@pytest.mark.django_db
+@freeze_time(FROZEN_TIME)
 def test_compo_must_belong_to_event_in_url(
     auth_client, open_compo, other_event, entry_zip, source_zip, image_png
 ):

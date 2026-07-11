@@ -127,7 +127,7 @@
         "apiTokens": "API-avaimet",
         "auditLog": "Muutosloki",
         "infodesk": "Infotiski",
-        "profile": "Profiili"
+        "notifications": "Ilmoitukset"
       }
     },
     "MainNavigation": {
@@ -955,35 +955,13 @@
         "youtubeUrlHint": "Syötä YouTube-URL (esim. https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
-    "ProfileView": {
-      "title": "Profiili",
-      "sections": {
-        "account": "Tilitiedot"
-      },
-      "labels": {
-        "username": "Käyttäjänimi",
-        "email": "Sähköposti",
-        "dateJoined": "Liittymispäivä",
-        "firstName": "Etunimi",
-        "lastName": "Sukunimi",
-        "language": "Kieli",
-        "browserDefault": "Selaimen oletus",
-        "otherinfo": "Muut yhteystiedot",
-        "otherinfoHint": "Muut yhteystiedot, esim. IRC-nick ja -verkko, Discord-tunnus jne.",
-        "manageEmail": "Hallitse sähköpostiosoitteita"
-      },
-      "loadFailure": "Profiilin lataus epäonnistui; yritä myöhemmin uudelleen.",
-      "saveSuccess": "Profiili tallennettu!",
-      "saveFailure": "Profiilin tallennus epäonnistui; yritä myöhemmin uudelleen.",
-      "notifications": {
-        "title": "Push-ilmoitukset",
-        "enable": "Ota push-ilmoitukset käyttöön",
-        "enableHint": "Tämä ominaisuus on testauksessa. Valitse haluamasi ilmoitustyypit yllä olevasta profiilin lomakkeesta.",
-        "unsupported": "Push-ilmoituksia ei tueta tässä selaimessa.",
-        "denied": "Ilmoituslupa evättiin. Ota se käyttöön selaimen asetuksista.",
-        "subscribeFailure": "Push-ilmoitusten tilaus epäonnistui.",
-        "unsubscribeFailure": "Push-ilmoitusten peruutus epäonnistui.",
-        "preferencesTitle": "Ilmoitusasetukset",
+    "NotificationsView": {
+      "title": "Ilmoitukset",
+      "loadFailure": "Ilmoitusasetusten lataus epäonnistui; yritä myöhemmin uudelleen.",
+      "saveSuccess": "Ilmoitusasetukset tallennettu!",
+      "saveFailure": "Ilmoitusasetusten tallennus epäonnistui; yritä myöhemmin uudelleen.",
+      "preferences": {
+        "title": "Ilmoitusasetukset",
         "voteCodeRequestsOn": "Äänestyskoodipyyntöilmoitukset käytössä",
         "voteCodeRequestsOff": "Äänestyskoodipyyntöilmoitukset pois käytöstä",
         "voteCodeRequestsHint": "Ilmoittaa kun käyttäjä pyytää äänestyskoodia. Edellyttää, että push-ilmoitukset ovat käytössä.",
@@ -996,6 +974,15 @@
         "competitionStartsOn": "Kilpailuilmoitukset käytössä",
         "competitionStartsOff": "Kilpailuilmoitukset pois käytöstä",
         "competitionStartsHint": "Ilmoittaa 15 minuuttia ennen kilpailun alkua. Edellyttää, että push-ilmoitukset ovat käytössä."
+      },
+      "push": {
+        "title": "Push-ilmoitukset",
+        "enable": "Ota push-ilmoitukset käyttöön",
+        "enableHint": "Tämä ominaisuus on testauksessa. Valitse haluamasi ilmoitustyypit yllä olevista asetuksista.",
+        "unsupported": "Push-ilmoituksia ei tueta tässä selaimessa.",
+        "denied": "Ilmoituslupa evättiin. Ota se käyttöön selaimen asetuksista.",
+        "subscribeFailure": "Push-ilmoitusten tilaus epäonnistui.",
+        "unsubscribeFailure": "Push-ilmoitusten peruutus epäonnistui."
       }
     },
     "LoginView": {

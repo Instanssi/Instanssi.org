@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import {
     faArchive,
+    faBell,
     faBlog,
     faBoxes,
     faBoxOpen,
@@ -38,7 +39,6 @@ import {
     faTicket,
     faTrophy,
     faUpload,
-    faUser,
     faUsers,
     faVideo,
 } from "@fortawesome/free-solid-svg-icons";
@@ -211,9 +211,9 @@ const secondaryLinks = computed((): NavigationLinks => [
         requirePerm: PermissionTarget.LOG_ENTRY,
     },
     {
-        title: t("App.nav.profile"),
-        icon: faUser,
-        to: "profile",
+        title: t("App.nav.notifications"),
+        icon: faBell,
+        to: "notifications",
         noEventId: true,
     },
     {

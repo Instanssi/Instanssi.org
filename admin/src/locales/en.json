@@ -106,7 +106,6 @@
         "uploads": "Uploads",
         "events": "Events",
         "users": "Users",
-        "logout": "Log out",
         "kompomaatti": "Kompomaatti",
         "compos": "Compos",
         "entries": "Entries",
@@ -126,8 +125,7 @@
         "arkistoVideos": "Videos",
         "apiTokens": "API Tokens",
         "auditLog": "Audit Log",
-        "infodesk": "Infodesk",
-        "notifications": "Notifications"
+        "infodesk": "Infodesk"
       }
     },
     "MainNavigation": {
@@ -135,7 +133,20 @@
       "event": "Event",
       "publicEvents": "Public",
       "hiddenEvents": "Hidden",
-      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost."
+      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost.",
+      "links": {
+        "index": "Index",
+        "kompomaatti": "Kompomaatti",
+        "arkisto": "Archive"
+      }
+    },
+    "UserMenu": {
+      "profile": "Profile",
+      "emailAddresses": "Email addresses",
+      "changePassword": "Change password",
+      "connectedAccounts": "Connected accounts",
+      "notifications": "Notifications",
+      "logout": "Log out"
     },
     "EventView": {
       "title": "Events",

@@ -39,6 +39,17 @@ export const VDialogStub = defineComponent({
     },
 });
 
+export const VMenuStub = defineComponent({
+    name: "VMenu",
+    setup(_, { slots }) {
+        return () =>
+            h("div", { class: "v-menu-stub" }, [
+                slots.activator?.({ props: {}, isActive: false }),
+                slots.default?.(),
+            ]);
+    },
+});
+
 export const ContentDialogStub = defineComponent({
     name: "ContentDialog",
     props: {

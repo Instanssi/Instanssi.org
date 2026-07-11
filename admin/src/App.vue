@@ -15,7 +15,6 @@
 <script setup lang="ts">
 import {
     faArchive,
-    faBell,
     faBlog,
     faBoxes,
     faBoxOpen,
@@ -34,7 +33,6 @@ import {
     faNewspaper,
     faPeopleGroup,
     faReceipt,
-    faRightFromBracket,
     faStore,
     faTicket,
     faTrophy,
@@ -209,18 +207,6 @@ const secondaryLinks = computed((): NavigationLinks => [
         to: "auditlog",
         noEventId: true,
         requirePerm: PermissionTarget.LOG_ENTRY,
-    },
-    {
-        title: t("App.nav.notifications"),
-        icon: faBell,
-        to: "notifications",
-        noEventId: true,
-    },
-    {
-        title: t("App.nav.logout"),
-        icon: faRightFromBracket,
-        to: "logout",
-        noEventId: true,
     },
 ]);
 

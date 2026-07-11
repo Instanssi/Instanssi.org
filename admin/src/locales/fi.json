@@ -106,7 +106,6 @@
         "uploads": "Tiedostot",
         "events": "Tapahtumat",
         "users": "Käyttäjät",
-        "logout": "Kirjaudu ulos",
         "kompomaatti": "Kompomaatti",
         "compos": "Kompot",
         "entries": "Tuotokset",
@@ -126,8 +125,7 @@
         "arkistoVideos": "Videot",
         "apiTokens": "API-avaimet",
         "auditLog": "Muutosloki",
-        "infodesk": "Infotiski",
-        "notifications": "Ilmoitukset"
+        "infodesk": "Infotiski"
       }
     },
     "MainNavigation": {
@@ -135,7 +133,20 @@
       "event": "Tapahtuma",
       "publicEvents": "Julkiset",
       "hiddenEvents": "Piilotetut",
-      "confirmEventChange": "Haluatko varmasti vaihtaa tapahtumaa? Sinut ohjataan uuden tapahtuman kojelaudalle ja tallentamattomat muutokset menetetään."
+      "confirmEventChange": "Haluatko varmasti vaihtaa tapahtumaa? Sinut ohjataan uuden tapahtuman kojelaudalle ja tallentamattomat muutokset menetetään.",
+      "links": {
+        "index": "Etusivu",
+        "kompomaatti": "Kompomaatti",
+        "arkisto": "Arkisto"
+      }
+    },
+    "UserMenu": {
+      "profile": "Profiili",
+      "emailAddresses": "Sähköpostiosoitteet",
+      "changePassword": "Vaihda salasana",
+      "connectedAccounts": "Yhdistetyt tilit",
+      "notifications": "Ilmoitukset",
+      "logout": "Kirjaudu ulos"
     },
     "EventView": {
       "title": "Tapahtumat",

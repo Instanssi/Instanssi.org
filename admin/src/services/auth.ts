@@ -7,6 +7,7 @@ import { i18n, isSupportedLocale, setLocale, type SupportedLocale } from "@/i18n
 
 export type CurrentUserInfo = {
     id: number;
+    username: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -18,6 +19,7 @@ export type CurrentUserInfo = {
 const loggedIn: Ref<boolean> = ref(false);
 const userInfo: Ref<CurrentUserInfo> = ref({
     id: 0,
+    username: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -104,6 +106,7 @@ export function useAuth() {
         loggedIn.value = info !== undefined;
         userInfo.value = {
             id: info?.id || 0,
+            username: info?.username || "",
             firstName: info?.first_name || "",
             lastName: info?.last_name || "",
             email: info?.email || "",
@@ -168,6 +171,7 @@ export function useAuth() {
         loggedIn.value = false;
         userInfo.value = {
             id: 0,
+            username: "",
             firstName: "",
             lastName: "",
             email: "",
@@ -178,6 +182,7 @@ export function useAuth() {
     }
 
     return {
+        userInfo,
         isLoggedIn,
         isSuperUser,
         login,

@@ -96,12 +96,12 @@ const router = createRouter({
             component: () => import("@/views/users/UsersView.vue"),
         },
         {
-            path: "/profile",
-            name: "profile",
+            path: "/notifications",
+            name: "notifications",
             meta: {
                 requireAuth: true,
             },
-            component: () => import("@/views/profile/ProfileView.vue"),
+            component: () => import("@/views/notifications/NotificationsView.vue"),
         },
         {
             path: "/tokens",

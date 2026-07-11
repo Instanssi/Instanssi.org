@@ -33,12 +33,10 @@ import {
     faNewspaper,
     faPeopleGroup,
     faReceipt,
-    faRightFromBracket,
     faStore,
     faTicket,
     faTrophy,
     faUpload,
-    faUser,
     faUsers,
     faVideo,
 } from "@fortawesome/free-solid-svg-icons";
@@ -209,18 +207,6 @@ const secondaryLinks = computed((): NavigationLinks => [
         to: "auditlog",
         noEventId: true,
         requirePerm: PermissionTarget.LOG_ENTRY,
-    },
-    {
-        title: t("App.nav.profile"),
-        icon: faUser,
-        to: "profile",
-        noEventId: true,
-    },
-    {
-        title: t("App.nav.logout"),
-        icon: faRightFromBracket,
-        to: "logout",
-        noEventId: true,
     },
 ]);
 

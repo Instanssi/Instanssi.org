@@ -106,7 +106,6 @@
         "uploads": "Uploads",
         "events": "Events",
         "users": "Users",
-        "logout": "Log out",
         "kompomaatti": "Kompomaatti",
         "compos": "Compos",
         "entries": "Entries",
@@ -126,8 +125,7 @@
         "arkistoVideos": "Videos",
         "apiTokens": "API Tokens",
         "auditLog": "Audit Log",
-        "infodesk": "Infodesk",
-        "profile": "Profile"
+        "infodesk": "Infodesk"
       }
     },
     "MainNavigation": {
@@ -135,7 +133,20 @@
       "event": "Event",
       "publicEvents": "Public",
       "hiddenEvents": "Hidden",
-      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost."
+      "confirmEventChange": "Are you sure you want to change the event? You will be redirected to the new event's dashboard and any unsaved changes will be lost.",
+      "links": {
+        "index": "Index",
+        "kompomaatti": "Kompomaatti",
+        "arkisto": "Archive"
+      }
+    },
+    "UserMenu": {
+      "profile": "Profile",
+      "emailAddresses": "Email addresses",
+      "changePassword": "Change password",
+      "connectedAccounts": "Connected accounts",
+      "notifications": "Notifications",
+      "logout": "Log out"
     },
     "EventView": {
       "title": "Events",
@@ -955,35 +966,13 @@
         "youtubeUrlHint": "Enter a YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30)"
       }
     },
-    "ProfileView": {
-      "title": "Profile",
-      "sections": {
-        "account": "Account Information"
-      },
-      "labels": {
-        "username": "Username",
-        "email": "Email",
-        "dateJoined": "Date joined",
-        "firstName": "First name",
-        "lastName": "Last name",
-        "language": "Language",
-        "browserDefault": "Browser default",
-        "otherinfo": "Other contact info",
-        "otherinfoHint": "Other contact information, e.g. IRC nick & network, Discord handle, etc.",
-        "manageEmail": "Manage email addresses"
-      },
-      "loadFailure": "Failed to load profile; try again later.",
-      "saveSuccess": "Profile saved!",
-      "saveFailure": "Failed to save profile; try again later.",
-      "notifications": {
-        "title": "Push Notifications",
-        "enable": "Enable push notifications",
-        "enableHint": "This feature is in testing. Select which notification types you want to receive in the profile form above.",
-        "unsupported": "Push notifications are not supported in this browser.",
-        "denied": "Notification permission was denied. Please enable it in your browser settings.",
-        "subscribeFailure": "Failed to subscribe to push notifications.",
-        "unsubscribeFailure": "Failed to unsubscribe from push notifications.",
-        "preferencesTitle": "Notification Preferences",
+    "NotificationsView": {
+      "title": "Notifications",
+      "loadFailure": "Failed to load notification settings; try again later.",
+      "saveSuccess": "Notification settings saved!",
+      "saveFailure": "Failed to save notification settings; try again later.",
+      "preferences": {
+        "title": "Notification Preferences",
         "voteCodeRequestsOn": "Vote code request notifications enabled",
         "voteCodeRequestsOff": "Vote code request notifications disabled",
         "voteCodeRequestsHint": "Notifies when a user requests a vote code. Requires push notifications to be enabled.",
@@ -996,6 +985,15 @@
         "competitionStartsOn": "Competition start notifications enabled",
         "competitionStartsOff": "Competition start notifications disabled",
         "competitionStartsHint": "Notifies 15 minutes before a competition starts. Requires push notifications to be enabled."
+      },
+      "push": {
+        "title": "Push Notifications",
+        "enable": "Enable push notifications",
+        "enableHint": "This feature is in testing. Select which notification types you want to receive above.",
+        "unsupported": "Push notifications are not supported in this browser.",
+        "denied": "Notification permission was denied. Please enable it in your browser settings.",
+        "subscribeFailure": "Failed to subscribe to push notifications.",
+        "unsubscribeFailure": "Failed to unsubscribe from push notifications."
       }
     },
     "LoginView": {

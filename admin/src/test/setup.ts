@@ -188,26 +188,39 @@ vi.mock("@/services/events", () => ({
 }));
 
 // Mock auth service
-vi.mock("@/services/auth", () => ({
-    useAuth: () => ({
-        isLoggedIn: () => true,
-        canView: () => true,
-        canAdd: () => true,
-        canChange: () => true,
-        canDelete: () => true,
-        login: vi.fn(),
-        logout: vi.fn(),
-        refreshStatus: vi.fn(),
-        updateLanguage: vi.fn(),
-    }),
-    PermissionTarget: {
-        EVENT: "event",
-        USER: "user",
-        BLOG_ENTRY: "blogentry",
-        AUTH_TOKEN: "authtoken",
-        LOG_ENTRY: "logentry",
-    },
-}));
+vi.mock("@/services/auth", async () => {
+    const { ref } = await import("vue");
+    return {
+        useAuth: () => ({
+            userInfo: ref({
+                id: 1,
+                username: "testuser",
+                firstName: "Test",
+                lastName: "User",
+                email: "test@example.com",
+                permissions: new Set<string>(),
+                isSuperUser: false,
+                language: "en",
+            }),
+            isLoggedIn: () => true,
+            canView: () => true,
+            canAdd: () => true,
+            canChange: () => true,
+            canDelete: () => true,
+            login: vi.fn(),
+            logout: vi.fn(),
+            refreshStatus: vi.fn(),
+            updateLanguage: vi.fn(),
+        }),
+        PermissionTarget: {
+            EVENT: "event",
+            USER: "user",
+            BLOG_ENTRY: "blogentry",
+            AUTH_TOKEN: "authtoken",
+            LOG_ENTRY: "logentry",
+        },
+    };
+});
 
 // Mock symbols (for inject)
 vi.mock("@/symbols", () => ({

@@ -1,8 +1,23 @@
 <template>
-    <!-- Mobile App Bar -->
-    <v-app-bar v-if="mobile" color="grey-darken-4" density="compact">
-        <v-app-bar-nav-icon @click="drawer = !drawer" />
-        <v-app-bar-title>{{ t("MainNavigation.title") }}</v-app-bar-title>
+    <!-- Top Bar -->
+    <v-app-bar color="grey-darken-4" density="compact">
+        <v-app-bar-nav-icon v-if="mobile" @click="drawer = !drawer" />
+        <v-app-bar-title v-if="mobile">{{ t("MainNavigation.title") }}</v-app-bar-title>
+        <template v-if="!mobile">
+            <v-btn
+                v-for="link in SITE_LINKS"
+                :key="link.href"
+                :href="link.href"
+                variant="text"
+                class="ml-1"
+            >
+                {{ t(link.titleKey) }}
+            </v-btn>
+        </template>
+        <v-spacer />
+        <LanguageSelector />
+        <SiteLinksMenu v-if="mobile" />
+        <UserMenu />
     </v-app-bar>
 
     <!-- Navigation Drawer (permanent on desktop, temporary on mobile) -->
@@ -65,7 +80,11 @@ import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import logoImage from "@/assets/icon.png";
+import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import NavigationList, { type NavigationLinks } from "@/components/layout/NavigationList.vue";
+import { SITE_LINKS } from "@/components/layout/siteLinks";
+import SiteLinksMenu from "@/components/layout/SiteLinksMenu.vue";
+import UserMenu from "@/components/layout/UserMenu.vue";
 import { PermissionTarget, useAuth } from "@/services/auth";
 import { useEvents } from "@/services/events";
 import { confirmDialogKey, type ConfirmDialogType } from "@/symbols";

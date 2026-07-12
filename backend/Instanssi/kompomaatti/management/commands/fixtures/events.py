@@ -124,4 +124,12 @@ events: list[dict[str, Any]] = [
         "archived": False,
         "mainurl": "https://instanssi.org/2026",
     },
+    {
+        "pk": 27,
+        "name": "Instanssi 2027",
+        "tag": "2027",
+        "date": date(2027, 3, 4),
+        "archived": False,
+        "mainurl": "https://instanssi.org/2027",
+    },
 ]

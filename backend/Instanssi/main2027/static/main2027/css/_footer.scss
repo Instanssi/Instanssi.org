@@ -1,0 +1,68 @@
+/* footer */
+#page-footer {
+    min-height: $main-footer-height;
+    margin-top: $spacing-large;
+    width: 100%;
+    background: #333;
+    bottom: 0px;
+    padding: $spacing-large 0;
+
+    section {
+        h2 {
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
+    }
+
+    .sponsors {
+        .sponsor {
+            position: relative;
+            max-height: 80px;
+            float: left;
+            margin-bottom: $spacer;
+            margin-right: $spacer;
+
+            &.white {
+                background: #fff;
+            }
+
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 0px;
+                padding: $spacer;
+                background: #fff;
+                width: 128px;
+                height: 80px;
+            }
+
+            a:hover {
+                opacity: 0.9;
+            }
+
+            img {
+                background: #fff;
+                max-width: 128px - $spacer * 2;
+                max-height: 80px - $spacer * 2;
+            }
+        }
+    }
+
+    .menu-item {
+        margin: $spacer 0 $spacer;
+    }
+
+    .menu-item a {
+        padding: $spacer;
+        color: #ccc;
+        text-decoration: none;
+    }
+
+    .current-menu-item a {
+        color: #fff;
+        background: $theme-color;
+        text-decoration: none;
+    }
+}

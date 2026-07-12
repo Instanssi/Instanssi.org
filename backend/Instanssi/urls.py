@@ -16,6 +16,7 @@ urlpatterns = [
     path("api/v1/", include("Instanssi.api.v1.urls", namespace="api")),
     path("api/v2/", include("Instanssi.api.v2.urls", namespace="api-v2")),
     path("2026/", include("Instanssi.main2026.urls", namespace="main2026")),
+    path("2027/", include("Instanssi.main2027.urls", namespace="main2027")),
     path("users/", include("Instanssi.users.urls", namespace="users")),
     path("blog/", include("Instanssi.ext_blog.urls", namespace="ext-blog")),
     path("arkisto/", include("Instanssi.arkisto.urls", namespace="archive")),
@@ -23,7 +24,7 @@ urlpatterns = [
     path("store/", include("Instanssi.store.urls", namespace="store")),
     # External Vue app -- served by nginx; this just provides a named URL for templates.
     path("management/", RedirectView.as_view(url="/management/"), name="management"),
-    path("", RedirectView.as_view(url=reverse_lazy("main2026:index")), name="root-index"),
+    path("", RedirectView.as_view(url=reverse_lazy("main2027:index")), name="root-index"),
 ]
 
 # Add admin panel link if debug mode is on

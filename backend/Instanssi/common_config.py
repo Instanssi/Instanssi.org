@@ -189,6 +189,7 @@ INSTALLED_APPS = (
     "Instanssi.base_layout",
     "Instanssi.arkisto",
     "Instanssi.main2026",
+    "Instanssi.main2027",
     "Instanssi.admin_upload",
     "Instanssi.users.apps.UsersConfig",
     "Instanssi.kompomaatti",

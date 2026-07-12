@@ -1,0 +1,9 @@
+{% extends "main2027/base.html" %}
+{% load blog_tags %}
+
+{% block content %}
+{{ block.super }}
+<h1>Blogi</h1>
+
+{% render_blog 25 10 %}
+{% endblock %}

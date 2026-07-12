@@ -16,6 +16,7 @@ def test_social_urls(api_client):
     assert "google" in methods
     assert "github" in methods
     assert "steam" in methods
+    assert "sceneid" in methods
     # All entries should have the expected structure and default next parameter
     for item in response.data:
         assert set(item.keys()) == {"method", "url", "name"}

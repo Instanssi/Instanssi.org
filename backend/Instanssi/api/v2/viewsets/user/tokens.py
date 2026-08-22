@@ -36,7 +36,7 @@ class UserTokenViewSet(DestroyModelMixin, ListModelMixin, GenericViewSet[AuthTok
     pagination_class = LimitOffsetPagination
     filter_backends = (OrderingFilter,)
     ordering_fields = ("created", "expiry")
-    ordering = ("-created",)
+    ordering = ("created",)
     queryset = AuthToken.objects.all()
 
     def get_queryset(self) -> QuerySet[AuthToken]:

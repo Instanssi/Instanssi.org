@@ -80,14 +80,14 @@ class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
     Use for data that should only be readable by staff with explicit permissions.
     Includes LimitOffsetPagination and standard filter backends by default.
 
-    Default ordering is by descending ID (newest first). Individual viewsets
-    can override this by setting their own `ordering` attribute.
+    Default ordering is by ascending ID. Individual viewsets can override
+    this by setting their own `ordering` attribute.
     """
 
     permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
     filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
-    ordering: Sequence[str] = ("-id",)
+    ordering: Sequence[str] = ("id",)
 
 
 class PermissionViewSet(ModelViewSet[Model]):
@@ -100,14 +100,14 @@ class PermissionViewSet(ModelViewSet[Model]):
     Includes LimitOffsetPagination and standard filter backends by default.
     Viewsets that don't need SearchFilter can override filter_backends.
 
-    Default ordering is by descending ID (newest first). Individual viewsets
-    can override this by setting their own `ordering` attribute.
+    Default ordering is by ascending ID. Individual viewsets can override
+    this by setting their own `ordering` attribute.
     """
 
     permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
     filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
-    ordering: Sequence[str] = ("-id",)
+    ordering: Sequence[str] = ("id",)
 
 
 class PublicReadOnlyViewSet(ReadOnlyModelViewSet[_ModelT]):

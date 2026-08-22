@@ -20,7 +20,7 @@ class InfodeskTransactionViewSet(ReadOnlyModelViewSet[StoreTransaction]):
     permission_classes = [IsAdminUser, HasInfodeskViewPermission]
     pagination_class = LimitOffsetPagination
     filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
-    ordering = ("-time_created",)
+    ordering = ("id",)
     ordering_fields = ("id", "time_created", "firstname", "lastname")
     search_fields = ("firstname", "lastname", "email")
 

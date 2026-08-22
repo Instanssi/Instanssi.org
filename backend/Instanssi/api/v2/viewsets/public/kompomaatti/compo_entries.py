@@ -18,7 +18,6 @@ class PublicCompoEntryViewSet(PublicReadOnlyViewSet[Entry]):
     queryset = Entry.objects.all()
     ordering_fields = ["id", "name", "compo", "order_index", "computed_rank", "computed_score"]
     filterset_fields = ("compo",)
-    ordering = ["compo", "computed_rank"]
 
     def get_queryset(self) -> QuerySet[Entry]:
         event_id = int(self.kwargs["event_pk"])

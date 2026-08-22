@@ -121,8 +121,8 @@ class TestTokenOrdering:
     """Tests for token ordering."""
 
     @pytest.mark.django_db
-    def test_tokens_ordered_by_created_desc_default(self, staff_api_client, staff_user):
-        """Test that tokens are ordered by created date descending by default."""
+    def test_tokens_ordered_by_created_asc_default(self, staff_api_client, staff_user):
+        """Test that tokens are ordered by created date ascending by default."""
         # Create tokens with slight delay to ensure different timestamps
         token1_string = create_token_string()
         token1 = AuthToken(
@@ -144,6 +144,6 @@ class TestTokenOrdering:
 
         result = staff_api_client.get(BASE_URL)
         assert result.status_code == 200
-        # Most recently created should be first (descending order)
-        assert result.data[0]["pk"] == str(token2.pk)
-        assert result.data[1]["pk"] == str(token1.pk)
+        # Oldest token should be first (ascending order)
+        assert result.data[0]["pk"] == str(token1.pk)
+        assert result.data[1]["pk"] == str(token2.pk)

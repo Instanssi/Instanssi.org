@@ -46,7 +46,6 @@ class AuditLogViewSet(PermissionReadOnlyViewSet):
     serializer_class = LogEntrySerializer
     filter_backends = (OrderingFilter, ApiFilterBackend)
     filterset_class = LogEntryFilter
-    ordering = ("-timestamp",)
     ordering_fields = ["timestamp"]
 
     def get_queryset(self) -> QuerySet[LogEntry]:

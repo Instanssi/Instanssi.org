@@ -13,7 +13,6 @@ class PublicBlogEntryViewSet(PublicReadOnlyViewSet[BlogEntry]):
     serializer_class = PublicBlogEntrySerializer
     filter_backends = (OrderingFilter, SearchFilter, ApiFilterBackend)
     ordering_fields = ("id", "date")
-    ordering = ("-date", "-id")
     search_fields = ("title", "text")
     filterset_fields = ("event",)
 

@@ -57,15 +57,22 @@ def test_v2_viewsets_use_api_filter_backend():
 
 
 def test_v2_paginated_viewsets_have_default_ordering():
-    """Paginated lists need OrderingFilter and a non-empty default ordering."""
+    """Paginated lists need OrderingFilter and a default ordering of ("id",).
+
+    Clients that want a different order (e.g. the admin panel's newest-first
+    tables) must request it via the `ordering` query parameter. Models without
+    an `id` field only need some non-empty deterministic ordering.
+    """
     offenders = []
     for path, cls in _v2_list_views():
         if not issubclass(cls, GenericAPIView) or cls.pagination_class is None:
             continue
         backends = getattr(cls, "filter_backends", ())
         has_ordering_filter = any(issubclass(b, OrderingFilter) for b in backends)
-        if not has_ordering_filter or not getattr(cls, "ordering", None):
-            offenders.append(f"{cls.__name__} ({path})")
-    assert not offenders, "Paginated viewsets missing OrderingFilter or a default `ordering`:\n" + "\n".join(
-        offenders
-    )
+        ordering = tuple(getattr(cls, "ordering", None) or ())
+        model = getattr(getattr(cls, "queryset", None), "model", None)
+        has_id_field = model is not None and any(f.name == "id" for f in model._meta.fields)
+        ordering_ok = ordering == ("id",) if has_id_field else bool(ordering)
+        if not has_ordering_filter or not ordering_ok:
+            offenders.append(f"{cls.__name__} ({path}) ordering={ordering!r}")
+    assert not offenders, "Paginated viewsets must order by ('id',) by default:\n" + "\n".join(offenders)

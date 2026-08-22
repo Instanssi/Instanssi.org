@@ -15,8 +15,7 @@ class PublicStoreItemViewSet(PublicReadOnlyViewSet[StoreItem]):
     serializer_class = PublicStoreItemSerializer
     ordering_fields = ("id", "event", "name", "price", "sort_index")
     filterset_fields = ("event",)
-    ordering = ("sort_index", "id")
 
     def get_queryset(self) -> QuerySet[StoreItem]:
         secret_key = self.request.query_params.get("secret_key")
-        return StoreItem.items_visible(secret_key=secret_key).order_by("sort_index")
+        return StoreItem.items_visible(secret_key=secret_key)

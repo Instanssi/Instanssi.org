@@ -570,7 +570,8 @@
       "revealed": "Paljastettu",
       "onScreen": "Ruudulla",
       "votingEnd": "Äänestys päättyy:",
-      "votingTimeEnded": "Päättynyt"
+      "votingTimeEnded": "Päättynyt",
+      "eventArchived": "Tapahtuma on arkistoitu — live-äänestys on poissa käytöstä."
     },
     "VoteCodesView": {
       "title": "Lippu-äänikoodit",

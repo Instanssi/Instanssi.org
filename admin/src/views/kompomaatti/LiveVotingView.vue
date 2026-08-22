@@ -5,6 +5,13 @@
             <v-alert v-else type="error">{{ t("LiveVotingView.loadFailure") }}</v-alert>
         </v-col>
         <v-col v-else>
+            <v-row v-if="eventArchived" class="mt-2">
+                <v-col cols="12">
+                    <v-alert type="info" variant="tonal">
+                        {{ t("LiveVotingView.eventArchived") }}
+                    </v-alert>
+                </v-col>
+            </v-row>
             <v-row class="mt-2" align="center">
                 <v-col cols="auto">
                     <FontAwesomeIcon :icon="faClock" class="mr-1" />
@@ -16,7 +23,7 @@
                 </v-col>
             </v-row>
 
-            <v-row class="mt-2">
+            <v-row v-if="!eventArchived" class="mt-2">
                 <v-col cols="auto">
                     <v-btn
                         :color="state.voting_open ? 'warning' : 'success'"
@@ -106,7 +113,9 @@
                                     size="small"
                                     variant="elevated"
                                     :disabled="
-                                        !state.voting_open || entry.id !== nextRevealableEntryId
+                                        eventArchived ||
+                                        !state.voting_open ||
+                                        entry.id !== nextRevealableEntryId
                                     "
                                     :loading="actionLoading"
                                     @click="revealEntry(entry.id)"
@@ -121,7 +130,9 @@
                                     <v-btn
                                         size="small"
                                         variant="text"
-                                        :disabled="entry.id !== lastHideableEntryId"
+                                        :disabled="
+                                            eventArchived || entry.id !== lastHideableEntryId
+                                        "
                                         :loading="actionLoading"
                                         @click="hideEntry(entry.id)"
                                     >
@@ -167,6 +178,7 @@ const { getEventById } = useEvents();
 const confirmDialog: ConfirmDialogType = inject(confirmDialogKey)!;
 const eventId = computed(() => parseInt(props.eventId, 10));
 const compoId = computed(() => parseInt(props.compoId, 10));
+const eventArchived = computed(() => getEventById(eventId.value)?.archived ?? false);
 
 const breadcrumbs = computed((): BreadcrumbItem[] => [
     {
@@ -398,6 +410,7 @@ async function confirmReset() {
 
 const pollIntervalMs = computed(() => {
     if (!state.value) return null;
+    if (eventArchived.value) return null;
     if (votingEnded.value) return null;
     return state.value.voting_open ? 1000 : 5000;
 });

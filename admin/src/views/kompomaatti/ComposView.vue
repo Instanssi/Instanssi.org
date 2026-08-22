@@ -69,7 +69,9 @@
                     </template>
                     <template #item.actions="{ item }">
                         <v-btn
-                            v-if="auth.canView(PermissionTarget.LIVE_VOTING_STATE)"
+                            v-if="
+                                auth.canView(PermissionTarget.LIVE_VOTING_STATE) && !eventArchived
+                            "
                             class="ml-1 mr-1"
                             icon
                             density="compact"
@@ -132,6 +134,7 @@ const toast = useToast();
 const auth = useAuth();
 const { getEventById } = useEvents();
 const eventId = computed(() => parseInt(props.eventId, 10));
+const eventArchived = computed(() => getEventById(eventId.value)?.archived ?? false);
 const loading = ref(false);
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [

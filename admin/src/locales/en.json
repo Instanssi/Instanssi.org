@@ -570,7 +570,8 @@
       "revealed": "Revealed",
       "onScreen": "On Screen",
       "votingEnd": "Voting ends:",
-      "votingTimeEnded": "Ended"
+      "votingTimeEnded": "Ended",
+      "eventArchived": "This event has been archived — live voting is disabled."
     },
     "VoteCodesView": {
       "title": "Ticket Vote Codes",

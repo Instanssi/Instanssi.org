@@ -6,7 +6,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -17,6 +16,8 @@ from rest_framework.viewsets import (
     ReadOnlyModelViewSet,
     ViewSet,
 )
+
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 
 _ModelT = TypeVar("_ModelT", bound=Model)
 
@@ -85,8 +86,8 @@ class PermissionReadOnlyViewSet(ReadOnlyModelViewSet[Model]):
 
     permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
-    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
-    ordering = ("-id",)
+    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
+    ordering: Sequence[str] = ("-id",)
 
 
 class PermissionViewSet(ModelViewSet[Model]):
@@ -105,8 +106,8 @@ class PermissionViewSet(ModelViewSet[Model]):
 
     permission_classes = [IsAdminUser, FullDjangoModelPermissions]
     pagination_class = LimitOffsetPagination
-    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
-    ordering = ("-id",)
+    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
+    ordering: Sequence[str] = ("-id",)
 
 
 class PublicReadOnlyViewSet(ReadOnlyModelViewSet[_ModelT]):
@@ -120,6 +121,8 @@ class PublicReadOnlyViewSet(ReadOnlyModelViewSet[_ModelT]):
     permission_classes = [AllowAny]
     authentication_classes: list[type] = []
     pagination_class = LimitOffsetPagination
+    filter_backends: Sequence[type] = (OrderingFilter, ApiFilterBackend)
+    ordering: Sequence[str] = ("id",)
 
 
 class WriteOnlyModelViewSet(CreateModelMixin, GenericViewSet[Model]):

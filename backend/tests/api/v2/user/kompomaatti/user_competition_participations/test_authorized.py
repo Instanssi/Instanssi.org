@@ -228,3 +228,15 @@ def test_user_cannot_create_participation_for_hidden_event(
         },
     )
     assert req.status_code == 400
+
+
+@pytest.mark.django_db
+def test_user_participations_filter_with_unknown_competition_id_returns_empty_list(
+    auth_client, competition_participation
+):
+    """A nonexistent competition id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which competition ids exist."""
+    base_url = get_base_url(competition_participation.competition.event_id)
+    req = auth_client.get(f"{base_url}?competition=999999")
+    assert req.status_code == 200
+    assert req.data == []

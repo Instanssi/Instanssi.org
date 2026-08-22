@@ -148,6 +148,18 @@ def test_can_filter_transaction_items_by_transaction(infodesk_view_client, trans
 
 
 @pytest.mark.django_db
+def test_transaction_items_filter_with_unknown_transaction_id_returns_empty_list(
+    infodesk_view_client, transaction_item_a, store_item
+):
+    """A nonexistent transaction id must yield an empty list, not a validation error,
+    so a stale id in the admin UI does not break the view."""
+    base = get_base_url(store_item.event_id)
+    response = infodesk_view_client.get(f"{base}/transaction_items/?limit=25&transaction=999999")
+    assert response.status_code == 200
+    assert response.data["count"] == 0
+
+
+@pytest.mark.django_db
 def test_view_only_cannot_mark_delivered(infodesk_view_client, transaction_item_a, store_item):
     """User with view permission only cannot mark items as delivered."""
     base = get_base_url(store_item.event_id)

@@ -5829,6 +5829,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -5893,6 +5899,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -5940,6 +5952,10 @@ paths:
 
         Only participations from active competitions that have started are shown.
       parameters:
+      - in: query
+        name: competition
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -5957,6 +5973,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -6021,6 +6043,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -6082,6 +6110,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -6131,6 +6165,10 @@ paths:
 
         Supports ordering by rank and score when results are visible.
       parameters:
+      - in: query
+        name: compo
+        schema:
+          type: integer
       - in: path
         name: event_pk
         schema:
@@ -6256,6 +6294,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       tags:
       - public
       security:
@@ -10350,14 +10394,57 @@ components:
           title: Entry presentation
           minimum: -9223372036854775808
           maximum: 9223372036854775807
+        max_entry_size:
+          type: integer
+          readOnly: true
+        max_source_size:
+          type: integer
+          readOnly: true
+        max_image_size:
+          type: integer
+          readOnly: true
+        source_format_list:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        entry_format_list:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        image_format_list:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        is_imagefile_allowed:
+          type: boolean
+          readOnly: true
+        is_imagefile_required:
+          type: boolean
+          readOnly: true
+        show_voting_results:
+          type: boolean
+          readOnly: true
+          title: Show results
       required:
       - adding_end
       - compo_start
       - description
       - editing_end
+      - entry_format_list
       - event
       - id
+      - image_format_list
+      - is_imagefile_allowed
+      - is_imagefile_required
+      - max_entry_size
+      - max_image_size
+      - max_source_size
       - name
+      - show_voting_results
+      - source_format_list
       - voting_end
     PublicCompoEntry:
       type: object

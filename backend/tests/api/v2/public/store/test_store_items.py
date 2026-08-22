@@ -64,3 +64,12 @@ def test_hidden_event_store_items_not_in_list(api_client, store_item, hidden_eve
     item_ids = [i["id"] for i in req.data]
     assert store_item.id in item_ids
     assert hidden_event_store_item.id not in item_ids
+
+
+@pytest.mark.django_db
+def test_store_items_filter_with_unknown_event_id_returns_empty_list(api_client, store_item):
+    """A nonexistent event id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which event ids exist."""
+    req = api_client.get(PUBLIC_STORE_URL, {"event": 999999})
+    assert req.status_code == 200
+    assert req.data == []

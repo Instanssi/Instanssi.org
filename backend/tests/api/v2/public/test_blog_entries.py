@@ -59,3 +59,12 @@ def test_hidden_event_blog_entries_not_in_list(api_client, hidden_event_blog_ent
     assert req.status_code == 200
     blog_ids = [b["id"] for b in req.data]
     assert hidden_event_blog_entry.id not in blog_ids
+
+
+@pytest.mark.django_db
+def test_blog_filter_with_unknown_event_id_returns_empty_list(api_client, public_blog_entry):
+    """A nonexistent event id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which event ids exist."""
+    req = api_client.get(BASE_URL, {"event": 999999})
+    assert req.status_code == 200
+    assert req.data == []

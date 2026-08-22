@@ -280,3 +280,15 @@ def test_user_cannot_create_vote_group_for_hidden_event(
         format="json",
     )
     assert req.status_code == 400
+
+
+@pytest.mark.django_db
+def test_user_votes_filter_with_unknown_compo_id_returns_empty_list(
+    auth_client, ticket_vote_code, votable_compo, entry_vote_group, entry_vote
+):
+    """A nonexistent compo id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which compo ids exist."""
+    base_url = get_base_url(votable_compo.event_id)
+    req = auth_client.get(f"{base_url}?compo=999999")
+    assert req.status_code == 200
+    assert req.data == []

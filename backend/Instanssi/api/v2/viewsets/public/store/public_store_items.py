@@ -1,6 +1,4 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
 
 from Instanssi.api.v2.serializers.public.store import PublicStoreItemSerializer
 from Instanssi.api.v2.utils.base import PublicReadOnlyViewSet
@@ -15,9 +13,9 @@ class PublicStoreItemViewSet(PublicReadOnlyViewSet[StoreItem]):
     """
 
     serializer_class = PublicStoreItemSerializer
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
     ordering_fields = ("id", "event", "name", "price", "sort_index")
     filterset_fields = ("event",)
+    ordering = ("sort_index", "id")
 
     def get_queryset(self) -> QuerySet[StoreItem]:
         secret_key = self.request.query_params.get("secret_key")

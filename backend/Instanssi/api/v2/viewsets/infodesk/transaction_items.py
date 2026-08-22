@@ -3,7 +3,6 @@ from typing import Sequence
 
 from django.db.models import QuerySet
 from django.utils import timezone
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import LimitOffsetPagination
@@ -13,6 +12,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from Instanssi.api.v2.serializers.infodesk import InfodeskTransactionItemSerializer
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 from Instanssi.api.v2.viewsets.infodesk.permissions import (
     HasInfodeskChangePermission,
     HasInfodeskViewPermission,
@@ -29,7 +29,7 @@ class InfodeskTransactionItemViewSet(ReadOnlyModelViewSet[TransactionItem]):
     serializer_class = InfodeskTransactionItemSerializer
     permission_classes = [IsAdminUser, HasInfodeskViewPermission]
     pagination_class = LimitOffsetPagination
-    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, DjangoFilterBackend)
+    filter_backends: Sequence[type] = (OrderingFilter, SearchFilter, ApiFilterBackend)
     ordering = ("-id",)
     ordering_fields = ("id", "time_delivered")
     search_fields = ("key", "transaction__firstname", "transaction__lastname", "transaction__email")

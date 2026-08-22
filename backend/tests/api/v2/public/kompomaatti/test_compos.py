@@ -25,6 +25,23 @@ def test_anonymous_can_get_active_compo_detail(api_client, open_compo):
 
 
 @pytest.mark.django_db
+def test_compo_detail_contains_entry_submission_fields(api_client, open_compo):
+    """Fields needed by the kompomaatti frontend entry forms are exposed."""
+    base_url = get_base_url(open_compo.event_id)
+    req = api_client.get(f"{base_url}{open_compo.id}/")
+    assert req.status_code == 200
+    assert req.data["max_entry_size"] == open_compo.max_entry_size
+    assert req.data["max_source_size"] == open_compo.max_source_size
+    assert req.data["max_image_size"] == open_compo.max_image_size
+    assert req.data["entry_format_list"] == open_compo.entry_format_list
+    assert req.data["source_format_list"] == open_compo.source_format_list
+    assert req.data["image_format_list"] == open_compo.image_format_list
+    assert req.data["is_imagefile_allowed"] == open_compo.is_imagefile_allowed
+    assert req.data["is_imagefile_required"] == open_compo.is_imagefile_required
+    assert req.data["show_voting_results"] == open_compo.show_voting_results
+
+
+@pytest.mark.django_db
 def test_anonymous_cannot_see_inactive_compos(api_client, inactive_compo):
     """Test that inactive compos are not visible."""
     base_url = get_base_url(inactive_compo.event_id)

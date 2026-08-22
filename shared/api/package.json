@@ -4,13 +4,7 @@
     "private": true,
     "type": "module",
     "description": "Generated TypeScript client for the Instanssi.org APIv2",
-    "packageManager": "pnpm@10.29.1",
-    "pnpm": {
-        "onlyBuiltDependencies": [],
-        "onlyBuiltDependenciesFile": "",
-        "blockExoticSubdeps": false,
-        "minimumReleaseAge": "1440"
-    },
+    "packageManager": "pnpm@11.22.0",
     "exports": {
         ".": "./src/index.ts",
         "./client": "./src/generated/client.gen.ts",

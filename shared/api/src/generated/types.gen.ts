@@ -2208,6 +2208,18 @@ export type PublicCompo = {
      * Entry presentation
      */
     entry_view_type?: EntryViewTypeEnum;
+    readonly max_entry_size: number;
+    readonly max_source_size: number;
+    readonly max_image_size: number;
+    readonly source_format_list: Array<string>;
+    readonly entry_format_list: Array<string>;
+    readonly image_format_list: Array<string>;
+    readonly is_imagefile_allowed: boolean;
+    readonly is_imagefile_required: boolean;
+    /**
+     * Show results
+     */
+    readonly show_voting_results: boolean;
 };
 
 /**
@@ -7976,6 +7988,10 @@ export type PublicEventArchiveVideoCategoriesListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/archive/video_categories/";
 };
@@ -8021,6 +8037,10 @@ export type PublicEventArchiveVideosListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/archive/videos/";
 };
@@ -8058,6 +8078,7 @@ export type PublicEventKompomaattiCompetitionParticipationsListData = {
         event_pk: number;
     };
     query?: {
+        competition?: number;
         /**
          * Number of results to return per page.
          */
@@ -8066,6 +8087,10 @@ export type PublicEventKompomaattiCompetitionParticipationsListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/kompomaatti/competition_participations/";
 };
@@ -8111,6 +8136,10 @@ export type PublicEventKompomaattiCompetitionsListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/kompomaatti/competitions/";
 };
@@ -8156,6 +8185,10 @@ export type PublicEventKompomaattiComposListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/kompomaatti/compos/";
 };
@@ -8193,6 +8226,7 @@ export type PublicEventKompomaattiEntriesListData = {
         event_pk: number;
     };
     query?: {
+        compo?: number;
         /**
          * Number of results to return per page.
          */
@@ -8274,6 +8308,10 @@ export type PublicEventProgramEventsListData = {
          * The initial index from which to return the results.
          */
         offset?: number;
+        /**
+         * Which field to use when ordering the results.
+         */
+        ordering?: string;
     };
     url: "/api/v2/public/event/{event_pk}/program/events/";
 };

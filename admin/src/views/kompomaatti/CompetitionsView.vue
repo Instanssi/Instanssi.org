@@ -202,7 +202,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventKompomaattiCompetitionsList({
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },
         });

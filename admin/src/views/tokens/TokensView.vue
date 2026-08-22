@@ -139,7 +139,9 @@ async function load(args: LoadArgs) {
     loading.value = true;
     lastLoadArgs.value = args;
     try {
-        const response = await api.tokensList({ query: getLoadArgs(args) });
+        const response = await api.tokensList({
+            query: getLoadArgs(args, "-created"),
+        });
         tokens.value = response.data!.results;
         totalItems.value = response.data!.count;
     } catch (e) {

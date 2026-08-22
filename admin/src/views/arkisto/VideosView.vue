@@ -209,7 +209,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventArkistoVideosList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(selectedCategory.value ? { category: selectedCategory.value } : {}),
             },
         });

@@ -204,7 +204,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventKompomaattiVoteCodeRequestsList({
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
             },
         });
         requests.value = response.data!.results;

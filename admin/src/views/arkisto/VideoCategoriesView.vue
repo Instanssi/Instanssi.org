@@ -140,7 +140,7 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminEventArkistoVideoCategoriesList({
             path: { event_pk: eventId.value },
-            query: getLoadArgs(args),
+            query: getLoadArgs(args, "-id"),
         });
         items.value = response.data!.results;
         totalItems.value = response.data!.count;

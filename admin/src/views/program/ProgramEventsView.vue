@@ -269,7 +269,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventProgramEventsList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(filterEventType.value !== null ? { event_type: filterEventType.value } : {}),
                 ...(filterActive.value !== null ? { active: filterActive.value } : {}),
             },

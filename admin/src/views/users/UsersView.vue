@@ -221,7 +221,7 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminUsersList({
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(filterIsActive.value !== null ? { is_active: filterIsActive.value } : {}),
                 ...(filterIsStaff.value !== null ? { is_staff: filterIsStaff.value } : {}),
                 ...(filterIsSystem.value !== null ? { is_system: filterIsSystem.value } : {}),

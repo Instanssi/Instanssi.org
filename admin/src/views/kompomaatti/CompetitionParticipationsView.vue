@@ -261,7 +261,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventKompomaattiCompetitionParticipationsList({
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(selectedCompetition.value ? { competition: selectedCompetition.value } : {}),
                 ...(filterDisqualified.value !== null
                     ? { disqualified: filterDisqualified.value }

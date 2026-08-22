@@ -12,7 +12,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).offset).toBe(0);
+            expect(getLoadArgs(args, "-id").offset).toBe(0);
         });
 
         it("should calculate correct offset for page 2", () => {
@@ -23,7 +23,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).offset).toBe(10);
+            expect(getLoadArgs(args, "-id").offset).toBe(10);
         });
 
         it("should calculate correct offset for page 5 with 25 items per page", () => {
@@ -34,7 +34,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).offset).toBe(100);
+            expect(getLoadArgs(args, "-id").offset).toBe(100);
         });
     });
 
@@ -47,7 +47,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).limit).toBe(50);
+            expect(getLoadArgs(args, "-id").limit).toBe(50);
         });
     });
 
@@ -60,7 +60,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).search).toBe("");
+            expect(getLoadArgs(args, "-id").search).toBe("");
         });
 
         it("should pass search term unchanged", () => {
@@ -71,12 +71,12 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "test query",
             };
-            expect(getLoadArgs(args).search).toBe("test query");
+            expect(getLoadArgs(args, "-id").search).toBe("test query");
         });
     });
 
     describe("ordering", () => {
-        it("should pass undefined ordering when no sort", () => {
+        it("should use the given default ordering when no sort", () => {
             const args: LoadArgs = {
                 page: 1,
                 itemsPerPage: 10,
@@ -84,7 +84,8 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).ordering).toBeUndefined();
+            expect(getLoadArgs(args, "-id").ordering).toBe("-id");
+            expect(getLoadArgs(args, "-created").ordering).toBe("-created");
         });
 
         it("should pass correct ordering for ascending sort", () => {
@@ -95,7 +96,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).ordering).toBe("name");
+            expect(getLoadArgs(args, "-id").ordering).toBe("name");
         });
 
         it("should pass correct ordering for descending sort", () => {
@@ -106,7 +107,7 @@ describe("getLoadArgs", () => {
                 groupBy: undefined as never,
                 search: "",
             };
-            expect(getLoadArgs(args).ordering).toBe("-created");
+            expect(getLoadArgs(args, "-id").ordering).toBe("-created");
         });
     });
 });

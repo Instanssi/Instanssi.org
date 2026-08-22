@@ -21,13 +21,14 @@ export type ApiArgs = {
 };
 
 /**
- * Converts vuetify arguments to API compatible form
+ * Converts vuetify arguments to API compatible form. The default ordering is
+ * used when the user has not selected a column sort.
  */
-export function getLoadArgs(args: LoadArgs): ApiArgs {
+export function getLoadArgs(args: LoadArgs, defaultOrdering?: string): ApiArgs {
     return {
         offset: (args.page - 1) * args.itemsPerPage,
         limit: args.itemsPerPage,
-        ordering: getSortString(args),
+        ordering: getSortString(args) ?? defaultOrdering,
         search: args.search,
     };
 }

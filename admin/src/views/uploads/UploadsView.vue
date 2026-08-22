@@ -176,7 +176,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventUploadsFilesList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
             },
         });
         items.value = response.data!.results;

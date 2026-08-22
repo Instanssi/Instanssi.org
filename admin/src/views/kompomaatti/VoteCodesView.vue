@@ -99,7 +99,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventKompomaattiTicketVoteCodesList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
             },
         });
         voteCodes.value = response.data!.results;

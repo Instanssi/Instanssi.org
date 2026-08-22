@@ -397,7 +397,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventKompomaattiEntriesList({
             path: { event_pk: parseInt(props.eventId, 10) },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(selectedCompo.value ? { compo: selectedCompo.value } : {}),
                 ...(filterDisqualified.value !== null
                     ? { disqualified: filterDisqualified.value }

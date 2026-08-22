@@ -237,7 +237,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventStoreItemsList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(filterAvailable.value !== null ? { available: filterAvailable.value } : {}),
                 ...(filterIsTicket.value !== null ? { is_ticket: filterIsTicket.value } : {}),
                 ...(filterIsSecret.value !== null ? { is_secret: filterIsSecret.value } : {}),

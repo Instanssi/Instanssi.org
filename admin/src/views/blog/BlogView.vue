@@ -172,7 +172,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminBlogList({
             query: {
                 event: parseInt(props.eventId, 10),
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
             },
         });
         blogPosts.value = response.data!.results;

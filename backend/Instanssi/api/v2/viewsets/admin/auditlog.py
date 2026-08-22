@@ -6,9 +6,10 @@ from rest_framework.filters import OrderingFilter
 
 from Instanssi.api.v2.serializers.admin.auditlog_serializer import LogEntrySerializer
 from Instanssi.api.v2.utils.base import PermissionReadOnlyViewSet
+from Instanssi.api.v2.utils.filters import ApiFilterBackend, BaseFilterSet
 
 
-class LogEntryFilter(filters.FilterSet):
+class LogEntryFilter(BaseFilterSet):
     """Filter for audit log entries."""
 
     app_label = filters.CharFilter(method="filter_by_content_type")
@@ -43,9 +44,8 @@ class AuditLogViewSet(PermissionReadOnlyViewSet):
     """
 
     serializer_class = LogEntrySerializer
-    filter_backends = (OrderingFilter, filters.DjangoFilterBackend)
+    filter_backends = (OrderingFilter, ApiFilterBackend)
     filterset_class = LogEntryFilter
-    ordering = ("-timestamp",)
     ordering_fields = ["timestamp"]
 
     def get_queryset(self) -> QuerySet[LogEntry]:

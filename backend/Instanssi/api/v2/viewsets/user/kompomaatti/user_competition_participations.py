@@ -1,6 +1,5 @@
 from django.db.models import QuerySet
 from django.utils.translation import gettext as _
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
@@ -11,6 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 from Instanssi.api.v2.serializers.user.kompomaatti.user_competition_participation_serializer import (
     UserCompetitionParticipationSerializer,
 )
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 from Instanssi.kompomaatti.models import Competition, CompetitionParticipation
 from Instanssi.users.models import User
 
@@ -26,9 +26,10 @@ class UserCompetitionParticipationViewSet(ModelViewSet[CompetitionParticipation]
     permission_classes = [IsAuthenticated]
     serializer_class = UserCompetitionParticipationSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, ApiFilterBackend)
     ordering_fields = ("id", "competition")
     filterset_fields = ("competition",)
+    ordering = ("id",)
     queryset = CompetitionParticipation.objects.all()
 
     def get_queryset(self) -> QuerySet[CompetitionParticipation]:

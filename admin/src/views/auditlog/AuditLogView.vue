@@ -208,6 +208,7 @@ async function load(options: LoadOptions) {
             query.model = model;
         }
 
+        query.ordering = "-timestamp";
         if (options.sortBy.length > 0) {
             const sort = options.sortBy[0];
             if (sort) {

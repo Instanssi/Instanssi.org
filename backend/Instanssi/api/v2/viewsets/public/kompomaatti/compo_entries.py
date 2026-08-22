@@ -1,5 +1,4 @@
 from django.db.models import Q, QuerySet
-from rest_framework.filters import OrderingFilter
 
 from Instanssi.api.v2.serializers.public.kompomaatti import PublicCompoEntrySerializer
 from Instanssi.api.v2.utils.base import PublicReadOnlyViewSet
@@ -17,9 +16,8 @@ class PublicCompoEntryViewSet(PublicReadOnlyViewSet[Entry]):
 
     serializer_class = PublicCompoEntrySerializer
     queryset = Entry.objects.all()
-    filter_backends = [OrderingFilter]
     ordering_fields = ["id", "name", "compo", "order_index", "computed_rank", "computed_score"]
-    ordering = ["compo", "computed_rank"]
+    filterset_fields = ("compo",)
 
     def get_queryset(self) -> QuerySet[Entry]:
         event_id = int(self.kwargs["event_pk"])

@@ -172,7 +172,7 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminEventStoreTransactionsList({
             path: { event_pk: eventId.value },
-            query: getLoadArgs(args),
+            query: getLoadArgs(args, "-id"),
         });
         transactions.value = response.data!.results;
         totalItems.value = response.data!.count;

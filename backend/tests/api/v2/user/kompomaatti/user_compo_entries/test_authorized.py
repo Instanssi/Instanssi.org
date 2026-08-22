@@ -353,3 +353,13 @@ def test_user_cannot_create_entry_for_hidden_event(
         format="multipart",
     )
     assert req.status_code == 400
+
+
+@pytest.mark.django_db
+def test_user_entries_filter_with_unknown_compo_id_returns_empty_list(auth_client, editable_compo_entry):
+    """A nonexistent compo id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which compo ids exist."""
+    base_url = get_base_url(editable_compo_entry.compo.event_id)
+    req = auth_client.get(f"{base_url}?compo=999999")
+    assert req.status_code == 200
+    assert req.data == []

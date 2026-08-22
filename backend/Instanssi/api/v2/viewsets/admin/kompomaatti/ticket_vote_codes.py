@@ -1,9 +1,9 @@
 from django.db.models import QuerySet
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 
 from Instanssi.api.v2.serializers.admin.kompomaatti import TicketVoteCodeSerializer
 from Instanssi.api.v2.utils.base import PermissionReadOnlyViewSet
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 from Instanssi.kompomaatti.models import TicketVoteCode
 
 
@@ -12,7 +12,7 @@ class TicketVoteCodeViewSet(PermissionReadOnlyViewSet):
 
     queryset = TicketVoteCode.objects.all()
     serializer_class = TicketVoteCodeSerializer  # type: ignore[assignment]
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, ApiFilterBackend)
     ordering_fields = ("id", "event", "associated_to", "time")
     filterset_fields = ("associated_to", "ticket")
 

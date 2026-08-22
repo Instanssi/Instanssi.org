@@ -131,7 +131,7 @@ def test_search_by_description(staff_api_client, uploaded_file):
 
 @pytest.mark.django_db
 def test_ordering_by_date(staff_api_client, event, staff_user, test_zip):
-    """Test that uploaded files are ordered by date (newest first) by default."""
+    """Test that uploaded files are ordered by ascending id by default."""
     base_url = get_base_url(event.id)
     # Create multiple files
     from Instanssi.admin_upload.models import UploadedFile
@@ -147,6 +147,6 @@ def test_ordering_by_date(staff_api_client, event, staff_user, test_zip):
 
     req = staff_api_client.get(base_url)
     assert req.status_code == 200
-    # Check that dates are in descending order (newest first)
+    # Default ordering is ascending id, so dates are oldest first
     dates = [uf["date"] for uf in req.data]
-    assert dates == sorted(dates, reverse=True)
+    assert dates == sorted(dates)

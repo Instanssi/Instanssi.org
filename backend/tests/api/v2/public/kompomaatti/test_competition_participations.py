@@ -139,3 +139,31 @@ def test_hidden_event_participations_not_in_list(
     req = api_client.get(base_url)
     assert req.status_code == 200
     assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_participations_can_be_filtered_by_competition(
+    api_client, started_competition_participation, competition
+):
+    """Participations list supports filtering by competition id."""
+    base_url = get_base_url(started_competition_participation.competition.event_id)
+
+    req = api_client.get(base_url, {"competition": started_competition_participation.competition_id})
+    assert req.status_code == 200
+    assert started_competition_participation.id in [p["id"] for p in req.data]
+
+    req = api_client.get(base_url, {"competition": competition.id})
+    assert req.status_code == 200
+    assert req.data == []
+
+
+@pytest.mark.django_db
+def test_participations_filter_with_unknown_competition_id_returns_empty_list(
+    api_client, started_competition_participation
+):
+    """A nonexistent competition id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which competition ids exist."""
+    base_url = get_base_url(started_competition_participation.competition.event_id)
+    req = api_client.get(base_url, {"competition": 999999})
+    assert req.status_code == 200
+    assert req.data == []

@@ -216,7 +216,7 @@ async function load(args: LoadArgs) {
     try {
         const response = await api.adminEventsList({
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(filterArchived.value !== null ? { archived: filterArchived.value } : {}),
                 ...(filterHidden.value !== null ? { hidden: filterHidden.value } : {}),
             },

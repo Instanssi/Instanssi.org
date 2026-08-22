@@ -137,7 +137,7 @@ def test_auditlog_is_read_only(super_api_client, log_entry):
 
 @pytest.mark.django_db
 def test_auditlog_ordering_default(super_api_client, event, super_user):
-    """Test that entries are ordered by timestamp descending by default."""
+    """Test that entries are ordered by ascending id by default."""
     content_type = ContentType.objects.get_for_model(Event)
     # Create multiple entries
     entry1 = LogEntry.objects.create(
@@ -157,10 +157,10 @@ def test_auditlog_ordering_default(super_api_client, event, super_user):
 
     result = super_api_client.get(BASE_URL)
     assert result.status_code == 200
-    results = result.data
-    # Most recent should be first
-    assert results[0]["id"] == entry2.id
-    assert results[1]["id"] == entry1.id
+    # Default ordering is ascending id (oldest first)
+    ids = [r["id"] for r in result.data]
+    assert ids == sorted(ids)
+    assert ids.index(entry1.id) < ids.index(entry2.id)
 
 
 @pytest.mark.django_db

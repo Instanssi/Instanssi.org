@@ -2,7 +2,6 @@ from django.db import transaction
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
@@ -14,6 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 from Instanssi.api.v2.serializers.user.kompomaatti.user_ticket_vote_code_serializer import (
     UserTicketVoteCodeSerializer,
 )
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 from Instanssi.kompomaatti.models import Event, TicketVoteCode
 from Instanssi.store.models import TransactionItem
 from Instanssi.users.models import User
@@ -39,9 +39,10 @@ class UserTicketVoteCodeViewSet(
     permission_classes = [IsAuthenticated]
     serializer_class = UserTicketVoteCodeSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, ApiFilterBackend)
     ordering_fields = ("id", "event", "time")
     filterset_fields = ("event",)
+    ordering = ("id",)
     queryset = TicketVoteCode.objects.all()
 
     def get_queryset(self) -> QuerySet[TicketVoteCode]:

@@ -1,6 +1,5 @@
 from django.db.models import QuerySet
 from django.utils.translation import gettext as _
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
@@ -14,6 +13,7 @@ from Instanssi.api.v2.utils.entry_file_validation import (
     maybe_copy_entry_to_image,
     validate_entry_files,
 )
+from Instanssi.api.v2.utils.filters import ApiFilterBackend
 from Instanssi.kompomaatti.models import Compo, Entry
 from Instanssi.users.models import User
 
@@ -28,9 +28,10 @@ class UserCompoEntryViewSet(ModelViewSet[Entry]):
     serializer_class = UserCompoEntrySerializer
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = LimitOffsetPagination
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = (OrderingFilter, ApiFilterBackend)
     ordering_fields = ("id", "compo", "name", "computed_rank", "computed_score")
     filterset_fields = ("compo",)
+    ordering = ("id",)
     queryset = Entry.objects.all()
 
     def get_queryset(self) -> QuerySet[Entry]:

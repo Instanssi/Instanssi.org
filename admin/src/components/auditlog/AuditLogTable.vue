@@ -114,6 +114,7 @@ async function load(options: LoadOptions) {
             query.object_pk = String(props.objectPk);
         }
 
+        query.ordering = "-timestamp";
         if (options.sortBy.length > 0) {
             const sort = options.sortBy[0];
             if (sort) {

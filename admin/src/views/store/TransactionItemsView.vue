@@ -197,7 +197,7 @@ async function load(args: LoadArgs) {
         const response = await api.adminEventStoreTransactionItemsList({
             path: { event_pk: eventId.value },
             query: {
-                ...getLoadArgs(args),
+                ...getLoadArgs(args, "-id"),
                 ...(selectedItem.value ? { item: selectedItem.value } : {}),
             },
         });

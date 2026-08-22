@@ -171,3 +171,13 @@ def test_user_cannot_create_vote_code_request_for_hidden_event(auth_client, hidd
         },
     )
     assert req.status_code == 400
+
+
+@pytest.mark.django_db
+def test_vote_code_requests_filter_with_unknown_event_id_returns_empty_list(auth_client, vote_code_request):
+    """A nonexistent event id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which event ids exist."""
+    base_url = get_base_url(vote_code_request.event_id)
+    req = auth_client.get(f"{base_url}?event=999999")
+    assert req.status_code == 200
+    assert req.data == []

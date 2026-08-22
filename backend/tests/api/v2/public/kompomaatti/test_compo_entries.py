@@ -165,3 +165,27 @@ def test_hidden_event_entries_not_in_list(api_client, hidden_event, hidden_event
     req = api_client.get(base_url)
     assert req.status_code == 200
     assert len(req.data) == 0
+
+
+@pytest.mark.django_db
+def test_entries_can_be_filtered_by_compo(api_client, votable_compo_entry, open_compo):
+    """Entries list supports filtering by compo id."""
+    base_url = get_base_url(votable_compo_entry.compo.event_id)
+
+    req = api_client.get(base_url, {"compo": votable_compo_entry.compo_id})
+    assert req.status_code == 200
+    assert votable_compo_entry.id in [e["id"] for e in req.data]
+
+    req = api_client.get(base_url, {"compo": open_compo.id})
+    assert req.status_code == 200
+    assert req.data == []
+
+
+@pytest.mark.django_db
+def test_entries_filter_with_unknown_compo_id_returns_empty_list(api_client, votable_compo_entry):
+    """A nonexistent compo id must yield an empty list, not a validation error,
+    so the filter cannot be used to probe which compo ids exist."""
+    base_url = get_base_url(votable_compo_entry.compo.event_id)
+    req = api_client.get(base_url, {"compo": 999999})
+    assert req.status_code == 200
+    assert req.data == []

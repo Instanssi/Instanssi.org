@@ -16,6 +16,7 @@ class PublicCompetitionParticipationViewSet(PublicReadOnlyViewSet[CompetitionPar
 
     serializer_class = PublicCompetitionParticipationSerializer
     queryset = CompetitionParticipation.objects.all()
+    filterset_fields = ("competition",)
 
     def get_queryset(self) -> QuerySet[CompetitionParticipation]:
         event_id = int(self.kwargs["event_pk"])

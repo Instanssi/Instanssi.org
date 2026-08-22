@@ -1,6 +1,7 @@
 name: Kompomaatti CI
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "kompomaatti/**"

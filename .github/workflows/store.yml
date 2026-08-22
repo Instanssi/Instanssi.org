@@ -1,6 +1,7 @@
 name: Store CI
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "store/**"

@@ -1,6 +1,7 @@
 name: Admin CI
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "admin/**"

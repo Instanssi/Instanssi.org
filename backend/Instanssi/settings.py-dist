@@ -75,6 +75,14 @@ SOCIALACCOUNT_PROVIDERS = {
         "EMAIL_AUTHENTICATION": True,
         "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
     },
+    "sceneid": {
+        # Request API keys from scene.org staff; all redirect URIs must be registered with them.
+        "APPS": [{"client_id": "", "secret": ""}],
+        "SCOPE": ["basic", "user:email"],
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
 }
 
 # Paytrail APIv2

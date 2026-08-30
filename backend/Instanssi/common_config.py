@@ -217,6 +217,7 @@ INSTALLED_APPS = (
     "allauth.socialaccount.providers.steam",
     "allauth.socialaccount.providers.twitch",
     "allauth.socialaccount.providers.openid",  # Required by Steam provider
+    "Instanssi.sceneid",  # Custom SceneID provider
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

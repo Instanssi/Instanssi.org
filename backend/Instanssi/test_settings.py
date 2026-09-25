@@ -76,6 +76,13 @@ SOCIALACCOUNT_PROVIDERS = {
         "EMAIL_AUTHENTICATION": True,
         "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
     },
+    "sceneid": {
+        "APPS": [{"client_id": "test-sceneid-id", "secret": "test-sceneid-secret"}],
+        "SCOPE": ["basic", "user:email"],
+        "VERIFIED_EMAIL": True,
+        "EMAIL_AUTHENTICATION": True,
+        "EMAIL_AUTHENTICATION_AUTO_CONNECT": True,
+    },
 }
 
 # Disable mandatory email verification for tests

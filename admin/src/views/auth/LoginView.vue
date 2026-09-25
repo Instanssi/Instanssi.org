@@ -12,8 +12,15 @@
                         variant="plain"
                         :href="method.url"
                     >
-                        <template v-if="socialIcons[method.method]" #prepend>
-                            <FontAwesomeIcon :icon="socialIcons[method.method]!" />
+                        <template
+                            v-if="socialIcons[method.method] || socialIconComponents[method.method]"
+                            #prepend
+                        >
+                            <FontAwesomeIcon
+                                v-if="socialIcons[method.method]"
+                                :icon="socialIcons[method.method]!"
+                            />
+                            <component :is="socialIconComponents[method.method]" v-else />
                         </template>
                         {{ method.name }}
                     </v-btn>
@@ -67,12 +74,13 @@ import {
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useField, useForm } from "vee-validate";
-import { type Ref, onMounted, ref } from "vue";
+import { type Component, type Ref, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { object as yupObject, string as yupString } from "yup";
 
 import type { SocialAuthUrl } from "@instanssi/api";
+import SceneIDIcon from "@/components/icons/SceneIDIcon.vue";
 import LanguageSelector from "@/components/layout/LanguageSelector.vue";
 import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
 
@@ -86,6 +94,11 @@ const socialIcons: Record<string, IconDefinition> = {
     github: faGithub,
     discord: faDiscord,
     twitch: faTwitch,
+};
+
+// Providers without a FontAwesome brand icon use a custom icon component instead.
+const socialIconComponents: Record<string, Component> = {
+    sceneid: SceneIDIcon,
 };
 
 const socialLoginUrls: Ref<SocialAuthUrl[]> = ref([]);

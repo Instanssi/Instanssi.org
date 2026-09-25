@@ -1,3 +1,4 @@
+import { flushPromises, mount } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Unmock auth service since we're testing it directly
@@ -6,6 +7,54 @@ vi.unmock("@/services/auth");
 import * as api from "@instanssi/api";
 import { LoginResult, PermissionTarget, useAuth } from "@/services/auth";
 import { createMockApiError } from "@/test/helpers/form-test-utils";
+import { vuetify } from "@/test/helpers/component-stubs";
+
+import LoginView from "./LoginView.vue";
+
+describe("LoginView - social login buttons", () => {
+    async function mountWithProviders() {
+        vi.mocked(api.getSocialAuthUrls).mockResolvedValue({
+            data: [
+                {
+                    method: "github",
+                    url: "/users/github/login/?next=%2Fmanagement",
+                    name: "GitHub",
+                },
+                {
+                    method: "sceneid",
+                    url: "/users/sceneid/login/?next=%2Fmanagement",
+                    name: "SceneID",
+                },
+            ],
+        } as never);
+        const wrapper = mount(LoginView, {
+            global: {
+                plugins: [vuetify],
+                stubs: { FontAwesomeIcon: true, LanguageSelector: true },
+            },
+        });
+        await flushPromises();
+        return wrapper;
+    }
+
+    it("renders a button per provider", async () => {
+        const wrapper = await mountWithProviders();
+        const github = wrapper.find('a[href="/users/github/login/?next=%2Fmanagement"]');
+        const sceneid = wrapper.find('a[href="/users/sceneid/login/?next=%2Fmanagement"]');
+        expect(github.exists()).toBe(true);
+        expect(github.text()).toContain("GitHub");
+        expect(sceneid.exists()).toBe(true);
+        expect(sceneid.text()).toContain("SceneID");
+    });
+
+    it("renders the SceneID icon in the button text color", async () => {
+        const wrapper = await mountWithProviders();
+        const sceneid = wrapper.find('a[href="/users/sceneid/login/?next=%2Fmanagement"]');
+        const icon = sceneid.find("svg.sceneid-icon");
+        expect(icon.exists()).toBe(true);
+        expect(icon.attributes("fill")).toBe("currentColor");
+    });
+});
 
 describe("LoginView - auth service integration", () => {
     const authService = useAuth();

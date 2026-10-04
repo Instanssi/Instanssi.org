@@ -104,7 +104,7 @@ def _is_readable_image(file: File[Any]) -> bool:
 
 
 def _validate_file(
-    file: UploadedFile,
+    file: UploadedFile[bytes],
     accept_formats: list[str],
     accept_formats_readable: str,
     max_size: int,

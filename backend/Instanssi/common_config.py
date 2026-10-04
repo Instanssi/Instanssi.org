@@ -129,6 +129,7 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "EXCEPTION_HANDLER": "Instanssi.api.exception_handler.custom_exception_handler",
+    "LIST_SERIALIZER_ERRORS_AS_DICT": False,  # TODO: Migrate store to use the new error format!
 }
 
 # OpenAPI
@@ -283,11 +284,15 @@ def make_cache_conf(debug_mode: bool) -> dict[str, Any]:
         }
 
 
-def make_email_conf(debug_mode: bool) -> str:
+def make_email_conf(debug_mode: bool, **smtp_options: Any) -> dict[str, dict[str, Any]]:
     if debug_mode:
-        return "django.core.mail.backends.console.EmailBackend"
-    else:
-        return "django.core.mail.backends.smtp.EmailBackend"
+        return {"default": {"BACKEND": "django.core.mail.backends.console.EmailBackend"}}
+    return {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": smtp_options,
+        }
+    }
 
 
 def setup_sentry(conf: dict[str, Any]) -> None:

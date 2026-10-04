@@ -112,8 +112,9 @@ class CompoEntryViewSet(PermissionViewSet):
     @action(detail=False, methods=["post"], url_path="reorder", parser_classes=[JSONParser])
     def reorder(self, request: Request, event_pk: int = 0) -> Response:
         """Bulk reorder entries within a compo."""
-        compo_id = request.data.get("compo")
-        entry_ids = request.data.get("entry_ids")
+        data = request.data if isinstance(request.data, dict) else {}
+        compo_id = data.get("compo")
+        entry_ids = data.get("entry_ids")
 
         if compo_id is None or not isinstance(entry_ids, list):
             raise serializers.ValidationError({"error": _("Both 'compo' and 'entry_ids' are required")})
